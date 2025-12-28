@@ -801,6 +801,12 @@ const AttributeSummaryCard = (function() {
     let sortStack = ['changed'];
 
     /**
+     * Additiver Sort-Modus: Wenn true, werden Klicks zur Sortierung hinzugefügt
+     * Wenn false, ersetzt jeder Klick die bestehende Sortierung
+     */
+    let additiveSortMode = false;
+
+    /**
      * Person-spezifische Persistenz für Sort-Mode UND "Geänderte"-Filter
      * (FIX: Sortierung und Filter pro ICH/PARTNER speichern)
      */
@@ -1492,21 +1498,23 @@ const AttributeSummaryCard = (function() {
 
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
+                <button class="flat-needs-sort-btn sort-additive-btn${additiveSortMode ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.toggleAdditiveSortMode()" title="${additiveSortMode ? 'Multi-Sort aktiv: Klicks werden kombiniert' : 'Multi-Sort: Klick zum Aktivieren'}">+</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('value') ? ' active' : ''}${sortStack.indexOf('value') >= 0 ? ' sort-' + (sortStack.indexOf('value') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('value', event.shiftKey)" title="Klick: Nur nach Wert | Shift+Klick: Zur Sortierung hinzufügen">Wert</button>
+                        onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('name') ? ' active' : ''}${sortStack.indexOf('name') >= 0 ? ' sort-' + (sortStack.indexOf('name') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('name', event.shiftKey)" title="Klick: Nur nach Name | Shift+Klick: Zur Sortierung hinzufügen">Name</button>
+                        onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('id') ? ' active' : ''}${sortStack.indexOf('id') >= 0 ? ' sort-' + (sortStack.indexOf('id') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('id', event.shiftKey)" title="Klick: Nur nach #B Nr. | Shift+Klick: Zur Sortierung hinzufügen">#B Nr.</button>
+                        onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('status') ? ' active' : ''}${sortStack.indexOf('status') >= 0 ? ' sort-' + (sortStack.indexOf('status') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('status', event.shiftKey)" title="Klick: Nur nach Status | Shift+Klick: Zur Sortierung hinzufügen">Status</button>
+                        onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('changed') ? ' active' : ''}${sortStack.indexOf('changed') >= 0 ? ' sort-' + (sortStack.indexOf('changed') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('changed', event.shiftKey)" title="Klick: Nur nach Geändert | Shift+Klick: Zur Sortierung hinzufügen">Geändert</button>
+                        onclick="AttributeSummaryCard.setSortMode('changed')">Geändert</button>
                 <button class="flat-needs-sort-btn sort-direction-btn" onclick="AttributeSummaryCard.toggleSortDirection()" title="Sortierrichtung umkehren">${currentSortDescending ? '↓' : '↑'}</button>
-                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'changed' && currentSortDescending ? ' hidden' : ''}"
+                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'changed' && currentSortDescending && !additiveSortMode ? ' hidden' : ''}"
                         onclick="AttributeSummaryCard.resetSort()" title="Sortierung zurücksetzen">✕</button>
             </div>
-            ${sortStack.length > 1 ? `<div class="flat-needs-sort-info">Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)}</span>`).join(' → ')} ${currentSortDescending ? '(absteigend)' : '(aufsteigend)'}</div>` : ''}
+            ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)}</span>`).join(' → ')}` : ''} ${currentSortDescending ? '(absteigend)' : '(aufsteigend)'}</div>` : ''}
         </div>`;
 
         // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
@@ -1684,11 +1692,11 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
+     * Verwendet additiveSortMode um zu entscheiden ob zur Sortierung hinzugefügt wird
      * @param {string} mode - 'value', 'name', 'id', 'status', 'changed'
-     * @param {boolean} additive - true = zum Stack hinzufügen (Shift-Klick)
      */
-    function setSortMode(mode, additive = false) {
-        if (additive && sortStack.length < 3) {
+    function setSortMode(mode) {
+        if (additiveSortMode && sortStack.length < 3) {
             // Additive Sortierung: zum Stack hinzufügen wenn nicht schon drin
             if (!sortStack.includes(mode)) {
                 sortStack.push(mode);
@@ -1707,7 +1715,18 @@ const AttributeSummaryCard = (function() {
         savedStatePerPerson[currentSortPerson].sortMode = currentFlatSortMode;
         savedStatePerPerson[currentSortPerson].sortStack = [...sortStack];
 
-        console.log('[AttributeSummaryCard] Sort-Stack:', sortStack, 'Richtung:', currentSortDescending ? 'absteigend' : 'aufsteigend');
+        console.log('[AttributeSummaryCard] Sort-Stack:', sortStack, 'Additiv:', additiveSortMode, 'Richtung:', currentSortDescending ? 'absteigend' : 'aufsteigend');
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Toggle additiven Sortiermodus (+ Button)
+     * Wenn aktiv: Klicks fügen zur Sortierung hinzu
+     * Wenn inaktiv: Klicks ersetzen die Sortierung
+     */
+    function toggleAdditiveSortMode() {
+        additiveSortMode = !additiveSortMode;
+        console.log('[AttributeSummaryCard] Additiver Modus:', additiveSortMode ? 'AN' : 'AUS');
         reRenderFlatNeeds();
     }
 
@@ -1722,12 +1741,13 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Setzt Sortierung auf Standard zurück (nur 'changed', absteigend)
+     * Setzt Sortierung auf Standard zurück (nur 'changed', absteigend, nicht-additiv)
      */
     function resetSort() {
         sortStack = ['changed'];
         currentFlatSortMode = 'changed';
         currentSortDescending = true;
+        additiveSortMode = false;
         savedStatePerPerson[currentSortPerson].sortMode = 'changed';
         savedStatePerPerson[currentSortPerson].sortStack = ['changed'];
         savedStatePerPerson[currentSortPerson].sortDescending = true;
@@ -3680,6 +3700,7 @@ const AttributeSummaryCard = (function() {
         reRenderFlatNeeds,
         setSortMode,
         toggleSortDirection,
+        toggleAdditiveSortMode,
         resetSort,
         toggleShowOnlyChanged,
         // Person-spezifische Sort-Persistenz (FIX für ICH/PARTNER Tab-Wechsel)
