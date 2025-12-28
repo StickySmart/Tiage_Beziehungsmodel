@@ -941,27 +941,30 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Vergleiche gegen die berechneten Anfangswerte (Basis + Modifiers)
-        // aus LoadedArchetypProfile - diese sind die SSOT für die initialen Werte
+        // PRIMÄR: Vergleiche gegen LoadedArchetypProfile (berechnete Anfangswerte)
         const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
 
-        if (!loadedProfile?.profileReview?.flatNeeds) {
-            return false;
-        }
-
-        const flatNeedsData = loadedProfile.profileReview.flatNeeds;
         let initialValue;
 
-        // Unterstütze sowohl Array- als auch Object-Format
-        if (Array.isArray(flatNeedsData)) {
-            // Array-Format: [{ id: '#B16', value: 95, ... }, ...]
-            const needEntry = flatNeedsData.find(n => n.id === needId);
-            initialValue = needEntry?.value;
-        } else {
-            // Object-Format: { '#B16': 95, ... }
-            initialValue = flatNeedsData[needId];
+        if (loadedProfile?.profileReview?.flatNeeds) {
+            const flatNeedsData = loadedProfile.profileReview.flatNeeds;
+            // Unterstütze sowohl Array- als auch Object-Format
+            if (Array.isArray(flatNeedsData)) {
+                const needEntry = flatNeedsData.find(n => n.id === needId);
+                initialValue = needEntry?.value;
+            } else {
+                initialValue = flatNeedsData[needId];
+            }
+        }
+
+        // FALLBACK: Vergleiche gegen statische Archetyp-Werte aus GfkBeduerfnisse
+        if (initialValue === undefined) {
+            const archetyp = currentFlatArchetyp || 'polyamor';
+            if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+                initialValue = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte[needId];
+            }
         }
 
         if (initialValue === undefined) {
@@ -1435,14 +1438,18 @@ const AttributeSummaryCard = (function() {
                 const isHauptfrageLocked = lockedHauptfragen.has(hf.id);
                 const hasNuancen = nuancenCount > 0;
 
-                // NEU: Prüfe ob ALLE Nuancen gelockt sind → Hauptfrage automatisch auch gelockt
+                // Zähle gelockte Nuancen
+                let lockedNuancenCount = 0;
                 let allNuancenLocked = false;
                 if (hasNuancen && hf.nuancen && hf.nuancen.length > 0) {
-                    allNuancenLocked = hf.nuancen.every(nuanceId => {
+                    lockedNuancenCount = hf.nuancen.filter(nuanceId => {
                         const nuanceObj = findNeedById(nuanceId);
                         return nuanceObj?.locked === true;
-                    });
+                    }).length;
+                    allNuancenLocked = lockedNuancenCount === hf.nuancen.length;
                 }
+                const hasLockedNuancen = lockedNuancenCount > 0;
+                const someNuancenLocked = hasLockedNuancen && !allNuancenLocked;
 
                 // Hauptfrage ist effektiv gelockt wenn: explizit gelockt ODER alle Nuancen gelockt
                 const isEffectivelyLocked = isHauptfrageLocked || allNuancenLocked;
@@ -1451,18 +1458,32 @@ const AttributeSummaryCard = (function() {
                 // Bei Hauptfragen ohne Nuancen ist Slider immer editierbar
                 const sliderDisabled = hasNuancen && isEffectivelyLocked;
 
-                // Prüfe ob mindestens eine Nuance dieser Hauptfrage geändert wurde
+                // Zähle geänderte Nuancen
                 const changedNuancenCount = (hf.nuancen || []).filter(nuanceId => {
                     const nuanceObj = findNeedById(nuanceId);
                     return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
                 }).length;
                 const hasChangedNuancen = changedNuancenCount > 0;
+
+                // CSS-Klassen
                 const changedClass = hasChangedNuancen ? ' has-changed-nuancen' : '';
                 const lockedClass = isEffectivelyLocked ? ' hauptfrage-locked' : '';
                 const lockedByNuancenClass = allNuancenLocked && !isHauptfrageLocked ? ' locked-by-nuancen' : '';
+                const partialLockedClass = someNuancenLocked ? ' has-locked-nuancen' : '';
+
+                // Indikator: Sternchen für geänderte Nuancen
                 const changedIndicator = hasChangedNuancen
                     ? `<span class="hauptfrage-changed-indicator" title="${changedNuancenCount} Nuance(n) geändert">*</span>`
                     : '';
+
+                // Nuancen-Status Info (zeigt gelockt/geändert Anzahl)
+                let nuancenStatusInfo = '';
+                if (hasNuancen) {
+                    const statusParts = [];
+                    if (lockedNuancenCount > 0) statusParts.push(`${lockedNuancenCount}🔒`);
+                    if (changedNuancenCount > 0) statusParts.push(`${changedNuancenCount}*`);
+                    nuancenStatusInfo = statusParts.length > 0 ? ` <span class="nuancen-status-info">${statusParts.join(' ')}</span>` : '';
+                }
 
                 // Slider-Style für Hauptfrage
                 const sliderValue = aggregatedValue !== null ? aggregatedValue : 50;
@@ -1474,6 +1495,8 @@ const AttributeSummaryCard = (function() {
                 let lockTitle = '';
                 if (allNuancenLocked && !isHauptfrageLocked) {
                     lockTitle = 'Alle Nuancen gesperrt - Hauptfrage automatisch fixiert';
+                } else if (someNuancenLocked) {
+                    lockTitle = `${lockedNuancenCount}/${nuancenCount} Nuancen gesperrt`;
                 } else if (isHauptfrageLocked) {
                     lockTitle = 'Entsperren (Nuancen wieder editierbar)';
                 } else {
@@ -1482,16 +1505,16 @@ const AttributeSummaryCard = (function() {
 
                 // Hauptfrage-Item mit Expand-Toggle und Slider
                 html += `
-                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}" data-hauptfrage-id="${hf.id}">
+                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}" data-hauptfrage-id="${hf.id}">
                     <div class="hauptfrage-header">
                         <span class="hauptfrage-expand-icon" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
                         <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;"
                               onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
                             ${hf.id} ${hf.label}${changedIndicator}
                         </span>
-                        <span class="hauptfrage-nuancen-count" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)` : '(direkt)'}</span>
+                        <span class="hauptfrage-nuancen-count" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)${nuancenStatusInfo}` : '(direkt)'}</span>
                         <div class="hauptfrage-controls">
-                            <span class="hauptfrage-lock-icon ${isEffectivelyLocked ? 'locked' : ''}${allNuancenLocked && !isHauptfrageLocked ? ' auto-locked' : ''}"
+                            <span class="hauptfrage-lock-icon ${isEffectivelyLocked ? 'locked' : ''}${allNuancenLocked && !isHauptfrageLocked ? ' auto-locked' : ''}${someNuancenLocked ? ' partial-locked' : ''}"
                                   onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageLock('${hf.id}', this)"
                                   title="${lockTitle}"></span>
                         </div>

@@ -2913,6 +2913,32 @@ input.resonanz-input:focus {
     font-size: 14px;
 }
 
+/* Hauptfrage mit einigen (nicht allen) gelockten Nuancen */
+.hauptfrage-item.has-locked-nuancen {
+    border-left: 3px solid rgba(245, 158, 11, 0.5);
+}
+
+.hauptfrage-item.has-locked-nuancen .hauptfrage-header {
+    background: rgba(245, 158, 11, 0.04);
+}
+
+/* Nuancen-Status Info (zeigt Anzahl gelockt/geändert) */
+.nuancen-status-info {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 4px;
+}
+
+/* Partial Lock Icon (einige Nuancen gelockt) */
+.hauptfrage-lock-icon.partial-locked::before {
+    content: "🔐";
+    opacity: 0.7;
+}
+
+.hauptfrage-lock-icon.partial-locked {
+    opacity: 1 !important;
+}
+
 /* Hauptfrage Label */
 .hauptfrage-label {
     flex: 1;
