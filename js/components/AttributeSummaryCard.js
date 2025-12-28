@@ -1415,6 +1415,9 @@ const AttributeSummaryCard = (function() {
         // Zähle gesperrte Bedürfnisse direkt aus TiageState (SSOT)
         const lockedCount = Object.keys(savedLockedNeeds).length;
 
+        // Zähle geänderte Bedürfnisse (abweichend vom Archetyp-Standard)
+        const changedCount = flatNeeds.filter(need => isValueChanged(need.id, need.value)).length;
+
         // Hauptfragen-Daten für aggregierte Ansicht
         let hauptfragenCount = 0;
         let hauptfragenData = [];
@@ -1456,8 +1459,9 @@ const AttributeSummaryCard = (function() {
             );
 
             // Spezielle "Geändert"-Sortierung für Hauptfragen:
-            // Hauptfragen mit geänderten Nuancen zuerst, dann nach Anzahl geänderter Nuancen
+            // Hauptfragen mit geänderten Nuancen zuerst/letzt (je nach Richtung), dann nach Anzahl geänderter Nuancen
             if (needsCustomChangedSort) {
+                const changedDirection = sortDirections.changed ? 1 : -1; // true = ↓ (mehr zuerst), false = ↑ (weniger zuerst)
                 hauptfragenData.sort((a, b) => {
                     const aChangedCount = (a.nuancen || []).filter(nuanceId => {
                         const nuanceObj = findNeedById(nuanceId);
@@ -1467,9 +1471,9 @@ const AttributeSummaryCard = (function() {
                         const nuanceObj = findNeedById(nuanceId);
                         return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
                     }).length;
-                    // Mehr geänderte Nuancen zuerst
+                    // Sortierrichtung berücksichtigen
                     if (bChangedCount !== aChangedCount) {
-                        return bChangedCount - aChangedCount;
+                        return (bChangedCount - aChangedCount) * changedDirection;
                     }
                     // Bei gleicher Anzahl nach Wert absteigend
                     return (b.aggregatedValue || 0) - (a.aggregatedValue || 0);
@@ -1479,7 +1483,7 @@ const AttributeSummaryCard = (function() {
             hauptfragenCount = hauptfragenData.length;
         }
 
-        // Subtitle mit Filter-Info und gesperrten Bedürfnissen
+        // Subtitle mit Filter-Info, gesperrten und geänderten Bedürfnissen
         const filterActive = filteredCount < totalNeedsCount;
         let subtitleText;
         if (showOnlyHauptfragen) {
@@ -1488,6 +1492,10 @@ const AttributeSummaryCard = (function() {
             subtitleText = filterActive
                 ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
                 : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
+        }
+        // Füge geänderte Zählung hinzu wenn > 0
+        if (changedCount > 0) {
+            subtitleText += `, geändert: ${changedCount}`;
         }
 
         // Titel je nach Ansichtsmodus
@@ -2029,6 +2037,9 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
         updateParentHauptfrageValue(needId);
+
+        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
+        updateLockedCountDisplay();
     }
 
     /**
@@ -2226,6 +2237,9 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
         }));
+
+        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
+        updateLockedCountDisplay();
     }
 
     /**
@@ -2412,6 +2426,9 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere Hauptfrage UI
         updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, finalValue);
 
+        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
+        updateLockedCountDisplay();
+
         return { handled: true, finalValue };
     }
 
@@ -2569,6 +2586,9 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
         }));
+
+        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
+        updateLockedCountDisplay();
     }
 
     /**
@@ -2659,6 +2679,9 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
         updateParentHauptfrageValue(needId);
+
+        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
+        updateLockedCountDisplay();
     }
 
     /**
@@ -2794,8 +2817,8 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Aktualisiert die Anzeige der gesperrten Bedürfnisse im Subtitle
-     * Wird nach Lock/Unlock-Aktionen aufgerufen
+     * Aktualisiert die Anzeige der gesperrten und geänderten Bedürfnisse im Subtitle
+     * Wird nach Lock/Unlock-Aktionen und nach Wertänderungen aufgerufen
      */
     function updateLockedCountDisplay() {
         // Ermittle aktuelle Person aus Kontext
@@ -2811,14 +2834,27 @@ const AttributeSummaryCard = (function() {
             lockedNeedsCount = Object.keys(lockedNeeds).length;
         }
 
+        // Zähle geänderte Bedürfnisse
+        const changedNeedsCount = flatNeeds.filter(need => isValueChanged(need.id, need.value)).length;
+
         // Finde das Subtitle-Element und aktualisiere den Text
         const subtitleElement = document.querySelector('.flat-needs-subtitle');
         if (subtitleElement) {
-            const currentText = subtitleElement.textContent;
+            let currentText = subtitleElement.textContent;
             // Ersetze den "davon gesperrt: X" Teil
-            const updatedText = currentText.replace(/davon gesperrt: \d+/, `davon gesperrt: ${lockedNeedsCount}`);
-            subtitleElement.textContent = updatedText;
-            console.log('[updateLockedCountDisplay] Subtitle aktualisiert:', lockedNeedsCount, 'gesperrt');
+            currentText = currentText.replace(/davon gesperrt: \d+/, `davon gesperrt: ${lockedNeedsCount}`);
+            // Ersetze oder füge den "geändert: X" Teil hinzu
+            if (currentText.includes('geändert:')) {
+                currentText = currentText.replace(/geändert: \d+/, `geändert: ${changedNeedsCount}`);
+            } else if (changedNeedsCount > 0) {
+                currentText += `, geändert: ${changedNeedsCount}`;
+            }
+            // Entferne "geändert: 0" wenn vorhanden
+            if (changedNeedsCount === 0) {
+                currentText = currentText.replace(/, geändert: \d+/, '');
+            }
+            subtitleElement.textContent = currentText;
+            console.log('[updateLockedCountDisplay] Subtitle aktualisiert:', lockedNeedsCount, 'gesperrt,', changedNeedsCount, 'geändert');
         }
     }
 
