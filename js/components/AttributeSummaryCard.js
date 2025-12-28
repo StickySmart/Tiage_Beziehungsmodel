@@ -1450,28 +1450,24 @@ const AttributeSummaryCard = (function() {
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
-        // FIX: Zähle gefilterte Bedürfnisse (für Anzeige), aber rendere ALLE
-        // Dies ermöglicht, dass die Suche funktioniert, auch wenn Filter aktiv sind
-        // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
+        // FIX: Zähle gefilterte Bedürfnisse (für Anzeige)
+        // Dies ermöglicht korrekte Anzeige im Subtitle wenn Filter aktiv sind
         let filteredNeeds = sortedNeeds;
         let filteredCount = sortedNeeds.length;
-        // DimensionKategorieFilter DEAKTIVIERT:
-        // if (typeof DimensionKategorieFilter !== 'undefined') {
-        //     filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
-        //     filteredCount = filteredNeeds.length;
-        //     console.log('[AttributeSummaryCard] Filter gezählt:', {
-        //         gesamt: sortedNeeds.length,
-        //         sichtbar: filteredCount,
-        //         filterAktiv: filteredCount < sortedNeeds.length
-        //     });
-        // }
-        console.log('[AttributeSummaryCard] FILTER DEAKTIVIERT - Zeige alle', sortedNeeds.length, 'Bedürfnisse');
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+            filteredCount = filteredNeeds.length;
+            if (filteredCount < sortedNeeds.length) {
+                console.log('[AttributeSummaryCard] Filter aktiv:', filteredCount, 'von', sortedNeeds.length, 'Bedürfnissen sichtbar');
+            }
+        }
 
         // Zähle gesperrte Bedürfnisse direkt aus TiageState (SSOT)
         const lockedCount = Object.keys(savedLockedNeeds).length;
 
         // Zähle geänderte Bedürfnisse (abweichend vom Archetyp-Standard)
-        const changedCount = flatNeeds.filter(need => isValueChanged(need.id, need.value)).length;
+        // Bei aktivem Filter: zähle nur gefilterte geänderte Bedürfnisse
+        const changedCount = filteredNeeds.filter(need => isValueChanged(need.id, need.value)).length;
 
         // Hauptfragen-Daten für aggregierte Ansicht
         let hauptfragenCount = 0;
@@ -1535,6 +1531,22 @@ const AttributeSummaryCard = (function() {
                 });
             }
 
+            // Filtere Hauptfragen nach aktivem DimensionKategorieFilter
+            // Eine Hauptfrage ist sichtbar wenn mindestens eine ihrer Nuancen sichtbar ist
+            const totalHauptfragen = hauptfragenData.length;
+            if (typeof DimensionKategorieFilter !== 'undefined' && filteredCount < sortedNeeds.length) {
+                hauptfragenData = hauptfragenData.filter(hf => {
+                    // Prüfe ob die Hauptfrage selbst sichtbar ist
+                    if (DimensionKategorieFilter.shouldShowNeed(hf.id)) {
+                        return true;
+                    }
+                    // Prüfe ob mindestens eine Nuance sichtbar ist
+                    if (hf.nuancen && hf.nuancen.length > 0) {
+                        return hf.nuancen.some(nuanceId => DimensionKategorieFilter.shouldShowNeed(nuanceId));
+                    }
+                    return false;
+                });
+            }
             hauptfragenCount = hauptfragenData.length;
         }
 
@@ -1542,7 +1554,12 @@ const AttributeSummaryCard = (function() {
         const filterActive = filteredCount < totalNeedsCount;
         let subtitleText;
         if (showOnlyHauptfragen) {
-            subtitleText = `Dein ${archetypLabel}-Profil (${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
+            // Bei Hauptfragen-Ansicht: Zeige gefilterte Anzahl wenn Filter aktiv
+            if (filterActive) {
+                subtitleText = `Dein ${archetypLabel}-Profil (Gefiltert: ${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
+            } else {
+                subtitleText = `Dein ${archetypLabel}-Profil (${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
+            }
         } else {
             subtitleText = filterActive
                 ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
