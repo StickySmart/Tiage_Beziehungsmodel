@@ -848,6 +848,21 @@ const AttributeSummaryCard = (function() {
     let showOnlyChangedNeeds = false;
 
     /**
+     * Baseline FlatNeeds: Speichert die Anfangswerte beim ersten Laden
+     * Pro Person ('ich', 'partner') - wird verwendet für isValueChanged-Vergleich
+     * Wird nur einmal pro Person/Archetyp gesetzt und nicht mehr geändert
+     */
+    const baselineFlatNeeds = {
+        ich: null,
+        partner: null
+    };
+    // Speichert den Archetyp für den das Baseline gesetzt wurde
+    const baselineArchetyp = {
+        ich: null,
+        partner: null
+    };
+
+    /**
      * GFK-Kategorien mit Labels und Icons
      */
     const GFK_KATEGORIEN = {
@@ -965,29 +980,44 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // PRIMÄR: Vergleiche gegen LoadedArchetypProfile (berechnete Anfangswerte)
-        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
-            ? window.LoadedArchetypProfile[currentPerson]
-            : null;
-
         let initialValue;
 
-        if (loadedProfile?.profileReview?.flatNeeds) {
-            const flatNeedsData = loadedProfile.profileReview.flatNeeds;
-            // Unterstütze sowohl Array- als auch Object-Format
-            if (Array.isArray(flatNeedsData)) {
-                const needEntry = flatNeedsData.find(n => n.id === needId);
+        // PRIORITÄT 1: Vergleiche gegen gespeichertes Baseline (beste Quelle)
+        // Das Baseline wird beim ersten Laden des Profils gespeichert
+        if (baselineFlatNeeds[currentPerson]) {
+            const baseline = baselineFlatNeeds[currentPerson];
+            if (Array.isArray(baseline)) {
+                const needEntry = baseline.find(n => n.id === needId);
                 initialValue = needEntry?.value;
-            } else {
-                initialValue = flatNeedsData[needId];
+            } else if (typeof baseline === 'object') {
+                const entry = baseline[needId];
+                initialValue = (typeof entry === 'object' && entry?.value !== undefined) ? entry.value : entry;
             }
         }
 
-        // FALLBACK: Vergleiche gegen statische Archetyp-Werte aus GfkBeduerfnisse
+        // PRIORITÄT 2: Vergleiche gegen statische Archetyp-Werte aus GfkBeduerfnisse
+        // (Falls kein Baseline gesetzt ist)
         if (initialValue === undefined) {
             const archetyp = currentFlatArchetyp || 'polyamor';
             if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
                 initialValue = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte[needId];
+            }
+        }
+
+        // PRIORITÄT 3: Vergleiche gegen LoadedArchetypProfile (Fallback)
+        if (initialValue === undefined) {
+            const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+                ? window.LoadedArchetypProfile[currentPerson]
+                : null;
+
+            if (loadedProfile?.profileReview?.flatNeeds) {
+                const flatNeedsData = loadedProfile.profileReview.flatNeeds;
+                if (Array.isArray(flatNeedsData)) {
+                    const needEntry = flatNeedsData.find(n => n.id === needId);
+                    initialValue = needEntry?.value;
+                } else {
+                    initialValue = flatNeedsData[needId];
+                }
             }
         }
 
@@ -996,6 +1026,27 @@ const AttributeSummaryCard = (function() {
         }
 
         return currentValue !== initialValue;
+    }
+
+    /**
+     * Setzt das Baseline für eine Person (nur einmal pro Archetyp)
+     * Wird beim ersten Laden des Profils aufgerufen
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {string} archetyp - Archetyp-ID
+     */
+    function setBaselineForPerson(person, archetyp) {
+        // Nur setzen wenn noch nicht für diesen Archetyp gesetzt
+        if (baselineArchetyp[person] === archetyp && baselineFlatNeeds[person]) {
+            return; // Bereits gesetzt für diesen Archetyp
+        }
+
+        // Hole die berechneten Anfangswerte aus GfkBeduerfnisse
+        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+            // Tiefe Kopie der Basis-Werte
+            baselineFlatNeeds[person] = { ...GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte };
+            baselineArchetyp[person] = archetyp;
+            console.log('[AttributeSummaryCard] Baseline gesetzt für', person, '/', archetyp, '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
+        }
     }
 
     /**
@@ -1279,6 +1330,16 @@ const AttributeSummaryCard = (function() {
         currentFlatArchetyp = archetyp;
         currentFlatArchetypLabel = archetypLabel;
 
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // WICHTIG: Setze Baseline für die aktuelle Person/Archetyp Kombination
+        // Das Baseline enthält die statischen Archetyp-Werte und dient als Vergleichsbasis
+        setBaselineForPerson(currentPerson, archetyp);
+
         // Bei neuem Archetyp: Alle Einträge zurücksetzen
         if (isNewArchetyp) {
             // Alle Bedürfnisse zurücksetzen damit neue Profil-Werte geladen werden
@@ -1288,12 +1349,6 @@ const AttributeSummaryCard = (function() {
 
         // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
         let umfrageWerte = {};
-
-        // Ermittle aktuelle Person aus Kontext
-        let currentPerson = 'ich';
-        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
-            currentPerson = window.currentProfileReviewContext.person;
-        }
 
         // 1. Versuche berechnete Werte aus LoadedArchetypProfile zu holen (für ich ODER partner)
         const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
