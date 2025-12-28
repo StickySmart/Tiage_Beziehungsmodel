@@ -1402,11 +1402,8 @@ const AttributeSummaryCard = (function() {
         // }
         console.log('[AttributeSummaryCard] FILTER DEAKTIVIERT - Zeige alle', sortedNeeds.length, 'Bedürfnisse');
 
-        // Zähle gesperrte Bedürfnisse innerhalb der gefilterten
-        // Verwende savedLockedNeeds die bereits aus TiageState geladen wurden (Zeile 1150)
-        const lockedCount = filteredNeeds.filter(need => {
-            return savedLockedNeeds.hasOwnProperty(need.id);
-        }).length;
+        // Zähle gesperrte Bedürfnisse direkt aus TiageState (SSOT)
+        const lockedCount = Object.keys(savedLockedNeeds).length;
 
         // Hauptfragen-Daten für aggregierte Ansicht
         let hauptfragenCount = 0;
