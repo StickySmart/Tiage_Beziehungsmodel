@@ -2152,6 +2152,63 @@ input.resonanz-input:focus {
     font-weight: 600;
 }
 
+/* Multi-Sort: Position-Badges (1, 2, 3) */
+.flat-needs-sort-btn.sort-1::after,
+.flat-needs-sort-btn.sort-2::after,
+.flat-needs-sort-btn.sort-3::after {
+    font-size: 9px;
+    font-weight: bold;
+    margin-left: 2px;
+    opacity: 0.8;
+}
+.flat-needs-sort-btn.sort-1::after { content: '¹'; }
+.flat-needs-sort-btn.sort-2::after { content: '²'; }
+.flat-needs-sort-btn.sort-3::after { content: '³'; }
+
+/* Richtungs-Button */
+.flat-needs-sort-btn.sort-direction-btn {
+    min-width: 28px;
+    font-size: 14px;
+    padding: 3px 6px;
+}
+
+/* Reset-Button */
+.flat-needs-sort-btn.sort-reset-btn {
+    min-width: 28px;
+    font-size: 12px;
+    padding: 3px 6px;
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.flat-needs-sort-btn.sort-reset-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+.flat-needs-sort-btn.sort-reset-btn.hidden {
+    display: none;
+}
+
+/* Sort-Info (Multi-Sort Anzeige) */
+.flat-needs-sort-info {
+    font-size: 11px;
+    color: var(--text-muted, #888);
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+}
+
+.flat-needs-sort-info .sort-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    margin: 0 2px;
+}
+.sort-badge.sort-1 { background: var(--primary, #FFD700); color: #000; }
+.sort-badge.sort-2 { background: rgba(168, 85, 247, 0.3); color: #c084fc; }
+.sort-badge.sort-3 { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */
