@@ -790,9 +790,16 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'changed';
 
     /**
-     * Sortierrichtung: true = absteigend (Standard), false = aufsteigend
+     * Per-mode Sortierrichtungen: Jeder Sort-Mode hat seine eigene Richtung
+     * true = absteigend, false = aufsteigend
      */
-    let currentSortDescending = true;
+    const sortDirections = {
+        'value': true,
+        'name': true,
+        'id': true,
+        'status': true,
+        'changed': true
+    };
 
     /**
      * Multi-Sort Stack: Array von Sort-Modi für additive Sortierung
@@ -811,8 +818,8 @@ const AttributeSummaryCard = (function() {
      * (FIX: Sortierung und Filter pro ICH/PARTNER speichern)
      */
     const savedStatePerPerson = {
-        ich: { sortMode: 'changed', sortDescending: true, sortStack: ['changed'], showOnlyChanged: false },
-        partner: { sortMode: 'changed', sortDescending: true, sortStack: ['changed'], showOnlyChanged: false }
+        ich: { sortMode: 'changed', sortStack: ['changed'], sortDirections: {...sortDirections}, showOnlyChanged: false },
+        partner: { sortMode: 'changed', sortStack: ['changed'], sortDirections: {...sortDirections}, showOnlyChanged: false }
     };
     let currentSortPerson = 'ich';  // Aktuelle Person für Sort-Kontext
 
@@ -1149,6 +1156,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Sortiert die Bedürfnis-Liste nach dem aktuellen Sort-Stack (Multi-Sort)
+     * Jeder Sort-Mode hat seine eigene Richtung (sortDirections)
      * @param {Array} needs - Array von {id, value, label}
      * @param {string} mode - Primärer Sort-Mode (für Rückwärtskompatibilität)
      * @returns {Array} Sortiertes Array
@@ -1156,18 +1164,20 @@ const AttributeSummaryCard = (function() {
     function sortNeedsList(needs, mode) {
         const sorted = [...needs];
         const stack = sortStack.length > 0 ? sortStack : [mode];
-        const direction = currentSortDescending ? 1 : -1;
 
         sorted.sort((a, b) => {
             // Multi-Sort: Iteriere durch den Stack
             for (const sortMode of stack) {
                 const result = compareByMode(a, b, sortMode);
                 if (result !== 0) {
+                    // Jeder Mode hat seine eigene Richtung
+                    const direction = sortDirections[sortMode] ? 1 : -1;
                     return result * direction;
                 }
             }
             // Fallback: Nach Wert wenn alle gleich
-            return (b.value - a.value) * direction;
+            const fallbackDir = sortDirections['value'] ? 1 : -1;
+            return (b.value - a.value) * fallbackDir;
         });
 
         return sorted;
@@ -1498,20 +1508,19 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn sort-additive-btn${additiveSortMode ? ' active' : ''}"
                         onclick="AttributeSummaryCard.toggleAdditiveSortMode()" title="${additiveSortMode ? 'Multi-Sort aktiv: Klicks werden kombiniert' : 'Multi-Sort: Klick zum Aktivieren'}">+</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('value') ? ' active' : ''}${sortStack.indexOf('value') >= 0 ? ' sort-' + (sortStack.indexOf('value') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
+                        onclick="AttributeSummaryCard.setSortMode('value')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Wert ${sortDirections.value ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('name') ? ' active' : ''}${sortStack.indexOf('name') >= 0 ? ' sort-' + (sortStack.indexOf('name') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
+                        onclick="AttributeSummaryCard.setSortMode('name')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Name ${sortDirections.name ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('id') ? ' active' : ''}${sortStack.indexOf('id') >= 0 ? ' sort-' + (sortStack.indexOf('id') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
+                        onclick="AttributeSummaryCard.setSortMode('id')" title="Klick: primär sortieren / nochmal: Richtung wechseln">#B Nr. ${sortDirections.id ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('status') ? ' active' : ''}${sortStack.indexOf('status') >= 0 ? ' sort-' + (sortStack.indexOf('status') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
+                        onclick="AttributeSummaryCard.setSortMode('status')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Status ${sortDirections.status ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('changed') ? ' active' : ''}${sortStack.indexOf('changed') >= 0 ? ' sort-' + (sortStack.indexOf('changed') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('changed')">Geändert</button>
-                <button class="flat-needs-sort-btn sort-direction-btn" onclick="AttributeSummaryCard.toggleSortDirection()" title="Sortierrichtung umkehren">${currentSortDescending ? '↓' : '↑'}</button>
-                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'changed' && currentSortDescending && !additiveSortMode ? ' hidden' : ''}"
+                        onclick="AttributeSummaryCard.setSortMode('changed')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Geändert ${sortDirections.changed ? '↓' : '↑'}</button>
+                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'changed' && sortDirections.changed && !additiveSortMode ? ' hidden' : ''}"
                         onclick="AttributeSummaryCard.resetSort()" title="Sortierung zurücksetzen">✕</button>
             </div>
-            ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)}</span>`).join(' → ')}` : ''} ${currentSortDescending ? '(absteigend)' : '(aufsteigend)'}</div>` : ''}
+            ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
         </div>`;
 
         // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
@@ -1689,18 +1698,28 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
-     * Verwendet additiveSortMode um zu entscheiden ob zur Sortierung hinzugefügt wird
+     * Verwendet additiveSortMode und per-mode sortDirections
+     * Jeder Sort-Mode hat seine eigene Richtung (sortDirections)
      * @param {string} mode - 'value', 'name', 'id', 'status', 'changed'
      */
     function setSortMode(mode) {
+        // Wenn dieser Mode bereits der primäre ist (und nicht additiv): Toggle Richtung
+        if (sortStack[0] === mode && !additiveSortMode) {
+            sortDirections[mode] = !sortDirections[mode];
+            savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
+            console.log('[AttributeSummaryCard] Richtung getoggelt für', mode, ':', sortDirections[mode] ? '↓' : '↑');
+            reRenderFlatNeeds();
+            return;
+        }
+
         if (additiveSortMode && sortStack.length < 3) {
             // Additive Sortierung: zum Stack hinzufügen wenn nicht schon drin
             if (!sortStack.includes(mode)) {
                 sortStack.push(mode);
             } else {
-                // Wenn schon im Stack: entfernen
-                sortStack = sortStack.filter(m => m !== mode);
-                if (sortStack.length === 0) sortStack = ['changed'];
+                // Wenn schon im Stack: Toggle Richtung
+                sortDirections[mode] = !sortDirections[mode];
+                savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
             }
         } else {
             // Normale Sortierung: ersetzt den Stack
@@ -1711,8 +1730,9 @@ const AttributeSummaryCard = (function() {
         // Speichere für aktuelle Person
         savedStatePerPerson[currentSortPerson].sortMode = currentFlatSortMode;
         savedStatePerPerson[currentSortPerson].sortStack = [...sortStack];
+        savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
 
-        console.log('[AttributeSummaryCard] Sort-Stack:', sortStack, 'Additiv:', additiveSortMode, 'Richtung:', currentSortDescending ? 'absteigend' : 'aufsteigend');
+        console.log('[AttributeSummaryCard] Sort-Stack:', sortStack, 'Richtungen:', sortDirections);
         reRenderFlatNeeds();
     }
 
@@ -1728,26 +1748,21 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Toggle Sortierrichtung (aufsteigend/absteigend)
-     */
-    function toggleSortDirection() {
-        currentSortDescending = !currentSortDescending;
-        savedStatePerPerson[currentSortPerson].sortDescending = currentSortDescending;
-        console.log('[AttributeSummaryCard] Sortierrichtung:', currentSortDescending ? 'absteigend' : 'aufsteigend');
-        reRenderFlatNeeds();
-    }
-
-    /**
      * Setzt Sortierung auf Standard zurück (nur 'changed', absteigend, nicht-additiv)
      */
     function resetSort() {
         sortStack = ['changed'];
         currentFlatSortMode = 'changed';
-        currentSortDescending = true;
         additiveSortMode = false;
+        // Alle Richtungen auf Standard zurücksetzen
+        sortDirections.value = true;
+        sortDirections.name = true;
+        sortDirections.id = true;
+        sortDirections.status = true;
+        sortDirections.changed = true;
         savedStatePerPerson[currentSortPerson].sortMode = 'changed';
         savedStatePerPerson[currentSortPerson].sortStack = ['changed'];
-        savedStatePerPerson[currentSortPerson].sortDescending = true;
+        savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
         console.log('[AttributeSummaryCard] Sortierung zurückgesetzt');
         reRenderFlatNeeds();
     }
@@ -1761,8 +1776,8 @@ const AttributeSummaryCard = (function() {
             person = 'ich';
         }
         savedStatePerPerson[person].sortMode = currentFlatSortMode;
-        savedStatePerPerson[person].sortDescending = currentSortDescending;
         savedStatePerPerson[person].sortStack = [...sortStack];
+        savedStatePerPerson[person].sortDirections = {...sortDirections};
         savedStatePerPerson[person].showOnlyChanged = showOnlyChangedNeeds;
         console.log('[AttributeSummaryCard] State gespeichert für', person, ':', savedStatePerPerson[person]);
     }
@@ -1777,8 +1792,17 @@ const AttributeSummaryCard = (function() {
         }
         const state = savedStatePerPerson[person];
         currentFlatSortMode = state?.sortMode || 'changed';
-        currentSortDescending = state?.sortDescending !== undefined ? state.sortDescending : true;
         sortStack = state?.sortStack || ['changed'];
+        // Lade sortDirections per-mode oder setze Defaults
+        if (state?.sortDirections) {
+            Object.assign(sortDirections, state.sortDirections);
+        } else {
+            sortDirections.value = true;
+            sortDirections.name = true;
+            sortDirections.id = true;
+            sortDirections.status = true;
+            sortDirections.changed = true;
+        }
         showOnlyChangedNeeds = state?.showOnlyChanged || false;
         currentSortPerson = person;
 
@@ -3696,7 +3720,6 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
-        toggleSortDirection,
         toggleAdditiveSortMode,
         resetSort,
         toggleShowOnlyChanged,
