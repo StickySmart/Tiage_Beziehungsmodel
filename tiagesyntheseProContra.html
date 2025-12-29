@@ -743,48 +743,78 @@
 
         /**
          * Berechnet die Kopf-Herz-Balance (Theorie vs. Praxis)
-         * Logos = Archetyp-Matrix-Score (theoretisch)
-         * Pathos = Bedürfnis-Match-Score (tatsächlich gemessen)
+         * Logos = Bedürfnis-Match OHNE manuelle Änderungen (nur flatNeeds)
+         * Pathos = Bedürfnis-Match MIT manuellen Änderungen (flatNeeds + lockedNeeds)
          * Balance = (100 - |Logos - Pathos|) / 100
-         * @returns {Object} { logos, pathos, balance, color, interpretation }
+         * Zeigt wie sehr manuelle Anpassungen von der automatischen Berechnung abweichen
+         * @returns {Object} { logos, pathos, balance, color, interpretation, lockedCount }
          */
         function getBalanceData() {
-            let logos = 50; // Default: Archetyp-Score
-            let pathos = 50; // Default: Bedürfnis-Match
+            let logos = 50; // Default: Theorie-Score
+            let pathos = 50; // Default: Praxis-Score
+            let lockedCount = 0; // Anzahl manuell geänderter Bedürfnisse
 
-            // 1. Logos: Archetyp-Matrix-Score (theoretischer Wert)
-            if (typeof TiageSynthesis !== 'undefined' &&
-                TiageSynthesis.ArchetypeMatrixCalculator &&
-                typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
-                logos = TiageSynthesis.ArchetypeMatrixCalculator.getScore(currentIchArchetype, currentPartnerArchetype);
+            if (typeof TiageState === 'undefined') {
+                return { logos, pathos, balance: 1.0, color: '#22c55e', interpretation: 'Keine Daten verfügbar', lockedCount: 0 };
             }
 
-            // 2. Pathos: Bedürfnis-Match-Score (tatsächlich gemessen)
-            // Versuche aus TiageState.flatNeeds zu berechnen
-            if (typeof TiageState !== 'undefined') {
-                const needs1 = TiageState.get('flatNeeds.ich') || {};
-                const needs2 = TiageState.get('flatNeeds.partner') || {};
+            // flatNeeds holen (Archetyp + D/G/O Modifikatoren - AUTOMATISCHE Berechnung)
+            const ichFlatNeeds = TiageState.getFlatNeeds('ich') || {};
+            const partnerFlatNeeds = TiageState.getFlatNeeds('partner') || {};
 
-                if (Object.keys(needs1).length > 0 && Object.keys(needs2).length > 0) {
-                    // Einfache Differenz-Berechnung über alle Bedürfnisse
-                    let totalDiff = 0;
-                    let count = 0;
+            // lockedNeeds holen (MANUELLE Änderungen)
+            const ichLockedNeeds = TiageState.getLockedNeeds('ich') || {};
+            const partnerLockedNeeds = TiageState.getLockedNeeds('partner') || {};
 
-                    for (const key in needs1) {
-                        if (needs2[key] !== undefined) {
-                            const diff = Math.abs(needs1[key] - needs2[key]);
-                            totalDiff += diff;
-                            count++;
-                        }
-                    }
+            // Anzahl der manuellen Änderungen zählen
+            lockedCount = Object.keys(ichLockedNeeds).length + Object.keys(partnerLockedNeeds).length;
 
-                    if (count > 0) {
-                        const avgDiff = totalDiff / count;
-                        // Konvertiere Differenz zu Score: 0 Diff = 100%, 100 Diff = 0%
-                        pathos = Math.round(100 - avgDiff);
+            const ichKeys = Object.keys(ichFlatNeeds);
+            const partnerKeys = Object.keys(partnerFlatNeeds);
+
+            if (ichKeys.length === 0 || partnerKeys.length === 0) {
+                return { logos: 50, pathos: 50, balance: 1.0, color: '#22c55e', interpretation: 'Keine Bedürfnisdaten', lockedCount: 0 };
+            }
+
+            // Helper: Score aus zwei Bedürfnis-Objekten berechnen
+            const calculateScore = (needs1, needs2) => {
+                let totalDiff = 0;
+                let count = 0;
+
+                for (const key in needs1) {
+                    if (needs2[key] !== undefined) {
+                        const diff = Math.abs(needs1[key] - needs2[key]);
+                        totalDiff += diff;
+                        count++;
                     }
                 }
+
+                if (count === 0) return 50;
+                const avgDiff = totalDiff / count;
+                return Math.round(100 - avgDiff);
+            };
+
+            // 1. LOGOS (Theorie): Score NUR aus flatNeeds (OHNE lockedNeeds)
+            logos = calculateScore(ichFlatNeeds, partnerFlatNeeds);
+
+            // 2. PATHOS (Praxis): Score aus flatNeeds MIT lockedNeeds überschrieben
+            // Erstelle finale Werte mit lockedNeeds-Priorität
+            const ichFinalNeeds = { ...ichFlatNeeds };
+            const partnerFinalNeeds = { ...partnerFlatNeeds };
+
+            // lockedNeeds überschreiben flatNeeds
+            for (const key in ichLockedNeeds) {
+                if (ichLockedNeeds[key] !== undefined && ichLockedNeeds[key] !== null) {
+                    ichFinalNeeds[key] = ichLockedNeeds[key];
+                }
             }
+            for (const key in partnerLockedNeeds) {
+                if (partnerLockedNeeds[key] !== undefined && partnerLockedNeeds[key] !== null) {
+                    partnerFinalNeeds[key] = partnerLockedNeeds[key];
+                }
+            }
+
+            pathos = calculateScore(ichFinalNeeds, partnerFinalNeeds);
 
             // 3. Balance berechnen
             const differenz = Math.abs(logos - pathos);
@@ -792,25 +822,38 @@
 
             // 4. Farbe und Interpretation bestimmen
             let color = '#eab308'; // Gelb - neutral
-            let interpretation = 'Theorie und Praxis weichen etwas ab';
+            let interpretation = 'Manuelle Anpassungen weichen etwas von der Theorie ab';
 
-            if (balance >= 0.90) {
+            if (lockedCount === 0) {
                 color = '#22c55e'; // Grün
-                interpretation = 'Kopf und Herz sind im Einklang';
-            } else if (balance >= 0.75) {
+                interpretation = 'Keine manuellen Änderungen - Theorie = Praxis';
+            } else if (balance >= 0.95) {
+                color = '#22c55e'; // Grün
+                interpretation = 'Manuelle Anpassungen bestätigen die Theorie';
+            } else if (balance >= 0.85) {
                 color = '#3b82f6'; // Blau
-                interpretation = 'Gute Übereinstimmung zwischen Theorie und Praxis';
-            } else if (balance < 0.60) {
+                interpretation = 'Geringe Abweichung durch manuelle Anpassungen';
+            } else if (balance >= 0.70) {
+                color = '#eab308'; // Gelb
+                interpretation = 'Moderate Abweichung zwischen Theorie und Praxis';
+            } else {
                 color = '#ef4444'; // Rot
-                interpretation = 'Deutliche Diskrepanz zwischen Erwartung und Realität';
+                interpretation = 'Deutliche Diskrepanz - Praxis weicht stark von Theorie ab';
             }
+
+            console.log('[getBalanceData]', {
+                logos, pathos, balance: balance.toFixed(2),
+                lockedIch: Object.keys(ichLockedNeeds).length,
+                lockedPartner: Object.keys(partnerLockedNeeds).length
+            });
 
             return {
                 logos: logos,
                 pathos: pathos,
                 balance: balance,
                 color: color,
-                interpretation: interpretation
+                interpretation: interpretation,
+                lockedCount: lockedCount
             };
         }
 
@@ -924,13 +967,16 @@
 
             // Balance Section (Kopf-Herz-Balance)
             const balanceData = getBalanceData();
+            const lockedInfo = balanceData.lockedCount > 0
+                ? `<span style="color: var(--text-muted); font-size: 11px;">(${balanceData.lockedCount} manuelle Änderungen)</span>`
+                : '';
             html += `
                 <div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🧠💚</span>
                         <div>
                             <div class="synthese-section-title">Kopf-Herz-Balance</div>
-                            <div class="synthese-section-subtitle">Theorie vs. Praxis</div>
+                            <div class="synthese-section-subtitle">Theorie vs. Praxis ${lockedInfo}</div>
                         </div>
                     </div>
 
@@ -957,17 +1003,17 @@
 
                         <div class="balance-components">
                             <div class="balance-component">
-                                <div class="balance-component-label">Logos</div>
+                                <div class="balance-component-label">Theorie</div>
                                 <div class="balance-component-value" style="color: #3b82f6;">${balanceData.logos}%</div>
-                                <div class="balance-component-desc">Archetyp-Score</div>
+                                <div class="balance-component-desc">Automatische Berechnung</div>
                             </div>
                             <div class="balance-component">
                                 <div style="font-size: 20px; color: var(--text-muted);">↔</div>
                             </div>
                             <div class="balance-component">
-                                <div class="balance-component-label">Pathos</div>
+                                <div class="balance-component-label">Praxis</div>
                                 <div class="balance-component-value" style="color: #ec4899;">${balanceData.pathos}%</div>
-                                <div class="balance-component-desc">Bedürfnis-Match</div>
+                                <div class="balance-component-desc">Mit manuellen Änderungen</div>
                             </div>
                         </div>
                     </div>
