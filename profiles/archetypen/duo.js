@@ -337,8 +337,10 @@ const DuoProfil = {
         '#B216': 35,  // dominieren - Niedrig
         '#B217': 35,  // bestrafung_erhalten - Niedrig
         '#B218': 30,  // bestrafen - Niedrig
-        '#B219': 65,  // service_orientierung - Mittel-hoch - für Partner
-        '#B220': 55   // service_empfangen - Mittel
+        '#B219': 65,  // service_geben - Mittel-hoch - für Partner
+        '#B220': 55,  // service_empfangen - Mittel
+        '#B225': 70,  // beschuetzt_werden - Hoch - Geborgenheit im Paar
+        '#B226': 75   // vertrauen_empfangen - Hoch - Vertrauen des Partners
     },
 
     // Zusammenfassung der Kernwerte

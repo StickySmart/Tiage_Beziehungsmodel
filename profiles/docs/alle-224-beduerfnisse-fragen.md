@@ -1,7 +1,7 @@
-# Alle 224 Bedürfnisse mit #IDs
+# Alle 226 Bedürfnisse mit #IDs
 
-> **Generiert:** 2025-12-09
-> **SSOT:** profiles/definitions/beduerfnis-ids.js (v2.0)
+> **Generiert:** 2025-12-29
+> **SSOT:** profiles/definitions/beduerfnis-ids.js (v2.1)
 > **Zweck:** Vollständige Liste aller Bedürfnisse für Profiling-Prompt
 
 ---
@@ -163,8 +163,10 @@
 | #B216 | dominieren | Dominieren | "Wie wichtig ist es Ihnen zu dominieren?" |
 | #B217 | bestrafung_erhalten | Bestrafung erhalten | "Wie offen sind Sie für erotische Bestrafung?" |
 | #B218 | bestrafen | Bestrafen | "Wie offen sind Sie, erotisch zu bestrafen?" |
-| #B219 | service_orientierung | Service-Orientierung | "Wie wichtig ist es Ihnen zu dienen?" |
-| #B220 | service_empfangen | Service empfangen | "Wie wichtig ist es Ihnen, bedient zu werden?" |
+| #B219 | service_geben | Service geben | "Wie wichtig ist es Ihnen Service zu geben?" |
+| #B220 | service_empfangen | Service empfangen | "Wie wichtig ist es Ihnen Service zu empfangen?" |
+| #B225 | beschuetzt_werden | Beschützt werden | "Wie wichtig ist Ihnen beschützt zu werden?" |
+| #B226 | vertrauen_empfangen | Vertrauen empfangen | "Wie wichtig ist Ihnen Vertrauen zu empfangen?" |
 
 ---
 

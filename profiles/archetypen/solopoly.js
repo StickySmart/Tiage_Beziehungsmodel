@@ -331,8 +331,10 @@ const SolopolyProfil = {
         '#B216': 50,  // dominieren - Mittel
         '#B217': 30,  // bestrafung_erhalten - Niedrig
         '#B218': 35,  // bestrafen - Niedrig
-        '#B219': 35,  // service_orientierung - Niedrig
-        '#B220': 45   // service_empfangen - Mittel
+        '#B219': 35,  // service_geben - Niedrig
+        '#B220': 45,  // service_empfangen - Mittel
+        '#B225': 40,  // beschuetzt_werden - Niedrig-mittel - Autonomie wichtiger
+        '#B226': 50   // vertrauen_empfangen - Mittel
     },
 
     kernwerte: ["Autonomie", "Authentizität", "Freiheit", "Selbstliebe", "Ehrlichkeit"],

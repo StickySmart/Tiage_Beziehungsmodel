@@ -1,7 +1,7 @@
-# Osho Zen Tarot Interpretationen für alle 224 Bedürfnisse
+# Osho Zen Tarot Interpretationen für alle 226 Bedürfnisse
 
-**Version:** 2.0.0  
-**Datum:** 2025-12-16  
+**Version:** 2.1.0
+**Datum:** 2025-12-29  
 **Quelle:** Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho
 
 ---
@@ -1540,15 +1540,29 @@ Zugeordnet ist die Karte **Guidance**. **Bestrafen als bewusste Praxis ist Führ
 
 ---
 
-**Service-Orientierung (#B219)** – *„Wie wichtig ist Ihnen Service-Orientierung?"*  
-Zugeordnet ist die Karte **Compassion**. **Service ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht.**  
+**Service-geben (#B219)** – *„Wie wichtig ist Ihnen Service zu geben?"*
+Zugeordnet ist die Karte **Compassion**. **Service geben ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht.**
 
 *Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibung ist eine freie Interpretation.*
 
 ---
 
-**Service-empfangen (#B220)** – *„Wie wichtig ist Ihnen Service-empfangen?"*  
-Zugeordnet ist die Karte **Receptivity**. **Service empfangen ist empfängliche Demut. Annehmen zu können ist eine eigene Kunst.**  
+**Service-empfangen (#B220)** – *„Wie wichtig ist Ihnen Service zu empfangen?"*
+Zugeordnet ist die Karte **Receptivity**. **Service empfangen ist empfängliche Demut. Annehmen zu können ist eine eigene Kunst.**
+
+*Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibung ist eine freie Interpretation.*
+
+---
+
+**Beschützt-werden (#B225)** – *„Wie wichtig ist Ihnen beschützt zu werden?"*
+Zugeordnet ist die Karte **The Lovers**. **Beschützt zu werden bedeutet, sich fallen lassen zu können. In der Geborgenheit liegt die Freiheit zur Verletzlichkeit.**
+
+*Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibung ist eine freie Interpretation.*
+
+---
+
+**Vertrauen-empfangen (#B226)** – *„Wie wichtig ist Ihnen Vertrauen zu empfangen?"*
+Zugeordnet ist die Karte **Trust**. **Vertrauen empfangen ist eine heilige Verantwortung. Du wirst zum Hüter eines kostbaren Geschenks.**
 
 *Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibung ist eine freie Interpretation.*
 

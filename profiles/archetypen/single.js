@@ -337,8 +337,10 @@ const SingleProfil = {
         '#B216': 45, // dominieren - Mittel - über eigenes Leben
         '#B217': 20, // bestrafung_erhalten - Niedrig
         '#B218': 25, // bestrafen - Niedrig
-        '#B219': 25, // service_orientierung - Niedrig - nicht dienend
-        '#B220': 40  // service_empfangen - Niedrig-mittel
+        '#B219': 25, // service_geben - Niedrig - nicht dienend
+        '#B220': 40, // service_empfangen - Niedrig-mittel
+        '#B225': 35, // beschuetzt_werden - Niedrig - Selbstschutz bevorzugt
+        '#B226': 40  // vertrauen_empfangen - Niedrig-mittel
     },
 
     kernwerte: ["Freiheit", "Authentizität", "Wachstum", "Kompetenz", "Unabhängigkeit"],

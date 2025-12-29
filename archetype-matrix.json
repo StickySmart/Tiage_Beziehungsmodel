@@ -4049,7 +4049,7 @@
         }
       },
       "#B219": {
-        "label": "Service-Orientierung",
+        "label": "Service-geben",
         "kategorie": "#K11",
         "dimension": "#D4",
         "archetypen": {
@@ -4136,6 +4136,36 @@
           "ra": 45,
           "lat": 45,
           "aromantisch": 40
+        }
+      },
+      "#B225": {
+        "label": "Beschützt-werden",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 35,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 35,
+          "lat": 45,
+          "aromantisch": 30
+        }
+      },
+      "#B226": {
+        "label": "Vertrauen-empfangen",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 50,
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 35
         }
       }
     }

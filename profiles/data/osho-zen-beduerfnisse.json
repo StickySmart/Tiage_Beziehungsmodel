@@ -1314,10 +1314,10 @@
       "text": "Bestrafen als bewusste Praxis ist Führung. Der Meister korrigiert mit Liebe, nicht mit Wut."
     },
     "#B219": {
-      "label": "Service-Orientierung",
-      "frage": "Wie wichtig ist Ihnen Service-Orientierung?",
+      "label": "Service-geben",
+      "frage": "Wie wichtig ist Ihnen Service zu geben?",
       "karte": "Compassion",
-      "text": "Service ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht."
+      "text": "Service geben ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht."
     },
     "#B220": {
       "label": "Service-empfangen",
@@ -1348,6 +1348,18 @@
       "frage": "Wie wichtig ist Ihnen Zuckerkonsum?",
       "karte": "Moment to Moment",
       "text": "Süße ist ein Genuss des Augenblicks. Die Frage ist: Genießt du bewusst oder flüchtest du?"
+    },
+    "#B225": {
+      "label": "Beschützt-werden",
+      "frage": "Wie wichtig ist Ihnen beschützt zu werden?",
+      "karte": "The Lovers",
+      "text": "Beschützt zu werden bedeutet, sich fallen lassen zu können. In der Geborgenheit liegt die Freiheit zur Verletzlichkeit."
+    },
+    "#B226": {
+      "label": "Vertrauen-empfangen",
+      "frage": "Wie wichtig ist Ihnen Vertrauen zu empfangen?",
+      "karte": "Trust",
+      "text": "Vertrauen empfangen ist eine heilige Verantwortung. Du wirst zum Hüter eines kostbaren Geschenks."
     }
   }
 }

@@ -331,8 +331,10 @@ const LATProfil = {
         '#B216': 40,  // dominieren - Niedrig-mittel
         '#B217': 30,  // bestrafung_erhalten - Niedrig
         '#B218': 30,  // bestrafen - Niedrig
-        '#B219': 45,  // service_orientierung - Mittel
-        '#B220': 45   // service_empfangen - Mittel
+        '#B219': 45,  // service_geben - Mittel
+        '#B220': 45,  // service_empfangen - Mittel
+        '#B225': 45,  // beschuetzt_werden - Mittel
+        '#B226': 55   // vertrauen_empfangen - Mittel
     },
 
     kernwerte: ["Autonomie", "Qualität", "Vertrauen", "Eigener Raum", "Verbundenheit"],

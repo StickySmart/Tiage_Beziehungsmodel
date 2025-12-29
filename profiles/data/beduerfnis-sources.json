@@ -104,7 +104,29 @@
       "#P4": { "gewichtung": 75, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Ethical dominance, verantwortungsvolle Macht mit Consent und Care", "zitat": "Power exchange requires trust and responsibility" }
     },
 
-    "_comment": "Weitere Bedürfnisse werden bei Bedarf hinzugefügt"
+    "_comment": "Weitere Bedürfnisse werden bei Bedarf hinzugefügt",
+
+    "#B219": {
+      "_label": "#B219-Service-geben",
+      "#P1": { "gewichtung": 60, "referenz": "BDSM Research - Wismeijer & van Assen 2013", "interpretation": "Service-orientierte Dynamik erfüllt Bedürfnisse nach Beitrag und Zugehörigkeit" },
+      "#P2": { "gewichtung": 85, "referenz": "Osho: Compassion", "interpretation": "Service aus Fülle, nicht aus Pflicht", "zitat": "Service is compassion in action" },
+      "#P3": { "gewichtung": 70, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - aktives Geben als lebendiger Austausch" },
+      "#P4": { "gewichtung": 75, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Service als consensual power exchange, D/s Dynamik", "zitat": "Service is a gift freely offered" }
+    },
+    "#B225": {
+      "_label": "#B225-Beschützt-werden",
+      "#P1": { "gewichtung": 65, "referenz": "Attachment Theory - Bowlby 1969", "interpretation": "Sicherer Hafen, Bindungsbedürfnis nach Schutz" },
+      "#P2": { "gewichtung": 80, "referenz": "Osho: The Lovers", "interpretation": "In Geborgenheit liegt Freiheit zur Verletzlichkeit", "zitat": "When you feel protected, you can be vulnerable" },
+      "#P3": { "gewichtung": 70, "referenz": "Pirsig: Static Quality", "interpretation": "Statische Qualität - Stabilität und Sicherheit" },
+      "#P4": { "gewichtung": 70, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Schutz als Teil von D/s Dynamik, Verantwortung des Dominanten" }
+    },
+    "#B226": {
+      "_label": "#B226-Vertrauen-empfangen",
+      "#P1": { "gewichtung": 70, "referenz": "Attachment Theory - Hazan & Shaver 1987", "interpretation": "Vertrauen als Grundlage für sichere Bindung" },
+      "#P2": { "gewichtung": 85, "referenz": "Osho: Trust", "interpretation": "Vertrauen empfangen ist heilige Verantwortung", "zitat": "Trust is the greatest gift" },
+      "#P3": { "gewichtung": 75, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - Vertrauen als lebendiger Prozess" },
+      "#P4": { "gewichtung": 80, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Vertrauen als Basis für Power Exchange und Intimität", "zitat": "Trust must be earned and honored" }
+    }
   },
 
   "default_gewichtungen": {

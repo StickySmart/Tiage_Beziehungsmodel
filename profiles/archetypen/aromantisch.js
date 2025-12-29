@@ -331,8 +331,10 @@ const AromantischProfil = {
         '#B216': 35, // dominieren - Niedrig
         '#B217': 20, // bestrafung_erhalten - Niedrig
         '#B218': 20, // bestrafen - Niedrig
-        '#B219': 35, // service_orientierung - Niedrig - für Freunde
-        '#B220': 35  // service_empfangen - Niedrig
+        '#B219': 35, // service_geben - Niedrig - für Freunde
+        '#B220': 35, // service_empfangen - Niedrig
+        '#B225': 30, // beschuetzt_werden - Niedrig - Selbstgenügsamkeit
+        '#B226': 35  // vertrauen_empfangen - Niedrig - Freundschafts-basiert
     },
 
     kernwerte: ["Authentizität", "Freundschaft", "Selbstgenügsamkeit", "Anti-Amatonormativität", "Autonomie"],
