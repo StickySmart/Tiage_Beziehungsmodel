@@ -1068,7 +1068,10 @@ const TiageState = (function() {
                     }
                     // Neue Felder laden
                     if (parsed.gewichtungen) {
+                        console.log('[TiageState] loadFromStorage - gewichtungen gefunden:', JSON.stringify(parsed.gewichtungen));
                         this.set('gewichtungen', parsed.gewichtungen);
+                    } else {
+                        console.log('[TiageState] loadFromStorage - KEINE gewichtungen in localStorage!');
                     }
                     if (parsed.resonanzFaktoren) {
                         this.set('resonanzFaktoren', parsed.resonanzFaktoren);
@@ -1139,11 +1142,14 @@ const TiageState = (function() {
          */
         saveToStorage() {
             try {
+                const gewichtungen = this.get('gewichtungen');
+                console.log('[TiageState] saveToStorage - gewichtungen:', JSON.stringify(gewichtungen));
+
                 const toSave = {
                     personDimensions: this.get('personDimensions'),
                     archetypes: this.get('archetypes'),
                     // Neue Felder - zentral speichern
-                    gewichtungen: this.get('gewichtungen'),
+                    gewichtungen: gewichtungen,
                     resonanzFaktoren: this.get('resonanzFaktoren'),
                     profileReview: this.get('profileReview'),
                     // UI Settings - persistente Einstellungen
@@ -1156,7 +1162,7 @@ const TiageState = (function() {
                     // flatNeeds werden NICHT gespeichert - sie werden aus Inputs berechnet
                 };
                 localStorage.setItem('tiage_state', JSON.stringify(toSave));
-                console.log('[TiageState] State gespeichert');
+                console.log('[TiageState] State gespeichert - tiage_state key');
             } catch (e) {
                 console.warn('[TiageState] Failed to save to storage:', e);
             }
