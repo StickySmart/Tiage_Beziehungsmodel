@@ -1717,14 +1717,33 @@
 
             if (typeof TiageState !== 'undefined') {
                 const stored = TiageState.get(`gewichtungen.${person}`);
-                console.log('[AGOD] Loading from TiageState:', person, stored);
+                console.log('[AGOD] Loading from TiageState:', person, JSON.stringify(stored));
+
                 if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
-                    agodWeights = {
+                    const loadedWeights = {
                         O: stored.O.value ?? 25,
                         A: stored.A.value ?? 25,
                         D: stored.D.value ?? 25,
                         G: stored.G.value ?? 25
                     };
+
+                    // Validation: Sum of 0 means invalid data (can't calculate scores)
+                    const sum = loadedWeights.O + loadedWeights.A + loadedWeights.D + loadedWeights.G;
+                    if (sum > 0) {
+                        agodWeights = loadedWeights;
+                        console.log('[AGOD] Loaded valid weights:', agodWeights);
+                    } else {
+                        console.log('[AGOD] Invalid weights (sum=0), using defaults:', agodWeights);
+                        // Fix the invalid data in TiageState
+                        TiageState.set(`gewichtungen.${person}`, {
+                            O: { value: 25, locked: false },
+                            A: { value: 25, locked: false },
+                            D: { value: 25, locked: false },
+                            G: { value: 25, locked: false },
+                            summeLock: { enabled: false, target: 100 }
+                        });
+                        TiageState.saveToStorage();
+                    }
                 } else if (stored && typeof stored.O === 'number') {
                     // Legacy format
                     agodWeights = {
