@@ -336,6 +336,7 @@ const GewichtungCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function save(person) {
+        console.log('[GewichtungCard] save called');
         person = person || getCurrentPerson();
         const combined = load(person);
 
@@ -518,6 +519,7 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     function normalize(changedFactor, newValue) {
+        console.log('[GewichtungCard] normalize called:', changedFactor, newValue);
         const person = getCurrentPerson();
         const isLocked = getSummeLockedByPerson(person);
         const target = getSummeTargetByPerson(person);
@@ -908,6 +910,7 @@ const GewichtungCard = (function() {
 
     // Kompatibilitäts-Handler für inline onclick
     function onSliderInput(factor, value) {
+        console.log('[GewichtungCard] onSliderInput called:', factor, value);
         const person = getCurrentPerson();
         const locks = getLocksByPerson(person);
 
@@ -928,6 +931,7 @@ const GewichtungCard = (function() {
     }
 
     function onInputChange(factor, value) {
+        console.log('[GewichtungCard] onInputChange called:', factor, value);
         const person = getCurrentPerson();
         const locks = getLocksByPerson(person);
 
