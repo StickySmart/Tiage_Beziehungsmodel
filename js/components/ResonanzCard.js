@@ -189,8 +189,9 @@ const ResonanzCard = (function() {
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`resonanzFaktoren.${person}`);
+            console.log('[ResonanzCard] load() - TiageState.get:', person, JSON.stringify(fromState));
             if (fromState && fromState.R1) {
-                return {
+                const result = {
                     R1: {
                         value: clampValue(fromState.R1?.value ?? DEFAULT_VALUES.R1.value),
                         locked: fromState.R1?.locked ?? false
@@ -208,6 +209,8 @@ const ResonanzCard = (function() {
                         locked: fromState.R4?.locked ?? false
                     }
                 };
+                console.log('[ResonanzCard] load() - Returning from TiageState:', JSON.stringify(result));
+                return result;
             }
         }
 
@@ -259,6 +262,7 @@ const ResonanzCard = (function() {
         try {
             // PHILOSOPHIE B: TiageState ist Single Source of Truth
             if (typeof TiageState !== 'undefined') {
+                console.log('[ResonanzCard] save() - Speichere in TiageState:', person, JSON.stringify(values));
                 TiageState.set(`resonanzFaktoren.${person}`, values);
                 // Persist to localStorage for temp local save
                 TiageState.saveToStorage();

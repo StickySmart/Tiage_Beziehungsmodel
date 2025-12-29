@@ -1074,7 +1074,10 @@ const TiageState = (function() {
                         console.log('[TiageState] loadFromStorage - KEINE gewichtungen in localStorage!');
                     }
                     if (parsed.resonanzFaktoren) {
+                        console.log('[TiageState] loadFromStorage - resonanzFaktoren gefunden:', JSON.stringify(parsed.resonanzFaktoren));
                         this.set('resonanzFaktoren', parsed.resonanzFaktoren);
+                    } else {
+                        console.log('[TiageState] loadFromStorage - KEINE resonanzFaktoren in localStorage!');
                     }
                     if (parsed.profileReview) {
                         this.set('profileReview', parsed.profileReview);
