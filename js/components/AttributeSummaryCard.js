@@ -1481,6 +1481,15 @@ const AttributeSummaryCard = (function() {
         });
         console.log('[AttributeSummaryCard] Alle', flatNeeds.length, 'Bedürfnisse aus BeduerfnisIds geladen');
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // FIX: Synchronisiere Lock-Status UND Werte für BESTEHENDE Needs
+        // Die obige Schleife fügt nur NEUE Needs hinzu. Bestehende Needs werden nicht
+        // aktualisiert - das führte dazu, dass gesperrte Werte verloren gingen.
+        // syncLocksFromTiageState() aktualisiert sowohl locked-Status als auch Werte
+        // für bestehende Needs aus TiageState.profileReview.lockedNeeds (SSOT).
+        // ═══════════════════════════════════════════════════════════════════════════
+        syncLocksFromTiageState();
+
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
         let allNeeds = flatNeeds.map(need => ({
             id: need.id,
