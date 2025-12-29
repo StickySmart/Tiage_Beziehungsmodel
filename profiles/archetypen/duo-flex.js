@@ -331,8 +331,10 @@ const DuoFlexProfil = {
         '#B216': 45,  // dominieren - Mittel
         '#B217': 30,  // bestrafung_erhalten - Niedrig
         '#B218': 30,  // bestrafen - Niedrig
-        '#B219': 50,  // service_orientierung - Mittel
-        '#B220': 50   // service_empfangen - Mittel
+        '#B219': 50,  // service_geben - Mittel
+        '#B220': 50,  // service_empfangen - Mittel
+        '#B225': 55,  // beschuetzt_werden - Mittel
+        '#B226': 60   // vertrauen_empfangen - Mittel-hoch
     },
 
     kernwerte: ["Kommunikation", "Vertrauen", "Balance", "Authentizität", "Flexibilität"],

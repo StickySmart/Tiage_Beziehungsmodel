@@ -330,8 +330,10 @@ const RAProfil = {
         '#B216': 40, // dominieren - Niedrig-mittel - situativ
         '#B217': 25, // bestrafung_erhalten - Niedrig
         '#B218': 25, // bestrafen - Niedrig
-        '#B219': 30, // service_orientierung - Niedrig - freiwillig
-        '#B220': 35  // service_empfangen - Niedrig - freiwillig
+        '#B219': 30, // service_geben - Niedrig - freiwillig
+        '#B220': 35, // service_empfangen - Niedrig - freiwillig
+        '#B225': 35, // beschuetzt_werden - Niedrig - Selbstbestimmung
+        '#B226': 45  // vertrauen_empfangen - Mittel
     },
 
     kernwerte: ["Freiheit", "Gleichwertigkeit", "Autonomie", "Anti-Hierarchie", "Selbstbestimmung"],

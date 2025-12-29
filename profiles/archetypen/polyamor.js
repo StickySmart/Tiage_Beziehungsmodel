@@ -331,8 +331,10 @@ const PolyamorProfil = {
         '#B216': 50,  // dominieren - Mittel
         '#B217': 40,  // bestrafung_erhalten - Niedrig-mittel
         '#B218': 40,  // bestrafen - Niedrig-mittel
-        '#B219': 55,  // service_orientierung - Mittel
-        '#B220': 55   // service_empfangen - Mittel
+        '#B219': 55,  // service_geben - Mittel
+        '#B220': 55,  // service_empfangen - Mittel
+        '#B225': 50,  // beschuetzt_werden - Mittel
+        '#B226': 60   // vertrauen_empfangen - Mittel-hoch
     },
 
     kernwerte: ["Liebe", "Transparenz", "Kommunikation", "Compersion", "Vielfalt"],
