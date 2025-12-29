@@ -1692,6 +1692,142 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // AGOD WEIGHT INPUTS - Gewichtung für Synthese Score
+        // Speichert in sessionStorage (wird beim Neuladen zurückgesetzt)
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Default weights (25% each = 100% total)
+        const AGOD_DEFAULT_WEIGHTS = { O: 25, A: 25, D: 25, G: 25 };
+
+        // Current weights state (reset on page load)
+        let agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+
+        /**
+         * Initialize AGOD weight inputs on page load
+         * Always resets to default 4x 25%
+         */
+        function initAgodWeightInputs() {
+            // Reset to defaults (do NOT load from storage - user wants reset on reload)
+            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+
+            // Update input fields
+            ['O', 'A', 'D', 'G'].forEach(factor => {
+                const input = document.getElementById(`agodWeight${factor}`);
+                if (input) {
+                    input.value = agodWeights[factor];
+                }
+            });
+
+            // Update visual bars
+            updateAgodStickBars();
+
+            // Save to sessionStorage for current session use in synthesis
+            saveAgodWeightsToSession();
+
+            console.log('[AGOD] Weight inputs initialized:', agodWeights);
+        }
+
+        /**
+         * Update AGOD weight when user changes input
+         * @param {string} factor - O, A, D, or G
+         * @param {string|number} value - New weight value (0-100)
+         */
+        function updateAgodWeight(factor, value) {
+            // Parse and clamp value
+            let numValue = parseInt(value) || 0;
+            numValue = Math.max(0, Math.min(100, numValue));
+
+            // Update state
+            agodWeights[factor] = numValue;
+
+            // Update input field (in case of clamping)
+            const input = document.getElementById(`agodWeight${factor}`);
+            if (input && parseInt(input.value) !== numValue) {
+                input.value = numValue;
+            }
+
+            // Update visual bars
+            updateAgodStickBars();
+
+            // Save to sessionStorage
+            saveAgodWeightsToSession();
+
+            // Trigger synthesis recalculation
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
+            console.log('[AGOD] Weight updated:', factor, '=', numValue, '| Total:', getAgodWeightSum());
+        }
+
+        /**
+         * Update visual height of stick bars based on weights
+         */
+        function updateAgodStickBars() {
+            const maxHeight = 60; // Max bar height in pixels
+            const maxWeight = 100;
+
+            ['O', 'A', 'D', 'G'].forEach(factor => {
+                const bar = document.getElementById(`agodStick${factor}`);
+                if (bar) {
+                    const weight = agodWeights[factor] || 0;
+                    const height = (weight / maxWeight) * maxHeight;
+                    bar.style.height = `${Math.max(4, height)}px`; // Min 4px for visibility
+                    bar.style.opacity = weight > 0 ? 1 : 0.3;
+                }
+            });
+        }
+
+        /**
+         * Get current AGOD weights as normalized decimals (sum to 1.0)
+         * @returns {object} { orientierung, archetyp, dominanz, geschlecht }
+         */
+        function getAgodWeights() {
+            const sum = getAgodWeightSum();
+            const divisor = sum > 0 ? sum : 100; // Avoid division by zero
+
+            return {
+                orientierung: agodWeights.O / divisor,
+                archetyp: agodWeights.A / divisor,
+                dominanz: agodWeights.D / divisor,
+                geschlecht: agodWeights.G / divisor
+            };
+        }
+
+        /**
+         * Get sum of all AGOD weights
+         * @returns {number}
+         */
+        function getAgodWeightSum() {
+            return agodWeights.O + agodWeights.A + agodWeights.D + agodWeights.G;
+        }
+
+        /**
+         * Save weights to sessionStorage (for current session synthesis use)
+         */
+        function saveAgodWeightsToSession() {
+            try {
+                sessionStorage.setItem('tiageAgodWeights', JSON.stringify(agodWeights));
+            } catch (e) {
+                console.warn('[AGOD] Could not save to sessionStorage:', e);
+            }
+        }
+
+        /**
+         * Get weights from sessionStorage (for synthesis integration)
+         * @returns {object|null}
+         */
+        function getAgodWeightsFromSession() {
+            try {
+                const stored = sessionStorage.getItem('tiageAgodWeights');
+                return stored ? JSON.parse(stored) : null;
+            } catch (e) {
+                console.warn('[AGOD] Could not read from sessionStorage:', e);
+                return null;
+            }
+        }
+
         // Update Score Cycle im Synthese Modal und auf der Hauptseite
         function updateSyntheseScoreCycle() {
             const scoreValueEl = document.getElementById('syntheseScoreValue');
@@ -11091,13 +11227,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // SCHRITT 3: Score-Berechnung mit Resonanz
             // ═══════════════════════════════════════
             // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
-            // Gewichtungen aus localStorage (Standard: 40/25/20/15)
+            // PRIORITÄT: 1. AGOD-Gewichte aus sessionStorage, 2. GewichtungCard, 3. Standard
 
-            const gew = typeof getGewichtungen === 'function' ? getGewichtungen() : { O: 40, A: 25, D: 20, G: 15 };
-            const wO = gew.O / 100;
-            const wA = gew.A / 100;
-            const wD = gew.D / 100;
-            const wG = gew.G / 100;
+            // Versuche AGOD-Gewichte aus sessionStorage zu laden
+            let gew = { O: 25, A: 25, D: 25, G: 25 };
+            try {
+                const agodStored = sessionStorage.getItem('tiageAgodWeights');
+                if (agodStored) {
+                    gew = JSON.parse(agodStored);
+                } else if (typeof getGewichtungen === 'function') {
+                    gew = getGewichtungen();
+                }
+            } catch (e) {
+                if (typeof getGewichtungen === 'function') {
+                    gew = getGewichtungen();
+                }
+            }
+            // Normalisiere auf 100%
+            const gewSum = (gew.O || 0) + (gew.A || 0) + (gew.D || 0) + (gew.G || 0);
+            const gewDivisor = gewSum > 0 ? gewSum : 100;
+            const wO = (gew.O || 25) / gewDivisor;
+            const wA = (gew.A || 25) / gewDivisor;
+            const wD = (gew.D || 25) / gewDivisor;
+            const wG = (gew.G || 25) / gewDivisor;
 
             const scoreO = orientationScore * wO * R1;
             const scoreA = archetypeScore * wA * R2;
@@ -14439,6 +14591,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (typeof MomentsToggle !== 'undefined' && typeof MomentsToggle.init === 'function') {
                     MomentsToggle.init();
                     console.log('[TIAGE DEBUG] MomentsToggle initialized');
+                }
+
+                // Initialize AGOD weight inputs (always reset to 4x 25% on page load)
+                if (typeof initAgodWeightInputs === 'function') {
+                    initAgodWeightInputs();
+                    console.log('[TIAGE DEBUG] AGOD weight inputs initialized');
                 }
 
                 console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
@@ -19188,6 +19346,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
         window.findBestPartnerMatch = findBestPartnerMatch;
+
+        // AGOD Weight functions (for synthesis weight inputs)
+        window.updateAgodWeight = updateAgodWeight;
+        window.getAgodWeights = getAgodWeights;
+        window.initAgodWeightInputs = initAgodWeightInputs;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
