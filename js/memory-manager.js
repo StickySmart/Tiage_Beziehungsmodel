@@ -185,7 +185,14 @@ const MemoryManager = (function() {
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`gewichtungen.${person}`);
+            console.log('[MemoryManager] collectGewichtungen - TiageState.get:', person, JSON.stringify(fromState));
+            console.log('[MemoryManager] collectGewichtungen - Check:',
+                'fromState:', !!fromState,
+                'fromState.O:', fromState?.O,
+                'typeof:', typeof fromState?.O,
+                'has value:', fromState?.O ? ('value' in fromState.O) : false);
             if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
+                console.log('[MemoryManager] collectGewichtungen - RETURNING:', JSON.stringify(fromState));
                 return fromState;
             }
         }
