@@ -4,9 +4,12 @@
  * Dieses Script empfängt Kommentare und speichert sie in Google Sheets.
  * Es verwaltet auch einen globalen Besucher-Zähler.
  *
- * @version 2.0.0
- * @date 2025-12-17
- * @lastUpdate 2025-12-17 04:32 AM
+ * @version 2.1.0
+ * @date 2025-12-29
+ * @lastUpdate 2025-12-29
+ *
+ * CHANGELOG v2.1.0:
+ * - LockService für atomare Zähler-Operationen (verhindert Race Conditions)
  *
  * CHANGELOG v2.0.0:
  * - Browser-Fingerprinting für eindeutige Identifikation
@@ -27,13 +30,13 @@
 // ============================================================================
 // VERSION INFO - Beim Deployen prüfen!
 // ============================================================================
-const SCRIPT_VERSION = '2.0.0';
-const SCRIPT_DATE = '2025-12-17';
+const SCRIPT_VERSION = '2.1.0';
+const SCRIPT_DATE = '2025-12-29';
 const SCRIPT_FEATURES = [
   'Browser Fingerprinting',
   'Rate Limiting (10/hour)',
   'Security Logging',
-  'Visitor Counter',
+  'Visitor Counter (mit LockService)',
   'Comment System'
 ];
 
@@ -222,43 +225,60 @@ function cleanupRateLimits() {
 
 /**
  * Holt den nächsten Besucher-Zähler und erhöht ihn
+ * Verwendet LockService für atomare Operationen (verhindert Race Conditions)
  */
 function getNextVisitorId(fingerprint) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let configSheet = ss.getSheetByName(CONFIG_SHEET);
+  // Lock erwerben um Race Conditions zu verhindern
+  const lock = LockService.getScriptLock();
 
-  if (!configSheet) {
-    initializeSheets();
-    configSheet = ss.getSheetByName(CONFIG_SHEET);
+  try {
+    // Warte max 10 Sekunden auf Lock
+    lock.waitLock(10000);
+  } catch (e) {
+    logSecurityEvent('LOCK_TIMEOUT', fingerprint, null, 'Could not acquire lock for visitor ID');
+    throw new Error('Server busy, please try again');
   }
 
-  // Finde die Zeile mit visitorCounter
-  const data = configSheet.getDataRange().getValues();
-  let counterRow = -1;
-  let currentValue = 1;
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let configSheet = ss.getSheetByName(CONFIG_SHEET);
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i][0] === 'visitorCounter') {
-      counterRow = i + 1;
-      currentValue = parseInt(data[i][1]) || 1;
-      break;
+    if (!configSheet) {
+      initializeSheets();
+      configSheet = ss.getSheetByName(CONFIG_SHEET);
     }
+
+    // Finde die Zeile mit visitorCounter
+    const data = configSheet.getDataRange().getValues();
+    let counterRow = -1;
+    let currentValue = 1;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i][0] === 'visitorCounter') {
+        counterRow = i + 1;
+        currentValue = parseInt(data[i][1]) || 1;
+        break;
+      }
+    }
+
+    if (counterRow === -1) {
+      configSheet.appendRow(['visitorCounter', '2']);
+      logSecurityEvent('NEW_VISITOR_ID', fingerprint, '1', 'Counter initialized');
+      return '1';
+    }
+
+    // Erhöhe den Zähler (jetzt atomar durch Lock)
+    const newValue = currentValue + 1;
+    configSheet.getRange(counterRow, 2).setValue(newValue);
+
+    // Log new visitor ID assignment
+    logSecurityEvent('NEW_VISITOR_ID', fingerprint, currentValue.toString(), 'ID assigned');
+
+    return currentValue.toString();
+  } finally {
+    // Lock IMMER freigeben, auch bei Fehlern
+    lock.releaseLock();
   }
-
-  if (counterRow === -1) {
-    configSheet.appendRow(['visitorCounter', '2']);
-    logSecurityEvent('NEW_VISITOR_ID', fingerprint, '1', 'Counter initialized');
-    return '1';
-  }
-
-  // Erhöhe den Zähler
-  const newValue = currentValue + 1;
-  configSheet.getRange(counterRow, 2).setValue(newValue);
-
-  // Log new visitor ID assignment
-  logSecurityEvent('NEW_VISITOR_ID', fingerprint, currentValue.toString(), 'ID assigned');
-
-  return currentValue.toString();
 }
 
 /**
@@ -503,7 +523,7 @@ function getScriptVersion() {
     version: SCRIPT_VERSION,
     date: SCRIPT_DATE,
     features: SCRIPT_FEATURES,
-    lastUpdate: '2025-12-17 04:32 AM'
+    lastUpdate: '2025-12-29'
   };
 }
 
