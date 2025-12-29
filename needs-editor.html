@@ -974,6 +974,10 @@
             if (typeof AttributeSummaryCard.initDimensionFilter === 'function') {
                 setTimeout(function() {
                     AttributeSummaryCard.initDimensionFilter();
+                    // Filter nach initialem Rendering anwenden
+                    if (typeof applyActiveFilters === 'function') {
+                        applyActiveFilters();
+                    }
                 }, 100);
             }
 
