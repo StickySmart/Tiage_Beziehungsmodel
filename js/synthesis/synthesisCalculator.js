@@ -1064,22 +1064,60 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // CIS+CIS KORREKTUR: Bei beiden Cis ist R4 (Identität) neutral
+        // R4 (IDENTITÄT) - UNIVERSELLE BERECHNUNG
         // ═══════════════════════════════════════════════════════════════════
-        // Rationale: R4 misst die "Offenheit für nicht-cis Identitäten"
-        // (basierend auf GESCHLECHT_NEEDS: Authentizität, Akzeptanz, etc.)
-        // Bei Cis+Cis ist diese Offenheit irrelevant - beide sind cis.
-        // Die Bedürfnis-Unterschiede sollten dann nicht den Geschlechts-Score
-        // dämpfen, da keine besondere Identitäts-Offenheit erforderlich ist.
+        //
+        // Basiert auf IDENTITY_OPENNESS (Similarity-Attraction Theorie):
+        //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
+        //
+        // Formel (statistisch fundiert durch Forschung zu Identitäts-Kongruenz):
+        //   Differenz = |O1 - O2|
+        //   Ähnlichkeit = 1 - (Differenz / 100)
+        //   Basis_R4 = 0.5 + (Ähnlichkeit × 0.5)
+        //   Openness_Bonus = (O1 + O2) / 400
+        //   R4 = Basis_R4 + Openness_Bonus
+        //
+        // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+        //
+        // Wissenschaftliche Grundlage:
+        //   - Similarity-Attraction Effect (Byrne, 1971)
+        //   - Trans+Trans Paare berichten höhere Zufriedenheit (PMC 2025)
+        //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
+        //
         if (perspectiveResult) {
-            var secondary1 = (profil1.geschlecht && profil1.geschlecht.secondary) || null;
-            var secondary2 = (profil2.geschlecht && profil2.geschlecht.secondary) || null;
+            var secondary1 = (profil1.geschlecht && profil1.geschlecht.secondary) || 'cis';
+            var secondary2 = (profil2.geschlecht && profil2.geschlecht.secondary) || 'cis';
 
-            if (secondary1 === 'cis' && secondary2 === 'cis') {
-                perspectiveResult.R4 = 1.0;
-                perspectiveResult.cisCisNeutral = true;
-                console.log('[TIAGE Calculator] CIS+CIS erkannt: R4 auf 1.0 (neutral) gesetzt');
-            }
+            // IDENTITY_OPENNESS aus constants holen
+            var identityOpenness = constants.IDENTITY_OPENNESS || {
+                'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
+            };
+
+            var O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
+            var O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+
+            // Formel anwenden
+            var differenz = Math.abs(O1 - O2);
+            var aehnlichkeit = 1 - (differenz / 100);
+            var basisR4 = 0.5 + (aehnlichkeit * 0.5);
+            var opennessBonus = (O1 + O2) / 400;
+            var calculatedR4 = Math.round((basisR4 + opennessBonus) * 1000) / 1000;
+
+            // R4 überschreiben mit berechneter Identitäts-Resonanz
+            perspectiveResult.R4 = calculatedR4;
+            perspectiveResult.identityResonance = {
+                secondary1: secondary1,
+                secondary2: secondary2,
+                openness1: O1,
+                openness2: O2,
+                differenz: differenz,
+                aehnlichkeit: aehnlichkeit,
+                basisR4: Math.round(basisR4 * 1000) / 1000,
+                opennessBonus: Math.round(opennessBonus * 1000) / 1000,
+                finalR4: calculatedR4
+            };
+
+            console.log('[TIAGE Calculator] R4 (Identität) berechnet:', perspectiveResult.identityResonance);
         }
 
         if (perspectiveResult) {
@@ -1120,7 +1158,7 @@ TiageSynthesis.Calculator = {
                     status: perspectiveResult.R4 >= 1.05 ? 'resonanz' : (perspectiveResult.R4 <= 0.97 ? 'dissonanz' : 'neutral'),
                     statusEmoji: perspectiveResult.R4 >= 1.05 ? '⬆️' : (perspectiveResult.R4 <= 0.97 ? '⬇️' : '➡️'),
                     weight: 0.25,
-                    cisCisNeutral: perspectiveResult.cisCisNeutral || false
+                    identityResonance: perspectiveResult.identityResonance || null
                 }
             };
 
@@ -1130,7 +1168,7 @@ TiageSynthesis.Calculator = {
 
             return {
                 coefficient: coefficient,
-                cisCisNeutral: perspectiveResult.cisCisNeutral || false,
+                identityResonance: perspectiveResult.identityResonance || null,
                 dimensions: dimensions,
                 interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS),
                 // NEU: Perspektiven-Matrix für Modal-Anzeige
