@@ -1412,15 +1412,11 @@
         /**
          * Filtert Bedürfnisse basierend auf ActiveFilterCard
          * Wird bei jeder Filter-Änderung aufgerufen
+         * NEU: Durchsucht auch Nuancen und zeigt Hauptfragen wenn Nuancen matchen
          */
         function applyActiveFilters() {
-            // Unterstütze beide Modi: Detail-Ansicht (.flat-need-item) und Hauptfragen-Ansicht (.hauptfrage-item)
-            var flatNeedItems = document.querySelectorAll('.flat-need-item');
             var hauptfrageItems = document.querySelectorAll('.hauptfrage-item');
-            var allItems = flatNeedItems.length > 0 ? flatNeedItems : hauptfrageItems;
-            var isHauptfragenMode = hauptfrageItems.length > 0 && flatNeedItems.length === 0;
-
-            if (!allItems.length) return;
+            var isHauptfragenMode = hauptfrageItems.length > 0;
 
             // Hole Filter von ActiveFilterCard
             var filters = [];
@@ -1432,49 +1428,126 @@
 
             // Keine Filter aktiv → alle anzeigen
             if (filters.length === 0) {
-                allItems.forEach(function(item) {
+                // Reset Hauptfragen
+                hauptfrageItems.forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match', 'has-matching-nuancen');
+                });
+                // Reset Nuancen (flat-need-items innerhalb von nuancen-list)
+                document.querySelectorAll('.nuancen-list .flat-need-item').forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
-                // Stelle Original-Anzeige wieder her
-                updateFilteredCountDisplay(allItems.length, allItems.length, false);
+                // Reset Detail-Ansicht Items
+                document.querySelectorAll('.flat-needs-list.kategorie-mode > .flat-need-item').forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match');
+                });
+                updateFilteredCountDisplay(hauptfrageItems.length || document.querySelectorAll('.flat-need-item').length,
+                    hauptfrageItems.length || document.querySelectorAll('.flat-need-item').length, false);
                 console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
                 return;
             }
 
             var totalMatches = 0;
 
-            allItems.forEach(function(item) {
-                var needId = item.getAttribute('data-need') || item.getAttribute('data-hauptfrage-id') || '';
-                var needLabel = item.querySelector('.flat-need-label') || item.querySelector('.hauptfrage-label');
-                var labelText = needLabel ? needLabel.textContent : '';
-                // getSearchableTextsForNeed gibt bereits einen lowercase String zurück
-                var searchableString = getSearchableTextsForNeed(needId, labelText);
-
-                var matches;
+            // Hilfsfunktion: Prüft ob ein Text die Filter erfüllt
+            function matchesFilters(searchableString) {
                 if (mode === 'AND') {
-                    // Alle Filter müssen zutreffen
-                    matches = filters.every(function(f) {
+                    return filters.every(function(f) {
                         return searchableString.includes(f.id.toLowerCase()) ||
                                searchableString.includes(f.label.toLowerCase());
                     });
                 } else {
-                    // Mindestens ein Filter muss zutreffen (OR)
-                    matches = filters.some(function(f) {
+                    return filters.some(function(f) {
                         return searchableString.includes(f.id.toLowerCase()) ||
                                searchableString.includes(f.label.toLowerCase());
                     });
                 }
+            }
 
-                item.classList.toggle('filter-hidden', !matches);
-                item.classList.toggle('filter-match', matches);
+            if (isHauptfragenMode) {
+                // HAUPTFRAGEN-MODUS: Durchsuche auch Nuancen
+                hauptfrageItems.forEach(function(hauptfrageItem) {
+                    var hauptfrageId = hauptfrageItem.getAttribute('data-hauptfrage-id') || '';
+                    var hauptfrageLabel = hauptfrageItem.querySelector('.hauptfrage-label');
+                    var hauptfrageLabelText = hauptfrageLabel ? hauptfrageLabel.textContent : '';
+                    var hauptfrageSearchable = getSearchableTextsForNeed(hauptfrageId, hauptfrageLabelText);
 
-                if (matches) totalMatches++;
-            });
+                    // Prüfe ob Hauptfrage selbst matcht
+                    var hauptfrageMatches = matchesFilters(hauptfrageSearchable);
+
+                    // Hole Nuancen für diese Hauptfrage und prüfe ob mindestens eine matcht
+                    var nuancenMatches = [];
+                    var hasMatchingNuancen = false;
+
+                    if (typeof HauptfrageAggregation !== 'undefined') {
+                        var hauptfrage = HauptfrageAggregation.getHauptfragen()[hauptfrageId];
+                        if (hauptfrage && hauptfrage.nuancen && hauptfrage.nuancen.length > 0) {
+                            hauptfrage.nuancen.forEach(function(nuanceId) {
+                                var nuanceObj = typeof findNeedById === 'function' ? findNeedById(nuanceId) : null;
+                                if (!nuanceObj && typeof GfkBeduerfnisse !== 'undefined') {
+                                    // Fallback: Hole Nuance-Label aus BeduerfnisIds
+                                    var needData = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse ?
+                                        window.BeduerfnisIds.beduerfnisse[nuanceId] : null;
+                                    if (needData) {
+                                        nuanceObj = { label: needData.label || nuanceId };
+                                    }
+                                }
+                                var nuanceLabel = nuanceObj ? nuanceObj.label : nuanceId;
+                                var nuanceSearchable = getSearchableTextsForNeed(nuanceId, nuanceId + ' ' + nuanceLabel);
+                                var nuanceMatches = matchesFilters(nuanceSearchable);
+                                nuancenMatches.push({ id: nuanceId, matches: nuanceMatches });
+                                if (nuanceMatches) hasMatchingNuancen = true;
+                            });
+                        }
+                    }
+
+                    // Hauptfrage anzeigen wenn: sie selbst matcht ODER mindestens eine Nuance matcht
+                    var showHauptfrage = hauptfrageMatches || hasMatchingNuancen;
+
+                    hauptfrageItem.classList.toggle('filter-hidden', !showHauptfrage);
+                    hauptfrageItem.classList.toggle('filter-match', hauptfrageMatches);
+                    hauptfrageItem.classList.toggle('has-matching-nuancen', hasMatchingNuancen && !hauptfrageMatches);
+
+                    // Filtere auch die Nuancen-Items im DOM (wenn aufgeklappt)
+                    var nuancenList = hauptfrageItem.querySelector('.nuancen-list');
+                    if (nuancenList) {
+                        nuancenMatches.forEach(function(nuance) {
+                            var nuanceItem = nuancenList.querySelector('.flat-need-item[data-need="' + nuance.id + '"]');
+                            if (nuanceItem) {
+                                // Bei Hauptfrage-Match: Alle Nuancen zeigen
+                                // Bei Nuancen-Match: Nur matchende Nuancen zeigen
+                                var showNuance = hauptfrageMatches || nuance.matches;
+                                nuanceItem.classList.toggle('filter-hidden', !showNuance);
+                                nuanceItem.classList.toggle('filter-match', nuance.matches);
+                            }
+                        });
+                    }
+
+                    if (showHauptfrage) totalMatches++;
+                });
+            } else {
+                // DETAIL-MODUS: Einfache Filterung wie bisher
+                var flatNeedItems = document.querySelectorAll('.flat-needs-list.kategorie-mode > .flat-need-item');
+                flatNeedItems.forEach(function(item) {
+                    var needId = item.getAttribute('data-need') || '';
+                    var needLabel = item.querySelector('.flat-need-label');
+                    var labelText = needLabel ? needLabel.textContent : '';
+                    var searchableString = getSearchableTextsForNeed(needId, labelText);
+                    var matches = matchesFilters(searchableString);
+
+                    item.classList.toggle('filter-hidden', !matches);
+                    item.classList.toggle('filter-match', matches);
+
+                    if (matches) totalMatches++;
+                });
+            }
 
             // Aktualisiere Subtitle mit Filter-Ergebnis
-            updateFilteredCountDisplay(totalMatches, allItems.length, filters.length > 0);
+            var totalItems = isHauptfragenMode ? hauptfrageItems.length : document.querySelectorAll('.flat-need-item').length;
+            updateFilteredCountDisplay(totalMatches, totalItems, filters.length > 0);
 
-            console.log('[ActiveFilter] Mode:', mode, '- Hauptfragen:', isHauptfragenMode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
+            console.log('[ActiveFilter] Mode:', mode, '- Hauptfragen:', isHauptfragenMode,
+                '- Filter:', filters.map(function(f) { return f.label; }).join(', '),
+                '- Matches:', totalMatches);
         }
 
         /**
