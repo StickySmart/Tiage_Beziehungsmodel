@@ -18,6 +18,65 @@
 
 Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
+---
+
+## Workflow: Von der Eingabe zum Ergebnis
+
+Das Tiage-Beziehungsmodell berechnet Kompatibilität in **drei Schritten**:
+
+```
+┌─────────────────┐     ┌─────────────────────┐     ┌─────────────────┐
+│  1. EINGABE     │ ──► │  2. ABWEICHUNG      │ ──► │  3. SYNTHESE    │
+│  (pro Person)   │     │  (pro Person)       │     │  (Paar-Match)   │
+└─────────────────┘     └─────────────────────┘     └─────────────────┘
+```
+
+### Schritt 1: User-Eingabe
+
+Jede Person gibt folgende Daten ein:
+
+| Eingabe | Beispiel |
+|---------|----------|
+| **Archetyp** | Duo, Single, Polyamor, etc. (8 Typen) |
+| **Orientierung** | Heterosexuell, Bisexuell, etc. |
+| **Dominanz** | Dominant, Submissiv, Switch, Ausgeglichen |
+| **Geschlecht** | Mann/Frau/Divers + Cis/Trans/etc. |
+| **Bedürfnisse** | 224 Werte (0-100) für Intimität, Autonomie, etc. |
+
+### Schritt 2: Archetyp-Abweichung (pro Person)
+
+Für jede Person wird geprüft: **Wie gut passen deine Bedürfnisse zu deinem gewählten Archetyp?**
+
+Jeder Archetyp hat ein wissenschaftlich definiertes Baseline-Profil. Die **R-Faktoren** (R1-R4) messen die Kohärenz zwischen deinen tatsächlichen Bedürfnissen und diesem Ideal:
+
+| R-Faktor | Dimension | Fragestellung |
+|----------|-----------|---------------|
+| R1 | 🔥 Leben | Passen deine Intimitäts-Bedürfnisse zum Archetyp? |
+| R2 | 🧠 Philosophie | Passt deine Beziehungsphilosophie zum Archetyp? |
+| R3 | ⚡ Dynamik | Passt deine Dominanz-Vorstellung zum Archetyp? |
+| R4 | 💚 Identität | Passt dein Identitäts-Ausdruck zum Archetyp? |
+
+**Beispiel:** Du wählst "Duo" (monogam), aber dein Bedürfnis nach sexueller Experimentierfreude liegt bei 90% (Duo-Baseline: 40%). → Niedrigerer R1-Wert (Dissonanz).
+
+### Schritt 3: Synthese (Paar-Kompatibilität)
+
+Die R-Faktoren beider Personen werden **multipliziert** und fließen als Resonanz-Multiplikatoren in die finale Berechnung ein:
+
+```
+Q = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
+```
+
+**Ablauf der Synthese:**
+
+1. **Lifestyle-Filter** – K.O.-Kriterien prüfen (z.B. Kinderwunsch ja/nein)
+2. **R-Faktoren kombinieren** – R_Person1 × R_Person2 pro Dimension
+3. **Faktor-Scores** – Matrix-basierte Kompatibilität (Archetyp, Orientierung, etc.)
+4. **Bedürfnis-Match** – Alle 224 Bedürfnisse vergleichen
+5. **Scores kombinieren** – Matrix + Bedürfnisse gewichten
+6. **Finale Formel** – Mit R-Faktoren multiplizieren → Endergebnis
+
+---
+
 ## Die 4 Qualitätsfaktoren
 
 | Faktor | Standard | Dimension | Beschreibung |
@@ -62,18 +121,20 @@ Resonanz wird auf **4 disjunkte Dimensionen** berechnet – keine Überlappung, 
 ### Resonanz-Formel pro Dimension
 
 ```
-R_dim = 0.9 + (Match_dim × 0.2)
+R_dim = 0.5 + (Match_dim × 1.0)
 ```
 
-**Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
+**Wertebereich:** R variiert zwischen 0.5 (keine Übereinstimmung) und 1.5 (perfekte Übereinstimmung).
 
 **Interpretation pro Dimension:**
 
-| R-Wert | Status | Symbol |
-|--------|--------|--------|
-| ≥ 1.05 | Resonanz | ⬆️ |
-| 0.97-1.05 | Neutral | ➡️ |
-| ≤ 0.97 | Dissonanz | ⬇️ |
+| R-Wert | Status | Symbol | Bedeutung |
+|--------|--------|--------|-----------|
+| ≥ 1.3 | Starke Resonanz | ⬆️⬆️ | Sehr hohe Kohärenz mit Archetyp |
+| 1.05-1.29 | Resonanz | ⬆️ | Gute Kohärenz |
+| 0.95-1.04 | Neutral | ➡️ | Durchschnittliche Kohärenz |
+| 0.7-0.94 | Dissonanz | ⬇️ | Geringe Kohärenz |
+| < 0.7 | Starke Dissonanz | ⬇️⬇️ | Archetyp passt nicht zu Bedürfnissen |
 
 > **Wichtige Unterscheidung:**
 > - **63 GFK-Bedürfnisse** → Dimensionaler Match in den R-Werten
@@ -87,15 +148,15 @@ Für jede Dimension werden die relevanten Bedürfnisse verglichen:
 Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n
 ```
 
-*Beispiel: Bei 80% Match in der Philosophie-Dimension: R_Phil = 0.9 + (0.8 × 0.2) = 1.06 ⬆️*
+*Beispiel: Bei 80% Match in der Philosophie-Dimension: R_Phil = 0.5 + (0.8 × 1.0) = 1.3 ⬆️*
 
 ---
 
-## Bedürfnis-Übereinstimmung (220 Bedürfnisse)
+## Bedürfnis-Übereinstimmung (224 Bedürfnisse)
 
 ### Was bedeutet die Prozentanzeige?
 
-Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über **alle 220 Bedürfnisse** zwischen beiden Profilen.
+Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über **alle 224 Bedürfnisse** zwischen beiden Profilen.
 
 **Wichtig:** Dies ist keine Schätzung, sondern wird **empirisch berechnet** aus den tatsächlichen Bedürfnis-Profilen beider Personen.
 
@@ -104,7 +165,7 @@ Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über 
 Die Berechnung erfolgt identisch zur individuellen Bedürfnis-Berechnung:
 
 ```
-Für JEDES der 220 Bedürfnisse:
+Für JEDES der 224 Bedürfnisse:
     Ähnlichkeit = 100 - |Wert Person 1 - Wert Person 2|
     Gewicht = (Wert Person 1 + Wert Person 2) / 2
     Beitrag = Ähnlichkeit × Gewicht
@@ -118,18 +179,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 - Gewicht = (85 + 40) / 2 = **62.5**
 - Beitrag = 55 × 62.5 = **3437.5**
 
-### Alle 220 Bedürfnisse im Überblick
+### Alle 224 Bedürfnisse im Überblick
 
 | Kategorie | Bedürfnisse | Anzahl |
 |-----------|-------------|--------|
 | GFK-Kern | #B1-#B88 | 88 |
+| Spezial | #B89 | 1 |
 | Lebensplanung | #B90-#B126 | 37 |
 | Finanzen & Karriere | #B127-#B148 | 22 |
 | Kommunikationsstil | #B149-#B176 | 28 |
 | Soziales Leben | #B177-#B203 | 27 |
 | Intimität & Romantik | #B204-#B208 | 5 |
 | Dynamik erweitert | #B209-#B220 | 12 |
-| **Total** | | **220** |
+| Osho-Zen Integration | #B221-#B224 | 4 |
+| **Total** | | **224** |
 
 ### Bewertungsstufen
 
@@ -201,28 +264,25 @@ Der **Resonanz-Override** ermöglicht eine Ausnahme: Wenn zwei Menschen auf eine
 
 | Dimension | Match | R-Wert | Status |
 |-----------|-------|--------|--------|
-| 🧠 R_Philosophie | 30% | 0.9 + (0.3 × 0.2) = **0.96** | ⬇️ Dissonanz |
-| 🔥 R_Leben | 90% | 0.9 + (0.9 × 0.2) = **1.08** | ⬆️ Resonanz |
-| ⚡ R_Dynamik | 60% | 0.9 + (0.6 × 0.2) = **1.02** | ➡️ Neutral |
-| 💚 R_Identität | 80% | 0.9 + (0.8 × 0.2) = **1.06** | ⬆️ Resonanz |
+| 🧠 R_Philosophie | 30% | 0.5 + (0.3 × 1.0) = **0.8** | ⬇️ Dissonanz |
+| 🔥 R_Leben | 90% | 0.5 + (0.9 × 1.0) = **1.4** | ⬆️⬆️ Starke Resonanz |
+| ⚡ R_Dynamik | 60% | 0.5 + (0.6 × 1.0) = **1.1** | ⬆️ Resonanz |
+| 💚 R_Identität | 80% | 0.5 + (0.8 × 1.0) = **1.3** | ⬆️⬆️ Starke Resonanz |
 
 ### Schritt 3: Dimensionale Multiplikation (v3.1)
 
 ```
 Q = (A × w_A × R_Phil) + (O × w_O × R_Leben) + (D × w_D × R_Dyn) + (G × w_G × R_Ident)
 
-Q = (75 × 0.15 × 0.96) +     = 10.8  🧠
-    (100 × 0.40 × 1.08) +    = 43.2  🔥
-    (100 × 0.20 × 1.02) +    = 20.4  ⚡
-    (100 × 0.25 × 1.06)      = 26.5  💚
+Q = (75 × 0.25 × 0.8) +      = 15.0  🧠
+    (100 × 0.25 × 1.4) +     = 35.0  🔥
+    (100 × 0.25 × 1.1) +     = 27.5  ⚡
+    (100 × 0.25 × 1.3)       = 32.5  💚
     ─────────────────────────────────
-    finalScore               = 101 → 100%
+    finalScore               = 110 → 100%
 ```
 
-**Vergleich mit Legacy (baseScore × R_gesamt):**
-- baseScore = 11.25 + 40 + 20 + 25 = 96.25
-- Legacy: 96.25 × 1.03 = **99%**
-- v3.1: **100%** (dimensionale Resonanz belohnt starke Übereinstimmung in O, D, G)
+**Interpretation:** Die starke Resonanz in Leben (🔥) und Identität (💚) kompensiert die Dissonanz in Philosophie (🧠). Das Paar hat sehr kompatible Lebensstile und Identitäten, sollte aber an der Beziehungsphilosophie arbeiten.
 
 ## Die 8 Archetypen
 
