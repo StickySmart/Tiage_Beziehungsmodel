@@ -1063,6 +1063,25 @@ TiageSynthesis.Calculator = {
             );
         }
 
+        // ═══════════════════════════════════════════════════════════════════
+        // CIS+CIS KORREKTUR: Bei beiden Cis ist R4 (Identität) neutral
+        // ═══════════════════════════════════════════════════════════════════
+        // Rationale: R4 misst die "Offenheit für nicht-cis Identitäten"
+        // (basierend auf GESCHLECHT_NEEDS: Authentizität, Akzeptanz, etc.)
+        // Bei Cis+Cis ist diese Offenheit irrelevant - beide sind cis.
+        // Die Bedürfnis-Unterschiede sollten dann nicht den Geschlechts-Score
+        // dämpfen, da keine besondere Identitäts-Offenheit erforderlich ist.
+        if (perspectiveResult) {
+            var secondary1 = (profil1.geschlecht && profil1.geschlecht.secondary) || null;
+            var secondary2 = (profil2.geschlecht && profil2.geschlecht.secondary) || null;
+
+            if (secondary1 === 'cis' && secondary2 === 'cis') {
+                perspectiveResult.R4 = 1.0;
+                perspectiveResult.cisCisNeutral = true;
+                console.log('[TIAGE Calculator] CIS+CIS erkannt: R4 auf 1.0 (neutral) gesetzt');
+            }
+        }
+
         if (perspectiveResult) {
             // Konvertiere zu dimensions-Format für Kompatibilität
             var dimensions = {
@@ -1100,7 +1119,8 @@ TiageSynthesis.Calculator = {
                     rValue: perspectiveResult.R4,
                     status: perspectiveResult.R4 >= 1.05 ? 'resonanz' : (perspectiveResult.R4 <= 0.97 ? 'dissonanz' : 'neutral'),
                     statusEmoji: perspectiveResult.R4 >= 1.05 ? '⬆️' : (perspectiveResult.R4 <= 0.97 ? '⬇️' : '➡️'),
-                    weight: 0.25
+                    weight: 0.25,
+                    cisCisNeutral: perspectiveResult.cisCisNeutral || false
                 }
             };
 
@@ -1110,6 +1130,7 @@ TiageSynthesis.Calculator = {
 
             return {
                 coefficient: coefficient,
+                cisCisNeutral: perspectiveResult.cisCisNeutral || false,
                 dimensions: dimensions,
                 interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS),
                 // NEU: Perspektiven-Matrix für Modal-Anzeige

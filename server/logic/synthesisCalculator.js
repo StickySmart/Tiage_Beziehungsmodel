@@ -39,7 +39,23 @@ export function calculate(person1, person2, options = {}) {
     const R1 = (resonanz1.R1 || 1.0) * (resonanz2.R1 || 1.0);
     const R2 = (resonanz1.R2 || 1.0) * (resonanz2.R2 || 1.0);
     const R3 = (resonanz1.R3 || 1.0) * (resonanz2.R3 || 1.0);
-    const R4 = (resonanz1.R4 || 1.0) * (resonanz2.R4 || 1.0);
+    let R4 = (resonanz1.R4 || 1.0) * (resonanz2.R4 || 1.0);
+
+    // ═══════════════════════════════════════════════════════════════════
+    // CIS+CIS KORREKTUR: Bei beiden Cis ist R4 (Identität) neutral
+    // ═══════════════════════════════════════════════════════════════════
+    // Rationale: R4 misst die "Offenheit für nicht-cis Identitäten"
+    // (basierend auf GESCHLECHT_NEEDS: Authentizität, Akzeptanz, etc.)
+    // Bei Cis+Cis ist diese Offenheit irrelevant - beide sind cis.
+    const secondary1 = person1.geschlecht?.secondary || null;
+    const secondary2 = person2.geschlecht?.secondary || null;
+    let cisCisNeutral = false;
+
+    if (secondary1 === 'cis' && secondary2 === 'cis') {
+        R4 = 1.0;
+        cisCisNeutral = true;
+        console.log('[SynthesisCalculator] CIS+CIS erkannt: R4 auf 1.0 (neutral) gesetzt');
+    }
 
     // ═══════════════════════════════════════════════════════════════════
     // SCHRITT 2: Faktor-Scores berechnen
@@ -107,11 +123,12 @@ export function calculate(person1, person2, options = {}) {
 
         resonanz: {
             coefficient: Math.round(resonanzCoefficient * 1000) / 1000,
+            cisCisNeutral: cisCisNeutral, // true wenn beide Cis → R4 wurde auf 1.0 gesetzt
             dimensional: {
                 leben:       { rValue: Math.round(R1 * 1000) / 1000, status: getStatus(R1) },
                 philosophie: { rValue: Math.round(R2 * 1000) / 1000, status: getStatus(R2) },
                 dynamik:     { rValue: Math.round(R3 * 1000) / 1000, status: getStatus(R3) },
-                identitaet:  { rValue: Math.round(R4 * 1000) / 1000, status: getStatus(R4) }
+                identitaet:  { rValue: Math.round(R4 * 1000) / 1000, status: getStatus(R4), cisCisNeutral: cisCisNeutral }
             }
         },
 
