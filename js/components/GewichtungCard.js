@@ -867,7 +867,13 @@ const GewichtungCard = (function() {
             { factor: 'geschlecht', label: 'Geschlecht' }
         ];
 
-        return factors.map(f => render({
+        const heading = `
+            <div class="gewichtung-heading">
+                <h3 style="color: #F59E0B; margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Gewichtung</h3>
+                <span style="color: var(--text-muted); font-size: 11px;">Archetyp · Geschlecht · Orientierung · Dominanz</span>
+            </div>`;
+
+        return heading + factors.map(f => render({
             ...f,
             value: weights[f.factor]
         })).join('\n');
