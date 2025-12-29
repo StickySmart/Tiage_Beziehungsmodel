@@ -301,23 +301,42 @@ body {
     }
 
     /* ========================================
-       AGOD WEIGHT STICKS (Mobile)
+       AGOD WEIGHT STICKS (Mobile) - Sortierung: A, G, O, D
        ======================================== */
 
     .agod-weight-sticks {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
-        gap: 6px;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 12px;
-        height: 70px;
     }
 
     .agod-stick {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 3px;
+        gap: 2px;
+    }
+
+    .agod-btn {
+        width: 20px;
+        height: 16px;
+        background: rgba(234, 179, 8, 0.2);
+        border: 1px solid rgba(234, 179, 8, 0.4);
+        border-radius: 3px;
+        color: #eab308;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .agod-btn:active {
+        background: rgba(234, 179, 8, 0.5);
     }
 
     .agod-stick-bar {
