@@ -1753,6 +1753,18 @@ input.resonanz-input:focus {
     display: none !important;
 }
 
+/* Slider und Input bei Hauptfragen deaktivieren wenn nur Nuancen matchen */
+/* Der Wert zeigt weiterhin den Durchschnitt aller Nuancen, ist aber nicht editierbar */
+.hauptfrage-item.has-matching-nuancen .hauptfrage-slider {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.hauptfrage-item.has-matching-nuancen .hauptfrage-input {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 /* Nuancen innerhalb von nuancen-list filtern */
 .nuancen-list .flat-need-item.filter-hidden {
     display: none !important;
