@@ -4018,4 +4018,15 @@ if (typeof document !== 'undefined') {
             }, 50);
         }
     });
+
+    // FIX: Event-Listener für DimensionKategorieFilter - UI aktualisieren wenn Filter geändert wird
+    // Dies war zuvor in initDimensionFilter() auskommentiert, wurde aber für korrekte Sortierung benötigt
+    document.addEventListener('dimensionKategorieFilterChange', function(event) {
+        console.log('[AttributeSummaryCard] Filter geändert:', event.detail);
+        // Re-render der Bedürfnisliste mit neuen Filtern (inkl. korrekter Sortierung)
+        const container = document.querySelector('.flat-needs-container');
+        if (container && typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.reRenderFlatNeeds) {
+            AttributeSummaryCard.reRenderFlatNeeds();
+        }
+    });
 }
