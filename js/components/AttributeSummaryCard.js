@@ -324,6 +324,53 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Helper: Berechnet die Gesamtzahl der gesperrten Items
+     * FIX v1.8.568: Berücksichtigt sowohl direkt gesperrte Nuancen als auch
+     * Nuancen die durch gesperrte Hauptfragen implizit gesperrt sind
+     * @param {string} currentPerson - 'ich' oder 'partner'
+     * @returns {number} Anzahl der gesperrten Items
+     */
+    function calculateTotalLockedCount(currentPerson) {
+        let lockedCount = 0;
+        const alreadyCountedNuancen = new Set();
+
+        // 1. Direkt gesperrte Nuancen aus TiageState
+        if (typeof TiageState !== 'undefined' && TiageState.getLockedNeeds) {
+            const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
+            Object.keys(lockedNeeds).forEach(id => {
+                lockedCount++;
+                alreadyCountedNuancen.add(id);
+            });
+        }
+
+        // 2. Nuancen die durch gesperrte Hauptfragen implizit gesperrt sind
+        if (lockedHauptfragen.size > 0 && typeof HauptfrageAggregation !== 'undefined') {
+            const hauptfragen = HauptfrageAggregation.getHauptfragen();
+
+            lockedHauptfragen.forEach(hfId => {
+                const hf = hauptfragen[hfId];
+                if (hf && hf.nuancen && hf.nuancen.length > 0) {
+                    // Hauptfrage hat Nuancen - zähle die nicht bereits gezählten
+                    hf.nuancen.forEach(nuanceId => {
+                        if (!alreadyCountedNuancen.has(nuanceId)) {
+                            lockedCount++;
+                            alreadyCountedNuancen.add(nuanceId);
+                        }
+                    });
+                } else {
+                    // Hauptfrage ohne Nuancen - zähle die Hauptfrage selbst
+                    if (!alreadyCountedNuancen.has(hfId)) {
+                        lockedCount++;
+                        alreadyCountedNuancen.add(hfId);
+                    }
+                }
+            });
+        }
+
+        return lockedCount;
+    }
+
+    /**
      * Helper: Aktualisiert ein Bedürfnis oder fügt es hinzu
      * @param {string} id - Die #B-ID
      * @param {Object} updates - Zu aktualisierende Felder
@@ -1462,8 +1509,8 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Zähle gesperrte Bedürfnisse direkt aus TiageState (SSOT)
-        const lockedCount = Object.keys(savedLockedNeeds).length;
+        // FIX v1.8.568: Zähle alle gesperrten Items (inkl. durch Hauptfragen-Lock implizit gesperrte Nuancen)
+        const lockedCount = calculateTotalLockedCount(currentPerson);
 
         // Zähle geänderte Bedürfnisse (abweichend vom Archetyp-Standard)
         // Bei aktivem Filter: zähle nur gefilterte geänderte Bedürfnisse
@@ -2501,6 +2548,10 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere Hauptfrage UI
         updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, finalValue);
 
+        // FIX: Aktualisiere den * Indikator der Hauptfrage sofort
+        // (bisher wurde dieser nur beim Aufklappen berechnet)
+        updateHauptfrageChangedIndicator(hauptfrageId, hauptfrageItem);
+
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
         updateLockedCountDisplay();
 
@@ -2523,6 +2574,82 @@ const AttributeSummaryCard = (function() {
         const dimColor = getDimensionColor(hauptfrageId);
         if (dimColor) {
             sliderElement.style.background = getSliderFillGradient(dimColor, value, sliderElement);
+        }
+    }
+
+    /**
+     * Aktualisiert den * Indikator einer Hauptfrage basierend auf geänderten Nuancen
+     * FIX v1.8.568: Diese Funktion wird jetzt auch bei Hauptfrage-Slider-Änderungen aufgerufen
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {HTMLElement|null} hauptfrageItem - Das DOM-Element (optional, wird gesucht wenn nicht übergeben)
+     */
+    function updateHauptfrageChangedIndicator(hauptfrageId, hauptfrageItem) {
+        if (typeof HauptfrageAggregation === 'undefined') return;
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        const hauptfrage = hauptfragen[hauptfrageId];
+        if (!hauptfrage) return;
+
+        // Finde das DOM-Element wenn nicht übergeben
+        const item = hauptfrageItem || document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+        if (!item) return;
+
+        // Zähle geänderte Nuancen
+        const nuancen = hauptfrage.nuancen || [];
+        const changedNuancenCount = nuancen.filter(nId => {
+            const nuanceObj = findNeedById(nId);
+            return nuanceObj && isValueChanged(nId, nuanceObj.value);
+        }).length;
+        const hasChangedNuancen = changedNuancenCount > 0;
+
+        // CSS-Klasse aktualisieren
+        if (hasChangedNuancen) {
+            item.classList.add('has-changed-nuancen');
+        } else {
+            item.classList.remove('has-changed-nuancen');
+        }
+
+        // Sternchen-Indikator aktualisieren
+        const labelSpan = item.querySelector('.hauptfrage-label');
+        if (labelSpan) {
+            let indicator = labelSpan.querySelector('.hauptfrage-changed-indicator');
+            if (hasChangedNuancen) {
+                if (!indicator) {
+                    indicator = document.createElement('span');
+                    indicator.className = 'hauptfrage-changed-indicator';
+                    indicator.textContent = '*';
+                    labelSpan.appendChild(indicator);
+                }
+                indicator.title = `${changedNuancenCount} Nuance(n) geändert`;
+            } else if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // Nuancen-Status-Info aktualisieren (rechts neben der Nuancen-Anzahl)
+        const nuancenCountSpan = item.querySelector('.hauptfrage-nuancen-count');
+        if (nuancenCountSpan && nuancen.length > 0) {
+            // Zähle gelockte Nuancen
+            const lockedNuancenCount = nuancen.filter(nId => {
+                const nuanceObj = findNeedById(nId);
+                return nuanceObj?.locked;
+            }).length;
+
+            // Baue Status-Info zusammen
+            const statusParts = [];
+            if (lockedNuancenCount > 0) statusParts.push(`${lockedNuancenCount}🔒`);
+            if (changedNuancenCount > 0) statusParts.push(`${changedNuancenCount}*`);
+
+            // Entferne alte Status-Info und füge neue hinzu
+            const existingStatusInfo = nuancenCountSpan.querySelector('.nuancen-status-info');
+            if (existingStatusInfo) existingStatusInfo.remove();
+
+            if (statusParts.length > 0) {
+                const statusInfoSpan = document.createElement('span');
+                statusInfoSpan.className = 'nuancen-status-info';
+                statusInfoSpan.textContent = ' ' + statusParts.join(' ');
+                nuancenCountSpan.appendChild(statusInfoSpan);
+            }
         }
     }
 
@@ -2894,6 +3021,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Aktualisiert die Anzeige der gesperrten und geänderten Bedürfnisse im Subtitle
      * Wird nach Lock/Unlock-Aktionen und nach Wertänderungen aufgerufen
+     * FIX v1.8.568: Verwendet calculateTotalLockedCount für korrekte Zählung
      */
     function updateLockedCountDisplay() {
         // Ermittle aktuelle Person aus Kontext
@@ -2902,12 +3030,8 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Hole aktuelle locked needs aus TiageState
-        let lockedNeedsCount = 0;
-        if (typeof TiageState !== 'undefined') {
-            const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
-            lockedNeedsCount = Object.keys(lockedNeeds).length;
-        }
+        // FIX v1.8.568: Nutze zentrale Hilfsfunktion für korrekte Zählung
+        const lockedNeedsCount = calculateTotalLockedCount(currentPerson);
 
         // Zähle geänderte Bedürfnisse
         const changedNeedsCount = flatNeeds.filter(need => isValueChanged(need.id, need.value)).length;
