@@ -1708,6 +1708,9 @@
          * Loads from TiageState if available, otherwise uses defaults
          */
         function initAgodWeightInputs() {
+            // Start with defaults
+            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+
             // Load from TiageState (SSOT) if available
             const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
                 ? currentProfileReviewContext.person : 'ich';
@@ -1731,6 +1734,13 @@
                         G: stored.G ?? 25
                     };
                 }
+            }
+
+            // Safety check: if all weights are 0, reset to defaults
+            const sum = agodWeights.O + agodWeights.A + agodWeights.D + agodWeights.G;
+            if (sum === 0) {
+                console.log('[AGOD] All weights were 0, resetting to defaults');
+                agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
             }
 
             // Update input fields
