@@ -768,13 +768,23 @@
                 ...Object.keys(partnerFlatNeeds || {})
             ]);
 
-            // Vergleichsdaten für jedes Bedürfnis erstellen
-            let totalDiff = 0;
-            let count = 0;
+            // Vergleichsdaten für jedes Bedürfnis erstellen (gewichtete Berechnung)
+            let summeUebereinstimmung = 0;
+            let summeGewicht = 0;
             allNeedIds.forEach(needId => {
                 const ichValue = ichFlatNeeds[needId] || 0;
                 const partnerValue = partnerFlatNeeds[needId] || 0;
                 const diff = Math.abs(ichValue - partnerValue);
+
+                // Gewicht: Durchschnitt beider Werte (höhere Werte = mehr Gewicht)
+                const gewicht = (ichValue + partnerValue) / 2;
+
+                // Ähnlichkeit: 100 - Differenz
+                const aehnlichkeit = 100 - diff;
+
+                // Gewichteter Beitrag
+                summeUebereinstimmung += aehnlichkeit * gewicht;
+                summeGewicht += gewicht;
 
                 needsComparison.push({
                     id: needId,
@@ -783,15 +793,11 @@
                     value2: partnerValue,
                     differenz: diff
                 });
-
-                totalDiff += diff;
-                count++;
             });
 
-            // Overall Match berechnen (100% - durchschnittliche Differenz)
-            if (count > 0) {
-                const avgDiff = totalDiff / count;
-                scoreValue = Math.round(Math.max(0, 100 - avgDiff));
+            // Overall Match berechnen (gewichtete Übereinstimmung)
+            if (summeGewicht > 0) {
+                scoreValue = Math.round(summeUebereinstimmung / summeGewicht);
             }
 
             // Sortierung anwenden
