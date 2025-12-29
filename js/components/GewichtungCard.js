@@ -343,6 +343,8 @@ const GewichtungCard = (function() {
         try {
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`gewichtungen.${person}`, combined);
+                // Persist to localStorage for temp local save
+                TiageState.saveToStorage();
             }
         } catch (e) {
             console.warn('[GewichtungCard] Fehler beim Speichern:', e);
@@ -369,6 +371,8 @@ const GewichtungCard = (function() {
         try {
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`gewichtungen.${person}`, combined);
+                // Persist to localStorage for temp local save
+                TiageState.saveToStorage();
             }
         } catch (e) {
             console.warn('[GewichtungCard] Fehler beim Speichern der Locks:', e);
@@ -420,6 +424,8 @@ const GewichtungCard = (function() {
                     enabled: isLocked,
                     target: target
                 });
+                // Persist to localStorage for temp local save
+                TiageState.saveToStorage();
             }
         } catch (e) {
             console.warn('[GewichtungCard] Fehler beim Speichern des Summen-Locks:', e);

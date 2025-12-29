@@ -688,7 +688,7 @@ const MemoryManager = (function() {
 
     /**
      * Apply Gewichtungen (factor weights) - supports both old and new format
-     * New format: { O: { value, locked }, A: { value, locked }, ... }
+     * New format: { O: { value, locked }, A: { value, locked }, ..., summeLock: { enabled, target } }
      * Old format: { O: number, A: number, ... }
      */
     function applyGewichtungen(gewichtungen, person) {
@@ -712,9 +712,26 @@ const MemoryManager = (function() {
                 };
             }
 
+            // Ensure summeLock is preserved or set to default
+            if (!combined.summeLock) {
+                combined.summeLock = { enabled: true, target: 100 };
+            }
+
             // PHILOSOPHIE B: TiageState ist Single Source of Truth
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`gewichtungen.${person}`, combined);
+            }
+
+            // Update GewichtungCard UI if available
+            if (typeof GewichtungCard !== 'undefined' && GewichtungCard.loadIntoUI) {
+                // Only update UI if this is the current person context
+                const currentPerson = typeof currentProfileReviewContext !== 'undefined'
+                    ? currentProfileReviewContext.person
+                    : 'ich';
+                if (person === currentPerson) {
+                    GewichtungCard.loadIntoUI();
+                    console.log(`[MemoryManager] GewichtungCard UI aktualisiert für ${person}`);
+                }
             }
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtungen:', e);
