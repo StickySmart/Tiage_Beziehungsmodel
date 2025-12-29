@@ -260,6 +260,8 @@ const ResonanzCard = (function() {
             // PHILOSOPHIE B: TiageState ist Single Source of Truth
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`resonanzFaktoren.${person}`, values);
+                // Persist to localStorage for temp local save
+                TiageState.saveToStorage();
             }
         } catch (e) {
             console.warn('Fehler beim Speichern der Resonanzfaktoren:', e);
