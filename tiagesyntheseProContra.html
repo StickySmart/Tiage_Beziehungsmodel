@@ -397,6 +397,91 @@
             margin-top: 4px;
         }
 
+        /* Balance Card Styles */
+        .balance-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .balance-meter {
+            width: 100%;
+            max-width: 300px;
+            margin: 16px 0;
+        }
+
+        .balance-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .balance-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .balance-bar {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .balance-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .balance-interpretation {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .balance-components {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .balance-component {
+            text-align: center;
+        }
+
+        .balance-component-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .balance-component-value {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .balance-component-desc {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
         @media (max-width: 600px) {
             .pro-contra-section {
                 grid-template-columns: 1fr;
@@ -657,6 +742,79 @@
         }
 
         /**
+         * Berechnet die Kopf-Herz-Balance (Theorie vs. Praxis)
+         * Logos = Archetyp-Matrix-Score (theoretisch)
+         * Pathos = Bedürfnis-Match-Score (tatsächlich gemessen)
+         * Balance = (100 - |Logos - Pathos|) / 100
+         * @returns {Object} { logos, pathos, balance, color, interpretation }
+         */
+        function getBalanceData() {
+            let logos = 50; // Default: Archetyp-Score
+            let pathos = 50; // Default: Bedürfnis-Match
+
+            // 1. Logos: Archetyp-Matrix-Score (theoretischer Wert)
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.ArchetypeMatrixCalculator &&
+                typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
+                logos = TiageSynthesis.ArchetypeMatrixCalculator.getScore(currentIchArchetype, currentPartnerArchetype);
+            }
+
+            // 2. Pathos: Bedürfnis-Match-Score (tatsächlich gemessen)
+            // Versuche aus TiageState.flatNeeds zu berechnen
+            if (typeof TiageState !== 'undefined') {
+                const needs1 = TiageState.get('flatNeeds.ich') || {};
+                const needs2 = TiageState.get('flatNeeds.partner') || {};
+
+                if (Object.keys(needs1).length > 0 && Object.keys(needs2).length > 0) {
+                    // Einfache Differenz-Berechnung über alle Bedürfnisse
+                    let totalDiff = 0;
+                    let count = 0;
+
+                    for (const key in needs1) {
+                        if (needs2[key] !== undefined) {
+                            const diff = Math.abs(needs1[key] - needs2[key]);
+                            totalDiff += diff;
+                            count++;
+                        }
+                    }
+
+                    if (count > 0) {
+                        const avgDiff = totalDiff / count;
+                        // Konvertiere Differenz zu Score: 0 Diff = 100%, 100 Diff = 0%
+                        pathos = Math.round(100 - avgDiff);
+                    }
+                }
+            }
+
+            // 3. Balance berechnen
+            const differenz = Math.abs(logos - pathos);
+            const balance = (100 - differenz) / 100;
+
+            // 4. Farbe und Interpretation bestimmen
+            let color = '#eab308'; // Gelb - neutral
+            let interpretation = 'Theorie und Praxis weichen etwas ab';
+
+            if (balance >= 0.90) {
+                color = '#22c55e'; // Grün
+                interpretation = 'Kopf und Herz sind im Einklang';
+            } else if (balance >= 0.75) {
+                color = '#3b82f6'; // Blau
+                interpretation = 'Gute Übereinstimmung zwischen Theorie und Praxis';
+            } else if (balance < 0.60) {
+                color = '#ef4444'; // Rot
+                interpretation = 'Deutliche Diskrepanz zwischen Erwartung und Realität';
+            }
+
+            return {
+                logos: logos,
+                pathos: pathos,
+                balance: balance,
+                color: color,
+                interpretation: interpretation
+            };
+        }
+
+        /**
          * Generiert Pro/Contra Listen basierend auf den ausgewählten Archetypen
          * Verdrahtet mit archetypeStatements aus statements/archetypeStatements.js
          */
@@ -761,6 +919,58 @@
                         })()}
                     </div>
 
+                </div>
+            `;
+
+            // Balance Section (Kopf-Herz-Balance)
+            const balanceData = getBalanceData();
+            html += `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">🧠💚</span>
+                        <div>
+                            <div class="synthese-section-title">Kopf-Herz-Balance</div>
+                            <div class="synthese-section-subtitle">Theorie vs. Praxis</div>
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="balance-value" style="color: ${balanceData.color};">
+                            ${balanceData.balance.toFixed(2)}
+                        </div>
+
+                        <div class="balance-meter">
+                            <div class="balance-labels">
+                                <span>0</span>
+                                <span>Diskrepanz</span>
+                                <span>Einklang</span>
+                                <span>1</span>
+                            </div>
+                            <div class="balance-bar-container">
+                                <div class="balance-bar" style="width: ${balanceData.balance * 100}%; background: ${balanceData.color};"></div>
+                            </div>
+                        </div>
+
+                        <div class="balance-interpretation">
+                            "${balanceData.interpretation}"
+                        </div>
+
+                        <div class="balance-components">
+                            <div class="balance-component">
+                                <div class="balance-component-label">Logos</div>
+                                <div class="balance-component-value" style="color: #3b82f6;">${balanceData.logos}%</div>
+                                <div class="balance-component-desc">Archetyp-Score</div>
+                            </div>
+                            <div class="balance-component">
+                                <div style="font-size: 20px; color: var(--text-muted);">↔</div>
+                            </div>
+                            <div class="balance-component">
+                                <div class="balance-component-label">Pathos</div>
+                                <div class="balance-component-value" style="color: #ec4899;">${balanceData.pathos}%</div>
+                                <div class="balance-component-desc">Bedürfnis-Match</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 
