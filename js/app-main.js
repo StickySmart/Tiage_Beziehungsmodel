@@ -14402,6 +14402,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 updateAll();
             }
 
+            // Load Gewichtungen into UI after TiageState is loaded
+            if (typeof GewichtungCard !== 'undefined' && GewichtungCard.loadIntoUI) {
+                GewichtungCard.loadIntoUI();
+                console.log('[loadDimensionsFromState] GewichtungCard UI aktualisiert');
+            }
+
+            // Load ResonanzCard into UI after TiageState is loaded
+            if (typeof ResonanzCard !== 'undefined' && ResonanzCard.initializeUI) {
+                ResonanzCard.initializeUI('ich');
+                console.log('[loadDimensionsFromState] ResonanzCard UI aktualisiert');
+            }
+
             console.log('[loadDimensionsFromState] Abgeschlossen - personDimensions:', JSON.stringify(personDimensions));
             console.log('[loadDimensionsFromState] Abgeschlossen - currentArchetype:', currentArchetype, 'selectedPartner:', selectedPartner);
         }
