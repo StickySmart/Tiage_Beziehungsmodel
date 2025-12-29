@@ -2483,8 +2483,9 @@ const AttributeSummaryCard = (function() {
         }
 
         // Spezialfall: Bei Zielwert 0 oder 100 alle Nuancen direkt setzen
+        // ABER nur wenn ALLE Nuancen unlocked sind (keine gelockten Nuancen)
         // (vermeidet Rundungsprobleme wie 99+100/2 = 99.5 → 100)
-        if (clampedTarget === 0 || clampedTarget === 100) {
+        if ((clampedTarget === 0 || clampedTarget === 100) && !limits.hasLockedNuancen) {
             for (const nuance of unlockedNuancen) {
                 nuance.value = clampedTarget;
             }
