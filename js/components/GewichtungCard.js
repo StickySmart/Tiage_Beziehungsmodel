@@ -621,6 +621,7 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     function initInputs() {
+        console.log('[GewichtungCard] initInputs called, initialized:', initialized);
         if (initialized) return;
 
         const factors = Object.keys(FAKTOR_MAP);
@@ -682,6 +683,7 @@ const GewichtungCard = (function() {
             // Slider-Events
             if (slider) {
                 slider.addEventListener('input', function(e) {
+                    console.log('[GewichtungCard] slider input event:', factor, e.target.value);
                     const person = getCurrentPerson();
                     const currentLocks = getLocksByPerson(person);
 
@@ -691,7 +693,9 @@ const GewichtungCard = (function() {
                         return;
                     }
                     input.value = e.target.value;
-                    updateSumme();
+                    // Also normalize and save during input (not just on change)
+                    const newVal = parseInt(e.target.value) || 0;
+                    normalize(factor, newVal);
                 });
 
                 slider.addEventListener('change', function(e) {
@@ -725,7 +729,12 @@ const GewichtungCard = (function() {
             });
         });
 
-        if (allFound) initialized = true;
+        if (allFound) {
+            initialized = true;
+            console.log('[GewichtungCard] initInputs: All elements found, event listeners attached');
+        } else {
+            console.log('[GewichtungCard] initInputs: Some elements not found, will retry later');
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
