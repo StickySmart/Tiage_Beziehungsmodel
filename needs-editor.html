@@ -1410,8 +1410,13 @@
          * Wird bei jeder Filter-Änderung aufgerufen
          */
         function applyActiveFilters() {
+            // Unterstütze beide Modi: Detail-Ansicht (.flat-need-item) und Hauptfragen-Ansicht (.hauptfrage-item)
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
-            if (!flatNeedItems.length) return;
+            var hauptfrageItems = document.querySelectorAll('.hauptfrage-item');
+            var allItems = flatNeedItems.length > 0 ? flatNeedItems : hauptfrageItems;
+            var isHauptfragenMode = hauptfrageItems.length > 0 && flatNeedItems.length === 0;
+
+            if (!allItems.length) return;
 
             // Hole Filter von ActiveFilterCard
             var filters = [];
@@ -1423,20 +1428,20 @@
 
             // Keine Filter aktiv → alle anzeigen
             if (filters.length === 0) {
-                flatNeedItems.forEach(function(item) {
+                allItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
                 // Stelle Original-Anzeige wieder her
-                updateFilteredCountDisplay(flatNeedItems.length, flatNeedItems.length, false);
+                updateFilteredCountDisplay(allItems.length, allItems.length, false);
                 console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
                 return;
             }
 
             var totalMatches = 0;
 
-            flatNeedItems.forEach(function(item) {
-                var needId = item.getAttribute('data-need') || '';
-                var needLabel = item.querySelector('.flat-need-label');
+            allItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || item.getAttribute('data-hauptfrage-id') || '';
+                var needLabel = item.querySelector('.flat-need-label') || item.querySelector('.hauptfrage-label');
                 var labelText = needLabel ? needLabel.textContent : '';
                 var searchableTexts = getSearchableTextsForNeed(needId, labelText);
                 // Konvertiere Array zu lowercase String für Suche
@@ -1464,9 +1469,9 @@
             });
 
             // Aktualisiere Subtitle mit Filter-Ergebnis
-            updateFilteredCountDisplay(totalMatches, flatNeedItems.length, filters.length > 0);
+            updateFilteredCountDisplay(totalMatches, allItems.length, filters.length > 0);
 
-            console.log('[ActiveFilter] Mode:', mode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
+            console.log('[ActiveFilter] Mode:', mode, '- Hauptfragen:', isHauptfragenMode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
         }
 
         /**
@@ -1499,6 +1504,12 @@
 
         // Lausche auf ActiveFilterCard Änderungen
         document.addEventListener('activeFilterChange', function(event) {
+            applyActiveFilters();
+        });
+
+        // Lausche auf Re-Render Events um Filter erneut anzuwenden
+        document.addEventListener('flatNeedsRendered', function(event) {
+            // Filter nach dem Re-Rendering erneut anwenden
             applyActiveFilters();
         });
 

@@ -1737,6 +1737,11 @@ input.resonanz-input:focus {
     display: none !important;
 }
 
+/* HAUPTFRAGEN VIEW: Filter states for hauptfrage-item */
+.hauptfrage-item.filter-hidden {
+    display: none !important;
+}
+
 /* FIX: DimensionKategorieFilter versteckt Bedürfnisse, aber lässt sie im DOM für Suche */
 .flat-need-item.dimension-filter-hidden {
     display: none !important;
