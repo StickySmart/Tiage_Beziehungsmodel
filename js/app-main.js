@@ -20302,6 +20302,67 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                 console.log('[Filter] Total matches found:', totalMatches);
 
+                // HAUPTFRAGEN-FILTER: Behandle hauptfrage-items separat
+                // Unterscheide zwischen: Hauptfrage selbst matcht vs. nur Nuancen matchen
+                var hauptfrageItems = contentContainer.querySelectorAll('.hauptfrage-item');
+                hauptfrageItems.forEach(function(hauptfrageItem) {
+                    var hauptfrageId = hauptfrageItem.getAttribute('data-hauptfrage-id') || '';
+                    var hauptfrageLabel = hauptfrageItem.querySelector('.hauptfrage-label');
+                    var hauptfrageLabelText = hauptfrageLabel ? hauptfrageLabel.textContent : '';
+
+                    // Sammle searchable text für die Hauptfrage selbst
+                    var hauptfrageSearchable = [hauptfrageLabelText, hauptfrageId];
+                    if (typeof GfkBeduerfnisse !== 'undefined') {
+                        var hfDef = GfkBeduerfnisse.getDefinition
+                            ? GfkBeduerfnisse.getDefinition(hauptfrageId)
+                            : GfkBeduerfnisse.definitionen[hauptfrageId];
+                        if (hfDef) {
+                            if (hfDef.description) hauptfrageSearchable.push(hfDef.description);
+                            var kategorie = hfDef.kategorie || '';
+                            if (kategorie) hauptfrageSearchable.push(kategorie);
+                        }
+                    }
+
+                    // Prüfe ob Hauptfrage selbst matcht
+                    var hauptfrageMatches = matchesAllCriteria(hauptfrageSearchable.join(' '), query.trim());
+
+                    // Prüfe ob mindestens eine Nuance matcht (durch filter-match Klasse)
+                    var nuancenList = hauptfrageItem.querySelector('.nuancen-list');
+                    var hasMatchingNuancen = false;
+                    if (nuancenList) {
+                        hasMatchingNuancen = nuancenList.querySelectorAll('.flat-need-item.filter-match').length > 0;
+                    } else {
+                        // Nuancen-Liste nicht expandiert - prüfe via HauptfrageAggregation
+                        if (typeof HauptfrageAggregation !== 'undefined') {
+                            var hfData = HauptfrageAggregation.getHauptfragen()[hauptfrageId];
+                            if (hfData && hfData.nuancen && hfData.nuancen.length > 0) {
+                                for (var i = 0; i < hfData.nuancen.length; i++) {
+                                    var nuanceId = hfData.nuancen[i];
+                                    var nuanceSearchable = [nuanceId];
+                                    // Hole Nuance-Label
+                                    if (window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse) {
+                                        var nuanceData = window.BeduerfnisIds.beduerfnisse[nuanceId];
+                                        if (nuanceData && nuanceData.label) {
+                                            nuanceSearchable.push(nuanceData.label);
+                                        }
+                                    }
+                                    if (matchesAllCriteria(nuanceSearchable.join(' '), query.trim())) {
+                                        hasMatchingNuancen = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Hauptfrage anzeigen wenn: sie selbst matcht ODER mindestens eine Nuance matcht
+                    var showHauptfrage = hauptfrageMatches || hasMatchingNuancen;
+
+                    hauptfrageItem.classList.toggle('filter-hidden', !showHauptfrage);
+                    hauptfrageItem.classList.toggle('filter-match', hauptfrageMatches);
+                    hauptfrageItem.classList.toggle('has-matching-nuancen', hasMatchingNuancen && !hauptfrageMatches);
+                });
+
                 // In flat view, count visible items as "matched attributes"
                 matchedAttributes = totalMatches > 0 ? 1 : 0;
 
@@ -20464,6 +20525,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var matchedNeeds = contentContainer.querySelectorAll('.filter-match');
             matchedNeeds.forEach(function(el) {
                 el.classList.remove('filter-match');
+            });
+
+            // Remove has-matching-nuancen class from hauptfrage-items
+            var nuancenMatchItems = contentContainer.querySelectorAll('.has-matching-nuancen');
+            nuancenMatchItems.forEach(function(el) {
+                el.classList.remove('has-matching-nuancen');
             });
 
             // Collapse all expanded needs lists (restore original state)

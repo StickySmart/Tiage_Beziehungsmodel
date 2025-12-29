@@ -1748,6 +1748,11 @@ input.resonanz-input:focus {
     border-left: 3px solid rgba(147, 51, 234, 0.5);
 }
 
+/* Lock-Icon bei Hauptfragen ausblenden wenn nur Nuancen matchen (nicht die Hauptfrage selbst) */
+.hauptfrage-item.has-matching-nuancen .hauptfrage-lock-icon {
+    display: none !important;
+}
+
 /* Nuancen innerhalb von nuancen-list filtern */
 .nuancen-list .flat-need-item.filter-hidden {
     display: none !important;
