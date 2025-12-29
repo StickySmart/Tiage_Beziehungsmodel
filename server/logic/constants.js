@@ -163,6 +163,27 @@ export const IDENTITY_OPENNESS = {
     "suchend": 100
 };
 
+// ORIENTIERUNGS-OFFENHEIT (für R1 Leben)
+// Basiert auf Similarity-Attraction Theorie
+export const ORIENTATION_OPENNESS = {
+    // Monosexuell
+    "hetero": 0,
+    "homo": 0,
+    // Mit Neugier
+    "hetero-homo": 25,
+    "homo-hetero": 25,
+    // Aktive Erweiterung
+    "hetero-bi": 50,
+    "homo-bi": 50,
+    // Bisexuell gelebt
+    "bi": 75,
+    // Bi mit Präferenz
+    "bi-hetero": 90,
+    "bi-homo": 90,
+    // Voll offen
+    "bi-bi": 100
+};
+
 // ═══════════════════════════════════════════════════════════════════════════
 // SOFT-KO / HARD-KO KRITERIEN
 // ═══════════════════════════════════════════════════════════════════════════
@@ -302,6 +323,7 @@ export default {
     ORIENTATION,
     IDENTITY_MATRIX,
     IDENTITY_OPENNESS,
+    ORIENTATION_OPENNESS,
     HARD_KO,
     SOFT_KO,
     PS_VALIDATION,

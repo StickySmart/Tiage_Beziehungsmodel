@@ -1064,6 +1064,71 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
+        // R1 (LEBEN/ORIENTIERUNG) - UNIVERSELLE BERECHNUNG
+        // ═══════════════════════════════════════════════════════════════════
+        //
+        // Basiert auf ORIENTATION_OPENNESS (Similarity-Attraction Theorie):
+        //   hetero/homo=0, hetero-homo=25, hetero-bi=50, bi=75, bi-bi=100
+        //
+        // Formel (statistisch fundiert durch Forschung zu sexueller Offenheit):
+        //   Differenz = |O1 - O2|
+        //   Ähnlichkeit = 1 - (Differenz / 100)
+        //   Basis_R1 = 0.5 + (Ähnlichkeit × 0.5)
+        //   Openness_Bonus = (O1 + O2) / 400
+        //   R1 = Basis_R1 + Openness_Bonus
+        //
+        // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+        //
+        // Wissenschaftliche Grundlage:
+        //   - Within-couple Similarity in Sexuality → Sexual Satisfaction (PMC)
+        //   - Bi-Identity Anerkennung kritisch für Zufriedenheit (Journal of Bisexuality)
+        //   - Sexual Openness hat 5 Subdimensionen (PMC 2017)
+        //
+        if (perspectiveResult) {
+            // Orientierung aus Profilen extrahieren
+            var ori1 = profil1.orientierung || {};
+            var ori2 = profil2.orientierung || {};
+
+            // Primary und Secondary zu Openness-Key kombinieren
+            var oriKey1 = this._getOrientationOpennessKey(ori1);
+            var oriKey2 = this._getOrientationOpennessKey(ori2);
+
+            // ORIENTATION_OPENNESS aus constants holen
+            var orientationOpenness = constants.ORIENTATION_OPENNESS || {
+                'hetero': 0, 'homo': 0,
+                'hetero-homo': 25, 'homo-hetero': 25,
+                'hetero-bi': 50, 'homo-bi': 50,
+                'bi': 75, 'bi-hetero': 90, 'bi-homo': 90, 'bi-bi': 100
+            };
+
+            var oriO1 = orientationOpenness[oriKey1] !== undefined ? orientationOpenness[oriKey1] : 0;
+            var oriO2 = orientationOpenness[oriKey2] !== undefined ? orientationOpenness[oriKey2] : 0;
+
+            // Formel anwenden
+            var oriDifferenz = Math.abs(oriO1 - oriO2);
+            var oriAehnlichkeit = 1 - (oriDifferenz / 100);
+            var basisR1 = 0.5 + (oriAehnlichkeit * 0.5);
+            var oriOpennessBonus = (oriO1 + oriO2) / 400;
+            var calculatedR1 = Math.round((basisR1 + oriOpennessBonus) * 1000) / 1000;
+
+            // R1 überschreiben mit berechneter Orientierungs-Resonanz
+            perspectiveResult.R1 = calculatedR1;
+            perspectiveResult.orientationResonance = {
+                key1: oriKey1,
+                key2: oriKey2,
+                openness1: oriO1,
+                openness2: oriO2,
+                differenz: oriDifferenz,
+                aehnlichkeit: oriAehnlichkeit,
+                basisR1: Math.round(basisR1 * 1000) / 1000,
+                opennessBonus: Math.round(oriOpennessBonus * 1000) / 1000,
+                finalR1: calculatedR1
+            };
+
+            console.log('[TIAGE Calculator] R1 (Leben/Orientierung) berechnet:', perspectiveResult.orientationResonance);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
         // R4 (IDENTITÄT) - UNIVERSELLE BERECHNUNG
         // ═══════════════════════════════════════════════════════════════════
         //
@@ -1130,7 +1195,8 @@ TiageSynthesis.Calculator = {
                     rValue: perspectiveResult.R1,
                     status: perspectiveResult.R1 >= 1.05 ? 'resonanz' : (perspectiveResult.R1 <= 0.97 ? 'dissonanz' : 'neutral'),
                     statusEmoji: perspectiveResult.R1 >= 1.05 ? '⬆️' : (perspectiveResult.R1 <= 0.97 ? '⬇️' : '➡️'),
-                    weight: 0.25
+                    weight: 0.25,
+                    orientationResonance: perspectiveResult.orientationResonance || null
                 },
                 philosophie: {
                     name: 'Philosophie',
@@ -1168,6 +1234,7 @@ TiageSynthesis.Calculator = {
 
             return {
                 coefficient: coefficient,
+                orientationResonance: perspectiveResult.orientationResonance || null,
                 identityResonance: perspectiveResult.identityResonance || null,
                 dimensions: dimensions,
                 interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS),
@@ -1237,6 +1304,41 @@ TiageSynthesis.Calculator = {
         }
 
         return count > 0 ? sumMatch / count : 0.5;
+    },
+
+    /**
+     * Erstellt den ORIENTATION_OPENNESS Key aus Primary + Secondary Orientierung
+     *
+     * @param {object} orientierung - { primary: 'heterosexuell', secondary: 'bisexuell' }
+     * @returns {string} Key für ORIENTATION_OPENNESS Tabelle
+     */
+    _getOrientationOpennessKey: function(orientierung) {
+        if (!orientierung) return 'hetero';
+
+        var primary = orientierung.primary || 'heterosexuell';
+        var secondary = orientierung.secondary || null;
+
+        // Normalisiere zu Kurzform
+        var normalizeOri = function(ori) {
+            if (!ori) return null;
+            ori = ori.toLowerCase();
+            if (ori === 'heterosexuell' || ori === 'hetero') return 'hetero';
+            if (ori === 'homosexuell' || ori === 'homo') return 'homo';
+            if (ori === 'bisexuell' || ori === 'bi-/pansexuell' || ori === 'bi' || ori === 'pansexuell') return 'bi';
+            return 'hetero'; // Fallback
+        };
+
+        var prim = normalizeOri(primary);
+        var sec = normalizeOri(secondary);
+
+        // Key erstellen
+        if (!sec || sec === prim) {
+            // Nur Primary oder Secondary gleich Primary
+            return prim;
+        } else {
+            // Primary + Secondary kombinieren
+            return prim + '-' + sec;
+        }
     },
 
     /**

@@ -734,6 +734,49 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // ORIENTIERUNGS-OFFENHEIT (für R1 Leben)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // Basiert auf Similarity-Attraction Theorie:
+    //   - Ähnlichkeit in sexueller Offenheit → höhere Resonanz
+    //   - Mixed-Orientation kann funktionieren, braucht aber mehr Commitment
+    //
+    // Wissenschaftliche Grundlage:
+    //   - Within-couple Similarity in Sexuality → Sexual Satisfaction (PMC)
+    //   - Bi-Identity Anerkennung kritisch für Zufriedenheit (Journal of Bisexuality)
+    //   - Sexual Openness hat 5 Subdimensionen (PMC 2017)
+    //
+    // Formel: R1 = Basis_R1 + Openness_Bonus
+    //   Basis_R1 = 0.5 + (Ähnlichkeit × 0.5)
+    //   Openness_Bonus = (O1 + O2) / 400
+    //
+    // Die Openness-Werte werden aus Primary + Secondary Orientierung berechnet:
+
+    ORIENTATION_OPENNESS: {
+        // Monosexuell (nur ein Geschlecht)
+        "hetero": 0,
+        "homo": 0,
+        // Mit Neugier auf anderes Spektrum
+        "hetero-homo": 25,
+        "homo-hetero": 25,
+        // Aktive Erweiterung Richtung Bi
+        "hetero-bi": 50,
+        "homo-bi": 50,
+        // Bisexuell gelebt
+        "bi": 75,
+        // Bi mit bewusster Präferenz
+        "bi-hetero": 90,
+        "bi-homo": 90,
+        // Voll offen
+        "bi-bi": 100
+    },
+
+    ORIENTATION_RESONANCE: {
+        MAX_BONUS: 10,      // Maximaler Offenheits-Bonus (wie bei Identity)
+        WEIGHT: 0.25        // Gewichtung im Gesamt-Score (bereits bei WEIGHTS.orientierung)
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // EXPLORATION-MODIFIER
     // ═══════════════════════════════════════════════════════════════════════
     // Reduziert Konfidenz wenn jemand "interessiert" ist
