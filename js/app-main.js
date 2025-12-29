@@ -1708,6 +1708,9 @@
          * Loads from TiageState if available, otherwise uses defaults
          */
         function initAgodWeightInputs() {
+            // Start with defaults
+            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+
             // Load from TiageState (SSOT) if available
             const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
                 ? currentProfileReviewContext.person : 'ich';

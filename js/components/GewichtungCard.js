@@ -338,12 +338,24 @@ const GewichtungCard = (function() {
     function save(person) {
         console.log('[GewichtungCard] save called');
         person = person || getCurrentPerson();
+
+        // Check if DOM elements exist - if not, don't save (prevents 0/0/0/0)
+        const inputO = document.getElementById('gewicht-orientierung');
+        const inputA = document.getElementById('gewicht-archetyp');
+        const inputD = document.getElementById('gewicht-dominanz');
+        const inputG = document.getElementById('gewicht-geschlecht');
+
+        if (!inputO || !inputA || !inputD || !inputG) {
+            console.log('[GewichtungCard] save aborted - DOM elements not found');
+            return;
+        }
+
         const combined = load(person);
 
-        combined.O.value = parseInt(document.getElementById('gewicht-orientierung')?.value) || 0;
-        combined.A.value = parseInt(document.getElementById('gewicht-archetyp')?.value) || 0;
-        combined.D.value = parseInt(document.getElementById('gewicht-dominanz')?.value) || 0;
-        combined.G.value = parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0;
+        combined.O.value = parseInt(inputO.value) || combined.O.value;
+        combined.A.value = parseInt(inputA.value) || combined.A.value;
+        combined.D.value = parseInt(inputD.value) || combined.D.value;
+        combined.G.value = parseInt(inputG.value) || combined.G.value;
 
         try {
             // SSOT: TiageState speichern + persistieren
