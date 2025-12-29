@@ -1752,8 +1752,7 @@ const AttributeSummaryCard = (function() {
             // ═══════════════════════════════════════════════════════════════════════════
             html += `<div class="flat-needs-list-wrapper">
                 <div class="flat-needs-list kategorie-mode">`;
-            // FIX: Rendere ALLE Bedürfnisse ohne Filter
-            // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
+            // Rendere alle Bedürfnisse mit aktiven Filtern
             sortedNeeds.forEach(need => {
                 const needObj = findNeedById(need.id);
                 const isLocked = needObj?.locked || false;
@@ -1763,8 +1762,12 @@ const AttributeSummaryCard = (function() {
                 // "Nur Geänderte" Filter - zeigt nur Bedürfnisse deren Wert vom Standard abweicht
                 const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
 
-                // Filter anwenden
-                const shouldHide = hiddenByChangedFilter;
+                // DimensionKategorieFilter anwenden (Kategorie-Filter)
+                const hiddenByDimensionFilter = typeof DimensionKategorieFilter !== 'undefined' &&
+                    !DimensionKategorieFilter.shouldShowNeed(need.id);
+
+                // Beide Filter kombinieren
+                const shouldHide = hiddenByChangedFilter || hiddenByDimensionFilter;
 
                 html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
             });
