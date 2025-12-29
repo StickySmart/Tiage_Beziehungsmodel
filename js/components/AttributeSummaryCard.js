@@ -826,6 +826,12 @@ const AttributeSummaryCard = (function() {
     let currentFlatArchetyp = null;
 
     /**
+     * Aktuelle Person für flache Darstellung (ich/partner)
+     * FIX: Track person to reset flatNeeds when switching
+     */
+    let currentFlatPerson = null;
+
+    /**
      * Aktuelles Archetyp-Label für flache Darstellung
      */
     let currentFlatArchetypLabel = null;
@@ -1370,28 +1376,32 @@ const AttributeSummaryCard = (function() {
             return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
         }
 
-        // Prüfe ob neuer Archetyp geladen wird
-        const isNewArchetyp = currentFlatArchetyp !== archetyp;
-
-        // Speichere aktuellen Archetyp und Label
-        currentFlatArchetyp = archetyp;
-        currentFlatArchetypLabel = archetypLabel;
-
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
         if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
+        // Prüfe ob neuer Archetyp oder neue Person geladen wird
+        const isNewArchetyp = currentFlatArchetyp !== archetyp;
+        const isNewPerson = currentFlatPerson !== currentPerson;
+
+        // Speichere aktuellen Archetyp, Person und Label
+        currentFlatArchetyp = archetyp;
+        currentFlatPerson = currentPerson;
+        currentFlatArchetypLabel = archetypLabel;
+
         // WICHTIG: Setze Baseline für die aktuelle Person/Archetyp Kombination
         // Das Baseline enthält die statischen Archetyp-Werte und dient als Vergleichsbasis
         setBaselineForPerson(currentPerson, archetyp);
 
-        // Bei neuem Archetyp: Alle Einträge zurücksetzen
-        if (isNewArchetyp) {
+        // Bei neuem Archetyp ODER neuer Person: Alle Einträge zurücksetzen
+        // FIX: Ohne Person-Reset werden Werte von ich auf partner übertragen und umgekehrt
+        if (isNewArchetyp || isNewPerson) {
             // Alle Bedürfnisse zurücksetzen damit neue Profil-Werte geladen werden
             flatNeeds = [];
-            console.log('[AttributeSummaryCard] Neuer Archetyp geladen - Bedürfnisse zurückgesetzt');
+            console.log('[AttributeSummaryCard] Neuer Archetyp oder Person geladen - Bedürfnisse zurückgesetzt',
+                { archetyp, person: currentPerson, isNewArchetyp, isNewPerson });
         }
 
         // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
