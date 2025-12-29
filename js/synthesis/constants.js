@@ -116,11 +116,14 @@ TiageSynthesis.Constants = {
         // PRIORITÄT 2: UI-Gewichtungen (GewichtungCard)
         if (typeof getGewichtungen === 'function') {
             var gew = getGewichtungen();
+            // Relative Gewichte: Nutzer gibt beliebige Werte, System normalisiert auf Summe=1.0
+            var sum2 = (gew.O || 0) + (gew.A || 0) + (gew.D || 0) + (gew.G || 0);
+            var divisor2 = sum2 > 0 ? sum2 : 100;
             return {
-                orientierung: (gew.O || 25) / 100,
-                archetyp: (gew.A || 25) / 100,
-                dominanz: (gew.D || 25) / 100,
-                geschlecht: (gew.G || 25) / 100
+                orientierung: (gew.O || 25) / divisor2,
+                archetyp: (gew.A || 25) / divisor2,
+                dominanz: (gew.D || 25) / divisor2,
+                geschlecht: (gew.G || 25) / divisor2
             };
         }
         // Fallback: Standard-Gewichtungen

@@ -299,11 +299,18 @@ export const ARCHETYP_KOHAERENZ = {
 
 export function getWeights(customWeights = null) {
     if (customWeights) {
+        // Relative Gewichte: Nutzer gibt beliebige Werte, System normalisiert auf Summe=1.0
+        const O = customWeights.O || 25;
+        const A = customWeights.A || 25;
+        const D = customWeights.D || 25;
+        const G = customWeights.G || 25;
+        const sum = O + A + D + G;
+
         return {
-            orientierung: (customWeights.O || 25) / 100,
-            archetyp: (customWeights.A || 25) / 100,
-            dominanz: (customWeights.D || 25) / 100,
-            geschlecht: (customWeights.G || 25) / 100
+            orientierung: O / sum,
+            archetyp: A / sum,
+            dominanz: D / sum,
+            geschlecht: G / sum
         };
     }
     return DEFAULT_WEIGHTS;
