@@ -1762,6 +1762,17 @@
         }
 
         /**
+         * Adjust AGOD weight by delta (for +/- buttons)
+         * @param {string} factor - O, A, D, or G
+         * @param {number} delta - Amount to add (positive) or subtract (negative)
+         */
+        function adjustAgodWeight(factor, delta) {
+            const currentValue = agodWeights[factor] || 0;
+            const newValue = Math.max(0, Math.min(100, currentValue + delta));
+            updateAgodWeight(factor, newValue);
+        }
+
+        /**
          * Update visual height of stick bars based on weights
          */
         function updateAgodStickBars() {
@@ -19349,6 +19360,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // AGOD Weight functions (for synthesis weight inputs)
         window.updateAgodWeight = updateAgodWeight;
+        window.adjustAgodWeight = adjustAgodWeight;
         window.getAgodWeights = getAgodWeights;
         window.initAgodWeightInputs = initAgodWeightInputs;
 

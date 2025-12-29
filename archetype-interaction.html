@@ -703,27 +703,35 @@
 
             <!-- Center Column - Lightbulb Button & Score Circle -->
             <div class="center-column">
-                <!-- AGOD Weight Inputs (4 Sticks) -->
+                <!-- AGOD Weight Inputs (4 Sticks) - Sortierung: A, G, O, D -->
                 <div class="agod-weight-sticks" id="agodWeightSticks">
-                    <div class="agod-stick" data-factor="O" title="Orientierung (O) - Gewichtung">
-                        <div class="agod-stick-bar" id="agodStickO"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightO" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('O', this.value)">
-                        <span class="agod-stick-label">O</span>
-                    </div>
                     <div class="agod-stick" data-factor="A" title="Archetyp (A) - Gewichtung">
+                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('A', 5)">+</button>
                         <div class="agod-stick-bar" id="agodStickA"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightA" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('A', this.value)">
+                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('A', -5)">−</button>
                         <span class="agod-stick-label">A</span>
                     </div>
-                    <div class="agod-stick" data-factor="D" title="Dominanz (D) - Gewichtung">
-                        <div class="agod-stick-bar" id="agodStickD"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightD" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('D', this.value)">
-                        <span class="agod-stick-label">D</span>
-                    </div>
                     <div class="agod-stick" data-factor="G" title="Geschlecht (G) - Gewichtung">
+                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('G', 5)">+</button>
                         <div class="agod-stick-bar" id="agodStickG"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightG" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('G', this.value)">
+                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('G', -5)">−</button>
                         <span class="agod-stick-label">G</span>
+                    </div>
+                    <div class="agod-stick" data-factor="O" title="Orientierung (O) - Gewichtung">
+                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('O', 5)">+</button>
+                        <div class="agod-stick-bar" id="agodStickO"></div>
+                        <input type="number" class="agod-weight-input" id="agodWeightO" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('O', this.value)">
+                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('O', -5)">−</button>
+                        <span class="agod-stick-label">O</span>
+                    </div>
+                    <div class="agod-stick" data-factor="D" title="Dominanz (D) - Gewichtung">
+                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('D', 5)">+</button>
+                        <div class="agod-stick-bar" id="agodStickD"></div>
+                        <input type="number" class="agod-weight-input" id="agodWeightD" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('D', this.value)">
+                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('D', -5)">−</button>
+                        <span class="agod-stick-label">D</span>
                     </div>
                 </div>
                 <!-- Score Label -->
