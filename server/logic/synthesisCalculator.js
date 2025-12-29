@@ -35,11 +35,109 @@ export function calculate(person1, person2, options = {}) {
     const resonanz1 = NeedsIntegration.calculateDimensionalResonance('ich', person1);
     const resonanz2 = NeedsIntegration.calculateDimensionalResonance('partner', person2);
 
-    // Kombiniere R-Faktoren via Produkt
-    const R1 = (resonanz1.R1 || 1.0) * (resonanz2.R1 || 1.0);
+    // Kombiniere R-Faktoren via Produkt (R2, R3 bleiben Needs-basiert)
     const R2 = (resonanz1.R2 || 1.0) * (resonanz2.R2 || 1.0);
     const R3 = (resonanz1.R3 || 1.0) * (resonanz2.R3 || 1.0);
-    const R4 = (resonanz1.R4 || 1.0) * (resonanz2.R4 || 1.0);
+
+    // ═══════════════════════════════════════════════════════════════════
+    // R1 (LEBEN/ORIENTIERUNG) - UNIVERSELLE BERECHNUNG
+    // ═══════════════════════════════════════════════════════════════════
+    //
+    // Basiert auf ORIENTATION_OPENNESS (Similarity-Attraction Theorie):
+    //   hetero/homo=0, hetero-homo=25, hetero-bi=50, bi=75, bi-bi=100
+    //
+    // Wissenschaftliche Grundlage:
+    //   - Within-couple Similarity in Sexuality → Sexual Satisfaction (PMC)
+    //   - Bi-Identity Anerkennung kritisch für Zufriedenheit (Journal of Bisexuality)
+    //
+    const ori1 = person1.orientierung || {};
+    const ori2 = person2.orientierung || {};
+
+    const oriKey1 = getOrientationOpennessKey(ori1);
+    const oriKey2 = getOrientationOpennessKey(ori2);
+
+    const orientationOpenness = Constants.ORIENTATION_OPENNESS || {
+        'hetero': 0, 'homo': 0,
+        'hetero-homo': 25, 'homo-hetero': 25,
+        'hetero-bi': 50, 'homo-bi': 50,
+        'bi': 75, 'bi-hetero': 90, 'bi-homo': 90, 'bi-bi': 100
+    };
+
+    const oriO1 = orientationOpenness[oriKey1] !== undefined ? orientationOpenness[oriKey1] : 0;
+    const oriO2 = orientationOpenness[oriKey2] !== undefined ? orientationOpenness[oriKey2] : 0;
+
+    const oriDifferenz = Math.abs(oriO1 - oriO2);
+    const oriAehnlichkeit = 1 - (oriDifferenz / 100);
+    const basisR1 = 0.5 + (oriAehnlichkeit * 0.5);
+    const oriOpennessBonus = (oriO1 + oriO2) / 400;
+    const R1 = Math.round((basisR1 + oriOpennessBonus) * 1000) / 1000;
+
+    const orientationResonance = {
+        key1: oriKey1,
+        key2: oriKey2,
+        openness1: oriO1,
+        openness2: oriO2,
+        differenz: oriDifferenz,
+        aehnlichkeit: Math.round(oriAehnlichkeit * 1000) / 1000,
+        basisR1: Math.round(basisR1 * 1000) / 1000,
+        opennessBonus: Math.round(oriOpennessBonus * 1000) / 1000,
+        finalR1: R1
+    };
+
+    console.log('[SynthesisCalculator] R1 (Leben/Orientierung) berechnet:', orientationResonance);
+
+    // ═══════════════════════════════════════════════════════════════════
+    // R4 (IDENTITÄT) - UNIVERSELLE BERECHNUNG
+    // ═══════════════════════════════════════════════════════════════════
+    //
+    // Basiert auf IDENTITY_OPENNESS (Similarity-Attraction Theorie):
+    //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
+    //
+    // Formel (statistisch fundiert durch Forschung zu Identitäts-Kongruenz):
+    //   Differenz = |O1 - O2|
+    //   Ähnlichkeit = 1 - (Differenz / 100)
+    //   Basis_R4 = 0.5 + (Ähnlichkeit × 0.5)
+    //   Openness_Bonus = (O1 + O2) / 400
+    //   R4 = Basis_R4 + Openness_Bonus
+    //
+    // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+    //
+    // Wissenschaftliche Grundlage:
+    //   - Similarity-Attraction Effect (Byrne, 1971)
+    //   - Trans+Trans Paare berichten höhere Zufriedenheit (PMC 2025)
+    //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
+    //
+    const secondary1 = person1.geschlecht?.secondary || 'cis';
+    const secondary2 = person2.geschlecht?.secondary || 'cis';
+
+    // IDENTITY_OPENNESS aus Constants holen
+    const identityOpenness = Constants.IDENTITY_OPENNESS || {
+        'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
+    };
+
+    const O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
+    const O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+
+    // Formel anwenden
+    const differenz = Math.abs(O1 - O2);
+    const aehnlichkeit = 1 - (differenz / 100);
+    const basisR4 = 0.5 + (aehnlichkeit * 0.5);
+    const opennessBonus = (O1 + O2) / 400;
+    const R4 = Math.round((basisR4 + opennessBonus) * 1000) / 1000;
+
+    const identityResonance = {
+        secondary1,
+        secondary2,
+        openness1: O1,
+        openness2: O2,
+        differenz,
+        aehnlichkeit: Math.round(aehnlichkeit * 1000) / 1000,
+        basisR4: Math.round(basisR4 * 1000) / 1000,
+        opennessBonus: Math.round(opennessBonus * 1000) / 1000,
+        finalR4: R4
+    };
+
+    console.log('[SynthesisCalculator] R4 (Identität) berechnet:', identityResonance);
 
     // ═══════════════════════════════════════════════════════════════════
     // SCHRITT 2: Faktor-Scores berechnen
@@ -107,11 +205,13 @@ export function calculate(person1, person2, options = {}) {
 
         resonanz: {
             coefficient: Math.round(resonanzCoefficient * 1000) / 1000,
+            identityResonance: identityResonance, // Details zur R4-Berechnung
+            orientationResonance: orientationResonance, // Details zur R1-Berechnung
             dimensional: {
-                leben:       { rValue: Math.round(R1 * 1000) / 1000, status: getStatus(R1) },
+                leben:       { rValue: Math.round(R1 * 1000) / 1000, status: getStatus(R1), orientationResonance: orientationResonance },
                 philosophie: { rValue: Math.round(R2 * 1000) / 1000, status: getStatus(R2) },
                 dynamik:     { rValue: Math.round(R3 * 1000) / 1000, status: getStatus(R3) },
-                identitaet:  { rValue: Math.round(R4 * 1000) / 1000, status: getStatus(R4) }
+                identitaet:  { rValue: Math.round(R4 * 1000) / 1000, status: getStatus(R4), identityResonance: identityResonance }
             }
         },
 
@@ -388,6 +488,43 @@ function extractIdentity(geschlecht) {
         return geschlecht.secondary;
     }
     return 'cis';
+}
+
+/**
+ * Erzeugt den ORIENTATION_OPENNESS-Schlüssel aus primärer/sekundärer Orientierung
+ *
+ * @param {object|string} orientierung - Orientierungs-Objekt oder String
+ * @returns {string} Key für ORIENTATION_OPENNESS Lookup
+ */
+function getOrientationOpennessKey(orientierung) {
+    if (!orientierung) return 'hetero';
+
+    const primary = typeof orientierung === 'string'
+        ? orientierung
+        : (orientierung.primary || 'heterosexuell');
+    const secondary = typeof orientierung === 'object'
+        ? (orientierung.secondary || null)
+        : null;
+
+    // Normalisiere Orientierungswerte
+    const normalizeOri = (ori) => {
+        if (!ori) return null;
+        ori = ori.toLowerCase();
+        if (ori === 'heterosexuell' || ori === 'hetero') return 'hetero';
+        if (ori === 'homosexuell' || ori === 'homo') return 'homo';
+        if (ori === 'bisexuell' || ori === 'bi-/pansexuell' || ori === 'bi' || ori === 'pansexuell') return 'bi';
+        return 'hetero';
+    };
+
+    const prim = normalizeOri(primary);
+    const sec = normalizeOri(secondary);
+
+    // Wenn keine sekundäre oder gleich wie primäre → nur primäre
+    if (!sec || sec === prim) {
+        return prim;
+    } else {
+        return prim + '-' + sec;
+    }
 }
 
 // Default export

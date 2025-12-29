@@ -163,6 +163,27 @@ export const IDENTITY_OPENNESS = {
     "suchend": 100
 };
 
+// ORIENTIERUNGS-OFFENHEIT (für R1 Leben)
+// Basiert auf Similarity-Attraction Theorie
+export const ORIENTATION_OPENNESS = {
+    // Monosexuell
+    "hetero": 0,
+    "homo": 0,
+    // Mit Neugier
+    "hetero-homo": 25,
+    "homo-hetero": 25,
+    // Aktive Erweiterung
+    "hetero-bi": 50,
+    "homo-bi": 50,
+    // Bisexuell gelebt
+    "bi": 75,
+    // Bi mit Präferenz
+    "bi-hetero": 90,
+    "bi-homo": 90,
+    // Voll offen
+    "bi-bi": 100
+};
+
 // ═══════════════════════════════════════════════════════════════════════════
 // SOFT-KO / HARD-KO KRITERIEN
 // ═══════════════════════════════════════════════════════════════════════════
@@ -278,11 +299,18 @@ export const ARCHETYP_KOHAERENZ = {
 
 export function getWeights(customWeights = null) {
     if (customWeights) {
+        // Relative Gewichte: Nutzer gibt beliebige Werte, System normalisiert auf Summe=1.0
+        const O = customWeights.O || 25;
+        const A = customWeights.A || 25;
+        const D = customWeights.D || 25;
+        const G = customWeights.G || 25;
+        const sum = O + A + D + G;
+
         return {
-            orientierung: (customWeights.O || 25) / 100,
-            archetyp: (customWeights.A || 25) / 100,
-            dominanz: (customWeights.D || 25) / 100,
-            geschlecht: (customWeights.G || 25) / 100
+            orientierung: O / sum,
+            archetyp: A / sum,
+            dominanz: D / sum,
+            geschlecht: G / sum
         };
     }
     return DEFAULT_WEIGHTS;
@@ -302,6 +330,7 @@ export default {
     ORIENTATION,
     IDENTITY_MATRIX,
     IDENTITY_OPENNESS,
+    ORIENTATION_OPENNESS,
     HARD_KO,
     SOFT_KO,
     PS_VALIDATION,

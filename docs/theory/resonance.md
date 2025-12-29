@@ -67,7 +67,9 @@ Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
 | **R1 Leben** | 🔥 | Existenz, Zuneigung, Muße, Intimität & Romantik | 4 |
 | **R2 Philosophie** | 🧠 | Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen & Karriere, Werte & Haltungen, Soziales Leben, Praktisches Leben | 8 |
 | **R3 Dynamik** | ⚡ | Dynamik, Sicherheit | 2 |
-| **R4 Identität** | 💚 | Verständnis, Erschaffen, Verbundenheit, Kommunikationsstil | 4 |
+| **R4 Identität** | 💚 | Basiert auf IDENTITY_OPENNESS (siehe [R4 Identity Resonance](./r4-identity-resonance.md)) | - |
+
+> **NEU (v3.4):** R4 wird nicht mehr aus Bedürfnis-Kategorien berechnet, sondern basiert auf der **Similarity-Attraction Theorie** und den IDENTITY_OPENNESS Werten (cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100). Details siehe [R4 Identity Resonance](./r4-identity-resonance.md).
 
 **Wichtig:** Durch sekundäre Kategorien fließen Bedürfnisse in mehrere Faktoren ein (mit 30% Gewichtung).
 
