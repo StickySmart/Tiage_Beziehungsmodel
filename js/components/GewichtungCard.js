@@ -913,9 +913,13 @@ const GewichtungCard = (function() {
             return;
         }
 
+        // Sync input field with slider
         const input = document.getElementById(FAKTOR_MAP[factor].inputId);
         if (input) input.value = value;
-        updateSumme();
+
+        // Use normalize to handle sum-lock and SAVE to TiageState + localStorage
+        const numValue = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
+        normalize(factor, numValue);
     }
 
     function onInputChange(factor, value) {
