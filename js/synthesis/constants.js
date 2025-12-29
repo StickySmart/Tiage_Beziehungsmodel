@@ -94,7 +94,26 @@ TiageSynthesis.Constants = {
     // WEIGHTS werden dynamisch aus UI geladen (Standard: 25/25/25/25)
     // Getter-Funktion für aktuelle Gewichtungen
     getWeights: function() {
-        // Versuche UI-Gewichtungen zu laden
+        // PRIORITÄT 1: AGOD-Gewichtungen aus sessionStorage (Synthese-Eingabefelder)
+        // Diese werden bei jedem Seitenladen auf 4x 25% zurückgesetzt
+        try {
+            var agodStored = sessionStorage.getItem('tiageAgodWeights');
+            if (agodStored) {
+                var agod = JSON.parse(agodStored);
+                var sum = (agod.O || 0) + (agod.A || 0) + (agod.D || 0) + (agod.G || 0);
+                var divisor = sum > 0 ? sum : 100;
+                return {
+                    orientierung: (agod.O || 25) / divisor,
+                    archetyp: (agod.A || 25) / divisor,
+                    dominanz: (agod.D || 25) / divisor,
+                    geschlecht: (agod.G || 25) / divisor
+                };
+            }
+        } catch (e) {
+            console.warn('[TiageSynthesis] Could not load AGOD weights from sessionStorage:', e);
+        }
+
+        // PRIORITÄT 2: UI-Gewichtungen (GewichtungCard)
         if (typeof getGewichtungen === 'function') {
             var gew = getGewichtungen();
             return {

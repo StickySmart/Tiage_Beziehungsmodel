@@ -301,6 +301,54 @@ body {
     }
 
     /* ========================================
+       AGOD WEIGHT STICKS (Mobile)
+       ======================================== */
+
+    .agod-weight-sticks {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 6px;
+        margin-bottom: 12px;
+        height: 70px;
+    }
+
+    .agod-stick {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .agod-stick-bar {
+        width: 6px;
+        height: 50px;
+        background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%);
+        border-radius: 3px;
+        box-shadow: 0 2px 6px rgba(234, 179, 8, 0.3);
+    }
+
+    .agod-weight-input {
+        width: 32px;
+        height: 20px;
+        background: rgba(234, 179, 8, 0.15);
+        border: 1px solid rgba(234, 179, 8, 0.4);
+        border-radius: 4px;
+        color: #eab308;
+        font-size: 10px;
+        font-weight: 600;
+        text-align: center;
+        padding: 0;
+        outline: none;
+    }
+
+    .agod-stick-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: #eab308;
+    }
+
+    /* ========================================
        SCORE-AUFSCHLÜSSELUNG (Seite 2)
        ======================================== */
 
