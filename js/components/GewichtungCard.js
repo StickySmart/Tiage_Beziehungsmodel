@@ -336,6 +336,7 @@ const GewichtungCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function save(person) {
+        console.log('[GewichtungCard] save called');
         person = person || getCurrentPerson();
         const combined = load(person);
 
@@ -518,6 +519,7 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     function normalize(changedFactor, newValue) {
+        console.log('[GewichtungCard] normalize called:', changedFactor, newValue);
         const person = getCurrentPerson();
         const isLocked = getSummeLockedByPerson(person);
         const target = getSummeTargetByPerson(person);
@@ -619,6 +621,7 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     function initInputs() {
+        console.log('[GewichtungCard] initInputs called, initialized:', initialized);
         if (initialized) return;
 
         const factors = Object.keys(FAKTOR_MAP);
@@ -680,6 +683,7 @@ const GewichtungCard = (function() {
             // Slider-Events
             if (slider) {
                 slider.addEventListener('input', function(e) {
+                    console.log('[GewichtungCard] slider input event:', factor, e.target.value);
                     const person = getCurrentPerson();
                     const currentLocks = getLocksByPerson(person);
 
@@ -689,7 +693,9 @@ const GewichtungCard = (function() {
                         return;
                     }
                     input.value = e.target.value;
-                    updateSumme();
+                    // Also normalize and save during input (not just on change)
+                    const newVal = parseInt(e.target.value) || 0;
+                    normalize(factor, newVal);
                 });
 
                 slider.addEventListener('change', function(e) {
@@ -723,7 +729,12 @@ const GewichtungCard = (function() {
             });
         });
 
-        if (allFound) initialized = true;
+        if (allFound) {
+            initialized = true;
+            console.log('[GewichtungCard] initInputs: All elements found, event listeners attached');
+        } else {
+            console.log('[GewichtungCard] initInputs: Some elements not found, will retry later');
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -908,6 +919,7 @@ const GewichtungCard = (function() {
 
     // Kompatibilitäts-Handler für inline onclick
     function onSliderInput(factor, value) {
+        console.log('[GewichtungCard] onSliderInput called:', factor, value);
         const person = getCurrentPerson();
         const locks = getLocksByPerson(person);
 
@@ -928,6 +940,7 @@ const GewichtungCard = (function() {
     }
 
     function onInputChange(factor, value) {
+        console.log('[GewichtungCard] onInputChange called:', factor, value);
         const person = getCurrentPerson();
         const locks = getLocksByPerson(person);
 
