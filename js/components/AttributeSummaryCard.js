@@ -1999,6 +1999,12 @@ const AttributeSummaryCard = (function() {
 
             // Re-initialisiere Filter
             initDimensionFilter();
+
+            // Event feuern damit externe Komponenten (z.B. ActiveFilterCard) ihre Filter anwenden können
+            document.dispatchEvent(new CustomEvent('flatNeedsRendered', {
+                bubbles: true,
+                detail: { archetyp: currentFlatArchetyp }
+            }));
         }
     }
 
