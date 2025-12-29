@@ -1447,9 +1447,8 @@
                 var needId = item.getAttribute('data-need') || item.getAttribute('data-hauptfrage-id') || '';
                 var needLabel = item.querySelector('.flat-need-label') || item.querySelector('.hauptfrage-label');
                 var labelText = needLabel ? needLabel.textContent : '';
-                var searchableTexts = getSearchableTextsForNeed(needId, labelText);
-                // Konvertiere Array zu lowercase String für Suche
-                var searchableString = searchableTexts.join(' ').toLowerCase();
+                // getSearchableTextsForNeed gibt bereits einen lowercase String zurück
+                var searchableString = getSearchableTextsForNeed(needId, labelText);
 
                 var matches;
                 if (mode === 'AND') {
