@@ -1694,22 +1694,44 @@
 
         // ═══════════════════════════════════════════════════════════════════════════
         // AGOD WEIGHT INPUTS - Gewichtung für Synthese Score
-        // Speichert in sessionStorage (wird beim Neuladen zurückgesetzt)
+        // Speichert persistent in TiageState (überlebt Reload)
         // ═══════════════════════════════════════════════════════════════════════════
 
         // Default weights (25% each = 100% total)
         const AGOD_DEFAULT_WEIGHTS = { O: 25, A: 25, D: 25, G: 25 };
 
-        // Current weights state (reset on page load)
+        // Current weights state
         let agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
 
         /**
          * Initialize AGOD weight inputs on page load
-         * Always resets to default 4x 25%
+         * Loads from TiageState if available, otherwise uses defaults
          */
         function initAgodWeightInputs() {
-            // Reset to defaults (do NOT load from storage - user wants reset on reload)
-            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+            // Load from TiageState (SSOT) if available
+            const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
+                ? currentProfileReviewContext.person : 'ich';
+
+            if (typeof TiageState !== 'undefined') {
+                const stored = TiageState.get(`gewichtungen.${person}`);
+                console.log('[AGOD] Loading from TiageState:', person, stored);
+                if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
+                    agodWeights = {
+                        O: stored.O.value ?? 25,
+                        A: stored.A.value ?? 25,
+                        D: stored.D.value ?? 25,
+                        G: stored.G.value ?? 25
+                    };
+                } else if (stored && typeof stored.O === 'number') {
+                    // Legacy format
+                    agodWeights = {
+                        O: stored.O ?? 25,
+                        A: stored.A ?? 25,
+                        D: stored.D ?? 25,
+                        G: stored.G ?? 25
+                    };
+                }
+            }
 
             // Update input fields
             ['O', 'A', 'D', 'G'].forEach(factor => {
@@ -1722,10 +1744,10 @@
             // Update visual bars
             updateAgodStickBars();
 
-            // Save to sessionStorage for current session use in synthesis
+            // Also save to sessionStorage for synthesis
             saveAgodWeightsToSession();
 
-            console.log('[AGOD] Weight inputs initialized:', agodWeights);
+            console.log('[AGOD] Weight inputs initialized from TiageState:', agodWeights);
         }
 
         /**
@@ -1750,8 +1772,30 @@
             // Update visual bars
             updateAgodStickBars();
 
-            // Save to sessionStorage
+            // Save to sessionStorage (for synthesis)
             saveAgodWeightsToSession();
+
+            // SSOT: Save to TiageState for persistence
+            const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
+                ? currentProfileReviewContext.person : 'ich';
+            if (typeof TiageState !== 'undefined') {
+                // Get existing gewichtungen or create new
+                let gew = TiageState.get(`gewichtungen.${person}`);
+                if (!gew || !gew.O || typeof gew.O !== 'object') {
+                    gew = {
+                        O: { value: agodWeights.O, locked: false },
+                        A: { value: agodWeights.A, locked: false },
+                        D: { value: agodWeights.D, locked: false },
+                        G: { value: agodWeights.G, locked: false },
+                        summeLock: { enabled: false, target: 100 }
+                    };
+                } else {
+                    gew[factor].value = numValue;
+                }
+                TiageState.set(`gewichtungen.${person}`, gew);
+                TiageState.saveToStorage();
+                console.log('[AGOD] Saved to TiageState:', person, factor, '=', numValue);
+            }
 
             // Trigger synthesis recalculation
             if (typeof updateComparisonView === 'function') {
