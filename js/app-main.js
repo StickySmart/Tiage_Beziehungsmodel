@@ -15604,10 +15604,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // Perspektiven-Konfiguration
             const perspektiven = {
-                P1: { icon: '📊', label: 'Statistik', color: '#3B82F6' },
-                P2: { icon: '🌱', label: 'Konditionierung', color: '#F59E0B' },
-                P3: { icon: '⚖️', label: 'Qualität', color: '#10B981' },
-                P4: { icon: '💜', label: 'SexPositiv', color: '#8B5CF6' }
+                P1: { icon: '📊', label: 'Statistik', color: '#3B82F6', description: 'Empirisch nachgewiesene Grundbedürfnisse' },
+                P2: { icon: '🌱', label: 'Konditionierung', color: '#F59E0B', description: 'Natürliche vs. anerzogene Bedürfnisse' },
+                P3: { icon: '⚖️', label: 'Qualität', color: '#10B981', description: 'Statische vs. dynamische Qualitätsaspekte' },
+                P4: { icon: '💜', label: 'SexPositiv', color: '#8B5CF6', description: 'Bewusste Machtdynamik und Consent' }
             };
 
             // Resonanzfaktor-Konfiguration
@@ -15702,10 +15702,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         <tr style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                             <th style="padding: 8px 10px; text-align: left; color: var(--text-muted); font-weight: 500;">Faktor</th>
                             <th style="padding: 8px 6px; text-align: center; color: var(--text-muted); font-weight: 500;">R</th>
-                            <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P1.color}; font-size: 10px;">${perspektiven.P1.icon} ${perspektiven.P1.label}</span></th>
-                            <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P2.color}; font-size: 10px;">${perspektiven.P2.icon} ${perspektiven.P2.label}</span></th>
-                            <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P3.color}; font-size: 10px;">${perspektiven.P3.icon} ${perspektiven.P3.label}</span></th>
-                            <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P4.color}; font-size: 10px;">${perspektiven.P4.icon} ${perspektiven.P4.label}</span></th>
+                            <th style="padding: 8px 6px; text-align: center;" title="${perspektiven.P1.description}"><span style="color: ${perspektiven.P1.color}; font-size: 10px;">${perspektiven.P1.icon} ${perspektiven.P1.label}</span></th>
+                            <th style="padding: 8px 6px; text-align: center;" title="${perspektiven.P2.description}"><span style="color: ${perspektiven.P2.color}; font-size: 10px;">${perspektiven.P2.icon} ${perspektiven.P2.label}</span></th>
+                            <th style="padding: 8px 6px; text-align: center;" title="${perspektiven.P3.description}"><span style="color: ${perspektiven.P3.color}; font-size: 10px;">${perspektiven.P3.icon} ${perspektiven.P3.label}</span></th>
+                            <th style="padding: 8px 6px; text-align: center;" title="${perspektiven.P4.description}"><span style="color: ${perspektiven.P4.color}; font-size: 10px;">${perspektiven.P4.icon} ${perspektiven.P4.label}</span></th>
                         </tr>
                     </thead>
                     <tbody>

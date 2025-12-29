@@ -22,14 +22,14 @@ const ActiveFilterCard = (function() {
 
     // Filter-Definitionen für R1-R4, P1-P4
     const FILTER_DEFS = {
-        'R1': { label: 'Leben', icon: '🔥', color: '#E63946', type: 'dimension' },
-        'R2': { label: 'Philosophie', icon: '🧠', color: '#2A9D8F', type: 'dimension' },
-        'R3': { label: 'Dynamik', icon: '⚡', color: '#8B5CF6', type: 'dimension' },
-        'R4': { label: 'Identität', icon: '💚', color: '#F4A261', type: 'dimension' },
-        'P1': { label: 'Statistik', icon: '📊', color: '#3B82F6', type: 'perspektive' },
-        'P2': { label: 'Konditionierung', icon: '🌱', color: '#F59E0B', type: 'perspektive' },
-        'P3': { label: 'Qualität', icon: '⚖️', color: '#10B981', type: 'perspektive' },
-        'P4': { label: 'SexPositiv', icon: '💜', color: '#8B5CF6', type: 'perspektive' }
+        'R1': { label: 'Leben', icon: '🔥', color: '#E63946', type: 'dimension', description: 'Resonanzfaktor Leben/Orientierung' },
+        'R2': { label: 'Philosophie', icon: '🧠', color: '#2A9D8F', type: 'dimension', description: 'Resonanzfaktor Philosophie/Archetyp' },
+        'R3': { label: 'Dynamik', icon: '⚡', color: '#8B5CF6', type: 'dimension', description: 'Resonanzfaktor Dynamik/Dominanz' },
+        'R4': { label: 'Identität', icon: '💚', color: '#F4A261', type: 'dimension', description: 'Resonanzfaktor Identität/Geschlecht' },
+        'P1': { label: 'Statistik', icon: '📊', color: '#3B82F6', type: 'perspektive', description: 'Empirisch nachgewiesene Grundbedürfnisse' },
+        'P2': { label: 'Konditionierung', icon: '🌱', color: '#F59E0B', type: 'perspektive', description: 'Natürliche vs. anerzogene Bedürfnisse' },
+        'P3': { label: 'Qualität', icon: '⚖️', color: '#10B981', type: 'perspektive', description: 'Statische vs. dynamische Qualitätsaspekte' },
+        'P4': { label: 'SexPositiv', icon: '💜', color: '#8B5CF6', type: 'perspektive', description: 'Bewusste Machtdynamik und Consent' }
     };
 
     /**
