@@ -1718,15 +1718,19 @@ const AttributeSummaryCard = (function() {
                 }).length;
                 const hasChangedNuancen = changedNuancenCount > 0;
 
+                // FIX: Prüfe auch ob Hauptfrage selbst geändert wurde (für Hauptfragen ohne Nuancen)
+                const hauptfrageDirectlyChanged = !hasNuancen && isValueChanged(hf.id, aggregatedValue);
+                const hasAnyChange = hasChangedNuancen || hauptfrageDirectlyChanged;
+
                 // CSS-Klassen
-                const changedClass = hasChangedNuancen ? ' has-changed-nuancen' : '';
+                const changedClass = hasAnyChange ? ' has-changed-nuancen' : '';
                 const lockedClass = isEffectivelyLocked ? ' hauptfrage-locked' : '';
                 const lockedByNuancenClass = allNuancenLocked && !isHauptfrageLocked ? ' locked-by-nuancen' : '';
                 const partialLockedClass = someNuancenLocked ? ' has-locked-nuancen' : '';
 
-                // Indikator: Sternchen für geänderte Nuancen
-                const changedIndicator = hasChangedNuancen
-                    ? `<span class="hauptfrage-changed-indicator" title="${changedNuancenCount} Nuance(n) geändert">*</span>`
+                // Indikator: Sternchen für geänderte Nuancen ODER direkte Änderung
+                const changedIndicator = hasAnyChange
+                    ? `<span class="hauptfrage-changed-indicator" title="${hauptfrageDirectlyChanged ? 'Wert wurde geändert' : `${changedNuancenCount} Nuance(n) geändert`}">*</span>`
                     : '';
 
                 // Nuancen-Status Info (zeigt gelockt/geändert Anzahl)
