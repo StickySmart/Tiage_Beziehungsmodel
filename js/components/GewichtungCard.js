@@ -260,13 +260,16 @@ const GewichtungCard = (function() {
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`gewichtungen.${person}`);
+            console.log('[GewichtungCard] load() - TiageState.get:', person, JSON.stringify(fromState));
             if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
-                return {
+                const result = {
                     O: { value: fromState.O.value ?? DEFAULTS.O.value, locked: fromState.O.locked ?? false },
                     A: { value: fromState.A.value ?? DEFAULTS.A.value, locked: fromState.A.locked ?? false },
                     D: { value: fromState.D.value ?? DEFAULTS.D.value, locked: fromState.D.locked ?? false },
                     G: { value: fromState.G.value ?? DEFAULTS.G.value, locked: fromState.G.locked ?? false }
                 };
+                console.log('[GewichtungCard] load() - Returning from TiageState:', JSON.stringify(result));
+                return result;
             }
         }
 
@@ -329,6 +332,7 @@ const GewichtungCard = (function() {
 
     /**
      * Speichert Gewichtungen aus UI
+     * SSOT: TiageState ist Single Source of Truth
      * @param {string} person - 'ich' oder 'partner'
      */
     function save(person) {
@@ -341,10 +345,11 @@ const GewichtungCard = (function() {
         combined.G.value = parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0;
 
         try {
+            // SSOT: TiageState speichern + persistieren
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`gewichtungen.${person}`, combined);
-                // Persist to localStorage for temp local save
                 TiageState.saveToStorage();
+                console.log('[GewichtungCard] Saved to TiageState:', person, JSON.stringify(combined));
             }
         } catch (e) {
             console.warn('[GewichtungCard] Fehler beim Speichern:', e);
@@ -913,9 +918,13 @@ const GewichtungCard = (function() {
             return;
         }
 
+        // Sync input field with slider
         const input = document.getElementById(FAKTOR_MAP[factor].inputId);
         if (input) input.value = value;
-        updateSumme();
+
+        // Use normalize to handle sum-lock and SAVE to TiageState + localStorage
+        const numValue = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
+        normalize(factor, numValue);
     }
 
     function onInputChange(factor, value) {
