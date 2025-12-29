@@ -1417,6 +1417,10 @@ const TiageAutoSync = (function() {
 
             // Gewichtungen
             if (profile.gewichtungen) {
+                // Ensure summeLock is preserved or set to default
+                if (!profile.gewichtungen.summeLock) {
+                    profile.gewichtungen.summeLock = { enabled: true, target: 100 };
+                }
                 TiageState.set(`gewichtungen.${person}`, profile.gewichtungen);
             }
 
@@ -1439,6 +1443,21 @@ const TiageAutoSync = (function() {
         // UI aktualisieren
         if (typeof window.updateAll === 'function') {
             window.updateAll();
+        }
+
+        // GewichtungCard UI aktualisieren falls vorhanden
+        if (typeof GewichtungCard !== 'undefined' && GewichtungCard.loadIntoUI) {
+            GewichtungCard.loadIntoUI();
+            console.log('[TiageAutoSync] GewichtungCard UI aktualisiert');
+        }
+
+        // ResonanzCard UI aktualisieren falls vorhanden
+        if (typeof ResonanzCard !== 'undefined' && ResonanzCard.initializeUI) {
+            const currentPerson = typeof currentProfileReviewContext !== 'undefined'
+                ? currentProfileReviewContext.person
+                : 'ich';
+            ResonanzCard.initializeUI(currentPerson);
+            console.log('[TiageAutoSync] ResonanzCard UI aktualisiert');
         }
 
         showToast('Server-Daten synchronisiert', 'success');
