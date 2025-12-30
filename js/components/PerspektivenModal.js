@@ -218,7 +218,22 @@ const PerspektivenModal = {
         'sich_fallenlassen': ['#P2', '#P4'],            // Osho + SexPositiv
         'machtaustausch': ['#P3', '#P4'],               // Quality (Dynamic) + SexPositiv
         'dienend_sein': ['#P2', '#P4'],                 // Osho + SexPositiv
-        'beschuetzen': ['#P3', '#P4']                   // Quality + SexPositiv
+        'beschuetzen': ['#P3', '#P4'],                  // Quality + SexPositiv
+
+        // ─────────────────────────────────────────────────────────────────────
+        // R4-KATEGORIE-BEDÜRFNISSE mit P4 (für P4+R4 Filter-Kombination)
+        // Diese #B-IDs sind in R4-Kategorien und haben auch P4-Relevanz
+        // ─────────────────────────────────────────────────────────────────────
+        // #K8 (identitaet) - R4
+        '#B50': ['#P3', '#P4'],                         // Authentizität - Quality + SexPositiv
+        '#B51': ['#P3', '#P4'],                         // Echtheit - Quality + SexPositiv
+        '#B53': ['#P2', '#P4'],                         // Präsenz - Osho + SexPositiv
+        '#B55': ['#P3', '#P4'],                         // Bewusstheit & Klarheit - Quality + SexPositiv
+
+        // #K14 (kommunikation_stil) - R4
+        '#B134': ['#P2', '#P4'],                        // Verletzlichkeit - Osho + SexPositiv (Trust)
+        '#B136': ['#P3', '#P4'],                        // Emotionale Sicherheit - Quality + SexPositiv (Aftercare)
+        '#B137': ['#P2', '#P4']                         // Gefühle teilen - Osho + SexPositiv
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
