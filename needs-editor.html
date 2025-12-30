@@ -1137,8 +1137,8 @@
                     if (category) categoryKey = category.key;
                 }
 
-                // Hole Need-Key (stringKey) für das Mapping
-                var needKey = need ? need.stringKey : null;
+                // Hole Need-Key: stringKey falls vorhanden, sonst #B-ID
+                var needKey = need ? (need.stringKey || needId) : needId;
 
                 return window.PerspektivenModal.getPerspektiveForNeed(needKey, categoryKey);
             }
@@ -1173,8 +1173,8 @@
                     if (category) categoryKey = category.key;
                 }
 
-                // Hole Need-Key (stringKey) für das Mapping
-                var needKey = need ? need.stringKey : null;
+                // Hole Need-Key: stringKey falls vorhanden, sonst #B-ID
+                var needKey = need ? (need.stringKey || needId) : needId;
 
                 return window.PerspektivenModal.getAllPerspektivenForNeed(needKey, categoryKey);
             }

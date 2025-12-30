@@ -218,7 +218,97 @@ const PerspektivenModal = {
         'sich_fallenlassen': ['#P2', '#P4'],            // Osho + SexPositiv
         'machtaustausch': ['#P3', '#P4'],               // Quality (Dynamic) + SexPositiv
         'dienend_sein': ['#P2', '#P4'],                 // Osho + SexPositiv
-        'beschuetzen': ['#P3', '#P4']                   // Quality + SexPositiv
+        'beschuetzen': ['#P3', '#P4'],                  // Quality + SexPositiv
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // UMFASSENDE #B-ID MULTI-PERSPEKTIVEN (für alle R+P Kombinationen)
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // ─────────────────────────────────────────────────────────────────────
+        // R1 (Leben): existenz #K1, zuneigung #K3, musse #K7, intimitaet #K16
+        // ─────────────────────────────────────────────────────────────────────
+        '#B5': ['#P2', '#P4'],                          // Berührung & Körperkontakt - Osho + SexPositiv
+        '#B7': ['#P2', '#P4'],                          // Sexueller Ausdruck - Osho + SexPositiv
+        '#B18': ['#P2', '#P4'],                         // Emotionale Nähe - Osho + SexPositiv
+        '#B20': ['#P2', '#P4'],                         // Intimität - Osho + SexPositiv
+        '#B21': ['#P2', '#P3'],                         // Liebe - Osho + Quality
+        '#B22': ['#P2', '#P3'],                         // Fürsorge & Unterstützung - Osho + Quality
+        '#B46': ['#P2', '#P3'],                         // Schönheit - Osho + Quality
+        '#B47': ['#P2'],                                // Freizeit - Osho
+        '#B48': ['#P2'],                                // Spiel - Osho
+        '#B49': ['#P2'],                                // Humor - Osho
+
+        // ─────────────────────────────────────────────────────────────────────
+        // R2 (Philosophie): freiheit #K5, teilnahme #K6, identitaet #K8
+        // ─────────────────────────────────────────────────────────────────────
+        '#B34': ['#P2', '#P3'],                         // Selbstbestimmung - Osho + Quality
+        '#B36': ['#P2'],                                // Unabhängigkeit - Osho
+        '#B37': ['#P2', '#P4'],                         // Raum haben - Osho + SexPositiv
+        '#B38': ['#P2'],                                // Spontaneität - Osho
+        '#B41': ['#P2', '#P3'],                         // Gemeinschaft - Osho + Quality
+        '#B42': ['#P2', '#P3'],                         // Zugehörigkeit - Osho + Quality
+        '#B43': ['#P3', '#P4'],                         // Gegenseitigkeit - Quality + SexPositiv
+        '#B44': ['#P3', '#P4'],                         // Respekt - Quality + SexPositiv (Consent)
+        '#B50': ['#P2', '#P3', '#P4'],                  // Authentizität - Osho + Quality + SexPositiv
+        '#B51': ['#P2', '#P3', '#P4'],                  // Echtheit - Osho + Quality + SexPositiv
+        '#B52': ['#P3', '#P4'],                         // Integrität - Quality + SexPositiv
+        '#B53': ['#P2', '#P4'],                         // Präsenz - Osho + SexPositiv
+        '#B55': ['#P2', '#P3', '#P4'],                  // Bewusstheit & Klarheit - Osho + Quality + SexPositiv
+        '#B57': ['#P3', '#P4'],                         // Klarheit - Quality + SexPositiv (Communication)
+        '#B61': ['#P2', '#P3'],                         // Wachstum & Sinn - Osho + Quality
+        '#B62': ['#P2', '#P3'],                         // Sinn - Osho + Quality
+        '#B63': ['#P3'],                                // Beitrag leisten - Quality
+
+        // ─────────────────────────────────────────────────────────────────────
+        // R3 (Dynamik): dynamik #K11, sicherheit #K2
+        // ─────────────────────────────────────────────────────────────────────
+        '#B10': ['#P3'],                                // Beständigkeit - Quality
+        '#B11': ['#P3', '#P4'],                         // Stabilität & Sicherheit - Quality + SexPositiv
+        '#B12': ['#P3', '#P4'],                         // Schutz - Quality + SexPositiv (Protection)
+        '#B13': ['#P3'],                                // Stabilität - Quality
+        '#B15': ['#P2', '#P4'],                         // Geborgenheit - Osho + SexPositiv (Aftercare)
+        '#B74': ['#P3', '#P4'],                         // Kontrolle ausüben - Quality + SexPositiv
+        '#B75': ['#P2', '#P4'],                         // Hingabe - Osho + SexPositiv
+        '#B76': ['#P3', '#P4'],                         // Führung geben - Quality + SexPositiv
+        '#B77': ['#P2', '#P4'],                         // Geführt werden - Osho + SexPositiv
+        '#B78': ['#P3', '#P4'],                         // Ritual - Quality + SexPositiv
+        '#B79': ['#P3', '#P4'],                         // Nachsorge - Quality + SexPositiv
+        '#B80': ['#P3', '#P4'],                         // Grenzen setzen - Quality + SexPositiv
+        '#B81': ['#P3', '#P4'],                         // Grenzen respektieren - Quality + SexPositiv
+        '#B82': ['#P2', '#P4'],                         // Intensität - Osho + SexPositiv
+        '#B83': ['#P2', '#P3', '#P4'],                  // Vertrauen schenken - Osho + Quality + SexPositiv
+        '#B84': ['#P3', '#P4'],                         // Verantwortung übernehmen - Quality + SexPositiv
+        '#B85': ['#P2', '#P4'],                         // Sich fallenlassen - Osho + SexPositiv
+        '#B86': ['#P3', '#P4'],                         // Machtdynamik - Quality + SexPositiv
+        '#B87': ['#P2', '#P4'],                         // Rollenausdruck - Osho + SexPositiv
+
+        // ─────────────────────────────────────────────────────────────────────
+        // R4 (Identität): verstaendnis #K4, erschaffen #K9, verbundenheit #K10, kommunikation #K14
+        // ─────────────────────────────────────────────────────────────────────
+        '#B25': ['#P2', '#P3'],                         // Akzeptanz & Empathie - Osho + Quality
+        '#B26': ['#P2', '#P3'],                         // Mitgefühl - Osho + Quality
+        '#B28': ['#P2', '#P3'],                         // Empathie - Osho + Quality
+        '#B29': ['#P2', '#P3', '#P4'],                  // Vertrauen - Osho + Quality + SexPositiv
+        '#B31': ['#P2', '#P4'],                         // Gesehen & Verstanden werden - Osho + SexPositiv
+        '#B32': ['#P2', '#P4'],                         // Verstanden werden - Osho + SexPositiv
+        '#B33': ['#P2', '#P3'],                         // Harmonie - Osho + Quality
+        '#B64': ['#P2', '#P3'],                         // Kreativität & Selbstausdruck - Osho + Quality
+        '#B67': ['#P2', '#P4'],                         // Selbst-Ausdruck - Osho + SexPositiv
+        '#B69': ['#P2'],                                // Lebensfreude - Osho
+        '#B70': ['#P2', '#P3'],                         // Inspiration - Osho + Quality
+        '#B71': ['#P2', '#P4'],                         // Emotionale Tiefe - Osho + SexPositiv
+        '#B126': ['#P3', '#P4'],                        // Gesprächstiefe - Quality + SexPositiv
+        '#B127': ['#P2', '#P3'],                        // Tiefgehende Gespräche - Osho + Quality
+        '#B130': ['#P3', '#P4'],                        // Verbale Verbindung - Quality + SexPositiv
+        '#B131': ['#P2', '#P3'],                        // Zuhören - Osho + Quality
+        '#B132': ['#P2', '#P4'],                        // Emotionaler Ausdruck - Osho + SexPositiv
+        '#B133': ['#P2', '#P4'],                        // Gefühle zeigen - Osho + SexPositiv
+        '#B134': ['#P2', '#P4'],                        // Verletzlichkeit - Osho + SexPositiv (Trust)
+        '#B136': ['#P3', '#P4'],                        // Emotionale Sicherheit - Quality + SexPositiv
+        '#B137': ['#P2', '#P4'],                        // Gefühle teilen - Osho + SexPositiv
+        '#B138': ['#P3', '#P4'],                        // Konfliktverhalten - Quality + SexPositiv
+        '#B141': ['#P3', '#P4'],                        // Streitkultur - Quality + SexPositiv
+        '#B142': ['#P2', '#P3']                         // Versöhnlichkeit - Osho + Quality
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
