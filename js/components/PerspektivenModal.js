@@ -215,17 +215,37 @@ const PerspektivenModal = {
 
     /**
      * Gibt die Perspektive für ein Bedürfnis zurück
+     * @param {object|string} needOrKey - Das Bedürfnis-Objekt oder der Key
+     * @param {string} kategorieKey - Kategorie-Key (z.B. 'existenz') oder ID (z.B. '#K1')
      */
-    getPerspektiveForNeed: function(needKey, kategorieKey) {
-        // Erst spezifisches Bedürfnis-Mapping prüfen
-        if (this.beduerfnisPerspektiven[needKey]) {
+    getPerspektiveForNeed: function(needOrKey, kategorieKey) {
+        // 1. Wenn ein Objekt übergeben wird, direkt perspektive-Feld prüfen
+        if (needOrKey && typeof needOrKey === 'object' && needOrKey.perspektive) {
+            return this.perspektiven[needOrKey.perspektive] || this.perspektiven['#P1'];
+        }
+
+        // 2. Spezifisches Bedürfnis-Mapping prüfen (für Rückwärtskompatibilität)
+        const needKey = typeof needOrKey === 'string' ? needOrKey : (needOrKey?.id || needOrKey);
+        if (needKey && this.beduerfnisPerspektiven[needKey]) {
             return this.perspektiven[this.beduerfnisPerspektiven[needKey]];
         }
-        // Dann Kategorie-Default
-        if (kategorieKey && this.kategoriePerspektiven[kategorieKey]) {
-            return this.perspektiven[this.kategoriePerspektiven[kategorieKey]];
+
+        // 3. Kategorie-Default prüfen (unterstützt sowohl Key als auch #K-ID)
+        if (kategorieKey) {
+            // Direkt als Key probieren
+            if (this.kategoriePerspektiven[kategorieKey]) {
+                return this.perspektiven[this.kategoriePerspektiven[kategorieKey]];
+            }
+            // Wenn es eine #K-ID ist, den Key nachschlagen
+            if (kategorieKey.startsWith('#K') && window.beduerfnisKatalog?.kategorien) {
+                const kat = window.beduerfnisKatalog.kategorien[kategorieKey];
+                if (kat?.key && this.kategoriePerspektiven[kat.key]) {
+                    return this.perspektiven[this.kategoriePerspektiven[kat.key]];
+                }
+            }
         }
-        // Fallback: Statistik
+
+        // 4. Fallback: Statistik
         return this.perspektiven['#P1'];
     },
 
@@ -723,10 +743,37 @@ const PerspektivenModal = {
 
         // Bedürfnisse gruppieren
         for (const key in beduerfnisse) {
+            if (key.startsWith('_')) continue; // Kommentare überspringen
             const need = beduerfnisse[key];
-            const perspektiveId = this.beduerfnisPerspektiven[key] ||
-                                  this.kategoriePerspektiven[need.kategorie] ||
-                                  '#P1';
+            if (!need || typeof need !== 'object') continue;
+
+            // Perspektive ermitteln (Priorität: 1. direktes Feld, 2. Mapping, 3. Kategorie, 4. Fallback)
+            let perspektiveId = '#P1';
+
+            // 1. Direktes perspektive-Feld im Bedürfnis
+            if (need.perspektive && this.perspektiven[need.perspektive]) {
+                perspektiveId = need.perspektive;
+            }
+            // 2. Spezifisches Bedürfnis-Mapping
+            else if (this.beduerfnisPerspektiven[key]) {
+                perspektiveId = this.beduerfnisPerspektiven[key];
+            }
+            // 3. Kategorie-Mapping (mit Key-Lookup für #K-IDs)
+            else if (need.kategorie) {
+                const katKey = need.kategorie;
+                // Direkt als Key versuchen
+                if (this.kategoriePerspektiven[katKey]) {
+                    perspektiveId = this.kategoriePerspektiven[katKey];
+                }
+                // #K-ID zu Key konvertieren
+                else if (katKey.startsWith('#K') && window.beduerfnisKatalog?.kategorien) {
+                    const kat = window.beduerfnisKatalog.kategorien[katKey];
+                    if (kat?.key && this.kategoriePerspektiven[kat.key]) {
+                        perspektiveId = this.kategoriePerspektiven[kat.key];
+                    }
+                }
+            }
+
             grouped[perspektiveId].push({
                 key: key,
                 ...need
