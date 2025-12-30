@@ -824,9 +824,18 @@
             }
 
             // Matching-Daten in sessionStorage speichern für Modal-Zugriff
+            // FIX: resonanceMap hinzufügen damit tiagesynthese.html die wert1/wert2 Werte anzeigen kann
+            const resonanceMap = {};
+            needsComparison.forEach(need => {
+                resonanceMap[need.id] = {
+                    wert1: need.value1,
+                    wert2: need.value2
+                };
+            });
             sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
                 ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
-                partnerName: archetypeNames[currentPartnerArchetype] || currentPartnerArchetype
+                partnerName: archetypeNames[currentPartnerArchetype] || currentPartnerArchetype,
+                resonanceMap: resonanceMap
             }));
 
             let html = `
