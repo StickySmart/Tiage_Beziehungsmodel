@@ -9128,6 +9128,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         alleGemeinsam: allGemeinsamUndKompatibel,
                         alleUnterschiedlich: allUnterschiedlich,
                         alleKomplementaer: allKomplementaer,
+                        // FIX: details-Eigenschaft für openNeedWithResonance() - ermöglicht Werte-Vergleich im Detail-Modal
+                        details: {
+                            uebereinstimmend: allGemeinsam,
+                            komplementaer: allKomplementaer,
+                            konflikt: allUnterschiedlich
+                        },
                         source: 'calculateNeedsMatchFromFlatNeeds'  // Markierung: Individualisierte Bedürfnisse (flatNeeds + lockedNeeds)
                     };
                 }
@@ -9265,6 +9271,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 alleGemeinsam: allGemeinsamUndKompatibel,
                 alleUnterschiedlich: allUnterschiedlich,
                 alleKomplementaer: allKomplementaer,
+                // FIX: details-Eigenschaft für openNeedWithResonance() - ermöglicht Werte-Vergleich im Detail-Modal
+                details: {
+                    uebereinstimmend: allGemeinsam,
+                    komplementaer: allKomplementaer,
+                    konflikt: allUnterschiedlich
+                },
                 // Zusätzliche Details
                 profile: {
                     ich: ichProfil,
