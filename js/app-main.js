@@ -14469,9 +14469,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Load Gewichtungen into UI after TiageState is loaded
+            // Only if GewichtungCard DOM elements exist (card is visible)
             if (typeof GewichtungCard !== 'undefined' && GewichtungCard.loadIntoUI) {
-                GewichtungCard.loadIntoUI();
-                console.log('[loadDimensionsFromState] GewichtungCard UI aktualisiert');
+                const gewichtungCardVisible = document.getElementById('gewicht-orientierung');
+                if (gewichtungCardVisible) {
+                    GewichtungCard.loadIntoUI();
+                    console.log('[loadDimensionsFromState] GewichtungCard UI aktualisiert');
+                } else {
+                    console.log('[loadDimensionsFromState] GewichtungCard skipped - DOM not present');
+                }
             }
 
             // Load ResonanzCard into UI after TiageState is loaded
