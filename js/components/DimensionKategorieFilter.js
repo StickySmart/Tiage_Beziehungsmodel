@@ -641,9 +641,21 @@ const DimensionKategorieFilter = (function() {
             const beduerfnisIds = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds : null;
             const taxonomie = typeof TiageTaxonomie !== 'undefined' ? TiageTaxonomie : null;
 
+            // Katalog aus BeduerfnisIds._katalog (SSOT)
+            const katalog = beduerfnisIds?._katalog || null;
+
+            // Erst: Prüfe direktes perspektive-Feld im Katalog (SSOT)
+            if (katalog?.beduerfnisse?.[needId]?.perspektive) {
+                return katalog.beduerfnisse[needId].perspektive.replace('#', '');
+            }
+
             if (beduerfnisIds && beduerfnisIds.beduerfnisse) {
                 const need = beduerfnisIds.beduerfnisse[needId];
                 if (need) {
+                    // Prüfe perspektive-Feld im need-Objekt
+                    if (need.perspektive) {
+                        return need.perspektive.replace('#', '');
+                    }
                     const needKey = need.key;
                     const kategorieKey = taxonomie?.kategorien?.[need.kategorie]?.key;
                     const perspektive = PerspektivenModal.getPerspektiveForNeed(needKey, kategorieKey);
