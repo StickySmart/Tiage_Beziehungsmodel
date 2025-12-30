@@ -1119,7 +1119,31 @@
             return null;
         }
 
+        /**
+         * Gibt die primäre Perspektive für ein Bedürfnis zurück (Rückwärtskompatibilität)
+         */
         function getPerspectiveForNeed(needId) {
+            // Nutze PerspektivenModal.getPerspektiveForNeed wenn verfügbar
+            if (window.PerspektivenModal && window.PerspektivenModal.getPerspektiveForNeed) {
+                var need = null;
+                var categoryKey = null;
+
+                // Hole Need-Key und Kategorie-Key
+                if (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) {
+                    need = window.BeduerfnisKatalog.beduerfnisse[needId];
+                }
+                if (need && need.kategorie && window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                    var category = window.TiageTaxonomie.kategorien[need.kategorie];
+                    if (category) categoryKey = category.key;
+                }
+
+                // Hole Need-Key (stringKey) für das Mapping
+                var needKey = need ? need.stringKey : null;
+
+                return window.PerspektivenModal.getPerspektiveForNeed(needKey, categoryKey);
+            }
+
+            // Fallback: alte Logik
             if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
             var need = window.BeduerfnisKatalog.beduerfnisse[needId];
             if (!need || !need.kategorie) return null;
@@ -1128,6 +1152,36 @@
             var category = window.TiageTaxonomie.kategorien[categoryId];
             if (!category || !category.key) return null;
             return getPerspectiveForCategory(category.key);
+        }
+
+        /**
+         * Gibt ALLE Perspektiven für ein Bedürfnis zurück (Multi-Perspektiven-Support)
+         * @returns {Array} Array von Perspektiv-Objekten
+         */
+        function getAllPerspectivesForNeed(needId) {
+            // Nutze PerspektivenModal.getAllPerspektivenForNeed wenn verfügbar
+            if (window.PerspektivenModal && window.PerspektivenModal.getAllPerspektivenForNeed) {
+                var need = null;
+                var categoryKey = null;
+
+                // Hole Need-Key und Kategorie-Key
+                if (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) {
+                    need = window.BeduerfnisKatalog.beduerfnisse[needId];
+                }
+                if (need && need.kategorie && window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                    var category = window.TiageTaxonomie.kategorien[need.kategorie];
+                    if (category) categoryKey = category.key;
+                }
+
+                // Hole Need-Key (stringKey) für das Mapping
+                var needKey = need ? need.stringKey : null;
+
+                return window.PerspektivenModal.getAllPerspektivenForNeed(needKey, categoryKey);
+            }
+
+            // Fallback: einzelne Perspektive als Array
+            var single = getPerspectiveForNeed(needId);
+            return single ? [single] : [];
         }
 
         function generateSearchSuggestions(query) {
@@ -1330,27 +1384,64 @@
             }
 
             // Resonanzfaktor R1-R4 basierend auf Kategorie-Key hinzufügen
+            var addedResonanz = {};
             if (categoryKey && typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
                 var dims = DimensionKategorieFilter.DIMENSIONEN;
                 ['R1', 'R2', 'R3', 'R4'].forEach(function(rId) {
                     if (dims[rId] && dims[rId].kategorienKeys && dims[rId].kategorienKeys.indexOf(categoryKey) !== -1) {
                         texts.push(rId);
                         texts.push(dims[rId].label); // z.B. "Leben", "Philosophie"
+                        addedResonanz[rId] = true;
                     }
                 });
             }
 
-            // Perspektive-Info hinzufügen
-            var perspective = getPerspectiveForNeed(needId);
-            if (perspective) {
-                if (perspective.label) texts.push(perspective.label);
-                if (perspective.id) {
-                    texts.push(perspective.id);
-                    // Auch Version ohne # hinzufügen für P1, P2, P3, P4 Filter
-                    if (perspective.id.startsWith('#')) {
-                        texts.push(perspective.id.substring(1));
+            // Zusätzlich: Resonanzfaktor aus PerspektivenModal.needToDimension hinzufügen
+            // Dies ermöglicht R4 für Bedürfnisse wie "authentischer_ausdruck" die dort als 'identitaet' gemappt sind
+            if (window.PerspektivenModal && window.PerspektivenModal.needToDimension) {
+                var need = null;
+                var needKey = null;
+                if (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) {
+                    need = window.BeduerfnisKatalog.beduerfnisse[needId];
+                    needKey = need ? need.stringKey : null;
+                }
+                if (needKey) {
+                    var dimKey = window.PerspektivenModal.needToDimension[needKey];
+                    if (dimKey) {
+                        // Mapping: dimKey → R-Faktor
+                        var dimToR = {
+                            'leben': 'R1',
+                            'philosophie': 'R2',
+                            'dynamik': 'R3',
+                            'identitaet': 'R4'
+                        };
+                        var rId = dimToR[dimKey];
+                        if (rId && !addedResonanz[rId]) {
+                            texts.push(rId);
+                            // Label hinzufügen
+                            if (typeof DimensionKategorieFilter !== 'undefined' &&
+                                DimensionKategorieFilter.DIMENSIONEN &&
+                                DimensionKategorieFilter.DIMENSIONEN[rId]) {
+                                texts.push(DimensionKategorieFilter.DIMENSIONEN[rId].label);
+                            }
+                        }
                     }
                 }
+            }
+
+            // Perspektive-Info hinzufügen (Multi-Perspektiven-Support)
+            var perspectives = getAllPerspectivesForNeed(needId);
+            if (perspectives && perspectives.length > 0) {
+                perspectives.forEach(function(perspective) {
+                    if (perspective.label) texts.push(perspective.label);
+                    if (perspective.id) {
+                        texts.push(perspective.id);
+                        // Auch Version ohne # hinzufügen für P1, P2, P3, P4 Filter
+                        if (perspective.id.startsWith('#')) {
+                            texts.push(perspective.id.substring(1));
+                        }
+                    }
+                });
             }
 
             return texts.join(' ').toLowerCase();
