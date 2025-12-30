@@ -104,22 +104,30 @@ const PerspektivenModal = {
         'praktisches_leben': '#P1'
     },
 
-    // Spezifische Bedürfnis-Perspektiven (überschreibt Kategorie-Default)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MULTI-PERSPEKTIVEN MAPPING (v2.0)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Jedes Bedürfnis kann MEHRERE Perspektiven haben (Array-Syntax)
+    // P1 (Statistik) = NUR für reine, trockene GFK-Basis-Bedürfnisse
+    // Andere Perspektiven werden NICHT automatisch mit P1 kombiniert!
+    // ═══════════════════════════════════════════════════════════════════════════
     beduerfnisPerspektiven: {
-        // Osho-Bedürfnisse (#P2)
-        'sex_als_meditation': '#P2',
+        // ─────────────────────────────────────────────────────────────────────
+        // OSHO-BEDÜRFNISSE (#P2) - einige mit Multi-Perspektive
+        // ─────────────────────────────────────────────────────────────────────
+        'sex_als_meditation': ['#P2', '#P4'],           // Osho + SexPositiv
         'liebe_ohne_beziehung': '#P2',
         'nicht_anhaften_an_partner': '#P2',
-        'hier_und_jetzt_intimitaet': '#P2',
-        'polyamore_energie': '#P2',
-        'wildheit_und_zartheit': '#P2',
-        'meditation_zu_zweit': '#P2',
+        'hier_und_jetzt_intimitaet': ['#P2', '#P4'],    // Osho + SexPositiv
+        'polyamore_energie': ['#P2', '#P4'],            // Osho + SexPositiv
+        'wildheit_und_zartheit': ['#P2', '#P4'],        // Osho + SexPositiv
+        'meditation_zu_zweit': ['#P2', '#P4'],          // Osho + SexPositiv
         'schweigen_statt_worte': '#P2',
-        'radikale_ehrlichkeit': '#P2',
+        'radikale_ehrlichkeit': ['#P2', '#P4'],         // Osho + SexPositiv (Consent-Kultur)
         'humorvolle_leichtigkeit': '#P2',
         'paradoxe_weisheit': '#P2',
         'herz_statt_kopf': '#P2',
-        'authentischer_ausdruck': '#P2',
+        'authentischer_ausdruck': ['#P2', '#P4'],       // Osho + SexPositiv (Identität)
         'familien_rebellion': '#P2',
         'zorba_das_kind': '#P2',
         'nicht_anhaften_an_familie': '#P2',
@@ -129,20 +137,20 @@ const PerspektivenModal = {
         'nicht_karriere': '#P2',
         'zorba_der_unternehmer': '#P2',
         'nicht_anhaften_an_geld': '#P2',
-        'kreative_selbstverwirklichung': '#P2',
+        'kreative_selbstverwirklichung': ['#P2', '#P3'], // Osho + Quality
         'sannyas_gemeinschaft': '#P2',
         'rebellion_gegen_gesellschaft': '#P2',
         'einsamkeit_in_menge': '#P2',
         'celebration_mit_anderen': '#P2',
         'keine_freundschaft_besitz': '#P2',
-        'tantra_gruppe': '#P2',
+        'tantra_gruppe': ['#P2', '#P4'],                // Osho + SexPositiv
         'religionslosigkeit': '#P2',
-        'eigene_wahrheit': '#P2',
+        'eigene_wahrheit': ['#P2', '#P4'],              // Osho + SexPositiv (Identität)
         'zen_paradox': '#P2',
-        'tantra_als_weg': '#P2',
+        'tantra_als_weg': ['#P2', '#P4'],               // Osho + SexPositiv
         'politische_rebellion': '#P2',
         'individueller_anarchismus': '#P2',
-        'leben_als_kunst': '#P2',
+        'leben_als_kunst': ['#P2', '#P3'],              // Osho + Quality
         'celebration_statt_gebet': '#P2',
         'meditation_im_alltag': '#P2',
         'dynamische_meditation': '#P2',
@@ -150,16 +158,18 @@ const PerspektivenModal = {
         'natuerliches_leben': '#P2',
         'lachen_therapie': '#P2',
         'no_mind': '#P2',
-        'zorba_der_geniesser': '#P2',
-        'orgastisches_leben': '#P2',
+        'zorba_der_geniesser': ['#P2', '#P4'],          // Osho + SexPositiv
+        'orgastisches_leben': ['#P2', '#P4'],           // Osho + SexPositiv
         'gesundheit_durch_bewusstsein': '#P2',
 
-        // Pirsig-Bedürfnisse (#P3)
-        'biologische_anziehung': '#P3',
+        // ─────────────────────────────────────────────────────────────────────
+        // PIRSIG-BEDÜRFNISSE (#P3) - Quality-Philosophie
+        // ─────────────────────────────────────────────────────────────────────
+        'biologische_anziehung': ['#P3', '#P4'],        // Quality + SexPositiv
         'intellektuelle_verbindung': '#P3',
-        'qualitaet_der_beruehrung': '#P3',
-        'dynamische_liebe': '#P3',
-        'care_in_intimitaet': '#P3',
+        'qualitaet_der_beruehrung': ['#P3', '#P4'],     // Quality + SexPositiv
+        'dynamische_liebe': ['#P3', '#P4'],             // Quality + SexPositiv
+        'care_in_intimitaet': ['#P3', '#P4'],           // Quality + SexPositiv
         'biologisches_muster': '#P3',
         'soziales_muster': '#P3',
         'statische_stabilitaet': '#P3',
@@ -172,7 +182,7 @@ const PerspektivenModal = {
         'romantisches_verstehen': '#P3',
         'klassische_klarheit': '#P3',
         'dialektik': '#P3',
-        'qualitaets_ausdruck': '#P3',
+        'qualitaets_ausdruck': ['#P3', '#P4'],          // Quality + SexPositiv
         'care_im_gespraech': '#P3',
         'soziale_qualitaet': '#P3',
         'tribe_muster': '#P3',
@@ -182,7 +192,7 @@ const PerspektivenModal = {
         'rationaler_mystizismus': '#P3',
         'aristotelische_vernunft': '#P3',
         'platonische_ideen': '#P3',
-        'buddhistische_achtsamkeit': '#P3',
+        'buddhistische_achtsamkeit': ['#P2', '#P3'],    // Osho + Quality
         'motorrad_pflege': '#P3',
         'gumption_im_alltag': '#P3',
         'stuck_vermeiden': '#P3',
@@ -191,22 +201,24 @@ const PerspektivenModal = {
         'qualitaets_werkzeug': '#P3',
         'achtsamkeit_im_detail': '#P3',
 
-        // SexPositiv/Dynamik-Bedürfnisse (#P4)
-        'kontrolle_ausueben': '#P4',
-        'hingabe': '#P4',
-        'fuehrung_geben': '#P4',
-        'gefuehrt_werden': '#P4',
-        'ritual': '#P4',
-        'nachsorge': '#P4',
-        'grenzen_setzen': '#P4',
-        'grenzen_respektieren': '#P4',
-        'intensitaet': '#P4',
-        'vertrauen_schenken': '#P4',
-        'verantwortung_uebernehmen': '#P4',
-        'sich_fallenlassen': '#P4',
-        'machtaustausch': '#P4',
-        'dienend_sein': '#P4',
-        'beschuetzen': '#P4'
+        // ─────────────────────────────────────────────────────────────────────
+        // SEXPOSITIV/DYNAMIK-BEDÜRFNISSE (#P4) - mit Multi-Perspektive
+        // ─────────────────────────────────────────────────────────────────────
+        'kontrolle_ausueben': ['#P3', '#P4'],           // Quality (Dynamic) + SexPositiv
+        'hingabe': ['#P2', '#P4'],                      // Osho (Loslassen) + SexPositiv
+        'fuehrung_geben': ['#P3', '#P4'],               // Quality (Dynamic) + SexPositiv
+        'gefuehrt_werden': ['#P2', '#P4'],              // Osho (Surrender) + SexPositiv
+        'ritual': ['#P3', '#P4'],                       // Quality (Care) + SexPositiv
+        'nachsorge': ['#P3', '#P4'],                    // Quality (Care) + SexPositiv
+        'grenzen_setzen': ['#P3', '#P4'],               // Quality + SexPositiv
+        'grenzen_respektieren': ['#P3', '#P4'],         // Quality + SexPositiv
+        'intensitaet': ['#P2', '#P4'],                  // Osho + SexPositiv
+        'vertrauen_schenken': ['#P2', '#P3', '#P4'],    // Osho + Quality + SexPositiv
+        'verantwortung_uebernehmen': ['#P3', '#P4'],    // Quality + SexPositiv
+        'sich_fallenlassen': ['#P2', '#P4'],            // Osho + SexPositiv
+        'machtaustausch': ['#P3', '#P4'],               // Quality (Dynamic) + SexPositiv
+        'dienend_sein': ['#P2', '#P4'],                 // Osho + SexPositiv
+        'beschuetzen': ['#P3', '#P4']                   // Quality + SexPositiv
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -214,39 +226,76 @@ const PerspektivenModal = {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * Gibt die Perspektive für ein Bedürfnis zurück
+     * Gibt ALLE Perspektiven für ein Bedürfnis zurück (Multi-Perspektiven-Support)
      * @param {object|string} needOrKey - Das Bedürfnis-Objekt oder der Key
      * @param {string} kategorieKey - Kategorie-Key (z.B. 'existenz') oder ID (z.B. '#K1')
+     * @returns {Array} Array von Perspektiv-Objekten
      */
-    getPerspektiveForNeed: function(needOrKey, kategorieKey) {
+    getAllPerspektivenForNeed: function(needOrKey, kategorieKey) {
+        const result = [];
+
         // 1. Wenn ein Objekt übergeben wird, direkt perspektive-Feld prüfen
         if (needOrKey && typeof needOrKey === 'object' && needOrKey.perspektive) {
-            return this.perspektiven[needOrKey.perspektive] || this.perspektiven['#P1'];
+            const perspValue = needOrKey.perspektive;
+            // Kann String oder Array sein
+            const perspIds = Array.isArray(perspValue) ? perspValue : [perspValue];
+            perspIds.forEach(pId => {
+                if (this.perspektiven[pId]) {
+                    result.push(this.perspektiven[pId]);
+                }
+            });
+            if (result.length > 0) return result;
         }
 
-        // 2. Spezifisches Bedürfnis-Mapping prüfen (für Rückwärtskompatibilität)
+        // 2. Spezifisches Bedürfnis-Mapping prüfen
         const needKey = typeof needOrKey === 'string' ? needOrKey : (needOrKey?.id || needOrKey);
         if (needKey && this.beduerfnisPerspektiven[needKey]) {
-            return this.perspektiven[this.beduerfnisPerspektiven[needKey]];
+            const perspValue = this.beduerfnisPerspektiven[needKey];
+            // Kann String oder Array sein
+            const perspIds = Array.isArray(perspValue) ? perspValue : [perspValue];
+            perspIds.forEach(pId => {
+                if (this.perspektiven[pId]) {
+                    result.push(this.perspektiven[pId]);
+                }
+            });
+            if (result.length > 0) return result;
         }
 
-        // 3. Kategorie-Default prüfen (unterstützt sowohl Key als auch #K-ID)
+        // 3. Kategorie-Default prüfen
         if (kategorieKey) {
             // Direkt als Key probieren
             if (this.kategoriePerspektiven[kategorieKey]) {
-                return this.perspektiven[this.kategoriePerspektiven[kategorieKey]];
-            }
-            // Wenn es eine #K-ID ist, den Key nachschlagen
-            if (kategorieKey.startsWith('#K') && window.beduerfnisKatalog?.kategorien) {
-                const kat = window.beduerfnisKatalog.kategorien[kategorieKey];
-                if (kat?.key && this.kategoriePerspektiven[kat.key]) {
-                    return this.perspektiven[this.kategoriePerspektiven[kat.key]];
+                const pId = this.kategoriePerspektiven[kategorieKey];
+                if (this.perspektiven[pId]) {
+                    result.push(this.perspektiven[pId]);
                 }
             }
+            // Wenn es eine #K-ID ist, den Key nachschlagen
+            else if (kategorieKey.startsWith('#K') && window.beduerfnisKatalog?.kategorien) {
+                const kat = window.beduerfnisKatalog.kategorien[kategorieKey];
+                if (kat?.key && this.kategoriePerspektiven[kat.key]) {
+                    const pId = this.kategoriePerspektiven[kat.key];
+                    if (this.perspektiven[pId]) {
+                        result.push(this.perspektiven[pId]);
+                    }
+                }
+            }
+            if (result.length > 0) return result;
         }
 
-        // 4. Fallback: Statistik
-        return this.perspektiven['#P1'];
+        // 4. Fallback: Statistik (nur wenn keine andere Perspektive gefunden)
+        return [this.perspektiven['#P1']];
+    },
+
+    /**
+     * Gibt die PRIMÄRE Perspektive für ein Bedürfnis zurück (Rückwärtskompatibilität)
+     * @param {object|string} needOrKey - Das Bedürfnis-Objekt oder der Key
+     * @param {string} kategorieKey - Kategorie-Key (z.B. 'existenz') oder ID (z.B. '#K1')
+     * @returns {object} Einzelnes Perspektiv-Objekt (das erste aus der Liste)
+     */
+    getPerspektiveForNeed: function(needOrKey, kategorieKey) {
+        const allPerspektiven = this.getAllPerspektivenForNeed(needOrKey, kategorieKey);
+        return allPerspektiven[0] || this.perspektiven['#P1'];
     },
 
     /**
