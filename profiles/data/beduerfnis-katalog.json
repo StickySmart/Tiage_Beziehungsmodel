@@ -1,10 +1,10 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
-  "aktualisiert": "2025-12-29",
-  "changelog": "v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
+  "aktualisiert": "2025-12-30",
+  "changelog": "v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
     "#P1": {
       "id": "#P1",
@@ -1249,6 +1249,7 @@
       "id": "#B50",
       "label": "Authentizität",
       "kategorie": "#K8",
+      "perspektive": "#P2",
       "dimension": "#D4",
       "skala": [
         0,
@@ -1303,6 +1304,7 @@
       "id": "#B53",
       "label": "Präsenz",
       "kategorie": "#K8",
+      "perspektive": "#P2",
       "dimension": "#D4",
       "skala": [
         0,
@@ -3531,6 +3533,7 @@
       "id": "#B178",
       "label": "Spiritualität",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3552,6 +3555,7 @@
       "id": "#B179",
       "label": "Glaubenspraxis",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3569,6 +3573,7 @@
       "id": "#B180",
       "label": "Religiöse-Gemeinschaft",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3586,6 +3591,7 @@
       "id": "#B181",
       "label": "Säkularität",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3601,6 +3607,7 @@
       "id": "#B182",
       "label": "Sinnsuche",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3619,6 +3626,7 @@
       "id": "#B183",
       "label": "Transzendenz",
       "kategorie": "#K17",
+      "perspektive": "#P2",
       "dimension": "#D2",
       "skala": [
         0,
@@ -3847,6 +3855,7 @@
       "id": "#B196",
       "label": "Ordnung-&-Struktur",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3869,6 +3878,7 @@
       "id": "#B197",
       "label": "Sauberkeit",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3882,6 +3892,7 @@
       "id": "#B198",
       "label": "Struktur",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3898,6 +3909,7 @@
       "id": "#B199",
       "label": "Chaos-Toleranz",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3914,6 +3926,7 @@
       "id": "#B200",
       "label": "Organisiert-sein",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3930,6 +3943,7 @@
       "id": "#B201",
       "label": "Flexibilität-Haushalt",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3946,6 +3960,7 @@
       "id": "#B202",
       "label": "Reisen-&-Abenteuer",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
@@ -3968,6 +3983,7 @@
       "id": "#B203",
       "label": "Abenteuer",
       "kategorie": "#K18",
+      "perspektive": "#P3",
       "dimension": "#D6",
       "skala": [
         0,
