@@ -1592,8 +1592,10 @@ const AttributeSummaryCard = (function() {
                     if (bChangedCount !== aChangedCount) {
                         return (bChangedCount - aChangedCount) * changedDirection;
                     }
-                    // Bei gleicher Anzahl nach Wert absteigend
-                    return (b.aggregatedValue || 0) - (a.aggregatedValue || 0);
+                    // Bei gleicher Anzahl (insbes. 0 Änderungen): nach #B-Nummer sortieren für konsistente Reihenfolge
+                    const numA = parseInt((a.id || '').replace('#B', ''), 10) || 0;
+                    const numB = parseInt((b.id || '').replace('#B', ''), 10) || 0;
+                    return numA - numB;
                 });
             }
 
