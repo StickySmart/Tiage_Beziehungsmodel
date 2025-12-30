@@ -1,24 +1,39 @@
 # R4 Identitäts-Resonanz
 
-> *Universelle Berechnung basierend auf Similarity-Attraction Theorie*
+> *Hybrid-Berechnung: Empirisch fundierte Ähnlichkeit + Pirsig-inspirierte Openness*
 
 ## Übersicht
 
-R4 (Identität) moduliert den Geschlechtsfaktor (G) und misst die **Resonanz zwischen Geschlechtsidentitäten** der Partner. Die Berechnung basiert auf wissenschaftlich fundierter Forschung zur Identitäts-Kongruenz in Partnerschaften.
+R4 (Identität) moduliert den Geschlechtsfaktor (G) und misst die **Resonanz zwischen Geschlechtsidentitäten** der Partner. Die Berechnung kombiniert zwei Ansätze:
 
-## Die Formel
+1. **EMPIRISCH**: Ähnlichkeits-Bonus bei gleicher Identität (T4T-Effekt)
+2. **PIRSIG**: Openness-Bonus basierend auf "Dynamischer Qualität"
+
+## Die Hybrid-Formel (v3.5)
+
+### Individuelle R4 (ICH / PARTNER)
 
 ```
-Differenz = |O1 - O2|
-Ähnlichkeit = 1 - (Differenz / 100)
-Basis_R4 = 0.5 + (Ähnlichkeit × 0.5)
-Openness_Bonus = (O1 + O2) / 400
-R4 = Basis_R4 + Openness_Bonus
+R4 = Archetypen-Vergleich (Bedürfnisse vs archetyp-typisch)
+
+Formel:
+  avgDiff = Σ|dein_wert - archetyp_typisch| / count
+  Übereinstimmung = 1 - (avgDiff / 100)
+  R4 = 0.5 + (Übereinstimmung × 1.0)
 ```
 
-**Range:** 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+### Paarungs-R4
 
-## IDENTITY_OPENNESS Werte
+```
+BASIS = R4_ich × R4_partner
+
+Ähnlichkeits-Faktor = 1.3 (wenn gleiche Identität) oder 1.0
+Openness-Bonus = (O1 + O2) / 200
+
+R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+```
+
+## IDENTITY_OPENNESS Werte (Pirsig-inspiriert)
 
 | Identität | Openness (O) | Beschreibung |
 |-----------|--------------|--------------|
@@ -28,57 +43,79 @@ R4 = Basis_R4 + Openness_Bonus
 | fluid | 80 | Dynamische Qualität - ständige Bewegung |
 | suchend | 100 | Reine Potentialität - Anfängergeist |
 
-## Vollständige R4-Matrix
+**Hinweis:** Diese Werte basieren auf Pirsigs Philosophie der "Statischen vs. Dynamischen Qualität", nicht auf empirischer Forschung. Sie drücken keine Wertung aus, sondern beschreiben verschiedene Qualitäten der Identitätserfahrung.
+
+## Konstanten
+
+```javascript
+IDENTITY_RESONANCE: {
+    SIMILARITY_FACTOR_MATCH: 1.3,  // Faktor wenn gleiche Identität
+    SIMILARITY_FACTOR_DIFF: 1.0,   // Faktor wenn unterschiedliche Identität
+    OPENNESS_DIVISOR: 200          // Teiler für Openness-Normalisierung (0-1)
+}
+```
+
+## Vollständige R4-Matrix (mit BASIS = 1.0)
 
 | | cis (0) | trans (30) | nonbin (50) | fluid (80) | suchend (100) |
 |---|---------|------------|-------------|------------|---------------|
-| **cis (0)** | **1.00** | 0.85 | 0.75 | 0.60 | 0.50 |
-| **trans (30)** | 0.85 | **1.15** | 1.00 | 0.85 | 0.75 |
-| **nonbin (50)** | 0.75 | 1.00 | **1.25** | 1.10 | 1.00 |
-| **fluid (80)** | 0.60 | 0.85 | 1.10 | **1.40** | 1.30 |
-| **suchend (100)** | 0.50 | 0.75 | 1.00 | 1.30 | **1.50** |
+| **cis** | **1.00** | 1.15 | 1.25 | 1.40 | 1.50 |
+| **trans** | 1.15 | **1.39** | 1.40 | 1.55 | 1.65 |
+| **nonbin** | 1.25 | 1.40 | **1.65** | 1.65 | 1.75 |
+| **fluid** | 1.40 | 1.55 | 1.65 | **2.04** | 1.90 |
+| **suchend** | 1.50 | 1.65 | 1.75 | 1.90 | **2.30** |
 
-### Beispielrechnungen
+**Diagonal = gleiche Identität (Ähnlichkeits-Bonus ×1.3)**
 
-**cis + cis:**
-```
-O1=0, O2=0
-Differenz = 0
-Ähnlichkeit = 1.0
-Basis_R4 = 0.5 + 0.5 = 1.0
-Openness_Bonus = 0/400 = 0
-R4 = 1.0 (neutral)
-```
+## Beispielrechnungen
 
-**trans + trans:**
+### cis + cis (gleiche Identität, niedrige Openness)
+
 ```
-O1=30, O2=30
-Differenz = 0
-Ähnlichkeit = 1.0
-Basis_R4 = 1.0
-Openness_Bonus = 60/400 = 0.15
-R4 = 1.15 (+15% Boost)
+BASIS = 1.0
+Gleiche Identität: Ja → Ähnlichkeits-Faktor = 1.3
+Openness-Bonus = (0 + 0) / 200 = 0.0
+Hybrid-Bonus = 1.3 × 0.0 = 0.0
+R4 = 1.0 + 0.0 = 1.00
 ```
 
-**cis + suchend:**
+### suchend + suchend (gleiche Identität, hohe Openness)
+
 ```
-O1=0, O2=100
-Differenz = 100
-Ähnlichkeit = 0
-Basis_R4 = 0.5
-Openness_Bonus = 100/400 = 0.25
-R4 = 0.75 (-25% Dämpfung)
+BASIS = 1.0
+Gleiche Identität: Ja → Ähnlichkeits-Faktor = 1.3
+Openness-Bonus = (100 + 100) / 200 = 1.0
+Hybrid-Bonus = 1.3 × 1.0 = 1.3
+R4 = 1.0 + 1.3 = 2.30
 ```
 
-**fluid + suchend:**
+### cis + suchend (unterschiedliche Identität)
+
 ```
-O1=80, O2=100
-Differenz = 20
-Ähnlichkeit = 0.8
-Basis_R4 = 0.5 + 0.4 = 0.9
-Openness_Bonus = 180/400 = 0.45
-R4 = 1.35 (+35% Boost)
+BASIS = 1.0
+Gleiche Identität: Nein → Ähnlichkeits-Faktor = 1.0
+Openness-Bonus = (0 + 100) / 200 = 0.5
+Hybrid-Bonus = 1.0 × 0.5 = 0.5
+R4 = 1.0 + 0.5 = 1.50
 ```
+
+### fluid + fluid (gleiche Identität, mittlere-hohe Openness)
+
+```
+BASIS = 1.0
+Gleiche Identität: Ja → Ähnlichkeits-Faktor = 1.3
+Openness-Bonus = (80 + 80) / 200 = 0.8
+Hybrid-Bonus = 1.3 × 0.8 = 1.04
+R4 = 1.0 + 1.04 = 2.04
+```
+
+## Die Logik in Worten
+
+> "Der Openness-Bonus wird VERSTÄRKT wenn die Identitäten gleich sind"
+
+- **Gleiche Identität + hohe Openness** = maximaler Boost
+- **Gleiche Identität + niedrige Openness** = kleiner/kein Boost
+- **Unterschiedliche Identität** = Openness wirkt, aber weniger stark
 
 ## Wissenschaftliche Grundlage
 
@@ -86,59 +123,46 @@ R4 = 1.35 (+35% Boost)
 
 > "Similarity/attraction theory posits that people like and are attracted to others who are similar, rather than dissimilar, to themselves."
 
-**Quelle:** [Encyclopedia of Social Psychology](https://www.encyclopedia.com/social-sciences/applied-and-social-sciences-magazines/similarityattraction-theory)
+**Anwendung:** Partner mit gleicher Identität (T4T) resonieren besser.
 
-**Anwendung:** Partner mit ähnlicher Identitäts-Offenheit (gleicher O-Wert) resonieren besser.
+### 2. T4T-Beziehungen (Partner Gender Affirmation)
 
-### 2. Trans+Trans Beziehungen (PMC 2025)
+Forschung zeigt, dass transgender und nonbinary (TNB) Personen in Beziehungen mit anderen TNB-Partnern höhere Zufriedenheit berichten, teilweise durch bessere Partner-Affirmation der Geschlechtsidentität.
 
-> "All trans women with trans women main partners reported satisfaction across all relationship domains."
-
-**Quelle:** [Frontiers in Global Women's Health](https://pmc.ncbi.nlm.nih.gov/articles/PMC12183293/)
-
-**Anwendung:** Trans+Trans (identische O-Werte) erhält höchsten Bonus bei dieser Identitätskategorie.
+**Quelle:** [PMC - Identity Needs in Relationships Framework](https://pmc.ncbi.nlm.nih.gov/articles/PMC11086993/)
 
 ### 3. Openness und Beziehungsqualität (Frontiers Psychology 2017)
 
 > "Couples with similar high openness could experience better relationship quality than those with similar low openness traits."
 
-**Quelle:** [Frontiers in Psychology](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00382/full)
+**Anwendung:** Der Openness-Bonus belohnt Paare mit hoher gemeinsamer Offenheit.
 
-**Anwendung:** Der Openness_Bonus belohnt Paare mit hoher gemeinsamer Offenheit.
+### 4. Philosophische Grundlage (Pirsig)
 
-### 4. Kongruenz in extremen Einstellungen (PNAS Nexus 2025)
+Die Openness-Werte basieren auf Robert Pirsigs "Metaphysik der Qualität":
+- **Statische Qualität** = gefestigt, klar, stabil (cis)
+- **Dynamische Qualität** = offen, suchend, beweglich (suchend)
 
-> "Relationship satisfaction was also higher when both partners showed congruence in extreme attitudes (either strongly traditional or egalitarian) than when either partner endorsed more neutral attitudes."
-
-**Quelle:** [PNAS Nexus](https://academic.oup.com/pnasnexus/article/4/1/pgae589/7944955)
-
-**Anwendung:** Sowohl cis+cis (beide "traditionell") als auch suchend+suchend (beide "progressiv") erhalten Boost durch Kongruenz.
-
-## Interpretation
-
-| R4-Wert | Status | Effekt auf G-Score |
-|---------|--------|-------------------|
-| ≥ 1.05 | Resonanz ⬆️ | Boost |
-| 0.97 - 1.05 | Neutral ➡️ | Kein Effekt |
-| ≤ 0.97 | Dissonanz ⬇️ | Dämpfung |
+Dies ist eine philosophische Interpretation, keine empirische Hierarchie.
 
 ## Implementierung
 
-**Client:** `js/synthesis/synthesisCalculator.js` (Zeilen 1066-1121)
+**Client:** `js/synthesis/synthesisCalculator.js` (Zeilen 1131-1204)
 
-**Server:** `server/logic/synthesisCalculator.js` (Zeilen 43-94)
+**Server:** `server/logic/synthesisCalculator.js` (Zeilen 89-157)
 
-**Konstanten:** `IDENTITY_OPENNESS` in `constants.js`
+**Konstanten:** `IDENTITY_OPENNESS` und `IDENTITY_RESONANCE` in `constants.js`
 
 ## Änderungshistorie
 
 | Version | Datum | Beschreibung |
 |---------|-------|--------------|
+| v3.5 | 2025-12-30 | Hybrid-Formel: Ähnlichkeit (empirisch) + Openness (Pirsig) |
 | v3.4 | 2025-12-29 | Universelle R4-Berechnung basierend auf IDENTITY_OPENNESS |
 | v3.3 | - | R4 basierte auf GESCHLECHT_NEEDS (Authentizität, Akzeptanz, etc.) |
 
 ## Siehe auch
 
+- [Pirsig-Philosophie](./pirsig.md)
 - [Resonanz-Theorie](./resonance.md)
 - [Score-Calculation Overview](./score-calculation-overview.md)
-- [TIAGE Synthese](./tiage-synthesis.md)

@@ -87,24 +87,25 @@ export function calculate(person1, person2, options = {}) {
     console.log('[SynthesisCalculator] R1 (Leben/Orientierung) berechnet:', orientationResonance);
 
     // ═══════════════════════════════════════════════════════════════════
-    // R4 (IDENTITÄT) - UNIVERSELLE BERECHNUNG
+    // R4 (IDENTITÄT) - HYBRID-BERECHNUNG (v3.5)
     // ═══════════════════════════════════════════════════════════════════
     //
-    // Basiert auf IDENTITY_OPENNESS (Similarity-Attraction Theorie):
+    // Kombiniert zwei Ansätze:
+    //   1. EMPIRISCH: Ähnlichkeits-Bonus bei gleicher Identität (T4T-Effekt)
+    //   2. PIRSIG: Openness-Bonus basierend auf "Dynamischer Qualität"
+    //
+    // IDENTITY_OPENNESS (Pirsig-inspiriert):
     //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
     //
-    // Formel (statistisch fundiert durch Forschung zu Identitäts-Kongruenz):
-    //   Differenz = |O1 - O2|
-    //   Ähnlichkeit = 1 - (Differenz / 100)
-    //   Basis_R4 = 0.5 + (Ähnlichkeit × 0.5)
-    //   Openness_Bonus = (O1 + O2) / 400
-    //   R4 = Basis_R4 + Openness_Bonus
-    //
-    // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+    // Hybrid-Formel:
+    //   BASIS = 1.0 (Server hat keinen individuellen Archetypen-Vergleich)
+    //   Ähnlichkeits-Faktor = 1.3 (wenn gleiche Identität) oder 1.0
+    //   Openness-Bonus = (O1 + O2) / 200
+    //   R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
     //
     // Wissenschaftliche Grundlage:
     //   - Similarity-Attraction Effect (Byrne, 1971)
-    //   - Trans+Trans Paare berichten höhere Zufriedenheit (PMC 2025)
+    //   - T4T-Beziehungen zeigen höhere Zufriedenheit durch Partner-Affirmation
     //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
     //
     const secondary1 = person1.geschlecht?.secondary || 'cis';
@@ -115,29 +116,45 @@ export function calculate(person1, person2, options = {}) {
         'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
     };
 
+    // IDENTITY_RESONANCE Konstanten
+    const identityResonanceConst = Constants.IDENTITY_RESONANCE || {
+        SIMILARITY_FACTOR_MATCH: 1.3,
+        SIMILARITY_FACTOR_DIFF: 1.0,
+        OPENNESS_DIVISOR: 200
+    };
+
     const O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
     const O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
 
-    // Formel anwenden
-    const differenz = Math.abs(O1 - O2);
-    const aehnlichkeit = 1 - (differenz / 100);
-    const basisR4 = 0.5 + (aehnlichkeit * 0.5);
-    const opennessBonus = (O1 + O2) / 400;
-    const R4 = Math.round((basisR4 + opennessBonus) * 1000) / 1000;
+    // Hybrid-Formel anwenden
+    const basisR4 = 1.0; // Server-Seite: Default-Basis
+
+    // Ähnlichkeits-Faktor: Bonus wenn gleiche Identität
+    const gleicheIdentitaet = (secondary1 === secondary2);
+    const aehnlichkeitsFaktor = gleicheIdentitaet
+        ? identityResonanceConst.SIMILARITY_FACTOR_MATCH
+        : identityResonanceConst.SIMILARITY_FACTOR_DIFF;
+
+    // Openness-Bonus: (O1 + O2) / 200 → Range 0-1
+    const opennessBonus = (O1 + O2) / identityResonanceConst.OPENNESS_DIVISOR;
+
+    // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+    const R4 = Math.round((basisR4 + (aehnlichkeitsFaktor * opennessBonus)) * 1000) / 1000;
 
     const identityResonance = {
         secondary1,
         secondary2,
         openness1: O1,
         openness2: O2,
-        differenz,
-        aehnlichkeit: Math.round(aehnlichkeit * 1000) / 1000,
-        basisR4: Math.round(basisR4 * 1000) / 1000,
+        gleicheIdentitaet,
+        aehnlichkeitsFaktor,
+        basisR4,
         opennessBonus: Math.round(opennessBonus * 1000) / 1000,
+        hybridBonus: Math.round((aehnlichkeitsFaktor * opennessBonus) * 1000) / 1000,
         finalR4: R4
     };
 
-    console.log('[SynthesisCalculator] R4 (Identität) berechnet:', identityResonance);
+    console.log('[SynthesisCalculator] R4 (Identität) Hybrid berechnet:', identityResonance);
 
     // ═══════════════════════════════════════════════════════════════════
     // SCHRITT 2: Faktor-Scores berechnen

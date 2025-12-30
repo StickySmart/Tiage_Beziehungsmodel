@@ -1129,24 +1129,25 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // R4 (IDENTITÄT) - UNIVERSELLE BERECHNUNG
+        // R4 (IDENTITÄT) - HYBRID-BERECHNUNG (v3.5)
         // ═══════════════════════════════════════════════════════════════════
         //
-        // Basiert auf IDENTITY_OPENNESS (Similarity-Attraction Theorie):
+        // Kombiniert zwei Ansätze:
+        //   1. EMPIRISCH: Ähnlichkeits-Bonus bei gleicher Identität (T4T-Effekt)
+        //   2. PIRSIG: Openness-Bonus basierend auf "Dynamischer Qualität"
+        //
+        // IDENTITY_OPENNESS (Pirsig-inspiriert):
         //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
         //
-        // Formel (statistisch fundiert durch Forschung zu Identitäts-Kongruenz):
-        //   Differenz = |O1 - O2|
-        //   Ähnlichkeit = 1 - (Differenz / 100)
-        //   Basis_R4 = 0.5 + (Ähnlichkeit × 0.5)
-        //   Openness_Bonus = (O1 + O2) / 400
-        //   R4 = Basis_R4 + Openness_Bonus
-        //
-        // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+        // Hybrid-Formel:
+        //   BASIS = R4_ich × R4_partner (individueller Archetypen-Vergleich)
+        //   Ähnlichkeits-Faktor = 1.3 (wenn gleiche Identität) oder 1.0
+        //   Openness-Bonus = (O1 + O2) / 200
+        //   R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
         //
         // Wissenschaftliche Grundlage:
         //   - Similarity-Attraction Effect (Byrne, 1971)
-        //   - Trans+Trans Paare berichten höhere Zufriedenheit (PMC 2025)
+        //   - T4T-Beziehungen zeigen höhere Zufriedenheit durch Partner-Affirmation
         //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
         //
         if (perspectiveResult) {
@@ -1158,31 +1159,48 @@ TiageSynthesis.Calculator = {
                 'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
             };
 
+            // IDENTITY_RESONANCE Konstanten
+            var identityResonance = constants.IDENTITY_RESONANCE || {
+                SIMILARITY_FACTOR_MATCH: 1.3,
+                SIMILARITY_FACTOR_DIFF: 1.0,
+                OPENNESS_DIVISOR: 200
+            };
+
             var O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
             var O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
 
-            // Formel anwenden
-            var differenz = Math.abs(O1 - O2);
-            var aehnlichkeit = 1 - (differenz / 100);
-            var basisR4 = 0.5 + (aehnlichkeit * 0.5);
-            var opennessBonus = (O1 + O2) / 400;
-            var calculatedR4 = Math.round((basisR4 + opennessBonus) * 1000) / 1000;
+            // Hybrid-Formel anwenden
+            // BASIS = perspectiveResult.R4 (bereits aus R4_ich × R4_partner berechnet)
+            var basisR4 = perspectiveResult.R4;
 
-            // R4 überschreiben mit berechneter Identitäts-Resonanz
+            // Ähnlichkeits-Faktor: Bonus wenn gleiche Identität
+            var gleicheIdentitaet = (secondary1 === secondary2);
+            var aehnlichkeitsFaktor = gleicheIdentitaet
+                ? identityResonance.SIMILARITY_FACTOR_MATCH
+                : identityResonance.SIMILARITY_FACTOR_DIFF;
+
+            // Openness-Bonus: (O1 + O2) / 200 → Range 0-1
+            var opennessBonus = (O1 + O2) / identityResonance.OPENNESS_DIVISOR;
+
+            // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+            var calculatedR4 = Math.round((basisR4 + (aehnlichkeitsFaktor * opennessBonus)) * 1000) / 1000;
+
+            // R4 mit Hybrid-Berechnung aktualisieren
             perspectiveResult.R4 = calculatedR4;
             perspectiveResult.identityResonance = {
                 secondary1: secondary1,
                 secondary2: secondary2,
                 openness1: O1,
                 openness2: O2,
-                differenz: differenz,
-                aehnlichkeit: aehnlichkeit,
+                gleicheIdentitaet: gleicheIdentitaet,
+                aehnlichkeitsFaktor: aehnlichkeitsFaktor,
                 basisR4: Math.round(basisR4 * 1000) / 1000,
                 opennessBonus: Math.round(opennessBonus * 1000) / 1000,
+                hybridBonus: Math.round((aehnlichkeitsFaktor * opennessBonus) * 1000) / 1000,
                 finalR4: calculatedR4
             };
 
-            console.log('[TIAGE Calculator] R4 (Identität) berechnet:', perspectiveResult.identityResonance);
+            console.log('[TIAGE Calculator] R4 (Identität) Hybrid berechnet:', perspectiveResult.identityResonance);
         }
 
         if (perspectiveResult) {
