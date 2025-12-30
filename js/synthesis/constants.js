@@ -732,8 +732,14 @@ TiageSynthesis.Constants = {
     },
 
     IDENTITY_RESONANCE: {
-        MAX_BONUS: 10,      // Maximaler Offenheits-Bonus
-        WEIGHT: 0.15        // Gewichtung im Gesamt-Score (bereits bei WEIGHTS.geschlecht)
+        // Hybrid-Formel: R4 = BASIS + (SIMILARITY_FACTOR × Openness-Bonus)
+        // Openness-Bonus = (O1 + O2) / 200
+        SIMILARITY_FACTOR_MATCH: 1.3,    // Faktor wenn gleiche Identität
+        SIMILARITY_FACTOR_DIFF: 1.0,     // Faktor wenn unterschiedliche Identität
+        OPENNESS_DIVISOR: 200,           // Teiler für Openness-Normalisierung (0-1)
+        // Legacy (für Score-Berechnung)
+        MAX_BONUS: 10,
+        WEIGHT: 0.15
     },
 
     // ═══════════════════════════════════════════════════════════════════════
