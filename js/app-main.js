@@ -1705,19 +1705,24 @@
 
         /**
          * Initialize AGOD weight inputs on page load
-         * Loads from TiageState if available, otherwise uses defaults
+         * Loads from TiageState.paarung.gewichtungen (primary) or gewichtungen.ich (fallback)
          */
         function initAgodWeightInputs() {
             // Start with defaults
             agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
 
-            // Load from TiageState (SSOT) if available
-            const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
-                ? currentProfileReviewContext.person : 'ich';
-
             if (typeof TiageState !== 'undefined') {
-                const stored = TiageState.get(`gewichtungen.${person}`);
-                console.log('[AGOD] Loading from TiageState:', person, JSON.stringify(stored));
+                // Primary: Load from paarung.gewichtungen
+                let stored = TiageState.get('paarung.gewichtungen');
+                let source = 'paarung.gewichtungen';
+
+                // Fallback: Load from gewichtungen.ich
+                if (!stored || !stored.O) {
+                    stored = TiageState.get('gewichtungen.ich');
+                    source = 'gewichtungen.ich (fallback)';
+                }
+
+                console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
 
                 if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
                     const loadedWeights = {
@@ -1727,22 +1732,13 @@
                         G: stored.G.value ?? 25
                     };
 
-                    // Validation: Sum of 0 means invalid data (can't calculate scores)
+                    // Validation: Sum of 0 means invalid data
                     const sum = loadedWeights.O + loadedWeights.A + loadedWeights.D + loadedWeights.G;
                     if (sum > 0) {
                         agodWeights = loadedWeights;
                         console.log('[AGOD] Loaded valid weights:', agodWeights);
                     } else {
                         console.log('[AGOD] Invalid weights (sum=0), using defaults:', agodWeights);
-                        // Fix the invalid data in TiageState
-                        TiageState.set(`gewichtungen.${person}`, {
-                            O: { value: 25, locked: false },
-                            A: { value: 25, locked: false },
-                            D: { value: 25, locked: false },
-                            G: { value: 25, locked: false },
-                            summeLock: { enabled: false, target: 100 }
-                        });
-                        TiageState.saveToStorage();
                     }
                 } else if (stored && typeof stored.O === 'number') {
                     // Legacy format
@@ -1769,11 +1765,12 @@
             // Also save to sessionStorage for synthesis
             saveAgodWeightsToSession();
 
-            console.log('[AGOD] Weight inputs initialized from TiageState:', agodWeights);
+            console.log('[AGOD] Weight inputs initialized:', agodWeights);
         }
 
         /**
          * Update AGOD weight when user changes input
+         * Saves to paarung.gewichtungen (primary) and gewichtungen.ich/partner (backup)
          * @param {string} factor - O, A, D, or G
          * @param {string|number} value - New weight value (0-100)
          */
@@ -1798,25 +1795,25 @@
             saveAgodWeightsToSession();
 
             // SSOT: Save to TiageState for persistence
-            const person = typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person
-                ? currentProfileReviewContext.person : 'ich';
             if (typeof TiageState !== 'undefined') {
-                // Get existing gewichtungen or create new
-                let gew = TiageState.get(`gewichtungen.${person}`);
-                if (!gew || !gew.O || typeof gew.O !== 'object') {
-                    gew = {
-                        O: { value: agodWeights.O, locked: false },
-                        A: { value: agodWeights.A, locked: false },
-                        D: { value: agodWeights.D, locked: false },
-                        G: { value: agodWeights.G, locked: false },
-                        summeLock: { enabled: false, target: 100 }
-                    };
-                } else {
-                    gew[factor].value = numValue;
-                }
-                TiageState.set(`gewichtungen.${person}`, gew);
+                // Create gewichtungen object with all current values
+                const gewData = {
+                    O: { value: agodWeights.O, locked: false },
+                    A: { value: agodWeights.A, locked: false },
+                    D: { value: agodWeights.D, locked: false },
+                    G: { value: agodWeights.G, locked: false },
+                    summeLock: { enabled: false, target: 100 }
+                };
+
+                // Primary: Save to paarung.gewichtungen
+                TiageState.set('paarung.gewichtungen', gewData);
+
+                // Backup: Save to gewichtungen.ich and gewichtungen.partner
+                TiageState.set('gewichtungen.ich', gewData);
+                TiageState.set('gewichtungen.partner', gewData);
+
                 TiageState.saveToStorage();
-                console.log('[AGOD] Saved to TiageState:', person, factor, '=', numValue);
+                console.log('[AGOD] Saved to TiageState (paarung + ich + partner):', factor, '=', numValue);
             }
 
             // Trigger synthesis recalculation
