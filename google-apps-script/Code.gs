@@ -4,9 +4,16 @@
  * Dieses Script empfängt Kommentare und speichert sie in Google Sheets.
  * Es verwaltet auch einen globalen Besucher-Zähler.
  *
- * @version 2.1.0
- * @date 2025-12-29
- * @lastUpdate 2025-12-29
+ * @version 2.2.0
+ * @date 2025-12-31
+ * @lastUpdate 2025-12-31
+ *
+ * CHANGELOG v2.2.0:
+ * - NEU: PageViews-Zähler für alle Seitenaufrufe (nicht nur neue Besucher)
+ * - Neue Funktion: incrementPageViews() - erhöht pageViews bei jedem Aufruf
+ * - Neue Funktion: getPageViews() - liest aktuellen pageViews-Stand
+ * - Neue Action: trackPageView - Client kann Seitenaufrufe tracken
+ * - getStats gibt jetzt auch pageViews zurück
  *
  * CHANGELOG v2.1.0:
  * - LockService für atomare Zähler-Operationen (verhindert Race Conditions)
