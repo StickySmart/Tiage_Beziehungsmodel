@@ -4096,11 +4096,11 @@
                     { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
                 ];
             } else {
-                // Mann or Frau: Cis, Trans, Nonbinär (3 options)
+                // Mann or Frau: Cis, Trans, Suchend (3 options)
                 sOptions = [
                     { value: 'cis', label: TiageI18n.t('geschlecht.secondary.cis', 'Cis') },
                     { value: 'trans', label: TiageI18n.t('geschlecht.secondary.trans', 'Trans') },
-                    { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') }
+                    { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
                 ];
             }
 
@@ -18740,22 +18740,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             return null;
         }
 
-        // Track page view (bei jedem Seitenaufruf, auch für wiederkehrende Besucher)
-        async function trackPageView() {
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    const fingerprint = getBrowserFingerprint();
-                    await fetch(
-                        GOOGLE_SCRIPT_URL + '?action=trackPageView&fp=' + encodeURIComponent(fingerprint),
-                        { method: 'GET' }
-                    );
-                } catch (e) {
-                    // Silently ignore - page view tracking is not critical
-                    console.log('PageView tracking failed:', e.message);
-                }
-            }
-        }
-
         // Initialize visitor ID display
         async function initVisitorId() {
             const { visitorId, totalVisitors } = await fetchOrCreateVisitorId();
@@ -18775,9 +18759,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (headerDisplay) {
                 headerDisplay.textContent = displayText;
             }
-
-            // Track this page view
-            trackPageView();
         }
 
         // Rate limiting for comments (1 per minute)
@@ -22092,7 +22073,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         /**
          * Updates the geschlechtsidentität card options based on primary geschlecht
          * KONTEXTABHÄNGIG:
-         * - Mann/Frau (binär): Cis, Trans, Nonbinär (3 options)
+         * - Mann/Frau (binär): Cis, Trans, Suchend (3 options)
          * - Inter (divers): Nonbinär, Fluid, Suchend (3 options)
          * @param {string} primaryGeschlecht - 'mann', 'frau', 'inter', or null
          */
@@ -22109,8 +22090,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 options = ['Nonbinär', 'Fluid', 'Suchend'];
                 values = [0, 50, 100];
             } else {
-                // Mann/Frau (binär): Cis, Trans, Nonbinär (3 options)
-                options = ['Cis', 'Trans', 'Nonbinär'];
+                // Mann/Frau (binär): Cis, Trans, Suchend (3 options)
+                options = ['Cis', 'Trans', 'Suchend'];
                 values = [0, 50, 100];
             }
             buttonsContainer.classList.remove('five-options');
@@ -22136,7 +22117,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         /**
          * Maps secondary geschlecht back to profile review value
          * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
-         * - Mann/Frau (binär): Cis=0, Trans=50, Nonbinär=100
+         * - Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
          * - Inter (divers): Nonbinär=0, Fluid=50, Suchend=100
          * @param {string} secondary - 'cis', 'trans', 'nonbinaer', 'fluid', 'suchend'
          * @param {string} primary - Body: 'mann', 'frau', 'inter'
@@ -22151,8 +22132,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return 0; // Default to Nonbinär for Inter
             }
 
-            // For Mann/Frau (binär): Cis=0, Trans=50, Nonbinär=100
-            if (secondary === 'nonbinaer') return 100;
+            // For Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
+            if (secondary === 'suchend' || secondary === 'unsicher') return 100;
 
             // Cis: identity matches body
             if (secondary === 'cis' || secondary === primary) return 0;
@@ -22164,8 +22145,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return 50; // Trans
             }
 
-            // Legacy: suchend/fluid → map to Nonbinär for Mann/Frau
-            if (secondary === 'suchend' || secondary === 'unsicher' || secondary === 'fluid') return 100;
+            // Legacy: nonbinaer/fluid → map to Suchend for Mann/Frau
+            if (secondary === 'nonbinaer' || secondary === 'fluid') return 100;
 
             // Default: Cis
             return 0;
@@ -22174,7 +22155,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         /**
          * Maps profile review geschlechtsidentität value to secondary geschlecht
          * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
-         * - Mann/Frau (binär): 0=Cis, 50=Trans, 100=Nonbinär
+         * - Mann/Frau (binär): 0=Cis, 50=Trans, 100=Suchend
          * - Inter (divers): 0=Nonbinär, 50=Fluid, 100=Suchend
          * @param {number} value - Profile review button value
          * @param {string} primaryGeschlecht - Body: 'mann', 'frau', 'inter'
@@ -22188,10 +22169,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return 'suchend';                     // 100
             }
 
-            // For Mann/Frau (binär): 0=Cis, 50=Trans, 100=Nonbinär
-            if (value <= 25) return 'cis';       // 0
-            if (value <= 75) return 'trans';     // 50
-            return 'nonbinaer';                  // 100
+            // For Mann/Frau (binär): 0=Cis, 50=Trans, 100=Suchend
+            if (value <= 25) return 'cis';    // 0
+            if (value <= 75) return 'trans';  // 50
+            return 'suchend';                 // 100
         }
 
         // Save Profile Review
