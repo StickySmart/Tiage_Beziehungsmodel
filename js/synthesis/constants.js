@@ -672,7 +672,7 @@ TiageSynthesis.Constants = {
     //
     // Kontextabhängig:
     // - Binär (Mann/Frau): Cis, Trans, Nonbinär
-    // - Divers (Inter): Nonbinär, Fluid, Suchend
+    // - Divers (Inter): Nonbinär, Fluid
 
     IDENTITY_MATRIX: {
         // ─── BINÄR-KONTEXT (Cis, Trans, Nonbinär) ───
@@ -686,7 +686,7 @@ TiageSynthesis.Constants = {
         "trans-trans": 100,
         "trans-suchend": 75,
 
-        // ─── DIVERS-KONTEXT (Nonbinär, Fluid, Suchend) ───
+        // ─── DIVERS-KONTEXT (Nonbinär, Fluid) ───
         // Nonbinär: Jenseits der Dualität, bewusste Position
         "nonbinaer-nonbinaer": 100,
         "nonbinaer-fluid": 90,

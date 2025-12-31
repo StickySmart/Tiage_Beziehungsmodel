@@ -151,14 +151,14 @@ const TiageConfig = (function() {
     // SEKUNDÄR = Geist/Identität (wie man sich fühlt)
     // Kontextabhängig je nach PRIMARY:
     // - Mann/Frau (binär): Cis, Trans, Nonbinär
-    // - Inter (divers): Nonbinär, Fluid, Suchend
-    const GESCHLECHT_SECONDARY_TYPES = ['cis', 'trans', 'nonbinaer', 'fluid', 'suchend'];
+    // - Inter (divers): Nonbinär, Fluid
+    const GESCHLECHT_SECONDARY_TYPES = ['cis', 'trans', 'nonbinaer', 'fluid'];
 
     // Kontextabhängige Optionen je nach Primary
     const GESCHLECHT_SECONDARY_BY_PRIMARY = {
-        'mann': ['cis', 'trans', 'nonbinaer'],     // Binär: Kongruenz, Transition, Nonbinär
-        'frau': ['cis', 'trans', 'nonbinaer'],     // Binär: Kongruenz, Transition, Nonbinär
-        'inter': ['nonbinaer', 'fluid', 'suchend'] // Divers: NB, Fluid, Suchend
+        'mann': ['cis', 'trans', 'nonbinaer'],  // Binär: Kongruenz, Transition, Nonbinär
+        'frau': ['cis', 'trans', 'nonbinaer'],  // Binär: Kongruenz, Transition, Nonbinär
+        'inter': ['nonbinaer', 'fluid']         // Divers: NB, Fluid
     };
 
     const GESCHLECHT_SECONDARY_SHORT = {
