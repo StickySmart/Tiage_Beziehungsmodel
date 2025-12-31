@@ -275,6 +275,11 @@ TiageSynthesis.Factors.Geschlecht = {
 
     /**
      * Extrahiert Orientierungen als String-Array
+     *
+     * Unterstützt drei Formate:
+     * 1. String: 'heterosexuell' → ['heterosexuell']
+     * 2. NEU P/S-Format: { primary: 'heterosexuell', secondary: 'bisexuell' }
+     * 3. Altes Multi-Select: { heterosexuell: 'gelebt', bisexuell: 'interessiert' }
      */
     _extractOrientations: function(person) {
         var list = [];
@@ -283,9 +288,22 @@ TiageSynthesis.Factors.Geschlecht = {
         if (!ori) return list;
 
         if (typeof ori === 'object') {
+            // NEU: Handle Primary/Secondary Format aus UI
+            if ('primary' in ori) {
+                if (ori.primary) {
+                    list.push(ori.primary);
+                }
+                if (ori.secondary) {
+                    list.push(ori.secondary);
+                }
+                return list;
+            }
+
+            // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
             if (ori.heterosexuell) list.push('heterosexuell');
             if (ori.homosexuell) list.push('homosexuell');
             if (ori.bisexuell) list.push('bisexuell');
+            if (ori.pansexuell) list.push('pansexuell');
         } else if (typeof ori === 'string') {
             list.push(ori);
         }
