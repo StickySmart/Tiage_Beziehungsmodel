@@ -75,17 +75,19 @@ TiageSynthesis.Factors.Orientierung = {
      * NEUES SYSTEM mit P/S (kontextabhängig):
      * - P = Körper (mann, frau, inter)
      * - S = Identität:
-     *   - Binär (Mann/Frau): cis, trans, suchend
+     *   - Binär (Mann/Frau): cis, trans, nonbinaer
      *   - Divers (Inter): nonbinaer, fluid, suchend
      *
      * Logik für Orientierung:
      * - P=Mann + S=Cis → mann (identifiziert als Mann)
      * - P=Mann + S=Trans → frau (identifiziert als Frau)
+     * - P=Mann + S=Nonbinär → mann_nonbinaer (männlicher Körper, nonbinäre Seele)
      * - P=Frau + S=Cis → frau (identifiziert als Frau)
      * - P=Frau + S=Trans → mann (identifiziert als Mann)
+     * - P=Frau + S=Nonbinär → frau_nonbinaer (weiblicher Körper, nonbinäre Seele)
      * - P=Inter + S=Nonbinär → nonbinaer
      * - P=Inter + S=Fluid → fluid
-     * - Suchend → suchend (in Exploration)
+     * - P=Inter + S=Suchend → suchend (in Exploration)
      */
     _extractGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
@@ -106,8 +108,14 @@ TiageSynthesis.Factors.Orientierung = {
                     if (primary === 'frau') return 'mann';
                     return primary; // inter bleibt inter
                 }
-                // Nonbinär, Fluid, Suchend: direkt verwenden
-                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
+                // Nonbinär: Bei Mann/Frau eigene Kategorie, bei Inter direkt
+                if (secondary === 'nonbinaer') {
+                    if (primary === 'mann') return 'mann_nonbinaer';
+                    if (primary === 'frau') return 'frau_nonbinaer';
+                    return 'nonbinaer';  // Inter+Nonbinär bleibt 'nonbinaer'
+                }
+                // Fluid, Suchend: direkt verwenden
+                if (secondary === 'fluid' || secondary === 'suchend') {
                     return secondary;
                 }
                 // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
@@ -421,6 +429,7 @@ TiageSynthesis.Factors.Orientierung = {
 
     /**
      * Prüft ob Geschlecht nonbinär/inter/fluid ist
+     * Inkl. mann_nonbinaer und frau_nonbinaer (männlicher/weiblicher Körper mit nonbinärer Seele)
      */
     _isNonBinaryGender: function(gender) {
         if (!gender) return false;
@@ -429,7 +438,8 @@ TiageSynthesis.Factors.Orientierung = {
         return g === 'nonbinaer' || g === 'nonbinär' || g === 'non-binär' ||
                g === 'inter' || g === 'intersex' || g === 'fluid' ||
                g === 'genderfluid' || g === 'divers' || g === 'agender' ||
-               g === 'unsicher';
+               g === 'unsicher' ||
+               g === 'mann_nonbinaer' || g === 'frau_nonbinaer';
     },
 
     /**

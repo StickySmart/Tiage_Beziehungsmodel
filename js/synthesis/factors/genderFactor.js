@@ -96,16 +96,16 @@ TiageSynthesis.Factors.Geschlecht = {
      * NEUES SYSTEM mit P/S (kontextabhängig):
      * - P = Körper (mann, frau, inter)
      * - S = Identität:
-     *   - Binär (Mann/Frau): cis, trans, suchend
+     *   - Binär (Mann/Frau): cis, trans, nonbinaer
      *   - Divers (Inter): nonbinaer, fluid, suchend
      *
      * Logik für Orientierung:
      * - P=Mann + S=Cis → mann (identifiziert als Mann)
      * - P=Mann + S=Trans → frau (identifiziert als Frau)
-     * - P=Mann + S=Suchend → suchend (in Exploration)
+     * - P=Mann + S=Nonbinär → mann_nonbinaer (männlicher Körper, nonbinäre Seele)
      * - P=Frau + S=Cis → frau (identifiziert als Frau)
      * - P=Frau + S=Trans → mann (identifiziert als Mann)
-     * - P=Frau + S=Suchend → suchend (in Exploration)
+     * - P=Frau + S=Nonbinär → frau_nonbinaer (weiblicher Körper, nonbinäre Seele)
      * - P=Inter + S=Nonbinär → nonbinaer
      * - P=Inter + S=Fluid → fluid
      * - P=Inter + S=Suchend → suchend
@@ -130,8 +130,14 @@ TiageSynthesis.Factors.Geschlecht = {
                     if (primary === 'frau') return 'mann';
                     return primary; // inter bleibt inter
                 }
-                // Nonbinär, Fluid, Suchend: direkt verwenden
-                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
+                // Nonbinär: Bei Mann/Frau eigene Kategorie, bei Inter direkt
+                if (secondary === 'nonbinaer') {
+                    if (primary === 'mann') return 'mann_nonbinaer';
+                    if (primary === 'frau') return 'frau_nonbinaer';
+                    return 'nonbinaer';  // Inter+Nonbinär bleibt 'nonbinaer'
+                }
+                // Fluid, Suchend: direkt verwenden
+                if (secondary === 'fluid' || secondary === 'suchend') {
                     return secondary;
                 }
                 // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
@@ -317,7 +323,7 @@ TiageSynthesis.Factors.Geschlecht = {
      * Die Werte kommen aus _extractPrimaryGeschlecht, das bereits
      * die P/S-Logik (cis/trans) aufgelöst hat.
      *
-     * Ergebnis-Werte: maennlich, weiblich, nonbinaer, fluid, inter, andere
+     * Ergebnis-Werte: maennlich, weiblich, nonbinaer, fluid, inter, mann_nonbinaer, frau_nonbinaer, andere
      */
     _getGeschlechtCategory: function(geschlecht) {
         var categoryMap = {
@@ -328,6 +334,9 @@ TiageSynthesis.Factors.Geschlecht = {
             'fluid': 'fluid',
             'suchend': 'suchend',  // Suchend = eigene Kategorie (Exploration)
             'inter': 'inter',
+            // NEU: Mann/Frau + Nonbinär als eigene Kategorien
+            'mann_nonbinaer': 'mann_nonbinaer',
+            'frau_nonbinaer': 'frau_nonbinaer',
             // Legacy-Support für alte Daten
             'cis_mann': 'maennlich',
             'cis_frau': 'weiblich',
