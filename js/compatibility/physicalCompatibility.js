@@ -141,9 +141,10 @@ TiageCompatibility.Physical = (function() {
                     if (primary === 'frau') return 'mann';
                     return primary; // inter stays inter
                 }
-                // Nonbinär, Fluid, Suchend: use directly
+                // Nonbinär, Fluid, Suchend: use primary (body) for orientation compatibility
+                // The body determines physical attraction potential, while identity is respected separately
                 if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
-                    return secondary;
+                    return primary;
                 }
                 // Fallback: use secondary value
                 return secondary;
