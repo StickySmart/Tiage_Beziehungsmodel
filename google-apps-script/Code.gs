@@ -30,13 +30,14 @@
 // ============================================================================
 // VERSION INFO - Beim Deployen prüfen!
 // ============================================================================
-const SCRIPT_VERSION = '2.1.0';
-const SCRIPT_DATE = '2025-12-29';
+const SCRIPT_VERSION = '2.2.0';
+const SCRIPT_DATE = '2025-12-31';
 const SCRIPT_FEATURES = [
   'Browser Fingerprinting',
   'Rate Limiting (10/hour)',
   'Security Logging',
   'Visitor Counter (mit LockService)',
+  'PageViews Counter (Seitenaufrufe)',
   'Comment System'
 ];
 
@@ -303,6 +304,75 @@ function getTotalVisitors() {
 }
 
 /**
+ * Erhöht den PageViews-Zähler (bei jedem Seitenaufruf)
+ * Verwendet LockService für atomare Operationen
+ */
+function incrementPageViews() {
+  const lock = LockService.getScriptLock();
+
+  try {
+    lock.waitLock(10000);
+  } catch (e) {
+    return null; // Silently fail for page views
+  }
+
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let configSheet = ss.getSheetByName(CONFIG_SHEET);
+
+    if (!configSheet) {
+      initializeSheets();
+      configSheet = ss.getSheetByName(CONFIG_SHEET);
+    }
+
+    const data = configSheet.getDataRange().getValues();
+    let pageViewsRow = -1;
+    let currentValue = 0;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i][0] === 'pageViews') {
+        pageViewsRow = i + 1;
+        currentValue = parseInt(data[i][1]) || 0;
+        break;
+      }
+    }
+
+    const newValue = currentValue + 1;
+
+    if (pageViewsRow === -1) {
+      // pageViews noch nicht vorhanden - hinzufügen
+      configSheet.appendRow(['pageViews', newValue]);
+    } else {
+      configSheet.getRange(pageViewsRow, 2).setValue(newValue);
+    }
+
+    return newValue;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Holt die aktuelle Anzahl der PageViews (ohne zu erhöhen)
+ */
+function getPageViews() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let configSheet = ss.getSheetByName(CONFIG_SHEET);
+
+  if (!configSheet) {
+    return 0;
+  }
+
+  const data = configSheet.getDataRange().getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][0] === 'pageViews') {
+      return parseInt(data[i][1]) || 0;
+    }
+  }
+  return 0;
+}
+
+/**
  * Registriert einen neuen Besucher oder aktualisiert den letzten Besuch
  */
 function registerVisitor(visitorId) {
@@ -484,7 +554,20 @@ function doGet(e) {
 
     if (action === 'getStats') {
       const total = getTotalVisitors();
-      return ContentService.createTextOutput(JSON.stringify({ totalVisitors: total }))
+      const views = getPageViews();
+      return ContentService.createTextOutput(JSON.stringify({ totalVisitors: total, pageViews: views }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === 'trackPageView') {
+      // Erhöht pageViews bei jedem Seitenaufruf
+      const views = incrementPageViews();
+      const total = getTotalVisitors();
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        pageViews: views,
+        totalVisitors: total
+      }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 

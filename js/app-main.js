@@ -18716,6 +18716,22 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             return '#' + visitorId;
         }
 
+        // Track page view (bei jedem Seitenaufruf, auch für wiederkehrende Besucher)
+        async function trackPageView() {
+            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                try {
+                    const fingerprint = getBrowserFingerprint();
+                    await fetch(
+                        GOOGLE_SCRIPT_URL + '?action=trackPageView&fp=' + encodeURIComponent(fingerprint),
+                        { method: 'GET' }
+                    );
+                } catch (e) {
+                    // Silently ignore - page view tracking is not critical
+                    console.log('PageView tracking failed:', e.message);
+                }
+            }
+        }
+
         // Initialize visitor ID display
         async function initVisitorId() {
             const { visitorId, totalVisitors } = await fetchOrCreateVisitorId();
@@ -18731,6 +18747,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (headerDisplay) {
                 headerDisplay.textContent = displayText;
             }
+
+            // Track this page view
+            trackPageView();
         }
 
         // Rate limiting for comments (1 per minute)
