@@ -22,15 +22,15 @@ const ProfileReviewConfig = (function() {
                 hint: 'Sekundär',
                 // Optionen sind kontextabhängig vom Primary (Körper):
                 // - Mann/Frau (binär): ['Cis', 'Trans', 'Nonbinär']
-                // - Inter (divers): ['Nonbinär', 'Fluid', 'Suchend']
+                // - Inter (divers): ['Nonbinär', 'Fluid']
                 optionsByPrimary: {
                     'mann': ['Cis', 'Trans', 'Nonbinär'],
                     'frau': ['Cis', 'Trans', 'Nonbinär'],
-                    'inter': ['Nonbinär', 'Fluid', 'Suchend']
+                    'inter': ['Nonbinär', 'Fluid']
                 },
-                options: ['Cis', 'Trans', 'Suchend'], // Default für binär
+                options: ['Cis', 'Trans', 'Nonbinär'], // Default für binär
                 defaultValue: 0,
-                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Nonbinär (jenseits der Dualität). Bei Inter: Nonbinär, Fluid, Suchend.'
+                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Nonbinär (jenseits der Dualität). Bei Inter: Nonbinär, Fluid.'
             }
         ],
 

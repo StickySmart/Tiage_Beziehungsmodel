@@ -671,11 +671,11 @@ TiageSynthesis.Constants = {
     // Ähnliche Identitäten verstehen sich intuitiv.
     //
     // Kontextabhängig:
-    // - Binär (Mann/Frau): Cis, Trans, Suchend
-    // - Divers (Inter): Nonbinär, Fluid, Suchend
+    // - Binär (Mann/Frau): Cis, Trans, Nonbinär
+    // - Divers (Inter): Nonbinär, Fluid
 
     IDENTITY_MATRIX: {
-        // ─── BINÄR-KONTEXT (Cis, Trans, Suchend) ───
+        // ─── BINÄR-KONTEXT (Cis, Trans, Nonbinär) ───
         // Cis: Form = Körper, klare statische Qualität
         "cis-cis": 100,
         "cis-trans": 85,
@@ -686,7 +686,7 @@ TiageSynthesis.Constants = {
         "trans-trans": 100,
         "trans-suchend": 75,
 
-        // ─── DIVERS-KONTEXT (Nonbinär, Fluid, Suchend) ───
+        // ─── DIVERS-KONTEXT (Nonbinär, Fluid) ───
         // Nonbinär: Jenseits der Dualität, bewusste Position
         "nonbinaer-nonbinaer": 100,
         "nonbinaer-fluid": 90,
