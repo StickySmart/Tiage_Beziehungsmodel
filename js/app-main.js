@@ -18709,11 +18709,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Format visitor display text
-        function formatVisitorDisplay(visitorId, totalVisitors) {
+        function formatVisitorDisplay(visitorId, totalVisitors, pageViews) {
+            let text = '#' + visitorId;
             if (totalVisitors && !visitorId.startsWith('L')) {
-                return '#' + visitorId + ' von ' + totalVisitors;
+                text += ' von ' + totalVisitors;
             }
-            return '#' + visitorId;
+            if (pageViews) {
+                text += ' (' + pageViews + ')';
+            }
+            return text;
         }
 
         // Track page view (bei jedem Seitenaufruf, auch für wiederkehrende Besucher)
@@ -18721,21 +18725,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                 try {
                     const fingerprint = getBrowserFingerprint();
-                    await fetch(
+                    const response = await fetch(
                         GOOGLE_SCRIPT_URL + '?action=trackPageView&fp=' + encodeURIComponent(fingerprint),
                         { method: 'GET' }
                     );
+                    const data = await response.json();
+                    return data.pageViews || null;
                 } catch (e) {
                     // Silently ignore - page view tracking is not critical
                     console.log('PageView tracking failed:', e.message);
+                    return null;
                 }
             }
+            return null;
         }
 
         // Initialize visitor ID display
         async function initVisitorId() {
             const { visitorId, totalVisitors } = await fetchOrCreateVisitorId();
-            const displayText = formatVisitorDisplay(visitorId, totalVisitors);
+
+            // Track page view and get updated count
+            const pageViews = await trackPageView();
+
+            const displayText = formatVisitorDisplay(visitorId, totalVisitors, pageViews);
 
             // Update comment form display
             const display = document.getElementById('visitorIdDisplay');
@@ -18747,9 +18759,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (headerDisplay) {
                 headerDisplay.textContent = displayText;
             }
-
-            // Track this page view
-            trackPageView();
         }
 
         // Rate limiting for comments (1 per minute)
