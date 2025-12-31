@@ -671,11 +671,11 @@ TiageSynthesis.Constants = {
     // Ähnliche Identitäten verstehen sich intuitiv.
     //
     // Kontextabhängig:
-    // - Binär (Mann/Frau): Cis, Trans, Suchend
+    // - Binär (Mann/Frau): Cis, Trans, Nonbinär
     // - Divers (Inter): Nonbinär, Fluid, Suchend
 
     IDENTITY_MATRIX: {
-        // ─── BINÄR-KONTEXT (Cis, Trans, Suchend) ───
+        // ─── BINÄR-KONTEXT (Cis, Trans, Nonbinär) ───
         // Cis: Form = Körper, klare statische Qualität
         "cis-cis": 100,
         "cis-trans": 85,
