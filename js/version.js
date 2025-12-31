@@ -11,11 +11,11 @@ const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
     minor: 8,
-    patch: 614,
+    patch: 615,
 
     // Letztes Merge-Datum und -Uhrzeit
-    mergeDate: '2025-12-30',
-    mergeTime: '10:06',
+    mergeDate: '2025-12-31',
+    mergeTime: '06:31',
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
