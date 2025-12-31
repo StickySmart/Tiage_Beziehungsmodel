@@ -18,15 +18,15 @@
      * Mapper von Profil-Werten zu Modifier-Keys
      */
     const GENDER_IDENTITY_MAP = {
-        // Mann + Identität
+        // Mann + Identität (Cis, Trans, Nonbinär)
         'mann-cis': 'MannCis',
         'mann-trans': 'MannTrans',
-        'mann-suchend': 'MannSuchend',
-        // Frau + Identität
+        'mann-nonbinaer': 'MannNonbinaer',
+        // Frau + Identität (Cis, Trans, Nonbinär)
         'frau-cis': 'FrauCis',
         'frau-trans': 'FrauTrans',
-        'frau-suchend': 'FrauSuchend',
-        // Inter + Identität
+        'frau-nonbinaer': 'FrauNonbinaer',
+        // Inter + Identität (Nonbinär, Fluid, Suchend)
         'inter-nonbinaer': 'InterNonbinaer',
         'inter-fluid': 'InterFluid',
         'inter-suchend': 'InterSuchend'

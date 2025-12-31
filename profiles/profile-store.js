@@ -51,13 +51,13 @@ var TiageProfileStore = (function() {
 
     // ════════════════════════════════════════════════════════════════════════
     // GENDER-MODIFIKATOREN (9 P/S-Kombinationen)
-    // Kontextabhängig: Binär (Cis/Trans/Suchend) vs. Divers (NB/Fluid/Suchend)
+    // Kontextabhängig: Binär (Cis/Trans/Nonbinär) vs. Divers (NB/Fluid/Suchend)
     // ════════════════════════════════════════════════════════════════════════
 
     var genderModifiers = {
 
         // ─────────────────────────────────────────────────────────────────────
-        // MANN (P) Kombinationen - BINÄR: Cis, Trans, Suchend
+        // MANN (P) Kombinationen - BINÄR: Cis, Trans, Nonbinär
         // ─────────────────────────────────────────────────────────────────────
 
         'mann-cis': {
@@ -124,39 +124,39 @@ var TiageProfileStore = (function() {
             osho: 'Authentizität über Konvention. Die innere Wahrheit transzendiert den Körper.'
         },
 
-        'mann-suchend': {
-            key: 'mann-suchend',
-            label: 'Mann (Suchend)',
-            effectiveIdentity: 'suchend',
+        'mann-nonbinaer': {
+            key: 'mann-nonbinaer',
+            label: 'Mann (Nonbinär)',
+            effectiveIdentity: 'mann_nonbinaer',
             body: 'mann',
-            identity: 'suchend',
-            description: 'Männlicher Körper, suchende/fragende Identität',
+            identity: 'nonbinaer',
+            description: 'Männlicher Körper, nonbinäre Identität (jenseits der Dualität)',
 
             modifiers: {
-                emotionaleOffenheit: 0.1,       // Offener durch Selbstreflexion
+                emotionaleOffenheit: 0.15,      // Offener durch Selbstreflexion
                 kommunikationsstil: -0.05,      // Etwas indirekter
                 konfliktverhalten: -0.05,       // Weniger konfrontativ
                 familieWichtigkeit: 0,          // Neutral
-                traditionenWichtigkeit: -0.1,   // Weniger traditionell
-                openness: 0.15,                 // Höhere Offenheit
-                neuroticism: 0.1                // Etwas höher (Identitäts-Exploration)
+                traditionenWichtigkeit: -0.15,  // Weniger traditionell
+                openness: 0.2,                  // Höhere Offenheit
+                authenticity: 0.2               // Hohe Authentizität
             },
 
             categoryModifiers: {
-                A: +1,      // In Exploration
-                B: -2,      // Weniger sicher in Werten
-                C: 0,       // Variabel
-                D: +2,      // Entwickelt Autonomie
-                E: +3,      // Reflektiert
-                F: -2       // Unsicher im sozialen Kontext
+                A: +2,      // Reflektierter über Beziehungsformen
+                B: -3,      // Weniger traditionelle Werte
+                C: +1,      // Offen für Nähe
+                D: +4,      // Hohe Autonomie
+                E: +5,      // Hohe emotionale Intelligenz
+                F: -3       // Gesellschaftlich komplexer
             },
 
-            pirsig: 'Im Übergang zwischen statischer und dynamischer Qualität.',
-            osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
+            pirsig: 'Dynamische Qualität - die Seele transzendiert die Kategorien des Körpers.',
+            osho: 'Die Gesellschaft gab dir einen männlichen Körper, doch deine Seele kennt keine Grenzen. Du bist der lebende Beweis, dass Bewusstsein größer ist als jede Kategorie.'
         },
 
         // ─────────────────────────────────────────────────────────────────────
-        // FRAU (P) Kombinationen - BINÄR: Cis, Trans, Suchend
+        // FRAU (P) Kombinationen - BINÄR: Cis, Trans, Nonbinär
         // ─────────────────────────────────────────────────────────────────────
 
         'frau-cis': {
@@ -218,35 +218,35 @@ var TiageProfileStore = (function() {
             osho: 'Authentizität über Konvention. Die innere Wahrheit transzendiert den Körper.'
         },
 
-        'frau-suchend': {
-            key: 'frau-suchend',
-            label: 'Frau (Suchend)',
-            effectiveIdentity: 'suchend',
+        'frau-nonbinaer': {
+            key: 'frau-nonbinaer',
+            label: 'Frau (Nonbinär)',
+            effectiveIdentity: 'frau_nonbinaer',
             body: 'frau',
-            identity: 'suchend',
-            description: 'Weiblicher Körper, suchende/fragende Identität',
+            identity: 'nonbinaer',
+            description: 'Weiblicher Körper, nonbinäre Identität (jenseits der Dualität)',
 
             modifiers: {
                 emotionaleOffenheit: 0.15,      // Offener durch Selbstreflexion
                 kommunikationsstil: -0.05,      // Etwas indirekter
                 konfliktverhalten: -0.05,       // Weniger konfrontativ
                 familieWichtigkeit: 0,          // Neutral
-                traditionenWichtigkeit: -0.1,   // Weniger traditionell
-                openness: 0.15,                 // Höhere Offenheit
-                neuroticism: 0.1                // Etwas höher
+                traditionenWichtigkeit: -0.15,  // Weniger traditionell
+                openness: 0.2,                  // Höhere Offenheit
+                authenticity: 0.2               // Hohe Authentizität
             },
 
             categoryModifiers: {
-                A: +1,      // In Exploration
-                B: -2,      // Weniger sicher in Werten
-                C: +1,      // Tendiert zu Nähe
-                D: +2,      // Entwickelt Autonomie
-                E: +4,      // Reflektiert, kommunikativ
-                F: -2       // Unsicher im sozialen Kontext
+                A: +2,      // Reflektierter über Beziehungsformen
+                B: -3,      // Weniger traditionelle Werte
+                C: +2,      // Offen für Nähe
+                D: +4,      // Hohe Autonomie
+                E: +5,      // Hohe emotionale Intelligenz
+                F: -2       // Gesellschaftlich komplexer (AFAB-NB oft mehr akzeptiert)
             },
 
-            pirsig: 'Im Übergang zwischen statischer und dynamischer Qualität.',
-            osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
+            pirsig: 'Dynamische Qualität - die Seele transzendiert die Kategorien des Körpers.',
+            osho: 'Du hast einen weiblichen Körper, aber deine Seele weigert sich, in der Box zu bleiben. Das ist kein Defekt - das ist Erwachen.'
         },
 
         // ─────────────────────────────────────────────────────────────────────
@@ -916,11 +916,11 @@ var TiageProfileStore = (function() {
 
         /**
          * Gibt alle gültigen S-Optionen für ein P zurück
-         * Kontextabhängig: Binär (Cis/Trans/Suchend) vs. Divers (NB/Fluid/Suchend)
+         * Kontextabhängig: Binär (Cis/Trans/Nonbinär) vs. Divers (NB/Fluid/Suchend)
          */
         getSecondaryOptionsForPrimary: function(pGender) {
             if (pGender === 'mann' || pGender === 'frau') {
-                return ['cis', 'trans', 'suchend'];  // Binär
+                return ['cis', 'trans', 'nonbinaer'];  // Binär
             }
             if (pGender === 'inter') {
                 return ['nonbinaer', 'fluid', 'suchend'];  // Divers
