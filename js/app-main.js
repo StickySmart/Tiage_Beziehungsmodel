@@ -12283,8 +12283,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 TiageState.set('personDimensions.partner.dominanz', personDimensions.partner.dominanz);
             }
 
-            // 5. UI aktualisieren
-            updateAllDimensionButtons();
+            // 5. UI aktualisieren - Sync all dimension buttons and summaries for partner
+            syncGeschlechtUI('partner');
+            syncDimensionUI('partner', 'dominanz');
+            syncDimensionUI('partner', 'orientierung');
+            updateGeschlechtSummary('partner');
+            updateDominanzSummary('partner');
+            updateOrientierungSummary('partner');
             updateComparisonView();
 
             // Profil neu berechnen
@@ -12297,8 +12302,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 });
             }
 
-            // Modal schließen
-            closeSlotMachineModal();
+            // Modal schließen und zurücksetzen
+            const modal = document.getElementById('slotMachineModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            // Reset für nächste Verwendung (Phase 1)
+            resetSlotMachine();
 
             // Feedback-Animation auf dem Button
             const matchBtns = document.querySelectorAll('.best-match-btn:not(.ich-match-btn)');
