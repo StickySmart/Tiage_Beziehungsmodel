@@ -3084,33 +3084,7 @@ input.resonanz-input:focus {
     border-style: dashed;
 }
 
-/* Selection Checkbox Icon */
-.hauptfrage-select-icon {
-    font-size: 16px;
-    color: var(--text-muted, #888);
-    flex-shrink: 0;
-    width: 20px;
-    text-align: center;
-    opacity: 0.6;
-    transition: all 0.2s ease;
-}
-
-.hauptfrage-select-icon.selected {
-    color: #22c55e;
-    opacity: 1;
-}
-
-.hauptfrage-header:hover .hauptfrage-select-icon {
-    opacity: 1;
-    color: var(--primary, #FFD700);
-}
-
-.hauptfrage-item.hauptfrage-selected .hauptfrage-select-icon {
-    color: #22c55e;
-    opacity: 1;
-}
-
-/* Hauptfrage Header (klickbar) */
+/* Hauptfrage Header */
 .hauptfrage-header {
     display: flex;
     align-items: center;
@@ -3451,10 +3425,6 @@ input.resonanz-input:focus {
 
     .hauptfrage-nuancen-count {
         font-size: 10px;
-    }
-
-    .hauptfrage-select-icon {
-        font-size: 14px;
     }
 
     .hauptfrage-value-container {

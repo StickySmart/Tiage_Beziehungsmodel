@@ -1933,14 +1933,13 @@ const AttributeSummaryCard = (function() {
                 const someSelected = allIds.some(id => selectedNeeds.has(id));
                 const selectedClass = isHauptfrageSelected ? ' hauptfrage-selected' : (someSelected ? ' hauptfrage-partial-selected' : '');
 
-                // Hauptfrage-Item mit Expand-Toggle und Slider - CARD STYLE
+                // Hauptfrage-Item mit Expand-Toggle und Slider - CARD STYLE (Klick auf Card = Markieren)
                 html += `
-                <div class="hauptfrage-item hauptfrage-card${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}${selectedClass}" data-hauptfrage-id="${hf.id}">
-                    <div class="hauptfrage-header"
-                         onclick="AttributeSummaryCard.toggleHauptfrageSelection('${hf.id}')"
-                         title="Klicken um Hauptfrage + alle Nuancen zu markieren">
+                <div class="hauptfrage-item hauptfrage-card${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}${selectedClass}" data-hauptfrage-id="${hf.id}"
+                     onclick="AttributeSummaryCard.toggleHauptfrageSelection('${hf.id}')"
+                     title="Klicken um Hauptfrage + alle Nuancen zu markieren">
+                    <div class="hauptfrage-header">
                         <span class="hauptfrage-expand-icon" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
-                        <span class="hauptfrage-select-icon${isHauptfrageSelected ? ' selected' : ''}">${isHauptfrageSelected ? '☑' : '☐'}</span>
                         <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
                             ${hf.id} ${hf.label}${changedIndicator}
                         </span>
@@ -1951,22 +1950,20 @@ const AttributeSummaryCard = (function() {
                                   title="${lockTitle}"></span>
                         </div>
                     </div>
-                    <div class="hauptfrage-slider-row">
+                    <div class="hauptfrage-slider-row" onclick="event.stopPropagation();">
                         <input type="range" class="hauptfrage-slider"
                                min="0" max="100" value="${sliderValue}"
                                oninput="AttributeSummaryCard.onHauptfrageSliderInput('${hf.id}', this.value, this)"
-                               onclick="event.stopPropagation()"
                                ${sliderStyle}
                                ${sliderDisabled ? 'disabled' : ''}>
                         <input type="text" class="hauptfrage-input" value="${sliderValue}" maxlength="3"
                                onchange="AttributeSummaryCard.updateHauptfrageValue('${hf.id}', this.value)"
-                               onclick="event.stopPropagation()"
                                ${sliderDisabled ? 'readonly' : ''}>
                     </div>`;
 
                 // Nuancen-Liste (wenn aufgeklappt und Nuancen vorhanden)
                 if (isExpanded && hf.nuancen && hf.nuancen.length > 0) {
-                    html += `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}">`;
+                    html += `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}" onclick="event.stopPropagation();">`;
                     hf.nuancen.forEach(nuanceId => {
                         const nuanceObj = findNeedById(nuanceId);
                         if (nuanceObj) {
