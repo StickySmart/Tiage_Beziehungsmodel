@@ -3032,27 +3032,59 @@ input.resonanz-input:focus {
 .flat-needs-list.hauptfragen-mode {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 12px;
+    padding: 12px;
 }
 
-/* Einzelnes Hauptfrage-Item */
+/* Einzelnes Hauptfrage-Item - CARD STYLE */
 .hauptfrage-item {
     background: var(--bg-secondary, rgba(255, 255, 255, 0.03));
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Enhanced Card Style */
+.hauptfrage-item.hauptfrage-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hauptfrage-item:hover {
     background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hauptfrage-item.expanded {
     background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Hauptfrage Header (klickbar) */
+/* Hauptfrage SELECTED State - alle Nuancen ausgewählt */
+.hauptfrage-item.hauptfrage-selected {
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
+    border-color: rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2), 0 4px 12px rgba(34, 197, 94, 0.15);
+}
+
+.hauptfrage-item.hauptfrage-selected:hover {
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.12));
+    border-color: rgba(34, 197, 94, 0.6);
+}
+
+/* Hauptfrage PARTIAL SELECTED State - einige Nuancen ausgewählt */
+.hauptfrage-item.hauptfrage-partial-selected {
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.08), rgba(255, 255, 255, 0.03));
+    border-color: rgba(34, 197, 94, 0.3);
+    border-style: dashed;
+}
+
+/* Hauptfrage Header */
 .hauptfrage-header {
     display: flex;
     align-items: center;
@@ -3223,13 +3255,19 @@ input.resonanz-input:focus {
     background: rgba(245, 158, 11, 0.05);
 }
 
-/* Hauptfrage-Slider-Row */
+/* Hauptfrage-Slider-Row - Card Style */
 .hauptfrage-slider-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 16px 12px 36px;
-    background: rgba(0, 0, 0, 0.1);
+    gap: 12px;
+    padding: 12px 16px 16px 48px;
+    background: rgba(0, 0, 0, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Selected state slider row */
+.hauptfrage-item.hauptfrage-selected .hauptfrage-slider-row {
+    background: rgba(34, 197, 94, 0.08);
 }
 
 .hauptfrage-slider {
@@ -3337,28 +3375,48 @@ input.resonanz-input:focus {
     opacity: 0.5;
 }
 
-/* Nuancen-Liste (expandiert) */
+/* Nuancen-Liste (expandiert) - Card Style */
 .nuancen-list {
-    padding: 0 8px 8px 28px;
-    background: rgba(0, 0, 0, 0.15);
+    padding: 8px 12px 12px 48px;
+    background: rgba(0, 0, 0, 0.18);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
+/* Nuancen-Items als Sub-Cards */
 .nuancen-list .flat-need-item {
-    background: transparent;
-    border-left-width: 2px;
-    padding: 8px 10px;
-    margin: 4px 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-left-width: 3px;
+    padding: 10px 12px;
+    margin: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.15s ease;
 }
 
 .nuancen-list .flat-need-item:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Selected Nuancen inside list */
+.nuancen-list .flat-need-item.need-selected {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.4);
 }
 
 /* Mobile Anpassungen */
 @media (max-width: 768px) {
+    .flat-needs-list.hauptfragen-mode {
+        gap: 8px;
+        padding: 8px;
+    }
+
     .hauptfrage-header {
         padding: 10px 12px;
+        flex-wrap: wrap;
     }
 
     .hauptfrage-label {
@@ -3366,14 +3424,23 @@ input.resonanz-input:focus {
     }
 
     .hauptfrage-nuancen-count {
-        display: none;
+        font-size: 10px;
     }
 
     .hauptfrage-value-container {
         min-width: 60px;
     }
 
+    .hauptfrage-slider-row {
+        padding: 10px 12px 12px 36px;
+    }
+
     .nuancen-list {
-        padding-left: 20px;
+        padding: 6px 8px 8px 32px;
+        gap: 4px;
+    }
+
+    .nuancen-list .flat-need-item {
+        padding: 8px 10px;
     }
 }
