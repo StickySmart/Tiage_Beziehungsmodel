@@ -9909,33 +9909,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Helper: Check single pair of orientations
         function checkSingleOrientationPair(type1, status1, type2, status2, g1, g2) {
-            // Bisexuell is always compatible
-            if (type1 === 'bisexuell' || type2 === 'bisexuell') {
-                return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
+            const isUnsicher = status1 === 'interessiert' || status2 === 'interessiert';
+
+            // Helper: Can this orientation be attracted to the other person's gender?
+            const canBeAttractedTo = (orientation, myGender, theirGender) => {
+                if (orientation === 'bisexuell') return true; // Bi can be attracted to any gender
+                if (orientation === 'heterosexuell') return isDifferentBinaryGender(myGender, theirGender);
+                if (orientation === 'homosexuell') return isSameGenderCategory(myGender, theirGender);
+                return false;
+            };
+
+            // BOTH persons must be able to be attracted to each other's gender
+            const person1CanBeAttracted = canBeAttractedTo(type1, g1, g2);
+            const person2CanBeAttracted = canBeAttractedTo(type2, g2, g1);
+
+            if (person1CanBeAttracted && person2CanBeAttracted) {
+                return isUnsicher ? 'unsicher' : 'möglich';
             }
 
-            // Both heterosexuell - need different gender categories (male + female)
-            if (type1 === 'heterosexuell' && type2 === 'heterosexuell') {
-                if (isDifferentBinaryGender(g1, g2)) {
-                    return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
-                } else {
-                    return 'unmöglich'; // Same gender category, both hetero
-                }
+            // If only one person is exploring, there might be potential
+            if (isUnsicher && (person1CanBeAttracted || person2CanBeAttracted)) {
+                return 'unsicher';
             }
 
-            // Both homosexuell - need same gender category
-            if (type1 === 'homosexuell' && type2 === 'homosexuell') {
-                if (isSameGenderCategory(g1, g2)) {
-                    return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
-                } else {
-                    return 'unmöglich'; // Different gender category, both homo
-                }
-            }
-
-            // Mixed: hetero + homo - check if exploring
-            if (status1 === 'interessiert' || status2 === 'interessiert') {
-                return 'unsicher'; // Exploration could change things
-            }
             return 'unmöglich';
         }
 
