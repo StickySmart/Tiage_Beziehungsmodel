@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="css/philosophy-hint.css">
     <!-- Resonanz Tree View Styling -->
     <link rel="stylesheet" href="css/resonanz-tree-view.css">
+    <!-- Slot Machine Modal Styling -->
+    <link rel="stylesheet" href="css/slot-machine.css">
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
@@ -440,6 +442,146 @@
         </div>
     </div>
 
+    <!-- Slot Machine Modal - Finde passenden Partner -->
+    <div class="modal-overlay" id="slotMachineModal" onclick="closeSlotMachineModal(event)" style="z-index: 2700;">
+        <div class="modal slot-machine-modal" onclick="event.stopPropagation()" style="max-width: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span class="modal-title">🎰 Finde passenden Partner</span>
+                <button class="modal-close" onclick="closeSlotMachineModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <!-- Phase 1: Bindungsmuster Auswahl -->
+                <div id="slotPhase1" class="slot-phase">
+                    <h3 style="color: #e94560; margin-bottom: 15px; text-align: center;">Wähle dein Bindungsmuster</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-bottom: 20px;">
+                        Nach Bowlby/Ainsworth - wird als Tie-Breaker bei gleichem Score verwendet
+                    </p>
+
+                    <div class="bindung-selection">
+                        <div class="bindung-group">
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">Primäres Muster (70%)</label>
+                            <div class="bindung-options" id="bindungPrimaryOptions">
+                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('primary', 'sicher')">
+                                    <span class="bindung-icon">🛡️</span>
+                                    <span class="bindung-name">Sicher</span>
+                                    <span class="bindung-desc">Nähe & Autonomie ok</span>
+                                </button>
+                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('primary', 'aengstlich')">
+                                    <span class="bindung-icon">💔</span>
+                                    <span class="bindung-name">Ängstlich</span>
+                                    <span class="bindung-desc">Angst vor Verlust</span>
+                                </button>
+                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('primary', 'vermeidend')">
+                                    <span class="bindung-icon">🚪</span>
+                                    <span class="bindung-name">Vermeidend</span>
+                                    <span class="bindung-desc">Hält Distanz</span>
+                                </button>
+                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('primary', 'desorganisiert')">
+                                    <span class="bindung-icon">🌀</span>
+                                    <span class="bindung-name">Desorganisiert</span>
+                                    <span class="bindung-desc">Will Nähe & flüchtet</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bindung-group" style="margin-top: 20px;">
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">Sekundäres Muster (30%)</label>
+                            <div class="bindung-options" id="bindungSecondaryOptions">
+                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('secondary', 'sicher')">
+                                    <span class="bindung-icon">🛡️</span>
+                                    <span class="bindung-name">Sicher</span>
+                                </button>
+                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('secondary', 'aengstlich')">
+                                    <span class="bindung-icon">💔</span>
+                                    <span class="bindung-name">Ängstlich</span>
+                                </button>
+                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('secondary', 'vermeidend')">
+                                    <span class="bindung-icon">🚪</span>
+                                    <span class="bindung-name">Vermeidend</span>
+                                </button>
+                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('secondary', 'desorganisiert')">
+                                    <span class="bindung-icon">🌀</span>
+                                    <span class="bindung-name">Desorganisiert</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="slot-start-btn" id="slotStartBtn" onclick="startSlotMachine()" disabled style="margin-top: 25px;">
+                        🎰 Suche starten
+                    </button>
+                </div>
+
+                <!-- Phase 2: Slot Machine Animation -->
+                <div id="slotPhase2" class="slot-phase" style="display: none;">
+                    <h3 style="color: #e94560; margin-bottom: 20px; text-align: center;">Berechne beste Kombination...</h3>
+
+                    <div class="slot-machine-display">
+                        <div class="slot-reel" id="slotReelA">
+                            <div class="slot-label">A</div>
+                            <div class="slot-value" id="slotValueA">-</div>
+                        </div>
+                        <div class="slot-reel" id="slotReelG">
+                            <div class="slot-label">G</div>
+                            <div class="slot-value" id="slotValueG">-</div>
+                        </div>
+                        <div class="slot-reel" id="slotReelO">
+                            <div class="slot-label">O</div>
+                            <div class="slot-value" id="slotValueO">-</div>
+                        </div>
+                        <div class="slot-reel" id="slotReelD">
+                            <div class="slot-label">D</div>
+                            <div class="slot-value" id="slotValueD">-</div>
+                        </div>
+                    </div>
+
+                    <div class="slot-score-display">
+                        <div class="slot-score-label">Score</div>
+                        <div class="slot-score-value" id="slotScoreValue">0</div>
+                    </div>
+
+                    <div class="slot-progress">
+                        <div class="slot-progress-bar" id="slotProgressBar"></div>
+                    </div>
+                    <div class="slot-progress-text" id="slotProgressText">0 / 864 Kombinationen</div>
+                </div>
+
+                <!-- Phase 3: Ergebnis -->
+                <div id="slotPhase3" class="slot-phase" style="display: none;">
+                    <h3 style="color: #00d26a; margin-bottom: 20px; text-align: center;">✨ Beste Kombination gefunden!</h3>
+
+                    <div class="slot-result">
+                        <div class="slot-result-row">
+                            <span class="result-label">Archetyp:</span>
+                            <span class="result-value" id="resultArchetyp">-</span>
+                        </div>
+                        <div class="slot-result-row">
+                            <span class="result-label">Geschlecht:</span>
+                            <span class="result-value" id="resultGeschlecht">-</span>
+                        </div>
+                        <div class="slot-result-row">
+                            <span class="result-label">Orientierung:</span>
+                            <span class="result-value" id="resultOrientierung">-</span>
+                        </div>
+                        <div class="slot-result-row">
+                            <span class="result-label">Dominanz:</span>
+                            <span class="result-value" id="resultDominanz">-</span>
+                        </div>
+                        <div class="slot-result-row slot-result-score">
+                            <span class="result-label">Score:</span>
+                            <span class="result-value" id="resultScore">-</span>
+                        </div>
+                    </div>
+
+                    <div class="slot-result-actions">
+                        <button class="slot-apply-btn" onclick="applySlotResult()">✓ Übernehmen</button>
+                        <button class="slot-retry-btn" onclick="resetSlotMachine()">↻ Nochmal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Factor Detail Modal (Feature 1) -->
     <div class="modal-overlay" id="factorModal" onclick="closeFactorModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
@@ -663,11 +805,6 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für DU - findet bestes ICH basierend auf Partner-Einstellungen -->
-                    <button class="best-match-btn ich-match-btn" onclick="findBestIchMatch()" title="Finde den besten ICH-Archetyp basierend auf den Partner-Einstellungen">
-                        <span class="match-icon">🎯</span>
-                        <span class="match-text">FINDE PASSENDES ICH</span>
-                    </button>
                 </div>
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="ich-header-dominanz"></div>
@@ -812,9 +949,9 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für PARTNER - findet besten Partner-Archetyp basierend auf DU-Einstellungen -->
-                    <button class="best-match-btn" onclick="findBestPartnerMatch()" title="Finde den besten Partner-Archetyp basierend auf deinen DU-Einstellungen">
-                        <span class="match-icon">🎯</span>
+                    <!-- MATCH Button für PARTNER - öffnet Slot Machine Modal -->
+                    <button class="best-match-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen">
+                        <span class="match-icon">🎰</span>
                         <span class="match-text">FINDE PASSENDEN PARTNER</span>
                     </button>
                 </div>
@@ -933,11 +1070,6 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für DU (Mobile) - findet bestes ICH basierend auf Partner-Einstellungen -->
-                    <button class="best-match-btn ich-match-btn" onclick="findBestIchMatch()" title="Finde den besten ICH-Archetyp basierend auf den Partner-Einstellungen">
-                        <span class="match-icon">🎯</span>
-                        <span class="match-text">FINDE PASSENDES ICH</span>
-                    </button>
                 </div>
                 <div class="mobile-header-info-container">
                     <div class="header-geschlecht-info" id="mobile-ich-header-geschlecht"></div>
@@ -1097,9 +1229,9 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für PARTNER (Mobile) - findet besten Partner-Archetyp basierend auf DU-Einstellungen -->
-                    <button class="best-match-btn" onclick="findBestPartnerMatch()" title="Finde den besten Partner-Archetyp basierend auf deinen DU-Einstellungen">
-                        <span class="match-icon">🎯</span>
+                    <!-- MATCH Button für PARTNER (Mobile) - öffnet Slot Machine Modal -->
+                    <button class="best-match-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen">
+                        <span class="match-icon">🎰</span>
                         <span class="match-text">FINDE PASSENDEN PARTNER</span>
                     </button>
                 </div>

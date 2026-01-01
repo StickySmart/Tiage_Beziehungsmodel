@@ -11844,6 +11844,472 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // ═══════════════════════════════════════════════════════════════════════
+        // SLOT MACHINE - FINDE PASSENDEN PARTNER (ALLE KOMBINATIONEN)
+        // ═══════════════════════════════════════════════════════════════════════
+        // Iteriert durch ALLE möglichen Kombinationen (A, G, O, D) und findet
+        // die beste Kombination basierend auf dem aktuellen ICH-Profil.
+        // Bei Score-Gleichstand wird Bindungsmuster als Tie-Breaker verwendet.
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Globale Variablen für Slot Machine
+        let slotMachineResult = null;
+        let slotMachineBindung = { primary: null, secondary: null };
+
+        // Bindungsmuster Präferenzen für Tie-Breaker
+        const BINDUNGSMUSTER_PRAEFERENZEN = {
+            sicher: {
+                archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'ra', 'single', 'aromantisch'],
+                dominanz: ['ausgeglichen', 'switch', 'dominant', 'submissiv']
+            },
+            aengstlich: {
+                archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'single', 'ra', 'aromantisch'],
+                dominanz: ['submissiv', 'ausgeglichen', 'switch', 'dominant']
+            },
+            vermeidend: {
+                archetypen: ['lat', 'single', 'solopoly', 'ra', 'aromantisch', 'duo_flex', 'duo', 'polyamor'],
+                dominanz: ['ausgeglichen', 'dominant', 'switch', 'submissiv']
+            },
+            desorganisiert: {
+                archetypen: ['duo_flex', 'ra', 'polyamor', 'lat', 'duo', 'solopoly', 'single', 'aromantisch'],
+                dominanz: ['switch', 'ausgeglichen', 'dominant', 'submissiv']
+            }
+        };
+
+        // Alle möglichen Werte
+        const ALL_ARCHETYPES_SLOT = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
+        const ALL_GESCHLECHT_COMBINATIONS = [
+            { primary: 'mann', secondary: 'cis' },
+            { primary: 'mann', secondary: 'trans' },
+            { primary: 'mann', secondary: 'nonbinaer' },
+            { primary: 'frau', secondary: 'cis' },
+            { primary: 'frau', secondary: 'trans' },
+            { primary: 'frau', secondary: 'nonbinaer' },
+            { primary: 'inter', secondary: 'nonbinaer' },
+            { primary: 'inter', secondary: 'fluid' },
+            { primary: 'inter', secondary: 'suchend' }
+        ];
+        const ALL_ORIENTIERUNGEN = ['heterosexuell', 'homosexuell', 'bisexuell'];
+        const ALL_DOMINANZEN = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+
+        // Labels für die Anzeige
+        const ARCHETYP_LABELS = {
+            'single': 'Single', 'duo': 'Duo', 'duo_flex': 'Duo-Flex', 'ra': 'RA',
+            'lat': 'LAT', 'aromantisch': 'Aromantisch', 'solopoly': 'Solopoly', 'polyamor': 'Polyamor'
+        };
+        const GESCHLECHT_LABELS = {
+            'mann': 'Mann', 'frau': 'Frau', 'inter': 'Inter',
+            'cis': 'Cis', 'trans': 'Trans', 'nonbinaer': 'NB', 'fluid': 'Fluid', 'suchend': 'Such.'
+        };
+        const ORIENTIERUNG_LABELS = {
+            'heterosexuell': 'Hetero', 'homosexuell': 'Homo', 'bisexuell': 'Bi/Pan'
+        };
+        const DOMINANZ_LABELS = {
+            'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
+        };
+
+        /**
+         * Öffnet das Slot Machine Modal
+         */
+        function openSlotMachineModal() {
+            const modal = document.getElementById('slotMachineModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                resetSlotMachine();
+                // Lade gespeicherte Bindungsmuster aus TiageState
+                if (typeof TiageState !== 'undefined') {
+                    const saved = TiageState.get('bindungsmuster.ich');
+                    if (saved && saved.primary) {
+                        slotMachineBindung.primary = saved.primary;
+                        slotMachineBindung.secondary = saved.secondary;
+                        updateBindungsmusterUI();
+                        checkStartButtonState();
+                    }
+                }
+            }
+        }
+        window.openSlotMachineModal = openSlotMachineModal;
+
+        /**
+         * Schließt das Slot Machine Modal
+         */
+        function closeSlotMachineModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('slotMachineModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        window.closeSlotMachineModal = closeSlotMachineModal;
+
+        /**
+         * Setzt das Modal zurück auf Phase 1
+         */
+        function resetSlotMachine() {
+            document.getElementById('slotPhase1').style.display = 'block';
+            document.getElementById('slotPhase2').style.display = 'none';
+            document.getElementById('slotPhase3').style.display = 'none';
+            slotMachineResult = null;
+            // Bindungsmuster nicht zurücksetzen - die bleiben erhalten
+            updateBindungsmusterUI();
+            checkStartButtonState();
+        }
+        window.resetSlotMachine = resetSlotMachine;
+
+        /**
+         * Aktualisiert die Bindungsmuster-Buttons UI
+         */
+        function updateBindungsmusterUI() {
+            // Primary Buttons
+            document.querySelectorAll('#bindungPrimaryOptions .bindung-btn').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.value === slotMachineBindung.primary);
+            });
+            // Secondary Buttons
+            document.querySelectorAll('#bindungSecondaryOptions .bindung-btn').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.value === slotMachineBindung.secondary);
+            });
+        }
+
+        /**
+         * Wählt ein Bindungsmuster aus
+         */
+        function selectBindungsmuster(type, value) {
+            if (type === 'primary') {
+                slotMachineBindung.primary = slotMachineBindung.primary === value ? null : value;
+            } else {
+                slotMachineBindung.secondary = slotMachineBindung.secondary === value ? null : value;
+            }
+            updateBindungsmusterUI();
+            checkStartButtonState();
+
+            // Speichere in TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('bindungsmuster.ich', slotMachineBindung);
+            }
+        }
+        window.selectBindungsmuster = selectBindungsmuster;
+
+        /**
+         * Prüft ob der Start-Button aktiviert werden kann
+         */
+        function checkStartButtonState() {
+            const startBtn = document.getElementById('slotStartBtn');
+            if (startBtn) {
+                startBtn.disabled = !(slotMachineBindung.primary && slotMachineBindung.secondary);
+            }
+        }
+
+        /**
+         * Startet die Slot Machine Animation und Berechnung
+         */
+        function startSlotMachine() {
+            // Wechsel zu Phase 2
+            document.getElementById('slotPhase1').style.display = 'none';
+            document.getElementById('slotPhase2').style.display = 'block';
+
+            // Starte Berechnung und Animation
+            runSlotMachineAnimation();
+        }
+        window.startSlotMachine = startSlotMachine;
+
+        /**
+         * Führt die Slot Machine Animation und Berechnung durch
+         */
+        async function runSlotMachineAnimation() {
+            const ANIMATION_DURATION = 2000; // 2 Sekunden
+            const UPDATE_INTERVAL = 50; // Update alle 50ms
+
+            // Berechne alle Kombinationen im Hintergrund
+            const allResults = calculateAllCombinations();
+            const totalCombinations = allResults.length;
+
+            // Sortiere nach Score (beste zuerst)
+            allResults.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                // Bei Gleichstand: Tie-Breaker
+                return calculateTieBreaker(a) - calculateTieBreaker(b);
+            });
+
+            const bestResult = allResults[0];
+            slotMachineResult = bestResult;
+
+            // Animation starten
+            const reelA = document.getElementById('slotReelA');
+            const reelG = document.getElementById('slotReelG');
+            const reelO = document.getElementById('slotReelO');
+            const reelD = document.getElementById('slotReelD');
+            const valueA = document.getElementById('slotValueA');
+            const valueG = document.getElementById('slotValueG');
+            const valueO = document.getElementById('slotValueO');
+            const valueD = document.getElementById('slotValueD');
+            const scoreDisplay = document.getElementById('slotScoreValue');
+            const progressBar = document.getElementById('slotProgressBar');
+            const progressText = document.getElementById('slotProgressText');
+
+            // Spinning starten
+            [reelA, reelG, reelO, reelD].forEach(r => r.classList.add('spinning'));
+
+            const startTime = Date.now();
+            let currentIndex = 0;
+
+            const animationLoop = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / ANIMATION_DURATION, 1);
+
+                // Zeige zufällige/durchlaufende Werte
+                const displayIndex = Math.floor(progress * totalCombinations);
+                const currentCombo = allResults[Math.min(displayIndex, allResults.length - 1)];
+
+                // Update Anzeige
+                valueA.textContent = ARCHETYP_LABELS[currentCombo.archetyp] || currentCombo.archetyp;
+                const gLabel = `${GESCHLECHT_LABELS[currentCombo.geschlecht.primary]}-${GESCHLECHT_LABELS[currentCombo.geschlecht.secondary]}`;
+                valueG.textContent = gLabel;
+                valueO.textContent = ORIENTIERUNG_LABELS[currentCombo.orientierung] || currentCombo.orientierung;
+                valueD.textContent = DOMINANZ_LABELS[currentCombo.dominanz] || currentCombo.dominanz;
+
+                // Score mit Animation
+                scoreDisplay.textContent = currentCombo.score;
+                scoreDisplay.classList.add('updating');
+                setTimeout(() => scoreDisplay.classList.remove('updating'), 100);
+
+                // Progress Bar
+                progressBar.style.width = (progress * 100) + '%';
+                progressText.textContent = `${Math.floor(progress * totalCombinations)} / ${totalCombinations} Kombinationen`;
+
+                // Animation beenden
+                if (progress >= 1) {
+                    clearInterval(animationLoop);
+
+                    // Finales Ergebnis anzeigen
+                    [reelA, reelG, reelO, reelD].forEach(r => {
+                        r.classList.remove('spinning');
+                        r.classList.add('locked');
+                    });
+
+                    valueA.textContent = ARCHETYP_LABELS[bestResult.archetyp] || bestResult.archetyp;
+                    const finalGLabel = `${GESCHLECHT_LABELS[bestResult.geschlecht.primary]}-${GESCHLECHT_LABELS[bestResult.geschlecht.secondary]}`;
+                    valueG.textContent = finalGLabel;
+                    valueO.textContent = ORIENTIERUNG_LABELS[bestResult.orientierung] || bestResult.orientierung;
+                    valueD.textContent = DOMINANZ_LABELS[bestResult.dominanz] || bestResult.dominanz;
+                    scoreDisplay.textContent = bestResult.score;
+
+                    // Nach kurzer Pause zu Phase 3 wechseln
+                    setTimeout(() => showSlotResult(bestResult), 500);
+                }
+            }, UPDATE_INTERVAL);
+        }
+
+        /**
+         * Berechnet alle möglichen Kombinationen
+         */
+        function calculateAllCombinations() {
+            const results = [];
+
+            // ICH-Daten (fix)
+            const ichArchetype = currentArchetype || 'single';
+            const ichDims = personDimensions.ich || {};
+            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
+            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
+            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
+            const ichGfk = ichDims.gfk || 'mittel';
+
+            // Speichere globale Variablen
+            const savedCurrentArchetype = currentArchetype;
+            const savedSelectedPartner = selectedPartner;
+
+            try {
+                // Iteriere durch alle Kombinationen
+                for (const archetype of ALL_ARCHETYPES_SLOT) {
+                    for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
+                        for (const orientierung of ALL_ORIENTIERUNGEN) {
+                            for (const dominanz of ALL_DOMINANZEN) {
+                                // Partner-Person erstellen
+                                const partnerObj = {
+                                    archetyp: archetype,
+                                    geschlecht: geschlecht,
+                                    orientierung: { primary: orientierung, secondary: null },
+                                    dominanz: { primary: dominanz, secondary: null },
+                                    gfk: 'mittel'
+                                };
+
+                                // ICH-Person erstellen
+                                const ichObj = {
+                                    archetyp: ichArchetype,
+                                    geschlecht: validIchGeschlecht,
+                                    orientierung: validIchOrientierung,
+                                    dominanz: validIchDominanz,
+                                    gfk: ichGfk
+                                };
+
+                                // Globale Variablen für Berechnung setzen
+                                currentArchetype = ichArchetype;
+                                selectedPartner = archetype;
+
+                                let score = 0;
+
+                                try {
+                                    const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                                    const logosCheck = calculatePhilosophyCompatibility(ichArchetype, archetype);
+
+                                    if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck);
+                                        score = result.overall || 0;
+                                    } else if (pathosCheck.result === 'unvollständig') {
+                                        score = logosCheck.score || 50;
+                                    }
+                                } catch (e) {
+                                    // Fehler ignorieren
+                                }
+
+                                results.push({
+                                    archetyp: archetype,
+                                    geschlecht: geschlecht,
+                                    orientierung: orientierung,
+                                    dominanz: dominanz,
+                                    score: score
+                                });
+                            }
+                        }
+                    }
+                }
+            } finally {
+                // Globale Variablen wiederherstellen
+                currentArchetype = savedCurrentArchetype;
+                selectedPartner = savedSelectedPartner;
+            }
+
+            return results;
+        }
+
+        /**
+         * Berechnet den Tie-Breaker Score basierend auf Bindungsmuster
+         * Niedrigerer Wert = besser
+         */
+        function calculateTieBreaker(combo) {
+            const primary = slotMachineBindung.primary;
+            const secondary = slotMachineBindung.secondary;
+
+            let score = 0;
+
+            if (primary && BINDUNGSMUSTER_PRAEFERENZEN[primary]) {
+                const prefs = BINDUNGSMUSTER_PRAEFERENZEN[primary];
+                // Archetyp Rang (0-7, niedriger = besser) * 0.7
+                const archRank = prefs.archetypen.indexOf(combo.archetyp);
+                score += (archRank >= 0 ? archRank : 8) * 0.7;
+                // Dominanz Rang (0-3, niedriger = besser) * 0.7
+                const domRank = prefs.dominanz.indexOf(combo.dominanz);
+                score += (domRank >= 0 ? domRank : 4) * 0.7;
+            }
+
+            if (secondary && BINDUNGSMUSTER_PRAEFERENZEN[secondary]) {
+                const prefs = BINDUNGSMUSTER_PRAEFERENZEN[secondary];
+                // Sekundär mit 30% Gewichtung
+                const archRank = prefs.archetypen.indexOf(combo.archetyp);
+                score += (archRank >= 0 ? archRank : 8) * 0.3;
+                const domRank = prefs.dominanz.indexOf(combo.dominanz);
+                score += (domRank >= 0 ? domRank : 4) * 0.3;
+            }
+
+            return score;
+        }
+
+        /**
+         * Zeigt das Ergebnis in Phase 3
+         */
+        function showSlotResult(result) {
+            document.getElementById('slotPhase2').style.display = 'none';
+            document.getElementById('slotPhase3').style.display = 'block';
+
+            document.getElementById('resultArchetyp').textContent = ARCHETYP_LABELS[result.archetyp] || result.archetyp;
+            document.getElementById('resultGeschlecht').textContent =
+                `${GESCHLECHT_LABELS[result.geschlecht.primary]} (${GESCHLECHT_LABELS[result.geschlecht.secondary]})`;
+            document.getElementById('resultOrientierung').textContent = ORIENTIERUNG_LABELS[result.orientierung] || result.orientierung;
+            document.getElementById('resultDominanz').textContent = DOMINANZ_LABELS[result.dominanz] || result.dominanz;
+            document.getElementById('resultScore').textContent = result.score;
+        }
+
+        /**
+         * Wendet das Slot Machine Ergebnis auf das Partner-Profil an
+         */
+        function applySlotResult() {
+            if (!slotMachineResult) return;
+
+            const result = slotMachineResult;
+
+            // 1. Archetyp setzen
+            selectArchetypeFromGrid('partner', result.archetyp);
+
+            // 2. Geschlecht setzen
+            personDimensions.partner.geschlecht = {
+                primary: result.geschlecht.primary,
+                secondary: result.geschlecht.secondary
+            };
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions.partner.geschlecht = {
+                    primary: result.geschlecht.primary,
+                    secondary: result.geschlecht.secondary
+                };
+            }
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner.geschlecht', personDimensions.partner.geschlecht);
+            }
+
+            // 3. Orientierung setzen
+            personDimensions.partner.orientierung = {
+                primary: result.orientierung,
+                secondary: null
+            };
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions.partner.orientierung = {
+                    primary: result.orientierung,
+                    secondary: null
+                };
+            }
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner.orientierung', personDimensions.partner.orientierung);
+            }
+
+            // 4. Dominanz setzen
+            personDimensions.partner.dominanz = {
+                primary: result.dominanz,
+                secondary: null
+            };
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions.partner.dominanz = {
+                    primary: result.dominanz,
+                    secondary: null
+                };
+            }
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner.dominanz', personDimensions.partner.dominanz);
+            }
+
+            // 5. UI aktualisieren
+            updateAllDimensionButtons();
+            updateComparisonView();
+
+            // Profil neu berechnen
+            if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                ProfileCalculator.loadProfile('partner', {
+                    archetyp: result.archetyp,
+                    geschlecht: personDimensions.partner.geschlecht,
+                    dominanz: personDimensions.partner.dominanz,
+                    orientierung: personDimensions.partner.orientierung
+                });
+            }
+
+            // Modal schließen
+            closeSlotMachineModal();
+
+            // Feedback-Animation auf dem Button
+            const matchBtns = document.querySelectorAll('.best-match-btn:not(.ich-match-btn)');
+            matchBtns.forEach(btn => {
+                btn.classList.add('match-found');
+                setTimeout(() => btn.classList.remove('match-found'), 1000);
+            });
+        }
+        window.applySlotResult = applySlotResult;
+
+        // ═══════════════════════════════════════════════════════════════════════
         // HILFSFUNKTIONEN FÜR DIMENSIONEN
         // ═══════════════════════════════════════════════════════════════════════
 
