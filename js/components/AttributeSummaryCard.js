@@ -631,6 +631,88 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * MULTI-SELECT: Markiert/Demarkiert eine Hauptfrage zusammen mit allen ihren Nuancen
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage (z.B. '#B1')
+     */
+    function toggleHauptfrageSelection(hauptfrageId) {
+        // Hole Hauptfragen-Daten aus dem Cache
+        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
+            ? HauptfrageAggregation.getHauptfragen()
+            : {};
+
+        const hf = hauptfragen[hauptfrageId];
+        if (!hf) {
+            console.warn('[AttributeSummaryCard] Hauptfrage nicht gefunden:', hauptfrageId);
+            return;
+        }
+
+        // Sammle alle IDs: Hauptfrage + alle Nuancen
+        const allIds = [hauptfrageId, ...(hf.nuancen || [])];
+
+        // Prüfe ob alle bereits ausgewählt sind
+        const allSelected = allIds.every(id => selectedNeeds.has(id));
+
+        if (allSelected) {
+            // Alle abwählen
+            allIds.forEach(id => {
+                if (selectedNeeds.has(id)) {
+                    selectedNeeds.delete(id);
+                    originalNeedValues.delete(id);
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${id}"]`);
+                    if (needItem) {
+                        needItem.classList.remove('need-selected');
+                    }
+                }
+            });
+
+            // Hauptfrage-Item auch aktualisieren
+            const hfItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+            if (hfItem) {
+                hfItem.classList.remove('hauptfrage-selected');
+            }
+        } else {
+            // Alle auswählen
+            allIds.forEach(id => {
+                if (!selectedNeeds.has(id)) {
+                    selectedNeeds.add(id);
+                    const needObj = findNeedById(id);
+                    if (needObj) {
+                        originalNeedValues.set(id, needObj.value);
+                    }
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${id}"]`);
+                    if (needItem) {
+                        needItem.classList.add('need-selected');
+                    }
+                }
+            });
+
+            // Hauptfrage-Item auch als ausgewählt markieren
+            const hfItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+            if (hfItem) {
+                hfItem.classList.add('hauptfrage-selected');
+            }
+        }
+
+        // Event
+        document.dispatchEvent(new CustomEvent('needSelectionChange', {
+            bubbles: true,
+            detail: {
+                action: allSelected ? 'deselectHauptfrage' : 'selectHauptfrage',
+                hauptfrageId,
+                nuancenCount: (hf.nuancen || []).length,
+                totalSelected: selectedNeeds.size
+            }
+        }));
+
+        // Update Auswahl-Counter
+        updateSelectionCounter();
+
+        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} ${allSelected ? 'abgewählt' : 'ausgewählt'} mit ${(hf.nuancen || []).length} Nuancen. Total: ${selectedNeeds.size}`);
+    }
+
+    /**
      * MULTI-SELECT: Aktualisiert den Auswahl-Counter in der UI
      */
     function updateSelectionCounter() {
@@ -1845,19 +1927,27 @@ const AttributeSummaryCard = (function() {
                     lockTitle = 'Sperren (fixiert Wert, sperrt Nuancen)';
                 }
 
-                // Hauptfrage-Item mit Expand-Toggle und Slider
+                // Prüfe Auswahl-Status: Alle Nuancen + Hauptfrage ausgewählt?
+                const allIds = [hf.id, ...(hf.nuancen || [])];
+                const isHauptfrageSelected = allIds.every(id => selectedNeeds.has(id));
+                const someSelected = allIds.some(id => selectedNeeds.has(id));
+                const selectedClass = isHauptfrageSelected ? ' hauptfrage-selected' : (someSelected ? ' hauptfrage-partial-selected' : '');
+
+                // Hauptfrage-Item mit Expand-Toggle und Slider - CARD STYLE
                 html += `
-                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}" data-hauptfrage-id="${hf.id}">
-                    <div class="hauptfrage-header">
-                        <span class="hauptfrage-expand-icon" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
-                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;"
-                              onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
+                <div class="hauptfrage-item hauptfrage-card${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}${selectedClass}" data-hauptfrage-id="${hf.id}">
+                    <div class="hauptfrage-header"
+                         onclick="AttributeSummaryCard.toggleHauptfrageSelection('${hf.id}')"
+                         title="Klicken um Hauptfrage + alle Nuancen zu markieren">
+                        <span class="hauptfrage-expand-icon" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
+                        <span class="hauptfrage-select-icon${isHauptfrageSelected ? ' selected' : ''}">${isHauptfrageSelected ? '☑' : '☐'}</span>
+                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
                             ${hf.id} ${hf.label}${changedIndicator}
                         </span>
-                        <span class="hauptfrage-nuancen-count" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)${nuancenStatusInfo}` : '(direkt)'}</span>
-                        <div class="hauptfrage-controls">
+                        <span class="hauptfrage-nuancen-count" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)${nuancenStatusInfo}` : '(direkt)'}</span>
+                        <div class="hauptfrage-controls" onclick="event.stopPropagation();">
                             <span class="hauptfrage-lock-icon ${isEffectivelyLocked ? 'locked' : ''}${allNuancenLocked && !isHauptfrageLocked ? ' auto-locked' : ''}${someNuancenLocked ? ' partial-locked' : ''}"
-                                  onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageLock('${hf.id}', this)"
+                                  onclick="AttributeSummaryCard.toggleHauptfrageLock('${hf.id}', this)"
                                   title="${lockTitle}"></span>
                         </div>
                     </div>
@@ -4159,6 +4249,7 @@ const AttributeSummaryCard = (function() {
         clearNeedSelection,
         selectAllFilteredNeeds,
         invertNeedSelection,
+        toggleHauptfrageSelection,
         resetSelectedNeedsValues,
         resetFilters,
         updateSelectedNeedsValue,
