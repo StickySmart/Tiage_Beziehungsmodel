@@ -11849,6 +11849,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Globale Variablen für Slot Machine
         let slotMachineResult = null;
+        let slotMachineTop4Results = []; // NEU: Top 4 Ergebnisse
         let slotMachineBindung = { primary: null, secondary: null };
 
         // Bindungsmuster Präferenzen für Tie-Breaker
@@ -11945,6 +11946,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             document.getElementById('slotPhase2').style.display = 'none';
             document.getElementById('slotPhase3').style.display = 'none';
             slotMachineResult = null;
+            slotMachineTop4Results = []; // NEU: Top 4 zurücksetzen
             // Bindungsmuster nicht zurücksetzen - die bleiben erhalten
             updateBindungsmusterUI();
             checkStartButtonState();
@@ -12027,6 +12029,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const bestResult = allResults[0];
             slotMachineResult = bestResult;
+            // NEU: Top 4 speichern
+            slotMachineTop4Results = allResults.slice(0, 4);
 
             // Animation starten
             const reelA = document.getElementById('slotReelA');
@@ -12209,27 +12213,56 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Zeigt das Ergebnis in Phase 3
+         * Zeigt die Top 4 Ergebnisse in Phase 3
          */
         function showSlotResult(result) {
             document.getElementById('slotPhase2').style.display = 'none';
             document.getElementById('slotPhase3').style.display = 'block';
 
-            document.getElementById('resultArchetyp').textContent = ARCHETYP_LABELS[result.archetyp] || result.archetyp;
-            document.getElementById('resultGeschlecht').textContent =
-                `${GESCHLECHT_LABELS[result.geschlecht.primary]} (${GESCHLECHT_LABELS[result.geschlecht.secondary]})`;
-            document.getElementById('resultOrientierung').textContent = ORIENTIERUNG_LABELS[result.orientierung] || result.orientierung;
-            document.getElementById('resultDominanz').textContent = DOMINANZ_LABELS[result.dominanz] || result.dominanz;
-            document.getElementById('resultScore').textContent = result.score;
+            const listContainer = document.getElementById('slotTop4List');
+            if (!listContainer) return;
+
+            // Top 4 HTML generieren
+            const rankIcons = ['🥇', '🥈', '🥉', '4.'];
+            const rankClasses = ['gold', 'silver', 'bronze', 'fourth'];
+
+            let html = '';
+            slotMachineTop4Results.forEach((res, index) => {
+                const geschlechtLabel = `${GESCHLECHT_LABELS[res.geschlecht.primary]}-${GESCHLECHT_LABELS[res.geschlecht.secondary]}`;
+                const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung;
+                const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz;
+                const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
+
+                html += `
+                    <div class="slot-top4-item rank-${index + 1}">
+                        <div class="slot-top4-rank ${rankClasses[index]}">${rankIcons[index]}</div>
+                        <div class="slot-top4-info">
+                            <div class="slot-top4-main">
+                                <span class="slot-top4-archetyp">${archetypLabel}</span>
+                                <span class="slot-top4-score">${res.score}</span>
+                            </div>
+                            <div class="slot-top4-details">
+                                <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
+                                <span class="slot-top4-detail">O: ${orientierungLabel}</span>
+                                <span class="slot-top4-detail">D: ${dominanzLabel}</span>
+                            </div>
+                        </div>
+                        <button class="slot-top4-apply-btn" onclick="applySlotResult(${index})">✓ Übernehmen</button>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
         }
 
         /**
          * Wendet das Slot Machine Ergebnis auf das Partner-Profil an
+         * @param {number} index - Index des Ergebnisses in slotMachineTop4Results (0-3), default 0
          */
-        function applySlotResult() {
-            if (!slotMachineResult) return;
-
-            const result = slotMachineResult;
+        function applySlotResult(index = 0) {
+            // NEU: Wähle Ergebnis aus Top 4 basierend auf Index
+            const result = slotMachineTop4Results[index] || slotMachineResult;
+            if (!result) return;
 
             // 1. Archetyp setzen
             selectArchetypeFromGrid('partner', result.archetyp);

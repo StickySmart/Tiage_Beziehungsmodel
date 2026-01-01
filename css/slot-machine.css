@@ -246,9 +246,120 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ERGEBNIS (Phase 3)
+   TOP 4 ERGEBNISSE (Phase 3)
    ═══════════════════════════════════════════════════════════════════════════ */
 
+.slot-top4-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.slot-top4-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    transition: all 0.2s ease;
+}
+
+.slot-top4-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.slot-top4-item.rank-1 {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+.slot-top4-item.rank-2 {
+    background: rgba(192, 192, 192, 0.1);
+    border-color: rgba(192, 192, 192, 0.3);
+}
+
+.slot-top4-item.rank-3 {
+    background: rgba(205, 127, 50, 0.1);
+    border-color: rgba(205, 127, 50, 0.3);
+}
+
+.slot-top4-rank {
+    font-size: 20px;
+    font-weight: bold;
+    min-width: 32px;
+    text-align: center;
+}
+
+.slot-top4-rank.gold { color: #FFD700; }
+.slot-top4-rank.silver { color: #C0C0C0; }
+.slot-top4-rank.bronze { color: #CD7F32; }
+.slot-top4-rank.fourth { color: #888; }
+
+.slot-top4-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.slot-top4-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.slot-top4-archetyp {
+    font-weight: bold;
+    color: #e94560;
+    font-size: 14px;
+}
+
+.slot-top4-score {
+    background: linear-gradient(135deg, #00d26a 0%, #4A90E2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.slot-top4-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.slot-top4-detail {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.slot-top4-apply-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00d26a 0%, #00a854 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.slot-top4-apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 10px rgba(0, 210, 106, 0.4);
+}
+
+/* Legacy - für Rückwärtskompatibilität */
 .slot-result {
     background: rgba(0, 210, 106, 0.1);
     border: 2px solid rgba(0, 210, 106, 0.3);
@@ -370,5 +481,37 @@
 
     .slot-score-value {
         font-size: 36px;
+    }
+
+    /* Top 4 Liste - Mobile */
+    .slot-top4-list {
+        max-height: 350px;
+    }
+
+    .slot-top4-item {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .slot-top4-rank {
+        font-size: 16px;
+        min-width: 28px;
+    }
+
+    .slot-top4-archetyp {
+        font-size: 13px;
+    }
+
+    .slot-top4-score {
+        font-size: 14px;
+    }
+
+    .slot-top4-details {
+        font-size: 10px;
+    }
+
+    .slot-top4-apply-btn {
+        padding: 6px 10px;
+        font-size: 11px;
     }
 }

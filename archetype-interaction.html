@@ -546,36 +546,16 @@
                     <div class="slot-progress-text" id="slotProgressText">0 / 864 Kombinationen</div>
                 </div>
 
-                <!-- Phase 3: Ergebnis -->
+                <!-- Phase 3: Top 4 Ergebnisse -->
                 <div id="slotPhase3" class="slot-phase" style="display: none;">
-                    <h3 style="color: #00d26a; margin-bottom: 20px; text-align: center;">✨ Beste Kombination gefunden!</h3>
+                    <h3 style="color: #00d26a; margin-bottom: 15px; text-align: center;">🏆 Top 4 Partner gefunden!</h3>
 
-                    <div class="slot-result">
-                        <div class="slot-result-row">
-                            <span class="result-label">Archetyp:</span>
-                            <span class="result-value" id="resultArchetyp">-</span>
-                        </div>
-                        <div class="slot-result-row">
-                            <span class="result-label">Geschlecht:</span>
-                            <span class="result-value" id="resultGeschlecht">-</span>
-                        </div>
-                        <div class="slot-result-row">
-                            <span class="result-label">Orientierung:</span>
-                            <span class="result-value" id="resultOrientierung">-</span>
-                        </div>
-                        <div class="slot-result-row">
-                            <span class="result-label">Dominanz:</span>
-                            <span class="result-value" id="resultDominanz">-</span>
-                        </div>
-                        <div class="slot-result-row slot-result-score">
-                            <span class="result-label">Score:</span>
-                            <span class="result-value" id="resultScore">-</span>
-                        </div>
+                    <div class="slot-top4-list" id="slotTop4List">
+                        <!-- Wird dynamisch gefüllt -->
                     </div>
 
-                    <div class="slot-result-actions">
-                        <button class="slot-apply-btn" onclick="applySlotResult()">✓ Übernehmen</button>
-                        <button class="slot-retry-btn" onclick="resetSlotMachine()">↻ Nochmal</button>
+                    <div class="slot-result-actions" style="margin-top: 15px;">
+                        <button class="slot-retry-btn" onclick="resetSlotMachine()">↻ Nochmal suchen</button>
                     </div>
                 </div>
             </div>
