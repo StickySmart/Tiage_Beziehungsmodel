@@ -11282,11 +11282,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
                     const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
 
-                    // Skaliere auf 0.5-1.5
-                    R1 = 0.5 + match1;
-                    R2 = 0.5 + match2;
-                    R3 = 0.5 + match3;
-                    R4 = 0.5 + match4;
+                    // Skaliere auf 0.5-1.5+ (quadratisch - gute Matches werden stärker belohnt)
+                    R1 = 0.5 + (match1 * match1);
+                    R2 = 0.5 + (match2 * match2);
+                    R3 = 0.5 + (match3 * match3);
+                    R4 = 0.5 + (match4 * match4);
 
                     console.log('[calculateRelationshipQuality] R-Faktoren aus SSOT berechnet:', { R1, R2, R3, R4, matching: matching.score });
                 }
