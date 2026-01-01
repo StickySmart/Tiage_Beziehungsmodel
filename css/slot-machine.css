@@ -6,6 +6,42 @@
  */
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   CENTER BUTTON (in der mittleren Karte)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.slot-machine-center-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+    border: 2px solid #e94560;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.slot-machine-center-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.5);
+}
+
+.slot-machine-center-btn .match-icon {
+    font-size: 18px;
+}
+
+.slot-machine-center-btn .match-text {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    MODAL CONTAINER
    ═══════════════════════════════════════════════════════════════════════════ */
 
