@@ -484,28 +484,32 @@ const AttributeSummaryCard = (function() {
      */
     function selectAllFilteredNeeds() {
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
-        // FILTER DEAKTIVIERT - Zeige alle Bedürfnisse ohne DimensionKategorieFilter
+        // Nutze DimensionKategorieFilter.shouldShowNeed() für korrekte Filterung
         const visibleNeeds = flatNeeds.filter(need => {
-            // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
-            // if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
-            //     return false;
-            // }
-            // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
+            // DimensionKategorieFilter prüfen (primärer Filter)
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return false;
+            }
+            // Zusätzlich DOM-basierte Filter prüfen (Suchfilter etc.)
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
+                return false;
+            }
+            // In Hauptfragen-Modus: Prüfe ob die zugehörige Hauptfrage sichtbar ist
+            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
             return true;
         });
 
         // Ermittle nicht-sichtbare (gefilterte) Bedürfnisse
-        // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
         const hiddenNeeds = flatNeeds.filter(need => {
-            // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
-            // if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
-            //     return true;
-            // }
-            // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
+            // DimensionKategorieFilter prüfen
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return true;
+            }
+            // DOM-basierte Filter
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return true;
@@ -583,6 +587,11 @@ const AttributeSummaryCard = (function() {
     function invertNeedSelection() {
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
         const visibleNeeds = flatNeeds.filter(need => {
+            // DimensionKategorieFilter prüfen (primärer Filter)
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return false;
+            }
+            // DOM-basierte Filter
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
@@ -631,7 +640,7 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Markiert/Demarkiert eine Hauptfrage zusammen mit allen ihren Nuancen
+     * MULTI-SELECT: Markiert/Demarkiert eine Hauptfrage zusammen mit allen ihren GEFILTERTEN Nuancen
      * @param {string} hauptfrageId - Die #B-ID der Hauptfrage (z.B. '#B1')
      */
     function toggleHauptfrageSelection(hauptfrageId) {
@@ -646,8 +655,27 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        // Sammle alle IDs: Hauptfrage + alle Nuancen
-        const allIds = [hauptfrageId, ...(hf.nuancen || [])];
+        // Sammle alle IDs: Hauptfrage + alle Nuancen - NUR GEFILTERTE
+        const allNuancen = hf.nuancen || [];
+        const filteredNuancen = allNuancen.filter(nuanceId => {
+            // DimensionKategorieFilter prüfen
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(nuanceId)) {
+                return false;
+            }
+            return true;
+        });
+
+        // Hauptfrage selbst auch prüfen
+        const hauptfrageVisible = typeof DimensionKategorieFilter === 'undefined' ||
+            DimensionKategorieFilter.shouldShowNeed(hauptfrageId);
+
+        // Alle sichtbaren IDs sammeln
+        const allIds = hauptfrageVisible ? [hauptfrageId, ...filteredNuancen] : filteredNuancen;
+
+        if (allIds.length === 0) {
+            console.log('[AttributeSummaryCard] Keine sichtbaren Nuancen für', hauptfrageId);
+            return;
+        }
 
         // Prüfe ob alle bereits ausgewählt sind
         const allSelected = allIds.every(id => selectedNeeds.has(id));
@@ -701,7 +729,7 @@ const AttributeSummaryCard = (function() {
             detail: {
                 action: allSelected ? 'deselectHauptfrage' : 'selectHauptfrage',
                 hauptfrageId,
-                nuancenCount: (hf.nuancen || []).length,
+                nuancenCount: filteredNuancen.length,
                 totalSelected: selectedNeeds.size
             }
         }));
@@ -709,7 +737,7 @@ const AttributeSummaryCard = (function() {
         // Update Auswahl-Counter
         updateSelectionCounter();
 
-        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} ${allSelected ? 'abgewählt' : 'ausgewählt'} mit ${(hf.nuancen || []).length} Nuancen. Total: ${selectedNeeds.size}`);
+        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} ${allSelected ? 'abgewählt' : 'ausgewählt'} mit ${filteredNuancen.length} gefilterten Nuancen. Total: ${selectedNeeds.size}`);
     }
 
     /**
