@@ -1099,6 +1099,11 @@ const TiageState = (function() {
                     if (parsed.profileReview) {
                         this.set('profileReview', parsed.profileReview);
                     }
+                    // Bindungsmuster laden
+                    if (parsed.bindungsmuster) {
+                        this.set('bindungsmuster', parsed.bindungsmuster);
+                        console.log('[TiageState] loadFromStorage - bindungsmuster geladen:', JSON.stringify(parsed.bindungsmuster));
+                    }
                     // UI Settings laden
                     if (parsed.ui) {
                         if (parsed.ui.matchModalView) {
@@ -1172,6 +1177,8 @@ const TiageState = (function() {
                     gewichtungen: gewichtungen,
                     resonanzFaktoren: this.get('resonanzFaktoren'),
                     profileReview: this.get('profileReview'),
+                    // Bindungsmuster für Slot Machine Tie-Breaker
+                    bindungsmuster: this.get('bindungsmuster'),
                     // UI Settings - persistente Einstellungen
                     ui: {
                         matchModalView: this.get('ui.matchModalView'),
