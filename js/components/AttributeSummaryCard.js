@@ -455,6 +455,9 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { needId, selected: selectedNeeds.has(needId), totalSelected: selectedNeeds.size }
         }));
+
+        // Update Auswahl-Counter
+        updateSelectionCounter();
     }
 
     /**
@@ -469,6 +472,9 @@ const AttributeSummaryCard = (function() {
         });
         selectedNeeds.clear();
         originalNeedValues.clear();
+
+        // Update Auswahl-Counter
+        updateSelectionCounter();
     }
 
     /**
@@ -565,6 +571,75 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { action: allSelected ? 'deselectAll' : 'selectAll', totalSelected: selectedNeeds.size }
         }));
+
+        // Update Auswahl-Counter
+        updateSelectionCounter();
+    }
+
+    /**
+     * MULTI-SELECT: Kehrt die Auswahl aller sichtbaren Bedürfnisse um
+     * Ausgewählte werden abgewählt und umgekehrt
+     */
+    function invertNeedSelection() {
+        // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
+        const visibleNeeds = flatNeeds.filter(need => {
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
+                return false;
+            }
+            return true;
+        });
+
+        if (visibleNeeds.length === 0) {
+            return;
+        }
+
+        // Invertiere die Auswahl für alle sichtbaren
+        visibleNeeds.forEach(need => {
+            if (selectedNeeds.has(need.id)) {
+                // War ausgewählt -> abwählen
+                selectedNeeds.delete(need.id);
+                originalNeedValues.delete(need.id);
+
+                const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                if (needItem) {
+                    needItem.classList.remove('need-selected');
+                }
+            } else {
+                // War nicht ausgewählt -> auswählen
+                selectedNeeds.add(need.id);
+                const needObj = findNeedById(need.id);
+                if (needObj) {
+                    originalNeedValues.set(need.id, needObj.value);
+                }
+
+                const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                if (needItem) {
+                    needItem.classList.add('need-selected');
+                }
+            }
+        });
+
+        // Event
+        document.dispatchEvent(new CustomEvent('needSelectionChange', {
+            bubbles: true,
+            detail: { action: 'invert', totalSelected: selectedNeeds.size }
+        }));
+
+        // Update Auswahl-Counter
+        updateSelectionCounter();
+    }
+
+    /**
+     * MULTI-SELECT: Aktualisiert den Auswahl-Counter in der UI
+     */
+    function updateSelectionCounter() {
+        const counter = document.querySelector('.selection-counter');
+        if (counter) {
+            const count = selectedNeeds.size;
+            counter.textContent = count > 0 ? `${count} markiert` : '';
+            counter.classList.toggle('has-selection', count > 0);
+        }
     }
 
     /**
@@ -1669,6 +1744,14 @@ const AttributeSummaryCard = (function() {
                         onclick="AttributeSummaryCard.resetSort()" title="Sortierung zurücksetzen">✕</button>
             </div>
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
+
+            <div class="flat-needs-selection-bar">
+                <span class="flat-needs-selection-label">Markieren:</span>
+                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds()" title="Alle sichtbaren Bedürfnisse auswählen">✓ Alle</button>
+                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
+                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Auswahl umkehren">⇄ Umkehren</button>
+                <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
+            </div>
         </div>`;
 
         // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
@@ -2149,6 +2232,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Slider-Input-Handler für flache Darstellung
+     * BULK-EDIT: Wenn das Bedürfnis markiert ist, werden alle markierten mit geändert
      */
     function onFlatSliderInput(needId, value, sliderElement) {
         const needObj = findNeedById(needId);
@@ -2156,6 +2240,11 @@ const AttributeSummaryCard = (function() {
 
         const numValue = parseInt(value, 10);
         if (isNaN(numValue)) return;
+
+        // BULK-EDIT: Wenn dieses Bedürfnis markiert ist, alle markierten aktualisieren
+        if (selectedNeeds.has(needId) && selectedNeeds.size > 1) {
+            updateAllSelectedNeedsUI(numValue, needId);
+        }
 
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { value: numValue });
@@ -2193,6 +2282,52 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
         updateLockedCountDisplay();
+    }
+
+    /**
+     * BULK-EDIT: Aktualisiert alle markierten Bedürfnisse auf den gleichen Wert
+     * @param {number} value - Der neue Wert
+     * @param {string} excludeNeedId - Das Bedürfnis das gerade geändert wird (bereits aktualisiert)
+     */
+    function updateAllSelectedNeedsUI(value, excludeNeedId) {
+        selectedNeeds.forEach(selectedNeedId => {
+            if (selectedNeedId === excludeNeedId) return; // Skip das aktuelle
+
+            const selectedNeedObj = findNeedById(selectedNeedId);
+            if (selectedNeedObj?.locked) return; // Skip gesperrte
+
+            // Update Daten
+            upsertNeed(selectedNeedId, { value: value });
+
+            // Update UI
+            const selectedNeedItem = document.querySelector(`.flat-need-item[data-need="${selectedNeedId}"]`);
+            if (selectedNeedItem) {
+                const slider = selectedNeedItem.querySelector('.need-slider');
+                const input = selectedNeedItem.querySelector('.flat-need-input');
+
+                if (slider) {
+                    slider.value = value;
+                    // Slider-Track-Hintergrund aktualisieren
+                    const dimColor = getDimensionColor(selectedNeedId);
+                    if (dimColor) {
+                        slider.style.background = getSliderFillGradient(dimColor, value, slider);
+                    }
+                }
+                if (input) input.value = value;
+
+                // Changed-Indicator aktualisieren
+                updateChangedIndicator(selectedNeedItem, selectedNeedId, value);
+            }
+
+            // Event für Änderungstracking
+            document.dispatchEvent(new CustomEvent('flatNeedChange', {
+                bubbles: true,
+                detail: { needId: selectedNeedId, value: value, bulk: true }
+            }));
+
+            // Aktualisiere Hauptfrage-Aggregation
+            updateParentHauptfrageValue(selectedNeedId);
+        });
     }
 
     /**
@@ -2920,11 +3055,18 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Toggle Lock für ein Bedürfnis in der flachen Darstellung
+     * BULK-EDIT: Wenn das Bedürfnis markiert ist, werden alle markierten mit gesperrt/entsperrt
      */
     function toggleFlatNeedLock(needId, lockElement) {
         console.log('[DEBUG toggleFlatNeedLock] Called with:', needId);
         const needObj = findNeedById(needId);
         const newLockState = needObj ? !needObj.locked : true;
+
+        // BULK-EDIT: Wenn dieses Bedürfnis markiert ist, alle markierten sperren/entsperren
+        if (selectedNeeds.has(needId) && selectedNeeds.size > 1) {
+            lockSelectedNeeds(newLockState);
+            return; // lockSelectedNeeds handled alles
+        }
 
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { locked: newLockState });
@@ -4016,10 +4158,12 @@ const AttributeSummaryCard = (function() {
         toggleNeedSelection,
         clearNeedSelection,
         selectAllFilteredNeeds,
+        invertNeedSelection,
         resetSelectedNeedsValues,
         resetFilters,
         updateSelectedNeedsValue,
         lockSelectedNeeds,
+        getSelectedNeeds: function() { return selectedNeeds; },
         // NEU: Person-spezifische Lock-Synchronisierung
         syncLocksFromState: syncLocksFromTiageState
     };
