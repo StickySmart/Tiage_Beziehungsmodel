@@ -1,0 +1,338 @@
+/**
+ * SLOT MACHINE MODAL CSS
+ * Styles für das "Finde passenden Partner" Slot-Machine Modal
+ *
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODAL CONTAINER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.slot-machine-modal {
+    border: 2px solid #e94560;
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+}
+
+.slot-phase {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BINDUNGSMUSTER AUSWAHL (Phase 1)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bindung-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bindung-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.bindung-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.bindung-btn:hover {
+    background: rgba(74, 144, 226, 0.2);
+    border-color: #4A90E2;
+}
+
+.bindung-btn.selected {
+    background: rgba(233, 69, 96, 0.3);
+    border-color: #e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+}
+
+.bindung-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.bindung-name {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.bindung-desc {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 3px;
+}
+
+/* Start Button */
+.slot-start-btn {
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slot-start-btn:hover:not(:disabled) {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.5);
+}
+
+.slot-start-btn:disabled {
+    background: linear-gradient(135deg, #555 0%, #444 100%);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SLOT MACHINE DISPLAY (Phase 2)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.slot-machine-display {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.slot-reel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 90px;
+    transition: all 0.1s ease;
+}
+
+.slot-reel.spinning {
+    animation: slotSpin 0.1s infinite;
+    border-color: #e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
+}
+
+@keyframes slotSpin {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.slot-reel.locked {
+    border-color: #00d26a;
+    box-shadow: 0 0 15px rgba(0, 210, 106, 0.5);
+}
+
+.slot-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.slot-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Score Display */
+.slot-score-display {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.slot-score-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+}
+
+.slot-score-value {
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00d26a 0%, #4A90E2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all 0.15s ease;
+}
+
+.slot-score-value.updating {
+    transform: scale(1.1);
+}
+
+/* Progress Bar */
+.slot-progress {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.slot-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #e94560 0%, #00d26a 100%);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.slot-progress-text {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ERGEBNIS (Phase 3)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.slot-result {
+    background: rgba(0, 210, 106, 0.1);
+    border: 2px solid rgba(0, 210, 106, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.slot-result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slot-result-row:last-child {
+    border-bottom: none;
+}
+
+.slot-result-row.slot-result-score {
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px solid rgba(0, 210, 106, 0.3);
+    border-bottom: none;
+}
+
+.result-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.result-value {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.slot-result-score .result-value {
+    font-size: 24px;
+    color: #00d26a;
+}
+
+/* Result Actions */
+.slot-result-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.slot-apply-btn,
+.slot-retry-btn {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.slot-apply-btn {
+    background: linear-gradient(135deg, #00d26a 0%, #00a854 100%);
+    color: white;
+}
+
+.slot-apply-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 210, 106, 0.4);
+}
+
+.slot-retry-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.slot-retry-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 500px) {
+    .bindung-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .bindung-btn {
+        padding: 10px 6px;
+    }
+
+    .bindung-icon {
+        font-size: 20px;
+    }
+
+    .bindung-name {
+        font-size: 11px;
+    }
+
+    .bindung-desc {
+        font-size: 9px;
+    }
+
+    .slot-machine-display {
+        gap: 8px;
+    }
+
+    .slot-reel {
+        min-width: 70px;
+        padding: 8px;
+    }
+
+    .slot-value {
+        font-size: 12px;
+    }
+
+    .slot-score-value {
+        font-size: 36px;
+    }
+}

@@ -164,6 +164,21 @@ const TiageState = (function() {
             partner: {
                 lockedNeeds: {}
             }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // BINDUNGSMUSTER (Attachment Styles) - für Tie-Breaker bei Match-Suche
+        // ═══════════════════════════════════════════════════════════════════════
+        // Nach Bowlby/Ainsworth:
+        // - 'sicher': Kann Nähe und Autonomie balancieren, vertraut
+        // - 'aengstlich': Angst vor Verlassenwerden, klammert, braucht Bestätigung
+        // - 'vermeidend': Hält Distanz, zeigt wenig Gefühle, "braucht niemanden"
+        // - 'desorganisiert': Chaotisch, will Nähe und flüchtet gleichzeitig
+        bindungsmuster: {
+            ich: {
+                primary: null,    // 'sicher', 'aengstlich', 'vermeidend', 'desorganisiert'
+                secondary: null   // Zweites Muster für Tie-Breaker (30% Gewichtung)
+            }
         }
     };
 
@@ -205,6 +220,8 @@ const TiageState = (function() {
         'profileReview': [],
         'profileReview.ich': [],
         'profileReview.partner': [],
+        'bindungsmuster': [],
+        'bindungsmuster.ich': [],
         '*': []  // Wildcard - receives ALL updates
     };
 
