@@ -11939,27 +11939,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.closeSlotMachineModal = closeSlotMachineModal;
 
         /**
-         * Schließt Modal und navigiert zu den ICH-Attributen
+         * Schließt Modal und öffnet die ICH-Attribute Seite
          */
         function goToIchAttributes() {
             // Modal schließen
             closeSlotMachineModal();
             resetSlotMachine();
 
-            // Zur ICH-Karte scrollen (Desktop) oder ICH-Tab aktivieren (Mobile)
-            const isMobile = window.innerWidth <= 768;
-
-            if (isMobile) {
-                // Mobile: ICH-Tab aktivieren
-                const ichTab = document.querySelector('[data-tab="ich"]');
-                if (ichTab) ichTab.click();
-            } else {
-                // Desktop: Zur ICH-Karte scrollen
-                const ichCard = document.querySelector('.person-card.ich-card') ||
-                               document.querySelector('.archetype-card:first-child');
-                if (ichCard) {
-                    ichCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+            // Direkt die Attribute-Seite für ICH öffnen (wie der lila ATTRIBUTE Button)
+            const ichArchetyp = getSelectedArchetype ? getSelectedArchetype('ich') : (currentArchetype || 'single');
+            if (typeof openNeedsEditorPage === 'function') {
+                openNeedsEditorPage(ichArchetyp, 'ich');
             }
         }
         window.goToIchAttributes = goToIchAttributes;
