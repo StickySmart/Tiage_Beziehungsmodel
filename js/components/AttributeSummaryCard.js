@@ -473,6 +473,11 @@ const AttributeSummaryCard = (function() {
         selectedNeeds.clear();
         originalNeedValues.clear();
 
+        // FIX: Auch Hauptfrage-Selection-Classes entfernen
+        document.querySelectorAll('.hauptfrage-item.hauptfrage-selected, .hauptfrage-item.hauptfrage-partial-selected').forEach(item => {
+            item.classList.remove('hauptfrage-selected', 'hauptfrage-partial-selected');
+        });
+
         // Update Auswahl-Counter
         updateSelectionCounter();
     }
@@ -483,6 +488,9 @@ const AttributeSummaryCard = (function() {
      * WICHTIG: Bei aktiven Filtern werden NUR die gefilterten Bedürfnisse berücksichtigt
      */
     function selectAllFilteredNeeds() {
+        // Prüfe ob wir in Hauptfragen-Modus sind
+        const isHauptfragenMode = document.querySelector('.flat-needs-list.hauptfragen-mode') !== null;
+
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
         // Nutze DimensionKategorieFilter.shouldShowNeed() für korrekte Filterung
         const visibleNeeds = flatNeeds.filter(need => {
@@ -495,11 +503,34 @@ const AttributeSummaryCard = (function() {
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
+
             // In Hauptfragen-Modus: Prüfe ob die zugehörige Hauptfrage sichtbar ist
             const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
+
+            // FIX: In Hauptfragen-Modus müssen wir prüfen ob das Item tatsächlich sichtbar ist
+            // Wenn weder needItem noch hauptfrageItem existiert, ist dies eine Nuance einer nicht-expandierten Hauptfrage
+            if (isHauptfragenMode && !needItem && !hauptfrageItem) {
+                // Prüfe ob die Parent-Hauptfrage existiert und expanded ist
+                if (typeof HauptfrageAggregation !== 'undefined') {
+                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                    if (parentHf) {
+                        // Es ist eine Nuance - prüfe ob Parent expanded ist
+                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                        if (!parentItem || !parentItem.classList.contains('expanded')) {
+                            // Parent nicht expanded = Nuance nicht sichtbar
+                            return false;
+                        }
+                        // Prüfe auch ob Parent durch Filter versteckt ist
+                        if (parentItem && parentItem.classList.contains('filter-hidden')) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             return true;
         });
 
@@ -514,6 +545,21 @@ const AttributeSummaryCard = (function() {
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return true;
             }
+
+            // FIX: In Hauptfragen-Modus - Nuancen von nicht-expandierten Hauptfragen sind hidden
+            if (isHauptfragenMode && !needItem) {
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+                if (!hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
+                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                    if (parentHf) {
+                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                        if (!parentItem || !parentItem.classList.contains('expanded')) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         });
 
@@ -576,8 +622,9 @@ const AttributeSummaryCard = (function() {
             detail: { action: allSelected ? 'deselectAll' : 'selectAll', totalSelected: selectedNeeds.size }
         }));
 
-        // Update Auswahl-Counter
+        // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
+        updateHauptfragenSelectionVisuals();
     }
 
     /**
@@ -585,6 +632,9 @@ const AttributeSummaryCard = (function() {
      * Ausgewählte werden abgewählt und umgekehrt
      */
     function invertNeedSelection() {
+        // Prüfe ob wir in Hauptfragen-Modus sind
+        const isHauptfragenMode = document.querySelector('.flat-needs-list.hauptfragen-mode') !== null;
+
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
         const visibleNeeds = flatNeeds.filter(need => {
             // DimensionKategorieFilter prüfen (primärer Filter)
@@ -596,6 +646,24 @@ const AttributeSummaryCard = (function() {
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
+
+            // FIX: In Hauptfragen-Modus müssen wir prüfen ob das Item tatsächlich sichtbar ist
+            if (isHauptfragenMode && !needItem) {
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+                if (!hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
+                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                    if (parentHf) {
+                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                        if (!parentItem || !parentItem.classList.contains('expanded')) {
+                            return false;
+                        }
+                        if (parentItem && parentItem.classList.contains('filter-hidden')) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             return true;
         });
 
@@ -635,8 +703,9 @@ const AttributeSummaryCard = (function() {
             detail: { action: 'invert', totalSelected: selectedNeeds.size }
         }));
 
-        // Update Auswahl-Counter
+        // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
+        updateHauptfragenSelectionVisuals();
     }
 
     /**
@@ -750,6 +819,36 @@ const AttributeSummaryCard = (function() {
             counter.textContent = count > 0 ? `${count} markiert` : '';
             counter.classList.toggle('has-selection', count > 0);
         }
+    }
+
+    /**
+     * MULTI-SELECT: Aktualisiert die visuellen Selektions-Klassen aller Hauptfragen
+     * Basierend auf dem aktuellen Zustand von selectedNeeds
+     */
+    function updateHauptfragenSelectionVisuals() {
+        if (typeof HauptfrageAggregation === 'undefined') return;
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        if (!hauptfragen) return;
+
+        document.querySelectorAll('.hauptfrage-item[data-hauptfrage-id]').forEach(hfItem => {
+            const hfId = hfItem.getAttribute('data-hauptfrage-id');
+            const hf = hauptfragen[hfId];
+            if (!hf) return;
+
+            // Prüfe Auswahl-Status: Alle Nuancen + Hauptfrage ausgewählt?
+            const allIds = [hfId, ...(hf.nuancen || [])];
+            const allSelected = allIds.every(id => selectedNeeds.has(id));
+            const someSelected = allIds.some(id => selectedNeeds.has(id));
+
+            // Aktualisiere Klassen
+            hfItem.classList.remove('hauptfrage-selected', 'hauptfrage-partial-selected');
+            if (allSelected) {
+                hfItem.classList.add('hauptfrage-selected');
+            } else if (someSelected) {
+                hfItem.classList.add('hauptfrage-partial-selected');
+            }
+        });
     }
 
     /**
