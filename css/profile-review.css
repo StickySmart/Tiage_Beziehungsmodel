@@ -2409,6 +2409,46 @@ input.resonanz-input:focus {
     margin-top: 2px;
 }
 
+/* Reset Button für markierte Werte */
+.bulk-reset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    min-width: 48px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 4px;
+}
+
+.bulk-reset-btn:hover {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.35) 0%, rgba(245, 158, 11, 0.25) 100%);
+    border-color: rgba(251, 191, 36, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+}
+
+.bulk-reset-btn:active {
+    transform: scale(0.95);
+}
+
+.bulk-reset-btn .bulk-btn-icon {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fbbf24;
+}
+
+.bulk-reset-btn .bulk-btn-label {
+    font-size: 9px;
+    color: var(--text-muted, #888);
+    margin-top: 2px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */
