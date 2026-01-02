@@ -2176,15 +2176,19 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
-                ${selectedNeeds.size > 0 && filterActive ? `
+                ${selectedNeeds.size > 0 ? `
                 <div class="bulk-increment-card">
+                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen">
+                        <span class="bulk-btn-icon">+</span>
+                        <span class="bulk-btn-label">5</span>
+                    </button>
                     <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(5)" title="Alle markierten Werte um 5 verringern">
                         <span class="bulk-btn-icon">−</span>
                         <span class="bulk-btn-label">5</span>
                     </button>
-                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen">
-                        <span class="bulk-btn-icon">+</span>
-                        <span class="bulk-btn-label">5</span>
+                    <button class="bulk-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues()" title="Markierte Werte auf Original zurücksetzen (gesperrte bleiben unverändert)">
+                        <span class="bulk-btn-icon">↺</span>
+                        <span class="bulk-btn-label">Reset</span>
                     </button>
                 </div>` : ''}
             </div>
