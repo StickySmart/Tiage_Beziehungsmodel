@@ -501,8 +501,16 @@ TiageSynthesis.NeedsIntegration = {
     /**
      * Berechnet R für eine einzelne Dimension
      *
-     * Formel: R_dim = 0.9 + (Übereinstimmung × 0.2)
-     * Übereinstimmung = 1 - (durchschnittliche Abweichung / 100)
+     * NEUE FORMEL (Intensitäts-basiert):
+     * R_dim = 0.5 + (Durchschnitt der Bedürfniswerte / 100)
+     *
+     * Der R-Faktor repräsentiert jetzt die WICHTIGKEIT/INTENSITÄT
+     * dieser Dimension für den Benutzer, nicht die Abweichung vom Archetyp.
+     *
+     * - Hohe Bedürfniswerte → hoher R-Faktor → mehr Gewicht
+     * - Niedrige Bedürfniswerte → niedriger R-Faktor → weniger Gewicht
+     *
+     * Range: 0.5 (alle Bedürfnisse auf 0) bis 1.5 (alle auf 100)
      *
      * Unterstützt zwei Formate:
      * - Altes Format: { needKey: 50 }
@@ -517,18 +525,13 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         var archetypTypisch = dimensionKohaerenz[archetyp];
-        var totalDiff = 0;
+        var totalValue = 0;
         var count = 0;
         var debugMatches = [];
 
         for (var needKey in archetypTypisch) {
             if (archetypTypisch.hasOwnProperty(needKey) && archetypTypisch[needKey] !== null) {
                 var typischEntry = archetypTypisch[needKey];
-
-                // Unterstütze beide Formate: direkte Zahl oder Objekt mit .value
-                var typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
-                    ? typischEntry.value
-                    : typischEntry;
 
                 // Hole Bedürfnis-ID wenn vorhanden
                 var needId = (typeof typischEntry === 'object' && typischEntry.id)
@@ -538,32 +541,36 @@ TiageSynthesis.NeedsIntegration = {
                 // Verwende Hilfsfunktion für konsistente Lookup-Logik
                 var actualValue = this._getNeedValue(needs, needId, needKey);
 
-                if (actualValue !== undefined && typeof typischValue === 'number') {
-                    var diff = Math.abs(actualValue - typischValue);
-                    totalDiff += diff;
+                if (actualValue !== undefined) {
+                    totalValue += actualValue;
                     count++;
-                    debugMatches.push({ key: needKey, id: needId, actual: actualValue, typisch: typischValue, diff: diff });
+                    debugMatches.push({ key: needKey, id: needId, value: actualValue });
                 }
             }
         }
 
         if (count === 0) {
-            console.warn('[NeedsIntegration._calculateSingleResonance] Keine vergleichbaren Bedürfnisse gefunden für:', archetyp, '- Needs-Keys:', Object.keys(needs || {}).slice(0, 5));
-            return 1.0; // Neutral wenn keine vergleichbaren Bedürfnisse
+            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Bedürfnisse gefunden für:', archetyp, '- Needs-Keys:', Object.keys(needs || {}).slice(0, 5));
+            return 1.0; // Neutral wenn keine Bedürfnisse gefunden
         }
 
         // Debug-Output für Diagnose
         if (debugMatches.length > 0) {
-            console.log('[NeedsIntegration._calculateSingleResonance] Archetyp:', archetyp, '- Matches:', debugMatches);
+            var avgValue = totalValue / count;
+            console.log('[NeedsIntegration._calculateSingleResonance] Intensitäts-Berechnung:', {
+                archetyp: archetyp,
+                avgValue: avgValue.toFixed(1),
+                count: count,
+                matches: debugMatches
+            });
         }
 
-        var avgDiff = totalDiff / count;
-        var uebereinstimmung = 1 - (avgDiff / 100);
-
-        // R_dim = 0.5 + (Übereinstimmung × 1.0)
-        // Range: 0.5 (keine Übereinstimmung) bis 1.5 (perfekte Übereinstimmung)
-        // Passend zum UI-Slider Range
-        var rValue = 0.5 + (uebereinstimmung * 1.0);
+        // NEUE FORMEL: R = 0.5 + (Durchschnitt / 100)
+        // Durchschnitt 0 → R = 0.5
+        // Durchschnitt 50 → R = 1.0
+        // Durchschnitt 100 → R = 1.5
+        var avgValue = totalValue / count;
+        var rValue = 0.5 + (avgValue / 100);
 
         // Clamp auf 0.5 - 1.5
         return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;

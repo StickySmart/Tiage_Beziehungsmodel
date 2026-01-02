@@ -231,3 +231,84 @@
     color: rgba(255, 255, 255, 0.4);
     text-shadow: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * DELTA-ANZEIGE
+ * Zeigt Änderungen der R-Faktoren live an (↑+0.05 oder ↓-0.03)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.resonanz-profile-delta {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.resonanz-profile-delta.delta-positive {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(22, 163, 74, 0.9) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.5);
+}
+
+.resonanz-profile-delta.delta-negative {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+}
+
+.resonanz-profile-delta.delta-animate {
+    opacity: 1;
+    transform: translateY(0);
+    animation: deltaPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes deltaPopIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.8);
+    }
+    50% {
+        transform: translateY(2px) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Pulsieren für starke Änderungen */
+.resonanz-profile-delta.delta-animate.delta-positive {
+    animation: deltaPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+               deltaPulseGreen 1s ease-in-out 0.4s infinite;
+}
+
+.resonanz-profile-delta.delta-animate.delta-negative {
+    animation: deltaPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+               deltaPulseRed 1s ease-in-out 0.4s infinite;
+}
+
+@keyframes deltaPulseGreen {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.5);
+    }
+    50% {
+        box-shadow: 0 2px 16px rgba(34, 197, 94, 0.8), 0 0 24px rgba(34, 197, 94, 0.4);
+    }
+}
+
+@keyframes deltaPulseRed {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+    }
+    50% {
+        box-shadow: 0 2px 16px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+    }
+}

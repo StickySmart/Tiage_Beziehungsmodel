@@ -3444,3 +3444,86 @@ input.resonanz-input:focus {
         padding: 8px 10px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * R-FAKTOR EINFLUSS-BADGES
+ * Zeigt bei jedem Bedürfnis an, zu welchem R-Faktor es beiträgt
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.r-factor-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 18px;
+    padding: 0 6px;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--r-color, #8B5CF6);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid var(--r-color, #8B5CF6);
+    border-radius: 4px;
+    cursor: help;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.r-factor-badge:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+                0 0 12px color-mix(in srgb, var(--r-color, #8B5CF6) 40%, transparent);
+}
+
+/* Kern-Bedürfnisse (die 4-5 wichtigsten pro R-Faktor) */
+.r-factor-badge.r-badge-core {
+    opacity: 1;
+    background: color-mix(in srgb, var(--r-color, #8B5CF6) 15%, transparent);
+    font-weight: 800;
+}
+
+.r-factor-badge.r-badge-core::after {
+    content: '★';
+    margin-left: 2px;
+    font-size: 8px;
+}
+
+/* Hohe Intensität (Wert >= 70) */
+.r-factor-badge.r-badge-high {
+    opacity: 1;
+    background: color-mix(in srgb, var(--r-color, #8B5CF6) 25%, transparent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--r-color, #8B5CF6) 50%, transparent);
+    animation: rBadgePulse 2s ease-in-out infinite;
+}
+
+/* Niedrige Intensität (Wert <= 30) */
+.r-factor-badge.r-badge-low {
+    opacity: 0.5;
+    border-style: dashed;
+}
+
+@keyframes rBadgePulse {
+    0%, 100% {
+        box-shadow: 0 0 8px color-mix(in srgb, var(--r-color, #8B5CF6) 50%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 16px color-mix(in srgb, var(--r-color, #8B5CF6) 70%, transparent),
+                    0 0 24px color-mix(in srgb, var(--r-color, #8B5CF6) 30%, transparent);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .r-factor-badge {
+        min-width: 20px;
+        height: 16px;
+        padding: 0 4px;
+        font-size: 9px;
+        margin-right: 4px;
+    }
+
+    .r-factor-badge.r-badge-core::after {
+        display: none;
+    }
+}
