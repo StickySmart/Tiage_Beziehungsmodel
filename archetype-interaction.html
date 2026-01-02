@@ -446,37 +446,37 @@
     <div class="modal-overlay" id="slotMachineModal" onclick="closeSlotMachineModal(event)" style="z-index: 2700;">
         <div class="modal slot-machine-modal" onclick="event.stopPropagation()" style="max-width: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
             <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <span class="modal-title">🎰 Finde passenden Partner</span>
+                <span class="modal-title">Wie tickst Du?</span>
                 <button class="modal-close" onclick="closeSlotMachineModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <!-- Phase 1: Bindungsmuster Auswahl -->
                 <div id="slotPhase1" class="slot-phase">
-                    <h3 style="color: #e94560; margin-bottom: 15px; text-align: center;">Wähle dein Bindungsmuster</h3>
+                    <h3 style="color: #e94560; margin-bottom: 15px; text-align: center;">Wähle was zu dir passt</h3>
                     <p style="color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-bottom: 20px;">
                         Nach Bowlby/Ainsworth - wird als Tie-Breaker bei gleichem Score verwendet
                     </p>
 
                     <div class="bindung-selection">
                         <div class="bindung-group">
-                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">Primäres Muster (70%)</label>
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du meistens (70%)</label>
                             <div class="bindung-options" id="bindungPrimaryOptions">
-                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('primary', 'sicher')">
+                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('primary', 'sicher')" title="Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen">
                                     <span class="bindung-icon">🛡️</span>
                                     <span class="bindung-name">Sicher</span>
                                     <span class="bindung-desc">Nähe & Autonomie ok</span>
                                 </button>
-                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('primary', 'aengstlich')">
+                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('primary', 'aengstlich')" title="Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden">
                                     <span class="bindung-icon">💔</span>
                                     <span class="bindung-name">Ängstlich</span>
                                     <span class="bindung-desc">Angst vor Verlust</span>
                                 </button>
-                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('primary', 'vermeidend')">
+                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('primary', 'vermeidend')" title="Du hältst meistens emotionale Distanz und brauchst viel Freiraum">
                                     <span class="bindung-icon">🚪</span>
                                     <span class="bindung-name">Vermeidend</span>
                                     <span class="bindung-desc">Hält Distanz</span>
                                 </button>
-                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('primary', 'desorganisiert')">
+                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('primary', 'desorganisiert')" title="Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen">
                                     <span class="bindung-icon">🌀</span>
                                     <span class="bindung-name">Desorganisiert</span>
                                     <span class="bindung-desc">Will Nähe & flüchtet</span>
@@ -485,21 +485,21 @@
                         </div>
 
                         <div class="bindung-group" style="margin-top: 20px;">
-                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">Sekundäres Muster (30%)</label>
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du im Stress (30%)</label>
                             <div class="bindung-options" id="bindungSecondaryOptions">
-                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('secondary', 'sicher')">
+                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('secondary', 'sicher')" title="Im Stress bleibst du gelassen und kannst dich gut regulieren">
                                     <span class="bindung-icon">🛡️</span>
                                     <span class="bindung-name">Sicher</span>
                                 </button>
-                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('secondary', 'aengstlich')">
+                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('secondary', 'aengstlich')" title="Im Stress wirst du klammernder und brauchst mehr Bestätigung">
                                     <span class="bindung-icon">💔</span>
                                     <span class="bindung-name">Ängstlich</span>
                                 </button>
-                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('secondary', 'vermeidend')">
+                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('secondary', 'vermeidend')" title="Im Stress ziehst du dich zurück und machst dicht">
                                     <span class="bindung-icon">🚪</span>
                                     <span class="bindung-name">Vermeidend</span>
                                 </button>
-                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('secondary', 'desorganisiert')">
+                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('secondary', 'desorganisiert')" title="Im Stress reagierst du unberechenbar - mal nah, mal distanziert">
                                     <span class="bindung-icon">🌀</span>
                                     <span class="bindung-name">Desorganisiert</span>
                                 </button>
