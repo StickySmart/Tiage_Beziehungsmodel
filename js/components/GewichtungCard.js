@@ -903,7 +903,7 @@ const GewichtungCard = (function() {
 
         const heading = `
             <div class="gewichtung-heading">
-                <h3 style="color: #F59E0B; margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Gewichtung</h3>
+                <h3 style="color: #F59E0B; margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Gewichtung <span style="font-size: 12px; font-weight: 400; opacity: 0.7;">100%</span></h3>
                 <span style="color: var(--text-muted); font-size: 11px;">Archetyp · Geschlecht · Orientierung · Dominanz</span>
             </div>`;
 
