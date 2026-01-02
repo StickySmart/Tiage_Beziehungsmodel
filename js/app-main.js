@@ -9587,7 +9587,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Legacy-Support
                 'männlich': 'maennlich',
                 'weiblich': 'weiblich',
-                'non-binär': 'nonbinaer'
+                'non-binär': 'nonbinaer',
+                // Einfache Geschlechter (für R4 Hybrid)
+                'mann': 'maennlich',
+                'frau': 'weiblich',
+                'inter': 'nonbinaer',
+                'fluid': 'fluid'
             };
             return map[geschlecht] || 'andere';
         }
@@ -10659,6 +10664,205 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // ═══════════════════════════════════════════════════════════════════════
+        // R4 HYBRID: BIDIREKTIONALE ATTRAKTION MIT P/S GEWICHTUNG
+        // ═══════════════════════════════════════════════════════════════════════
+        // Berechnet gegenseitige Attraktion unter Berücksichtigung von:
+        // - Primäre Orientierung (70% Gewicht)
+        // - Sekundäre Orientierung (30% Gewicht, Bonus nicht Override)
+        // - Bidirektional: ICH→Partner UND Partner→ICH
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Berechnet die Attraktion in EINE Richtung (Person A → Person B)
+         * Berücksichtigt Primär/Sekundär Orientierung mit Gewichtung
+         *
+         * @param {string} genderA - Geschlecht von A (effektiv, nach Cis/Trans)
+         * @param {object} orientierungA - { primary, secondary } von A
+         * @param {string} genderB - Geschlecht von B (effektiv)
+         * @returns {number} Attraktion 0-100
+         */
+        function calculateDirectionalAttraction(genderA, orientierungA, genderB) {
+            const PRIMARY_WEIGHT = 0.70;
+            const SECONDARY_WEIGHT = 0.30;
+
+            // Extrahiere P/S Orientierungen
+            let primaryOri = null;
+            let secondaryOri = null;
+
+            if (orientierungA && typeof orientierungA === 'object') {
+                primaryOri = orientierungA.primary || null;
+                secondaryOri = orientierungA.secondary || null;
+            } else if (typeof orientierungA === 'string') {
+                primaryOri = orientierungA;
+            }
+
+            if (!primaryOri || !genderA || !genderB) {
+                return 75; // Neutral bei fehlenden Daten
+            }
+
+            // Konvertiere zu Kategorien
+            const catA = getGeschlechtCategory(genderA);
+            const catB = getGeschlechtCategory(genderB);
+
+            // Hilfsfunktion: Prüft ob Orientierung zu Geschlecht passt
+            const checkAttraction = (ori, fromCat, toCat) => {
+                if (!ori) return 0;
+
+                if (ori === 'bisexuell' || ori === 'pansexuell') {
+                    return 100; // Bi/Pan = offen für alle
+                }
+
+                if (ori === 'heterosexuell') {
+                    // Hetero: Angezogen vom "anderen" Geschlecht
+                    if ((fromCat === 'maennlich' && toCat === 'weiblich') ||
+                        (fromCat === 'weiblich' && toCat === 'maennlich')) {
+                        return 100;
+                    }
+                    // Nonbinär/Fluid - partielle Kompatibilität
+                    if (toCat === 'nonbinaer' || toCat === 'fluid') return 60;
+                    // Gleiches Geschlecht = keine Attraktion
+                    return 0;
+                }
+
+                if (ori === 'homosexuell') {
+                    // Homo: Angezogen vom "gleichen" Geschlecht
+                    if (fromCat === toCat && fromCat !== 'nonbinaer' && fromCat !== 'fluid') {
+                        return 100;
+                    }
+                    // Nonbinär mit ähnlichen
+                    if ((fromCat === 'nonbinaer' || fromCat === 'fluid') &&
+                        (toCat === 'nonbinaer' || toCat === 'fluid')) {
+                        return 85;
+                    }
+                    // Verschiedene binäre Geschlechter = keine Attraktion
+                    if ((fromCat === 'maennlich' && toCat === 'weiblich') ||
+                        (fromCat === 'weiblich' && toCat === 'maennlich')) {
+                        return 0;
+                    }
+                    return 50; // Unsicher
+                }
+
+                return 50; // Unbekannte Orientierung
+            };
+
+            // Berechne Attraktion für Primär und Sekundär
+            const primaryAttraction = checkAttraction(primaryOri, catA, catB);
+            const secondaryAttraction = secondaryOri
+                ? checkAttraction(secondaryOri, catA, catB)
+                : 0;
+
+            // Gewichtete Kombination
+            // Wenn kein Secondary: nur Primary zählt (100%)
+            if (!secondaryOri) {
+                return primaryAttraction;
+            }
+
+            // Mit Secondary: P × 0.70 + S × 0.30
+            return Math.round(primaryAttraction * PRIMARY_WEIGHT + secondaryAttraction * SECONDARY_WEIGHT);
+        }
+
+        /**
+         * Berechnet BIDIREKTIONALE Attraktion zwischen zwei Personen
+         * Beide Richtungen müssen passen!
+         *
+         * @param {object} person1 - { geschlecht: {primary, secondary}, orientierung: {primary, secondary} }
+         * @param {object} person2 - { geschlecht: {primary, secondary}, orientierung: {primary, secondary} }
+         * @returns {object} { score, direction1to2, direction2to1, details }
+         */
+        function calculateBidirectionalAttraction(person1, person2) {
+            // Extrahiere effektive Geschlechter (nach Cis/Trans Transformation)
+            const getEffectiveGender = (geschlecht) => {
+                if (!geschlecht) return null;
+                if (typeof geschlecht === 'string') return geschlecht;
+
+                const primary = geschlecht.primary;   // Körper: mann, frau, inter
+                const secondary = geschlecht.secondary; // Identität: cis, trans, nonbinaer
+
+                if (!secondary || secondary === 'cis') return primary;
+                if (secondary === 'trans') {
+                    if (primary === 'mann') return 'frau';
+                    if (primary === 'frau') return 'mann';
+                    return primary;
+                }
+                if (secondary === 'nonbinaer') return 'nonbinaer';
+                if (secondary === 'fluid') return 'fluid';
+
+                return primary || secondary;
+            };
+
+            const gender1 = getEffectiveGender(person1.geschlecht);
+            const gender2 = getEffectiveGender(person2.geschlecht);
+
+            // Berechne beide Richtungen
+            const attraction1to2 = calculateDirectionalAttraction(gender1, person1.orientierung, gender2);
+            const attraction2to1 = calculateDirectionalAttraction(gender2, person2.orientierung, gender1);
+
+            // Bidirektional: Durchschnitt beider Richtungen
+            // Alternativ: Minimum (strenger) - aber Durchschnitt ist fairer
+            const bidirectionalScore = Math.round((attraction1to2 + attraction2to1) / 2);
+
+            return {
+                score: bidirectionalScore,
+                direction1to2: attraction1to2,
+                direction2to1: attraction2to1,
+                details: {
+                    gender1,
+                    gender2,
+                    orientierung1: person1.orientierung,
+                    orientierung2: person2.orientierung
+                }
+            };
+        }
+
+        /**
+         * Berechnet R4 HYBRID: Kombination aus Identität + Bidirektionaler Attraktion
+         *
+         * Formel: R4 = 0.5 + (identity × 0.30 + attraction × 0.70) / 100
+         *
+         * @param {object} person1 - Vollständiges Profil
+         * @param {object} person2 - Vollständiges Profil
+         * @returns {object} { R4, identityScore, attractionScore, details }
+         */
+        function calculateR4Hybrid(person1, person2) {
+            const IDENTITY_WEIGHT = 0.30;
+            const ATTRACTION_WEIGHT = 0.70;
+
+            // 1. Identitäts-Resonanz (Cis↔Cis, Trans↔Trans, etc.)
+            const identity1 = person1.geschlecht?.secondary || 'cis';
+            const identity2 = person2.geschlecht?.secondary || 'cis';
+            const identityScore = calculateIdentityResonance(identity1, identity2);
+
+            // 2. Bidirektionale Attraktion
+            const attractionResult = calculateBidirectionalAttraction(person1, person2);
+            const attractionScore = attractionResult.score;
+
+            // 3. Hybrid-Kombination
+            // R4 = 0.5 + (identity × 0.30 + attraction × 0.70) / 100
+            const combinedScore = identityScore * IDENTITY_WEIGHT + attractionScore * ATTRACTION_WEIGHT;
+            const R4 = 0.5 + (combinedScore / 100);
+
+            // Clamp auf 0.5-1.5
+            const R4Clamped = Math.max(0.5, Math.min(1.5, R4));
+
+            console.log('[calculateR4Hybrid] Ergebnis:', {
+                identityScore,
+                attractionScore,
+                combinedScore: Math.round(combinedScore),
+                R4: Math.round(R4Clamped * 1000) / 1000,
+                attraction1to2: attractionResult.direction1to2,
+                attraction2to1: attractionResult.direction2to1
+            });
+
+            return {
+                R4: Math.round(R4Clamped * 1000) / 1000,
+                identityScore,
+                attractionScore,
+                combinedScore: Math.round(combinedScore),
+                attractionDetails: attractionResult
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
         // RESONANZ-BERECHNUNG (Meta-Dimension)
         // ═══════════════════════════════════════════════════════════════════════
         // R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
@@ -11280,17 +11484,33 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     const match1 = calculateKSubfaktor('K1', matching);  // Orientierung
                     const match2 = calculateKSubfaktor('K2', matching);  // Archetyp
                     const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
-                    const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
+                    // R4 wird unten via calculateR4Hybrid berechnet (nicht mehr aus K4)
 
                     // Skaliere auf 0.5-1.5+ (quadratisch - gute Matches werden stärker belohnt)
                     R1 = 0.5 + (match1 * match1);
                     R2 = 0.5 + (match2 * match2);
                     R3 = 0.5 + (match3 * match3);
-                    R4 = 0.5 + (match4 * match4);
+                    // R4 wird separat berechnet
 
-                    console.log('[calculateRelationshipQuality] R-Faktoren aus SSOT berechnet:', { R1, R2, R3, R4, matching: matching.score });
+                    console.log('[calculateRelationshipQuality] R1-R3 aus SSOT berechnet:', { R1, R2, R3, matching: matching.score });
                 }
             }
+
+            // ═══════════════════════════════════════
+            // R4 HYBRID: Identität + Bidirektionale Attraktion
+            // ═══════════════════════════════════════
+            // R4 = 0.5 + (identity × 0.30 + attraction × 0.70) / 100
+            // - Identität: Cis↔Cis, Trans↔Trans Resonanz (30%)
+            // - Attraktion: Bidirektional mit P/S Gewichtung (70%)
+            const r4Result = calculateR4Hybrid(person1, person2);
+            R4 = r4Result.R4;
+            console.log('[calculateRelationshipQuality] R4 HYBRID berechnet:', {
+                R4,
+                identityScore: r4Result.identityScore,
+                attractionScore: r4Result.attractionScore,
+                attraction1to2: r4Result.attractionDetails?.direction1to2,
+                attraction2to1: r4Result.attractionDetails?.direction2to1
+            });
 
             // Überschreibe mit benutzerdefinierten (locked) Werten falls vorhanden
             if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
