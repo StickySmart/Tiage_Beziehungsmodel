@@ -150,7 +150,10 @@ TiageSynthesis.Factors.Orientierung = {
                     list.push({ type: ori.primary, status: 'gelebt' });
                 }
                 if (ori.secondary) {
-                    list.push({ type: ori.secondary, status: 'interessiert' });
+                    // SSOT-FIX: Sekundäre Orientierung ist NICHT 'interessiert' (Exploration),
+                    // sondern 'sekundaer' (auch gelebt, aber nicht primär).
+                    // 'interessiert' bleibt für echte Exploration (unsicher/suchend).
+                    list.push({ type: ori.secondary, status: 'sekundaer' });
                 }
             }
             // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
@@ -177,11 +180,17 @@ TiageSynthesis.Factors.Orientierung = {
 
     /**
      * Findet beste Kompatibilität aus allen Kombinationen
+     *
+     * SSOT-FIX: Unterscheidung zwischen 'sekundaer' und 'interessiert':
+     * - 'sekundaer': Auch gelebte Orientierung, nur nicht primär → erhöht Flexibilität
+     * - 'interessiert': Echte Exploration/Unsicherheit → führt zu 'unsicher' Ergebnis
      */
     _findBestCompatibility: function(oriList1, oriList2, g1, g2) {
         var hasMoeglich = false;
+        var hasMoeglichPrimaer = false;  // Primäre Orientierungen passen
+        var hasMoeglichSekundaer = false; // Sekundäre Orientierungen passen auch
         var hasUnsicher = false;
-        var hasInteressiert = false;
+        var hasInteressiert = false;  // Nur echte 'interessiert', nicht 'sekundaer'
         var hasHardKO = false;
         var hardKOReason = null;
         var bestCombination = null;
@@ -196,7 +205,16 @@ TiageSynthesis.Factors.Orientierung = {
 
                 if (result === 'moeglich') {
                     hasMoeglich = true;
-                    bestCombination = { ori1: o1, ori2: o2 };
+                    // Track ob es primäre oder sekundäre Kompatibilität ist
+                    if (o1.status === 'gelebt' && o2.status === 'gelebt') {
+                        hasMoeglichPrimaer = true;
+                        bestCombination = { ori1: o1, ori2: o2 };
+                    } else if (o1.status === 'sekundaer' || o2.status === 'sekundaer') {
+                        hasMoeglichSekundaer = true;
+                        if (!bestCombination) {
+                            bestCombination = { ori1: o1, ori2: o2 };
+                        }
+                    }
                 } else if (result === 'unsicher') {
                     hasUnsicher = true;
                     if (!bestCombination) {
@@ -207,6 +225,8 @@ TiageSynthesis.Factors.Orientierung = {
                     hardKOReason = checkResult.reason;
                 }
 
+                // SSOT-FIX: Nur echte 'interessiert' zählt als Exploration
+                // 'sekundaer' ist eine gelebte Orientierung, keine Unsicherheit
                 if (o1.status === 'interessiert' || o2.status === 'interessiert') {
                     hasInteressiert = true;
                 }
@@ -214,6 +234,22 @@ TiageSynthesis.Factors.Orientierung = {
         }
 
         // Bestes Ergebnis bestimmen
+
+        // SSOT-FIX: Primäre Orientierungen passen → 'moeglich' (100 Punkte)
+        // Sekundäre Orientierungen passen AUCH → Bonus für Flexibilität
+        if (hasMoeglichPrimaer) {
+            return {
+                result: 'moeglich',
+                confidence: hasMoeglichSekundaer ? 'sehr-hoch' : 'hoch',
+                hasExploration: false,
+                isHardKO: false,
+                hasSecondaryBonus: hasMoeglichSekundaer,  // NEU: Bonus-Flag
+                bestCombination: bestCombination
+            };
+        }
+
+        // Sekundäre Orientierungen passen, primäre nicht explizit geprüft
+        // → Trotzdem 'moeglich', da sekundäre auch gelebt sind
         if (hasMoeglich && !hasInteressiert) {
             return {
                 result: 'moeglich',
@@ -224,6 +260,7 @@ TiageSynthesis.Factors.Orientierung = {
             };
         }
 
+        // Nur wenn echte 'interessiert' (Exploration) dabei ist → 'unsicher'
         if (hasMoeglich && hasInteressiert) {
             return {
                 result: 'unsicher',
@@ -269,9 +306,14 @@ TiageSynthesis.Factors.Orientierung = {
     /**
      * Prüft einzelnes Orientierungs-Paar
      *
+     * SSOT-FIX: 'sekundaer' wird wie 'gelebt' behandelt (keine Exploration)
+     * Nur 'interessiert' führt zu isExploring = true
+     *
      * Returns: { result: string, isHardKO: boolean }
      */
     _checkSinglePair: function(type1, status1, type2, status2, g1, g2) {
+        // SSOT-FIX: Nur echte 'interessiert' zählt als Exploration
+        // 'sekundaer' ist eine gelebte Orientierung, keine Unsicherheit
         var isExploring = (status1 === 'interessiert' || status2 === 'interessiert');
 
         // Bisexuell/Pansexuell ist immer kompatibel

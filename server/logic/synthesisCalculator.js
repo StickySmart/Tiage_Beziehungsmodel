@@ -7,6 +7,7 @@
 
 import * as Constants from './constants.js';
 import * as NeedsIntegration from './needsIntegration.js';
+import * as OrientationFactor from './orientationFactor.js';  // SSOT: Client-Logik
 
 // ═══════════════════════════════════════════════════════════════════════════
 // MAIN CALCULATION
@@ -321,35 +322,27 @@ function calculateArchetypScore(arch1, arch2) {
 
 /**
  * Berechnet Orientierungs-Kompatibilität
+ *
+ * SSOT: Verwendet die Client-Logik aus js/synthesis/factors/orientationFactor.js
+ * über den Wrapper in ./orientationFactor.js
+ *
+ * Die vollständige Logik inkl. P/S-Handling (Primary/Secondary Orientierung)
+ * ist dort implementiert.
  */
 function calculateOrientierungScore(person1, person2) {
-    const ori1 = extractOrientation(person1.orientierung);
-    const ori2 = extractOrientation(person2.orientierung);
-    const g1 = extractGender(person1.geschlecht);
-    const g2 = extractGender(person2.geschlecht);
+    // SSOT: Constants für Score-Werte setzen
+    OrientationFactor.setConstants(Constants);
 
-    // Bisexuell ist immer kompatibel
-    if (ori1 === 'bisexuell' || ori2 === 'bisexuell') {
-        return Constants.ORIENTATION.COMPATIBLE;
-    }
+    // SSOT: Client-Logik verwenden
+    const result = OrientationFactor.calculate(person1, person2);
 
-    // Pansexuell auch
-    if (ori1 === 'pansexuell' || ori2 === 'pansexuell') {
-        return Constants.ORIENTATION.COMPATIBLE;
-    }
+    console.log('[SynthesisCalculator] SSOT OrientationFactor result:', {
+        score: result.score,
+        result: result.details?.result,
+        hasSecondaryBonus: result.details?.hasSecondaryBonus
+    });
 
-    // Hetero + gleiches Geschlecht = Hard-KO
-    if (ori1 === 'heterosexuell' && ori2 === 'heterosexuell' && g1 === g2) {
-        return Constants.ORIENTATION.HARD_KO;
-    }
-
-    // Homo + verschiedenes Geschlecht = Hard-KO
-    if (ori1 === 'homosexuell' && ori2 === 'homosexuell' && g1 !== g2) {
-        return Constants.ORIENTATION.HARD_KO;
-    }
-
-    // Standard-Kompatibilität
-    return Constants.ORIENTATION.COMPATIBLE;
+    return result.score;
 }
 
 /**
