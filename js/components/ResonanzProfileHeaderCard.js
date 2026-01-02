@@ -226,7 +226,7 @@ const ResonanzProfileHeaderCard = (function() {
     }
 
     /**
-     * Zeigt eine Delta-Animation für einen R-Faktor
+     * Zeigt eine Delta-Animation für einen R-Faktor (dauerhaft sichtbar)
      * @param {string} key - R1, R2, R3 oder R4
      * @param {number} delta - Die Änderung (positiv oder negativ)
      */
@@ -240,19 +240,9 @@ const ResonanzProfileHeaderCard = (function() {
         const arrow = delta > 0 ? '↑' : '↓';
         const colorClass = delta > 0 ? 'delta-positive' : 'delta-negative';
 
-        // Setze Inhalt und Klasse
+        // Setze Inhalt und Klasse - bleibt dauerhaft sichtbar
         deltaEl.textContent = `${arrow}${deltaText}`;
-        deltaEl.className = `resonanz-profile-delta ${colorClass} delta-animate`;
-
-        // Entferne Animation nach 3 Sekunden
-        setTimeout(() => {
-            deltaEl.classList.remove('delta-animate');
-            // Fade out nach weiteren 2 Sekunden
-            setTimeout(() => {
-                deltaEl.textContent = '';
-                deltaEl.className = 'resonanz-profile-delta';
-            }, 2000);
-        }, 3000);
+        deltaEl.className = `resonanz-profile-delta ${colorClass} delta-visible`;
     }
 
     /**
