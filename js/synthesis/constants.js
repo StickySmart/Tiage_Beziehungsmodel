@@ -601,7 +601,53 @@ TiageSynthesis.Constants = {
         EXPLORING: 70,       // Exploration-Phase (interessiert)
         UNLIKELY: 30,        // Unwahrscheinlich aber nicht unmöglich
         INCOMPATIBLE: 10,    // Sehr unwahrscheinlich (soft K.O.)
-        HARD_KO: 0           // Geometrisch unmöglich (echtes K.O.)
+        HARD_KO: 0,          // Geometrisch unmöglich (echtes K.O.)
+
+        // Sekundär-Orientierungs-Bonus
+        // Wenn beide sekundäre Orientierungen auch kompatibel sind
+        // Formel: Bonus = SECONDARY_BONUS_BASE × (wO / 0.25)
+        // Bei Standard-Gewichtung (25%): 5% Bonus
+        // Bei doppelter Gewichtung (50%): 10% Bonus
+        SECONDARY_BONUS_BASE: 0.05
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // DOMINANZ-SEKUNDÄR-BONUS
+    // ═══════════════════════════════════════════════════════════════════════
+    // Wenn beide sekundäre Dominanzen komplementär oder kompatibel sind
+    // Formel: Bonus = SECONDARY_BONUS_BASE × (wD / 0.25)
+
+    DOMINANCE_SECONDARY: {
+        BONUS_BASE: 0.05,    // 5% Basis-Verstärkung bei Standard-Gewichtung
+
+        // Komplementäre Sekundär-Kombinationen (höchster Bonus)
+        COMPLEMENTARY_PAIRS: [
+            ['dominant', 'submissiv'],
+            ['submissiv', 'dominant']
+        ],
+
+        // Kompatible Sekundär-Kombinationen (mittlerer Bonus)
+        COMPATIBLE_PAIRS: [
+            ['switch', 'switch'],
+            ['ausgeglichen', 'ausgeglichen'],
+            ['switch', 'ausgeglichen'],
+            ['dominant', 'switch'],
+            ['submissiv', 'switch'],
+            ['dominant', 'ausgeglichen'],
+            ['submissiv', 'ausgeglichen']
+        ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // GESCHLECHT-SEKUNDÄR-BONUS-SKALIERUNG
+    // ═══════════════════════════════════════════════════════════════════════
+    // Der bestehende Identitäts-Resonanz-Bonus wird mit der G-Gewichtung skaliert
+
+    GENDER_SECONDARY: {
+        // Basis-Bonus bleibt max 5 Punkte (aus _calculateSecondaryBonus)
+        // Skalierung: Bonus × (wG / 0.25)
+        SCALING_ENABLED: true,
+        SCALING_BASE: 0.25   // Standard-Gewichtung für Normalisierung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -444,6 +444,57 @@
    MOBILE RESPONSIVE
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   BINDUNGSMUSTER TOOLTIP (erscheint bei Klick für 2 Sekunden)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bindung-tooltip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(30, 30, 50, 0.98);
+    border: 2px solid #e94560;
+    border-radius: 12px;
+    padding: 16px 24px;
+    max-width: 320px;
+    z-index: 10000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(233, 69, 96, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+
+.bindung-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.bindung-tooltip-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.bindung-tooltip-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #e94560;
+    margin-bottom: 8px;
+}
+
+.bindung-tooltip-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @media (max-width: 500px) {
     .bindung-options {
         grid-template-columns: repeat(2, 1fr);

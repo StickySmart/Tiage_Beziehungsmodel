@@ -11985,9 +11985,64 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
+         * Zeigt den Bindungsmuster-Tooltip für 2 Sekunden
+         */
+        let bindungTooltipTimeout = null;
+        function showBindungTooltip(type, value) {
+            const tooltip = document.getElementById('bindungTooltip');
+            const iconEl = document.getElementById('bindungTooltipIcon');
+            const titleEl = document.getElementById('bindungTooltipTitle');
+            const textEl = document.getElementById('bindungTooltipText');
+
+            if (!tooltip) return;
+
+            // Tooltip-Inhalte basierend auf Typ und Wert
+            const tooltipData = {
+                primary: {
+                    sicher: { icon: '🛡️', title: 'Sicher', text: 'Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen' },
+                    aengstlich: { icon: '💔', title: 'Ängstlich', text: 'Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden' },
+                    vermeidend: { icon: '🚪', title: 'Vermeidend', text: 'Du hältst meistens emotionale Distanz und brauchst viel Freiraum' },
+                    desorganisiert: { icon: '🌀', title: 'Desorganisiert', text: 'Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen' }
+                },
+                secondary: {
+                    sicher: { icon: '🛡️', title: 'Sicher (Stress)', text: 'Im Stress bleibst du gelassen und kannst dich gut regulieren' },
+                    aengstlich: { icon: '💔', title: 'Ängstlich (Stress)', text: 'Im Stress wirst du klammernder und brauchst mehr Bestätigung' },
+                    vermeidend: { icon: '🚪', title: 'Vermeidend (Stress)', text: 'Im Stress ziehst du dich zurück und machst dicht' },
+                    desorganisiert: { icon: '🌀', title: 'Desorganisiert (Stress)', text: 'Im Stress reagierst du unberechenbar - mal nah, mal distanziert' }
+                }
+            };
+
+            const data = tooltipData[type]?.[value];
+            if (!data) return;
+
+            // Vorherigen Timeout löschen
+            if (bindungTooltipTimeout) {
+                clearTimeout(bindungTooltipTimeout);
+            }
+
+            // Tooltip-Inhalte setzen
+            iconEl.textContent = data.icon;
+            titleEl.textContent = data.title;
+            textEl.textContent = data.text;
+
+            // Tooltip anzeigen
+            tooltip.classList.add('show');
+
+            // Nach 2 Sekunden ausblenden
+            bindungTooltipTimeout = setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 2000);
+        }
+        window.showBindungTooltip = showBindungTooltip;
+
+        /**
          * Wählt ein Bindungsmuster aus
          */
         function selectBindungsmuster(type, value) {
+            // Tooltip nur anzeigen wenn neu ausgewählt (nicht wenn abgewählt)
+            const isNewSelection = (type === 'primary' && slotMachineBindung.primary !== value) ||
+                                   (type === 'secondary' && slotMachineBindung.secondary !== value);
+
             if (type === 'primary') {
                 slotMachineBindung.primary = slotMachineBindung.primary === value ? null : value;
             } else {
@@ -11995,6 +12050,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
             updateBindungsmusterUI();
             checkStartButtonState();
+
+            // Tooltip nur bei neuer Auswahl anzeigen
+            if (isNewSelection) {
+                showBindungTooltip(type, value);
+            }
 
             // Speichere in TiageState
             if (typeof TiageState !== 'undefined') {
