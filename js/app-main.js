@@ -18337,6 +18337,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (person === 'ich') {
                 mobileIchArchetype = newArchetype;
                 currentArchetype = newArchetype; // Sync desktop variable
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', newArchetype);
+                    TiageState.saveToStorage(); // Sofort speichern
+                }
                 // Update mobile and desktop select elements
                 const mobileSelect = document.getElementById('mobileIchSelect');
                 const desktopSelect = document.getElementById('ichSelect');
@@ -18345,6 +18350,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             } else {
                 mobilePartnerArchetype = newArchetype;
                 selectedPartner = newArchetype; // Sync desktop variable
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', newArchetype);
+                    TiageState.saveToStorage(); // Sofort speichern
+                }
                 // Update mobile and desktop select elements
                 const mobileSelect = document.getElementById('mobilePartnerSelect');
                 const desktopSelect = document.getElementById('partnerSelect');
