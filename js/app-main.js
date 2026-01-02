@@ -12028,10 +12028,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Tooltip anzeigen
             tooltip.classList.add('show');
 
-            // Nach 2 Sekunden ausblenden
+            // Nach 4 Sekunden ausblenden
             bindungTooltipTimeout = setTimeout(() => {
                 tooltip.classList.remove('show');
-            }, 2000);
+            }, 4000);
         }
         window.showBindungTooltip = showBindungTooltip;
 
