@@ -11324,12 +11324,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
             // Normalisiere auf 100%
+            // FIX: typeof check statt || operator, damit 0 korrekt als 0 behandelt wird
             const gewSum = (gew.O || 0) + (gew.A || 0) + (gew.D || 0) + (gew.G || 0);
             const gewDivisor = gewSum > 0 ? gewSum : 100;
-            const wO = (gew.O || 25) / gewDivisor;
-            const wA = (gew.A || 25) / gewDivisor;
-            const wD = (gew.D || 25) / gewDivisor;
-            const wG = (gew.G || 25) / gewDivisor;
+            const wO = (typeof gew.O === 'number' ? gew.O : 25) / gewDivisor;
+            const wA = (typeof gew.A === 'number' ? gew.A : 25) / gewDivisor;
+            const wD = (typeof gew.D === 'number' ? gew.D : 25) / gewDivisor;
+            const wG = (typeof gew.G === 'number' ? gew.G : 25) / gewDivisor;
 
             const scoreO = orientationScore * wO * R1;
             const scoreA = archetypeScore * wA * R2;
