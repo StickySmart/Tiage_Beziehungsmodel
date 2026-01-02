@@ -2331,6 +2331,85 @@ input.resonanz-input:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
+/* Bulk Increment/Decrement Card (Plus/Minus Buttons für markierte Werte)      */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.bulk-increment-card {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+    padding: 4px 8px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+}
+
+.bulk-increment-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    min-width: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bulk-increment-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bulk-increment-btn:active {
+    transform: scale(0.95);
+}
+
+.bulk-increment-btn.bulk-decrement {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.bulk-increment-btn.bulk-decrement:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.35) 0%, rgba(220, 38, 38, 0.25) 100%);
+    border-color: rgba(239, 68, 68, 0.6);
+}
+
+.bulk-increment-btn.bulk-increment {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.15) 100%);
+    border-color: rgba(34, 197, 94, 0.4);
+}
+
+.bulk-increment-btn.bulk-increment:hover {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.35) 0%, rgba(22, 163, 74, 0.25) 100%);
+    border-color: rgba(34, 197, 94, 0.6);
+}
+
+.bulk-btn-icon {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.bulk-decrement .bulk-btn-icon {
+    color: #ef4444;
+}
+
+.bulk-increment .bulk-btn-icon {
+    color: #22c55e;
+}
+
+.bulk-btn-label {
+    font-size: 10px;
+    color: var(--text-muted, #888);
+    margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 

@@ -1137,6 +1137,110 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * BULK-INCREMENT: Erhöht alle markierten Bedürfnisse um einen Schritt
+     * Werte die 100 erreichen bleiben dort bis alle anderen auch 100 sind
+     * @param {number} step - Schrittgröße (Standard: 5)
+     */
+    function incrementSelectedNeeds(step = 5) {
+        if (selectedNeeds.size === 0) return;
+
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj?.locked) return; // Skip locked needs
+
+            const currentValue = needObj?.value ?? 50;
+            // Wert bleibt bei 100 wenn bereits erreicht
+            if (currentValue >= 100) return;
+
+            const newValue = Math.min(100, currentValue + step);
+
+            // Update value
+            upsertNeed(needId, { value: newValue });
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) {
+                    slider.value = newValue;
+                    const dimColor = getDimensionColor(needId);
+                    if (dimColor) {
+                        slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                    }
+                }
+                if (input) input.value = newValue;
+                updateChangedIndicator(needItem, needId, newValue);
+            }
+
+            // Update Hauptfrage-Aggregation
+            updateParentHauptfrageValue(needId);
+
+            // Event für Änderungstracking
+            document.dispatchEvent(new CustomEvent('flatNeedChange', {
+                bubbles: true,
+                detail: { needId, value: newValue, bulk: true }
+            }));
+        });
+
+        // Aktualisiere Subtitle (geänderte Anzahl)
+        updateLockedCountDisplay();
+        console.log(`[AttributeSummaryCard] ${selectedNeeds.size} markierte Bedürfnisse um +${step} erhöht`);
+    }
+
+    /**
+     * BULK-DECREMENT: Verringert alle markierten Bedürfnisse um einen Schritt
+     * Werte die 0 erreichen bleiben dort bis alle anderen auch 0 sind
+     * @param {number} step - Schrittgröße (Standard: 5)
+     */
+    function decrementSelectedNeeds(step = 5) {
+        if (selectedNeeds.size === 0) return;
+
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj?.locked) return; // Skip locked needs
+
+            const currentValue = needObj?.value ?? 50;
+            // Wert bleibt bei 0 wenn bereits erreicht
+            if (currentValue <= 0) return;
+
+            const newValue = Math.max(0, currentValue - step);
+
+            // Update value
+            upsertNeed(needId, { value: newValue });
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) {
+                    slider.value = newValue;
+                    const dimColor = getDimensionColor(needId);
+                    if (dimColor) {
+                        slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                    }
+                }
+                if (input) input.value = newValue;
+                updateChangedIndicator(needItem, needId, newValue);
+            }
+
+            // Update Hauptfrage-Aggregation
+            updateParentHauptfrageValue(needId);
+
+            // Event für Änderungstracking
+            document.dispatchEvent(new CustomEvent('flatNeedChange', {
+                bubbles: true,
+                detail: { needId, value: newValue, bulk: true }
+            }));
+        });
+
+        // Aktualisiere Subtitle (geänderte Anzahl)
+        updateLockedCountDisplay();
+        console.log(`[AttributeSummaryCard] ${selectedNeeds.size} markierte Bedürfnisse um -${step} verringert`);
+    }
+
+    /**
      * MULTI-SELECT: Aktualisiert die Sichtbarkeit und den Status des Control Panels
      */
     function updateMultiSelectControlPanel() {
@@ -2072,6 +2176,17 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
+                ${selectedNeeds.size > 0 && filterActive ? `
+                <div class="bulk-increment-card">
+                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(5)" title="Alle markierten Werte um 5 verringern">
+                        <span class="bulk-btn-icon">−</span>
+                        <span class="bulk-btn-label">5</span>
+                    </button>
+                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen">
+                        <span class="bulk-btn-icon">+</span>
+                        <span class="bulk-btn-label">5</span>
+                    </button>
+                </div>` : ''}
             </div>
         </div>`;
 
@@ -4493,6 +4608,9 @@ const AttributeSummaryCard = (function() {
         resetFilters,
         updateSelectedNeedsValue,
         lockSelectedNeeds,
+        // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
+        incrementSelectedNeeds,
+        decrementSelectedNeeds,
         getSelectedNeeds: function() { return selectedNeeds; },
         // NEU: Person-spezifische Lock-Synchronisierung
         syncLocksFromState: syncLocksFromTiageState
