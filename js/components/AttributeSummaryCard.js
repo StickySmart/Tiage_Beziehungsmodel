@@ -55,6 +55,118 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * R-FAKTOR EINFLUSS-INDIKATOR
+     * Ermittelt zu welchem R-Faktor ein Bedürfnis beiträgt.
+     *
+     * Mapping:
+     * - R1 (Leben) = ORIENTIERUNG_NEEDS (Sexualität, Intimität)
+     * - R2 (Philosophie) = ARCHETYP_NEEDS (Lebensplanung, Bindung)
+     * - R3 (Dynamik) = DOMINANZ_NEEDS (Machtdynamik)
+     * - R4 (Identität) = GESCHLECHT_NEEDS (Authentizität, Ausdruck)
+     *
+     * @param {string} needId - Die Bedürfnis-ID (#B-ID oder String-Key)
+     * @returns {object|null} { factor: 'R1'|'R2'|'R3'|'R4', color: '#...', label: '...' } oder null
+     */
+    function getRFactorForNeed(needId) {
+        // Konvertiere #B-ID zu String-Key falls nötig
+        let stringKey = needId;
+        if (needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+            stringKey = BeduerfnisIds.toKey(needId) || needId;
+        }
+
+        // Hole NEEDS_INTEGRATION aus TiageSynthesis.Constants
+        const constants = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants)
+            ? TiageSynthesis.Constants.NEEDS_INTEGRATION
+            : null;
+
+        if (!constants) return null;
+
+        // R-Faktor Konfiguration
+        const R_FACTOR_CONFIG = {
+            R1: { label: 'Leben', color: '#E63946', needs: constants.ORIENTIERUNG_NEEDS || [] },
+            R2: { label: 'Philosophie', color: '#2A9D8F', needs: constants.ARCHETYP_NEEDS || [] },
+            R3: { label: 'Dynamik', color: '#8B5CF6', needs: constants.DOMINANZ_NEEDS || [] },
+            R4: { label: 'Identität', color: '#F4A261', needs: constants.GESCHLECHT_NEEDS || [] }
+        };
+
+        // Suche in welchem R-Faktor das Bedürfnis vorkommt
+        for (const [factor, config] of Object.entries(R_FACTOR_CONFIG)) {
+            if (config.needs.includes(stringKey)) {
+                return {
+                    factor: factor,
+                    color: config.color,
+                    label: config.label
+                };
+            }
+        }
+
+        // Zusätzlich: Prüfe ARCHETYP_KOHAERENZ für die 4-5 Kern-Bedürfnisse pro Dimension
+        const kohaerenz = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants)
+            ? TiageSynthesis.Constants.ARCHETYP_KOHAERENZ
+            : null;
+
+        if (kohaerenz) {
+            const KOHAERENZ_MAPPING = {
+                R1: { label: 'Leben', color: '#E63946', dimension: 'leben' },
+                R2: { label: 'Philosophie', color: '#2A9D8F', dimension: 'philosophie' },
+                R3: { label: 'Dynamik', color: '#8B5CF6', dimension: 'dynamik' },
+                R4: { label: 'Identität', color: '#F4A261', dimension: 'identitaet' }
+            };
+
+            for (const [factor, config] of Object.entries(KOHAERENZ_MAPPING)) {
+                const dimData = kohaerenz[config.dimension];
+                if (dimData) {
+                    // Prüfe jeden Archetyp
+                    for (const archetype of Object.keys(dimData)) {
+                        const archetypNeeds = dimData[archetype];
+                        if (archetypNeeds) {
+                            for (const needKey of Object.keys(archetypNeeds)) {
+                                const needEntry = archetypNeeds[needKey];
+                                // Prüfe sowohl needKey als auch #B-ID
+                                if (needKey === stringKey ||
+                                    (needEntry && needEntry.id === needId)) {
+                                    return {
+                                        factor: factor,
+                                        color: config.color,
+                                        label: config.label,
+                                        isCore: true // Markiere als Kern-Bedürfnis
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Erzeugt das HTML für das R-Faktor Badge
+     * @param {string} needId - Die Bedürfnis-ID
+     * @param {number} value - Der aktuelle Wert des Bedürfnisses
+     * @returns {string} HTML-String für das Badge oder leer
+     */
+    function renderRFactorBadge(needId, value) {
+        const rInfo = getRFactorForNeed(needId);
+        if (!rInfo) return '';
+
+        // Berechne den Beitrag: Wert / 100 zeigt wie stark dieses Bedürfnis R beeinflusst
+        const contribution = (value / 100).toFixed(2);
+        const isHigh = value >= 70;
+        const isLow = value <= 30;
+        const intensityClass = isHigh ? 'r-badge-high' : (isLow ? 'r-badge-low' : '');
+        const coreClass = rInfo.isCore ? ' r-badge-core' : '';
+
+        return `<span class="r-factor-badge ${intensityClass}${coreClass}"
+                      style="--r-color: ${rInfo.color};"
+                      title="${rInfo.label}: Wert ${value} → Beitrag ×${contribution}">
+                    ${rInfo.factor}
+                </span>`;
+    }
+
+    /**
      * SINGLE SOURCE OF TRUTH für Bedürfnis-Labels
      * Greift dynamisch auf GfkBeduerfnisse.getDefinition() zu.
      * Unterstützt sowohl #B-IDs als auch String-Keys.
@@ -2416,6 +2528,8 @@ const AttributeSummaryCard = (function() {
         const changedIndicator = valueChanged ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
         // CSS-Klasse für geänderte Werte (visuelle Hervorhebung)
         const changedClass = valueChanged ? ' value-changed' : '';
+        // R-Faktor Badge (zeigt zu welchem R-Faktor dieses Bedürfnis beiträgt)
+        const rFactorBadge = renderRFactorBadge(needId, value);
         return `
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
@@ -2424,6 +2538,7 @@ const AttributeSummaryCard = (function() {
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
                 <div class="flat-need-controls">
+                    ${rFactorBadge}
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
                           title="Wert fixieren"></span>

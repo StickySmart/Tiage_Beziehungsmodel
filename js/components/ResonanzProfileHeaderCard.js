@@ -47,6 +47,9 @@ const ResonanzProfileHeaderCard = (function() {
     // Loading state
     let isLoading = false;
 
+    // Speichert vorherige Werte für Delta-Berechnung
+    let previousValues = { R1: null, R2: null, R3: null, R4: null };
+
     /**
      * Setzt den Lade-Status und aktualisiert die Anzeige
      * @param {boolean} loading - true wenn Daten geladen werden
@@ -164,14 +167,21 @@ const ResonanzProfileHeaderCard = (function() {
             const value = values[key];
             const displayValue = value.toFixed(2);
 
+            // Speichere initialen Wert
+            if (previousValues[key] === null) {
+                previousValues[key] = value;
+            }
+
             html += `
                 <div class="resonanz-profile-value-item clickable"
                      style="--dimension-color: ${config.color};"
+                     data-resonanz-key="${key}"
                      onclick="ResonanzProfileHeaderCard.searchByResonanz('${key}')"
                      title="Klicke um nach ${key} Bedürfnissen zu suchen">
                     <div class="resonanz-profile-value-label">${config.label}</div>
                     <div class="resonanz-profile-value-id">${key}</div>
                     <div class="resonanz-profile-value-number">${displayValue}</div>
+                    <div class="resonanz-profile-delta" id="delta-${key}"></div>
                 </div>`;
         });
 
@@ -216,6 +226,36 @@ const ResonanzProfileHeaderCard = (function() {
     }
 
     /**
+     * Zeigt eine Delta-Animation für einen R-Faktor
+     * @param {string} key - R1, R2, R3 oder R4
+     * @param {number} delta - Die Änderung (positiv oder negativ)
+     */
+    function showDeltaAnimation(key, delta) {
+        const deltaEl = document.getElementById(`delta-${key}`);
+        if (!deltaEl) return;
+
+        // Formatiere Delta
+        const sign = delta > 0 ? '+' : '';
+        const deltaText = `${sign}${delta.toFixed(2)}`;
+        const arrow = delta > 0 ? '↑' : '↓';
+        const colorClass = delta > 0 ? 'delta-positive' : 'delta-negative';
+
+        // Setze Inhalt und Klasse
+        deltaEl.textContent = `${arrow}${deltaText}`;
+        deltaEl.className = `resonanz-profile-delta ${colorClass} delta-animate`;
+
+        // Entferne Animation nach 3 Sekunden
+        setTimeout(() => {
+            deltaEl.classList.remove('delta-animate');
+            // Fade out nach weiteren 2 Sekunden
+            setTimeout(() => {
+                deltaEl.textContent = '';
+                deltaEl.className = 'resonanz-profile-delta';
+            }, 2000);
+        }, 3000);
+    }
+
+    /**
      * Aktualisiert die Header-Karte mit neuen Werten
      */
     function update() {
@@ -228,14 +268,28 @@ const ResonanzProfileHeaderCard = (function() {
 
         const values = getCurrentValues();
 
-        // Aktualisiere Werte
+        // Aktualisiere Werte und zeige Delta
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
             const value = values[key];
             const displayValue = value.toFixed(2);
-            const valueElement = card.querySelector(`.resonanz-profile-value-item[style*="${RESONANZ_CONFIG[key].color}"] .resonanz-profile-value-number`);
+            const valueElement = card.querySelector(`[data-resonanz-key="${key}"] .resonanz-profile-value-number`);
+
             if (valueElement) {
+                // Berechne Delta wenn vorheriger Wert existiert
+                if (previousValues[key] !== null) {
+                    const delta = value - previousValues[key];
+                    // Zeige Delta nur wenn signifikant (> 0.005)
+                    if (Math.abs(delta) > 0.005) {
+                        showDeltaAnimation(key, delta);
+                        console.log(`[ResonanzProfileHeaderCard] ${key} Delta: ${delta.toFixed(3)}`);
+                    }
+                }
+
                 valueElement.textContent = displayValue;
             }
+
+            // Aktualisiere vorherigen Wert
+            previousValues[key] = value;
         });
 
         console.log('[ResonanzProfileHeaderCard] Aktualisiert');
