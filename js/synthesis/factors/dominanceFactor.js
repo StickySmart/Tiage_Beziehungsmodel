@@ -51,6 +51,11 @@ TiageSynthesis.Factors.Dominanz = {
         var bestCombination = null;
         var hasExploration = false;
 
+        // NEU: Tracking für Sekundär-Bonus
+        var hasPrimaryMatch = false;      // Primäre Dominanzen passen
+        var hasSecondaryMatch = false;    // Sekundäre Dominanzen passen auch
+        var secondaryComplementary = false; // Sekundäre sind komplementär (dom ↔ sub)
+
         for (var i = 0; i < list1.length; i++) {
             for (var j = 0; j < list2.length; j++) {
                 var d1 = list1[i];
@@ -67,8 +72,24 @@ TiageSynthesis.Factors.Dominanz = {
                     };
                     hasExploration = result.hasExploration;
                 }
+
+                // NEU: Tracking für Sekundär-Bonus
+                if (result.score >= 80) {  // Gute Kompatibilität
+                    if (d1.status === 'gelebt' && d2.status === 'gelebt') {
+                        hasPrimaryMatch = true;
+                    } else if (d1.status === 'sekundaer' || d2.status === 'sekundaer') {
+                        hasSecondaryMatch = true;
+                        // Prüfe ob komplementär (dom ↔ sub)
+                        if (result.harmonyType === 'komplementaer') {
+                            secondaryComplementary = true;
+                        }
+                    }
+                }
             }
         }
+
+        // Sekundär-Bonus nur wenn primäre UND sekundäre passen
+        var hasSecondaryBonus = hasPrimaryMatch && hasSecondaryMatch;
 
         return {
             score: bestScore,
@@ -77,7 +98,12 @@ TiageSynthesis.Factors.Dominanz = {
                 hasExploration: hasExploration,
                 allOptions1: list1,
                 allOptions2: list2,
-                harmonyLevel: this._getHarmonyLevel(bestScore)
+                harmonyLevel: this._getHarmonyLevel(bestScore),
+                // NEU: Sekundär-Bonus-Informationen
+                hasSecondaryBonus: hasSecondaryBonus,
+                secondaryComplementary: secondaryComplementary,
+                hasPrimaryMatch: hasPrimaryMatch,
+                hasSecondaryMatch: hasSecondaryMatch
             }
         };
     },
@@ -102,12 +128,14 @@ TiageSynthesis.Factors.Dominanz = {
         }
 
         // NEU: Handle Primary/Secondary Format aus UI
+        // SSOT-FIX: Secondary ist NICHT 'interessiert' (Exploration),
+        // sondern 'sekundaer' (auch gelebt, nur nicht primär)
         if ('primary' in domObj) {
             if (domObj.primary) {
                 list.push({ type: domObj.primary, status: 'gelebt' });
             }
             if (domObj.secondary) {
-                list.push({ type: domObj.secondary, status: 'interessiert' });
+                list.push({ type: domObj.secondary, status: 'sekundaer' });
             }
             return list;
         }
@@ -126,15 +154,21 @@ TiageSynthesis.Factors.Dominanz = {
 
     /**
      * Berechnet Harmonie für eine einzelne Kombination
+     *
+     * SSOT-FIX: 'sekundaer' wird wie 'gelebt' behandelt (keine Exploration)
+     * Nur 'interessiert' führt zu hasExploration = true
      */
     _calculateSingleHarmony: function(d1, d2, matrix, explorationMod) {
         var key = d1.type + '-' + d2.type;
         var reverseKey = d2.type + '-' + d1.type;
 
         var baseScore = matrix[key] || matrix[reverseKey] || 75;
+
+        // SSOT-FIX: Nur echte 'interessiert' zählt als Exploration
+        // 'sekundaer' ist eine gelebte Dominanz, keine Unsicherheit
         var hasExploration = (d1.status === 'interessiert' || d2.status === 'interessiert');
 
-        // Exploration-Modifier anwenden
+        // Exploration-Modifier nur bei echter Exploration anwenden
         if (hasExploration) {
             baseScore = Math.round(baseScore * explorationMod);
         }

@@ -260,6 +260,20 @@ TiageSynthesis.Calculator = {
         var weights = options.weights || (constants.getWeights ? constants.getWeights() : constants.WEIGHTS);
         var dim = resonanz.dimensional;
 
+        // ═══════════════════════════════════════════════════════════════════
+        // SCHRITT 4a: SEKUNDÄR-BONI BERECHNEN (NEU!)
+        // ═══════════════════════════════════════════════════════════════════
+        // Formel: Bonus = BONUS_BASE × (weight / 0.25)
+        // Je höher die Gewichtung, desto stärker der Bonus-Effekt
+
+        var secondaryBonuses = this._calculateSecondaryBonuses(
+            orientierungResult,
+            dominanzResult,
+            geschlechtResult,
+            weights,
+            constants
+        );
+
         var baseScore =
             (scores.archetyp * weights.archetyp) +
             (scores.orientierung * weights.orientierung) +
@@ -270,12 +284,12 @@ TiageSynthesis.Calculator = {
 
         // Prüfe ob dimensionale Resonanz verfügbar ist (mit korrekter Struktur)
         if (dim && dim.dimensions && dim.dimensions.philosophie && dim.dimensions.leben && dim.dimensions.dynamik && dim.dimensions.identitaet) {
-            // v3.1: Dimensionale Multiplikation
+            // v3.1: Dimensionale Multiplikation MIT Sekundär-Boni
             finalScore = Math.round(
                 (scores.archetyp * weights.archetyp * dim.dimensions.philosophie.rValue) +
-                (scores.orientierung * weights.orientierung * dim.dimensions.leben.rValue) +
-                (scores.dominanz * weights.dominanz * dim.dimensions.dynamik.rValue) +
-                (scores.geschlecht * weights.geschlecht * dim.dimensions.identitaet.rValue)
+                (scores.orientierung * weights.orientierung * dim.dimensions.leben.rValue * secondaryBonuses.orientierung.multiplier) +
+                (scores.dominanz * weights.dominanz * dim.dimensions.dynamik.rValue * secondaryBonuses.dominanz.multiplier) +
+                (scores.geschlecht * weights.geschlecht * dim.dimensions.identitaet.rValue * secondaryBonuses.geschlecht.multiplier)
             );
         } else {
             // FEHLER: Dimensionale Resonanz MUSS verfügbar sein (v3.1)
@@ -374,7 +388,10 @@ TiageSynthesis.Calculator = {
                     person1: resonanz1,
                     person2: resonanz2,
                     enabled: resonanz1.enabled && resonanz2.enabled
-                }
+                },
+
+                // NEU: Sekundär-Boni (O, D, G)
+                secondaryBonuses: secondaryBonuses
             },
 
             // Bedürfnis-Übereinstimmung (Gesamt)
@@ -1727,5 +1744,119 @@ TiageSynthesis.Calculator = {
             }
         }
         return clone;
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SEKUNDÄR-BONI BERECHNUNG (NEU!)
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // Wenn beide Personen sekundäre Attribute haben, die auch kompatibel sind,
+    // gibt es einen Bonus. Der Bonus skaliert mit der jeweiligen Gewichtung.
+    //
+    // Formel: multiplier = 1 + (BONUS_BASE × (weight / 0.25))
+    //
+    // Beispiel bei Standard-Gewichtung (25%):
+    //   multiplier = 1 + (0.05 × 1.0) = 1.05 (+5%)
+    //
+    // Beispiel bei doppelter Gewichtung (50%):
+    //   multiplier = 1 + (0.05 × 2.0) = 1.10 (+10%)
+    //
+
+    /**
+     * Berechnet Sekundär-Boni für O, D, G Faktoren
+     *
+     * @param {object} orientierungResult - Ergebnis von Factors.Orientierung.calculate()
+     * @param {object} dominanzResult - Ergebnis von Factors.Dominanz.calculate()
+     * @param {object} geschlechtResult - Ergebnis von Factors.Geschlecht.calculate()
+     * @param {object} weights - Aktuelle Gewichtungen { orientierung, dominanz, geschlecht, archetyp }
+     * @param {object} constants - TiageSynthesis.Constants
+     * @returns {object} { orientierung: {...}, dominanz: {...}, geschlecht: {...} }
+     */
+    _calculateSecondaryBonuses: function(orientierungResult, dominanzResult, geschlechtResult, weights, constants) {
+        var result = {
+            orientierung: { hasBonus: false, multiplier: 1.0, bonusPercent: 0, reason: null },
+            dominanz: { hasBonus: false, multiplier: 1.0, bonusPercent: 0, reason: null },
+            geschlecht: { hasBonus: false, multiplier: 1.0, bonusPercent: 0, reason: null }
+        };
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ORIENTIERUNG (O) - Sekundär-Bonus
+        // ═══════════════════════════════════════════════════════════════════
+        if (orientierungResult && orientierungResult.details && orientierungResult.details.hasSecondaryBonus) {
+            var oBonusBase = constants.ORIENTATION.SECONDARY_BONUS_BASE || 0.05;
+            var oWeightFactor = weights.orientierung / 0.25;  // Normalisiert auf Standard
+            var oBonus = oBonusBase * oWeightFactor;
+
+            result.orientierung = {
+                hasBonus: true,
+                multiplier: 1 + oBonus,
+                bonusPercent: Math.round(oBonus * 100),
+                reason: 'Sekundäre Orientierungen sind auch kompatibel',
+                weightFactor: oWeightFactor
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // DOMINANZ (D) - Sekundär-Bonus
+        // ═══════════════════════════════════════════════════════════════════
+        if (dominanzResult && dominanzResult.details && dominanzResult.details.hasSecondaryBonus) {
+            var dConfig = constants.DOMINANCE_SECONDARY || { BONUS_BASE: 0.05 };
+            var dBonusBase = dConfig.BONUS_BASE || 0.05;
+            var dWeightFactor = weights.dominanz / 0.25;
+
+            // Prüfe ob sekundäre Dominanzen komplementär sind (höherer Bonus)
+            var isComplementary = dominanzResult.details.secondaryComplementary || false;
+            var dBonus = dBonusBase * dWeightFactor;
+            if (isComplementary) {
+                dBonus *= 1.5;  // 50% mehr Bonus bei komplementären Sekundär-Dominanzen
+            }
+
+            result.dominanz = {
+                hasBonus: true,
+                multiplier: 1 + dBonus,
+                bonusPercent: Math.round(dBonus * 100),
+                reason: isComplementary
+                    ? 'Sekundäre Dominanzen sind komplementär'
+                    : 'Sekundäre Dominanzen sind kompatibel',
+                isComplementary: isComplementary,
+                weightFactor: dWeightFactor
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GESCHLECHT (G) - Sekundär-Bonus mit Gewichtungs-Skalierung
+        // ═══════════════════════════════════════════════════════════════════
+        // Der bestehende secondaryBonus (max +5 Punkte) wird jetzt mit der
+        // G-Gewichtung skaliert
+        if (geschlechtResult && geschlechtResult.details) {
+            var gConfig = constants.GENDER_SECONDARY || { SCALING_ENABLED: true, SCALING_BASE: 0.25 };
+
+            if (gConfig.SCALING_ENABLED && geschlechtResult.details.secondaryBonus > 0) {
+                var gWeightFactor = weights.geschlecht / (gConfig.SCALING_BASE || 0.25);
+                // Der Bonus ist bereits in Punkten (max 5), konvertiere zu Prozent
+                var gBonusPoints = geschlechtResult.details.secondaryBonus;
+                var gBonusPercent = (gBonusPoints / 100) * gWeightFactor;
+
+                result.geschlecht = {
+                    hasBonus: true,
+                    multiplier: 1 + gBonusPercent,
+                    bonusPercent: Math.round(gBonusPercent * 100),
+                    reason: 'Identitäts-Resonanz zwischen sekundären Geschlechtern',
+                    originalBonus: gBonusPoints,
+                    weightFactor: gWeightFactor
+                };
+            }
+        }
+
+        // Debug-Logging
+        if (result.orientierung.hasBonus || result.dominanz.hasBonus || result.geschlecht.hasBonus) {
+            console.log('[SynthesisCalculator] Sekundär-Boni berechnet:', {
+                O: result.orientierung.hasBonus ? '+' + result.orientierung.bonusPercent + '%' : 'kein',
+                D: result.dominanz.hasBonus ? '+' + result.dominanz.bonusPercent + '%' : 'kein',
+                G: result.geschlecht.hasBonus ? '+' + result.geschlecht.bonusPercent + '%' : 'kein'
+            });
+        }
+
+        return result;
     }
 };
