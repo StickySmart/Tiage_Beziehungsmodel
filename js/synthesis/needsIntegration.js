@@ -565,12 +565,16 @@ TiageSynthesis.NeedsIntegration = {
             });
         }
 
-        // NEUE FORMEL: R = 0.5 + (Durchschnitt / 100)
-        // Durchschnitt 0 → R = 0.5
-        // Durchschnitt 50 → R = 1.0
-        // Durchschnitt 100 → R = 1.5
+        // NEUE FORMEL: R = 0.5 + (Durchschnitt / 100)² (EXPONENTIELL)
+        // Quadratische Skalierung: Hohe Werte haben überproportional mehr Einfluss
+        // Durchschnitt 0 → R = 0.50
+        // Durchschnitt 50 → R = 0.75
+        // Durchschnitt 70 → R = 0.99
+        // Durchschnitt 85 → R = 1.22
+        // Durchschnitt 100 → R = 1.50
         var avgValue = totalValue / count;
-        var rValue = 0.5 + (avgValue / 100);
+        var normalizedValue = avgValue / 100;
+        var rValue = 0.5 + (normalizedValue * normalizedValue); // Quadratisch!
 
         // Clamp auf 0.5 - 1.5
         return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
