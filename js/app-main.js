@@ -18400,6 +18400,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Sync with TiageState for persistence
                 if (typeof TiageState !== 'undefined') {
                     TiageState.setArchetype('ich', newArchetype);
+                    TiageState.saveToStorage(); // Sofort speichern
                 }
                 // Update mobile and desktop select elements
                 const mobileSelect = document.getElementById('mobileIchSelect');
@@ -18412,6 +18413,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Sync with TiageState for persistence
                 if (typeof TiageState !== 'undefined') {
                     TiageState.setArchetype('partner', newArchetype);
+                    TiageState.saveToStorage(); // Sofort speichern
                 }
                 // Update mobile and desktop select elements
                 const mobileSelect = document.getElementById('mobilePartnerSelect');
