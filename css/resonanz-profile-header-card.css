@@ -270,6 +270,20 @@
     animation: deltaPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Dauerhaft sichtbar (ohne Animation/Timeout) */
+.resonanz-profile-delta.delta-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.resonanz-profile-delta.delta-visible.delta-positive {
+    animation: deltaPulseGreen 2s ease-in-out infinite;
+}
+
+.resonanz-profile-delta.delta-visible.delta-negative {
+    animation: deltaPulseRed 2s ease-in-out infinite;
+}
+
 @keyframes deltaPopIn {
     0% {
         opacity: 0;
