@@ -1053,10 +1053,33 @@
                 // Reload data and re-render
                 loadNeedsData();
                 renderNeedsList();
+
+                // FIX: Update ResonanzProfileHeaderCard für die neue Person
+                // Die Karte zeigt sonst weiterhin die Werte der alten Person
+                if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.update) {
+                    ResonanzProfileHeaderCard.update();
+                    console.log('[NeedsEditor] ResonanzProfileHeaderCard aktualisiert für', person);
+                }
+
+                // FIX: ResonanzCard UI für die neue Person initialisieren
+                // Damit die Slider/Werte die richtigen Person-Daten anzeigen
+                if (typeof ResonanzCard !== 'undefined' && ResonanzCard.initializeUI) {
+                    ResonanzCard.initializeUI(person);
+                    console.log('[NeedsEditor] ResonanzCard UI aktualisiert für', person);
+                }
+
+                // FIX: GewichtungCard UI für die neue Person aktualisieren
+                if (typeof GewichtungCard !== 'undefined' && GewichtungCard.loadIntoUI) {
+                    GewichtungCard.loadIntoUI();
+                    console.log('[NeedsEditor] GewichtungCard UI aktualisiert für', person);
+                }
             }, 50);
         }
 
         function saveCurrentState() {
+            // FIX: Speichere ALLE relevanten Komponenten-States vor Person-Wechsel
+
+            // 1. FlatNeeds speichern
             if (typeof AttributeSummaryCard !== 'undefined') {
                 const flatNeeds = AttributeSummaryCard.getFlatNeeds();
                 if (flatNeeds) {
@@ -1066,10 +1089,33 @@
                     // Save to TiageState if available (primary storage)
                     if (typeof TiageState !== 'undefined') {
                         TiageState.set('flatNeeds.' + currentPerson, flatNeeds);
-                        console.log('[NeedsEditor] State gespeichert für', currentPerson, ':',
+                        console.log('[NeedsEditor] FlatNeeds gespeichert für', currentPerson, ':',
                             Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length, 'needs');
                     }
                 }
+            }
+
+            // 2. ResonanzCard Werte speichern (falls vorhanden und geändert)
+            // Hinweis: ResonanzCard speichert bereits bei Slider-Änderungen automatisch
+            // Hier nur zur Sicherheit den aktuellen State in TiageState persistieren
+            if (typeof ResonanzCard !== 'undefined' && ResonanzCard.load && ResonanzCard.save) {
+                const resonanzValues = ResonanzCard.load(currentPerson);
+                if (resonanzValues) {
+                    ResonanzCard.save(resonanzValues, currentPerson);
+                    console.log('[NeedsEditor] ResonanzCard gespeichert für', currentPerson);
+                }
+            }
+
+            // 3. GewichtungCard Werte speichern (falls vorhanden)
+            // Hinweis: GewichtungCard speichert bereits bei Änderungen automatisch
+            if (typeof GewichtungCard !== 'undefined' && GewichtungCard.save) {
+                GewichtungCard.save(currentPerson);
+                console.log('[NeedsEditor] GewichtungCard gespeichert für', currentPerson);
+            }
+
+            // 4. TiageState persistieren
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
             }
         }
 
