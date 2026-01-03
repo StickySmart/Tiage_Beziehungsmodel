@@ -477,15 +477,25 @@ const GewichtungCard = (function() {
         const gew = getValues();
         const summe = gew.O + gew.A + gew.D + gew.G;
         const summeEl = document.getElementById('gewicht-summe');
+        const headerSummeEl = document.getElementById('gewichtung-header-summe');
+        const person = getCurrentPerson();
+        const isLocked = getSummeLockedByPerson(person);
+        const target = getSummeTargetByPerson(person);
+        const targetValue = isLocked ? target : 100;
+        const isOnTarget = summe === targetValue;
+
+        // Update footer sum display
         if (summeEl) {
             summeEl.textContent = summe + '%';
-            const person = getCurrentPerson();
-            const isLocked = getSummeLockedByPerson(person);
-            const target = getSummeTargetByPerson(person);
-            const targetValue = isLocked ? target : 100;
-            const isOnTarget = summe === targetValue;
             summeEl.classList.toggle('error', !isOnTarget);
             summeEl.style.color = isOnTarget ? '#10B981' : '#EF4444';
+        }
+
+        // Update header sum display (limit display to max 100%)
+        if (headerSummeEl) {
+            const displayValue = Math.min(summe, 100);
+            headerSummeEl.textContent = displayValue + '%';
+            headerSummeEl.style.color = isOnTarget ? '' : '#EF4444';
         }
     }
 
@@ -903,7 +913,7 @@ const GewichtungCard = (function() {
 
         const heading = `
             <div class="gewichtung-heading">
-                <h3 style="color: #F59E0B; margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Gewichtung <span style="font-size: 12px; font-weight: 400; opacity: 0.7;">100%</span></h3>
+                <h3 style="color: #F59E0B; margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Gewichtung <span id="gewichtung-header-summe" style="font-size: 12px; font-weight: 400; opacity: 0.7;">100%</span></h3>
                 <span style="color: var(--text-muted); font-size: 11px;">Archetyp · Geschlecht · Orientierung · Dominanz</span>
             </div>`;
 
