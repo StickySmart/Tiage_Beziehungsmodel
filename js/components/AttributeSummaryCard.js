@@ -897,6 +897,18 @@ const AttributeSummaryCard = (function() {
             counter.textContent = count > 0 ? `${count} markiert` : '';
             counter.classList.toggle('has-selection', count > 0);
         }
+
+        // FIX: Auch die Bulk-Buttons aktivieren/deaktivieren
+        const bulkCard = document.querySelector('.bulk-increment-card');
+        if (bulkCard) {
+            const hasSelection = selectedNeeds.size > 0;
+            bulkCard.classList.toggle('disabled', !hasSelection);
+
+            // Buttons innerhalb aktivieren/deaktivieren
+            bulkCard.querySelectorAll('button').forEach(btn => {
+                btn.disabled = !hasSelection;
+            });
+        }
     }
 
     /**
