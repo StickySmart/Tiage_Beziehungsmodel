@@ -491,10 +491,9 @@ const GewichtungCard = (function() {
             summeEl.style.color = isOnTarget ? '#10B981' : '#EF4444';
         }
 
-        // Update header sum display (limit display to max 100%)
+        // Update header sum display (show actual sum)
         if (headerSummeEl) {
-            const displayValue = Math.min(summe, 100);
-            headerSummeEl.textContent = displayValue + '%';
+            headerSummeEl.textContent = summe + '%';
             headerSummeEl.style.color = isOnTarget ? '' : '#EF4444';
         }
     }
