@@ -2468,6 +2468,44 @@ input.resonanz-input:focus {
     pointer-events: none;
 }
 
+/* Lock-Button für alle gefilterten Bedürfnisse */
+.bulk-lock-filtered-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    min-width: 52px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.15) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+}
+
+.bulk-lock-filtered-btn:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0.25) 100%);
+    border-color: rgba(59, 130, 246, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.bulk-lock-filtered-btn:active {
+    transform: scale(0.95);
+}
+
+.bulk-lock-filtered-btn .bulk-btn-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.bulk-lock-filtered-btn .bulk-btn-label {
+    font-size: 9px;
+    color: var(--text-muted, #888);
+    margin-top: 2px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */

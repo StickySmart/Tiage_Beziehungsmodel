@@ -1293,6 +1293,104 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * BULK-LOCK: Sperrt alle gefilterten (sichtbaren) Bedürfnisse
+     * Diese Funktion sperrt alle Bedürfnisse die aktuell durch Filter sichtbar sind
+     */
+    function lockAllFilteredNeeds() {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Hilfsfunktion: Prüft ob ein Need durch Filter sichtbar ist
+        function isNeedVisibleByFilters(need) {
+            // DimensionKategorieFilter prüfen (primärer Filter)
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return false;
+            }
+
+            // DOM-basierte Filter prüfen
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
+                return false;
+            }
+
+            // Hauptfrage-Filter prüfen
+            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
+                return false;
+            }
+
+            // Für Nuancen: Prüfe Parent-Hauptfrage
+            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
+                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                if (parentHf) {
+                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // Ermittle alle sichtbaren Bedürfnisse
+        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
+
+        if (visibleNeeds.length === 0) {
+            showLockToast('Keine gefilterten Bedürfnisse zum Sperren');
+            return;
+        }
+
+        let lockedCount = 0;
+        visibleNeeds.forEach(need => {
+            const needId = need.id;
+            const needObj = findNeedById(needId);
+
+            if (needObj) {
+                needObj.locked = true;
+            } else {
+                upsertNeed(needId, { locked: true });
+            }
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                needItem.classList.add('need-locked');
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                const lockIcon = needItem.querySelector('.flat-need-lock');
+                if (slider) slider.disabled = true;
+                if (input) input.readOnly = true;
+                if (lockIcon) lockIcon.textContent = '🔒';
+            }
+
+            // Speichere Lock-Status in TiageState
+            if (typeof TiageState !== 'undefined') {
+                const currentValue = needObj ? needObj.value : 50;
+                TiageState.lockNeed(currentPerson, needId, currentValue);
+                lockedCount++;
+            }
+
+            // Event
+            document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+                bubbles: true,
+                detail: { needId, locked: true }
+            }));
+        });
+
+        // Speichern und UI aktualisieren
+        if (typeof TiageState !== 'undefined' && lockedCount > 0) {
+            TiageState.saveToStorage();
+            console.log('[lockAllFilteredNeeds] Gesperrt:', lockedCount, 'gefilterte Bedürfnisse für', currentPerson);
+            showLockToast(`${lockedCount} gefilterte Werte gesperrt`);
+            updateLockedCountDisplay();
+        }
+    }
+
+    /**
      * Aktueller Archetyp für flache Darstellung
      */
     let currentFlatArchetyp = null;
@@ -2162,6 +2260,10 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-label">Reset</span>
                     </button>
                 </div>
+                <button class="bulk-lock-filtered-btn" onclick="AttributeSummaryCard.lockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren">
+                    <span class="bulk-btn-icon">🔒</span>
+                    <span class="bulk-btn-label">Sperren</span>
+                </button>
             </div>
         </div>`;
 
@@ -4583,6 +4685,7 @@ const AttributeSummaryCard = (function() {
         resetFilters,
         updateSelectedNeedsValue,
         lockSelectedNeeds,
+        lockAllFilteredNeeds,
         // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
         incrementSelectedNeeds,
         decrementSelectedNeeds,
