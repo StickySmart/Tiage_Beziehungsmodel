@@ -70,7 +70,7 @@ TiageModifiers.Dominanz.Submissiv = {
         hingabe: 5,                         // #B75 Kernmerkmal
         vertrauen: 5,                       // #B29 Notwendig für Submission
         leichtigkeit: 5,                    // #B14 Loslassen können
-        service_orientierung: 4,            // #B219 Wunsch zu gefallen
+        service_geben: 4,                    // #B219 Service-geben (Wunsch zu gefallen)
         offenheit_fuer_neues: 4,            // #B189 Anpassungsfähigkeit
 
         // Herausforderungen

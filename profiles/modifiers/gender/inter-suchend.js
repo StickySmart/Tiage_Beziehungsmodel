@@ -110,5 +110,5 @@ TiageModifiers.Gender.InterSuchend = {
 
 // Export für verschiedene Modulsysteme
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TiageModifiers.Gender.InterUnsicher;
+    module.exports = TiageModifiers.Gender.InterSuchend;
 }
