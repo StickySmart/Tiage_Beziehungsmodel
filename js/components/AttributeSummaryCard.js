@@ -600,45 +600,45 @@ const AttributeSummaryCard = (function() {
      * WICHTIG: Bei keinem aktiven Filter werden ALLE Bedürfnisse ausgewählt (inkl. nicht-expandierte Nuancen)
      */
     function selectAllFilteredNeeds() {
-        // Ermittle alle Bedürfnisse die durch aktive Filter erlaubt sind
-        // Bei keinem aktiven Filter: ALLE flatNeeds auswählen (auch Nuancen von nicht-expandierten Hauptfragen)
-        const visibleNeeds = flatNeeds.filter(need => {
+        // Hilfsfunktion: Prüft ob ein Need durch Filter (inkl. Suchfilter) sichtbar ist
+        function isNeedVisibleByFilters(need) {
             // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-            // DOM-basierte Filter prüfen (Suchfilter etc.) - nur wenn DOM-Element existiert
+
+            // DOM-basierte Filter prüfen - für Items die ein DOM-Element haben
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
 
-            // In Hauptfragen-Modus: Prüfe ob die zugehörige Hauptfrage durch Filter versteckt ist
+            // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
             const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
 
-            // FIX: Nuancen von nicht-expandierten Hauptfragen werden TROTZDEM ausgewählt
-            // wenn kein Filter sie ausschließt. "Alle" bedeutet ALLE, nicht nur sichtbare.
+            // FIX: Für Nuancen ohne DOM-Element: Prüfe ob Parent-Hauptfrage durch Filter versteckt ist
+            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
+                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                if (parentHf) {
+                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    // Wenn Parent-Hauptfrage durch Filter versteckt ist, ist auch Nuance versteckt
+                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
+                        return false;
+                    }
+                }
+            }
 
             return true;
-        });
+        }
+
+        // Ermittle alle Bedürfnisse die durch aktive Filter erlaubt sind
+        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
 
         // Ermittle Bedürfnisse die durch Filter ausgeschlossen sind
-        const hiddenNeeds = flatNeeds.filter(need => {
-            // DimensionKategorieFilter prüfen
-            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
-                return true;
-            }
-            // DOM-basierte Filter
-            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
-            if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
-                return true;
-            }
-
-            return false;
-        });
+        const hiddenNeeds = flatNeeds.filter(need => !isNeedVisibleByFilters(need));
 
         if (visibleNeeds.length === 0) {
             return;
@@ -709,24 +709,41 @@ const AttributeSummaryCard = (function() {
      * Ausgewählte werden abgewählt und umgekehrt
      */
     function invertNeedSelection() {
-        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind
-        // Bei keinem aktiven Filter: ALLE flatNeeds berücksichtigen
-        const visibleNeeds = flatNeeds.filter(need => {
+        // Hilfsfunktion: Prüft ob ein Need durch Filter (inkl. Suchfilter) sichtbar ist
+        function isNeedVisibleByFilters(need) {
             // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-            // DOM-basierte Filter - nur wenn DOM-Element existiert
+
+            // DOM-basierte Filter prüfen - für Items die ein DOM-Element haben
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
 
-            // FIX: Nuancen von nicht-expandierten Hauptfragen werden TROTZDEM berücksichtigt
-            // wenn kein Filter sie ausschließt.
+            // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
+            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
+                return false;
+            }
+
+            // FIX: Für Nuancen ohne DOM-Element: Prüfe ob Parent-Hauptfrage durch Filter versteckt ist
+            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
+                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
+                if (parentHf) {
+                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
+                        return false;
+                    }
+                }
+            }
 
             return true;
-        });
+        }
+
+        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind
+        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
 
         if (visibleNeeds.length === 0) {
             return;
