@@ -1762,6 +1762,9 @@
             // Update visual bars
             updateAgodStickBars();
 
+            // Update weight sum label
+            updateAgodWeightSumLabel();
+
             // Also save to sessionStorage for synthesis
             saveAgodWeightsToSession();
 
@@ -1790,6 +1793,9 @@
 
             // Update visual bars
             updateAgodStickBars();
+
+            // Update weight sum label
+            updateAgodWeightSumLabel();
 
             // Save to sessionStorage (for synthesis)
             saveAgodWeightsToSession();
@@ -1875,6 +1881,19 @@
          */
         function getAgodWeightSum() {
             return agodWeights.O + agodWeights.A + agodWeights.D + agodWeights.G;
+        }
+
+        /**
+         * Update the weight sum label in the UI
+         */
+        function updateAgodWeightSumLabel() {
+            const sumLabel = document.getElementById('agod-weight-sum-label');
+            if (sumLabel) {
+                const sum = getAgodWeightSum();
+                sumLabel.textContent = sum + '%';
+                // Visual feedback: red if not 100%, normal otherwise
+                sumLabel.style.color = sum === 100 ? '' : '#EF4444';
+            }
         }
 
         /**
