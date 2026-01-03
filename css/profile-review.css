@@ -2449,6 +2449,25 @@ input.resonanz-input:focus {
     margin-top: 2px;
 }
 
+/* Disabled State für Bulk-Buttons (wenn nichts markiert) */
+.bulk-increment-card.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.bulk-increment-card.disabled .bulk-increment-btn,
+.bulk-increment-card.disabled .bulk-reset-btn {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.bulk-increment-btn:disabled,
+.bulk-reset-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */

@@ -595,58 +595,37 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Wählt alle gefilterten (sichtbaren) Bedürfnisse aus oder ab
+     * MULTI-SELECT: Wählt alle gefilterten Bedürfnisse aus oder ab
      * Toggle-Logik: Wenn alle gefilterten bereits ausgewählt → alle abwählen, sonst alle auswählen
-     * WICHTIG: Bei aktiven Filtern werden NUR die gefilterten Bedürfnisse berücksichtigt
+     * WICHTIG: Bei keinem aktiven Filter werden ALLE Bedürfnisse ausgewählt (inkl. nicht-expandierte Nuancen)
      */
     function selectAllFilteredNeeds() {
-        // Prüfe ob wir in Hauptfragen-Modus sind
-        const isHauptfragenMode = document.querySelector('.flat-needs-list.hauptfragen-mode') !== null;
-
-        // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
-        // Nutze DimensionKategorieFilter.shouldShowNeed() für korrekte Filterung
+        // Ermittle alle Bedürfnisse die durch aktive Filter erlaubt sind
+        // Bei keinem aktiven Filter: ALLE flatNeeds auswählen (auch Nuancen von nicht-expandierten Hauptfragen)
         const visibleNeeds = flatNeeds.filter(need => {
             // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-            // Zusätzlich DOM-basierte Filter prüfen (Suchfilter etc.)
+            // DOM-basierte Filter prüfen (Suchfilter etc.) - nur wenn DOM-Element existiert
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
 
-            // In Hauptfragen-Modus: Prüfe ob die zugehörige Hauptfrage sichtbar ist
+            // In Hauptfragen-Modus: Prüfe ob die zugehörige Hauptfrage durch Filter versteckt ist
             const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
 
-            // FIX: In Hauptfragen-Modus müssen wir prüfen ob das Item tatsächlich sichtbar ist
-            // Wenn weder needItem noch hauptfrageItem existiert, ist dies eine Nuance einer nicht-expandierten Hauptfrage
-            if (isHauptfragenMode && !needItem && !hauptfrageItem) {
-                // Prüfe ob die Parent-Hauptfrage existiert und expanded ist
-                if (typeof HauptfrageAggregation !== 'undefined') {
-                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                    if (parentHf) {
-                        // Es ist eine Nuance - prüfe ob Parent expanded ist
-                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
-                        if (!parentItem || !parentItem.classList.contains('expanded')) {
-                            // Parent nicht expanded = Nuance nicht sichtbar
-                            return false;
-                        }
-                        // Prüfe auch ob Parent durch Filter versteckt ist
-                        if (parentItem && parentItem.classList.contains('filter-hidden')) {
-                            return false;
-                        }
-                    }
-                }
-            }
+            // FIX: Nuancen von nicht-expandierten Hauptfragen werden TROTZDEM ausgewählt
+            // wenn kein Filter sie ausschließt. "Alle" bedeutet ALLE, nicht nur sichtbare.
 
             return true;
         });
 
-        // Ermittle nicht-sichtbare (gefilterte) Bedürfnisse
+        // Ermittle Bedürfnisse die durch Filter ausgeschlossen sind
         const hiddenNeeds = flatNeeds.filter(need => {
             // DimensionKategorieFilter prüfen
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
@@ -656,20 +635,6 @@ const AttributeSummaryCard = (function() {
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return true;
-            }
-
-            // FIX: In Hauptfragen-Modus - Nuancen von nicht-expandierten Hauptfragen sind hidden
-            if (isHauptfragenMode && !needItem) {
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
-                if (!hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
-                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                    if (parentHf) {
-                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
-                        if (!parentItem || !parentItem.classList.contains('expanded')) {
-                            return true;
-                        }
-                    }
-                }
             }
 
             return false;
@@ -740,41 +705,25 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Kehrt die Auswahl aller sichtbaren Bedürfnisse um
+     * MULTI-SELECT: Kehrt die Auswahl aller Bedürfnisse um (die durch Filter erlaubt sind)
      * Ausgewählte werden abgewählt und umgekehrt
      */
     function invertNeedSelection() {
-        // Prüfe ob wir in Hauptfragen-Modus sind
-        const isHauptfragenMode = document.querySelector('.flat-needs-list.hauptfragen-mode') !== null;
-
-        // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
+        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind
+        // Bei keinem aktiven Filter: ALLE flatNeeds berücksichtigen
         const visibleNeeds = flatNeeds.filter(need => {
             // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-            // DOM-basierte Filter
+            // DOM-basierte Filter - nur wenn DOM-Element existiert
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
 
-            // FIX: In Hauptfragen-Modus müssen wir prüfen ob das Item tatsächlich sichtbar ist
-            if (isHauptfragenMode && !needItem) {
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
-                if (!hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
-                    const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                    if (parentHf) {
-                        const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
-                        if (!parentItem || !parentItem.classList.contains('expanded')) {
-                            return false;
-                        }
-                        if (parentItem && parentItem.classList.contains('filter-hidden')) {
-                            return false;
-                        }
-                    }
-                }
-            }
+            // FIX: Nuancen von nicht-expandierten Hauptfragen werden TROTZDEM berücksichtigt
+            // wenn kein Filter sie ausschließt.
 
             return true;
         });
@@ -1039,22 +988,16 @@ const AttributeSummaryCard = (function() {
         // Trigger event for resonance recalculation
         if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
+
+            // Update Hauptfrage-Aggregationen für alle betroffenen Hauptfragen
+            needsToReset.forEach(needId => {
+                updateParentHauptfrageValue(needId);
+            });
         }
 
-        // FIX: Auch Filter zurücksetzen um das konsolidierte Layout zu zeigen
-        if (typeof DimensionKategorieFilter !== 'undefined') {
-            DimensionKategorieFilter.reset(true);
-            const currentPerson = DimensionKategorieFilter.getCurrentPerson ?
-                DimensionKategorieFilter.getCurrentPerson() : 'ich';
-            if (DimensionKategorieFilter.saveStateForPerson) {
-                DimensionKategorieFilter.saveStateForPerson(currentPerson);
-            }
-        }
-        showOnlyChangedNeeds = false;
-
-        // Auswahl löschen und Liste neu rendern
-        clearNeedSelection();
-        reRenderFlatNeeds();
+        // FIX: Reset soll NUR Werte zurücksetzen - NICHT Filter oder Markierung ändern
+        // Aktualisiere Subtitle (geänderte Anzahl)
+        updateLockedCountDisplay();
     }
 
     /**
@@ -2176,21 +2119,20 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
-                ${selectedNeeds.size > 0 ? `
-                <div class="bulk-increment-card">
-                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen">
+                <div class="bulk-increment-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
+                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">+</span>
                         <span class="bulk-btn-label">5</span>
                     </button>
-                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(5)" title="Alle markierten Werte um 5 verringern">
+                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(5)" title="Alle markierten Werte um 5 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">−</span>
                         <span class="bulk-btn-label">5</span>
                     </button>
-                    <button class="bulk-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues()" title="Markierte Werte auf Original zurücksetzen (gesperrte bleiben unverändert)">
+                    <button class="bulk-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues()" title="Alle ungesperrten Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">↺</span>
                         <span class="bulk-btn-label">Reset</span>
                     </button>
-                </div>` : ''}
+                </div>
             </div>
         </div>`;
 
