@@ -16,9 +16,10 @@ export const FORMULAS = {
         version: '3.1'
     },
     r_factor: {
-        text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-        params: { base: 0.5, multiplier: 1.0, min: 0.5, max: 1.5 },
-        thresholds: { resonance: 1.05, dissonance: 0.97 }
+        text: 'R = similarity²',
+        description: 'Quadratische R-Formel mit Komplementär-Mapping (v3.2)',
+        params: { min: 0, max: 1 },  // Keine künstlichen Grenzen
+        thresholds: { resonance: 0.7, dissonance: 0.3 }
     }
 };
 
@@ -63,7 +64,7 @@ export const RESONANCE_DIMENSIONAL = {
         leben:       { name: 'Leben', emoji: '🔥', source: 'ORIENTIERUNG_NEEDS', weight: 0.25 },
         dynamik:     { name: 'Dynamik', emoji: '⚡', source: 'DOMINANZ_NEEDS', weight: 0.25 }
     },
-    THRESHOLDS: { resonanz: 1.05, dissonanz: 0.97 }
+    THRESHOLDS: { resonanz: 0.7, dissonanz: 0.3 }  // Angepasst für R = similarity²
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -222,6 +223,29 @@ export const EXPLORATION = {
 
 export const NEEDS_INTEGRATION = {
     ENABLED: true,
+    // Komplementäre Bedürfnis-Paare (v3.2) - werden KREUZ-verglichen
+    COMPLEMENTARY_PAIRS: {
+        '#B74': '#B75',   // Kontrolle-ausüben ↔ Hingabe
+        '#B75': '#B74',
+        '#B76': '#B77',   // Führung-geben ↔ Geführt-werden
+        '#B77': '#B76',
+        '#B216': '#B215', // Dominieren ↔ Demütig-sein
+        '#B215': '#B216',
+        '#B222': '#B221', // Schmerz-geben ↔ Schmerzerleben
+        '#B221': '#B222',
+        '#B212': '#B223', // Bondage-geben ↔ Bondage-erleben
+        '#B223': '#B212',
+        '#B218': '#B217', // Bestrafen ↔ Bestrafung-erhalten
+        '#B217': '#B218',
+        '#B219': '#B220', // Service-geben ↔ Service-empfangen
+        '#B220': '#B219',
+        '#B88': '#B225',  // Beschützen ↔ Beschützt-werden
+        '#B225': '#B88',
+        '#B83': '#B226',  // Vertrauen-schenken ↔ Vertrauen-empfangen
+        '#B226': '#B83',
+        '#B214': '#B213', // Anbetung ↔ Devotion
+        '#B213': '#B214'
+    },
     FACTOR_WEIGHTS: {
         archetyp:     { matrix: 0.60, needs: 0.40 },
         orientierung: { matrix: 0.50, needs: 0.50 },

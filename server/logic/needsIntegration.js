@@ -14,9 +14,8 @@ import * as Constants from './constants.js';
 /**
  * Berechnet R-Faktoren (R1-R4) für eine Person
  *
- * R = Kohärenz zwischen Archetyp und tatsächlichen Bedürfnissen
- * Formel: R = 0.5 + (Übereinstimmung × 1.0)
- * Range: 0.5 - 1.5
+ * v3.2: R = similarity² (quadratisch, mit Komplementär-Mapping)
+ * Range: 0 - 1
  *
  * @param {string} person - 'ich' oder 'partner'
  * @param {object} profile - Profil mit archetyp und needs
@@ -60,10 +59,11 @@ export function calculateDimensionalResonance(person, profile) {
 
 /**
  * Berechnet R-Wert für eine Dimension
+ * v3.2: R = similarity² (quadratisch)
  *
  * @param {object} actualNeeds - Tatsächliche Bedürfniswerte
  * @param {object} expectedNeeds - Archetyp-typische Werte
- * @returns {number} R-Wert (0.5 - 1.5)
+ * @returns {number} R-Wert (0 - 1)
  */
 function calculateDimensionR(actualNeeds, expectedNeeds) {
     const keys = Object.keys(expectedNeeds);
@@ -90,10 +90,11 @@ function calculateDimensionR(actualNeeds, expectedNeeds) {
     // Durchschnittliche Übereinstimmung
     const avgMatch = totalMatch / count;
 
-    // R = 0.5 + (Übereinstimmung × 1.0)
-    // Bei avgMatch = 0 → R = 0.5
-    // Bei avgMatch = 1 → R = 1.5
-    return 0.5 + (avgMatch * 1.0);
+    // v3.2: R = avgMatch² (quadratisch)
+    // Bei avgMatch = 0 → R = 0 (eliminiert)
+    // Bei avgMatch = 0.7 → R = 0.49
+    // Bei avgMatch = 1 → R = 1 (neutral)
+    return avgMatch * avgMatch;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

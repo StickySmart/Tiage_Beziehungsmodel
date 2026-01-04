@@ -69,13 +69,13 @@ var TiageHelpTexts = (function() {
         // Fallback wenn constants.js nicht geladen
         console.warn('[TiageHelpTexts] WARNUNG: constants.js nicht geladen - verwende Fallback');
         return {
-            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            description: 'Resonanzfaktor pro Dimension (Fallback)',
-            range: { min: 0.5, max: 1.5 },
+            text: 'R = similarity²',
+            description: 'Resonanzfaktor pro Dimension v3.2 (quadratisch, mit Komplementär-Mapping)',
+            range: { min: 0, max: 1 },
             interpretation: {
-                weak: { threshold: 0.97, label: 'schwächt Score' },
-                neutral: { range: [0.97, 1.05], label: 'neutral' },
-                strong: { threshold: 1.05, label: 'verstärkt Score' }
+                weak: { threshold: 0.3, label: 'schwächt Score stark' },
+                neutral: { range: [0.3, 0.7], label: 'mittelmäßig' },
+                strong: { threshold: 0.7, label: 'guter Match' }
             }
         };
     }
@@ -189,12 +189,12 @@ var TiageHelpTexts = (function() {
             subtitle: 'Wie entstehen die R-Werte aus Perspektiven und Archetyp-Kohärenz?',
 
             overview: {
-                description: 'Resonanzfaktoren messen die Kohärenz zwischen deinen Bedürfnissen und dem gewählten Archetyp, aufgeschlüsselt nach 4 philosophischen Perspektiven.',
-                formula: 'R = 0.5 + (Kohärenz × 1.0)',
+                description: 'v3.2: Resonanzfaktoren messen die Übereinstimmung zwischen ICH und PARTNER mit Komplementär-Mapping für Geben/Empfangen-Paare.',
+                formula: 'R = similarity² (quadratisch)',
                 range: {
-                    min: '0.5 (keine Kohärenz → schwächt Score)',
-                    neutral: '1.0 (neutral)',
-                    max: '1.5 (perfekte Kohärenz → verstärkt Score)'
+                    min: '0.0 (totaler Mismatch → eliminiert Dimension)',
+                    neutral: '0.5 (mittelmäßig)',
+                    max: '1.0 (perfekte Übereinstimmung)'
                 }
             },
 

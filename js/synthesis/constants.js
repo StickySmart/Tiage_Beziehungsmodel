@@ -25,21 +25,21 @@ TiageSynthesis.Constants = {
             version: '3.1'
         },
 
-        // R-Faktor Formel (dimensional)
+        // R-Faktor Formel (dimensional) - v3.2 mit quadratischer Formel
         r_factor: {
-            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            html: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            description: 'Dimensionaler Resonanzfaktor',
+            text: 'R = similarity²',
+            html: 'R = similarity²',
+            description: 'Dimensionaler Resonanzfaktor mit quadratischer Skalierung und Komplementär-Mapping',
             params: {
-                base: 0.5,
-                multiplier: 1.0,
-                min: 0.5,
-                max: 1.5
+                // Keine künstlichen Grenzen mehr - R basiert direkt auf similarity²
+                // similarity = 1 - (avgDiff / 100), wobei avgDiff mit Komplementär-Mapping berechnet wird
+                min: 0,    // Totaler Mismatch eliminiert Dimension
+                max: 1     // Perfekter Match = neutral (kein Boost über 1.0)
             },
             thresholds: {
-                resonance: 1.05,    // R ≥ 1.05 = verstärkt Score
-                dissonance: 0.97,   // R ≤ 0.97 = schwächt Score
-                neutral: [0.97, 1.05]  // Dazwischen = neutral
+                resonance: 0.7,     // R ≥ 0.7 = guter Match (similarity ≥ 0.84)
+                dissonance: 0.3,    // R ≤ 0.3 = schlechter Match (similarity ≤ 0.55)
+                neutral: [0.3, 0.7] // Dazwischen = mittelmäßig
             }
         },
 
@@ -185,7 +185,7 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     //
     // Formel pro Dimension: R_dim = 0.5 + (Übereinstimmung × 1.0)
-    // Range: 0.5 (keine Übereinstimmung) bis 1.5 (perfekte Übereinstimmung)
+    // v3.2: Range: 0 (totaler Mismatch) bis 1 (perfekte Übereinstimmung), R = similarity²
     //
     // Schwellenwerte:
     //   R ≥ 1.25 → Resonanz ⬆️
@@ -223,11 +223,11 @@ TiageSynthesis.Constants = {
             }
         },
 
-        // Interpretation pro Dimension
+        // Interpretation pro Dimension (v3.2: angepasst für R = similarity², Range 0-1)
         THRESHOLDS: {
-            resonanz: 1.05,   // R ≥ 1.05 = Resonanz ⬆️
-            dissonanz: 0.97   // R ≤ 0.97 = Dissonanz ⬇️
-                              // Dazwischen = Neutral ➡️
+            resonanz: 0.7,    // R ≥ 0.7 = Guter Match ⬆️ (similarity ≥ 0.84)
+            dissonanz: 0.3    // R ≤ 0.3 = Schlechter Match ⬇️ (similarity ≤ 0.55)
+                              // Dazwischen = Mittelmäßig ➡️
         }
     },
 
@@ -243,54 +243,55 @@ TiageSynthesis.Constants = {
     ARCHETYP_KOHAERENZ: {
         // ═══════════════════════════════════════════════════════════════════
         // R_Leben (Orientierungs-Bedürfnisse) - für R1
-        // Alle 4 Bedürfnisse haben nun #B-IDs: #B221, #B222, #B204, #B20
+        // Alle 4 Bedürfnisse haben nun #B-IDs: #B175, #B176, #B204, #B20
+        // FIX: #B221/#B222 waren falsch (sind Schmerz-Needs), korrigiert zu #B175/#B176
         // ═══════════════════════════════════════════════════════════════════
         leben: {
             single: {
-                sexuelle_experimentierfreude: { value: 50, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 30, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 50, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 30, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 40, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 30, id: '#B20', label: 'Intimität' }
             },
             duo: {
-                sexuelle_experimentierfreude: { value: 40, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 90, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 40, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 90, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 85, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 90, id: '#B20', label: 'Intimität' }
             },
             duo_flex: {
-                sexuelle_experimentierfreude: { value: 70, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 75, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 70, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 75, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 80, id: '#B20', label: 'Intimität' }
             },
             solopoly: {
-                sexuelle_experimentierfreude: { value: 85, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 60, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 85, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 50, id: '#B20', label: 'Intimität' }
             },
             polyamor: {
-                sexuelle_experimentierfreude: { value: 80, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 85, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 80, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 85, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 85, id: '#B20', label: 'Intimität' }
             },
             ra: {
-                sexuelle_experimentierfreude: { value: 75, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 60, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 75, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 50, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 60, id: '#B20', label: 'Intimität' }
             },
             lat: {
-                sexuelle_experimentierfreude: { value: 50, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 80, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 50, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 80, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 75, id: '#B20', label: 'Intimität' }
             },
             aromantisch: {
-                sexuelle_experimentierfreude: { value: 40, id: '#B221', label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 20, id: '#B222', label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 40, id: '#B175', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 20, id: '#B176', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 30, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 25, id: '#B20', label: 'Intimität' }
             }
@@ -861,6 +862,54 @@ TiageSynthesis.Constants = {
 
     NEEDS_INTEGRATION: {
         ENABLED: true,
+
+        // ─────────────────────────────────────────────────────────────────────
+        // KOMPLEMENTÄRE BEDÜRFNIS-PAARE (v3.2)
+        // ─────────────────────────────────────────────────────────────────────
+        // Diese Paare werden KREUZ-verglichen statt direkt:
+        // ICH.geben ↔ PARTNER.empfangen (und umgekehrt)
+        // Für R-Berechnung: similarity = 1 - |ICH.geben - PARTNER.empfangen| / 100
+        COMPLEMENTARY_PAIRS: {
+            // Kontrolle & Hingabe
+            '#B74': '#B75',   // Kontrolle-ausüben ↔ Hingabe
+            '#B75': '#B74',   // Hingabe ↔ Kontrolle-ausüben
+
+            // Führung
+            '#B76': '#B77',   // Führung-geben ↔ Geführt-werden
+            '#B77': '#B76',   // Geführt-werden ↔ Führung-geben
+
+            // Dominanz/Demut
+            '#B216': '#B215', // Dominieren ↔ Demütig-sein
+            '#B215': '#B216', // Demütig-sein ↔ Dominieren
+
+            // Schmerz (S/M)
+            '#B222': '#B221', // Schmerz-geben ↔ Schmerzerleben
+            '#B221': '#B222', // Schmerzerleben ↔ Schmerz-geben
+
+            // Bondage
+            '#B212': '#B223', // Bondage-geben ↔ Bondage-erleben
+            '#B223': '#B212', // Bondage-erleben ↔ Bondage-geben
+
+            // Bestrafung
+            '#B218': '#B217', // Bestrafen ↔ Bestrafung-erhalten
+            '#B217': '#B218', // Bestrafung-erhalten ↔ Bestrafen
+
+            // Service
+            '#B219': '#B220', // Service-geben ↔ Service-empfangen
+            '#B220': '#B219', // Service-empfangen ↔ Service-geben
+
+            // Beschützen
+            '#B88': '#B225',  // Beschützen ↔ Beschützt-werden
+            '#B225': '#B88',  // Beschützt-werden ↔ Beschützen
+
+            // Vertrauen
+            '#B83': '#B226',  // Vertrauen-schenken ↔ Vertrauen-empfangen
+            '#B226': '#B83',  // Vertrauen-empfangen ↔ Vertrauen-schenken
+
+            // Anbetung/Devotion
+            '#B214': '#B213', // Anbetung (verehren) ↔ Devotion (verehrt werden)
+            '#B213': '#B214'  // Devotion ↔ Anbetung
+        },
 
         // Gewichtung: Matrix vs. Bedürfnisse pro Faktor
         FACTOR_WEIGHTS: {

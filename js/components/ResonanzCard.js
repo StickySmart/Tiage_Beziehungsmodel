@@ -10,7 +10,7 @@
  * - R3: Kink (Dynamik, Sicherheit)
  * - R4: Identität (Verständnis, Erschaffen, Verbundenheit)
  *
- * Range: 0.5 - 1.5 (0.5 = schwächt ab, 1.0 = neutral, 1.5 = verstärkt)
+ * Range: 0 - 1 (v3.2: 0 = eliminiert, 1 = neutral, R = similarity²)
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
@@ -273,16 +273,18 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Begrenzt Wert auf gültigen Bereich (0.5-1.5)
+     * Begrenzt Wert auf gültigen Bereich (0-1)
+     * v3.2: Quadratische R-Formel ohne künstliche Grenzen
      * @param {number} value - Eingabewert
      * @returns {number} Begrenzter Wert
      */
     function clampValue(value) {
-        return Math.max(0.5, Math.min(1.5, parseFloat(value) || 1.0));
+        return Math.max(0, Math.min(1, parseFloat(value) || 1.0));
     }
 
     /**
-     * Konvertiert Slider-Wert (50-150) zu Resonanzwert (0.5-1.5)
+     * Konvertiert Slider-Wert (0-100) zu Resonanzwert (0-1)
+     * v3.2: Neuer Bereich 0-1 statt 0.5-1.5
      * @param {number} sliderValue - Slider-Wert
      * @returns {number} Resonanzwert
      */
@@ -291,7 +293,8 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Konvertiert Resonanzwert (0.5-1.5) zu Slider-Wert (50-150)
+     * Konvertiert Resonanzwert (0-1) zu Slider-Wert (0-100)
+     * v3.2: Neuer Bereich 0-1 statt 0.5-1.5
      * @param {number} value - Resonanzwert
      * @returns {number} Slider-Wert
      */
@@ -624,7 +627,7 @@ const ResonanzCard = (function() {
      * Überschreibt nur nicht-gelockte Werte.
      *
      * @param {Object} calculatedValues - { R1: number, R2: number, R3: number, R4: number }
-     *                                    Werte im Bereich 0.5-1.5 (oder 0.9-1.1 aus Synthese)
+     *                                    v3.2: Werte im Bereich 0-1 (R = similarity²)
      * @param {boolean} forceOverwrite - Wenn true, überschreibt auch gelockte Werte
      * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
      */

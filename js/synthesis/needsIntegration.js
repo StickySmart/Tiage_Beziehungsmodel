@@ -362,13 +362,16 @@ TiageSynthesis.NeedsIntegration = {
     /**
      * Berechnet R für eine einzelne Dimension basierend auf ICH vs PARTNER Ähnlichkeit
      *
-     * Formel: R = 0.5 + (Ähnlichkeit × 1.0)
-     * Ähnlichkeit = 1 - (durchschnittliche Abweichung / 100)
+     * NEU v3.2: R = similarity² (quadratisch, mit Komplementär-Mapping)
+     * - Komplementäre Bedürfnisse werden KREUZ-verglichen (ICH.geben ↔ PARTNER.empfangen)
+     * - Keine künstlichen Grenzen (0-1 statt 0.5-1.5)
      *
      * @private
      */
     _calculatePaarungsSingleResonance: function(ichNeeds, partnerNeeds, needsList) {
         var self = this;
+        var constants = TiageSynthesis.Constants;
+        var complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
 
         if (!needsList || needsList.length === 0) {
             // Fallback: Vergleiche ALLE gemeinsamen Needs
@@ -381,7 +384,10 @@ TiageSynthesis.NeedsIntegration = {
         for (var i = 0; i < needsList.length; i++) {
             var needKey = needsList[i];
             var ichVal = this._getNeedValue(ichNeeds, null, needKey);
-            var partnerVal = this._getNeedValue(partnerNeeds, null, needKey);
+
+            // Komplementär-Mapping: Wenn needKey komplementär ist, vergleiche mit Partner-Gegenstück
+            var partnerNeedKey = complementaryPairs[needKey] || needKey;
+            var partnerVal = this._getNeedValue(partnerNeeds, null, partnerNeedKey);
 
             if (ichVal !== undefined && partnerVal !== undefined) {
                 var diff = Math.abs(ichVal - partnerVal);
@@ -397,27 +403,34 @@ TiageSynthesis.NeedsIntegration = {
         var avgDiff = totalDiff / count;
         var similarity = 1 - (avgDiff / 100);
 
-        // R = 0.5 + (similarity × 1.0)
-        // Bei avgDiff=0 (identisch): R = 0.5 + 1.0 = 1.5
-        // Bei avgDiff=50: R = 0.5 + 0.5 = 1.0
-        // Bei avgDiff=100: R = 0.5 + 0.0 = 0.5
-        var rValue = 0.5 + (similarity * 1.0);
+        // NEU v3.2: R = similarity² (quadratisch)
+        // Bei avgDiff=0 (identisch): similarity=1.0 → R = 1.0
+        // Bei avgDiff=30: similarity=0.7 → R = 0.49
+        // Bei avgDiff=50: similarity=0.5 → R = 0.25
+        // Bei avgDiff=100 (gegensätzlich): similarity=0.0 → R = 0.0
+        var rValue = similarity * similarity;
 
-        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
+        return Math.round(rValue * 1000) / 1000;
     },
 
     /**
      * Fallback: Berechnet Ähnlichkeit über ALLE gemeinsamen Needs
+     * NEU v3.2: Mit Komplementär-Mapping und quadratischer Formel
      * @private
      */
     _calculateAllNeedsSimilarity: function(ichNeeds, partnerNeeds) {
+        var constants = TiageSynthesis.Constants;
+        var complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
         var totalDiff = 0;
         var count = 0;
 
         for (var key in ichNeeds) {
             if (ichNeeds.hasOwnProperty(key)) {
                 var ichVal = this._getNeedValue(ichNeeds, null, key);
-                var partnerVal = this._getNeedValue(partnerNeeds, null, key);
+
+                // Komplementär-Mapping anwenden
+                var partnerKey = complementaryPairs[key] || key;
+                var partnerVal = this._getNeedValue(partnerNeeds, null, partnerKey);
 
                 if (ichVal !== undefined && partnerVal !== undefined) {
                     totalDiff += Math.abs(ichVal - partnerVal);
@@ -430,9 +443,11 @@ TiageSynthesis.NeedsIntegration = {
 
         var avgDiff = totalDiff / count;
         var similarity = 1 - (avgDiff / 100);
-        var rValue = 0.5 + (similarity * 1.0);
 
-        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
+        // NEU v3.2: R = similarity² (quadratisch, keine Clamps)
+        var rValue = similarity * similarity;
+
+        return Math.round(rValue * 1000) / 1000;
     },
 
     /**
@@ -510,7 +525,7 @@ TiageSynthesis.NeedsIntegration = {
      * - Hohe Bedürfniswerte → hoher R-Faktor → mehr Gewicht
      * - Niedrige Bedürfniswerte → niedriger R-Faktor → weniger Gewicht
      *
-     * Range: 0.5 (alle Bedürfnisse auf 0) bis 1.5 (alle auf 100)
+     * v3.2: Range: 0 (alle auf 0) bis 1 (alle auf 100), R = (avgValue/100)²
      *
      * Unterstützt zwei Formate:
      * - Altes Format: { needKey: 50 }
@@ -565,19 +580,17 @@ TiageSynthesis.NeedsIntegration = {
             });
         }
 
-        // NEUE FORMEL: R = 0.5 + (Durchschnitt / 100)² (EXPONENTIELL)
-        // Quadratische Skalierung: Hohe Werte haben überproportional mehr Einfluss
-        // Durchschnitt 0 → R = 0.50
-        // Durchschnitt 50 → R = 0.75
-        // Durchschnitt 70 → R = 0.99
-        // Durchschnitt 85 → R = 1.22
-        // Durchschnitt 100 → R = 1.50
+        // NEU v3.2: R = (Durchschnitt / 100)² (rein quadratisch, keine Offsets/Clamps)
+        // Durchschnitt 0 → R = 0.00 (eliminiert)
+        // Durchschnitt 50 → R = 0.25
+        // Durchschnitt 70 → R = 0.49
+        // Durchschnitt 85 → R = 0.72
+        // Durchschnitt 100 → R = 1.00 (neutral)
         var avgValue = totalValue / count;
         var normalizedValue = avgValue / 100;
-        var rValue = 0.5 + (normalizedValue * normalizedValue); // Quadratisch!
+        var rValue = normalizedValue * normalizedValue; // Quadratisch, keine Clamps!
 
-        // Clamp auf 0.5 - 1.5
-        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
+        return Math.round(rValue * 1000) / 1000;
     },
 
     /**
@@ -1069,10 +1082,10 @@ TiageSynthesis.NeedsIntegration = {
     },
 
     /**
-     * Berechnet R-Werte (0.5-1.5) aus Kategorie-Scores mit sekundärer Gewichtung
+     * Berechnet R-Werte (0-1) aus Kategorie-Scores mit sekundärer Gewichtung
      *
-     * Formel: R = 0.5 + (Score / 100)
-     * Score 0 → R = 0.5, Score 50 → R = 1.0, Score 100 → R = 1.5
+     * NEU v3.2: R = (Score / 100)² (quadratisch, keine Clamps)
+     * Score 0 → R = 0.0, Score 50 → R = 0.25, Score 100 → R = 1.0
      *
      * @param {Object} needs - Bedürfniswerte
      * @param {number} secondaryWeight - Gewichtung für sekundäre Kategorien (optional)
@@ -1081,14 +1094,13 @@ TiageSynthesis.NeedsIntegration = {
     calculateResonanzWithSecondary: function(needs, secondaryWeight) {
         var result = this.calculateCategoryScoresWithSecondary(needs, secondaryWeight);
 
-        // Konvertiere Scores (0-100) zu R-Werten (0.5-1.5)
+        // NEU v3.2: Konvertiere Scores (0-100) zu R-Werten (0-1) quadratisch
         var rValues = {};
         for (var r in result.resonanzScores) {
             var score = result.resonanzScores[r];
-            // R = 0.5 + (score / 100)
-            rValues[r] = Math.round((0.5 + score / 100) * 1000) / 1000;
-            // Clamp auf 0.5-1.5
-            rValues[r] = Math.max(0.5, Math.min(1.5, rValues[r]));
+            var normalized = score / 100;
+            // R = normalized² (quadratisch, keine Clamps)
+            rValues[r] = Math.round((normalized * normalized) * 1000) / 1000;
         }
 
         return {

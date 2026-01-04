@@ -10856,12 +10856,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const attractionScore = attractionResult.score;
 
             // 3. Hybrid-Kombination
-            // R4 = 0.5 + (identity × 0.30 + attraction × 0.70) / 100
+            // v3.2: R4 = (combinedScore / 100)² (quadratisch, keine Clamps)
             const combinedScore = identityScore * IDENTITY_WEIGHT + attractionScore * ATTRACTION_WEIGHT;
-            const R4 = 0.5 + (combinedScore / 100);
+            const normalized = combinedScore / 100;
+            const R4 = normalized * normalized;
 
-            // Clamp auf 0.5-1.5
-            const R4Clamped = Math.max(0.5, Math.min(1.5, R4));
+            // v3.2: Keine Clamps mehr, Range 0-1
+            const R4Clamped = Math.max(0, Math.min(1, R4));
 
             console.log('[calculateR4Hybrid] Ergebnis:', {
                 identityScore,
@@ -11447,14 +11448,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // ═══════════════════════════════════════════════════════════════════════
         function calculateRelationshipQuality(person1, person2) {
             // ═══════════════════════════════════════════════════════════════════
-            // TIAGE RECHENMODELL v2.0 - Direkte Resonanz-Modulation
+            // TIAGE RECHENMODELL v3.2 - Quadratische Resonanz mit Komplementär-Mapping
             // ═══════════════════════════════════════════════════════════════════
-            // Formel: Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
+            // Formel: Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
             //
-            // Ri = 0.5 + Bedürfnis-Match-i (Range: 0.5 - 1.5)
-            // → 0% Match  = 0.5 (schwächt ab)
-            // → 50% Match = 1.0 (neutral)
-            // → 100% Match = 1.5 (verstärkt)
+            // Ri = similarity² (Range: 0 - 1)
+            // → 0% Match  = 0.0 (eliminiert Dimension)
+            // → 50% Match = 0.25 (stark reduziert)
+            // → 100% Match = 1.0 (neutral)
 
             const orientationScore = calculateOrientationScore(person1, person2);
 
@@ -11469,7 +11470,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         orientierung: 0,
                         geschlecht: 0
                     },
-                    resonanz: { R1: 0.5, R2: 0.5, R3: 0.5, R4: 0.5, GFK: 0.5 }
+                    resonanz: { R1: 0, R2: 0, R3: 0, R4: 0, GFK: 0 }
                 };
             }
 
@@ -11481,7 +11482,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const genderScore = calculateGenderAttraction(person1, person2);
 
             // ═══════════════════════════════════════
-            // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
+            // SCHRITT 2: Resonanz-Faktoren R1-R4 (0-1, v3.2 quadratisch)
             // ═══════════════════════════════════════
             // Basierend auf 224 Bedürfnissen (#B1-#B224), aufgeteilt nach Faktor
             // ODER benutzerdefinierten Werten aus ResonanzCard
@@ -11505,11 +11506,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
                     // R4 wird unten via calculateR4Hybrid berechnet (nicht mehr aus K4)
 
-                    // Skaliere auf 0.5-1.5+ (quadratisch - gute Matches werden stärker belohnt)
-                    R1 = 0.5 + (match1 * match1);
-                    R2 = 0.5 + (match2 * match2);
-                    R3 = 0.5 + (match3 * match3);
-                    // R4 wird separat berechnet
+                    // v3.2: R = match² (rein quadratisch, Range 0-1)
+                    R1 = match1 * match1;
+                    R2 = match2 * match2;
+                    R3 = match3 * match3;
+                    // R4 wird separat via calculateR4Hybrid berechnet
 
                     console.log('[calculateRelationshipQuality] R1-R3 aus SSOT berechnet:', { R1, R2, R3, matching: matching.score });
                 }
@@ -11518,7 +11519,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════
             // R4 HYBRID: Identität + Bidirektionale Attraktion
             // ═══════════════════════════════════════
-            // R4 = 0.5 + (identity × 0.30 + attraction × 0.70) / 100
+            // v3.2: R4 = (identity × 0.30 + attraction × 0.70)² / 10000
             // - Identität: Cis↔Cis, Trans↔Trans Resonanz (30%)
             // - Attraktion: Bidirektional mit P/S Gewichtung (70%)
             const r4Result = calculateR4Hybrid(person1, person2);
@@ -16796,7 +16797,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 </table>
                 <div style="display: flex; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; align-items: center;">
                     <span style="font-size: 10px; color: var(--text-muted); font-family: monospace;">(Resonanzwert − 1) × Gewicht × 100 = %</span>
-                    <span style="font-size: 10px; color: var(--text-muted);">R = Resonanzwert (0.5–1.5)</span>
+                    <span style="font-size: 10px; color: var(--text-muted);">R = similarity² (0–1)</span>
                     <span style="font-size: 10px; color: #22c55e;">+% verstärkt</span>
                     <span style="font-size: 10px; color: #ef4444;">−% schwächt</span>
                 </div>

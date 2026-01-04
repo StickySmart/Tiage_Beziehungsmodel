@@ -262,9 +262,9 @@ router.post('/recalculate', async (req, res, next) => {
             if (needValues.length > 0) {
                 const avgNeed = needValues.reduce((a, b) => a + b, 0) / needValues.length;
 
-                // R-Faktoren: Normalisiert auf 0.5-1.5 Bereich
-                const rFactor = 0.5 + (avgNeed / 100);
-                const clampedR = Math.min(1.5, Math.max(0.5, rFactor));
+                // v3.2: R = (avgNeed / 100)² (quadratisch, Range 0-1)
+                const normalized = avgNeed / 100;
+                const clampedR = Math.min(1, Math.max(0, normalized * normalized));
 
                 const newResonanzFaktoren = {
                     R1: { value: clampedR, locked: profile.resonanzFaktoren?.R1?.locked || false },
