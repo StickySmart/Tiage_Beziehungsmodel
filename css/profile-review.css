@@ -2506,6 +2506,13 @@ input.resonanz-input:focus {
     margin-top: 2px;
 }
 
+.bulk-lock-filtered-btn.disabled,
+.bulk-lock-filtered-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
 /* ═══════════════════════════════════════════════════════════════════════════ */
