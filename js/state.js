@@ -125,7 +125,7 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // Multiplier für die 4 Bedürfnis-Dimensionen (Leben, Philosophie, Kink, Identität).
         // Werden aus dem Profil berechnet, aber User kann sie manuell überschreiben.
-        // Wertebereich: 0.5 - 1.5
+        // v3.2: Wertebereich 0 - 1 (R = similarity², quadratisch)
         resonanzFaktoren: {
             ich: {
                 R1: { value: 1.0, locked: false },  // Leben (existenz, zuneigung, musse)
@@ -831,12 +831,12 @@ const TiageState = (function() {
          * Set a single Resonanzfaktor
          * @param {string} person - 'ich' or 'partner'
          * @param {string} key - 'R1', 'R2', 'R3', or 'R4'
-         * @param {number} value - 0.5-1.5
+         * @param {number} value - 0-1 (v3.2: quadratisch, keine künstlichen Grenzen)
          * @param {boolean} locked - Whether the value is locked
          */
         setResonanzFaktor(person, key, value, locked = false) {
-            // Clamp value to valid range
-            const clampedValue = Math.min(1.5, Math.max(0.5, value));
+            // v3.2: Clamp auf 0-1 (R = similarity²)
+            const clampedValue = Math.min(1, Math.max(0, value));
             this.set(`resonanzFaktoren.${person}.${key}`, { value: clampedValue, locked });
         },
 

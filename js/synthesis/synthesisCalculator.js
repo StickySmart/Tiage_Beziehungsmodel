@@ -13,13 +13,13 @@
  *   wD = 0.25 (25%) - Dominanz
  *   wG = 0.25 (25%) - Geschlecht
  *
- * Dimensionale Resonanz-Faktoren (0.5 - 1.5):
+ * Dimensionale Resonanz-Faktoren (0 - 1, v3.2 quadratisch mit Komplementär-Mapping):
  *   r1 = R_Leben       (Orientierung ↔ Anziehung/Intimität)
  *   r2 = R_Philosophie (Archetyp ↔ Beziehungsphilosophie)
  *   r3 = R_Dynamik     (Dominanz ↔ Machtdynamik)
  *   r4 = R_Identität   (Geschlecht ↔ Identität/Ausdruck)
  *
- *   0.5 = keine Übereinstimmung, 1.0 = neutral, 1.5 = perfekte Übereinstimmung
+ *   R = similarity² → 0 = eliminiert, 0.5 = mittelmäßig, 1.0 = perfekt
  *
  * Wobei:
  *   O = Orientierungs-Score (PATHOS) - Sexuelle Orientierung
@@ -1087,14 +1087,11 @@ TiageSynthesis.Calculator = {
         // Basiert auf ORIENTATION_OPENNESS (Similarity-Attraction Theorie):
         //   hetero/homo=0, hetero-homo=25, hetero-bi=50, bi=75, bi-bi=100
         //
-        // Formel (statistisch fundiert durch Forschung zu sexueller Offenheit):
-        //   Differenz = |O1 - O2|
-        //   Ähnlichkeit = 1 - (Differenz / 100)
-        //   Basis_R1 = 0.5 + (Ähnlichkeit × 0.5)
-        //   Openness_Bonus = (O1 + O2) / 400
-        //   R1 = Basis_R1 + Openness_Bonus
+        // v3.2: Formel (quadratisch mit Komplementär-Mapping):
+        //   similarity = 1 - (avgDiff / 100)
+        //   R = similarity² (mit Komplementär-Mapping für Geben/Empfangen-Paare)
         //
-        // Range: 0.5 (max. Asymmetrie, niedrige Offenheit) bis 1.5 (identisch, hohe Offenheit)
+        // Range: 0 (totaler Mismatch) bis 1 (perfekte Übereinstimmung)
         //
         // Wissenschaftliche Grundlage:
         //   - Within-couple Similarity in Sexuality → Sexual Satisfaction (PMC)
