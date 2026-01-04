@@ -1293,17 +1293,9 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * BULK-LOCK: Sperrt alle gefilterten (sichtbaren) Bedürfnisse
-     * Diese Funktion sperrt alle Bedürfnisse die aktuell durch Filter sichtbar sind
+     * Hilfsfunktion: Ermittelt alle gefilterten/sichtbaren Bedürfnisse
      */
-    function lockAllFilteredNeeds() {
-        // Ermittle aktuelle Person aus Kontext
-        let currentPerson = 'ich';
-        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-            currentPerson = window.currentProfileReviewContext.person;
-        }
-
-        // Hilfsfunktion: Prüft ob ein Need durch Filter sichtbar ist
+    function getVisibleFilteredNeeds() {
         function isNeedVisibleByFilters(need) {
             // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
@@ -1336,58 +1328,127 @@ const AttributeSummaryCard = (function() {
             return true;
         }
 
+        return flatNeeds.filter(need => isNeedVisibleByFilters(need));
+    }
+
+    /**
+     * Prüft ob alle gefilterten Needs gesperrt sind
+     */
+    function areAllFilteredNeedsLocked() {
+        const visibleNeeds = getVisibleFilteredNeeds();
+        if (visibleNeeds.length === 0) return false;
+
+        return visibleNeeds.every(need => {
+            const needObj = findNeedById(need.id);
+            return needObj && needObj.locked;
+        });
+    }
+
+    /**
+     * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse
+     * Toggle-Logik: Wenn alle gesperrt → entsperren, sonst → alle sperren
+     */
+    function toggleLockAllFilteredNeeds() {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
         // Ermittle alle sichtbaren Bedürfnisse
-        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
+        const visibleNeeds = getVisibleFilteredNeeds();
 
         if (visibleNeeds.length === 0) {
-            showLockToast('Keine gefilterten Bedürfnisse zum Sperren');
+            showLockToast('Keine gefilterten Bedürfnisse vorhanden');
             return;
         }
 
-        let lockedCount = 0;
+        // Toggle-Logik: Wenn alle gesperrt → entsperren, sonst → sperren
+        const allLocked = areAllFilteredNeedsLocked();
+        const newLockState = !allLocked;
+
+        let changedCount = 0;
         visibleNeeds.forEach(need => {
             const needId = need.id;
             const needObj = findNeedById(needId);
 
             if (needObj) {
-                needObj.locked = true;
+                needObj.locked = newLockState;
             } else {
-                upsertNeed(needId, { locked: true });
+                upsertNeed(needId, { locked: newLockState });
             }
 
             // Update UI
             const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
             if (needItem) {
-                needItem.classList.add('need-locked');
+                needItem.classList.toggle('need-locked', newLockState);
                 const slider = needItem.querySelector('.need-slider');
                 const input = needItem.querySelector('.flat-need-input');
                 const lockIcon = needItem.querySelector('.flat-need-lock');
-                if (slider) slider.disabled = true;
-                if (input) input.readOnly = true;
-                if (lockIcon) lockIcon.textContent = '🔒';
+                if (slider) slider.disabled = newLockState;
+                if (input) input.readOnly = newLockState;
+                if (lockIcon) lockIcon.textContent = newLockState ? '🔒' : '🔓';
             }
 
             // Speichere Lock-Status in TiageState
             if (typeof TiageState !== 'undefined') {
-                const currentValue = needObj ? needObj.value : 50;
-                TiageState.lockNeed(currentPerson, needId, currentValue);
-                lockedCount++;
+                if (newLockState) {
+                    const currentValue = needObj ? needObj.value : 50;
+                    TiageState.lockNeed(currentPerson, needId, currentValue);
+                } else {
+                    TiageState.unlockNeed(currentPerson, needId);
+                }
+                changedCount++;
             }
 
             // Event
             document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
                 bubbles: true,
-                detail: { needId, locked: true }
+                detail: { needId, locked: newLockState }
             }));
         });
 
         // Speichern und UI aktualisieren
-        if (typeof TiageState !== 'undefined' && lockedCount > 0) {
+        if (typeof TiageState !== 'undefined' && changedCount > 0) {
             TiageState.saveToStorage();
-            console.log('[lockAllFilteredNeeds] Gesperrt:', lockedCount, 'gefilterte Bedürfnisse für', currentPerson);
-            showLockToast(`${lockedCount} gefilterte Werte gesperrt`);
+            console.log('[toggleLockAllFilteredNeeds]', newLockState ? 'Gesperrt' : 'Entsperrt', changedCount, 'gefilterte Bedürfnisse für', currentPerson);
+            showLockToast(newLockState ? `${changedCount} gefilterte Werte gesperrt` : `${changedCount} gefilterte Werte entsperrt`);
             updateLockedCountDisplay();
+            // Update Button-Darstellung
+            updateFilteredLockButtonState();
         }
+    }
+
+    /**
+     * Aktualisiert den Lock-Button für gefilterte Needs (Icon und Label)
+     */
+    function updateFilteredLockButtonState() {
+        const btn = document.querySelector('.bulk-lock-filtered-btn');
+        if (!btn) return;
+
+        const visibleNeeds = getVisibleFilteredNeeds();
+        const hasFilteredNeeds = visibleNeeds.length > 0;
+        const allLocked = hasFilteredNeeds && areAllFilteredNeedsLocked();
+
+        // Button aktivieren/deaktivieren
+        btn.disabled = !hasFilteredNeeds;
+        btn.classList.toggle('disabled', !hasFilteredNeeds);
+
+        // Icon und Label aktualisieren
+        const icon = btn.querySelector('.bulk-btn-icon');
+        const label = btn.querySelector('.bulk-btn-label');
+        if (icon) icon.textContent = allLocked ? '🔓' : '🔒';
+        if (label) label.textContent = allLocked ? 'Entsperren' : 'Sperren';
+
+        // Tooltip aktualisieren
+        btn.title = allLocked
+            ? 'Alle gefilterten Bedürfnisse entsperren'
+            : 'Alle gefilterten Bedürfnisse sperren';
+    }
+
+    // Legacy-Funktion für Abwärtskompatibilität
+    function lockAllFilteredNeeds() {
+        toggleLockAllFilteredNeeds();
     }
 
     /**
@@ -2260,7 +2321,7 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-label">Reset</span>
                     </button>
                 </div>
-                <button class="bulk-lock-filtered-btn" onclick="AttributeSummaryCard.lockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren">
+                <button class="bulk-lock-filtered-btn${filteredCount === 0 ? ' disabled' : ''}" onclick="AttributeSummaryCard.toggleLockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren/entsperren" ${filteredCount === 0 ? 'disabled' : ''}>
                     <span class="bulk-btn-icon">🔒</span>
                     <span class="bulk-btn-label">Sperren</span>
                 </button>
@@ -4686,6 +4747,8 @@ const AttributeSummaryCard = (function() {
         updateSelectedNeedsValue,
         lockSelectedNeeds,
         lockAllFilteredNeeds,
+        toggleLockAllFilteredNeeds,
+        updateFilteredLockButtonState,
         // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
         incrementSelectedNeeds,
         decrementSelectedNeeds,
