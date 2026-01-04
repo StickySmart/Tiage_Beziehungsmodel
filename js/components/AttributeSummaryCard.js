@@ -1332,21 +1332,42 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Ermittelt den Lock-Status aller gefilterten Needs
+     * @returns {{ allLocked: boolean, someLocked: boolean, lockedCount: number, totalCount: number }}
+     */
+    function getFilteredNeedsLockStatus() {
+        const visibleNeeds = getVisibleFilteredNeeds();
+        if (visibleNeeds.length === 0) {
+            return { allLocked: false, someLocked: false, lockedCount: 0, totalCount: 0 };
+        }
+
+        let lockedCount = 0;
+        visibleNeeds.forEach(need => {
+            const needObj = findNeedById(need.id);
+            if (needObj && needObj.locked) {
+                lockedCount++;
+            }
+        });
+
+        return {
+            allLocked: lockedCount === visibleNeeds.length,
+            someLocked: lockedCount > 0 && lockedCount < visibleNeeds.length,
+            lockedCount,
+            totalCount: visibleNeeds.length
+        };
+    }
+
+    /**
      * Prüft ob alle gefilterten Needs gesperrt sind
      */
     function areAllFilteredNeedsLocked() {
-        const visibleNeeds = getVisibleFilteredNeeds();
-        if (visibleNeeds.length === 0) return false;
-
-        return visibleNeeds.every(need => {
-            const needObj = findNeedById(need.id);
-            return needObj && needObj.locked;
-        });
+        return getFilteredNeedsLockStatus().allLocked;
     }
 
     /**
      * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse
-     * Toggle-Logik: Wenn alle gesperrt → entsperren, sonst → alle sperren
+     * - Wenn ALLE gesperrt → alle entsperren
+     * - Wenn TEILWEISE oder KEINE gesperrt → alle noch nicht gesperrten sperren
      */
     function toggleLockAllFilteredNeeds() {
         // Ermittle aktuelle Person aus Kontext
@@ -1363,56 +1384,89 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        // Toggle-Logik: Wenn alle gesperrt → entsperren, sonst → sperren
-        const allLocked = areAllFilteredNeedsLocked();
-        const newLockState = !allLocked;
+        // Status ermitteln
+        const status = getFilteredNeedsLockStatus();
+
+        // Logik:
+        // - Alle gesperrt → alle entsperren
+        // - Nicht alle gesperrt (teilweise oder keine) → alle noch nicht gesperrten sperren
+        const shouldUnlock = status.allLocked;
 
         let changedCount = 0;
         visibleNeeds.forEach(need => {
             const needId = need.id;
             const needObj = findNeedById(needId);
+            const isCurrentlyLocked = needObj && needObj.locked;
 
-            if (needObj) {
-                needObj.locked = newLockState;
-            } else {
-                upsertNeed(needId, { locked: newLockState });
-            }
+            // Bei Entsperren: nur gesperrte entsperren
+            // Bei Sperren: nur ungesperrte sperren
+            if (shouldUnlock && isCurrentlyLocked) {
+                // Entsperren
+                if (needObj) {
+                    needObj.locked = false;
+                } else {
+                    upsertNeed(needId, { locked: false });
+                }
 
-            // Update UI
-            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-            if (needItem) {
-                needItem.classList.toggle('need-locked', newLockState);
-                const slider = needItem.querySelector('.need-slider');
-                const input = needItem.querySelector('.flat-need-input');
-                const lockIcon = needItem.querySelector('.flat-need-lock');
-                if (slider) slider.disabled = newLockState;
-                if (input) input.readOnly = newLockState;
-                if (lockIcon) lockIcon.textContent = newLockState ? '🔒' : '🔓';
-            }
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    needItem.classList.remove('need-locked');
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    const lockIcon = needItem.querySelector('.flat-need-lock');
+                    if (slider) slider.disabled = false;
+                    if (input) input.readOnly = false;
+                    if (lockIcon) lockIcon.textContent = '🔓';
+                }
 
-            // Speichere Lock-Status in TiageState
-            if (typeof TiageState !== 'undefined') {
-                if (newLockState) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.unlockNeed(currentPerson, needId);
+                    changedCount++;
+                }
+
+                document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+                    bubbles: true,
+                    detail: { needId, locked: false }
+                }));
+            } else if (!shouldUnlock && !isCurrentlyLocked) {
+                // Sperren (nur die noch nicht gesperrten)
+                if (needObj) {
+                    needObj.locked = true;
+                } else {
+                    upsertNeed(needId, { locked: true });
+                }
+
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    needItem.classList.add('need-locked');
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    const lockIcon = needItem.querySelector('.flat-need-lock');
+                    if (slider) slider.disabled = true;
+                    if (input) input.readOnly = true;
+                    if (lockIcon) lockIcon.textContent = '🔒';
+                }
+
+                if (typeof TiageState !== 'undefined') {
                     const currentValue = needObj ? needObj.value : 50;
                     TiageState.lockNeed(currentPerson, needId, currentValue);
-                } else {
-                    TiageState.unlockNeed(currentPerson, needId);
+                    changedCount++;
                 }
-                changedCount++;
-            }
 
-            // Event
-            document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
-                bubbles: true,
-                detail: { needId, locked: newLockState }
-            }));
+                document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+                    bubbles: true,
+                    detail: { needId, locked: true }
+                }));
+            }
         });
 
         // Speichern und UI aktualisieren
         if (typeof TiageState !== 'undefined' && changedCount > 0) {
             TiageState.saveToStorage();
-            console.log('[toggleLockAllFilteredNeeds]', newLockState ? 'Gesperrt' : 'Entsperrt', changedCount, 'gefilterte Bedürfnisse für', currentPerson);
-            showLockToast(newLockState ? `${changedCount} gefilterte Werte gesperrt` : `${changedCount} gefilterte Werte entsperrt`);
+            console.log('[toggleLockAllFilteredNeeds]', shouldUnlock ? 'Entsperrt' : 'Gesperrt', changedCount, 'gefilterte Bedürfnisse für', currentPerson);
+            showLockToast(shouldUnlock ? `${changedCount} gefilterte Werte entsperrt` : `${changedCount} gefilterte Werte gesperrt`);
             updateLockedCountDisplay();
             // Update Button-Darstellung
             updateFilteredLockButtonState();
@@ -1421,14 +1475,16 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Aktualisiert den Lock-Button für gefilterte Needs (Icon und Label)
+     * - Alle gesperrt: 🔓 "Entsperren"
+     * - Teilweise gesperrt: 🔒 "Sperren*" (mit * Indikator)
+     * - Keine gesperrt: 🔒 "Sperren"
      */
     function updateFilteredLockButtonState() {
         const btn = document.querySelector('.bulk-lock-filtered-btn');
         if (!btn) return;
 
-        const visibleNeeds = getVisibleFilteredNeeds();
-        const hasFilteredNeeds = visibleNeeds.length > 0;
-        const allLocked = hasFilteredNeeds && areAllFilteredNeedsLocked();
+        const status = getFilteredNeedsLockStatus();
+        const hasFilteredNeeds = status.totalCount > 0;
 
         // Button aktivieren/deaktivieren
         btn.disabled = !hasFilteredNeeds;
@@ -1437,13 +1493,23 @@ const AttributeSummaryCard = (function() {
         // Icon und Label aktualisieren
         const icon = btn.querySelector('.bulk-btn-icon');
         const label = btn.querySelector('.bulk-btn-label');
-        if (icon) icon.textContent = allLocked ? '🔓' : '🔒';
-        if (label) label.textContent = allLocked ? 'Entsperren' : 'Sperren';
 
-        // Tooltip aktualisieren
-        btn.title = allLocked
-            ? 'Alle gefilterten Bedürfnisse entsperren'
-            : 'Alle gefilterten Bedürfnisse sperren';
+        if (status.allLocked) {
+            // Alle gesperrt → Entsperren anzeigen
+            if (icon) icon.textContent = '🔓';
+            if (label) label.textContent = 'Entsperren';
+            btn.title = 'Alle gefilterten Bedürfnisse entsperren';
+        } else if (status.someLocked) {
+            // Teilweise gesperrt → Sperren mit * Indikator
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren*';
+            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt - klicken zum Sperren`;
+        } else {
+            // Keine gesperrt → Sperren anzeigen
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren';
+            btn.title = 'Alle gefilterten Bedürfnisse sperren';
+        }
     }
 
     // Legacy-Funktion für Abwärtskompatibilität
