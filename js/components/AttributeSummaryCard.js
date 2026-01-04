@@ -1332,7 +1332,7 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Ermittelt den Lock-Status aller gefilterten Needs
+     * Ermittelt den Lock-Status aller gefilterten Needs inkl. Nuancen
      * @returns {{ allLocked: boolean, someLocked: boolean, lockedCount: number, totalCount: number }}
      */
     function getFilteredNeedsLockStatus() {
@@ -1341,19 +1341,39 @@ const AttributeSummaryCard = (function() {
             return { allLocked: false, someLocked: false, lockedCount: 0, totalCount: 0 };
         }
 
+        // Hole Hauptfragen-Daten für Nuancen-Zugriff
+        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
+            ? HauptfrageAggregation.getHauptfragen()
+            : [];
+
         let lockedCount = 0;
+        let totalCount = 0;
+
         visibleNeeds.forEach(need => {
+            // Hauptfrage zählen
             const needObj = findNeedById(need.id);
+            totalCount++;
             if (needObj && needObj.locked) {
                 lockedCount++;
             }
+
+            // Nuancen zählen
+            const hauptfrage = hauptfragen.find(hf => hf.id === need.id);
+            const nuancen = hauptfrage?.nuancen || [];
+            nuancen.forEach(nuanceId => {
+                totalCount++;
+                const nuanceObj = findNeedById(nuanceId);
+                if (nuanceObj && nuanceObj.locked) {
+                    lockedCount++;
+                }
+            });
         });
 
         return {
-            allLocked: lockedCount === visibleNeeds.length,
-            someLocked: lockedCount > 0 && lockedCount < visibleNeeds.length,
+            allLocked: totalCount > 0 && lockedCount === totalCount,
+            someLocked: lockedCount > 0 && lockedCount < totalCount,
             lockedCount,
-            totalCount: visibleNeeds.length
+            totalCount
         };
     }
 
@@ -1365,7 +1385,50 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse
+     * Hilfsfunktion: Sperrt/Entsperrt ein einzelnes Need mit UI-Update
+     */
+    function setNeedLockState(needId, lockState, currentPerson) {
+        const needObj = findNeedById(needId);
+
+        if (needObj) {
+            needObj.locked = lockState;
+        } else {
+            upsertNeed(needId, { locked: lockState });
+        }
+
+        // Update UI
+        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+        if (needItem) {
+            needItem.classList.toggle('need-locked', lockState);
+            const slider = needItem.querySelector('.need-slider');
+            const input = needItem.querySelector('.flat-need-input');
+            const lockIcon = needItem.querySelector('.flat-need-lock');
+            if (slider) slider.disabled = lockState;
+            if (input) input.readOnly = lockState;
+            if (lockIcon) lockIcon.textContent = lockState ? '🔒' : '🔓';
+        }
+
+        // Speichere Lock-Status in TiageState
+        if (typeof TiageState !== 'undefined') {
+            if (lockState) {
+                const currentValue = needObj ? needObj.value : 50;
+                TiageState.lockNeed(currentPerson, needId, currentValue);
+            } else {
+                TiageState.unlockNeed(currentPerson, needId);
+            }
+        }
+
+        // Event
+        document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+            bubbles: true,
+            detail: { needId, locked: lockState }
+        }));
+
+        return 1; // 1 geändertes Item
+    }
+
+    /**
+     * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse inkl. Nuancen
      * - Wenn ALLE gesperrt → alle entsperren
      * - Wenn TEILWEISE oder KEINE gesperrt → alle noch nicht gesperrten sperren
      */
@@ -1376,7 +1439,7 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Ermittle alle sichtbaren Bedürfnisse
+        // Ermittle alle sichtbaren Bedürfnisse (Hauptfragen)
         const visibleNeeds = getVisibleFilteredNeeds();
 
         if (visibleNeeds.length === 0) {
@@ -1384,7 +1447,7 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        // Status ermitteln
+        // Status ermitteln (inkl. Nuancen)
         const status = getFilteredNeedsLockStatus();
 
         // Logik:
@@ -1393,72 +1456,45 @@ const AttributeSummaryCard = (function() {
         const shouldUnlock = status.allLocked;
 
         let changedCount = 0;
+
+        // Hole Hauptfragen-Daten für Nuancen-Zugriff
+        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
+            ? HauptfrageAggregation.getHauptfragen()
+            : [];
+
         visibleNeeds.forEach(need => {
             const needId = need.id;
             const needObj = findNeedById(needId);
             const isCurrentlyLocked = needObj && needObj.locked;
 
-            // Bei Entsperren: nur gesperrte entsperren
-            // Bei Sperren: nur ungesperrte sperren
-            if (shouldUnlock && isCurrentlyLocked) {
-                // Entsperren
-                if (needObj) {
-                    needObj.locked = false;
-                } else {
-                    upsertNeed(needId, { locked: false });
-                }
+            // Finde zugehörige Hauptfrage für Nuancen
+            const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+            const nuancen = hauptfrage?.nuancen || [];
 
-                // Update UI
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    needItem.classList.remove('need-locked');
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    const lockIcon = needItem.querySelector('.flat-need-lock');
-                    if (slider) slider.disabled = false;
-                    if (input) input.readOnly = false;
-                    if (lockIcon) lockIcon.textContent = '🔓';
+            if (shouldUnlock) {
+                // Entsperren: Hauptfrage und alle Nuancen
+                if (isCurrentlyLocked) {
+                    changedCount += setNeedLockState(needId, false, currentPerson);
                 }
-
-                if (typeof TiageState !== 'undefined') {
-                    TiageState.unlockNeed(currentPerson, needId);
-                    changedCount++;
+                // Auch alle Nuancen entsperren
+                nuancen.forEach(nuanceId => {
+                    const nuanceObj = findNeedById(nuanceId);
+                    if (nuanceObj && nuanceObj.locked) {
+                        changedCount += setNeedLockState(nuanceId, false, currentPerson);
+                    }
+                });
+            } else {
+                // Sperren: Hauptfrage und alle Nuancen (nur nicht-gesperrte)
+                if (!isCurrentlyLocked) {
+                    changedCount += setNeedLockState(needId, true, currentPerson);
                 }
-
-                document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
-                    bubbles: true,
-                    detail: { needId, locked: false }
-                }));
-            } else if (!shouldUnlock && !isCurrentlyLocked) {
-                // Sperren (nur die noch nicht gesperrten)
-                if (needObj) {
-                    needObj.locked = true;
-                } else {
-                    upsertNeed(needId, { locked: true });
-                }
-
-                // Update UI
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    needItem.classList.add('need-locked');
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    const lockIcon = needItem.querySelector('.flat-need-lock');
-                    if (slider) slider.disabled = true;
-                    if (input) input.readOnly = true;
-                    if (lockIcon) lockIcon.textContent = '🔒';
-                }
-
-                if (typeof TiageState !== 'undefined') {
-                    const currentValue = needObj ? needObj.value : 50;
-                    TiageState.lockNeed(currentPerson, needId, currentValue);
-                    changedCount++;
-                }
-
-                document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
-                    bubbles: true,
-                    detail: { needId, locked: true }
-                }));
+                // Auch alle Nuancen sperren
+                nuancen.forEach(nuanceId => {
+                    const nuanceObj = findNeedById(nuanceId);
+                    if (!nuanceObj || !nuanceObj.locked) {
+                        changedCount += setNeedLockState(nuanceId, true, currentPerson);
+                    }
+                });
             }
         });
 
@@ -1478,23 +1514,33 @@ const AttributeSummaryCard = (function() {
      * - Alle gesperrt: 🔓 "Entsperren"
      * - Teilweise gesperrt: 🔒 "Sperren*" (mit * Indikator)
      * - Keine gesperrt: 🔒 "Sperren"
+     * - Kein Filter aktiv: Button disabled
      */
     function updateFilteredLockButtonState() {
         const btn = document.querySelector('.bulk-lock-filtered-btn');
         if (!btn) return;
 
         const status = getFilteredNeedsLockStatus();
-        const hasFilteredNeeds = status.totalCount > 0;
+        const visibleCount = status.totalCount;
 
-        // Button aktivieren/deaktivieren
-        btn.disabled = !hasFilteredNeeds;
-        btn.classList.toggle('disabled', !hasFilteredNeeds);
+        // Prüfe ob ein Filter aktiv ist (sichtbare < gesamt)
+        const totalCount = flatNeeds.length;
+        const filterActive = visibleCount < totalCount;
+
+        // Button nur aktivieren wenn Filter aktiv ist
+        btn.disabled = !filterActive;
+        btn.classList.toggle('disabled', !filterActive);
 
         // Icon und Label aktualisieren
         const icon = btn.querySelector('.bulk-btn-icon');
         const label = btn.querySelector('.bulk-btn-label');
 
-        if (status.allLocked) {
+        if (!filterActive) {
+            // Kein Filter aktiv
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren';
+            btn.title = 'Erst Filter setzen um gefilterte Bedürfnisse zu sperren';
+        } else if (status.allLocked) {
             // Alle gesperrt → Entsperren anzeigen
             if (icon) icon.textContent = '🔓';
             if (label) label.textContent = 'Entsperren';
@@ -2387,7 +2433,7 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-label">Reset</span>
                     </button>
                 </div>
-                <button class="bulk-lock-filtered-btn${filteredCount === 0 ? ' disabled' : ''}" onclick="AttributeSummaryCard.toggleLockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren/entsperren" ${filteredCount === 0 ? 'disabled' : ''}>
+                <button class="bulk-lock-filtered-btn${!filterActive ? ' disabled' : ''}" onclick="AttributeSummaryCard.toggleLockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren/entsperren" ${!filterActive ? 'disabled' : ''}>
                     <span class="bulk-btn-icon">🔒</span>
                     <span class="bulk-btn-label">Sperren</span>
                 </button>
