@@ -981,19 +981,21 @@ const AttributeSummaryCard = (function() {
             : [];
 
         // Sammle alle zu resettenden IDs (inkl. Nuancen der markierten Hauptfragen)
-        let needsToReset = [];
+        // FIX: Verwende Set um Duplikate zu vermeiden
+        const needsToResetSet = new Set();
         if (selectedNeeds.size > 0) {
             selectedNeeds.forEach(needId => {
-                needsToReset.push(needId);
+                needsToResetSet.add(needId);
                 // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
                 const hauptfrage = hauptfragen[needId];
                 if (hauptfrage?.nuancen) {
-                    needsToReset.push(...hauptfrage.nuancen);
+                    hauptfrage.nuancen.forEach(nuanceId => needsToResetSet.add(nuanceId));
                 }
             });
         } else {
-            needsToReset = Object.keys(umfrageWerte);
+            Object.keys(umfrageWerte).forEach(id => needsToResetSet.add(id));
         }
+        const needsToReset = Array.from(needsToResetSet);
 
         console.log(`[AttributeSummaryCard] ${selectedNeeds.size > 0 ? 'Ausgewählte' : 'Alle'} Bedürfnisse werden zurückgesetzt:`, needsToReset.length);
 
@@ -1274,9 +1276,15 @@ const AttributeSummaryCard = (function() {
             : [];
 
         let lockedCount = 0;
+        const processedNeeds = new Set(); // FIX: Verhindere Doppelzählung
 
         // Hilfsfunktion zum Sperren/Entsperren eines einzelnen Needs
         function lockSingleNeed(needId) {
+            // FIX: Überspringe bereits verarbeitete Needs
+            if (processedNeeds.has(needId)) {
+                return;
+            }
+            processedNeeds.add(needId);
             const needObj = findNeedById(needId);
             if (needObj) {
                 needObj.locked = lockState;
