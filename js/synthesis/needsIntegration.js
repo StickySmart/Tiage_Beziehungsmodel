@@ -515,83 +515,143 @@ TiageSynthesis.NeedsIntegration = {
     },
 
     /**
-     * Berechnet R für eine einzelne Dimension
+     * v3.3 SSOT: Abweichungs-basierte Resonanz
      *
-     * NEUE FORMEL (Intensitäts-basiert):
-     * R_dim = 0.5 + (Durchschnitt der Bedürfniswerte / 100)
+     * FORMEL: R = similarity² = (avgMatch)²
+     * wobei: match = 1 - |actual - expected| / 100
      *
-     * Der R-Faktor repräsentiert jetzt die WICHTIGKEIT/INTENSITÄT
-     * dieser Dimension für den Benutzer, nicht die Abweichung vom Archetyp.
+     * - R = 1.0 wenn actual === expected (keine Abweichung)
+     * - R < 1.0 wenn actual !== expected (Abweichung vom Basis-Profil)
      *
-     * - Hohe Bedürfniswerte → hoher R-Faktor → mehr Gewicht
-     * - Niedrige Bedürfniswerte → niedriger R-Faktor → weniger Gewicht
-     *
-     * v3.2: Range: 0 (alle auf 0) bis 1 (alle auf 100), R = (avgValue/100)²
-     *
-     * Unterstützt zwei Formate:
-     * - Altes Format: { needKey: 50 }
-     * - Neues Format: { needKey: { value: 50, id: '#B50', label: 'Label' } }
+     * SSOT: Referenz-Werte kommen aus BaseArchetypProfile.beduerfnisse
+     * Fallback auf ARCHETYP_KOHAERENZ für Legacy-Kompatibilität
      *
      * @private
      */
     _calculateSingleResonance: function(needs, dimensionKohaerenz, archetyp) {
-        if (!dimensionKohaerenz || !dimensionKohaerenz[archetyp]) {
-            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Kohärenz-Daten für Archetyp:', archetyp);
+        var self = this;
+
+        // SSOT: Versuche zuerst BaseArchetypProfile zu verwenden
+        var expectedNeeds = this._getExpectedNeedsFromSSOT(archetyp, dimensionKohaerenz);
+
+        if (!expectedNeeds || Object.keys(expectedNeeds).length === 0) {
+            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Referenz-Daten für:', archetyp);
             return 1.0; // Neutral wenn keine Daten
         }
 
-        var archetypTypisch = dimensionKohaerenz[archetyp];
-        var totalValue = 0;
+        var totalMatch = 0;
         var count = 0;
         var debugMatches = [];
 
-        for (var needKey in archetypTypisch) {
-            if (archetypTypisch.hasOwnProperty(needKey) && archetypTypisch[needKey] !== null) {
-                var typischEntry = archetypTypisch[needKey];
+        for (var needKey in expectedNeeds) {
+            if (expectedNeeds.hasOwnProperty(needKey)) {
+                var expectedEntry = expectedNeeds[needKey];
+
+                // Hole erwarteten Wert (kann Objekt oder direkt Zahl sein)
+                var expectedValue = (typeof expectedEntry === 'object' && expectedEntry.value !== undefined)
+                    ? expectedEntry.value
+                    : expectedEntry;
 
                 // Hole Bedürfnis-ID wenn vorhanden
-                var needId = (typeof typischEntry === 'object' && typischEntry.id)
-                    ? typischEntry.id
-                    : null;
+                var needId = (typeof expectedEntry === 'object' && expectedEntry.id)
+                    ? expectedEntry.id
+                    : needKey;
 
-                // Verwende Hilfsfunktion für konsistente Lookup-Logik
+                // Hole tatsächlichen Wert
                 var actualValue = this._getNeedValue(needs, needId, needKey);
 
-                if (actualValue !== undefined) {
-                    totalValue += actualValue;
+                if (actualValue !== undefined && expectedValue !== undefined) {
+                    // v3.3: Berechne Ähnlichkeit (1 = identisch, 0 = maximal verschieden)
+                    var diff = Math.abs(actualValue - expectedValue) / 100;
+                    var match = 1 - diff;
+                    totalMatch += match;
                     count++;
-                    debugMatches.push({ key: needKey, id: needId, value: actualValue });
+
+                    debugMatches.push({
+                        key: needKey,
+                        id: needId,
+                        actual: actualValue,
+                        expected: expectedValue,
+                        diff: Math.round(diff * 100),
+                        match: Math.round(match * 100) / 100
+                    });
                 }
             }
         }
 
         if (count === 0) {
-            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Bedürfnisse gefunden für:', archetyp, '- Needs-Keys:', Object.keys(needs || {}).slice(0, 5));
-            return 1.0; // Neutral wenn keine Bedürfnisse gefunden
+            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Bedürfnisse gefunden für:', archetyp);
+            return 1.0;
         }
 
-        // Debug-Output für Diagnose
-        if (debugMatches.length > 0) {
-            var avgValue = totalValue / count;
-            console.log('[NeedsIntegration._calculateSingleResonance] Intensitäts-Berechnung:', {
-                archetyp: archetyp,
-                avgValue: avgValue.toFixed(1),
-                count: count,
-                matches: debugMatches
-            });
-        }
+        // v3.3: R = similarity² (quadratisch)
+        // avgMatch = 1.0 → R = 1.0 (keine Abweichung)
+        // avgMatch = 0.9 → R = 0.81
+        // avgMatch = 0.7 → R = 0.49
+        var avgMatch = totalMatch / count;
+        var rValue = avgMatch * avgMatch;
 
-        // NEU v3.2: R = (Durchschnitt / 100)² (rein quadratisch, keine Offsets/Clamps)
-        // Durchschnitt 0 → R = 0.00 (eliminiert)
-        // Durchschnitt 50 → R = 0.25
-        // Durchschnitt 70 → R = 0.49
-        // Durchschnitt 85 → R = 0.72
-        // Durchschnitt 100 → R = 1.00 (neutral)
-        var avgValue = totalValue / count;
-        var normalizedValue = avgValue / 100;
-        var rValue = normalizedValue * normalizedValue; // Quadratisch, keine Clamps!
+        console.log('[NeedsIntegration._calculateSingleResonance] SSOT-Berechnung:', {
+            archetyp: archetyp,
+            avgMatch: (avgMatch * 100).toFixed(1) + '%',
+            R: rValue.toFixed(3),
+            count: count,
+            matches: debugMatches
+        });
 
         return Math.round(rValue * 1000) / 1000;
+    },
+
+    /**
+     * SSOT: Holt erwartete Werte aus BaseArchetypProfile
+     * Fallback auf ARCHETYP_KOHAERENZ für Legacy-Kompatibilität
+     *
+     * @private
+     */
+    _getExpectedNeedsFromSSOT: function(archetyp, dimensionKohaerenzFallback) {
+        // SSOT: Versuche BaseArchetypProfile zu verwenden
+        if (typeof window !== 'undefined' && window.BaseArchetypProfile) {
+            var baseProfile = window.BaseArchetypProfile[archetyp];
+            // umfrageWerte enthält die Basis-Bedürfnisse mit #B-IDs
+            var baseNeeds = baseProfile && (baseProfile.umfrageWerte || baseProfile.beduerfnisse);
+            if (baseNeeds) {
+                // Hole die relevanten Need-IDs für diese Dimension
+                if (dimensionKohaerenzFallback && dimensionKohaerenzFallback[archetyp]) {
+                    var result = {};
+                    var kohaerenzDef = dimensionKohaerenzFallback[archetyp];
+
+                    for (var needKey in kohaerenzDef) {
+                        if (kohaerenzDef.hasOwnProperty(needKey)) {
+                            var entry = kohaerenzDef[needKey];
+                            var needId = (typeof entry === 'object' && entry.id) ? entry.id : null;
+
+                            if (needId && baseNeeds[needId] !== undefined) {
+                                // SSOT: Verwende Wert aus BaseArchetypProfile
+                                result[needKey] = {
+                                    value: baseNeeds[needId],
+                                    id: needId,
+                                    label: (typeof entry === 'object' && entry.label) ? entry.label : needKey,
+                                    source: 'BaseArchetypProfile'
+                                };
+                            }
+                        }
+                    }
+
+                    if (Object.keys(result).length > 0) {
+                        console.log('[NeedsIntegration] SSOT: Verwende BaseArchetypProfile für', archetyp);
+                        return result;
+                    }
+                }
+            }
+        }
+
+        // Fallback: Legacy ARCHETYP_KOHAERENZ
+        if (dimensionKohaerenzFallback && dimensionKohaerenzFallback[archetyp]) {
+            console.log('[NeedsIntegration] FALLBACK: Verwende ARCHETYP_KOHAERENZ für', archetyp);
+            return dimensionKohaerenzFallback[archetyp];
+        }
+
+        return null;
     },
 
     /**

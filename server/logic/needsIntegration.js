@@ -3,9 +3,106 @@
  *
  * Migriert von: js/synthesis/needsIntegration.js
  * R-Faktoren Berechnung (Kohärenz Archetyp ↔ Bedürfnisse)
+ *
+ * v3.3: SSOT - Referenz-Werte werden direkt aus BaseArchetypProfile extrahiert
+ *       statt aus hartcodierter ARCHETYP_KOHAERENZ
  */
 
 import * as Constants from './constants.js';
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SSOT: DIMENSION → NEED-IDs MAPPING
+// ═══════════════════════════════════════════════════════════════════════════
+// Definiert welche #B-IDs zu welcher R-Dimension gehören
+// Dies ist die EINZIGE Stelle wo dieses Mapping definiert ist (SSOT)
+
+const DIMENSION_NEED_IDS = {
+    // R1: Leben (Orientierung) - Intimität & Körperlichkeit
+    leben: ['#B221', '#B222', '#B204', '#B20'],
+    // #B221 = sexuelle_experimentierfreude
+    // #B222 = sexuelle_verbindung
+    // #B204 = koerpernaehe
+    // #B20  = intimitaet
+
+    // R2: Philosophie (Archetyp) - Lebensplanung & Bindung
+    philosophie: ['#B89', '#B96', '#B95', '#B36', '#B34'],
+    // #B89  = kinderwunsch / kinder_und_elternschaft
+    // #B96  = langfristige_bindung
+    // #B95  = verbindlichkeit
+    // #B36  = unabhaengigkeit
+    // #B34  = selbstbestimmung
+
+    // R3: Dynamik (Dominanz) - Machtdynamik
+    dynamik: ['#B74', '#B75', '#B76', '#B77', '#B86', '#B85'],
+    // #B74 = kontrolle_ausueben
+    // #B75 = hingabe
+    // #B76 = fuehrung_geben
+    // #B77 = gefuehrt_werden
+    // #B86 = machtaustausch
+    // #B85 = sich_fallenlassen
+
+    // R4: Identität (Geschlecht) - Selbstausdruck
+    identitaet: ['#B50', '#B67', '#B25', '#B31']
+    // #B50 = authentizitaet
+    // #B67 = selbst_ausdruck
+    // #B25 = akzeptanz
+    // #B31 = gesehen_werden
+};
+
+// Cache für BaseArchetypProfile (wird beim ersten Zugriff gesetzt)
+let _baseArchetypProfileCache = null;
+
+/**
+ * Setzt das BaseArchetypProfile für SSOT-Zugriff
+ * Muss beim Server-Start aufgerufen werden
+ *
+ * @param {object} profiles - Das BaseArchetypProfile Objekt
+ */
+export function setBaseArchetypProfile(profiles) {
+    _baseArchetypProfileCache = profiles;
+    console.log('[NeedsIntegration] BaseArchetypProfile gesetzt für SSOT');
+}
+
+/**
+ * Extrahiert die Referenz-Werte für eine Dimension aus dem BaseArchetypProfile
+ * SSOT: Keine hartcodierten Werte mehr!
+ *
+ * @param {string} archetyp - z.B. 'duo', 'single', etc.
+ * @param {string} dimension - 'leben', 'philosophie', 'dynamik', 'identitaet'
+ * @returns {object} Die Referenz-Werte als { needId: value }
+ */
+function getExpectedNeedsFromProfile(archetyp, dimension) {
+    const needIds = DIMENSION_NEED_IDS[dimension];
+    if (!needIds) {
+        console.warn(`[NeedsIntegration] Unbekannte Dimension: ${dimension}`);
+        return {};
+    }
+
+    // Versuche BaseArchetypProfile zu finden
+    let baseProfile = null;
+
+    if (_baseArchetypProfileCache && _baseArchetypProfileCache[archetyp]) {
+        baseProfile = _baseArchetypProfileCache[archetyp];
+    }
+
+    if (!baseProfile || !baseProfile.beduerfnisse) {
+        // Fallback auf ARCHETYP_KOHAERENZ (Legacy)
+        console.warn(`[NeedsIntegration] SSOT-Fallback: BaseArchetypProfile nicht verfügbar für ${archetyp}`);
+        const kohaerenz = Constants.ARCHETYP_KOHAERENZ;
+        return kohaerenz?.[dimension]?.[archetyp] || {};
+    }
+
+    // SSOT: Extrahiere Werte direkt aus dem Basis-Profil
+    const result = {};
+    for (const needId of needIds) {
+        const value = baseProfile.beduerfnisse[needId];
+        if (value !== undefined) {
+            result[needId] = value;
+        }
+    }
+
+    return result;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // R-FAKTOREN BERECHNUNG
@@ -14,7 +111,8 @@ import * as Constants from './constants.js';
 /**
  * Berechnet R-Faktoren (R1-R4) für eine Person
  *
- * v3.2: R = similarity² (quadratisch, mit Komplementär-Mapping)
+ * v3.3: SSOT - Referenz-Werte aus BaseArchetypProfile
+ * v3.2: R = similarity² (quadratisch)
  * Range: 0 - 1
  *
  * @param {string} person - 'ich' oder 'partner'
@@ -32,20 +130,23 @@ export function calculateDimensionalResonance(person, profile) {
     const archetyp = profile.archetyp;
     const needs = profile.needs || {};
 
-    // Hole archetyp-typische Werte aus ARCHETYP_KOHAERENZ
-    const kohaerenz = Constants.ARCHETYP_KOHAERENZ;
+    // SSOT: Hole Referenz-Werte direkt aus BaseArchetypProfile
+    const expectedLeben = getExpectedNeedsFromProfile(archetyp, 'leben');
+    const expectedPhilosophie = getExpectedNeedsFromProfile(archetyp, 'philosophie');
+    const expectedDynamik = getExpectedNeedsFromProfile(archetyp, 'dynamik');
+    const expectedIdentitaet = getExpectedNeedsFromProfile(archetyp, 'identitaet');
 
     // R1: Leben (Orientierung)
-    const R1 = calculateDimensionR(needs, kohaerenz.leben?.[archetyp] || {});
+    const R1 = calculateDimensionR(needs, expectedLeben);
 
     // R2: Philosophie (Archetyp)
-    const R2 = calculateDimensionR(needs, kohaerenz.philosophie?.[archetyp] || {});
+    const R2 = calculateDimensionR(needs, expectedPhilosophie);
 
     // R3: Dynamik (Dominanz)
-    const R3 = calculateDimensionR(needs, kohaerenz.dynamik?.[archetyp] || {});
+    const R3 = calculateDimensionR(needs, expectedDynamik);
 
     // R4: Identität (Geschlecht)
-    const R4 = calculateDimensionR(needs, kohaerenz.identitaet?.[archetyp] || {});
+    const R4 = calculateDimensionR(needs, expectedIdentitaet);
 
     return {
         R1: Math.round(R1 * 1000) / 1000,
