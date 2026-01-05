@@ -943,7 +943,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
-     * Lädt die Werte aus LoadedArchetypProfile (SSOT) - kein Fallback
+     * Lädt die Werte aus GfkBeduerfnisse.archetypProfile (SSOT Katalog)
      */
     function resetSelectedNeedsValues() {
         // Ermittle aktuelle Person aus Kontext
@@ -952,19 +952,28 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Hole berechnete Werte aus LoadedArchetypProfile (SSOT)
-        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
-            ? window.LoadedArchetypProfile[currentPerson]
-            : null;
+        // Ermittle aktuellen Archetyp
+        let currentArchetyp = currentFlatArchetypLabel;
+        if (!currentArchetyp && typeof window !== 'undefined' && window.currentProfileReviewContext?.archetyp) {
+            currentArchetyp = window.currentProfileReviewContext.archetyp;
+        }
 
-        if (!loadedProfile?.profileReview?.flatNeeds) {
-            console.error('[AttributeSummaryCard] Keine Original-Werte gefunden in LoadedArchetypProfile für', currentPerson);
-            alert('Zurücksetzen nicht möglich: Keine Original-Profil-Werte gefunden. Bitte laden Sie zuerst ein Profil.');
+        // SSOT: GfkBeduerfnisse.archetypProfile (Katalog)
+        if (!currentArchetyp || typeof GfkBeduerfnisse === 'undefined' ||
+            !GfkBeduerfnisse.archetypProfile || !GfkBeduerfnisse.archetypProfile[currentArchetyp]) {
+            console.error('[AttributeSummaryCard] Archetyp nicht im Katalog gefunden:', currentArchetyp);
+            alert('Zurücksetzen nicht möglich: Archetyp-Profil nicht im Katalog gefunden.');
             return;
         }
 
-        const umfrageWerte = loadedProfile.profileReview.flatNeeds;
-        console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
+        const umfrageWerte = GfkBeduerfnisse.archetypProfile[currentArchetyp].umfrageWerte;
+        if (!umfrageWerte || Object.keys(umfrageWerte).length === 0) {
+            console.error('[AttributeSummaryCard] Keine Umfragewerte im Katalog für', currentArchetyp);
+            alert('Zurücksetzen nicht möglich: Keine Umfragewerte für diesen Archetyp im Katalog.');
+            return;
+        }
+
+        console.log(`[AttributeSummaryCard] Reset mit Umfragewerten aus Katalog für ${currentPerson}/${currentArchetyp}`);
 
         // Hole Hauptfragen-Daten für Nuancen-Zugriff
         const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
@@ -1042,6 +1051,11 @@ const AttributeSummaryCard = (function() {
         // FIX: Reset soll NUR Werte zurücksetzen - NICHT Filter oder Markierung ändern
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
+
+        // Re-render für konsistente UI-Darstellung (Hauptfrage-Werte, Änderungs-Indikatoren)
+        if (resetCount > 0) {
+            reRenderFlatNeeds();
+        }
     }
 
     /**
