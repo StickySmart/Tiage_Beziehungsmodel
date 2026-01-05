@@ -966,10 +966,25 @@ const AttributeSummaryCard = (function() {
         const umfrageWerte = loadedProfile.profileReview.flatNeeds;
         console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
-        // Wenn keine Bedürfnisse ausgewählt sind, alle ungesperrten Bedürfnisse zurücksetzen
-        const needsToReset = selectedNeeds.size > 0
-            ? Array.from(selectedNeeds)
-            : Object.keys(umfrageWerte);
+        // Hole Hauptfragen-Daten für Nuancen-Zugriff
+        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
+            ? HauptfrageAggregation.getHauptfragen()
+            : [];
+
+        // Sammle alle zu resettenden IDs (inkl. Nuancen der markierten Hauptfragen)
+        let needsToReset = [];
+        if (selectedNeeds.size > 0) {
+            selectedNeeds.forEach(needId => {
+                needsToReset.push(needId);
+                // Finde zugehörige Hauptfrage für Nuancen
+                const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+                if (hauptfrage?.nuancen) {
+                    needsToReset.push(...hauptfrage.nuancen);
+                }
+            });
+        } else {
+            needsToReset = Object.keys(umfrageWerte);
+        }
 
         console.log(`[AttributeSummaryCard] ${selectedNeeds.size > 0 ? 'Ausgewählte' : 'Alle'} Bedürfnisse werden zurückgesetzt:`, needsToReset.length);
 
