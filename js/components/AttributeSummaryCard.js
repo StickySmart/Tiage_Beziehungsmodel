@@ -958,22 +958,22 @@ const AttributeSummaryCard = (function() {
             currentArchetyp = window.currentProfileReviewContext.archetyp;
         }
 
-        // SSOT: GfkBeduerfnisse.archetypProfile (Katalog)
-        if (!currentArchetyp || typeof GfkBeduerfnisse === 'undefined' ||
-            !GfkBeduerfnisse.archetypProfile || !GfkBeduerfnisse.archetypProfile[currentArchetyp]) {
-            console.error('[AttributeSummaryCard] Archetyp nicht im Katalog gefunden:', currentArchetyp);
-            alert('Zurücksetzen nicht möglich: Archetyp-Profil nicht im Katalog gefunden.');
+        // SSOT: BaseArchetypProfile (Archetyp-Profil-Dateien)
+        if (!currentArchetyp || typeof BaseArchetypProfile === 'undefined' ||
+            !BaseArchetypProfile[currentArchetyp]) {
+            console.error('[AttributeSummaryCard] Archetyp nicht in BaseArchetypProfile gefunden:', currentArchetyp);
+            alert('Zurücksetzen nicht möglich: Archetyp-Profil nicht gefunden.');
             return;
         }
 
-        const umfrageWerte = GfkBeduerfnisse.archetypProfile[currentArchetyp].umfrageWerte;
+        const umfrageWerte = BaseArchetypProfile[currentArchetyp].umfrageWerte;
         if (!umfrageWerte || Object.keys(umfrageWerte).length === 0) {
-            console.error('[AttributeSummaryCard] Keine Umfragewerte im Katalog für', currentArchetyp);
-            alert('Zurücksetzen nicht möglich: Keine Umfragewerte für diesen Archetyp im Katalog.');
+            console.error('[AttributeSummaryCard] Keine Umfragewerte in BaseArchetypProfile für', currentArchetyp);
+            alert('Zurücksetzen nicht möglich: Keine Umfragewerte für diesen Archetyp.');
             return;
         }
 
-        console.log(`[AttributeSummaryCard] Reset mit Umfragewerten aus Katalog für ${currentPerson}/${currentArchetyp}`);
+        console.log(`[AttributeSummaryCard] Reset mit Umfragewerten aus BaseArchetypProfile für ${currentPerson}/${currentArchetyp}`);
 
         // Hole Hauptfragen-Daten für Nuancen-Zugriff
         const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
