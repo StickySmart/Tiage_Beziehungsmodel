@@ -306,8 +306,9 @@ TiageSynthesis.NeedsIntegration = {
      * Diese Funktion berechnet R-Werte basierend auf der direkten Ähnlichkeit
      * zwischen den Bedürfnissen von ICH und PARTNER.
      *
-     * Bei identischen Werten: R = 1.5 (Maximum)
-     * Bei komplett unterschiedlichen Werten: R = 0.5 (Minimum)
+     * v3.2: R = similarity² (quadratisch mit Komplementär-Mapping)
+     * Bei identischen Werten: R = 1.0 (neutral)
+     * Bei komplett unterschiedlichen Werten: R = 0.0 (eliminiert)
      *
      * @param {object} ichNeeds - Bedürfnisse von ICH { needKey: value }
      * @param {object} partnerNeeds - Bedürfnisse von PARTNER { needKey: value }

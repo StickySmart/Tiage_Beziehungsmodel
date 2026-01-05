@@ -256,8 +256,9 @@
                 return null;
             },
             set resonanzFaktoren(value) {
+                // v3.2: Mit Clamping (0.5-1.5 → 0-1)
                 if (typeof TiageState !== 'undefined') {
-                    TiageState.set(`resonanzFaktoren.${person}`, value);
+                    TiageState.setResonanzFaktoren(person, value);
                 }
             }
         };
@@ -275,7 +276,7 @@
                 if (value.orientierung) TiageState.set('personDimensions.ich.orientierung', value.orientierung);
                 if (value.profileReview?.flatNeeds) TiageState.set('flatNeeds.ich', value.profileReview.flatNeeds);
                 if (value.gewichtungen) TiageState.set('gewichtungen.ich', value.gewichtungen);
-                if (value.resonanzFaktoren) TiageState.set('resonanzFaktoren.ich', value.resonanzFaktoren);
+                if (value.resonanzFaktoren) TiageState.setResonanzFaktoren('ich', value.resonanzFaktoren);
             }
         },
         get partner() { return createProfileView('partner'); },
@@ -288,7 +289,7 @@
                 if (value.orientierung) TiageState.set('personDimensions.partner.orientierung', value.orientierung);
                 if (value.profileReview?.flatNeeds) TiageState.set('flatNeeds.partner', value.profileReview.flatNeeds);
                 if (value.gewichtungen) TiageState.set('gewichtungen.partner', value.gewichtungen);
-                if (value.resonanzFaktoren) TiageState.set('resonanzFaktoren.partner', value.resonanzFaktoren);
+                if (value.resonanzFaktoren) TiageState.setResonanzFaktoren('partner', value.resonanzFaktoren);
             }
         }
     };
@@ -567,8 +568,9 @@
                         newResonanz[key] = current;
                     }
                 });
-                TiageState.set(`resonanzFaktoren.${person}`, newResonanz);
-                console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person}:`, JSON.stringify(newResonanz));
+                // v3.2: Mit Clamping (0.5-1.5 → 0-1)
+                TiageState.setResonanzFaktoren(person, newResonanz);
+                console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person} (clamped):`, JSON.stringify(newResonanz));
             }
         }
 

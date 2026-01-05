@@ -842,11 +842,67 @@ const TiageState = (function() {
 
         /**
          * Set all Resonanzfaktoren at once
+         * v3.2: Clamps all values to 0-1 range
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} faktoren - { R1, R2, R3, R4 }
          */
         setResonanzFaktoren(person, faktoren) {
-            this.set(`resonanzFaktoren.${person}`, faktoren);
+            // v3.2: Clamp alle Werte auf 0-1
+            const clamped = this._clampResonanzFaktoren(faktoren);
+            this.set(`resonanzFaktoren.${person}`, clamped);
+        },
+
+        /**
+         * Clamps Resonanzfaktoren values to 0-1 range
+         * v3.2: Migration von 0.5-1.5 zu 0-1 Range
+         * @private
+         * @param {Object} faktoren - { R1, R2, R3, R4 } oder { ich: {...}, partner: {...} }
+         * @returns {Object} Clamped faktoren
+         */
+        _clampResonanzFaktoren(faktoren) {
+            if (!faktoren) return faktoren;
+
+            const clampValue = (v) => Math.min(1, Math.max(0, v));
+
+            // Prüfe ob es ein verschachteltes Objekt ist (ich/partner)
+            if (faktoren.ich || faktoren.partner) {
+                const result = {};
+                for (const person of ['ich', 'partner']) {
+                    if (faktoren[person]) {
+                        result[person] = {};
+                        for (const key of ['R1', 'R2', 'R3', 'R4']) {
+                            if (faktoren[person][key]) {
+                                const entry = faktoren[person][key];
+                                result[person][key] = {
+                                    value: clampValue(entry.value ?? entry ?? 1.0),
+                                    locked: entry.locked ?? false
+                                };
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+
+            // Einfaches Objekt { R1, R2, R3, R4 }
+            const result = {};
+            for (const key of ['R1', 'R2', 'R3', 'R4']) {
+                if (faktoren[key] !== undefined) {
+                    const entry = faktoren[key];
+                    if (typeof entry === 'object' && entry !== null) {
+                        result[key] = {
+                            value: clampValue(entry.value ?? 1.0),
+                            locked: entry.locked ?? false
+                        };
+                    } else {
+                        result[key] = {
+                            value: clampValue(entry ?? 1.0),
+                            locked: false
+                        };
+                    }
+                }
+            }
+            return result;
         },
 
         // ═══════════════════════════════════════════════════════════════════
@@ -1091,8 +1147,10 @@ const TiageState = (function() {
                         console.log('[TiageState] loadFromStorage - KEINE gewichtungen in localStorage!');
                     }
                     if (parsed.resonanzFaktoren) {
-                        console.log('[TiageState] loadFromStorage - resonanzFaktoren gefunden:', JSON.stringify(parsed.resonanzFaktoren));
-                        this.set('resonanzFaktoren', parsed.resonanzFaktoren);
+                        // v3.2: Clamp alte 0.5-1.5 Werte auf neuen 0-1 Range
+                        const clamped = this._clampResonanzFaktoren(parsed.resonanzFaktoren);
+                        console.log('[TiageState] loadFromStorage - resonanzFaktoren gefunden (clamped):', JSON.stringify(clamped));
+                        this.set('resonanzFaktoren', clamped);
                     } else {
                         console.log('[TiageState] loadFromStorage - KEINE resonanzFaktoren in localStorage!');
                     }
@@ -1457,9 +1515,9 @@ const TiageAutoSync = (function() {
                 TiageState.set(`gewichtungen.${person}`, profile.gewichtungen);
             }
 
-            // Resonanzfaktoren
+            // Resonanzfaktoren (v3.2: mit Clamping)
             if (profile.resonanzFaktoren) {
-                TiageState.set(`resonanzFaktoren.${person}`, profile.resonanzFaktoren);
+                TiageState.setResonanzFaktoren(person, profile.resonanzFaktoren);
             }
 
             // FlatNeeds

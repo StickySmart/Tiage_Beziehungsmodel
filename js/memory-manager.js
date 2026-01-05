@@ -259,10 +259,10 @@ const MemoryManager = (function() {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Migriere zu TiageState
+                // v3.2: Migriere zu TiageState mit Clamping (0.5-1.5 → 0-1)
                 if (typeof TiageState !== 'undefined' && parsed) {
-                    TiageState.set(`resonanzFaktoren.${person}`, parsed);
-                    console.log(`[MemoryManager] ResonanzFaktoren migriert zu TiageState: ${person}`);
+                    TiageState.setResonanzFaktoren(person, parsed);
+                    console.log(`[MemoryManager] ResonanzFaktoren migriert zu TiageState (clamped): ${person}`);
                 }
                 return parsed;
             }
@@ -785,9 +785,9 @@ const MemoryManager = (function() {
         if (!resonanz) return;
 
         try {
-            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            // v3.2: TiageState mit Clamping (0.5-1.5 → 0-1)
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`resonanzFaktoren.${person}`, resonanz);
+                TiageState.setResonanzFaktoren(person, resonanz);
             }
         } catch (e) {
             console.warn('[MemoryManager] Could not save Resonanzfaktoren:', e);
