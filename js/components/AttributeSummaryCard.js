@@ -976,8 +976,8 @@ const AttributeSummaryCard = (function() {
         if (selectedNeeds.size > 0) {
             selectedNeeds.forEach(needId => {
                 needsToReset.push(needId);
-                // Finde zugehörige Hauptfrage für Nuancen
-                const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+                // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
+                const hauptfrage = hauptfragen[needId];
                 if (hauptfrage?.nuancen) {
                     needsToReset.push(...hauptfrage.nuancen);
                 }
@@ -1304,8 +1304,8 @@ const AttributeSummaryCard = (function() {
             // Sperre/Entsperre das Hauptbedürfnis
             lockSingleNeed(needId);
 
-            // Finde zugehörige Hauptfrage für Nuancen
-            const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+            // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
+            const hauptfrage = hauptfragen[needId];
             const nuancen = hauptfrage?.nuancen || [];
 
             // Sperre/Entsperre auch alle Nuancen
@@ -1461,8 +1461,8 @@ const AttributeSummaryCard = (function() {
                 lockedCount++;
             }
 
-            // Nuancen zählen
-            const hauptfrage = hauptfragen.find(hf => hf.id === need.id);
+            // Nuancen zählen (hauptfragen ist ein Objekt, kein Array)
+            const hauptfrage = hauptfragen[need.id];
             const nuancen = hauptfrage?.nuancen || [];
             nuancen.forEach(nuanceId => {
                 totalCount++;
@@ -1571,8 +1571,8 @@ const AttributeSummaryCard = (function() {
             const needObj = findNeedById(needId);
             const isCurrentlyLocked = needObj && needObj.locked;
 
-            // Finde zugehörige Hauptfrage für Nuancen
-            const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+            // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
+            const hauptfrage = hauptfragen[needId];
             const nuancen = hauptfrage?.nuancen || [];
 
             if (shouldUnlock) {
