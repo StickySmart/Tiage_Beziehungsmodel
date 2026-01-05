@@ -1323,6 +1323,8 @@ const AttributeSummaryCard = (function() {
             updateLockedCountDisplay();
             // Button-State aktualisieren
             updateSelectedLockButtonState();
+            // Re-render für konsistente UI-Darstellung (Hauptfrage Lock-Icons, Nuancen-Status)
+            reRenderFlatNeeds();
         }
     }
 
