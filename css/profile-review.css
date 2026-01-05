@@ -2449,6 +2449,49 @@ input.resonanz-input:focus {
     margin-top: 2px;
 }
 
+/* Lock Button für markierte Werte */
+.bulk-lock-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    min-width: 52px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.15) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 4px;
+}
+
+.bulk-lock-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0.25) 100%);
+    border-color: rgba(59, 130, 246, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.bulk-lock-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.bulk-lock-btn .bulk-btn-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.bulk-lock-btn .bulk-btn-label {
+    font-size: 9px;
+    color: var(--text-muted, #888);
+    margin-top: 2px;
+}
+
+.bulk-lock-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 /* Disabled State für Bulk-Buttons (wenn nichts markiert) */
 .bulk-increment-card.disabled {
     opacity: 0.4;
@@ -2456,7 +2499,8 @@ input.resonanz-input:focus {
 }
 
 .bulk-increment-card.disabled .bulk-increment-btn,
-.bulk-increment-card.disabled .bulk-reset-btn {
+.bulk-increment-card.disabled .bulk-reset-btn,
+.bulk-increment-card.disabled .bulk-lock-btn {
     cursor: not-allowed;
     opacity: 0.5;
 }

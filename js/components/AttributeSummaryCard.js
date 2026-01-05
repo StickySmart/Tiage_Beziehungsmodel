@@ -1229,7 +1229,7 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse
+     * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse inkl. deren Nuancen
      * @param {boolean} lockState - true = sperren, false = entsperren
      */
     function lockSelectedNeeds(lockState) {
@@ -1239,8 +1239,15 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
+        // Hole Hauptfragen-Daten für Nuancen-Zugriff
+        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
+            ? HauptfrageAggregation.getHauptfragen()
+            : [];
+
         let lockedCount = 0;
-        selectedNeeds.forEach(needId => {
+
+        // Hilfsfunktion zum Sperren/Entsperren eines einzelnen Needs
+        function lockSingleNeed(needId) {
             const needObj = findNeedById(needId);
             if (needObj) {
                 needObj.locked = lockState;
@@ -1260,16 +1267,12 @@ const AttributeSummaryCard = (function() {
                 if (lockIcon) lockIcon.textContent = lockState ? '🔒' : '🔓';
             }
 
-            // ═══════════════════════════════════════════════════════════════════════════
-            // FIX: Speichere Lock-Status in TiageState (SSOT)
-            // ═══════════════════════════════════════════════════════════════════════════
+            // Speichere Lock-Status in TiageState (SSOT)
             if (typeof TiageState !== 'undefined') {
                 if (lockState) {
-                    // Beim Sperren: Speichere Wert
                     const currentValue = needObj ? needObj.value : 50;
                     TiageState.lockNeed(currentPerson, needId, currentValue);
                 } else {
-                    // Beim Entsperren: Entferne aus lockedNeeds
                     TiageState.unlockNeed(currentPerson, needId);
                 }
                 lockedCount++;
@@ -1280,6 +1283,20 @@ const AttributeSummaryCard = (function() {
                 bubbles: true,
                 detail: { needId, locked: lockState }
             }));
+        }
+
+        selectedNeeds.forEach(needId => {
+            // Sperre/Entsperre das Hauptbedürfnis
+            lockSingleNeed(needId);
+
+            // Finde zugehörige Hauptfrage für Nuancen
+            const hauptfrage = hauptfragen.find(hf => hf.id === needId);
+            const nuancen = hauptfrage?.nuancen || [];
+
+            // Sperre/Entsperre auch alle Nuancen
+            nuancen.forEach(nuanceId => {
+                lockSingleNeed(nuanceId);
+            });
         });
 
         // Einmal speichern nach allen Änderungen
@@ -1289,6 +1306,78 @@ const AttributeSummaryCard = (function() {
             showLockToast(lockState ? `${lockedCount} Werte gesperrt` : `${lockedCount} Werte entsperrt`);
             // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
             updateLockedCountDisplay();
+            // Button-State aktualisieren
+            updateSelectedLockButtonState();
+        }
+    }
+
+    /**
+     * TOGGLE: Sperrt alle markierten wenn nicht alle gesperrt, entsperrt alle wenn alle gesperrt
+     */
+    function toggleLockSelectedNeeds() {
+        if (selectedNeeds.size === 0) return;
+
+        // Prüfe ob alle markierten bereits gesperrt sind
+        let allLocked = true;
+        let someLockedCount = 0;
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj && needObj.locked) {
+                someLockedCount++;
+            } else {
+                allLocked = false;
+            }
+        });
+
+        // Toggle: Wenn alle gesperrt → entsperren, sonst → sperren
+        const newLockState = !allLocked;
+        lockSelectedNeeds(newLockState);
+    }
+
+    /**
+     * Aktualisiert den Lock-Button für markierte Needs (Icon und Label)
+     */
+    function updateSelectedLockButtonState() {
+        const btn = document.querySelector('.bulk-lock-btn');
+        if (!btn) return;
+
+        if (selectedNeeds.size === 0) {
+            // Nichts markiert
+            const icon = btn.querySelector('.bulk-btn-icon');
+            const label = btn.querySelector('.bulk-btn-label');
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren';
+            btn.title = 'Alle markierten Werte sperren/entsperren';
+            return;
+        }
+
+        // Prüfe Lock-Status der markierten
+        let lockedCount = 0;
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj && needObj.locked) {
+                lockedCount++;
+            }
+        });
+
+        const allLocked = lockedCount === selectedNeeds.size;
+        const someLocked = lockedCount > 0 && lockedCount < selectedNeeds.size;
+
+        const icon = btn.querySelector('.bulk-btn-icon');
+        const label = btn.querySelector('.bulk-btn-label');
+
+        if (allLocked) {
+            if (icon) icon.textContent = '🔓';
+            if (label) label.textContent = 'Entsperren';
+            btn.title = 'Alle markierten Werte entsperren';
+        } else if (someLocked) {
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren*';
+            btn.title = `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} noch nicht gesperrt`;
+        } else {
+            if (icon) icon.textContent = '🔒';
+            if (label) label.textContent = 'Sperren';
+            btn.title = 'Alle markierten Werte sperren';
         }
     }
 
@@ -2432,11 +2521,11 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-icon">↺</span>
                         <span class="bulk-btn-label">Reset</span>
                     </button>
+                    <button class="bulk-lock-btn" onclick="AttributeSummaryCard.toggleLockSelectedNeeds()" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                        <span class="bulk-btn-icon">🔒</span>
+                        <span class="bulk-btn-label">Sperren</span>
+                    </button>
                 </div>
-                <button class="bulk-lock-filtered-btn${!filterActive ? ' disabled' : ''}" onclick="AttributeSummaryCard.toggleLockAllFilteredNeeds()" title="Alle gefilterten Bedürfnisse sperren/entsperren" ${!filterActive ? 'disabled' : ''}>
-                    <span class="bulk-btn-icon">🔒</span>
-                    <span class="bulk-btn-label">Sperren</span>
-                </button>
             </div>
         </div>`;
 
@@ -4858,9 +4947,8 @@ const AttributeSummaryCard = (function() {
         resetFilters,
         updateSelectedNeedsValue,
         lockSelectedNeeds,
-        lockAllFilteredNeeds,
-        toggleLockAllFilteredNeeds,
-        updateFilteredLockButtonState,
+        toggleLockSelectedNeeds,
+        updateSelectedLockButtonState,
         // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
         incrementSelectedNeeds,
         decrementSelectedNeeds,
