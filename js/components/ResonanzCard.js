@@ -238,10 +238,10 @@ const ResonanzCard = (function() {
                         locked: parsed.R4?.locked ?? false
                     }
                 };
-                // Migriere zu TiageState
+                // v3.2: Migriere zu TiageState mit Clamping
                 if (typeof TiageState !== 'undefined') {
-                    TiageState.set(`resonanzFaktoren.${person}`, result);
-                    console.log(`[ResonanzCard] Migriert zu TiageState: ${person}`);
+                    TiageState.setResonanzFaktoren(person, result);
+                    console.log(`[ResonanzCard] Migriert zu TiageState (clamped): ${person}`);
                 }
                 return result;
             }
@@ -260,10 +260,10 @@ const ResonanzCard = (function() {
         person = person || getCurrentPerson();
 
         try {
-            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            // v3.2: TiageState mit Clamping (Single Source of Truth)
             if (typeof TiageState !== 'undefined') {
-                console.log('[ResonanzCard] save() - Speichere in TiageState:', person, JSON.stringify(values));
-                TiageState.set(`resonanzFaktoren.${person}`, values);
+                console.log('[ResonanzCard] save() - Speichere in TiageState (clamped):', person, JSON.stringify(values));
+                TiageState.setResonanzFaktoren(person, values);
                 // Persist to localStorage for temp local save
                 TiageState.saveToStorage();
             }
