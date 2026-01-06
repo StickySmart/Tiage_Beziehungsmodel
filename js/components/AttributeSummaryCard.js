@@ -952,8 +952,8 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Ermittle aktuellen Archetyp
-        let currentArchetyp = currentFlatArchetypLabel;
+        // Ermittle aktuellen Archetyp (KEY, nicht Label!)
+        let currentArchetyp = currentFlatArchetyp;
         if (!currentArchetyp && typeof window !== 'undefined' && window.currentProfileReviewContext?.archetyp) {
             currentArchetyp = window.currentProfileReviewContext.archetyp;
         }
