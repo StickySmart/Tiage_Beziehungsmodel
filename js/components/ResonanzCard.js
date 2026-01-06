@@ -1229,18 +1229,67 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Prüft ob bereits Resonanzwerte in localStorage gespeichert sind
+     * Prüft ob bereits Resonanzwerte gespeichert sind
+     * FIX v1.8.687: Prüft TiageState (SSOT), NICHT localStorage direkt!
+     * Der alte Code prüfte 'tiage_resonanz_faktoren_ich', aber TiageState speichert unter 'tiage_state'
      * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
      * @returns {boolean} true wenn gespeicherte Werte existieren
      */
     function hasStoredValues(person) {
         person = person || getCurrentPerson();
+
+        // FIX v1.8.687: TiageState ist die Single Source of Truth!
+        // Der alte Code prüfte den falschen localStorage-Key ('tiage_resonanz_faktoren_ich')
+        // Aber TiageState speichert unter 'tiage_state'
+        if (typeof TiageState !== 'undefined') {
+            const fromState = TiageState.get(`resonanzFaktoren.${person}`);
+            if (fromState && fromState.R1) {
+                // Prüfe ob Werte existieren (NICHT ob sie vom Default abweichen!)
+                // User könnte explizit 1.0 wählen, das ist auch ein "gespeicherter Wert"
+                const hasStoredStructure = ['R1', 'R2', 'R3', 'R4'].every(key => {
+                    const faktor = fromState[key];
+                    return faktor && faktor.value !== undefined;
+                });
+                if (hasStoredStructure) {
+                    // Prüfe zusätzlich ob es NICHT der initiale Default-State ist
+                    // Der initiale State hat alle Werte auf 1.0 und locked=false
+                    // Aber wenn der User interagiert hat (auch nur geladen/gespeichert), ist es ein gültiger State
+                    const hasAnyLock = ['R1', 'R2', 'R3', 'R4'].some(key => fromState[key]?.locked === true);
+                    const hasAnyNonDefault = ['R1', 'R2', 'R3', 'R4'].some(key =>
+                        Math.abs((fromState[key]?.value || 1.0) - 1.0) > 0.001
+                    );
+
+                    // Werte sind gespeichert wenn: gelockt ODER vom Default abweichend
+                    // ODER wenn localStorage 'tiage_state' bereits existiert (User hat gespeichert)
+                    if (hasAnyLock || hasAnyNonDefault) {
+                        console.log('[ResonanzCard] hasStoredValues() - TiageState hat User-modifizierte Werte für', person);
+                        return true;
+                    }
+
+                    // Prüfe ob tiage_state in localStorage existiert (User hat irgendwann gespeichert)
+                    try {
+                        const tiageState = localStorage.getItem('tiage_state');
+                        if (tiageState) {
+                            const parsed = JSON.parse(tiageState);
+                            if (parsed.resonanzFaktoren && parsed.resonanzFaktoren[person]) {
+                                console.log('[ResonanzCard] hasStoredValues() - TiageState wurde aus localStorage geladen für', person);
+                                return true;
+                            }
+                        }
+                    } catch (e) {
+                        // Ignorieren
+                    }
+                }
+            }
+        }
+
+        // Fallback: Legacy localStorage (für Migration von alten Versionen)
         const storageKey = getStorageKey(person);
         try {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Prüfe ob mindestens ein Wert existiert und nicht der Default ist
+                // Prüfe ob mindestens ein Wert existiert
                 return parsed && (
                     parsed.R1?.value !== undefined ||
                     parsed.R2?.value !== undefined ||
