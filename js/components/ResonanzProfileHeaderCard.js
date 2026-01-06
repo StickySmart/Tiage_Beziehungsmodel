@@ -179,6 +179,29 @@ const ResonanzProfileHeaderCard = (function() {
                 previousValues[key] = value;
             }
 
+            // v3.4: Richtungs-Indikator basierend auf R-Wert
+            // R > 1.0 → mehr als Archetyp-typisch (↑ grün)
+            // R = 1.0 → perfekt (= neutral)
+            // R < 1.0 → weniger als Archetyp-typisch (↓ orange)
+            let richtungSymbol = '';
+            let richtungClass = '';
+            let richtungTitle = '';
+            const threshold = 0.01; // Toleranz für "perfekt"
+
+            if (value > 1.0 + threshold) {
+                richtungSymbol = '↑';
+                richtungClass = 'richtung-mehr';
+                richtungTitle = 'Mehr als typisch für deinen Archetyp';
+            } else if (value < 1.0 - threshold) {
+                richtungSymbol = '↓';
+                richtungClass = 'richtung-weniger';
+                richtungTitle = 'Weniger als typisch für deinen Archetyp';
+            } else {
+                richtungSymbol = '=';
+                richtungClass = 'richtung-perfekt';
+                richtungTitle = 'Perfekte Übereinstimmung mit Archetyp';
+            }
+
             html += `
                 <div class="resonanz-profile-value-item clickable"
                      style="--dimension-color: ${config.color};"
@@ -186,7 +209,7 @@ const ResonanzProfileHeaderCard = (function() {
                      onclick="ResonanzProfileHeaderCard.searchByResonanz('${key}')"
                      title="Klicke um nach ${key} Bedürfnissen zu suchen">
                     <div class="resonanz-profile-value-label">${config.label}</div>
-                    <div class="resonanz-profile-value-id">${key}</div>
+                    <div class="resonanz-profile-value-id">${key} <span class="resonanz-richtung ${richtungClass}" title="${richtungTitle}">${richtungSymbol}</span></div>
                     <div class="resonanz-profile-value-number">${displayValue}</div>
                     <div class="resonanz-profile-delta" id="delta-${key}"></div>
                 </div>`;
