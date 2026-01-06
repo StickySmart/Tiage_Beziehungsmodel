@@ -20596,6 +20596,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     TiageState.saveToStorage();
                     console.log('[ProfileReview] TiageState gespeichert vor Kontextwechsel von', previousPerson, 'zu', newPerson);
                 }
+
                 // Filter-State wechseln (DimensionKategorieFilter)
                 if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.switchPerson) {
                     DimensionKategorieFilter.switchPerson(newPerson);

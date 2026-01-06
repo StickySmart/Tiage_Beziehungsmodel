@@ -532,9 +532,22 @@
                 TiageState.set(`personDimensions.${person}.orientierung`, calculatedProfile.orientierung);
             }
 
-            // flatNeeds setzen
+            // flatNeeds setzen (respektiere lockedNeeds!)
+            // FIX v1.8.690: LockedNeeds dürfen NICHT durch berechnete Werte überschrieben werden
             if (calculatedProfile.profileReview?.flatNeeds) {
-                TiageState.set(`flatNeeds.${person}`, calculatedProfile.profileReview.flatNeeds);
+                const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
+                const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+                const newFlatNeeds = { ...calculatedProfile.profileReview.flatNeeds };
+
+                // Gesperrte Werte aus currentFlatNeeds beibehalten
+                Object.keys(lockedNeeds).forEach(needId => {
+                    if (currentFlatNeeds[needId] !== undefined) {
+                        newFlatNeeds[needId] = currentFlatNeeds[needId];
+                    }
+                });
+
+                TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
+                console.log(`[ProfileCalculator] flatNeeds gesetzt für ${person}, ${Object.keys(lockedNeeds).length} locked needs beibehalten`);
             }
 
             // gewichtungen setzen (respektiere Locks!)
@@ -690,17 +703,28 @@
         });
 
         // Berechne neue flatNeeds
-        const newFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+        const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
 
-        if (newFlatNeeds && Object.keys(newFlatNeeds).length > 0) {
+        if (calculatedFlatNeeds && Object.keys(calculatedFlatNeeds).length > 0) {
+            // FIX v1.8.690: LockedNeeds dürfen NICHT durch berechnete Werte überschrieben werden
+            const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
+            const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+            const newFlatNeeds = { ...calculatedFlatNeeds };
+
+            // Gesperrte Werte aus currentFlatNeeds beibehalten
+            Object.keys(lockedNeeds).forEach(needId => {
+                if (currentFlatNeeds[needId] !== undefined) {
+                    newFlatNeeds[needId] = currentFlatNeeds[needId];
+                }
+            });
+
             // Prüfe ob sich die Werte tatsächlich geändert haben (verhindert unnötige Updates)
-            const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`);
             const needsChanged = !currentFlatNeeds ||
                 JSON.stringify(newFlatNeeds) !== JSON.stringify(currentFlatNeeds);
 
             if (needsChanged) {
                 TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-                console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse');
+                console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse,', Object.keys(lockedNeeds).length, 'locked needs beibehalten');
             }
         }
     }

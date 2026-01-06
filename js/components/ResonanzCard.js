@@ -1512,10 +1512,10 @@ const ResonanzCard = (function() {
 
     // Subscriber für ICH
     TiageState.subscribe('flatNeeds.ich', function(event) {
-        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() läuft!
-        // Sonst werden die gerade geladenen R-Faktoren sofort überschrieben
-        if (TiageState.isLoading && TiageState.isLoading()) {
-            console.log('[ResonanzCard] SKIP: FlatNeeds.ich geändert während loadFromStorage - keine Neuberechnung');
+        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() oder Tab-Wechsel läuft!
+        // isSuppressResonanzRecalc() prüft beide Flags: isLoadingFromStorage UND suppressResonanzRecalc
+        if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
+            console.log('[ResonanzCard] SKIP: FlatNeeds.ich geändert während Suppress aktiv - keine Neuberechnung');
             return;
         }
 
@@ -1525,8 +1525,8 @@ const ResonanzCard = (function() {
         }
         debounceTimerIch = setTimeout(function() {
             // Nochmal prüfen nach Debounce
-            if (TiageState.isLoading && TiageState.isLoading()) {
-                console.log('[ResonanzCard] SKIP (nach Debounce): loadFromStorage läuft noch');
+            if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
+                console.log('[ResonanzCard] SKIP (nach Debounce): Suppress noch aktiv');
                 return;
             }
             console.log('[ResonanzCard] FlatNeeds geändert für ICH - Neuberechnung der Resonanzfaktoren');
@@ -1536,9 +1536,9 @@ const ResonanzCard = (function() {
 
     // Subscriber für PARTNER
     TiageState.subscribe('flatNeeds.partner', function(event) {
-        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() läuft!
-        if (TiageState.isLoading && TiageState.isLoading()) {
-            console.log('[ResonanzCard] SKIP: FlatNeeds.partner geändert während loadFromStorage - keine Neuberechnung');
+        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() oder Tab-Wechsel läuft!
+        if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
+            console.log('[ResonanzCard] SKIP: FlatNeeds.partner geändert während Suppress aktiv - keine Neuberechnung');
             return;
         }
 
@@ -1548,8 +1548,8 @@ const ResonanzCard = (function() {
         }
         debounceTimerPartner = setTimeout(function() {
             // Nochmal prüfen nach Debounce
-            if (TiageState.isLoading && TiageState.isLoading()) {
-                console.log('[ResonanzCard] SKIP (nach Debounce): loadFromStorage läuft noch');
+            if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
+                console.log('[ResonanzCard] SKIP (nach Debounce): Suppress noch aktiv');
                 return;
             }
             console.log('[ResonanzCard] FlatNeeds geändert für PARTNER - Neuberechnung der Resonanzfaktoren');

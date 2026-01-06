@@ -1305,6 +1305,16 @@ const TiageState = (function() {
         },
 
         /**
+         * Prüft ob R-Faktor Neuberechnung unterdrückt werden soll
+         * FIX v1.8.690: Nur noch während loadFromStorage aktiv - suppressResonanzRecalc entfernt
+         * da ProfileCalculator jetzt lockedNeeds respektiert
+         * @returns {boolean}
+         */
+        isSuppressResonanzRecalc() {
+            return isLoadingFromStorage;
+        },
+
+        /**
          * Save state to localStorage
          * Speichert alle persistenten Daten zentral
          */
