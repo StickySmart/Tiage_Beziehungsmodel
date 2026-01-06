@@ -26,6 +26,10 @@ const TiageState = (function() {
     // Während loadFromStorage() läuft, sollten Subscriber keine Neuberechnungen triggern
     let isLoadingFromStorage = false;
 
+    // FIX v1.8.687: Globales Flag um R-Faktor Neuberechnung temporär zu unterdrücken
+    // Wird beim Tab-Wechsel (ICH/PARTNER) verwendet, damit ProfileCalculator nicht die Werte überschreibt
+    let suppressResonanzRecalc = false;
+
     const state = {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
         // Data Structure v3.0:
@@ -1302,6 +1306,25 @@ const TiageState = (function() {
          */
         isLoading() {
             return isLoadingFromStorage;
+        },
+
+        /**
+         * Unterdrückt R-Faktor Neuberechnung temporär
+         * FIX v1.8.687: Verwendet beim Tab-Wechsel ICH/PARTNER um Race Conditions zu vermeiden
+         * @param {boolean} suppress - true = unterdrücken, false = wieder erlauben
+         */
+        setSuppressResonanzRecalc(suppress) {
+            suppressResonanzRecalc = !!suppress;
+            console.log('[TiageState] suppressResonanzRecalc =', suppressResonanzRecalc);
+        },
+
+        /**
+         * Prüft ob R-Faktor Neuberechnung unterdrückt werden soll
+         * FIX v1.8.687: Subscriber prüfen dieses Flag um keine Neuberechnung zu triggern
+         * @returns {boolean}
+         */
+        isSuppressResonanzRecalc() {
+            return suppressResonanzRecalc || isLoadingFromStorage;
         },
 
         /**

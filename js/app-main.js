@@ -20596,6 +20596,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     TiageState.saveToStorage();
                     console.log('[ProfileReview] TiageState gespeichert vor Kontextwechsel von', previousPerson, 'zu', newPerson);
                 }
+
+                // FIX v1.8.687: Unterdrücke R-Faktor Neuberechnung während Tab-Wechsel
+                // ProfileCalculator setzt flatNeeds, was den Subscriber triggert - das würde R-Faktoren überschreiben!
+                if (typeof TiageState !== 'undefined' && TiageState.setSuppressResonanzRecalc) {
+                    TiageState.setSuppressResonanzRecalc(true);
+                    console.log('[ProfileReview] R-Faktor Neuberechnung unterdrückt für Tab-Wechsel');
+                }
+
                 // Filter-State wechseln (DimensionKategorieFilter)
                 if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.switchPerson) {
                     DimensionKategorieFilter.switchPerson(newPerson);
@@ -20981,6 +20989,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Aktualisiere auch die Resonanz-Karte mit den richtigen Werten
                 if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.update) {
                     ResonanzProfileHeaderCard.update();
+                }
+
+                // FIX v1.8.687: R-Faktor Neuberechnung wieder erlauben nach Tab-Wechsel abgeschlossen
+                // MUSS nach ResonanzProfileHeaderCard.update() kommen, damit UI korrekt ist
+                if (typeof TiageState !== 'undefined' && TiageState.setSuppressResonanzRecalc) {
+                    TiageState.setSuppressResonanzRecalc(false);
+                    console.log('[ProfileReview] R-Faktor Neuberechnung wieder erlaubt');
                 }
             }, 150);
 
