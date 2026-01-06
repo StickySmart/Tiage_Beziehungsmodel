@@ -47,11 +47,15 @@ const ResonanzProfileHeaderCard = (function() {
     // Loading state
     let isLoading = false;
 
-    // Speichert vorherige Werte für Delta-Berechnung
+    // Speichert vorherige Werte für Delta-Berechnung (bei jeder Änderung)
     let previousValues = { R1: null, R2: null, R3: null, R4: null };
 
     // Flag: Initialisierungsphase (keine Deltas während Laden anzeigen)
     let isInitializing = true;
+
+    // Snapshot-Werte: Gespeichert bei Filter-Änderung für Impact-Anzeige
+    // Das "I-" Badge zeigt die Differenz zwischen Snapshot und aktuellem Wert
+    let snapshotValues = { R1: null, R2: null, R3: null, R4: null };
 
     /**
      * Setzt den Lade-Status und aktualisiert die Anzeige
@@ -239,9 +243,60 @@ const ResonanzProfileHeaderCard = (function() {
     }
 
     /**
+     * Speichert einen Snapshot der aktuellen R-Werte
+     * Wird aufgerufen wenn Filter geändert wird, um später den Impact anzuzeigen
+     */
+    function saveSnapshot() {
+        const values = getCurrentValues();
+        ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+            snapshotValues[key] = values[key];
+        });
+
+        // Verstecke alle Impact-Badges beim Snapshot
+        ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+            hideImpactBadge(key);
+        });
+
+        console.log('[ResonanzProfileHeaderCard] Snapshot gespeichert:', snapshotValues);
+    }
+
+    /**
+     * Zeigt das Impact-Badge für einen R-Faktor
+     * Format: "I-0.02" für negative Änderung, "I+0.02" für positive
+     * @param {string} key - R1, R2, R3 oder R4
+     * @param {number} impact - Die Differenz zum Snapshot (negativ = Verschlechterung)
+     */
+    function showImpactBadge(key, impact) {
+        const deltaEl = document.getElementById(`delta-${key}`);
+        if (!deltaEl) return;
+
+        // Formatiere Impact im "I-0.02" Format
+        const sign = impact >= 0 ? '+' : '';
+        const impactText = `I${sign}${impact.toFixed(2)}`;
+        const colorClass = impact >= 0 ? 'delta-positive' : 'delta-negative';
+
+        // Setze Inhalt und Klasse - bleibt dauerhaft sichtbar
+        deltaEl.textContent = impactText;
+        deltaEl.className = `resonanz-profile-delta ${colorClass} delta-visible`;
+    }
+
+    /**
+     * Versteckt das Impact-Badge für einen R-Faktor
+     * @param {string} key - R1, R2, R3 oder R4
+     */
+    function hideImpactBadge(key) {
+        const deltaEl = document.getElementById(`delta-${key}`);
+        if (!deltaEl) return;
+
+        deltaEl.textContent = '';
+        deltaEl.className = 'resonanz-profile-delta';
+    }
+
+    /**
      * Zeigt eine Delta-Animation für einen R-Faktor (dauerhaft sichtbar)
      * @param {string} key - R1, R2, R3 oder R4
      * @param {number} delta - Die Änderung (positiv oder negativ)
+     * @deprecated Verwende showImpactBadge() für das neue "I-" Format
      */
     function showDeltaAnimation(key, delta) {
         const deltaEl = document.getElementById(`delta-${key}`);
@@ -260,6 +315,7 @@ const ResonanzProfileHeaderCard = (function() {
 
     /**
      * Aktualisiert die Header-Karte mit neuen Werten
+     * Zeigt Impact-Badges basierend auf Snapshot-Differenz
      */
     function update() {
         const card = document.querySelector('.resonanz-profile-header-card');
@@ -271,28 +327,31 @@ const ResonanzProfileHeaderCard = (function() {
 
         const values = getCurrentValues();
 
-        // Aktualisiere Werte und zeige Delta
+        // Aktualisiere Werte und zeige Impact-Badge
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
             const value = values[key];
             const displayValue = value.toFixed(2);
             const valueElement = card.querySelector(`[data-resonanz-key="${key}"] .resonanz-profile-value-number`);
 
             if (valueElement) {
-                // Berechne Delta wenn vorheriger Wert existiert
-                // WICHTIG: Zeige Delta NUR wenn nicht mehr in Initialisierungsphase
-                if (previousValues[key] !== null && !isInitializing) {
-                    const delta = value - previousValues[key];
-                    // Zeige Delta nur wenn signifikant (> 0.005)
-                    if (Math.abs(delta) > 0.005) {
-                        showDeltaAnimation(key, delta);
-                        console.log(`[ResonanzProfileHeaderCard] ${key} Delta: ${delta.toFixed(3)}`);
+                // Berechne Impact zum Snapshot (wenn vorhanden)
+                // WICHTIG: Zeige Impact NUR wenn nicht mehr in Initialisierungsphase
+                if (snapshotValues[key] !== null && !isInitializing) {
+                    const impact = value - snapshotValues[key];
+                    // Zeige Impact-Badge nur wenn signifikant (> 0.005)
+                    if (Math.abs(impact) > 0.005) {
+                        showImpactBadge(key, impact);
+                        console.log(`[ResonanzProfileHeaderCard] ${key} Impact zum Snapshot: ${impact.toFixed(3)}`);
+                    } else {
+                        // Verstecke Badge wenn kein signifikanter Impact
+                        hideImpactBadge(key);
                     }
                 }
 
                 valueElement.textContent = displayValue;
             }
 
-            // Aktualisiere vorherigen Wert
+            // Aktualisiere vorherigen Wert (für eventuelle andere Nutzung)
             previousValues[key] = value;
         });
 
@@ -330,12 +389,32 @@ const ResonanzProfileHeaderCard = (function() {
         }
     });
 
+    // Lausche auf Filter-Änderungen um Snapshot zu speichern
+    // Wenn Filter geändert wird, speichere aktuelle R-Werte als Referenz
+    document.addEventListener('activeFilterChange', function(event) {
+        console.log('[ResonanzProfileHeaderCard] Filter geändert, speichere Snapshot');
+        saveSnapshot();
+    });
+
+    // Auch bei Person-Wechsel (ICH/PARTNER) Snapshot zurücksetzen
+    window.addEventListener('personChanged', function(event) {
+        console.log('[ResonanzProfileHeaderCard] Person gewechselt, setze Snapshot zurück');
+        // Setze Snapshot zurück
+        ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+            snapshotValues[key] = null;
+            hideImpactBadge(key);
+        });
+    });
+
     return {
         render,
         init,
         update,
         searchByResonanz,
-        setLoading
+        setLoading,
+        saveSnapshot,
+        showImpactBadge,
+        hideImpactBadge
     };
 })();
 
