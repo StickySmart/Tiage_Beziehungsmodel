@@ -675,14 +675,15 @@ const LogosTextGenerator = (function() {
         const rFormatted = R.toFixed(2);
         const vars = { r: rFormatted };
 
+        // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
         let phrases;
-        if (R >= 1.08) {
+        if (R >= 0.8) {
             phrases = resonanzPhrases.harmonie;
-        } else if (R >= 1.02) {
+        } else if (R >= 0.6) {
             phrases = resonanzPhrases.resonanz;
-        } else if (R >= 0.98) {
+        } else if (R >= 0.4) {
             phrases = resonanzPhrases.neutral;
-        } else if (R >= 0.93) {
+        } else if (R >= 0.25) {
             phrases = resonanzPhrases.spannung;
         } else {
             phrases = resonanzPhrases.dissonanz;

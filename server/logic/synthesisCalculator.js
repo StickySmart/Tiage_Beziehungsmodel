@@ -464,8 +464,10 @@ function combineScore(matrixScore, needsScore, weights) {
 }
 
 function getStatus(rValue) {
-    if (rValue >= 1.05) return 'resonanz';
-    if (rValue <= 0.97) return 'dissonanz';
+    // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
+    // THRESHOLDS: resonanz >= 0.7, dissonanz <= 0.3
+    if (rValue >= 0.7) return 'resonanz';
+    if (rValue <= 0.3) return 'dissonanz';
     return 'neutral';
 }
 
