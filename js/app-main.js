@@ -15405,6 +15405,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Event-Listener für Resonanzfaktoren-Änderungen
                 // Aktualisiert LoadedArchetypProfile wenn sich Resonanzfaktoren ändern
                 // ═══════════════════════════════════════════════════════════════════════════
+                // Debounce für Slider-Änderungen (verhindert zu häufige Score-Updates)
+                let resonanzUpdateDebounce = null;
+                const RESONANZ_DEBOUNCE_DELAY = 100; // ms
+
                 window.addEventListener('resonanzfaktoren-changed', function(e) {
                     const { person, values, source } = e.detail;
 
@@ -15414,8 +15418,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // Das würde die Lock-Struktur {value, locked} mit nur Werten überschreiben.
                     console.log('[TIAGE] resonanzfaktoren-changed Event für', person, '- Quelle:', source);
 
-                    // Aktualisiere Comparison View wenn nicht vom Slider (vermeidet doppelte Updates)
-                    if (source !== 'slider') {
+                    // FIX: Aktualisiere Comparison View für ALLE Quellen (inkl. Slider)
+                    // Debounce bei Slider-Änderungen um Performance zu optimieren
+                    if (source === 'slider') {
+                        if (resonanzUpdateDebounce) {
+                            clearTimeout(resonanzUpdateDebounce);
+                        }
+                        resonanzUpdateDebounce = setTimeout(function() {
+                            updateComparisonView();
+                        }, RESONANZ_DEBOUNCE_DELAY);
+                    } else {
+                        // Sofortiges Update für andere Quellen (reset, calculated, etc.)
                         updateComparisonView();
                     }
                 });
