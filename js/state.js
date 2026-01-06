@@ -879,38 +879,35 @@ const TiageState = (function() {
          * Set a single Resonanzfaktor
          * @param {string} person - 'ich' or 'partner'
          * @param {string} key - 'R1', 'R2', 'R3', or 'R4'
-         * @param {number} value - 0-1 (v3.2: quadratisch, keine künstlichen Grenzen)
+         * @param {number} value - v3.4: richtungsbasiert um 1.0 zentriert, R > 1.0 möglich
          * @param {boolean} locked - Whether the value is locked
          */
         setResonanzFaktor(person, key, value, locked = false) {
-            // v3.2: Clamp auf 0-1 (R = similarity²)
-            const clampedValue = Math.min(1, Math.max(0, value));
-            this.set(`resonanzFaktoren.${person}.${key}`, { value: clampedValue, locked });
+            // v3.4: Kein Clamping - R-Werte werden direkt aus Berechnung übernommen
+            this.set(`resonanzFaktoren.${person}.${key}`, { value, locked });
         },
 
         /**
          * Set all Resonanzfaktoren at once
-         * v3.2: Clamps all values to 0-1 range
+         * v3.4: Kein Clamping - R > 1.0 möglich
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} faktoren - { R1, R2, R3, R4 }
          */
         setResonanzFaktoren(person, faktoren) {
-            // v3.2: Clamp alle Werte auf 0-1
-            const clamped = this._clampResonanzFaktoren(faktoren);
-            this.set(`resonanzFaktoren.${person}`, clamped);
+            // v3.4: Kein Clamping - Werte direkt übernehmen
+            const normalized = this._normalizeResonanzFaktoren(faktoren);
+            this.set(`resonanzFaktoren.${person}`, normalized);
         },
 
         /**
-         * Clamps Resonanzfaktoren values to 0-1 range
-         * v3.2: Migration von 0.5-1.5 zu 0-1 Range
+         * Normalisiert Resonanzfaktoren auf einheitliches Format { value, locked }
+         * v3.4: Kein Clamping - R-Werte werden direkt übernommen
          * @private
          * @param {Object} faktoren - { R1, R2, R3, R4 } oder { ich: {...}, partner: {...} }
-         * @returns {Object} Clamped faktoren
+         * @returns {Object} Normalisierte faktoren
          */
-        _clampResonanzFaktoren(faktoren) {
+        _normalizeResonanzFaktoren(faktoren) {
             if (!faktoren) return faktoren;
-
-            const clampValue = (v) => Math.min(1, Math.max(0, v));
 
             // Prüfe ob es ein verschachteltes Objekt ist (ich/partner)
             if (faktoren.ich || faktoren.partner) {
@@ -922,7 +919,7 @@ const TiageState = (function() {
                             if (faktoren[person][key]) {
                                 const entry = faktoren[person][key];
                                 result[person][key] = {
-                                    value: clampValue(entry.value ?? entry ?? 1.0),
+                                    value: entry.value ?? entry ?? 1.0,
                                     locked: entry.locked ?? false
                                 };
                             }
@@ -939,18 +936,27 @@ const TiageState = (function() {
                     const entry = faktoren[key];
                     if (typeof entry === 'object' && entry !== null) {
                         result[key] = {
-                            value: clampValue(entry.value ?? 1.0),
+                            value: entry.value ?? 1.0,
                             locked: entry.locked ?? false
                         };
                     } else {
                         result[key] = {
-                            value: clampValue(entry ?? 1.0),
+                            value: entry ?? 1.0,
                             locked: false
                         };
                     }
                 }
             }
             return result;
+        },
+
+        /**
+         * Legacy-Alias für _normalizeResonanzFaktoren (Rückwärtskompatibilität)
+         * @private
+         * @deprecated Verwende _normalizeResonanzFaktoren
+         */
+        _clampResonanzFaktoren(faktoren) {
+            return this._normalizeResonanzFaktoren(faktoren);
         },
 
         // ═══════════════════════════════════════════════════════════════════

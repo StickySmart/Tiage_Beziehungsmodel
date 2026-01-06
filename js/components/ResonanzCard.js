@@ -193,19 +193,19 @@ const ResonanzCard = (function() {
             if (fromState && fromState.R1) {
                 const result = {
                     R1: {
-                        value: clampValue(fromState.R1?.value ?? DEFAULT_VALUES.R1.value),
+                        value: ensureNumber(fromState.R1?.value ?? DEFAULT_VALUES.R1.value),
                         locked: fromState.R1?.locked ?? false
                     },
                     R2: {
-                        value: clampValue(fromState.R2?.value ?? DEFAULT_VALUES.R2.value),
+                        value: ensureNumber(fromState.R2?.value ?? DEFAULT_VALUES.R2.value),
                         locked: fromState.R2?.locked ?? false
                     },
                     R3: {
-                        value: clampValue(fromState.R3?.value ?? DEFAULT_VALUES.R3.value),
+                        value: ensureNumber(fromState.R3?.value ?? DEFAULT_VALUES.R3.value),
                         locked: fromState.R3?.locked ?? false
                     },
                     R4: {
-                        value: clampValue(fromState.R4?.value ?? DEFAULT_VALUES.R4.value),
+                        value: ensureNumber(fromState.R4?.value ?? DEFAULT_VALUES.R4.value),
                         locked: fromState.R4?.locked ?? false
                     }
                 };
@@ -222,19 +222,19 @@ const ResonanzCard = (function() {
                 const parsed = JSON.parse(stored);
                 const result = {
                     R1: {
-                        value: clampValue(parsed.R1?.value ?? DEFAULT_VALUES.R1.value),
+                        value: ensureNumber(parsed.R1?.value ?? DEFAULT_VALUES.R1.value),
                         locked: parsed.R1?.locked ?? false
                     },
                     R2: {
-                        value: clampValue(parsed.R2?.value ?? DEFAULT_VALUES.R2.value),
+                        value: ensureNumber(parsed.R2?.value ?? DEFAULT_VALUES.R2.value),
                         locked: parsed.R2?.locked ?? false
                     },
                     R3: {
-                        value: clampValue(parsed.R3?.value ?? DEFAULT_VALUES.R3.value),
+                        value: ensureNumber(parsed.R3?.value ?? DEFAULT_VALUES.R3.value),
                         locked: parsed.R3?.locked ?? false
                     },
                     R4: {
-                        value: clampValue(parsed.R4?.value ?? DEFAULT_VALUES.R4.value),
+                        value: ensureNumber(parsed.R4?.value ?? DEFAULT_VALUES.R4.value),
                         locked: parsed.R4?.locked ?? false
                     }
                 };
@@ -273,16 +273,18 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Begrenzt Wert auf gültigen Bereich (0-2)
-     * v3.4: Erweiterter Bereich für richtungsbasierte R-Werte
-     * R > 1.0 = mehr als Archetyp-typisch
-     * R = 1.0 = perfekte Übereinstimmung
-     * R < 1.0 = weniger als Archetyp-typisch
+     * Stellt sicher dass der Wert eine gültige Zahl ist
+     * v3.4: Kein Clamping - wirft Fehler bei ungültigen Werten
      * @param {number} value - Eingabewert
-     * @returns {number} Begrenzter Wert (0-2)
+     * @returns {number} Geparster Wert
+     * @throws {Error} Wenn value keine gültige Zahl ist
      */
-    function clampValue(value) {
-        return Math.max(0, Math.min(2, parseFloat(value) || 1.0));
+    function ensureNumber(value) {
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            throw new Error(`[ResonanzCard] Ungültiger R-Wert: ${value}`);
+        }
+        return num;
     }
 
     /**
@@ -402,7 +404,7 @@ const ResonanzCard = (function() {
             return;
         }
 
-        const value = clampValue(parseFloat(inputValue) || 1.0);
+        const value = ensureNumber(inputValue);
         updateValue(faktor, value);
     }
 
@@ -412,18 +414,18 @@ const ResonanzCard = (function() {
      * @param {number} value - Neuer Wert
      */
     function updateValue(faktor, value) {
-        const clampedValue = clampValue(value);
+        const parsedValue = ensureNumber(value);
 
         // Update UI
         const input = document.getElementById(`resonanz-${faktor}`);
         const slider = document.getElementById(`resonanz-slider-${faktor}`);
 
-        if (input) input.value = clampedValue.toFixed(2);
-        if (slider) slider.value = valueToSlider(clampedValue);
+        if (input) input.value = parsedValue.toFixed(2);
+        if (slider) slider.value = valueToSlider(parsedValue);
 
         // Speichern
         const values = load();
-        values[faktor].value = clampedValue;
+        values[faktor].value = parsedValue;
         save(values);
 
         // GFK-Anzeige aktualisieren
@@ -550,10 +552,10 @@ const ResonanzCard = (function() {
         // Fallback auf DEFAULT_VALUES wenn keine Berechnung möglich
         const values = calculatedValues
             ? {
-                R1: { value: clampValue(calculatedValues.R1), locked: false },
-                R2: { value: clampValue(calculatedValues.R2), locked: false },
-                R3: { value: clampValue(calculatedValues.R3), locked: false },
-                R4: { value: clampValue(calculatedValues.R4), locked: false }
+                R1: { value: ensureNumber(calculatedValues.R1), locked: false },
+                R2: { value: ensureNumber(calculatedValues.R2), locked: false },
+                R3: { value: ensureNumber(calculatedValues.R3), locked: false },
+                R4: { value: ensureNumber(calculatedValues.R4), locked: false }
             }
             : JSON.parse(JSON.stringify(DEFAULT_VALUES));
 
@@ -667,8 +669,8 @@ const ResonanzCard = (function() {
                 }
 
                 if (!currentValues[faktor].locked || forceOverwrite) {
-                    const clampedValue = clampValue(newValue);
-                    currentValues[faktor].value = clampedValue;
+                    const parsedValue = ensureNumber(newValue);
+                    currentValues[faktor].value = parsedValue;
                     hasChanges = true;
 
                     // UI aktualisieren (nur wenn aktuelle Person angezeigt wird)
@@ -676,8 +678,8 @@ const ResonanzCard = (function() {
                         const input = document.getElementById(`resonanz-${faktor}`);
                         const slider = document.getElementById(`resonanz-slider-${faktor}`);
 
-                        if (input) input.value = clampedValue.toFixed(2);
-                        if (slider) slider.value = valueToSlider(clampedValue);
+                        if (input) input.value = parsedValue.toFixed(2);
+                        if (slider) slider.value = valueToSlider(parsedValue);
                     }
                 }
             }
@@ -846,7 +848,7 @@ const ResonanzCard = (function() {
         // Entsperre und übernimme Wert
         const values = load(person);
         values[faktor].locked = false;
-        values[faktor].value = clampValue(calculatedValues[faktor]);
+        values[faktor].value = ensureNumber(calculatedValues[faktor]);
         save(values, person);
 
         // UI aktualisieren

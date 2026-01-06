@@ -255,16 +255,18 @@ router.post('/recalculate', async (req, res, next) => {
             }
 
             // R-Faktoren basierend auf Bedürfnissen neu berechnen
-            // Vereinfachte Berechnung (in Produktion: komplexere Logik)
+            // Vereinfachte Berechnung (in Produktion: komplexere Logik via needsIntegration.js)
             const needs = profile.needs || {};
             const needValues = Object.values(needs);
 
             if (needValues.length > 0) {
                 const avgNeed = needValues.reduce((a, b) => a + b, 0) / needValues.length;
 
-                // v3.2: R = (avgNeed / 100)² (quadratisch, Range 0-1)
+                // v3.4: R = avgMatch² - kann über 1.0 gehen wenn mehr als Archetyp-typisch
+                // Vereinfachte Berechnung hier, vollständige Logik in needsIntegration.js
                 const normalized = avgNeed / 100;
-                const clampedR = Math.min(1, Math.max(0, normalized * normalized));
+                // v3.4: Range 0-2 (R kann über 1.0 gehen bei richtungsbasierter Berechnung)
+                const clampedR = Math.min(2, Math.max(0, normalized * normalized));
 
                 const newResonanzFaktoren = {
                     R1: { value: clampedR, locked: profile.resonanzFaktoren?.R1?.locked || false },
