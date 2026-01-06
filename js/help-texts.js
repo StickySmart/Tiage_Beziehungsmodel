@@ -127,15 +127,16 @@ var TiageHelpTexts = (function() {
 
         const factor = factorMapping[rKey] || { name: 'Faktor', variable: '?' };
 
+        // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
         return {
             title: 'Einfluss auf Endscore',
             description: `Der ${rKey}-Faktor wird direkt mit dem ${factor.name}-Score multipliziert.`,
             formula: mainFormula.html,
             highlightedFactor: rKey,
             interpretation: [
-                `R < 1.0: schwächt den ${factor.name}-Score`,
-                `R = 1.0: neutraler Einfluss`,
-                `R > 1.0: verstärkt den ${factor.name}-Score`
+                `R ≥ 0.7: guter Match - verstärkt den ${factor.name}-Score`,
+                `R 0.3-0.7: neutraler Bereich`,
+                `R ≤ 0.3: schwacher Match - schwächt den ${factor.name}-Score`
             ],
             range: `Range: ${formula.range.min} - ${formula.range.max}`
         };

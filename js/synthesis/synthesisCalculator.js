@@ -924,12 +924,15 @@ TiageSynthesis.Calculator = {
 
     /**
      * Interpretiert den Resonanz-Koeffizienten
+     * v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
+     *       0.8+ = harmonie, 0.6+ = resonanz, 0.4+ = neutral, 0.25+ = spannung
      */
     _interpretResonance: function(coefficient) {
-        if (coefficient >= 1.08) return { level: 'harmonie', text: 'Logos und Pathos verstärken sich' };
-        if (coefficient >= 1.02) return { level: 'resonanz', text: 'Gute Schwingung zwischen Kopf und Herz' };
-        if (coefficient >= 0.98) return { level: 'neutral', text: 'Ausgewogenes Verhältnis' };
-        if (coefficient >= 0.93) return { level: 'spannung', text: 'Leichte Spannung zwischen Logos und Pathos' };
+        // v3.2: Neue Schwellenwerte für R-Skala 0-1
+        if (coefficient >= 0.8) return { level: 'harmonie', text: 'Logos und Pathos verstärken sich' };
+        if (coefficient >= 0.6) return { level: 'resonanz', text: 'Gute Schwingung zwischen Kopf und Herz' };
+        if (coefficient >= 0.4) return { level: 'neutral', text: 'Ausgewogenes Verhältnis' };
+        if (coefficient >= 0.25) return { level: 'spannung', text: 'Leichte Spannung zwischen Logos und Pathos' };
         return { level: 'dissonanz', text: 'Logos und Pathos widersprechen sich' };
     },
 
@@ -1218,43 +1221,47 @@ TiageSynthesis.Calculator = {
         }
 
         if (perspectiveResult) {
+            // Schwellenwerte aus RESONANCE_DIMENSIONAL.THRESHOLDS (v3.2: 0.7/0.3)
+            var resonanzThreshold = cfg.THRESHOLDS.resonanz;   // 0.7 = guter Match
+            var dissonanzThreshold = cfg.THRESHOLDS.dissonanz; // 0.3 = schlechter Match
+
             // Konvertiere zu dimensions-Format für Kompatibilität
             var dimensions = {
                 leben: {
                     name: 'Leben',
                     emoji: '🔥',
-                    match: Math.round((perspectiveResult.R1 - 1) * 100),
+                    match: Math.round(perspectiveResult.R1 * 100),
                     rValue: perspectiveResult.R1,
-                    status: perspectiveResult.R1 >= 1.05 ? 'resonanz' : (perspectiveResult.R1 <= 0.97 ? 'dissonanz' : 'neutral'),
-                    statusEmoji: perspectiveResult.R1 >= 1.05 ? '⬆️' : (perspectiveResult.R1 <= 0.97 ? '⬇️' : '➡️'),
+                    status: perspectiveResult.R1 >= resonanzThreshold ? 'resonanz' : (perspectiveResult.R1 <= dissonanzThreshold ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R1 >= resonanzThreshold ? '⬆️' : (perspectiveResult.R1 <= dissonanzThreshold ? '⬇️' : '➡️'),
                     weight: 0.25,
                     orientationResonance: perspectiveResult.orientationResonance || null
                 },
                 philosophie: {
                     name: 'Philosophie',
                     emoji: '🧠',
-                    match: Math.round((perspectiveResult.R2 - 1) * 100),
+                    match: Math.round(perspectiveResult.R2 * 100),
                     rValue: perspectiveResult.R2,
-                    status: perspectiveResult.R2 >= 1.05 ? 'resonanz' : (perspectiveResult.R2 <= 0.97 ? 'dissonanz' : 'neutral'),
-                    statusEmoji: perspectiveResult.R2 >= 1.05 ? '⬆️' : (perspectiveResult.R2 <= 0.97 ? '⬇️' : '➡️'),
+                    status: perspectiveResult.R2 >= resonanzThreshold ? 'resonanz' : (perspectiveResult.R2 <= dissonanzThreshold ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R2 >= resonanzThreshold ? '⬆️' : (perspectiveResult.R2 <= dissonanzThreshold ? '⬇️' : '➡️'),
                     weight: 0.25
                 },
                 dynamik: {
                     name: 'Dynamik',
                     emoji: '⚡',
-                    match: Math.round((perspectiveResult.R3 - 1) * 100),
+                    match: Math.round(perspectiveResult.R3 * 100),
                     rValue: perspectiveResult.R3,
-                    status: perspectiveResult.R3 >= 1.05 ? 'resonanz' : (perspectiveResult.R3 <= 0.97 ? 'dissonanz' : 'neutral'),
-                    statusEmoji: perspectiveResult.R3 >= 1.05 ? '⬆️' : (perspectiveResult.R3 <= 0.97 ? '⬇️' : '➡️'),
+                    status: perspectiveResult.R3 >= resonanzThreshold ? 'resonanz' : (perspectiveResult.R3 <= dissonanzThreshold ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R3 >= resonanzThreshold ? '⬆️' : (perspectiveResult.R3 <= dissonanzThreshold ? '⬇️' : '➡️'),
                     weight: 0.25
                 },
                 identitaet: {
                     name: 'Identität',
                     emoji: '💚',
-                    match: Math.round((perspectiveResult.R4 - 1) * 100),
+                    match: Math.round(perspectiveResult.R4 * 100),
                     rValue: perspectiveResult.R4,
-                    status: perspectiveResult.R4 >= 1.05 ? 'resonanz' : (perspectiveResult.R4 <= 0.97 ? 'dissonanz' : 'neutral'),
-                    statusEmoji: perspectiveResult.R4 >= 1.05 ? '⬆️' : (perspectiveResult.R4 <= 0.97 ? '⬇️' : '➡️'),
+                    status: perspectiveResult.R4 >= resonanzThreshold ? 'resonanz' : (perspectiveResult.R4 <= dissonanzThreshold ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R4 >= resonanzThreshold ? '⬆️' : (perspectiveResult.R4 <= dissonanzThreshold ? '⬇️' : '➡️'),
                     weight: 0.25,
                     identityResonance: perspectiveResult.identityResonance || null
                 }
@@ -1375,6 +1382,8 @@ TiageSynthesis.Calculator = {
 
     /**
      * Interpretiert dimensionale Resonanz
+     * v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
+     *       thresholds.resonanz = 0.7, thresholds.dissonanz = 0.3
      */
     _interpretDimensionalResonance: function(coefficient, dimensions, thresholds) {
         // Zähle Resonanzen und Dissonanzen
@@ -1386,10 +1395,17 @@ TiageSynthesis.Calculator = {
             if (dimensions[key].status === 'dissonanz') dissonanzCount++;
         }
 
-        if (coefficient >= 1.08 || resonanzCount >= 3) {
+        // v3.2: Schwellenwerte aus THRESHOLDS (0.7 = resonanz, 0.3 = dissonanz)
+        // Bei 4 Dimensionen ist coefficient = Durchschnitt der R-Werte (Range 0-1)
+        // coefficient >= 0.8 = sehr gut (Durchschnitt über resonanz-Schwelle)
+        // coefficient >= 0.6 = gut (mittlerer Bereich)
+        var highThreshold = (thresholds && thresholds.resonanz) ? thresholds.resonanz + 0.1 : 0.8;
+        var goodThreshold = (thresholds && thresholds.resonanz) ? thresholds.resonanz - 0.1 : 0.6;
+
+        if (coefficient >= highThreshold || resonanzCount >= 3) {
             return { level: 'harmonie', text: 'Mehrdimensionale Resonanz auf hohem Niveau' };
         }
-        if (coefficient >= 1.02 || resonanzCount >= 2) {
+        if (coefficient >= goodThreshold || resonanzCount >= 2) {
             return { level: 'resonanz', text: 'Überwiegend gute Schwingung' };
         }
         if (dissonanzCount >= 2) {

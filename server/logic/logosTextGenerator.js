@@ -212,11 +212,12 @@ export function generateResonanzText(R, seed) {
     const rFormatted = R.toFixed(2);
     const vars = { r: rFormatted };
 
+    // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
     let phrases;
-    if (R >= 1.08) phrases = resonanzPhrases.harmonie;
-    else if (R >= 1.02) phrases = resonanzPhrases.resonanz;
-    else if (R >= 0.98) phrases = resonanzPhrases.neutral;
-    else if (R >= 0.93) phrases = resonanzPhrases.spannung;
+    if (R >= 0.8) phrases = resonanzPhrases.harmonie;
+    else if (R >= 0.6) phrases = resonanzPhrases.resonanz;
+    else if (R >= 0.4) phrases = resonanzPhrases.neutral;
+    else if (R >= 0.25) phrases = resonanzPhrases.spannung;
     else phrases = resonanzPhrases.dissonanz;
 
     return fillVariables(selectPhrase(phrases, seed), vars);
