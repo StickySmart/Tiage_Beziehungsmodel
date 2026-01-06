@@ -807,13 +807,26 @@
             // WICHTIG: Initiale R-Faktor-Berechnung nach Datenladen
             // ═══════════════════════════════════════════════════════════════════
             // Die R-Faktoren müssen NACH dem Laden der Daten berechnet werden,
-            // nicht nur reaktiv bei späteren Änderungen.
+            // ABER nur wenn noch keine gespeicherten Werte existieren!
+            // v3.4: Respektiere bestehende User-Änderungen
             // ═══════════════════════════════════════════════════════════════════
             if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
                 // Kurze Verzögerung um sicherzustellen, dass alle Daten geladen sind
                 setTimeout(function() {
-                    console.log('[NeedsEditor] Initiale R-Faktor-Berechnung für', currentPerson);
-                    ResonanzCard.recalculate(currentPerson);
+                    const hasStoredValues = typeof ResonanzCard.hasStoredValues === 'function'
+                        ? ResonanzCard.hasStoredValues(currentPerson)
+                        : false;
+
+                    if (!hasStoredValues) {
+                        console.log('[NeedsEditor] Initiale R-Faktor-Berechnung für', currentPerson, '(keine vorherigen Werte)');
+                        ResonanzCard.recalculate(currentPerson);
+                    } else {
+                        console.log('[NeedsEditor] Initiale R-Faktoren beibehalten für', currentPerson, '(gespeicherte Werte vorhanden)');
+                        // Nur UI aktualisieren, nicht neu berechnen
+                        if (ResonanzCard.initializeUI) {
+                            ResonanzCard.initializeUI(currentPerson);
+                        }
+                    }
                 }, 100);
             } else {
                 console.warn('[NeedsEditor] ResonanzCard.recalculate nicht verfügbar - R-Faktoren werden nicht initial berechnet');
@@ -1066,6 +1079,12 @@
                     archetypeKey: currentArchetype
                 };
 
+                // FIX v3.4: Feuere personChanged Event für alle Listener
+                window.dispatchEvent(new CustomEvent('personChanged', {
+                    detail: { person: person, archetype: currentArchetype }
+                }));
+                console.log('[NeedsEditor] personChanged Event gefeuert für', person);
+
                 // Reload data and re-render
                 loadNeedsData();
                 renderNeedsList();
@@ -1084,11 +1103,20 @@
                     console.log('[NeedsEditor] ResonanzCard UI aktualisiert für', person);
                 }
 
-                // FIX: R-Faktoren für die neue Person neu berechnen
-                // Dies muss NACH loadNeedsData() und ResonanzCard.initializeUI() passieren
+                // FIX v3.4: R-Faktoren NUR neu berechnen wenn KEINE gespeicherten Werte existieren
+                // Sonst werden User-Änderungen überschrieben!
+                // Wenn User Werte manuell angepasst hat (oder sie wurden berechnet), bleiben sie erhalten.
                 if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
-                    ResonanzCard.recalculate(person);
-                    console.log('[NeedsEditor] R-Faktoren neu berechnet für', person);
+                    const hasStoredValues = typeof ResonanzCard.hasStoredValues === 'function'
+                        ? ResonanzCard.hasStoredValues(person)
+                        : false;
+
+                    if (!hasStoredValues) {
+                        ResonanzCard.recalculate(person);
+                        console.log('[NeedsEditor] R-Faktoren NEU berechnet für', person, '(keine vorherigen Werte)');
+                    } else {
+                        console.log('[NeedsEditor] R-Faktoren NICHT überschrieben für', person, '(gespeicherte Werte vorhanden)');
+                    }
                 }
 
                 // FIX: GewichtungCard UI für die neue Person aktualisieren

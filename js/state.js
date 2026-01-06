@@ -879,30 +879,30 @@ const TiageState = (function() {
          * Set a single Resonanzfaktor
          * @param {string} person - 'ich' or 'partner'
          * @param {string} key - 'R1', 'R2', 'R3', or 'R4'
-         * @param {number} value - 0-1 (v3.2: quadratisch, keine künstlichen Grenzen)
+         * @param {number} value - 0-2 (v3.4: richtungsbasiert um 1.0 zentriert, R > 1.0 möglich)
          * @param {boolean} locked - Whether the value is locked
          */
         setResonanzFaktor(person, key, value, locked = false) {
-            // v3.2: Clamp auf 0-1 (R = similarity²)
-            const clampedValue = Math.min(1, Math.max(0, value));
+            // v3.4: Clamp auf 0-2 (R kann über 1.0 gehen bei mehr als Archetyp-typisch)
+            const clampedValue = Math.min(2, Math.max(0, value));
             this.set(`resonanzFaktoren.${person}.${key}`, { value: clampedValue, locked });
         },
 
         /**
          * Set all Resonanzfaktoren at once
-         * v3.2: Clamps all values to 0-1 range
+         * v3.4: Clamps all values to 0-2 range (R > 1.0 möglich)
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} faktoren - { R1, R2, R3, R4 }
          */
         setResonanzFaktoren(person, faktoren) {
-            // v3.2: Clamp alle Werte auf 0-1
+            // v3.4: Clamp alle Werte auf 0-2
             const clamped = this._clampResonanzFaktoren(faktoren);
             this.set(`resonanzFaktoren.${person}`, clamped);
         },
 
         /**
-         * Clamps Resonanzfaktoren values to 0-1 range
-         * v3.2: Migration von 0.5-1.5 zu 0-1 Range
+         * Clamps Resonanzfaktoren values to 0-2 range
+         * v3.4: Richtungsbasiert um 1.0 zentriert, R > 1.0 möglich
          * @private
          * @param {Object} faktoren - { R1, R2, R3, R4 } oder { ich: {...}, partner: {...} }
          * @returns {Object} Clamped faktoren
@@ -910,7 +910,8 @@ const TiageState = (function() {
         _clampResonanzFaktoren(faktoren) {
             if (!faktoren) return faktoren;
 
-            const clampValue = (v) => Math.min(1, Math.max(0, v));
+            // v3.4: Range 0-2 (R kann über 1.0 gehen)
+            const clampValue = (v) => Math.min(2, Math.max(0, v));
 
             // Prüfe ob es ein verschachteltes Objekt ist (ich/partner)
             if (faktoren.ich || faktoren.partner) {
