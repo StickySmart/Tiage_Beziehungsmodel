@@ -20590,6 +20590,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ════════════════════════════════════════════════════════════════════════
             var newPerson = person || 'ich';
             if (previousPerson && previousPerson !== newPerson) {
+                // FIX v1.8.687: CRITICAL - Speichere Daten der VORHERIGEN Person VOR dem Kontextwechsel
+                // Ohne diesen Code gehen Resonanzfaktoren und Bedürfniswerte beim Tab-Wechsel verloren!
+                if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                    TiageState.saveToStorage();
+                    console.log('[ProfileReview] TiageState gespeichert vor Kontextwechsel von', previousPerson, 'zu', newPerson);
+                }
                 // Filter-State wechseln (DimensionKategorieFilter)
                 if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.switchPerson) {
                     DimensionKategorieFilter.switchPerson(newPerson);
@@ -21101,6 +21107,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
                     return;
                 }
+            }
+
+            // FIX v1.8.687: CRITICAL - Speichere alle Änderungen VOR dem Schließen des Modals
+            // Ohne diesen Code gehen Resonanzfaktoren und Bedürfniswerte verloren!
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+                console.log('[closeProfileReviewModal] TiageState gespeichert vor Modal-Close');
             }
 
             var modal = document.getElementById('profileReviewModal');

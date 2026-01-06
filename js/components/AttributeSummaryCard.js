@@ -18,6 +18,21 @@ if (typeof window.openNeedWithResonance !== 'function') {
 const AttributeSummaryCard = (function() {
     'use strict';
 
+    // FIX v1.8.687: Debounced save für Performance bei Slider-Bewegungen
+    let saveDebounceTimer = null;
+    const SAVE_DEBOUNCE_MS = 300; // Speichern max alle 300ms
+
+    function debouncedSaveToStorage() {
+        if (saveDebounceTimer) {
+            clearTimeout(saveDebounceTimer);
+        }
+        saveDebounceTimer = setTimeout(function() {
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+        }, SAVE_DEBOUNCE_MS);
+    }
+
     /**
      * Berechnet den korrekten Fill-Prozentsatz für Slider-Track-Hintergrund.
      * Berücksichtigt die Thumb-Breite (16px), damit der Gradient mit dem
@@ -534,6 +549,11 @@ const AttributeSummaryCard = (function() {
                     TiageState.unlockNeed(currentPerson, id);
                 }
             }
+
+            // FIX v1.8.687: CRITICAL - Debounced save in localStorage persistieren
+            // Ohne diesen Code gehen Bedürfniswerte verloren beim Navigation!
+            // Debounce verhindert Performance-Probleme bei schnellen Slider-Bewegungen
+            debouncedSaveToStorage();
         }
     }
 
