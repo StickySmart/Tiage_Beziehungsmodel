@@ -814,6 +814,54 @@ const TiageState = (function() {
             this.set(`gewichtungen.${person}`, gewichtungen);
         },
 
+        /**
+         * Normalize Gewichtungen to new format
+         * Handles both old format { O: 25, A: 25, ... } and new format { O: { value: 25, locked: false }, ... }
+         * @private
+         * @param {Object} gewichtungen - { ich: {...}, partner: {...} }
+         * @returns {Object} Normalized gewichtungen
+         */
+        _normalizeGewichtungen(gewichtungen) {
+            if (!gewichtungen) return gewichtungen;
+
+            const normalizeValue = (entry, defaultValue = 25) => {
+                if (entry === undefined || entry === null) {
+                    return { value: defaultValue, locked: false };
+                }
+                if (typeof entry === 'number') {
+                    // Old format: plain number
+                    return { value: entry, locked: false };
+                }
+                if (typeof entry === 'object' && entry !== null) {
+                    return {
+                        value: entry.value ?? defaultValue,
+                        locked: entry.locked ?? false
+                    };
+                }
+                return { value: defaultValue, locked: false };
+            };
+
+            const normalizePerson = (person) => {
+                if (!person) return null;
+                return {
+                    O: normalizeValue(person.O),
+                    A: normalizeValue(person.A),
+                    D: normalizeValue(person.D),
+                    G: normalizeValue(person.G),
+                    summeLock: person.summeLock ?? { enabled: true, target: 100 }
+                };
+            };
+
+            const result = {};
+            if (gewichtungen.ich) {
+                result.ich = normalizePerson(gewichtungen.ich);
+            }
+            if (gewichtungen.partner) {
+                result.partner = normalizePerson(gewichtungen.partner);
+            }
+            return result;
+        },
+
         // ═══════════════════════════════════════════════════════════════════
         // RESONANZFAKTOREN METHODS
         // ═══════════════════════════════════════════════════════════════════
@@ -1141,8 +1189,10 @@ const TiageState = (function() {
                     }
                     // Neue Felder laden
                     if (parsed.gewichtungen) {
-                        console.log('[TiageState] loadFromStorage - gewichtungen gefunden:', JSON.stringify(parsed.gewichtungen));
-                        this.set('gewichtungen', parsed.gewichtungen);
+                        // Normalisiere Gewichtungen (konvertiert altes Format { O: 25, ... } zu neuem { O: { value: 25, locked: false }, ... })
+                        const normalized = this._normalizeGewichtungen(parsed.gewichtungen);
+                        console.log('[TiageState] loadFromStorage - gewichtungen gefunden, normalisiert:', JSON.stringify(normalized));
+                        this.set('gewichtungen', normalized);
                     } else {
                         console.log('[TiageState] loadFromStorage - KEINE gewichtungen in localStorage!');
                     }
@@ -1161,6 +1211,13 @@ const TiageState = (function() {
                     if (parsed.bindungsmuster) {
                         this.set('bindungsmuster', parsed.bindungsmuster);
                         console.log('[TiageState] loadFromStorage - bindungsmuster geladen:', JSON.stringify(parsed.bindungsmuster));
+                    }
+                    // flatNeeds laden - die 220 Bedürfniswerte
+                    if (parsed.flatNeeds) {
+                        this.set('flatNeeds', parsed.flatNeeds);
+                        console.log('[TiageState] loadFromStorage - flatNeeds geladen:',
+                            'ich:', Object.keys(parsed.flatNeeds.ich || {}).length, 'Werte,',
+                            'partner:', Object.keys(parsed.flatNeeds.partner || {}).length, 'Werte');
                     }
                     // UI Settings laden
                     if (parsed.ui) {
@@ -1237,6 +1294,9 @@ const TiageState = (function() {
                     profileReview: this.get('profileReview'),
                     // Bindungsmuster für Slot Machine Tie-Breaker
                     bindungsmuster: this.get('bindungsmuster'),
+                    // flatNeeds - die 220 Bedürfniswerte MÜSSEN gespeichert werden!
+                    // Früher: "werden aus Inputs berechnet" - aber sie wurden NICHT neu berechnet beim Laden
+                    flatNeeds: this.get('flatNeeds'),
                     // UI Settings - persistente Einstellungen
                     ui: {
                         matchModalView: this.get('ui.matchModalView'),
@@ -1244,7 +1304,6 @@ const TiageState = (function() {
                         selection: this.get('ui.selection'),
                         language: this.get('ui.language')
                     }
-                    // flatNeeds werden NICHT gespeichert - sie werden aus Inputs berechnet
                 };
                 localStorage.setItem('tiage_state', JSON.stringify(toSave));
                 console.log('[TiageState] State gespeichert - tiage_state key');
