@@ -1569,6 +1569,15 @@ const ResonanzCard = (function() {
     });
 
     console.log('[ResonanzCard] attributeNeedChange → TiageState Listener aktiviert');
+
+    // ═══════════════════════════════════════════════════════════════════
+    // EXPORT: recalculateResonanzForPerson für initiale Berechnung
+    // ═══════════════════════════════════════════════════════════════════
+    // Diese Funktion muss von außen aufrufbar sein, damit needs-editor.html
+    // nach dem Laden der Daten die R-Faktoren initial berechnen kann.
+    // ═══════════════════════════════════════════════════════════════════
+    ResonanzCard.recalculate = recalculateResonanzForPerson;
+    console.log('[ResonanzCard] recalculate Funktion exportiert');
 })();
 
 // Export für Module-System

@@ -803,6 +803,22 @@
             // Render the needs list
             renderNeedsList();
 
+            // ═══════════════════════════════════════════════════════════════════
+            // WICHTIG: Initiale R-Faktor-Berechnung nach Datenladen
+            // ═══════════════════════════════════════════════════════════════════
+            // Die R-Faktoren müssen NACH dem Laden der Daten berechnet werden,
+            // nicht nur reaktiv bei späteren Änderungen.
+            // ═══════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
+                // Kurze Verzögerung um sicherzustellen, dass alle Daten geladen sind
+                setTimeout(function() {
+                    console.log('[NeedsEditor] Initiale R-Faktor-Berechnung für', currentPerson);
+                    ResonanzCard.recalculate(currentPerson);
+                }, 100);
+            } else {
+                console.warn('[NeedsEditor] ResonanzCard.recalculate nicht verfügbar - R-Faktoren werden nicht initial berechnet');
+            }
+
             // Initialize Active Filter Card
             if (typeof ActiveFilterCard !== 'undefined') {
                 ActiveFilterCard.init('#activeFilterCardContainer');
@@ -1066,6 +1082,13 @@
                 if (typeof ResonanzCard !== 'undefined' && ResonanzCard.initializeUI) {
                     ResonanzCard.initializeUI(person);
                     console.log('[NeedsEditor] ResonanzCard UI aktualisiert für', person);
+                }
+
+                // FIX: R-Faktoren für die neue Person neu berechnen
+                // Dies muss NACH loadNeedsData() und ResonanzCard.initializeUI() passieren
+                if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
+                    ResonanzCard.recalculate(person);
+                    console.log('[NeedsEditor] R-Faktoren neu berechnet für', person);
                 }
 
                 // FIX: GewichtungCard UI für die neue Person aktualisieren
