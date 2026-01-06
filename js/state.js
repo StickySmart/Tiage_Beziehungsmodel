@@ -22,6 +22,10 @@ const TiageState = (function() {
     // PRIVATE STATE
     // ═══════════════════════════════════════════════════════════════════════
 
+    // FIX v1.8.687: Flag um Race Conditions beim Laden zu verhindern
+    // Während loadFromStorage() läuft, sollten Subscriber keine Neuberechnungen triggern
+    let isLoadingFromStorage = false;
+
     const state = {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
         // Data Structure v3.0:
@@ -1136,8 +1140,13 @@ const TiageState = (function() {
 
         /**
          * Load state from localStorage
+         * FIX v1.8.687: Setzt isLoadingFromStorage Flag um Race Conditions zu verhindern
          */
         loadFromStorage() {
+            // FIX v1.8.687: Flag setzen um Subscriber-Neuberechnungen zu verhindern
+            isLoadingFromStorage = true;
+            console.log('[TiageState] loadFromStorage - START (isLoadingFromStorage = true)');
+
             // Mapping von alten #A1-#A8 Keys zu neuen String-Keys
             const archetypeIdToKey = {
                 '#A1': 'single',
@@ -1279,7 +1288,20 @@ const TiageState = (function() {
                 }
             } catch (e) {
                 console.warn('[TiageState] Failed to load from storage:', e);
+            } finally {
+                // FIX v1.8.687: Flag zurücksetzen nach dem Laden
+                isLoadingFromStorage = false;
+                console.log('[TiageState] loadFromStorage - END (isLoadingFromStorage = false)');
             }
+        },
+
+        /**
+         * Prüft ob gerade aus localStorage geladen wird
+         * FIX v1.8.687: Subscriber können dieses Flag prüfen um Race Conditions zu vermeiden
+         * @returns {boolean}
+         */
+        isLoading() {
+            return isLoadingFromStorage;
         },
 
         /**
