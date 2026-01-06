@@ -278,11 +278,13 @@ const ResonanzCard = (function() {
      * R > 1.0 = mehr als Archetyp-typisch
      * R = 1.0 = perfekte Übereinstimmung
      * R < 1.0 = weniger als Archetyp-typisch
+     * v3.4: Kein Clamping - Werte werden direkt aus Berechnung übernommen
      * @param {number} value - Eingabewert
-     * @returns {number} Begrenzter Wert (0-2)
+     * @returns {number} Geparster Wert (oder 1.0 als Fallback)
      */
     function clampValue(value) {
-        return Math.max(0, Math.min(2, parseFloat(value) || 1.0));
+        // v3.4: Kein Clamping mehr - nur sicherstellen dass es eine Zahl ist
+        return parseFloat(value) || 1.0;
     }
 
     /**
