@@ -706,15 +706,15 @@ const PathosTextGenerator = (function() {
         const rFormatted = R.toFixed(2);
         const vars = { r: rFormatted };
 
-        // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
+        // v3.4: Schwellenwerte um 1.0 zentriert (R > 1.0 = verstärkt)
         let phrases;
-        if (R >= 0.8) {
+        if (R >= 1.08) {
             phrases = resonanzPhrases.harmonie;
-        } else if (R >= 0.6) {
+        } else if (R >= 1.02) {
             phrases = resonanzPhrases.resonanz;
-        } else if (R >= 0.4) {
+        } else if (R >= 0.98) {
             phrases = resonanzPhrases.neutral;
-        } else if (R >= 0.25) {
+        } else if (R >= 0.93) {
             phrases = resonanzPhrases.spannung;
         } else {
             phrases = resonanzPhrases.dissonanz;

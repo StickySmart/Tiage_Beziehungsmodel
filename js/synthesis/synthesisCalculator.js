@@ -924,15 +924,15 @@ TiageSynthesis.Calculator = {
 
     /**
      * Interpretiert den Resonanz-Koeffizienten
-     * v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
-     *       0.8+ = harmonie, 0.6+ = resonanz, 0.4+ = neutral, 0.25+ = spannung
+     * v3.4: Richtungsbasiert um 1.0 zentriert
+     *       R > 1.0 = verstärkt, R = 1.0 = neutral, R < 1.0 = geschwächt
      */
     _interpretResonance: function(coefficient) {
-        // v3.2: Neue Schwellenwerte für R-Skala 0-1
-        if (coefficient >= 0.8) return { level: 'harmonie', text: 'Logos und Pathos verstärken sich' };
-        if (coefficient >= 0.6) return { level: 'resonanz', text: 'Gute Schwingung zwischen Kopf und Herz' };
-        if (coefficient >= 0.4) return { level: 'neutral', text: 'Ausgewogenes Verhältnis' };
-        if (coefficient >= 0.25) return { level: 'spannung', text: 'Leichte Spannung zwischen Logos und Pathos' };
+        // v3.4: Schwellenwerte um 1.0 zentriert
+        if (coefficient >= 1.08) return { level: 'harmonie', text: 'Logos und Pathos verstärken sich' };
+        if (coefficient >= 1.02) return { level: 'resonanz', text: 'Gute Schwingung zwischen Kopf und Herz' };
+        if (coefficient >= 0.98) return { level: 'neutral', text: 'Ausgewogenes Verhältnis' };
+        if (coefficient >= 0.93) return { level: 'spannung', text: 'Leichte Spannung zwischen Logos und Pathos' };
         return { level: 'dissonanz', text: 'Logos und Pathos widersprechen sich' };
     },
 
@@ -1221,9 +1221,9 @@ TiageSynthesis.Calculator = {
         }
 
         if (perspectiveResult) {
-            // Schwellenwerte aus RESONANCE_DIMENSIONAL.THRESHOLDS (v3.2: 0.7/0.3)
-            var resonanzThreshold = cfg.THRESHOLDS.resonanz;   // 0.7 = guter Match
-            var dissonanzThreshold = cfg.THRESHOLDS.dissonanz; // 0.3 = schlechter Match
+            // Schwellenwerte aus RESONANCE_DIMENSIONAL.THRESHOLDS (v3.4: 1.05/0.95)
+            var resonanzThreshold = cfg.THRESHOLDS.resonanz;   // 1.05 = verstärkter Match
+            var dissonanzThreshold = cfg.THRESHOLDS.dissonanz; // 0.95 = geschwächter Match
 
             // Konvertiere zu dimensions-Format für Kompatibilität
             var dimensions = {
@@ -1382,8 +1382,8 @@ TiageSynthesis.Calculator = {
 
     /**
      * Interpretiert dimensionale Resonanz
-     * v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
-     *       thresholds.resonanz = 0.7, thresholds.dissonanz = 0.3
+     * v3.4: Richtungsbasiert um 1.0 zentriert
+     *       thresholds.resonanz = 1.05, thresholds.dissonanz = 0.95
      */
     _interpretDimensionalResonance: function(coefficient, dimensions, thresholds) {
         // Zähle Resonanzen und Dissonanzen
@@ -1395,17 +1395,14 @@ TiageSynthesis.Calculator = {
             if (dimensions[key].status === 'dissonanz') dissonanzCount++;
         }
 
-        // v3.2: Schwellenwerte aus THRESHOLDS (0.7 = resonanz, 0.3 = dissonanz)
-        // Bei 4 Dimensionen ist coefficient = Durchschnitt der R-Werte (Range 0-1)
-        // coefficient >= 0.8 = sehr gut (Durchschnitt über resonanz-Schwelle)
-        // coefficient >= 0.6 = gut (mittlerer Bereich)
-        var highThreshold = (thresholds && thresholds.resonanz) ? thresholds.resonanz + 0.1 : 0.8;
-        var goodThreshold = (thresholds && thresholds.resonanz) ? thresholds.resonanz - 0.1 : 0.6;
-
-        if (coefficient >= highThreshold || resonanzCount >= 3) {
+        // v3.4: Schwellenwerte um 1.0 zentriert (1.05 = resonanz, 0.95 = dissonanz)
+        // Bei 4 Dimensionen ist coefficient = Durchschnitt der R-Werte (um 1.0)
+        // coefficient >= 1.08 = sehr gut (deutliche Verstärkung)
+        // coefficient >= 1.02 = gut (leichte Verstärkung)
+        if (coefficient >= 1.08 || resonanzCount >= 3) {
             return { level: 'harmonie', text: 'Mehrdimensionale Resonanz auf hohem Niveau' };
         }
-        if (coefficient >= goodThreshold || resonanzCount >= 2) {
+        if (coefficient >= 1.02 || resonanzCount >= 2) {
             return { level: 'resonanz', text: 'Überwiegend gute Schwingung' };
         }
         if (dissonanzCount >= 2) {

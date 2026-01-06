@@ -64,7 +64,7 @@ export const RESONANCE_DIMENSIONAL = {
         leben:       { name: 'Leben', emoji: '🔥', source: 'ORIENTIERUNG_NEEDS', weight: 0.25 },
         dynamik:     { name: 'Dynamik', emoji: '⚡', source: 'DOMINANZ_NEEDS', weight: 0.25 }
     },
-    THRESHOLDS: { resonanz: 0.7, dissonanz: 0.3 }  // Angepasst für R = similarity²
+    THRESHOLDS: { resonanz: 1.05, dissonanz: 0.95 }  // v3.4: Richtungsbasiert um 1.0
 };
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -127,16 +127,16 @@ var TiageHelpTexts = (function() {
 
         const factor = factorMapping[rKey] || { name: 'Faktor', variable: '?' };
 
-        // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
+        // v3.4: Richtungsbasiert um 1.0 zentriert
         return {
             title: 'Einfluss auf Endscore',
             description: `Der ${rKey}-Faktor wird direkt mit dem ${factor.name}-Score multipliziert.`,
             formula: mainFormula.html,
             highlightedFactor: rKey,
             interpretation: [
-                `R ≥ 0.7: guter Match - verstärkt den ${factor.name}-Score`,
-                `R 0.3-0.7: neutraler Bereich`,
-                `R ≤ 0.3: schwacher Match - schwächt den ${factor.name}-Score`
+                `R > 1.0: mehr als Archetyp-typisch - verstärkt den ${factor.name}-Score`,
+                `R = 1.0: perfekte Übereinstimmung mit Archetyp`,
+                `R < 1.0: weniger als Archetyp-typisch - schwächt den ${factor.name}-Score`
             ],
             range: `Range: ${formula.range.min} - ${formula.range.max}`
         };
