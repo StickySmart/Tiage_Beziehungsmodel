@@ -1261,24 +1261,39 @@ const ResonanzCard = (function() {
         person = person || getCurrentPerson();
 
         // ═══════════════════════════════════════════════════════════════════
-        // SSOT: TiageState.flatNeeds ist die einzige Datenquelle
+        // SSOT: TiageState.flatNeeds ist die primäre Datenquelle
         // ═══════════════════════════════════════════════════════════════════
         if (typeof TiageState !== 'undefined') {
             const stateNeeds = TiageState.getFlatNeeds?.(person);
             if (stateNeeds && Object.keys(stateNeeds).length > 0) {
-                console.log('[ResonanzCard.getPersonNeeds] SSOT: Needs aus TiageState.flatNeeds für', person);
+                console.log('[ResonanzCard.getPersonNeeds] SSOT: Needs aus TiageState.flatNeeds für', person, '- Anzahl:', Object.keys(stateNeeds).length);
                 return stateNeeds;
             }
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // FALLBACK: Standard-Werte des Archetyps (wenn TiageState leer)
+        // FALLBACK 1: AttributeSummaryCard (für needs-editor.html)
+        // ═══════════════════════════════════════════════════════════════════
+        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+            const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+            if (cardNeeds && (Array.isArray(cardNeeds) ? cardNeeds.length > 0 : Object.keys(cardNeeds).length > 0)) {
+                // Normalisiere Array zu Objekt falls nötig
+                const normalized = _normalizeNeeds(cardNeeds);
+                if (normalized && Object.keys(normalized).length > 0) {
+                    console.log('[ResonanzCard.getPersonNeeds] Fallback 1: Needs aus AttributeSummaryCard für', person, '- Anzahl:', Object.keys(normalized).length);
+                    return normalized;
+                }
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // FALLBACK 2: Standard-Werte des Archetyps (wenn alles andere leer)
         // ═══════════════════════════════════════════════════════════════════
         if (archetypKey && typeof GfkBeduerfnisse !== 'undefined' &&
             GfkBeduerfnisse.archetypProfile?.[archetypKey]) {
             const needs = GfkBeduerfnisse.archetypProfile[archetypKey].umfrageWerte || {};
             if (Object.keys(needs).length > 0) {
-                console.log('[ResonanzCard.getPersonNeeds] Fallback: Archetyp-Standard für', archetypKey);
+                console.log('[ResonanzCard.getPersonNeeds] Fallback 2: Archetyp-Standard für', archetypKey);
                 return needs;
             }
         }
@@ -1464,6 +1479,42 @@ const ResonanzCard = (function() {
     });
 
     console.log('[ResonanzCard] FlatNeeds → Resonanz Synchronisation aktiviert');
+
+    // ═══════════════════════════════════════════════════════════════════
+    // EVENT LISTENER: flatNeedChange → Resonanz Neuberechnung (needs-editor.html)
+    // ═══════════════════════════════════════════════════════════════════
+    // Fängt Änderungen aus der Flat-Needs-Liste ab (flatNeedChange Events)
+    // und berechnet die Resonanzfaktoren direkt neu.
+    // ═══════════════════════════════════════════════════════════════════
+
+    let flatNeedDebounceTimer = null;
+    const FLAT_NEED_DEBOUNCE = 200; // ms
+
+    document.addEventListener('flatNeedChange', function(event) {
+        const { needId, value } = event.detail || {};
+
+        console.log('[ResonanzCard] flatNeedChange empfangen:', needId, value);
+
+        // Ermittle aktuelle Person aus ProfileReview-Kontext
+        let person = 'ich';
+        if (typeof window !== 'undefined') {
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                person = window.currentProfileReviewContext.person;
+            }
+        }
+
+        // Debounce um mehrfache schnelle Updates zu sammeln
+        if (flatNeedDebounceTimer) {
+            clearTimeout(flatNeedDebounceTimer);
+        }
+
+        flatNeedDebounceTimer = setTimeout(function() {
+            console.log('[ResonanzCard] flatNeedChange Debounce abgeschlossen - Neuberechnung für', person);
+            recalculateResonanzForPerson(person);
+        }, FLAT_NEED_DEBOUNCE);
+    });
+
+    console.log('[ResonanzCard] flatNeedChange Event-Listener aktiviert');
 
     // ═══════════════════════════════════════════════════════════════════
     // EVENT LISTENER: attributeNeedChange → TiageState.flatNeeds Sync
