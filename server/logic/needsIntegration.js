@@ -160,11 +160,14 @@ export function calculateDimensionalResonance(person, profile) {
 
 /**
  * Berechnet R-Wert für eine Dimension
- * v3.2: R = similarity² (quadratisch)
+ * v3.4: R = avgMatch² mit Richtung
+ * - R > 1.0: mehr als Archetyp-typisch
+ * - R = 1.0: perfekte Übereinstimmung
+ * - R < 1.0: weniger als Archetyp-typisch
  *
  * @param {object} actualNeeds - Tatsächliche Bedürfniswerte
  * @param {object} expectedNeeds - Archetyp-typische Werte
- * @returns {number} R-Wert (0 - 1)
+ * @returns {number} R-Wert (kann > 1.0 sein)
  */
 function calculateDimensionR(actualNeeds, expectedNeeds) {
     const keys = Object.keys(expectedNeeds);
@@ -178,9 +181,11 @@ function calculateDimensionR(actualNeeds, expectedNeeds) {
         const actual = actualNeeds[key];
 
         if (actual !== undefined && expected !== undefined) {
-            // Differenz normalisieren (0-100 -> 0-1)
-            const diff = Math.abs(actual - expected) / 100;
-            const match = 1 - diff;  // 1 = perfekt, 0 = maximal verschieden
+            // v3.4: Richtungs-basierte Resonanz
+            // Positive Abweichung (mehr als erwartet) → match > 1.0 → "mehr Archetyp-typisch"
+            // Negative Abweichung (weniger als erwartet) → match < 1.0 → "weniger Archetyp-typisch"
+            const abweichung = (actual - expected) / 100;
+            const match = 1 + abweichung;
             totalMatch += match;
             count++;
         }
@@ -191,10 +196,11 @@ function calculateDimensionR(actualNeeds, expectedNeeds) {
     // Durchschnittliche Übereinstimmung
     const avgMatch = totalMatch / count;
 
-    // v3.2: R = avgMatch² (quadratisch)
-    // Bei avgMatch = 0 → R = 0 (eliminiert)
-    // Bei avgMatch = 0.7 → R = 0.49
-    // Bei avgMatch = 1 → R = 1 (neutral)
+    // v3.4: R = avgMatch² (quadratisch, mit Richtung)
+    // avgMatch > 1.0 → R > 1.0 (mehr als Archetyp-typisch)
+    // avgMatch = 1.0 → R = 1.0 (perfekte Übereinstimmung)
+    // avgMatch < 1.0 → R < 1.0 (weniger als Archetyp-typisch)
+    // Beispiele: avgMatch=1.05 → R=1.10, avgMatch=0.9 → R=0.81
     return avgMatch * avgMatch;
 }
 

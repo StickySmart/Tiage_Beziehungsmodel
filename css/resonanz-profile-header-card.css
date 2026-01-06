@@ -326,3 +326,49 @@
         box-shadow: 0 2px 16px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * v3.4: RICHTUNGS-ANZEIGE
+ * Zeigt ob R-Wert über oder unter Archetyp-Erwartung liegt
+ * ↑ = mehr als typisch (grün)
+ * ↓ = weniger als typisch (orange)
+ * = = perfekte Übereinstimmung (neutral)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.resonanz-richtung {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 4px;
+    padding: 1px 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
+/* Mehr als Archetyp-typisch (↑) - Grün */
+.resonanz-richtung.richtung-mehr {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.15);
+    text-shadow: 0 1px 4px rgba(34, 197, 94, 0.5);
+}
+
+/* Weniger als Archetyp-typisch (↓) - Orange */
+.resonanz-richtung.richtung-weniger {
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.15);
+    text-shadow: 0 1px 4px rgba(249, 115, 22, 0.5);
+}
+
+/* Perfekte Übereinstimmung (=) - Neutral/Blau */
+.resonanz-richtung.richtung-perfekt {
+    color: #8B5CF6;
+    background: rgba(139, 92, 246, 0.15);
+    text-shadow: 0 1px 4px rgba(139, 92, 246, 0.5);
+}
+
+/* Hover-Effekt für Tooltip */
+.resonanz-richtung:hover {
+    transform: scale(1.2);
+    cursor: help;
+}

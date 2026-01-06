@@ -561,18 +561,25 @@ TiageSynthesis.NeedsIntegration = {
                 var actualValue = this._getNeedValue(needs, needId, needKey);
 
                 if (actualValue !== undefined && expectedValue !== undefined) {
-                    // v3.3: Berechne Ähnlichkeit (1 = identisch, 0 = maximal verschieden)
-                    var diff = Math.abs(actualValue - expectedValue) / 100;
-                    var match = 1 - diff;
+                    // v3.4: Richtungs-basierte Resonanz
+                    // Positive Abweichung (mehr als erwartet) → match > 1.0 → "mehr Archetyp-typisch"
+                    // Negative Abweichung (weniger als erwartet) → match < 1.0 → "weniger Archetyp-typisch"
+                    // Keine Abweichung → match = 1.0 → perfekte Übereinstimmung
+                    var abweichung = (actualValue - expectedValue) / 100;
+                    var match = 1 + abweichung;
                     totalMatch += match;
                     count++;
+
+                    // Richtung bestimmen: + = mehr als Archetyp, - = weniger, = = perfekt
+                    var richtung = abweichung > 0.001 ? '+' : (abweichung < -0.001 ? '-' : '=');
 
                     debugMatches.push({
                         key: needKey,
                         id: needId,
                         actual: actualValue,
                         expected: expectedValue,
-                        diff: Math.round(diff * 100),
+                        abweichung: Math.round(abweichung * 100),
+                        richtung: richtung,
                         match: Math.round(match * 100) / 100
                     });
                 }
@@ -584,10 +591,11 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0;
         }
 
-        // v3.3: R = similarity² (quadratisch)
-        // avgMatch = 1.0 → R = 1.0 (keine Abweichung)
-        // avgMatch = 0.9 → R = 0.81
-        // avgMatch = 0.7 → R = 0.49
+        // v3.4: R = avgMatch² (quadratisch, mit Richtung)
+        // avgMatch > 1.0 → R > 1.0 (mehr als Archetyp-typisch)
+        // avgMatch = 1.0 → R = 1.0 (perfekte Übereinstimmung)
+        // avgMatch < 1.0 → R < 1.0 (weniger als Archetyp-typisch)
+        // Beispiele: avgMatch=1.05 → R=1.10, avgMatch=0.9 → R=0.81
         var avgMatch = totalMatch / count;
         var rValue = avgMatch * avgMatch;
 
