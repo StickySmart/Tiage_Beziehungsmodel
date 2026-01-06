@@ -11532,15 +11532,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 attraction2to1: r4Result.attractionDetails?.direction2to1
             });
 
-            // Überschreibe mit benutzerdefinierten (locked) Werten falls vorhanden
+            // FIX: Verwende benutzerdefinierte R-Werte aus ResonanzCard (IMMER, nicht nur gelockt)
+            // Damit Slider-Änderungen sofort im Score sichtbar werden
             if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
                 const storedR = ResonanzCard.load();
 
-                // Nur locked Werte übernehmen, sonst berechnete SSOT-Werte behalten
-                if (storedR && storedR.R1 && storedR.R1.locked) R1 = storedR.R1.value;
-                if (storedR && storedR.R2 && storedR.R2.locked) R2 = storedR.R2.value;
-                if (storedR && storedR.R3 && storedR.R3.locked) R3 = storedR.R3.value;
-                if (storedR && storedR.R4 && storedR.R4.locked) R4 = storedR.R4.value;
+                // Verwende gespeicherte Werte wenn vorhanden (egal ob locked oder nicht)
+                // Dies ermöglicht Live-Preview der Slider-Änderungen
+                if (storedR && storedR.R1 && storedR.R1.value !== undefined) R1 = storedR.R1.value;
+                if (storedR && storedR.R2 && storedR.R2.value !== undefined) R2 = storedR.R2.value;
+                if (storedR && storedR.R3 && storedR.R3.value !== undefined) R3 = storedR.R3.value;
+                if (storedR && storedR.R4 && storedR.R4.value !== undefined) R4 = storedR.R4.value;
             }
 
             // ═══════════════════════════════════════
@@ -15405,6 +15407,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Event-Listener für Resonanzfaktoren-Änderungen
                 // Aktualisiert LoadedArchetypProfile wenn sich Resonanzfaktoren ändern
                 // ═══════════════════════════════════════════════════════════════════════════
+                // Debounce für Slider-Änderungen (verhindert zu häufige Score-Updates)
+                let resonanzUpdateDebounce = null;
+                const RESONANZ_DEBOUNCE_DELAY = 100; // ms
+
                 window.addEventListener('resonanzfaktoren-changed', function(e) {
                     const { person, values, source } = e.detail;
 
@@ -15414,8 +15420,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // Das würde die Lock-Struktur {value, locked} mit nur Werten überschreiben.
                     console.log('[TIAGE] resonanzfaktoren-changed Event für', person, '- Quelle:', source);
 
-                    // Aktualisiere Comparison View wenn nicht vom Slider (vermeidet doppelte Updates)
-                    if (source !== 'slider') {
+                    // FIX: Aktualisiere Comparison View für ALLE Quellen (inkl. Slider)
+                    // Debounce bei Slider-Änderungen um Performance zu optimieren
+                    if (source === 'slider') {
+                        if (resonanzUpdateDebounce) {
+                            clearTimeout(resonanzUpdateDebounce);
+                        }
+                        resonanzUpdateDebounce = setTimeout(function() {
+                            updateComparisonView();
+                        }, RESONANZ_DEBOUNCE_DELAY);
+                    } else {
+                        // Sofortiges Update für andere Quellen (reset, calculated, etc.)
                         updateComparisonView();
                     }
                 });
