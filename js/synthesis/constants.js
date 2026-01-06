@@ -25,21 +25,23 @@ TiageSynthesis.Constants = {
             version: '3.1'
         },
 
-        // R-Faktor Formel (dimensional) - v3.2 mit quadratischer Formel
+        // R-Faktor Formel (dimensional) - v3.4 mit richtungsbasierter Berechnung
         r_factor: {
-            text: 'R = similarity²',
-            html: 'R = similarity²',
-            description: 'Dimensionaler Resonanzfaktor mit quadratischer Skalierung und Komplementär-Mapping',
+            text: 'R = avgMatch²',
+            html: 'R = avgMatch²',
+            description: 'Dimensionaler Resonanzfaktor mit richtungsbasierter Skalierung',
             params: {
-                // Keine künstlichen Grenzen mehr - R basiert direkt auf similarity²
-                // similarity = 1 - (avgDiff / 100), wobei avgDiff mit Komplementär-Mapping berechnet wird
-                min: 0,    // Totaler Mismatch eliminiert Dimension
-                max: 1     // Perfekter Match = neutral (kein Boost über 1.0)
+                // v3.4: Richtungsbasierte R-Werte um 1.0 zentriert
+                // R > 1.0 = mehr als Archetyp-typisch (verstärkt Score)
+                // R = 1.0 = perfekte Übereinstimmung mit Archetyp
+                // R < 1.0 = weniger als Archetyp-typisch (schwächt Score)
+                min: 0,    // Theoretisches Minimum
+                max: 2     // Theoretisches Maximum (praktisch ca. 0.8 - 1.3)
             },
             thresholds: {
-                resonance: 0.7,     // R ≥ 0.7 = guter Match (similarity ≥ 0.84)
-                dissonance: 0.3,    // R ≤ 0.3 = schlechter Match (similarity ≤ 0.55)
-                neutral: [0.3, 0.7] // Dazwischen = mittelmäßig
+                resonance: 1.05,    // R ≥ 1.05 = verstärkter Match ⬆️
+                dissonance: 0.95,   // R ≤ 0.95 = geschwächter Match ⬇️
+                neutral: [0.95, 1.05] // Dazwischen = neutral ➡️
             }
         },
 
@@ -223,11 +225,11 @@ TiageSynthesis.Constants = {
             }
         },
 
-        // Interpretation pro Dimension (v3.2: angepasst für R = similarity², Range 0-1)
+        // Interpretation pro Dimension (v3.4: richtungsbasiert um 1.0 zentriert)
         THRESHOLDS: {
-            resonanz: 0.7,    // R ≥ 0.7 = Guter Match ⬆️ (similarity ≥ 0.84)
-            dissonanz: 0.3    // R ≤ 0.3 = Schlechter Match ⬇️ (similarity ≤ 0.55)
-                              // Dazwischen = Mittelmäßig ➡️
+            resonanz: 1.05,   // R ≥ 1.05 = Verstärkter Match ⬆️ (mehr als Archetyp-typisch)
+            dissonanz: 0.95   // R ≤ 0.95 = Geschwächter Match ⬇️ (weniger als Archetyp-typisch)
+                              // Dazwischen = Neutral ➡️
         }
     },
 

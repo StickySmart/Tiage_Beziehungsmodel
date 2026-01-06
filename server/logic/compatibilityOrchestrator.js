@@ -122,12 +122,12 @@ export function calculate(ich, partner, options = {}) {
     // 6. RESONANZ-STATUS
     // ═══════════════════════════════════════════════════════════════════
 
-    // v3.2: Angepasst an neue R-Skala (0-1, R = similarity²)
-    const resonanzCoefficient = synthesisResult.resonanz?.coefficient || 0.5;
+    // v3.4: Richtungsbasiert um 1.0 zentriert
+    const resonanzCoefficient = synthesisResult.resonanz?.coefficient || 1.0;
     let resonanzStatus;
-    if (resonanzCoefficient >= 0.8) resonanzStatus = 'harmonie';
-    else if (resonanzCoefficient >= 0.6) resonanzStatus = 'resonanz';
-    else if (resonanzCoefficient >= 0.4) resonanzStatus = 'neutral';
+    if (resonanzCoefficient >= 1.08) resonanzStatus = 'harmonie';
+    else if (resonanzCoefficient >= 1.02) resonanzStatus = 'resonanz';
+    else if (resonanzCoefficient >= 0.98) resonanzStatus = 'neutral';
     else resonanzStatus = 'dissonanz';
 
     // ═══════════════════════════════════════════════════════════════════
