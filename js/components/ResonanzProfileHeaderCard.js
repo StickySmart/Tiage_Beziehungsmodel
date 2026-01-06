@@ -50,6 +50,9 @@ const ResonanzProfileHeaderCard = (function() {
     // Speichert vorherige Werte für Delta-Berechnung
     let previousValues = { R1: null, R2: null, R3: null, R4: null };
 
+    // Flag: Initialisierungsphase (keine Deltas während Laden anzeigen)
+    let isInitializing = true;
+
     /**
      * Setzt den Lade-Status und aktualisiert die Anzeige
      * @param {boolean} loading - true wenn Daten geladen werden
@@ -197,6 +200,9 @@ const ResonanzProfileHeaderCard = (function() {
      * @param {string} targetSelector - CSS-Selektor für das Ziel-Element (default: nach header)
      */
     function init(targetSelector) {
+        // Setze Initialisierungsphase - keine Deltas während Laden
+        isInitializing = true;
+
         // Entferne alte Karte falls vorhanden
         const oldCard = document.querySelector('.resonanz-profile-header-card');
         if (oldCard) {
@@ -221,6 +227,13 @@ const ResonanzProfileHeaderCard = (function() {
                 header.parentNode.insertBefore(cardElement, header.nextSibling);
             }
         }
+
+        // Nach kurzer Verzögerung Initialisierungsphase beenden
+        // (damit automatische Neuberechnungen beim Laden keine Deltas anzeigen)
+        setTimeout(function() {
+            isInitializing = false;
+            console.log('[ResonanzProfileHeaderCard] Initialisierungsphase beendet - Deltas ab jetzt sichtbar');
+        }, 1500);
 
         console.log('[ResonanzProfileHeaderCard] Initialisiert');
     }
@@ -266,7 +279,8 @@ const ResonanzProfileHeaderCard = (function() {
 
             if (valueElement) {
                 // Berechne Delta wenn vorheriger Wert existiert
-                if (previousValues[key] !== null) {
+                // WICHTIG: Zeige Delta NUR wenn nicht mehr in Initialisierungsphase
+                if (previousValues[key] !== null && !isInitializing) {
                     const delta = value - previousValues[key];
                     // Zeige Delta nur wenn signifikant (> 0.005)
                     if (Math.abs(delta) > 0.005) {
@@ -282,7 +296,7 @@ const ResonanzProfileHeaderCard = (function() {
             previousValues[key] = value;
         });
 
-        console.log('[ResonanzProfileHeaderCard] Aktualisiert');
+        console.log('[ResonanzProfileHeaderCard] Aktualisiert', isInitializing ? '(Initialisierungsphase)' : '');
     }
 
     /**
