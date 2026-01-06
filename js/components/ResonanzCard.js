@@ -1512,11 +1512,23 @@ const ResonanzCard = (function() {
 
     // Subscriber für ICH
     TiageState.subscribe('flatNeeds.ich', function(event) {
+        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() läuft!
+        // Sonst werden die gerade geladenen R-Faktoren sofort überschrieben
+        if (TiageState.isLoading && TiageState.isLoading()) {
+            console.log('[ResonanzCard] SKIP: FlatNeeds.ich geändert während loadFromStorage - keine Neuberechnung');
+            return;
+        }
+
         // Debounce um mehrfache schnelle Updates zu vermeiden
         if (debounceTimerIch) {
             clearTimeout(debounceTimerIch);
         }
         debounceTimerIch = setTimeout(function() {
+            // Nochmal prüfen nach Debounce
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ResonanzCard] SKIP (nach Debounce): loadFromStorage läuft noch');
+                return;
+            }
             console.log('[ResonanzCard] FlatNeeds geändert für ICH - Neuberechnung der Resonanzfaktoren');
             recalculateResonanzForPerson('ich');
         }, DEBOUNCE_DELAY);
@@ -1524,11 +1536,22 @@ const ResonanzCard = (function() {
 
     // Subscriber für PARTNER
     TiageState.subscribe('flatNeeds.partner', function(event) {
+        // FIX v1.8.687: NICHT neu berechnen während loadFromStorage() läuft!
+        if (TiageState.isLoading && TiageState.isLoading()) {
+            console.log('[ResonanzCard] SKIP: FlatNeeds.partner geändert während loadFromStorage - keine Neuberechnung');
+            return;
+        }
+
         // Debounce um mehrfache schnelle Updates zu vermeiden
         if (debounceTimerPartner) {
             clearTimeout(debounceTimerPartner);
         }
         debounceTimerPartner = setTimeout(function() {
+            // Nochmal prüfen nach Debounce
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ResonanzCard] SKIP (nach Debounce): loadFromStorage läuft noch');
+                return;
+            }
             console.log('[ResonanzCard] FlatNeeds geändert für PARTNER - Neuberechnung der Resonanzfaktoren');
             recalculateResonanzForPerson('partner');
         }, DEBOUNCE_DELAY);
