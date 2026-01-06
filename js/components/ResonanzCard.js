@@ -273,33 +273,38 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Begrenzt Wert auf gültigen Bereich (0-1)
-     * v3.2: Quadratische R-Formel ohne künstliche Grenzen
+     * Begrenzt Wert auf gültigen Bereich (0-2)
+     * v3.4: Erweiterter Bereich für richtungsbasierte R-Werte
+     * R > 1.0 = mehr als Archetyp-typisch
+     * R = 1.0 = perfekte Übereinstimmung
+     * R < 1.0 = weniger als Archetyp-typisch
      * @param {number} value - Eingabewert
-     * @returns {number} Begrenzter Wert
+     * @returns {number} Begrenzter Wert (0-2)
      */
     function clampValue(value) {
-        return Math.max(0, Math.min(1, parseFloat(value) || 1.0));
+        return Math.max(0, Math.min(2, parseFloat(value) || 1.0));
     }
 
     /**
-     * Konvertiert Slider-Wert (0-100) zu Resonanzwert (0-1)
-     * v3.2: Neuer Bereich 0-1 statt 0.5-1.5
+     * Konvertiert Slider-Wert (0-100) zu Resonanzwert (0-2)
+     * v3.4: Neuer Bereich 0-2 für richtungsbasierte R-Werte
+     * Slider 50 = R 1.0 (neutral)
      * @param {number} sliderValue - Slider-Wert
      * @returns {number} Resonanzwert
      */
     function sliderToValue(sliderValue) {
-        return parseInt(sliderValue, 10) / 100;
+        return parseInt(sliderValue, 10) / 50;
     }
 
     /**
-     * Konvertiert Resonanzwert (0-1) zu Slider-Wert (0-100)
-     * v3.2: Neuer Bereich 0-1 statt 0.5-1.5
+     * Konvertiert Resonanzwert (0-2) zu Slider-Wert (0-100)
+     * v3.4: Neuer Bereich 0-2 für richtungsbasierte R-Werte
+     * R 1.0 = Slider 50 (neutral)
      * @param {number} value - Resonanzwert
      * @returns {number} Slider-Wert
      */
     function valueToSlider(value) {
-        return Math.round(value * 100);
+        return Math.round(value * 50);
     }
 
     /**
