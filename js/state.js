@@ -26,6 +26,11 @@ const TiageState = (function() {
     // Während loadFromStorage() läuft, sollten Subscriber keine Neuberechnungen triggern
     let isLoadingFromStorage = false;
 
+    // FIX v1.8.691: Flag um doppeltes Laden zu verhindern
+    // TiageState.init() wird automatisch beim DOMContentLoaded aufgerufen
+    // Weitere Aufrufe sind harmlos (werden ignoriert)
+    let isInitialized = false;
+
     const state = {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
         // Data Structure v3.0:
@@ -1130,12 +1135,28 @@ const TiageState = (function() {
 
         /**
          * Initialize TiageState - loads from storage
+         * FIX v1.8.691: Idempotent - kann mehrfach aufgerufen werden, lädt nur einmal
          * Returns a Promise for async compatibility
          * @returns {Promise<void>}
          */
         async init() {
+            if (isInitialized) {
+                console.log('[TiageState] init() - bereits initialisiert, überspringe');
+                return Promise.resolve();
+            }
+            console.log('[TiageState] init() - Initialisierung startet...');
             this.loadFromStorage();
+            isInitialized = true;
+            console.log('[TiageState] init() - Initialisierung abgeschlossen');
             return Promise.resolve();
+        },
+
+        /**
+         * Prüft ob TiageState bereits initialisiert wurde
+         * @returns {boolean}
+         */
+        isInitialized() {
+            return isInitialized;
         },
 
         /**
@@ -1776,14 +1797,19 @@ const TiageAutoSync = (function() {
 })();
 
 // Auto-Init wenn DOM geladen
+// FIX v1.8.691: TiageState.init() wird automatisch aufgerufen
+// Das stellt sicher, dass ALLE Seiten den State aus localStorage laden
+// REIHENFOLGE WICHTIG: TiageState.init() VOR TiageAutoSync.init()
 if (typeof window !== 'undefined') {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            TiageAutoSync.init();
+            TiageState.init();      // Lädt State aus localStorage (idempotent)
+            TiageAutoSync.init();   // Registriert Sync-Subscriber
         });
     } else {
         // DOM bereits geladen
-        TiageAutoSync.init();
+        TiageState.init();          // Lädt State aus localStorage (idempotent)
+        TiageAutoSync.init();       // Registriert Sync-Subscriber
     }
 }
 
