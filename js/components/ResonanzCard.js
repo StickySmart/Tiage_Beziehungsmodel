@@ -1477,6 +1477,8 @@ const ResonanzCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function recalculateResonanzForPerson(person) {
+        console.log('[ResonanzCard.recalculate] START für', person);
+
         // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
         if (typeof TiageState !== 'undefined') {
@@ -1489,11 +1491,14 @@ const ResonanzCard = (function() {
                 archetypeKey = selectedPartner;
             }
         }
+        console.log('[ResonanzCard.recalculate] Archetyp:', archetypeKey);
 
         // Hole Bedürfnisse (getPersonNeeds ist Teil von ResonanzCard)
         const needs = ResonanzCard.getPersonNeeds(person, archetypeKey);
+        console.log('[ResonanzCard.recalculate] Needs geladen:', needs ? Object.keys(needs).length : 0, 'Bedürfnisse');
+
         if (!needs || Object.keys(needs).length === 0) {
-            console.log('[ResonanzCard] Keine Needs für Neuberechnung vorhanden:', person);
+            console.warn('[ResonanzCard.recalculate] ABBRUCH: Keine Needs für', person);
             return;
         }
 
@@ -1518,13 +1523,34 @@ const ResonanzCard = (function() {
             orientierung: orientierung,
             geschlecht: geschlecht
         };
+        console.log('[ResonanzCard.recalculate] ProfileContext:', {
+            archetyp: profileContext.archetyp,
+            needsCount: Object.keys(profileContext.needs).length,
+            dominanz: profileContext.dominanz,
+            orientierung: profileContext.orientierung
+        });
+
+        // Prüfe ob NeedsIntegration verfügbar ist
+        const hasNeedsIntegration = typeof TiageSynthesis !== 'undefined' &&
+                                    typeof TiageSynthesis.NeedsIntegration !== 'undefined';
+        const hasKohaerenz = hasNeedsIntegration &&
+                            typeof TiageSynthesis.Constants !== 'undefined' &&
+                            TiageSynthesis.Constants.ARCHETYP_KOHAERENZ;
+        console.log('[ResonanzCard.recalculate] Dependencies:', {
+            hasNeedsIntegration: hasNeedsIntegration,
+            hasKohaerenz: !!hasKohaerenz
+        });
 
         // Berechne neue Resonanzwerte
         const calculatedValues = ResonanzCard.calculateFromProfile(profileContext);
+        console.log('[ResonanzCard.recalculate] Berechnete Werte:', calculatedValues);
+
         if (calculatedValues) {
             // Setze die berechneten Werte (respektiert gesperrte Werte)
             ResonanzCard.setCalculatedValues(calculatedValues, false, person);
-            console.log('[ResonanzCard] Resonanz automatisch neu berechnet für', person, ':', calculatedValues);
+            console.log('[ResonanzCard.recalculate] ERFOLG für', person, ':', calculatedValues);
+        } else {
+            console.warn('[ResonanzCard.recalculate] FEHLER: Keine Werte berechnet für', person);
         }
     }
 
