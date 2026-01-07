@@ -348,7 +348,10 @@ const ResonanzProfileHeaderCard = (function() {
             return;
         }
 
+        const person = getCurrentPerson();
         const values = getCurrentValues();
+        console.log('%c[ResonanzProfileHeaderCard] update() für ' + person, 'background: purple; color: white;');
+        console.log('[ResonanzProfileHeaderCard] Werte:', JSON.stringify(values));
 
         // Aktualisiere Werte und zeige Impact-Badge
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
