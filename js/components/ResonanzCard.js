@@ -1661,6 +1661,8 @@ const ResonanzCard = (function() {
     document.addEventListener('attributeNeedChange', function(event) {
         const { attrId, needId, value } = event.detail || {};
 
+        console.log('%c[ResonanzCard] attributeNeedChange EVENT!', 'background: blue; color: white; font-size: 14px;', { attrId, needId, value });
+
         if (!needId || value === undefined) {
             console.warn('[ResonanzCard] attributeNeedChange ohne gültige Daten:', event.detail);
             return;
