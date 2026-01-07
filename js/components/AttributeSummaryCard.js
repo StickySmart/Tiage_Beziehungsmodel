@@ -397,21 +397,97 @@ const AttributeSummaryCard = (function() {
     const NEEDS_LABELS = null; // Wird durch getNeedLabel() ersetzt
 
     /**
-     * Speicher für flache Bedürfnisse als Array von Objekten
-     * NEUE STRUKTUR (v1.8.128): Array mit einheitlicher Objekt-Struktur
+     * FLAT NEEDS - SSOT ARCHITEKTUR (v1.8.691)
+     *
+     * TiageState ist die EINZIGE Datenquelle für Bedürfnis-Werte.
+     * flatNeeds dient nur als CACHE für Performance (Rendering).
+     *
+     * LESEN: Über getFlatNeedsFromState() - liest von TiageState
+     * SCHREIBEN: Über TiageState.setNeed() - schreibt zu TiageState
      *
      * Format: [
      *   { id: "#B1", key: 1, stringKey: "sicherheit", label: "Sicherheit", value: 50, locked: false },
-     *   { id: "#B2", key: 2, stringKey: "geborgenheit", label: "Geborgenheit", value: 75, locked: true },
      *   ...
      * ]
-     *
-     * Vorteile:
-     * - Einheitliche Struktur überall (Matching-Ergebnisse, Storage, UI)
-     * - Alle Metadaten direkt am Objekt (id, key, label, value, locked)
-     * - Einfache Iteration und Filterung
      */
     let flatNeeds = [];
+    let flatNeedsCacheValid = false;
+    let flatNeedsCachePerson = null;
+
+    /**
+     * SSOT: Holt flatNeeds IMMER frisch von TiageState
+     * Kombiniert Werte aus TiageState mit Metadaten aus BeduerfnisIds
+     *
+     * @param {string} person - 'ich' oder 'partner' (optional, default: currentPerson)
+     * @returns {Array} Array mit Bedürfnis-Objekten
+     */
+    function getFlatNeedsFromState(person) {
+        // Person ermitteln
+        if (!person) {
+            if (window.currentProfileReviewContext?.person) {
+                person = window.currentProfileReviewContext.person;
+            } else {
+                person = 'ich';
+            }
+        }
+
+        // Cache prüfen - nur verwenden wenn gültig UND gleiche Person
+        if (flatNeedsCacheValid && flatNeedsCachePerson === person && flatNeeds.length > 0) {
+            return flatNeeds;
+        }
+
+        // Von TiageState lesen
+        if (typeof TiageState === 'undefined') {
+            console.warn('[AttributeSummaryCard] TiageState nicht verfügbar!');
+            return flatNeeds;
+        }
+
+        const stateValues = TiageState.get(`flatNeeds.${person}`) || {};
+        const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
+
+        // Metadaten aus BeduerfnisIds
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            console.warn('[AttributeSummaryCard] BeduerfnisIds nicht verfügbar!');
+            return flatNeeds;
+        }
+
+        // Array aufbauen
+        flatNeeds = [];
+        Object.keys(BeduerfnisIds.beduerfnisse).forEach(needId => {
+            const needData = BeduerfnisIds.beduerfnisse[needId];
+            const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
+            const isLocked = lockedNeeds.hasOwnProperty(needId);
+
+            // Wert: Gesperrter Wert hat Vorrang, dann State-Wert, dann Default 50
+            const value = isLocked
+                ? lockedNeeds[needId]
+                : (stateValues[needId] !== undefined ? stateValues[needId] : 50);
+
+            flatNeeds.push({
+                id: needId,
+                key: numKey,
+                stringKey: needData?.key || '',
+                label: needData?.label || needId,
+                value: value,
+                locked: isLocked
+            });
+        });
+
+        // Cache als gültig markieren
+        flatNeedsCacheValid = true;
+        flatNeedsCachePerson = person;
+
+        console.log('[AttributeSummaryCard] getFlatNeedsFromState() -', flatNeeds.length, 'Bedürfnisse für', person);
+        return flatNeeds;
+    }
+
+    /**
+     * Invalidiert den flatNeeds Cache
+     * Wird aufgerufen wenn Werte geändert werden
+     */
+    function invalidateFlatNeedsCache() {
+        flatNeedsCacheValid = false;
+    }
 
     /**
      * MULTI-SELECT FEATURE: Set zum Speichern ausgewählter Bedürfnisse
@@ -498,63 +574,50 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Helper: Aktualisiert ein Bedürfnis oder fügt es hinzu
+     * Helper: Aktualisiert ein Bedürfnis
+     * SSOT v1.8.691: Schreibt IMMER zu TiageState, Cache wird invalidiert
+     *
      * @param {string} id - Die #B-ID
      * @param {Object} updates - Zu aktualisierende Felder
      */
     function upsertNeed(id, updates) {
+        // SSOT: Schreibe zu TiageState (einzige Datenquelle)
+        if (typeof TiageState === 'undefined') {
+            console.error('[AttributeSummaryCard] TiageState nicht verfügbar!');
+            return;
+        }
+
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Value zu TiageState schreiben
+        if (updates.value !== undefined && TiageState.setNeed) {
+            TiageState.setNeed(currentPerson, id, updates.value);
+        }
+
+        // Lock-Status zu TiageState schreiben
+        if (updates.locked !== undefined) {
+            if (updates.locked && TiageState.lockNeed) {
+                const currentValue = updates.value !== undefined ? updates.value : 50;
+                TiageState.lockNeed(currentPerson, id, currentValue);
+            } else if (!updates.locked && TiageState.unlockNeed) {
+                TiageState.unlockNeed(currentPerson, id);
+            }
+        }
+
+        // Cache invalidieren - nächster Zugriff lädt frisch von TiageState
+        invalidateFlatNeedsCache();
+
+        // Lokalen Cache auch aktualisieren für sofortige UI-Reaktion
         const index = findNeedIndex(id);
         if (index >= 0) {
             flatNeeds[index] = { ...flatNeeds[index], ...updates };
-        } else {
-            // Neues Bedürfnis hinzufügen mit vollständigen Metadaten
-            const numKey = parseInt(id.replace('#B', ''), 10) || 0;
-            let stringKey = '';
-            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
-                stringKey = BeduerfnisIds.toKey(id) || '';
-            }
-            flatNeeds.push({
-                id: id,
-                key: numKey,
-                stringKey: stringKey,
-                label: getNeedLabel(id).replace(/^#B\d+\s*/, ''), // Label ohne #B-Prefix
-                value: 50,
-                locked: false,
-                ...updates
-            });
         }
 
-        // FIX: Direkt in TiageState synchronisieren (SSOT)
-        // Ohne diesen Code werden Änderungen auf Seiten ohne flatNeedChange-Handler nicht synchronisiert
-        if (typeof TiageState !== 'undefined') {
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-
-            // Value synchronisieren
-            if (updates.value !== undefined && TiageState.setNeed) {
-                TiageState.setNeed(currentPerson, id, updates.value);
-            }
-
-            // Lock-Status synchronisieren (SSOT für Locks ist TiageState.profileReview.lockedNeeds)
-            if (updates.locked !== undefined) {
-                if (updates.locked && TiageState.lockNeed) {
-                    // Beim Sperren: Wert in lockedNeeds speichern
-                    const currentValue = updates.value !== undefined ? updates.value :
-                        (findNeedById(id)?.value || 50);
-                    TiageState.lockNeed(currentPerson, id, currentValue);
-                } else if (!updates.locked && TiageState.unlockNeed) {
-                    // Beim Entsperren: Aus lockedNeeds entfernen
-                    TiageState.unlockNeed(currentPerson, id);
-                }
-            }
-
-            // FIX v1.8.687: CRITICAL - Debounced save in localStorage persistieren
-            // Ohne diesen Code gehen Bedürfniswerte verloren beim Navigation!
-            // Debounce verhindert Performance-Probleme bei schnellen Slider-Bewegungen
-            debouncedSaveToStorage();
-        }
+        // Debounced in localStorage persistieren
+        debouncedSaveToStorage();
     }
 
     /**
@@ -4962,6 +5025,9 @@ const AttributeSummaryCard = (function() {
         // NEU (v1.8.89): Integrierte Struktur { needId: { value, locked } }
         getFlatNeeds,
         setFlatNeeds,
+        // SSOT v1.8.691: Liest IMMER frisch von TiageState
+        getFlatNeedsFromState,
+        invalidateFlatNeedsCache,
         // DEPRECATED: Legacy-Wrapper für Rückwärtskompatibilität
         getFlatNeedsValues,
         setFlatNeedsValues,
