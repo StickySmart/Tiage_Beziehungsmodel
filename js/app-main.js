@@ -20910,42 +20910,31 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // RESONANZFAKTOREN: Nur initialisieren wenn KEINE gespeicherten Werte existieren
-            // Bestehende Werte werden beibehalten um Überschreiben zu vermeiden (FIX v1.8.208)
+            // RESONANZFAKTOREN: IMMER berechnen - gelockte Werte werden automatisch respektiert
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof ResonanzCard !== 'undefined') {
                 var currentPerson = currentProfileReviewContext?.person || 'ich';
 
-                // Prüfe ob bereits gespeicherte Werte existieren
-                if (typeof ResonanzCard.hasStoredValues === 'function' && ResonanzCard.hasStoredValues(currentPerson)) {
-                    // Gespeicherte Werte existieren - UI nur aktualisieren, NICHT neu berechnen
-                    if (typeof ResonanzCard.initializeUI === 'function') {
-                        ResonanzCard.initializeUI(currentPerson);
-                    }
-                    console.log('[ProfileReview] Resonanzfaktoren aus localStorage geladen für', currentPerson, '(gespeicherte Werte beibehalten)');
+                // Bevorzuge recalculate() - es ist die modernere, einfachere Methode
+                if (typeof ResonanzCard.recalculate === 'function') {
+                    ResonanzCard.recalculate(currentPerson);
+                    console.log('[ProfileReview] Resonanzfaktoren berechnet für', currentPerson);
                 } else if (typeof ResonanzCard.loadCalculatedValues === 'function') {
-                    // Keine gespeicherten Werte - neu berechnen
-                    // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+                    // Fallback: Legacy loadCalculatedValues
                     var needs = ResonanzCard.getPersonNeeds
                         ? ResonanzCard.getPersonNeeds(currentPerson, archetypeKey || 'duo')
                         : null;
 
-                    var resonanzProfileContext = {
-                        archetyp: archetypeKey || 'duo',
-                        needs: needs,
-                        dominanz: dominanz,
-                        orientierung: orientierung,
-                        geschlecht: personData ? personData.geschlecht : null
-                    };
-
-                    // Lade berechnete Resonanzwerte in die UI (nur bei Erstinitialisierung)
-                    if (resonanzProfileContext.needs) {
-                        var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, currentPerson);
-                        if (resonanzLoaded) {
-                            console.log('[ProfileReview] Resonanzfaktoren initial berechnet für', currentPerson);
-                        }
-                    } else {
-                        console.log('[ProfileReview] Keine Bedürfnis-Daten für Resonanz-Berechnung verfügbar');
+                    if (needs) {
+                        var resonanzProfileContext = {
+                            archetyp: archetypeKey || 'duo',
+                            needs: needs,
+                            dominanz: dominanz,
+                            orientierung: orientierung,
+                            geschlecht: personData ? personData.geschlecht : null
+                        };
+                        ResonanzCard.loadCalculatedValues(resonanzProfileContext, currentPerson);
+                        console.log('[ProfileReview] Resonanzfaktoren berechnet für', currentPerson, '(legacy)');
                     }
                 }
             }
