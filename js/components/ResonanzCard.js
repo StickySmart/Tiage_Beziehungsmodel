@@ -259,17 +259,13 @@ const ResonanzCard = (function() {
     function save(values, person) {
         person = person || getCurrentPerson();
 
-        // DEBUG: Prüfe ob Werte auf 1.0 gesetzt werden
-        const hasDefaultValues = values.R1?.value === 1 && values.R2?.value === 1 && values.R3?.value === 1 && values.R4?.value === 1;
-        if (hasDefaultValues) {
-            console.log('%c[ResonanzCard] WARNUNG: Alle Werte sind 1.0!', 'background: red; color: white; font-size: 14px;');
-            console.trace('[ResonanzCard] Stacktrace - wer setzt auf 1.0?');
-        }
+        // DEBUG: Zeige JEDEN save Aufruf mit Stacktrace
+        console.log('%c[ResonanzCard] SAVE ' + person + ': R1=' + values.R1?.value + ' R2=' + values.R2?.value + ' R3=' + values.R3?.value + ' R4=' + values.R4?.value, 'background: orange; color: black; font-size: 12px;');
+        console.trace('[ResonanzCard] SAVE Stacktrace');
 
         try {
             // v3.2: TiageState mit Clamping (Single Source of Truth)
             if (typeof TiageState !== 'undefined') {
-                console.log('[ResonanzCard] save() - Speichere in TiageState (clamped):', person, JSON.stringify(values));
                 TiageState.setResonanzFaktoren(person, values);
                 // Persist to localStorage for temp local save
                 TiageState.saveToStorage();
