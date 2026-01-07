@@ -259,6 +259,13 @@ const ResonanzCard = (function() {
     function save(values, person) {
         person = person || getCurrentPerson();
 
+        // DEBUG: Prüfe ob Werte auf 1.0 gesetzt werden
+        const hasDefaultValues = values.R1?.value === 1 && values.R2?.value === 1 && values.R3?.value === 1 && values.R4?.value === 1;
+        if (hasDefaultValues) {
+            console.log('%c[ResonanzCard] WARNUNG: Alle Werte sind 1.0!', 'background: red; color: white; font-size: 14px;');
+            console.trace('[ResonanzCard] Stacktrace - wer setzt auf 1.0?');
+        }
+
         try {
             // v3.2: TiageState mit Clamping (Single Source of Truth)
             if (typeof TiageState !== 'undefined') {
