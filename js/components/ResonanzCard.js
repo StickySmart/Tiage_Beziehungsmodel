@@ -1267,14 +1267,27 @@ const ResonanzCard = (function() {
                         return true;
                     }
 
-                    // Prüfe ob tiage_state in localStorage existiert (User hat irgendwann gespeichert)
+                    // Prüfe ob tiage_state in localStorage existiert MIT user-modifizierten Werten
+                    // FIX: Nicht nur prüfen ob Daten existieren, sondern ob sie vom Default abweichen!
                     try {
                         const tiageState = localStorage.getItem('tiage_state');
                         if (tiageState) {
                             const parsed = JSON.parse(tiageState);
-                            if (parsed.resonanzFaktoren && parsed.resonanzFaktoren[person]) {
-                                console.log('[ResonanzCard] hasStoredValues() - TiageState wurde aus localStorage geladen für', person);
-                                return true;
+                            const storedResonanz = parsed.resonanzFaktoren && parsed.resonanzFaktoren[person];
+                            if (storedResonanz) {
+                                // Prüfe ob gespeicherte Werte gelockt oder vom Default abweichend sind
+                                const storedHasLock = ['R1', 'R2', 'R3', 'R4'].some(key =>
+                                    storedResonanz[key]?.locked === true
+                                );
+                                const storedHasNonDefault = ['R1', 'R2', 'R3', 'R4'].some(key =>
+                                    Math.abs((storedResonanz[key]?.value || 1.0) - 1.0) > 0.001
+                                );
+                                if (storedHasLock || storedHasNonDefault) {
+                                    console.log('[ResonanzCard] hasStoredValues() - localStorage hat User-modifizierte Werte für', person);
+                                    return true;
+                                }
+                                // Keine user-modifizierten Werte im localStorage → erlaubt Neuberechnung
+                                console.log('[ResonanzCard] hasStoredValues() - localStorage hat nur Default-Werte für', person, '→ Neuberechnung erlaubt');
                             }
                         }
                     } catch (e) {
@@ -1290,13 +1303,17 @@ const ResonanzCard = (function() {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Prüfe ob mindestens ein Wert existiert
-                return parsed && (
-                    parsed.R1?.value !== undefined ||
-                    parsed.R2?.value !== undefined ||
-                    parsed.R3?.value !== undefined ||
-                    parsed.R4?.value !== undefined
+                // FIX: Prüfe ob Werte gelockt oder vom Default abweichend sind (nicht nur ob sie existieren)
+                const legacyHasLock = ['R1', 'R2', 'R3', 'R4'].some(key =>
+                    parsed[key]?.locked === true
                 );
+                const legacyHasNonDefault = ['R1', 'R2', 'R3', 'R4'].some(key =>
+                    Math.abs((parsed[key]?.value || 1.0) - 1.0) > 0.001
+                );
+                if (legacyHasLock || legacyHasNonDefault) {
+                    console.log('[ResonanzCard] hasStoredValues() - Legacy localStorage hat User-modifizierte Werte für', person);
+                    return true;
+                }
             }
         } catch (e) {
             console.warn('Fehler beim Prüfen gespeicherter Resonanzfaktoren:', e);
