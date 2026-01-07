@@ -809,14 +809,18 @@
             // Die R-Faktoren werden IMMER nach dem Laden der Daten berechnet.
             // Gelockte Werte werden dabei automatisch respektiert (nicht überschrieben).
             // ═══════════════════════════════════════════════════════════════════
+            console.log('%c[NeedsEditor] === R-FAKTOR BERECHNUNG START ===', 'background: red; color: white; font-size: 14px;');
+            console.log('[NeedsEditor] ResonanzCard verfügbar?', typeof ResonanzCard !== 'undefined');
+            console.log('[NeedsEditor] ResonanzCard.recalculate verfügbar?', typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.recalculate === 'function');
+
             if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
                 // Kurze Verzögerung um sicherzustellen, dass alle Daten geladen sind
                 setTimeout(function() {
-                    console.log('[NeedsEditor] R-Faktor-Berechnung für', currentPerson);
+                    console.log('%c[NeedsEditor] R-Faktor-Berechnung für ' + currentPerson, 'background: green; color: white;');
                     ResonanzCard.recalculate(currentPerson);
                 }, 100);
             } else {
-                console.warn('[NeedsEditor] ResonanzCard.recalculate nicht verfügbar - R-Faktoren werden nicht initial berechnet');
+                console.warn('%c[NeedsEditor] ResonanzCard.recalculate NICHT verfügbar!', 'background: orange; color: black; font-size: 14px;');
             }
 
             // Initialize Active Filter Card
