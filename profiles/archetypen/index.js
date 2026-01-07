@@ -540,20 +540,31 @@
                 const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
                 const currentCount = Object.keys(currentFlatNeeds).length;
 
-                // Strategie: Berechnete Werte als Basis, dann existierende User-Werte drüberlegen
-                const newFlatNeeds = { ...calculatedProfile.profileReview.flatNeeds };
+                // SSOT v1.8.691: Wenn User bereits Werte hat, NICHT überschreiben!
+                // Nur neue Bedürfnisse (die noch nicht existieren) werden aus Profil genommen
+                if (currentCount > 0) {
+                    // User hat bereits Werte - nur fehlende ergänzen
+                    const calculatedNeeds = calculatedProfile.profileReview.flatNeeds;
+                    let addedCount = 0;
 
-                // ALLE existierenden Werte beibehalten (User hat sie manuell gesetzt oder geladen)
-                let preservedCount = 0;
-                Object.keys(currentFlatNeeds).forEach(needId => {
-                    if (currentFlatNeeds[needId] !== undefined) {
-                        newFlatNeeds[needId] = currentFlatNeeds[needId];
-                        preservedCount++;
+                    Object.keys(calculatedNeeds).forEach(needId => {
+                        if (currentFlatNeeds[needId] === undefined) {
+                            // Nur setzen wenn noch nicht vorhanden
+                            TiageState.setNeed(person, needId, calculatedNeeds[needId]);
+                            addedCount++;
+                        }
+                    });
+
+                    if (addedCount > 0) {
+                        console.log(`[ProfileCalculator] ${addedCount} neue Bedürfnisse ergänzt für ${person}, ${currentCount} User-Werte beibehalten`);
+                    } else {
+                        console.log(`[ProfileCalculator] Keine neuen Bedürfnisse für ${person} - ${currentCount} User-Werte bleiben erhalten`);
                     }
-                });
-
-                TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-                console.log(`[ProfileCalculator] flatNeeds gesetzt für ${person}: ${preservedCount} existierende Werte beibehalten, ${Object.keys(newFlatNeeds).length - preservedCount} neue hinzugefügt`);
+                } else {
+                    // Keine existierenden Werte - alle aus Profil übernehmen
+                    TiageState.set(`flatNeeds.${person}`, calculatedProfile.profileReview.flatNeeds);
+                    console.log(`[ProfileCalculator] Initiale flatNeeds gesetzt für ${person}:`, Object.keys(calculatedProfile.profileReview.flatNeeds).length);
+                }
             }
 
             // gewichtungen setzen (respektiere Locks!)
