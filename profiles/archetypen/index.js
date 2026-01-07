@@ -532,22 +532,28 @@
                 TiageState.set(`personDimensions.${person}.orientierung`, calculatedProfile.orientierung);
             }
 
-            // flatNeeds setzen (respektiere lockedNeeds!)
-            // FIX v1.8.690: LockedNeeds dürfen NICHT durch berechnete Werte überschrieben werden
+            // flatNeeds setzen (respektiere ALLE existierenden User-Werte!)
+            // FIX v1.8.691: ALLE existierenden Werte beibehalten, nicht nur locked ones
+            // Begründung: Wenn ein User einen Wert manuell ändert, will er diesen behalten
+            // Berechnete Werte werden nur für NEUE Bedürfnisse verwendet (die noch keinen Wert haben)
             if (calculatedProfile.profileReview?.flatNeeds) {
-                const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
                 const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+                const currentCount = Object.keys(currentFlatNeeds).length;
+
+                // Strategie: Berechnete Werte als Basis, dann existierende User-Werte drüberlegen
                 const newFlatNeeds = { ...calculatedProfile.profileReview.flatNeeds };
 
-                // Gesperrte Werte aus currentFlatNeeds beibehalten
-                Object.keys(lockedNeeds).forEach(needId => {
+                // ALLE existierenden Werte beibehalten (User hat sie manuell gesetzt oder geladen)
+                let preservedCount = 0;
+                Object.keys(currentFlatNeeds).forEach(needId => {
                     if (currentFlatNeeds[needId] !== undefined) {
                         newFlatNeeds[needId] = currentFlatNeeds[needId];
+                        preservedCount++;
                     }
                 });
 
                 TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-                console.log(`[ProfileCalculator] flatNeeds gesetzt für ${person}, ${Object.keys(lockedNeeds).length} locked needs beibehalten`);
+                console.log(`[ProfileCalculator] flatNeeds gesetzt für ${person}: ${preservedCount} existierende Werte beibehalten, ${Object.keys(newFlatNeeds).length - preservedCount} neue hinzugefügt`);
             }
 
             // gewichtungen setzen (respektiere Locks!)

@@ -15164,8 +15164,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             console.log('[loadDimensionsFromState] Start - TiageState verfügbar:', typeof TiageState !== 'undefined');
             if (typeof TiageState === 'undefined') return;
 
-            // Load from TiageState
-            TiageState.loadFromStorage();
+            // FIX v1.8.691: init() statt loadFromStorage() - idempotent, kann mehrfach aufgerufen werden
+            // state.js ruft init() bereits beim DOMContentLoaded auf, aber zur Sicherheit nochmal
+            TiageState.init();
 
             // Load archetypes from TiageState and sync with global variables (Desktop + Mobile)
             const savedIchArchetype = TiageState.getArchetype('ich');
