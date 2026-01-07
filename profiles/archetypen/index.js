@@ -300,6 +300,50 @@
     // 3. PROFILE CALCULATOR - Berechnet und lädt Profile
     // ═══════════════════════════════════════════════════════════════════════════
 
+    // Flag um doppelte Neuberechnungs-Trigger zu vermeiden (BeduerfnisIds race condition)
+    let beduerfnisIdsLoadCallbackScheduled = false;
+
+    /**
+     * Wendet Deltas auf flatNeeds an (interne Hilfsfunktion)
+     * Erwartet dass BeduerfnisIds bereits geladen ist!
+     *
+     * @param {Object} flatNeeds - Die zu modifizierenden flatNeeds
+     * @param {Object} deltas - Die anzuwendenden Deltas { stringKey: deltaValue }
+     * @returns {void}
+     */
+    function applyDeltasToFlatNeeds(flatNeeds, deltas) {
+        let appliedCount = 0;
+        const appliedDeltas = [];
+
+        Object.keys(deltas).forEach(stringKey => {
+            // Convert string key to #ID for lookup in flatNeeds (which uses #ID keys)
+            const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
+                ? BeduerfnisIds.toId(stringKey)
+                : stringKey;
+
+            if (flatNeeds[hashId] !== undefined) {
+                const oldVal = flatNeeds[hashId];
+                // Wert modifizieren (keine Obergrenze, nur >= 0)
+                flatNeeds[hashId] = Math.max(0, flatNeeds[hashId] + deltas[stringKey]);
+                appliedDeltas.push(`${stringKey} (${hashId}): ${oldVal} → ${flatNeeds[hashId]}`);
+                appliedCount++;
+            } else if (flatNeeds[stringKey] !== undefined) {
+                const oldVal = flatNeeds[stringKey];
+                // Fallback: try direct string key lookup
+                flatNeeds[stringKey] = Math.max(0, flatNeeds[stringKey] + deltas[stringKey]);
+                appliedDeltas.push(`${stringKey}: ${oldVal} → ${flatNeeds[stringKey]}`);
+                appliedCount++;
+            } else {
+                console.warn(`[ProfileCalculator] Delta-Key nicht gefunden: ${stringKey} (hashId: ${hashId})`);
+            }
+        });
+
+        console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
+        if (appliedDeltas.length > 0) {
+            console.log('[ProfileCalculator] Angewendete Deltas:', appliedDeltas);
+        }
+    }
+
     /**
      * Berechnet flatNeeds aus Basis + Modifier
      *
@@ -338,34 +382,43 @@
             });
 
             if (deltas && Object.keys(deltas).length > 0) {
-                // Deltas anwenden - convert string keys to #IDs for lookup
-                let appliedCount = 0;
-                const appliedDeltas = [];
-                Object.keys(deltas).forEach(stringKey => {
-                    // Convert string key to #ID for lookup in flatNeeds (which uses #ID keys)
-                    const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
-                        ? BeduerfnisIds.toId(stringKey)
-                        : stringKey;
+                // Prüfe ob BeduerfnisIds geladen ist (async loading race condition fix)
+                const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' &&
+                                           BeduerfnisIds._loaded === true;
 
-                    if (flatNeeds[hashId] !== undefined) {
-                        const oldVal = flatNeeds[hashId];
-                        // Wert modifizieren (keine Obergrenze, nur >= 0)
-                        flatNeeds[hashId] = Math.max(0, flatNeeds[hashId] + deltas[stringKey]);
-                        appliedDeltas.push(`${stringKey} (${hashId}): ${oldVal} → ${flatNeeds[hashId]}`);
-                        appliedCount++;
-                    } else if (flatNeeds[stringKey] !== undefined) {
-                        const oldVal = flatNeeds[stringKey];
-                        // Fallback: try direct string key lookup
-                        flatNeeds[stringKey] = Math.max(0, flatNeeds[stringKey] + deltas[stringKey]);
-                        appliedDeltas.push(`${stringKey}: ${oldVal} → ${flatNeeds[stringKey]}`);
-                        appliedCount++;
+                if (beduerfnisIdsReady) {
+                    // BeduerfnisIds ist geladen - Deltas sofort anwenden
+                    applyDeltasToFlatNeeds(flatNeeds, deltas);
+                } else if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loadPromise) {
+                    // BeduerfnisIds lädt noch - warte auf Laden und triggere Neuberechnung
+                    // Aber nur einmal pro Seitenladung (verhindere mehrfache Callbacks)
+                    if (!beduerfnisIdsLoadCallbackScheduled) {
+                        beduerfnisIdsLoadCallbackScheduled = true;
+                        console.log('[ProfileCalculator] BeduerfnisIds lädt noch - Neuberechnung wird nach Laden ausgeführt');
+
+                        // Nach dem Laden von BeduerfnisIds: Neuberechnung für alle Personen triggern
+                        BeduerfnisIds._loadPromise.then(() => {
+                            console.log('[ProfileCalculator] BeduerfnisIds geladen - triggere Neuberechnung');
+
+                            // Verwende recalculateFlatNeeds um korrekt mit TiageState zu arbeiten
+                            // Das stellt sicher dass Locks respektiert werden und UI aktualisiert wird
+                            if (typeof TiageState !== 'undefined') {
+                                ['ich', 'partner'].forEach(person => {
+                                    const personArchetyp = TiageState.get(`archetypes.${person}.primary`);
+                                    if (personArchetyp) {
+                                        recalculateFlatNeeds(person);
+                                    }
+                                });
+                            }
+                        }).catch(err => {
+                            console.error('[ProfileCalculator] Fehler beim Laden von BeduerfnisIds:', err);
+                        });
                     } else {
-                        console.warn(`[ProfileCalculator] Delta-Key nicht gefunden: ${stringKey} (hashId: ${hashId})`);
+                        console.log('[ProfileCalculator] BeduerfnisIds lädt noch - Neuberechnung bereits geplant');
                     }
-                });
-                console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
-                if (appliedDeltas.length > 0) {
-                    console.log('[ProfileCalculator] Angewendete Deltas:', appliedDeltas);
+                } else {
+                    // BeduerfnisIds nicht verfügbar - Warnung ausgeben
+                    console.warn('[ProfileCalculator] BeduerfnisIds nicht verfügbar - Deltas können nicht angewendet werden');
                 }
             }
         }
