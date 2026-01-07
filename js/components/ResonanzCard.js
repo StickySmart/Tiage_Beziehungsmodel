@@ -649,20 +649,15 @@ const ResonanzCard = (function() {
         let hasChanges = false;
         const lockedDifferences = {}; // Speichere Unterschiede bei gesperrten Werten
 
-        // FIX v1.8.691: Prüfe ob User bereits Werte gespeichert hat
-        // Wenn ja, KEINE automatische Überschreibung (außer forceOverwrite)
-        const userHasStoredValues = hasStoredValues(person);
+        // FIX v1.8.692: R-Faktoren sind BERECHNETE Werte
+        // Nur LOCKED R-Faktoren werden beibehalten, alle anderen werden aktualisiert
 
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
             const newValue = calculatedValues[faktor];
 
-            // Nur setzen wenn:
-            // 1. Wert vorhanden ist
-            // 2. Nicht gelockt ODER forceOverwrite
-            // 3. FIX v1.8.691: User hat KEINE eigenen Werte ODER forceOverwrite
             if (newValue !== undefined && newValue !== null) {
                 // Prüfe ob gesperrt und Wert unterschiedlich ist
-                if ((currentValues[faktor].locked || userHasStoredValues) && !forceOverwrite) {
+                if (currentValues[faktor].locked && !forceOverwrite) {
                     const diff = Math.abs(newValue - currentValues[faktor].value);
                     if (diff > 0.01) { // Nur signifikante Unterschiede
                         lockedDifferences[faktor] = {
@@ -673,8 +668,8 @@ const ResonanzCard = (function() {
                     }
                 }
 
-                // FIX v1.8.691: Nicht überschreiben wenn User Werte hat (außer forceOverwrite)
-                if ((!currentValues[faktor].locked && !userHasStoredValues) || forceOverwrite) {
+                // FIX v1.8.692: Nur LOCKED R-Faktoren schützen (nicht alle User-Werte)
+                if (!currentValues[faktor].locked || forceOverwrite) {
                     const parsedValue = ensureNumber(newValue);
                     currentValues[faktor].value = parsedValue;
                     hasChanges = true;
@@ -1525,12 +1520,8 @@ const ResonanzCard = (function() {
             return;
         }
 
-        // FIX v1.8.691: NICHT neu berechnen wenn User bereits eigene R-Werte hat!
-        // User-Werte (aus localStorage geladen oder manuell gesetzt) haben Vorrang
-        if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues('ich')) {
-            console.log('[ResonanzCard] SKIP: FlatNeeds.ich geändert aber User hat bereits eigene R-Werte - keine Neuberechnung');
-            return;
-        }
+        // FIX v1.8.692: R-Faktoren sind BERECHNETE Werte - immer neu berechnen!
+        // Nur LOCKED R-Faktoren werden in setCalculatedValues() beibehalten
 
         // Debounce um mehrfache schnelle Updates zu vermeiden
         if (debounceTimerIch) {
@@ -1540,11 +1531,6 @@ const ResonanzCard = (function() {
             // Nochmal prüfen nach Debounce
             if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
                 console.log('[ResonanzCard] SKIP (nach Debounce): Suppress noch aktiv');
-                return;
-            }
-            // FIX v1.8.691: Nochmal prüfen ob User-Werte existieren
-            if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues('ich')) {
-                console.log('[ResonanzCard] SKIP (nach Debounce): User hat eigene R-Werte');
                 return;
             }
             console.log('[ResonanzCard] FlatNeeds geändert für ICH - Neuberechnung der Resonanzfaktoren');
@@ -1560,11 +1546,8 @@ const ResonanzCard = (function() {
             return;
         }
 
-        // FIX v1.8.691: NICHT neu berechnen wenn User bereits eigene R-Werte hat!
-        if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues('partner')) {
-            console.log('[ResonanzCard] SKIP: FlatNeeds.partner geändert aber User hat bereits eigene R-Werte - keine Neuberechnung');
-            return;
-        }
+        // FIX v1.8.692: R-Faktoren sind BERECHNETE Werte - immer neu berechnen!
+        // Nur LOCKED R-Faktoren werden in setCalculatedValues() beibehalten
 
         // Debounce um mehrfache schnelle Updates zu vermeiden
         if (debounceTimerPartner) {
@@ -1574,11 +1557,6 @@ const ResonanzCard = (function() {
             // Nochmal prüfen nach Debounce
             if (TiageState.isSuppressResonanzRecalc && TiageState.isSuppressResonanzRecalc()) {
                 console.log('[ResonanzCard] SKIP (nach Debounce): Suppress noch aktiv');
-                return;
-            }
-            // FIX v1.8.691: Nochmal prüfen ob User-Werte existieren
-            if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues('partner')) {
-                console.log('[ResonanzCard] SKIP (nach Debounce): User hat eigene R-Werte');
                 return;
             }
             console.log('[ResonanzCard] FlatNeeds geändert für PARTNER - Neuberechnung der Resonanzfaktoren');
@@ -1611,13 +1589,8 @@ const ResonanzCard = (function() {
             }
         }
 
-        // FIX v1.8.691: NICHT neu berechnen wenn User bereits eigene R-Werte hat!
-        // User-Änderungen an R-Faktoren haben Vorrang über automatische Berechnung
-        // Für Neuberechnung: User muss explizit "Reset" klicken
-        if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues(person)) {
-            console.log('[ResonanzCard] SKIP flatNeedChange: User hat bereits eigene R-Werte für', person);
-            return;
-        }
+        // FIX v1.8.692: R-Faktoren sind BERECHNETE Werte - immer neu berechnen!
+        // Nur LOCKED R-Faktoren werden in setCalculatedValues() beibehalten
 
         // Debounce um mehrfache schnelle Updates zu sammeln
         if (flatNeedDebounceTimer) {
@@ -1625,11 +1598,6 @@ const ResonanzCard = (function() {
         }
 
         flatNeedDebounceTimer = setTimeout(function() {
-            // FIX v1.8.691: Nochmal prüfen ob User-Werte existieren
-            if (ResonanzCard.hasStoredValues && ResonanzCard.hasStoredValues(person)) {
-                console.log('[ResonanzCard] SKIP flatNeedChange (nach Debounce): User hat eigene R-Werte');
-                return;
-            }
             console.log('[ResonanzCard] flatNeedChange Debounce abgeschlossen - Neuberechnung für', person);
             recalculateResonanzForPerson(person);
         }, FLAT_NEED_DEBOUNCE);
