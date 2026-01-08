@@ -1083,21 +1083,35 @@ const AttributeSummaryCard = (function() {
         console.log(`[AttributeSummaryCard] ${selectedNeeds.size > 0 ? 'Ausgewählte' : 'Alle'} Bedürfnisse werden zurückgesetzt:`, needsToReset.length);
 
         let resetCount = 0;
+        let skippedLocked = 0;
+        let skippedNoValue = 0;
         needsToReset.forEach(needId => {
-            const needObj = findNeedById(needId);
+            // FIX v1.8.700: Prüfe Lock-Status direkt aus TiageState (SSOT)
+            // statt aus flatNeeds, da flatNeeds möglicherweise nicht alle Needs enthält
+            const isLocked = typeof TiageState !== 'undefined' && TiageState.isNeedLocked
+                ? TiageState.isNeedLocked(currentPerson, needId)
+                : false;
 
             // WICHTIG: Gesperrte Bedürfnisse NICHT zurücksetzen
-            if (needObj?.locked) {
-                console.log(`[AttributeSummaryCard] ${needId} ist gesperrt - Reset übersprungen`);
+            if (isLocked) {
+                skippedLocked++;
                 return;
             }
 
             const originalValue = umfrageWerte[needId];
-            if (originalValue !== undefined && needObj) {
-                // Setze den Wert auf den Original-Profil-Wert zurück
-                upsertNeed(needId, { value: originalValue });
+            if (originalValue === undefined) {
+                skippedNoValue++;
+                return;
+            }
 
-                // Update UI
+            // FIX v1.8.700: upsertNeed schreibt direkt zu TiageState
+            // und braucht kein needObj - Reset funktioniert auch wenn
+            // das Need nicht in flatNeeds enthalten ist
+            upsertNeed(needId, { value: originalValue });
+
+            // Update UI - nur wenn das Need in flatNeeds existiert
+            const needObj = findNeedById(needId);
+            if (needObj) {
                 const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
                 if (needItem) {
                     const slider = needItem.querySelector('.need-slider');
@@ -1114,14 +1128,14 @@ const AttributeSummaryCard = (function() {
                     // Changed-Indicator (*) aktualisieren
                     updateChangedIndicator(needItem, needId, originalValue);
                 }
-
-                // Aktualisiere auch den gespeicherten Original-Wert
-                originalNeedValues.set(needId, originalValue);
-                resetCount++;
             }
+
+            // Aktualisiere auch den gespeicherten Original-Wert
+            originalNeedValues.set(needId, originalValue);
+            resetCount++;
         });
 
-        console.log(`[AttributeSummaryCard] ${resetCount} Bedürfnisse auf Original-Werte zurückgesetzt`);
+        console.log(`[AttributeSummaryCard] Reset: ${resetCount} zurückgesetzt, ${skippedLocked} gesperrt übersprungen, ${skippedNoValue} ohne Originalwert`);
 
         // Trigger event for resonance recalculation
         if (resetCount > 0) {
@@ -1137,8 +1151,10 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
 
-        // Re-render für konsistente UI-Darstellung (Hauptfrage-Werte, Änderungs-Indikatoren)
+        // FIX v1.8.700: Cache invalidieren damit flatNeeds beim Re-Render
+        // frisch aus TiageState geladen wird (enthält jetzt alle Reset-Werte)
         if (resetCount > 0) {
+            invalidateFlatNeedsCache();
             reRenderFlatNeeds();
         }
     }
