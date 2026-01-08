@@ -1145,6 +1145,10 @@ const AttributeSummaryCard = (function() {
             needsToReset.forEach(needId => {
                 updateParentHauptfrageValue(needId);
             });
+
+            // FIX v1.8.700: Baseline aktualisieren damit "geändert"-Zähler korrekt ist
+            // Nach Reset auf Archetyp-Werte sollten diese Needs als "nicht geändert" gelten
+            updateBaselineAfterReset(currentPerson, currentArchetyp, needsToReset);
         }
 
         // FIX: Reset soll NUR Werte zurücksetzen - NICHT Filter oder Markierung ändern
@@ -2069,6 +2073,34 @@ const AttributeSummaryCard = (function() {
             baselineFlatNeeds[person] = { ...GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte };
             baselineArchetyp[person] = archetyp;
             console.log('[AttributeSummaryCard] Baseline gesetzt für', person, '/', archetyp, '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
+        }
+    }
+
+    /**
+     * FIX v1.8.700: Aktualisiert das Baseline nach einem Reset
+     * Damit der "geändert"-Zähler korrekt ist (0 nach Reset)
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {string} archetyp - Archetyp-ID
+     * @param {Array<string>} resetNeedIds - Array von Need-IDs die zurückgesetzt wurden
+     */
+    function updateBaselineAfterReset(person, archetyp, resetNeedIds) {
+        // Hole die Archetyp-Basis-Werte
+        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+            const archetypWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
+
+            // Initialisiere baseline falls nicht vorhanden
+            if (!baselineFlatNeeds[person]) {
+                baselineFlatNeeds[person] = {};
+            }
+
+            // Aktualisiere nur die zurückgesetzten Needs im Baseline
+            resetNeedIds.forEach(needId => {
+                if (archetypWerte[needId] !== undefined) {
+                    baselineFlatNeeds[person][needId] = archetypWerte[needId];
+                }
+            });
+
+            console.log('[AttributeSummaryCard] Baseline aktualisiert nach Reset für', person, '- Aktualisiert:', resetNeedIds.length);
         }
     }
 
