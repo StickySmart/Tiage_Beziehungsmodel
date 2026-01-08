@@ -730,7 +730,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B18",
-      "kontext": "tiefe Intimität"
+      "kontext": "tiefe Intimität",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 50,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 25
+        }
+      }
     },
     "#B21": {
       "id": "#B21",
@@ -823,7 +836,20 @@
         "#B26",
         "#B27",
         "#B28"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 90
+        }
+      }
     },
     "#B26": {
       "id": "#B26",
@@ -927,7 +953,20 @@
       "nuancen": [
         "#B30",
         "#B32"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 75
+        }
+      }
     },
     "#B32": {
       "id": "#B32",
@@ -981,7 +1020,20 @@
         "#B35",
         "#B36",
         "#B37"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 95,
+          "polyamor": 75,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 90
+        }
+      }
     },
     "#B35": {
       "id": "#B35",
@@ -1014,7 +1066,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B34",
-      "kontext": "unabhängig sein"
+      "kontext": "unabhängig sein",
+      "kohaerenz": {
+        "rFaktor": ["R2", "R3"],
+        "typischeWerte": {
+          "single": 90,
+          "duo": 40,
+          "duo_flex": 60,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 85
+        }
+      }
     },
     "#B37": {
       "id": "#B37",
@@ -1101,7 +1166,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B42",
-      "kontext": "Teil einer Gemeinschaft"
+      "kontext": "Teil einer Gemeinschaft",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 60,
+          "aromantisch": 75
+        }
+      }
     },
     "#B42": {
       "id": "#B42",
@@ -1121,7 +1199,20 @@
       "nuancen": [
         "#B41",
         "#B45"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B43": {
       "id": "#B43",
@@ -1264,7 +1355,20 @@
       "nuancen": [
         "#B51",
         "#B52"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 95,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      }
     },
     "#B51": {
       "id": "#B51",
@@ -1567,7 +1671,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B64",
-      "kontext": "sich ausdrücken"
+      "kontext": "sich ausdrücken",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      }
     },
     "#B68": {
       "id": "#B68",
@@ -1693,7 +1810,20 @@
       "frage": "Wie wichtig ist Kontrolle ausüben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Kontrolle & Dominanz"
+      "kontext": "Kontrolle & Dominanz",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 45,
+          "ra": 30,
+          "lat": 40,
+          "aromantisch": 40
+        }
+      }
     },
     "#B75": {
       "id": "#B75",
@@ -1712,7 +1842,20 @@
       "frage": "Wie wichtig ist Hingabe?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Hingabe & Submission"
+      "kontext": "Hingabe & Submission",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 60,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B76": {
       "id": "#B76",
@@ -1731,7 +1874,20 @@
       "frage": "Wie wichtig ist Führung geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "führende Rolle"
+      "kontext": "führende Rolle",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 50,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 40
+        }
+      }
     },
     "#B77": {
       "id": "#B77",
@@ -1750,7 +1906,20 @@
       "frage": "Wie wichtig ist geführt werden?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "geführt werden"
+      "kontext": "geführt werden",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 50,
+          "duo_flex": 50,
+          "solopoly": 40,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      }
     },
     "#B78": {
       "id": "#B78",
