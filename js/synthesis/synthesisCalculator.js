@@ -76,6 +76,17 @@
 
 var TiageSynthesis = TiageSynthesis || {};
 
+// ═══════════════════════════════════════════════════════════════════════════
+// R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
+// ═══════════════════════════════════════════════════════════════════════════
+function combineRFactors(R_ich, R_partner) {
+    var a = R_ich || 1.0;
+    var b = R_partner || 1.0;
+    var summe = a + b;
+    var similarity = Math.min(a, b) / Math.max(a, b);
+    return Math.round(summe * similarity * 1000) / 1000;
+}
+
 TiageSynthesis.Calculator = {
 
     /**
@@ -1043,26 +1054,20 @@ TiageSynthesis.Calculator = {
             return 1.0;
         }
 
-        // Wenn beide R-Werte verfügbar: Kombiniere via Produkt
+        // Wenn beide R-Werte verfügbar: Kombiniere via Summe × Similarity (v3.6)
         if (r1_ich && r1_partner && r1_ich.R1 !== undefined && r1_partner.R1 !== undefined) {
-            // Kombination via Produkt: verstärkt wenn beide kohärent, dämpft wenn beide inkohärent
-            var R1_combined = extractRValue(r1_ich.R1) * extractRValue(r1_partner.R1);
-            var R2_combined = extractRValue(r1_ich.R2) * extractRValue(r1_partner.R2);
-            var R3_combined = extractRValue(r1_ich.R3) * extractRValue(r1_partner.R3);
-            var R4_combined = extractRValue(r1_ich.R4) * extractRValue(r1_partner.R4);
-
-            // Runden auf 3 Dezimalstellen
-            R1_combined = Math.round(R1_combined * 1000) / 1000;
-            R2_combined = Math.round(R2_combined * 1000) / 1000;
-            R3_combined = Math.round(R3_combined * 1000) / 1000;
-            R4_combined = Math.round(R4_combined * 1000) / 1000;
+            // Kombination via Summe × Similarity: belohnt wenn beide ÄHNLICH sind
+            var R1_combined = combineRFactors(extractRValue(r1_ich.R1), extractRValue(r1_partner.R1));
+            var R2_combined = combineRFactors(extractRValue(r1_ich.R2), extractRValue(r1_partner.R2));
+            var R3_combined = combineRFactors(extractRValue(r1_ich.R3), extractRValue(r1_partner.R3));
+            var R4_combined = combineRFactors(extractRValue(r1_ich.R4), extractRValue(r1_partner.R4));
 
             perspectiveResult = {
                 R1: R1_combined,
                 R2: R2_combined,
                 R3: R3_combined,
                 R4: R4_combined,
-                source: 'stored_product',
+                source: 'stored_similarity',
                 individual: {
                     ich: r1_ich,
                     partner: r1_partner

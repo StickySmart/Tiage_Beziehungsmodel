@@ -10,6 +10,26 @@ import * as NeedsIntegration from './needsIntegration.js';
 import * as OrientationFactor from './orientationFactor.js';  // SSOT: Client-Logik
 
 // ═══════════════════════════════════════════════════════════════════════════
+// R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Neue Formel: R_kombiniert = (R_ich + R_partner) × similarity
+// wobei: similarity = min(R_ich, R_partner) / max(R_ich, R_partner)
+//
+// Vorteile gegenüber Multiplikation:
+// - Belohnt wenn beide HOCH UND ÄHNLICH sind
+// - Bestraft wenn einer hoch, einer niedrig (Mismatch)
+// - Neutral bei 2.0 (1.0 + 1.0 × 1.0)
+//
+function combineRFactors(R_ich, R_partner) {
+    const a = R_ich || 1.0;
+    const b = R_partner || 1.0;
+    const summe = a + b;
+    const similarity = Math.min(a, b) / Math.max(a, b);
+    return Math.round(summe * similarity * 1000) / 1000;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // MAIN CALCULATION
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -36,9 +56,9 @@ export function calculate(person1, person2, options = {}) {
     const resonanz1 = NeedsIntegration.calculateDimensionalResonance('ich', person1);
     const resonanz2 = NeedsIntegration.calculateDimensionalResonance('partner', person2);
 
-    // Kombiniere R-Faktoren via Produkt (R2, R3 bleiben Needs-basiert)
-    const R2 = (resonanz1.R2 || 1.0) * (resonanz2.R2 || 1.0);
-    const R3 = (resonanz1.R3 || 1.0) * (resonanz2.R3 || 1.0);
+    // Kombiniere R-Faktoren via Summe × Similarity (v3.6)
+    const R2 = combineRFactors(resonanz1.R2, resonanz2.R2);
+    const R3 = combineRFactors(resonanz1.R3, resonanz2.R3);
 
     // ═══════════════════════════════════════════════════════════════════
     // R1 (LEBEN/ORIENTIERUNG) - UNIVERSELLE BERECHNUNG
