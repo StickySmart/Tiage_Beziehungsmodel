@@ -234,8 +234,17 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // ARCHETYP-BEDÜRFNIS-KOHÄRENZ (v3.1)
+    // ARCHETYP-BEDÜRFNIS-KOHÄRENZ (v3.1) - DEPRECATED
     // ═══════════════════════════════════════════════════════════════════════
+    //
+    // @deprecated v3.5 - Diese Daten sind jetzt in beduerfnis-katalog.json
+    // im kohaerenz-Feld jedes Bedürfnisses definiert (SSOT).
+    // Verwende TiageSynthesis.NeedsIntegration.getNeedsByRFaktor() /
+    // buildExpectedValuesFromKatalog() statt direktem Zugriff.
+    //
+    // Wird noch als Legacy-Fallback verwendet, sollte aber nicht für neue
+    // Entwicklungen genutzt werden.
+    //
     // Definiert die archetyp-typischen Bedürfnis-Ausprägungen.
     // R_dim = Übereinstimmung zwischen tatsächlichen und archetyp-typischen Werten.
     //
@@ -866,8 +875,14 @@ TiageSynthesis.Constants = {
         ENABLED: true,
 
         // ─────────────────────────────────────────────────────────────────────
-        // KOMPLEMENTÄRE BEDÜRFNIS-PAARE (v3.2)
+        // KOMPLEMENTÄRE BEDÜRFNIS-PAARE (v3.2) - DEPRECATED
         // ─────────────────────────────────────────────────────────────────────
+        //
+        // @deprecated v3.5 - Diese Daten sind jetzt in beduerfnis-katalog.json
+        // im kohaerenz.komplementaer Feld jedes Bedürfnisses definiert (SSOT).
+        // Verwende TiageSynthesis.NeedsIntegration.buildComplementaryPairsFromKatalog()
+        // oder getKomplementaerFromKatalog() statt direktem Zugriff.
+        //
         // Diese Paare werden KREUZ-verglichen statt direkt:
         // ICH.geben ↔ PARTNER.empfangen (und umgekehrt)
         // Für R-Berechnung: similarity = 1 - |ICH.geben - PARTNER.empfangen| / 100
