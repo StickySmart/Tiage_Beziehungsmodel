@@ -17555,16 +17555,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // PAARUNGS-Resonanz berechnen: R_PAARUNG = R_ICH × R_PARTNER (Produkt)
+            // PAARUNGS-Resonanz berechnen: R_PAARUNG = Summe × Similarity (v3.6)
+            // Formel: (R_ich + R_partner) × (min/max) - belohnt Ähnlichkeit
             // ═══════════════════════════════════════════════════════════════════════════
-            const resonanzWerte = {
-                R1: Math.round(resonanzIch.R1 * resonanzPartner.R1 * 1000) / 1000,
-                R2: Math.round(resonanzIch.R2 * resonanzPartner.R2 * 1000) / 1000,
-                R3: Math.round(resonanzIch.R3 * resonanzPartner.R3 * 1000) / 1000,
-                R4: Math.round(resonanzIch.R4 * resonanzPartner.R4 * 1000) / 1000
+            const combineR = (a, b) => {
+                const summe = a + b;
+                const similarity = Math.min(a, b) / Math.max(a, b);
+                return Math.round(summe * similarity * 1000) / 1000;
             };
 
-            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'PAARUNG (Produkt):', resonanzWerte);
+            const resonanzWerte = {
+                R1: combineR(resonanzIch.R1, resonanzPartner.R1),
+                R2: combineR(resonanzIch.R2, resonanzPartner.R2),
+                R3: combineR(resonanzIch.R3, resonanzPartner.R3),
+                R4: combineR(resonanzIch.R4, resonanzPartner.R4)
+            };
+
+            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'PAARUNG (Summe×Similarity):', resonanzWerte);
 
             // R-Faktoren Konfiguration mit AGOD-Zuordnung (v3.3: 18 Kategorien)
             // Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.

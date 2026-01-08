@@ -11,6 +11,17 @@
 import * as Constants from './constants.js';
 
 // ═══════════════════════════════════════════════════════════════════════════
+// R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
+// ═══════════════════════════════════════════════════════════════════════════
+function combineRFactors(R_ich, R_partner) {
+    const a = R_ich || 1.0;
+    const b = R_partner || 1.0;
+    const summe = a + b;
+    const similarity = Math.min(a, b) / Math.max(a, b);
+    return Math.round(summe * similarity * 1000) / 1000;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // SSOT: DIMENSION → NEED-IDs MAPPING
 // ═══════════════════════════════════════════════════════════════════════════
 // Definiert welche #B-IDs zu welcher R-Dimension gehören
@@ -356,12 +367,12 @@ export function calculateResonanceFromPerspectives(needs1, archetyp1, needs2, ar
     const r1 = calculateDimensionalResonance('ich', { archetyp: archetyp1, needs: needs1 });
     const r2 = calculateDimensionalResonance('partner', { archetyp: archetyp2, needs: needs2 });
 
-    // Kombiniere via Produkt
+    // Kombiniere via Summe × Similarity (v3.6)
     return {
-        R1: r1.R1 * r2.R1,
-        R2: r1.R2 * r2.R2,
-        R3: r1.R3 * r2.R3,
-        R4: r1.R4 * r2.R4,
+        R1: combineRFactors(r1.R1, r2.R1),
+        R2: combineRFactors(r1.R2, r2.R2),
+        R3: combineRFactors(r1.R3, r2.R3),
+        R4: combineRFactors(r1.R4, r2.R4),
         source: 'calculated',
         individual: { ich: r1, partner: r2 }
     };
