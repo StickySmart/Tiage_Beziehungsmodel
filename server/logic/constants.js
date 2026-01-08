@@ -223,7 +223,8 @@ export const EXPLORATION = {
 
 export const NEEDS_INTEGRATION = {
     ENABLED: true,
-    // Komplementäre Bedürfnis-Paare (v3.2) - werden KREUZ-verglichen
+    // Komplementäre Bedürfnis-Paare (v3.2) - DEPRECATED
+    // @deprecated v3.5 - Daten jetzt in beduerfnis-katalog.json (kohaerenz.komplementaer)
     COMPLEMENTARY_PAIRS: {
         '#B74': '#B75',   // Kontrolle-ausüben ↔ Hingabe
         '#B75': '#B74',
@@ -271,8 +272,10 @@ export const NEEDS_INTEGRATION = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ARCHETYP-KOHÄRENZ (für R-Faktoren)
+// ARCHETYP-KOHÄRENZ (für R-Faktoren) - DEPRECATED
 // ═══════════════════════════════════════════════════════════════════════════
+// @deprecated v3.5 - Daten jetzt in beduerfnis-katalog.json (kohaerenz.rFaktor, kohaerenz.typischeWerte)
+// Verwende NeedsIntegration.getNeedsByRFaktor() / buildExpectedValuesFromKatalog()
 
 export const ARCHETYP_KOHAERENZ = {
     leben: {

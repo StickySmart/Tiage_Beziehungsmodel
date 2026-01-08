@@ -730,7 +730,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B18",
-      "kontext": "tiefe Intimität"
+      "kontext": "tiefe Intimität",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 50,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 25
+        }
+      }
     },
     "#B21": {
       "id": "#B21",
@@ -823,7 +836,20 @@
         "#B26",
         "#B27",
         "#B28"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 90
+        }
+      }
     },
     "#B26": {
       "id": "#B26",
@@ -927,7 +953,20 @@
       "nuancen": [
         "#B30",
         "#B32"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 75
+        }
+      }
     },
     "#B32": {
       "id": "#B32",
@@ -981,7 +1020,20 @@
         "#B35",
         "#B36",
         "#B37"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 95,
+          "polyamor": 75,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 90
+        }
+      }
     },
     "#B35": {
       "id": "#B35",
@@ -1014,7 +1066,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B34",
-      "kontext": "unabhängig sein"
+      "kontext": "unabhängig sein",
+      "kohaerenz": {
+        "rFaktor": ["R2", "R3"],
+        "typischeWerte": {
+          "single": 90,
+          "duo": 40,
+          "duo_flex": 60,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 85
+        }
+      }
     },
     "#B37": {
       "id": "#B37",
@@ -1101,7 +1166,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B42",
-      "kontext": "Teil einer Gemeinschaft"
+      "kontext": "Teil einer Gemeinschaft",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 60,
+          "aromantisch": 75
+        }
+      }
     },
     "#B42": {
       "id": "#B42",
@@ -1121,7 +1199,20 @@
       "nuancen": [
         "#B41",
         "#B45"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B43": {
       "id": "#B43",
@@ -1264,7 +1355,20 @@
       "nuancen": [
         "#B51",
         "#B52"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 95,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      }
     },
     "#B51": {
       "id": "#B51",
@@ -1567,7 +1671,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B64",
-      "kontext": "sich ausdrücken"
+      "kontext": "sich ausdrücken",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      }
     },
     "#B68": {
       "id": "#B68",
@@ -1693,7 +1810,21 @@
       "frage": "Wie wichtig ist Kontrolle ausüben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Kontrolle & Dominanz"
+      "kontext": "Kontrolle & Dominanz",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B75",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 45,
+          "ra": 30,
+          "lat": 40,
+          "aromantisch": 40
+        }
+      }
     },
     "#B75": {
       "id": "#B75",
@@ -1712,7 +1843,21 @@
       "frage": "Wie wichtig ist Hingabe?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Hingabe & Submission"
+      "kontext": "Hingabe & Submission",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B74",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 60,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B76": {
       "id": "#B76",
@@ -1731,7 +1876,21 @@
       "frage": "Wie wichtig ist Führung geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "führende Rolle"
+      "kontext": "führende Rolle",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B77",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 50,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 40
+        }
+      }
     },
     "#B77": {
       "id": "#B77",
@@ -1750,7 +1909,21 @@
       "frage": "Wie wichtig ist geführt werden?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "geführt werden"
+      "kontext": "geführt werden",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B76",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 50,
+          "duo_flex": 50,
+          "solopoly": 40,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      }
     },
     "#B78": {
       "id": "#B78",
@@ -1873,7 +2046,11 @@
       "frage": "Wie wichtig ist Vertrauen schenken?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B80",
-      "kontext": "Vertrauen aufbauen"
+      "kontext": "Vertrauen aufbauen",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B226"
+      }
     },
     "#B84": {
       "id": "#B84",
@@ -1978,7 +2155,11 @@
       "frage": "Wie wichtig ist beschützen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "beschützende Rolle"
+      "kontext": "beschützende Rolle",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B225"
+      }
     },
     "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
     "#B89": {
@@ -1997,7 +2178,20 @@
         "#B91",
         "#B92",
         "#B93"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 30,
+          "polyamor": 50,
+          "ra": 35,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B90": {
       "id": "#B90",
@@ -2065,7 +2259,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B95",
-      "kontext": "verbindliche Partnerschaft"
+      "kontext": "verbindliche Partnerschaft",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 30,
+          "lat": 80,
+          "aromantisch": 35
+        }
+      }
     },
     "#B95": {
       "id": "#B95",
@@ -2086,7 +2293,20 @@
         "#B94",
         "#B96",
         "#B97"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 40,
+          "lat": 80,
+          "aromantisch": 30
+        }
+      }
     },
     "#B96": {
       "id": "#B96",
@@ -2153,7 +2373,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "häusliches Leben"
+      "kontext": "häusliches Leben",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 10,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 20,
+          "polyamor": 60,
+          "ra": 35,
+          "lat": 25,
+          "aromantisch": 30
+        }
+      }
     },
     "#B100": {
       "id": "#B100",
@@ -2186,7 +2419,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "Alltag gemeinsam leben"
+      "kontext": "Alltag gemeinsam leben",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 35,
+          "polyamor": 65,
+          "ra": 40,
+          "lat": 45,
+          "aromantisch": 40
+        }
+      }
     },
     "#B102": {
       "id": "#B102",
@@ -2202,7 +2448,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "eigenes Zimmer/Raum"
+      "kontext": "eigenes Zimmer/Raum",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 30,
+          "duo_flex": 50,
+          "solopoly": 90,
+          "polyamor": 60,
+          "ra": 80,
+          "lat": 85,
+          "aromantisch": 80
+        }
+      }
     },
     "#B103": {
       "id": "#B103",
@@ -3218,7 +3477,20 @@
         "#B163",
         "#B164",
         "#B165"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 60,
+          "aromantisch": 30
+        }
+      }
     },
     "#B161": {
       "id": "#B161",
@@ -3491,7 +3763,20 @@
       "frage": "Wie wichtig ist sexuelle Offenheit?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "sexuelle Offenheit"
+      "kontext": "sexuelle Offenheit",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 40,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 50,
+          "aromantisch": 40
+        }
+      }
     },
     "#B176": {
       "id": "#B176",
@@ -3509,7 +3794,20 @@
       "frage": "Wie wichtig ist tiefe sexuelle Verbindung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "tiefe sexuelle Verbindung"
+      "kontext": "tiefe sexuelle Verbindung",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 20
+        }
+      }
     },
     "#B177": {
       "id": "#B177",
@@ -4150,7 +4448,11 @@
       "frage": "Wie wichtig ist Ihnen Bondage-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Bondage & Fesseln (aktiv)"
+      "kontext": "Bondage & Fesseln (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B223"
+      }
     },
     "#B213": {
       "id": "#B213",
@@ -4161,7 +4463,11 @@
       "frage": "Wie wichtig ist Ihnen Devotion?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Hingabe & Verehrung"
+      "kontext": "Hingabe & Verehrung",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B214"
+      }
     },
     "#B214": {
       "id": "#B214",
@@ -4172,7 +4478,11 @@
       "frage": "Wie wichtig ist Ihnen Anbetung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Verehrung & Worship"
+      "kontext": "Verehrung & Worship",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B213"
+      }
     },
     "#B215": {
       "id": "#B215",
@@ -4183,7 +4493,11 @@
       "frage": "Wie wichtig ist Ihnen Demütig-sein?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Demut & Unterwerfung"
+      "kontext": "Demut & Unterwerfung",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B216"
+      }
     },
     "#B216": {
       "id": "#B216",
@@ -4194,7 +4508,11 @@
       "frage": "Wie wichtig ist Ihnen Dominieren?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Dominanz ausüben"
+      "kontext": "Dominanz ausüben",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B215"
+      }
     },
     "#B217": {
       "id": "#B217",
@@ -4205,7 +4523,11 @@
       "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Punishment (passiv)"
+      "kontext": "Punishment (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B218"
+      }
     },
     "#B218": {
       "id": "#B218",
@@ -4216,7 +4538,11 @@
       "frage": "Wie wichtig ist Ihnen Bestrafen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Punishment (aktiv)"
+      "kontext": "Punishment (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B217"
+      }
     },
     "#B219": {
       "id": "#B219",
@@ -4227,7 +4553,11 @@
       "frage": "Wie wichtig ist Ihnen Service zu geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "Service geben (aktiv)"
+      "kontext": "Service geben (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B220"
+      }
     },
     "#B220": {
       "id": "#B220",
@@ -4238,7 +4568,11 @@
       "frage": "Wie wichtig ist Ihnen Service zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "Service empfangen (passiv)"
+      "kontext": "Service empfangen (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B219"
+      }
     },
     "#B221": {
       "id": "#B221",
@@ -4249,7 +4583,11 @@
       "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Schmerz (passiv)"
+      "kontext": "Schmerz (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B222"
+      }
     },
     "#B222": {
       "id": "#B222",
@@ -4260,7 +4598,11 @@
       "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Schmerz (aktiv)"
+      "kontext": "Schmerz (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B221"
+      }
     },
     "#B223": {
       "id": "#B223",
@@ -4271,7 +4613,11 @@
       "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Bondage & Fesseln (passiv)"
+      "kontext": "Bondage & Fesseln (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B212"
+      }
     },
     "#B225": {
       "id": "#B225",
@@ -4282,7 +4628,11 @@
       "frage": "Wie wichtig ist Ihnen beschützt zu werden?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "beschützt werden (passiv)"
+      "kontext": "beschützt werden (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B88"
+      }
     },
     "#B226": {
       "id": "#B226",
@@ -4293,7 +4643,11 @@
       "frage": "Wie wichtig ist Ihnen Vertrauen zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B80",
-      "kontext": "Vertrauen empfangen (passiv)"
+      "kontext": "Vertrauen empfangen (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B83"
+      }
     }
   }
 }

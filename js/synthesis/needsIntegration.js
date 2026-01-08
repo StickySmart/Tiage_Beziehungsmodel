@@ -16,6 +16,187 @@ var TiageSynthesis = TiageSynthesis || {};
 
 TiageSynthesis.NeedsIntegration = {
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // KATALOG-BASIERTE KOHÄRENZ-FUNKTIONEN (v3.4)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // SSOT: Kohärenz-Daten kommen direkt aus beduerfnis-katalog.json
+    // Jedes Bedürfnis hat optional:
+    //   kohaerenz: {
+    //     rFaktor: "R1" | "R2" | "R3" | "R4" | ["R2", "R3"],
+    //     komplementaer: "#Bxxx",
+    //     typischeWerte: { single: x, duo: y, ... }
+    //   }
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Cache für Katalog-Daten
+     * @private
+     */
+    _katalogCache: null,
+
+    /**
+     * Lädt den Bedürfnis-Katalog (mit Caching)
+     * @returns {Object|null} Katalog-Objekt oder null
+     */
+    getBeduerfnisKatalog: function() {
+        if (this._katalogCache) {
+            return this._katalogCache;
+        }
+
+        // Versuche verschiedene Quellen
+        if (typeof window !== 'undefined' && window.BeduerfnisKatalog) {
+            this._katalogCache = window.BeduerfnisKatalog;
+            return this._katalogCache;
+        }
+
+        // Fallback: Globale Variable
+        if (typeof BeduerfnisKatalog !== 'undefined') {
+            this._katalogCache = BeduerfnisKatalog;
+            return this._katalogCache;
+        }
+
+        console.warn('[NeedsIntegration] Bedürfnis-Katalog nicht gefunden');
+        return null;
+    },
+
+    /**
+     * Holt alle Bedürfnisse für einen bestimmten R-Faktor aus dem Katalog
+     *
+     * @param {string} rFaktor - "R1", "R2", "R3" oder "R4"
+     * @returns {Array} Array von {id, label, typischeWerte, komplementaer}
+     */
+    getNeedsByRFaktor: function(rFaktor) {
+        var katalog = this.getBeduerfnisKatalog();
+        if (!katalog || !katalog.beduerfnisse) {
+            return [];
+        }
+
+        var result = [];
+        var beduerfnisse = katalog.beduerfnisse;
+
+        for (var id in beduerfnisse) {
+            if (beduerfnisse.hasOwnProperty(id)) {
+                var bed = beduerfnisse[id];
+                if (bed.kohaerenz && bed.kohaerenz.rFaktor) {
+                    var faktoren = bed.kohaerenz.rFaktor;
+                    // Kann String oder Array sein
+                    if (Array.isArray(faktoren)) {
+                        if (faktoren.indexOf(rFaktor) !== -1) {
+                            result.push({
+                                id: id,
+                                label: bed.label,
+                                typischeWerte: bed.kohaerenz.typischeWerte || {},
+                                komplementaer: bed.kohaerenz.komplementaer || null
+                            });
+                        }
+                    } else if (faktoren === rFaktor) {
+                        result.push({
+                            id: id,
+                            label: bed.label,
+                            typischeWerte: bed.kohaerenz.typischeWerte || {},
+                            komplementaer: bed.kohaerenz.komplementaer || null
+                        });
+                    }
+                }
+            }
+        }
+
+        return result;
+    },
+
+    /**
+     * Holt das komplementäre Bedürfnis für eine ID aus dem Katalog
+     *
+     * @param {string} needId - Bedürfnis-ID (z.B. "#B74")
+     * @returns {string|null} Komplementäre ID oder null
+     */
+    getKomplementaerFromKatalog: function(needId) {
+        var katalog = this.getBeduerfnisKatalog();
+        if (!katalog || !katalog.beduerfnisse) {
+            return null;
+        }
+
+        var bed = katalog.beduerfnisse[needId];
+        if (bed && bed.kohaerenz && bed.kohaerenz.komplementaer) {
+            return bed.kohaerenz.komplementaer;
+        }
+
+        return null;
+    },
+
+    /**
+     * Holt den typischen Wert für ein Bedürfnis und Archetyp aus dem Katalog
+     *
+     * @param {string} needId - Bedürfnis-ID (z.B. "#B74")
+     * @param {string} archetyp - Archetyp-Key (z.B. "single", "duo")
+     * @returns {number|null} Typischer Wert oder null
+     */
+    getTypischerWertFromKatalog: function(needId, archetyp) {
+        var katalog = this.getBeduerfnisKatalog();
+        if (!katalog || !katalog.beduerfnisse) {
+            return null;
+        }
+
+        var bed = katalog.beduerfnisse[needId];
+        if (bed && bed.kohaerenz && bed.kohaerenz.typischeWerte) {
+            return bed.kohaerenz.typischeWerte[archetyp] || null;
+        }
+
+        return null;
+    },
+
+    /**
+     * Baut COMPLEMENTARY_PAIRS dynamisch aus dem Katalog
+     * @returns {Object} Mapping {needId: komplementaerNeedId}
+     */
+    buildComplementaryPairsFromKatalog: function() {
+        var katalog = this.getBeduerfnisKatalog();
+        if (!katalog || !katalog.beduerfnisse) {
+            return {};
+        }
+
+        var pairs = {};
+        var beduerfnisse = katalog.beduerfnisse;
+
+        for (var id in beduerfnisse) {
+            if (beduerfnisse.hasOwnProperty(id)) {
+                var bed = beduerfnisse[id];
+                if (bed.kohaerenz && bed.kohaerenz.komplementaer) {
+                    pairs[id] = bed.kohaerenz.komplementaer;
+                }
+            }
+        }
+
+        return pairs;
+    },
+
+    /**
+     * Baut erwartete Werte für einen R-Faktor und Archetyp aus dem Katalog
+     * @param {string} rFaktor - "R1", "R2", "R3" oder "R4"
+     * @param {string} archetyp - Archetyp-Key
+     * @returns {Object} Mapping {needId: expectedValue}
+     */
+    buildExpectedValuesFromKatalog: function(rFaktor, archetyp) {
+        var needs = this.getNeedsByRFaktor(rFaktor);
+        var result = {};
+
+        for (var i = 0; i < needs.length; i++) {
+            var need = needs[i];
+            var typischerWert = need.typischeWerte[archetyp];
+            if (typischerWert !== undefined) {
+                result[need.id] = {
+                    value: typischerWert,
+                    id: need.id,
+                    label: need.label,
+                    komplementaer: need.komplementaer
+                };
+            }
+        }
+
+        return result;
+    },
+
     /**
      * Berechnet den Bedürfnis-Match für eine bestimmte Faktor-Gruppe
      *
@@ -371,8 +552,13 @@ TiageSynthesis.NeedsIntegration = {
      */
     _calculatePaarungsSingleResonance: function(ichNeeds, partnerNeeds, needsList) {
         var self = this;
-        var constants = TiageSynthesis.Constants;
-        var complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
+        // v3.5: Komplementär-Paare aus Katalog laden (SSOT)
+        var complementaryPairs = this.buildComplementaryPairsFromKatalog();
+        // Fallback auf alte Konstanten wenn Katalog leer
+        if (Object.keys(complementaryPairs).length === 0) {
+            var constants = TiageSynthesis.Constants;
+            complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
+        }
 
         if (!needsList || needsList.length === 0) {
             // Fallback: Vergleiche ALLE gemeinsamen Needs
@@ -420,8 +606,13 @@ TiageSynthesis.NeedsIntegration = {
      * @private
      */
     _calculateAllNeedsSimilarity: function(ichNeeds, partnerNeeds) {
-        var constants = TiageSynthesis.Constants;
-        var complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
+        // v3.5: Komplementär-Paare aus Katalog laden (SSOT)
+        var complementaryPairs = this.buildComplementaryPairsFromKatalog();
+        // Fallback auf alte Konstanten wenn Katalog leer
+        if (Object.keys(complementaryPairs).length === 0) {
+            var constants = TiageSynthesis.Constants;
+            complementaryPairs = constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.COMPLEMENTARY_PAIRS || {};
+        }
         var totalDiff = 0;
         var count = 0;
 
@@ -455,6 +646,8 @@ TiageSynthesis.NeedsIntegration = {
      * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität, R_Philosophie
      * basierend auf der Kohärenz zwischen Archetyp und Bedürfnissen.
      *
+     * v3.5 SSOT: Kohärenz-Daten kommen direkt aus dem Bedürfnis-Katalog
+     *
      * HINWEIS: Diese Funktion berechnet INDIVIDUELLE R-Werte (Person vs Archetyp).
      * Für PAARUNGS-R-Werte (ICH vs PARTNER) verwende calculatePaarungsResonance().
      *
@@ -462,24 +655,27 @@ TiageSynthesis.NeedsIntegration = {
      * @returns {object} { leben: R, dynamik: R, identitaet: R, philosophie: R }
      */
     calculateDimensionalResonance: function(person) {
-        var constants = TiageSynthesis.Constants;
-        var kohaerenz = constants.ARCHETYP_KOHAERENZ;
+        var self = this;
 
         // Needs können in person.needs oder person.profileReview.flatNeeds sein
         var needs = person.needs || (person.profileReview && person.profileReview.flatNeeds);
 
+        // Prüfe Katalog-Verfügbarkeit
+        var katalog = this.getBeduerfnisKatalog();
+        var hasKatalogKohaerenz = katalog && katalog.beduerfnisse &&
+            this.getNeedsByRFaktor('R1').length > 0;
+
         // Debug-Logging für Diagnose
         console.log('[NeedsIntegration.calculateDimensionalResonance] Input:', {
-            hasKohaerenz: !!kohaerenz,
+            hasKatalogKohaerenz: hasKatalogKohaerenz,
             archetyp: person.archetyp,
             needsType: needs ? (Array.isArray(needs) ? 'array' : 'object') : 'null',
             needsCount: needs ? Object.keys(needs).length : 0,
             sampleNeeds: needs ? Object.keys(needs).slice(0, 5) : []
         });
 
-        if (!kohaerenz || !person.archetyp || !needs) {
+        if (!person.archetyp || !needs) {
             console.warn('[NeedsIntegration.calculateDimensionalResonance] ABBRUCH - Fehlende Daten:', {
-                kohaerenz: !!kohaerenz,
                 archetyp: person.archetyp,
                 needs: !!needs
             });
@@ -494,11 +690,12 @@ TiageSynthesis.NeedsIntegration = {
 
         var archetyp = person.archetyp.key || person.archetyp;
 
+        // v3.5: R-Faktoren direkt mit rFaktor-String berechnen
         var result = {
-            leben: this._calculateSingleResonance(needs, kohaerenz.leben, archetyp),
-            dynamik: this._calculateSingleResonance(needs, kohaerenz.dynamik, archetyp),
-            identitaet: this._calculateSingleResonance(needs, kohaerenz.identitaet, archetyp),
-            philosophie: this._calculateSingleResonance(needs, kohaerenz.philosophie, archetyp),
+            leben: this._calculateSingleResonanceV35(needs, 'R1', archetyp),
+            philosophie: this._calculateSingleResonanceV35(needs, 'R2', archetyp),
+            dynamik: this._calculateSingleResonanceV35(needs, 'R3', archetyp),
+            identitaet: this._calculateSingleResonanceV35(needs, 'R4', archetyp),
             enabled: true,
             archetyp: archetyp
         };
@@ -515,7 +712,103 @@ TiageSynthesis.NeedsIntegration = {
     },
 
     /**
-     * v3.3 SSOT: Abweichungs-basierte Resonanz
+     * v3.5 SSOT: Katalog-basierte Resonanz-Berechnung
+     *
+     * FORMEL: R = (avgMatch)²
+     * wobei: match = 1 + (actual - expected) / 100
+     *
+     * SSOT: Referenz-Werte kommen direkt aus beduerfnis-katalog.json
+     * über das kohaerenz.typischeWerte Feld
+     *
+     * @param {Object} needs - Die tatsächlichen Bedürfnis-Werte der Person
+     * @param {string} rFaktor - "R1", "R2", "R3" oder "R4"
+     * @param {string} archetyp - Archetyp-Key (z.B. "single", "duo")
+     * @returns {number} R-Wert (quadratisch, mit Richtung)
+     * @private
+     */
+    _calculateSingleResonanceV35: function(needs, rFaktor, archetyp) {
+        var self = this;
+
+        // v3.5: Erwartete Werte aus Katalog holen
+        var expectedNeeds = this.buildExpectedValuesFromKatalog(rFaktor, archetyp);
+
+        // Fallback auf alte Methode wenn Katalog keine Daten hat
+        if (!expectedNeeds || Object.keys(expectedNeeds).length === 0) {
+            console.log('[NeedsIntegration._calculateSingleResonanceV35] Keine Katalog-Daten für',
+                rFaktor, archetyp, '- verwende Legacy-Fallback');
+            // Fallback: Alte Methode mit ARCHETYP_KOHAERENZ
+            var constants = TiageSynthesis.Constants;
+            var kohaerenz = constants.ARCHETYP_KOHAERENZ;
+            if (kohaerenz) {
+                var dimensionMap = { 'R1': 'leben', 'R2': 'philosophie', 'R3': 'dynamik', 'R4': 'identitaet' };
+                var dimension = dimensionMap[rFaktor];
+                if (dimension && kohaerenz[dimension]) {
+                    return this._calculateSingleResonance(needs, kohaerenz[dimension], archetyp);
+                }
+            }
+            return 1.0; // Neutral wenn keine Daten
+        }
+
+        var totalMatch = 0;
+        var count = 0;
+        var debugMatches = [];
+
+        for (var needId in expectedNeeds) {
+            if (expectedNeeds.hasOwnProperty(needId)) {
+                var expectedEntry = expectedNeeds[needId];
+                var expectedValue = expectedEntry.value;
+                var label = expectedEntry.label || needId;
+
+                // Hole tatsächlichen Wert - versuche ID und Label
+                var actualValue = this._getNeedValue(needs, needId, label);
+
+                if (actualValue !== undefined && expectedValue !== undefined) {
+                    // v3.4: Richtungs-basierte Resonanz
+                    var abweichung = (actualValue - expectedValue) / 100;
+                    var match = 1 + abweichung;
+                    totalMatch += match;
+                    count++;
+
+                    // Richtung bestimmen
+                    var richtung = abweichung > 0.001 ? '+' : (abweichung < -0.001 ? '-' : '=');
+
+                    debugMatches.push({
+                        id: needId,
+                        label: label,
+                        actual: actualValue,
+                        expected: expectedValue,
+                        abweichung: Math.round(abweichung * 100),
+                        richtung: richtung,
+                        match: Math.round(match * 100) / 100
+                    });
+                }
+            }
+        }
+
+        if (count === 0) {
+            console.warn('[NeedsIntegration._calculateSingleResonanceV35] Keine Bedürfnisse gefunden für:',
+                rFaktor, archetyp);
+            return 1.0;
+        }
+
+        // v3.5: R = avgMatch² (quadratisch, mit Richtung)
+        var avgMatch = totalMatch / count;
+        var rValue = avgMatch * avgMatch;
+
+        console.log('[NeedsIntegration._calculateSingleResonanceV35] Katalog-Berechnung:', {
+            rFaktor: rFaktor,
+            archetyp: archetyp,
+            avgMatch: (avgMatch * 100).toFixed(1) + '%',
+            R: rValue.toFixed(3),
+            count: count,
+            matches: debugMatches
+        });
+
+        return Math.round(rValue * 1000) / 1000;
+    },
+
+    /**
+     * v3.3 SSOT: Abweichungs-basierte Resonanz (LEGACY)
      *
      * FORMEL: R = similarity² = (avgMatch)²
      * wobei: match = 1 - |actual - expected| / 100
@@ -526,6 +819,7 @@ TiageSynthesis.NeedsIntegration = {
      * SSOT: Referenz-Werte kommen aus BaseArchetypProfile.beduerfnisse
      * Fallback auf ARCHETYP_KOHAERENZ für Legacy-Kompatibilität
      *
+     * @deprecated Verwende _calculateSingleResonanceV35 stattdessen
      * @private
      */
     _calculateSingleResonance: function(needs, dimensionKohaerenz, archetyp) {
