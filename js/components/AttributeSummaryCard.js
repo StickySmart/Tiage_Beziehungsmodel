@@ -1085,6 +1085,7 @@ const AttributeSummaryCard = (function() {
         let resetCount = 0;
         let skippedLocked = 0;
         let skippedNoValue = 0;
+        const actuallyResetNeeds = []; // FIX: Nur tatsächlich zurückgesetzte Needs tracken
         needsToReset.forEach(needId => {
             // FIX v1.8.700: Prüfe Lock-Status direkt aus TiageState (SSOT)
             // statt aus flatNeeds, da flatNeeds möglicherweise nicht alle Needs enthält
@@ -1132,6 +1133,7 @@ const AttributeSummaryCard = (function() {
 
             // Aktualisiere auch den gespeicherten Original-Wert
             originalNeedValues.set(needId, originalValue);
+            actuallyResetNeeds.push(needId); // FIX: Tracke tatsächlich zurückgesetzte Needs
             resetCount++;
         });
 
@@ -1148,7 +1150,8 @@ const AttributeSummaryCard = (function() {
 
             // FIX v1.8.700: Baseline aktualisieren damit "geändert"-Zähler korrekt ist
             // Nach Reset auf Archetyp-Werte sollten diese Needs als "nicht geändert" gelten
-            updateBaselineAfterReset(currentPerson, currentArchetyp, needsToReset);
+            // WICHTIG: Nur für tatsächlich zurückgesetzte Needs, NICHT für gesperrte!
+            updateBaselineAfterReset(currentPerson, currentArchetyp, actuallyResetNeeds);
         }
 
         // FIX: Reset soll NUR Werte zurücksetzen - NICHT Filter oder Markierung ändern
