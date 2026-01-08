@@ -1158,6 +1158,13 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
 
+        // FIX v1.8.701: Explizit speichern nach Reset (nicht nur debounced)
+        // Damit beim Wechsel ICH/PARTNER die Werte korrekt geladen werden
+        if (resetCount > 0 && typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+            TiageState.saveToStorage();
+            console.log('[AttributeSummaryCard] Reset gespeichert für', currentPerson);
+        }
+
         // FIX v1.8.700: Cache invalidieren damit flatNeeds beim Re-Render
         // frisch aus TiageState geladen wird (enthält jetzt alle Reset-Werte)
         if (resetCount > 0) {
