@@ -2046,7 +2046,11 @@
       "frage": "Wie wichtig ist Vertrauen schenken?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B80",
-      "kontext": "Vertrauen aufbauen"
+      "kontext": "Vertrauen aufbauen",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B226"
+      }
     },
     "#B84": {
       "id": "#B84",
@@ -2151,7 +2155,11 @@
       "frage": "Wie wichtig ist beschützen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "beschützende Rolle"
+      "kontext": "beschützende Rolle",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B225"
+      }
     },
     "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
     "#B89": {
@@ -4440,7 +4448,11 @@
       "frage": "Wie wichtig ist Ihnen Bondage-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Bondage & Fesseln (aktiv)"
+      "kontext": "Bondage & Fesseln (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B223"
+      }
     },
     "#B213": {
       "id": "#B213",
@@ -4451,7 +4463,11 @@
       "frage": "Wie wichtig ist Ihnen Devotion?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Hingabe & Verehrung"
+      "kontext": "Hingabe & Verehrung",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B214"
+      }
     },
     "#B214": {
       "id": "#B214",
@@ -4462,7 +4478,11 @@
       "frage": "Wie wichtig ist Ihnen Anbetung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Verehrung & Worship"
+      "kontext": "Verehrung & Worship",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B213"
+      }
     },
     "#B215": {
       "id": "#B215",
@@ -4473,7 +4493,11 @@
       "frage": "Wie wichtig ist Ihnen Demütig-sein?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Demut & Unterwerfung"
+      "kontext": "Demut & Unterwerfung",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B216"
+      }
     },
     "#B216": {
       "id": "#B216",
@@ -4484,7 +4508,11 @@
       "frage": "Wie wichtig ist Ihnen Dominieren?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
-      "kontext": "Dominanz ausüben"
+      "kontext": "Dominanz ausüben",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B215"
+      }
     },
     "#B217": {
       "id": "#B217",
@@ -4495,7 +4523,11 @@
       "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Punishment (passiv)"
+      "kontext": "Punishment (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B218"
+      }
     },
     "#B218": {
       "id": "#B218",
@@ -4506,7 +4538,11 @@
       "frage": "Wie wichtig ist Ihnen Bestrafen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Punishment (aktiv)"
+      "kontext": "Punishment (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B217"
+      }
     },
     "#B219": {
       "id": "#B219",
@@ -4517,7 +4553,11 @@
       "frage": "Wie wichtig ist Ihnen Service zu geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "Service geben (aktiv)"
+      "kontext": "Service geben (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B220"
+      }
     },
     "#B220": {
       "id": "#B220",
@@ -4528,7 +4568,11 @@
       "frage": "Wie wichtig ist Ihnen Service zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "Service empfangen (passiv)"
+      "kontext": "Service empfangen (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B219"
+      }
     },
     "#B221": {
       "id": "#B221",
@@ -4539,7 +4583,11 @@
       "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Schmerz (passiv)"
+      "kontext": "Schmerz (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B222"
+      }
     },
     "#B222": {
       "id": "#B222",
@@ -4550,7 +4598,11 @@
       "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Schmerz (aktiv)"
+      "kontext": "Schmerz (aktiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B221"
+      }
     },
     "#B223": {
       "id": "#B223",
@@ -4561,7 +4613,11 @@
       "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Bondage & Fesseln (passiv)"
+      "kontext": "Bondage & Fesseln (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B212"
+      }
     },
     "#B225": {
       "id": "#B225",
@@ -4572,7 +4628,11 @@
       "frage": "Wie wichtig ist Ihnen beschützt zu werden?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
-      "kontext": "beschützt werden (passiv)"
+      "kontext": "beschützt werden (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B88"
+      }
     },
     "#B226": {
       "id": "#B226",
@@ -4583,7 +4643,11 @@
       "frage": "Wie wichtig ist Ihnen Vertrauen zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B80",
-      "kontext": "Vertrauen empfangen (passiv)"
+      "kontext": "Vertrauen empfangen (passiv)",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "komplementaer": "#B83"
+      }
     }
   }
 }
