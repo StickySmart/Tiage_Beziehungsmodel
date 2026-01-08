@@ -1112,19 +1112,19 @@
         function saveCurrentState() {
             // FIX: Speichere ALLE relevanten Komponenten-States vor Person-Wechsel
 
-            // 1. FlatNeeds speichern
+            // 1. FlatNeeds speichern - NUR localStorage als Backup
+            // FIX v1.8.705: TiageState wird bereits von TiageState.setNeed() aktuell gehalten!
+            // NICHT nach TiageState schreiben - das würde das Format überschreiben:
+            // - TiageState.setNeed() speichert: { '#B1': 50 } (OBJECT)
+            // - getFlatNeeds() liefert: [{id, value, locked}] (ARRAY)
+            // Das Überschreiben mit ARRAY bricht den späteren Zugriff via umfrageWerte[needId]
             if (typeof AttributeSummaryCard !== 'undefined') {
                 const flatNeeds = AttributeSummaryCard.getFlatNeeds();
                 if (flatNeeds) {
-                    // FIX: Save to localStorage with person-specific key
+                    // Nur localStorage als Legacy-Backup (für Migration/Fallback)
                     localStorage.setItem('tiage_flat_needs_' + currentPerson, JSON.stringify(flatNeeds));
-
-                    // Save to TiageState if available (primary storage)
-                    if (typeof TiageState !== 'undefined') {
-                        TiageState.set('flatNeeds.' + currentPerson, flatNeeds);
-                        console.log('[NeedsEditor] FlatNeeds gespeichert für', currentPerson, ':',
-                            Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length, 'needs');
-                    }
+                    console.log('[NeedsEditor] FlatNeeds in localStorage gesichert für', currentPerson, ':',
+                        Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length, 'needs');
                 }
             }
 
