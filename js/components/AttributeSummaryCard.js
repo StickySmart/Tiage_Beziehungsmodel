@@ -1493,12 +1493,15 @@ const AttributeSummaryCard = (function() {
         const btn = document.querySelector('.bulk-lock-btn');
         if (!btn) return;
 
+        const icon = btn.querySelector('.bulk-btn-icon');
+        const label = btn.querySelector('.bulk-btn-label');
+
+        // Label bleibt immer gleich
+        if (label) label.textContent = 'Ent-/Sperren';
+
         if (selectedNeeds.size === 0) {
             // Nichts markiert
-            const icon = btn.querySelector('.bulk-btn-icon');
-            const label = btn.querySelector('.bulk-btn-label');
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle markierten Werte sperren/entsperren';
             return;
         }
@@ -1515,20 +1518,14 @@ const AttributeSummaryCard = (function() {
         const allLocked = lockedCount === selectedNeeds.size;
         const someLocked = lockedCount > 0 && lockedCount < selectedNeeds.size;
 
-        const icon = btn.querySelector('.bulk-btn-icon');
-        const label = btn.querySelector('.bulk-btn-label');
-
         if (allLocked) {
             if (icon) icon.textContent = '🔓';
-            if (label) label.textContent = 'Entsperren';
             btn.title = 'Alle markierten Werte entsperren';
         } else if (someLocked) {
-            if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren*';
+            if (icon) icon.textContent = '🔐';
             btn.title = `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} noch nicht gesperrt`;
         } else {
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle markierten Werte sperren';
         }
     }
@@ -1776,25 +1773,24 @@ const AttributeSummaryCard = (function() {
         const icon = btn.querySelector('.bulk-btn-icon');
         const label = btn.querySelector('.bulk-btn-label');
 
+        // Label bleibt immer gleich
+        if (label) label.textContent = 'Ent-/Sperren';
+
         if (!filterActive) {
             // Kein Filter aktiv
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Erst Filter setzen um gefilterte Bedürfnisse zu sperren';
         } else if (status.allLocked) {
-            // Alle gesperrt → Entsperren anzeigen
+            // Alle gesperrt → Entsperren Icon
             if (icon) icon.textContent = '🔓';
-            if (label) label.textContent = 'Entsperren';
             btn.title = 'Alle gefilterten Bedürfnisse entsperren';
         } else if (status.someLocked) {
-            // Teilweise gesperrt → Sperren mit * Indikator
-            if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren*';
-            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt - klicken zum Sperren`;
+            // Teilweise gesperrt
+            if (icon) icon.textContent = '🔐';
+            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt`;
         } else {
-            // Keine gesperrt → Sperren anzeigen
+            // Keine gesperrt → Sperren Icon
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle gefilterten Bedürfnisse sperren';
         }
     }
@@ -2724,7 +2720,7 @@ const AttributeSummaryCard = (function() {
                     </button>
                     <button class="bulk-lock-btn" onclick="AttributeSummaryCard.toggleLockSelectedNeeds()" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">🔒</span>
-                        <span class="bulk-btn-label">Sperren</span>
+                        <span class="bulk-btn-label">Ent-/Sperren</span>
                     </button>
                 </div>
             </div>
