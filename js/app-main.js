@@ -22918,6 +22918,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         AttributeSummaryCard.clearNeedSelection();
                     }
                     AttributeSummaryCard.resetSelectedNeedsValues();
+                    // Markierung erneut clearen und Button-Status aktualisieren
+                    if (typeof AttributeSummaryCard.clearNeedSelection === 'function') {
+                        AttributeSummaryCard.clearNeedSelection();
+                    }
+                    if (typeof AttributeSummaryCard.updateSelectedLockButtonState === 'function') {
+                        AttributeSummaryCard.updateSelectedLockButtonState();
+                    }
                     console.log('[resetProfileReview] Bedürfnisse wurden zurückgesetzt');
                 }
 
