@@ -22910,6 +22910,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     });
                 }
 
+                // v3.6: AUCH Bedürfnisse/Needs zurücksetzen
+                if (typeof AttributeSummaryCard !== 'undefined' &&
+                    typeof AttributeSummaryCard.resetSelectedNeedsValues === 'function') {
+                    // Zuerst alle Markierungen entfernen, damit ALLE Needs zurückgesetzt werden
+                    if (typeof AttributeSummaryCard.clearNeedSelection === 'function') {
+                        AttributeSummaryCard.clearNeedSelection();
+                    }
+                    AttributeSummaryCard.resetSelectedNeedsValues();
+                    console.log('[resetProfileReview] Bedürfnisse wurden zurückgesetzt');
+                }
+
                 // Reset counter
                 profileReviewChangesCount = 0;
                 var badge = document.getElementById('profileReviewChangesBadge');

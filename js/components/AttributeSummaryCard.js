@@ -1037,8 +1037,8 @@ const AttributeSummaryCard = (function() {
 
         // Ermittle aktuellen Archetyp (KEY, nicht Label!)
         let currentArchetyp = currentFlatArchetyp;
-        if (!currentArchetyp && typeof window !== 'undefined' && window.currentProfileReviewContext?.archetyp) {
-            currentArchetyp = window.currentProfileReviewContext.archetyp;
+        if (!currentArchetyp && typeof window !== 'undefined' && window.currentProfileReviewContext?.archetypeKey) {
+            currentArchetyp = window.currentProfileReviewContext.archetypeKey;
         }
 
         // SSOT: BaseArchetypProfile (Archetyp-Profil-Dateien)
