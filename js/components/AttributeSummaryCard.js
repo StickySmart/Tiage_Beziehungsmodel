@@ -5112,4 +5112,26 @@ if (typeof document !== 'undefined') {
             AttributeSummaryCard.reRenderFlatNeeds();
         }
     });
+
+    // FIX: Event-Listener für Person-Wechsel - Markierungen zurücksetzen
+    // Beim Wechsel zwischen ICH/PARTNER müssen Selektionen geleert werden,
+    // da sie sonst die falsche Person betreffen würden
+    window.addEventListener('personChanged', function(event) {
+        console.log('[AttributeSummaryCard] Person gewechselt:', event.detail?.person);
+
+        // Selektionen zurücksetzen (über Public API)
+        if (typeof AttributeSummaryCard !== 'undefined') {
+            // clearNeedSelection() leert selectedNeeds und originalNeedValues
+            if (AttributeSummaryCard.clearNeedSelection) {
+                AttributeSummaryCard.clearNeedSelection();
+                console.log('[AttributeSummaryCard] Selektionen zurückgesetzt');
+            }
+
+            // Gelockte Hauptfragen für neue Person laden
+            if (AttributeSummaryCard.loadLockedHauptfragen && event.detail?.person) {
+                AttributeSummaryCard.loadLockedHauptfragen(event.detail.person);
+                console.log('[AttributeSummaryCard] LockedHauptfragen geladen für', event.detail.person);
+            }
+        }
+    });
 }
