@@ -2049,7 +2049,17 @@
       "kontext": "Vertrauen aufbauen",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B226"
+        "komplementaer": "#B226",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 50
+        }
       }
     },
     "#B84": {
@@ -2158,7 +2168,17 @@
       "kontext": "beschützende Rolle",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B225"
+        "komplementaer": "#B225",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 75,
+          "duo_flex": 65,
+          "solopoly": 45,
+          "polyamor": 65,
+          "ra": 50,
+          "lat": 60,
+          "aromantisch": 40
+        }
       }
     },
     "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
@@ -4451,7 +4471,17 @@
       "kontext": "Bondage & Fesseln (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B223"
+        "komplementaer": "#B223",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 40,
+          "duo_flex": 50,
+          "solopoly": 45,
+          "polyamor": 50,
+          "ra": 45,
+          "lat": 40,
+          "aromantisch": 30
+        }
       }
     },
     "#B213": {
@@ -4466,7 +4496,17 @@
       "kontext": "Hingabe & Verehrung",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B214"
+        "komplementaer": "#B214",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 50,
+          "duo_flex": 45,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 35,
+          "lat": 40,
+          "aromantisch": 25
+        }
       }
     },
     "#B214": {
@@ -4481,7 +4521,17 @@
       "kontext": "Verehrung & Worship",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B213"
+        "komplementaer": "#B213",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 50,
+          "duo_flex": 45,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 35,
+          "lat": 40,
+          "aromantisch": 25
+        }
       }
     },
     "#B215": {
@@ -4496,7 +4546,17 @@
       "kontext": "Demut & Unterwerfung",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B216"
+        "komplementaer": "#B216",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 45,
+          "duo_flex": 45,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 35,
+          "lat": 40,
+          "aromantisch": 25
+        }
       }
     },
     "#B216": {
@@ -4511,7 +4571,17 @@
       "kontext": "Dominanz ausüben",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B215"
+        "komplementaer": "#B215",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 45,
+          "duo_flex": 50,
+          "solopoly": 40,
+          "polyamor": 45,
+          "ra": 40,
+          "lat": 40,
+          "aromantisch": 30
+        }
       }
     },
     "#B217": {
@@ -4526,7 +4596,17 @@
       "kontext": "Punishment (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B218"
+        "komplementaer": "#B218",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 35,
+          "duo_flex": 40,
+          "solopoly": 35,
+          "polyamor": 40,
+          "ra": 35,
+          "lat": 35,
+          "aromantisch": 25
+        }
       }
     },
     "#B218": {
@@ -4541,7 +4621,17 @@
       "kontext": "Punishment (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B217"
+        "komplementaer": "#B217",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 40,
+          "duo_flex": 45,
+          "solopoly": 38,
+          "polyamor": 42,
+          "ra": 38,
+          "lat": 38,
+          "aromantisch": 28
+        }
       }
     },
     "#B219": {
@@ -4556,7 +4646,17 @@
       "kontext": "Service geben (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B220"
+        "komplementaer": "#B220",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 60,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 35
+        }
       }
     },
     "#B220": {
@@ -4571,7 +4671,17 @@
       "kontext": "Service empfangen (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B219"
+        "komplementaer": "#B219",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 55,
+          "duo_flex": 50,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 42,
+          "lat": 48,
+          "aromantisch": 35
+        }
       }
     },
     "#B221": {
@@ -4586,7 +4696,17 @@
       "kontext": "Schmerz (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B222"
+        "komplementaer": "#B222",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 35,
+          "duo_flex": 40,
+          "solopoly": 35,
+          "polyamor": 40,
+          "ra": 35,
+          "lat": 35,
+          "aromantisch": 25
+        }
       }
     },
     "#B222": {
@@ -4601,7 +4721,17 @@
       "kontext": "Schmerz (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B221"
+        "komplementaer": "#B221",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 38,
+          "duo_flex": 42,
+          "solopoly": 36,
+          "polyamor": 42,
+          "ra": 36,
+          "lat": 36,
+          "aromantisch": 28
+        }
       }
     },
     "#B223": {
@@ -4616,7 +4746,17 @@
       "kontext": "Bondage & Fesseln (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B212"
+        "komplementaer": "#B212",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 38,
+          "duo_flex": 48,
+          "solopoly": 42,
+          "polyamor": 48,
+          "ra": 42,
+          "lat": 38,
+          "aromantisch": 28
+        }
       }
     },
     "#B225": {
@@ -4631,7 +4771,17 @@
       "kontext": "beschützt werden (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B88"
+        "komplementaer": "#B88",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 70,
+          "duo_flex": 60,
+          "solopoly": 40,
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 35
+        }
       }
     },
     "#B226": {
@@ -4646,7 +4796,17 @@
       "kontext": "Vertrauen empfangen (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B83"
+        "komplementaer": "#B83",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 45
+        }
       }
     }
   }
