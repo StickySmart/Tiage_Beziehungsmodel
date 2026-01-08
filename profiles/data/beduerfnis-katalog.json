@@ -734,14 +734,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 30,
-          "duo": 90,
-          "duo_flex": 80,
-          "solopoly": 50,
-          "polyamor": 85,
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 65,
+          "polyamor": 90,
           "ra": 60,
-          "lat": 75,
-          "aromantisch": 25
+          "lat": 80,
+          "aromantisch": 35
         }
       }
     },
@@ -840,14 +840,14 @@
       "kohaerenz": {
         "rFaktor": "R4",
         "typischeWerte": {
-          "single": 70,
-          "duo": 85,
-          "duo_flex": 80,
-          "solopoly": 75,
-          "polyamor": 85,
-          "ra": 80,
+          "single": 65,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 90,
           "lat": 80,
-          "aromantisch": 90
+          "aromantisch": 85
         }
       }
     },
@@ -957,14 +957,14 @@
       "kohaerenz": {
         "rFaktor": "R4",
         "typischeWerte": {
-          "single": 60,
-          "duo": 90,
+          "single": 65,
+          "duo": 85,
           "duo_flex": 80,
-          "solopoly": 70,
-          "polyamor": 85,
-          "ra": 70,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 75,
           "lat": 80,
-          "aromantisch": 75
+          "aromantisch": 80
         }
       }
     },
@@ -1025,12 +1025,12 @@
         "rFaktor": "R2",
         "typischeWerte": {
           "single": 95,
-          "duo": 50,
-          "duo_flex": 65,
+          "duo": 45,
+          "duo_flex": 70,
           "solopoly": 95,
-          "polyamor": 75,
-          "ra": 95,
-          "lat": 80,
+          "polyamor": 80,
+          "ra": 100,
+          "lat": 85,
           "aromantisch": 90
         }
       }
@@ -1068,16 +1068,19 @@
       "hauptbeduerfnis": "#B34",
       "kontext": "unabhängig sein",
       "kohaerenz": {
-        "rFaktor": ["R2", "R3"],
+        "rFaktor": [
+          "R2",
+          "R3"
+        ],
         "typischeWerte": {
-          "single": 90,
-          "duo": 40,
+          "single": 95,
+          "duo": 35,
           "duo_flex": 60,
           "solopoly": 95,
-          "polyamor": 70,
-          "ra": 90,
-          "lat": 75,
-          "aromantisch": 85
+          "polyamor": 65,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 90
         }
       }
     },
@@ -1172,11 +1175,11 @@
         "typischeWerte": {
           "single": 50,
           "duo": 70,
-          "duo_flex": 75,
-          "solopoly": 70,
+          "duo_flex": 70,
+          "solopoly": 65,
           "polyamor": 90,
-          "ra": 85,
-          "lat": 60,
+          "ra": 75,
+          "lat": 65,
           "aromantisch": 75
         }
       }
@@ -1203,14 +1206,14 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 40,
+          "single": 45,
           "duo": 90,
           "duo_flex": 80,
-          "solopoly": 60,
+          "solopoly": 55,
           "polyamor": 85,
-          "ra": 70,
+          "ra": 55,
           "lat": 75,
-          "aromantisch": 65
+          "aromantisch": 70
         }
       }
     },
@@ -1359,14 +1362,14 @@
       "kohaerenz": {
         "rFaktor": "R4",
         "typischeWerte": {
-          "single": 85,
-          "duo": 75,
-          "duo_flex": 80,
-          "solopoly": 95,
+          "single": 90,
+          "duo": 70,
+          "duo_flex": 85,
+          "solopoly": 90,
           "polyamor": 85,
           "ra": 95,
           "lat": 85,
-          "aromantisch": 90
+          "aromantisch": 95
         }
       }
     },
@@ -1675,11 +1678,11 @@
       "kohaerenz": {
         "rFaktor": "R4",
         "typischeWerte": {
-          "single": 80,
-          "duo": 70,
+          "single": 85,
+          "duo": 55,
           "duo_flex": 75,
           "solopoly": 90,
-          "polyamor": 85,
+          "polyamor": 80,
           "ra": 95,
           "lat": 80,
           "aromantisch": 85
@@ -1815,14 +1818,14 @@
         "rFaktor": "R3",
         "komplementaer": "#B75",
         "typischeWerte": {
-          "single": 50,
-          "duo": 50,
+          "single": 55,
+          "duo": 35,
           "duo_flex": 55,
-          "solopoly": 40,
-          "polyamor": 45,
-          "ra": 30,
-          "lat": 40,
-          "aromantisch": 40
+          "solopoly": 60,
+          "polyamor": 50,
+          "ra": 55,
+          "lat": 55,
+          "aromantisch": 55
         }
       }
     },
@@ -1849,13 +1852,13 @@
         "komplementaer": "#B74",
         "typischeWerte": {
           "single": 30,
-          "duo": 60,
-          "duo_flex": 55,
+          "duo": 75,
+          "duo_flex": 60,
           "solopoly": 40,
-          "polyamor": 60,
-          "ra": 50,
+          "polyamor": 65,
+          "ra": 40,
           "lat": 55,
-          "aromantisch": 25
+          "aromantisch": 35
         }
       }
     },
@@ -1881,14 +1884,14 @@
         "rFaktor": "R3",
         "komplementaer": "#B77",
         "typischeWerte": {
-          "single": 50,
-          "duo": 50,
+          "single": 55,
+          "duo": 40,
           "duo_flex": 55,
-          "solopoly": 45,
-          "polyamor": 50,
-          "ra": 30,
-          "lat": 45,
-          "aromantisch": 40
+          "solopoly": 55,
+          "polyamor": 55,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 50
         }
       }
     },
@@ -1914,14 +1917,14 @@
         "rFaktor": "R3",
         "komplementaer": "#B76",
         "typischeWerte": {
-          "single": 30,
-          "duo": 50,
-          "duo_flex": 50,
-          "solopoly": 40,
+          "single": 25,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 35,
           "polyamor": 55,
-          "ra": 30,
-          "lat": 50,
-          "aromantisch": 30
+          "ra": 35,
+          "lat": 45,
+          "aromantisch": 35
         }
       }
     },
@@ -2049,7 +2052,17 @@
       "kontext": "Vertrauen aufbauen",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B226"
+        "komplementaer": "#B226",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 60
+        }
       }
     },
     "#B84": {
@@ -2158,7 +2171,17 @@
       "kontext": "beschützende Rolle",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B225"
+        "komplementaer": "#B225",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 65,
+          "aromantisch": 55
+        }
       }
     },
     "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
@@ -2182,14 +2205,14 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 20,
-          "duo": 75,
+          "single": 25,
+          "duo": 85,
           "duo_flex": 60,
           "solopoly": 30,
-          "polyamor": 50,
+          "polyamor": 55,
           "ra": 35,
-          "lat": 55,
-          "aromantisch": 25
+          "lat": 50,
+          "aromantisch": 30
         }
       }
     },
@@ -2263,14 +2286,14 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 20,
-          "duo": 95,
-          "duo_flex": 80,
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 65,
           "solopoly": 45,
-          "polyamor": 70,
-          "ra": 30,
-          "lat": 80,
-          "aromantisch": 35
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 50
         }
       }
     },
@@ -2297,13 +2320,13 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 15,
+          "single": 25,
           "duo": 95,
-          "duo_flex": 85,
-          "solopoly": 50,
-          "polyamor": 75,
-          "ra": 40,
-          "lat": 80,
+          "duo_flex": 75,
+          "solopoly": 35,
+          "polyamor": 70,
+          "ra": 25,
+          "lat": 75,
           "aromantisch": 30
         }
       }
@@ -2377,14 +2400,14 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 10,
-          "duo": 90,
-          "duo_flex": 75,
-          "solopoly": 20,
-          "polyamor": 60,
-          "ra": 35,
-          "lat": 25,
-          "aromantisch": 30
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 10,
+          "polyamor": 55,
+          "ra": 25,
+          "lat": 10,
+          "aromantisch": 25
         }
       }
     },
@@ -2423,13 +2446,13 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 20,
+          "single": 30,
           "duo": 90,
-          "duo_flex": 75,
-          "solopoly": 35,
-          "polyamor": 65,
-          "ra": 40,
-          "lat": 45,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 55,
+          "ra": 25,
+          "lat": 50,
           "aromantisch": 40
         }
       }
@@ -2452,14 +2475,14 @@
       "kohaerenz": {
         "rFaktor": "R2",
         "typischeWerte": {
-          "single": 95,
-          "duo": 30,
-          "duo_flex": 50,
-          "solopoly": 90,
+          "single": 10,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 10,
           "polyamor": 60,
-          "ra": 80,
-          "lat": 85,
-          "aromantisch": 80
+          "ra": 20,
+          "lat": 25,
+          "aromantisch": 30
         }
       }
     },
@@ -3482,13 +3505,13 @@
         "rFaktor": "R1",
         "typischeWerte": {
           "single": 40,
-          "duo": 85,
-          "duo_flex": 75,
-          "solopoly": 60,
-          "polyamor": 75,
-          "ra": 50,
-          "lat": 60,
-          "aromantisch": 30
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 90,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 50
         }
       }
     },
@@ -3767,14 +3790,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 50,
-          "duo": 40,
-          "duo_flex": 70,
-          "solopoly": 85,
-          "polyamor": 80,
-          "ra": 75,
-          "lat": 50,
-          "aromantisch": 40
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 35
         }
       }
     },
@@ -3798,14 +3821,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 30,
-          "duo": 90,
-          "duo_flex": 75,
-          "solopoly": 60,
+          "single": 90,
+          "duo": 60,
+          "duo_flex": 80,
+          "solopoly": 90,
           "polyamor": 85,
-          "ra": 60,
+          "ra": 95,
           "lat": 80,
-          "aromantisch": 20
+          "aromantisch": 95
         }
       }
     },
@@ -4444,14 +4467,27 @@
       "label": "Bondage-geben",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Bondage-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Bondage & Fesseln (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B223"
+        "komplementaer": "#B223",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 35,
+          "duo_flex": 40,
+          "solopoly": 45,
+          "polyamor": 50,
+          "ra": 40,
+          "lat": 35,
+          "aromantisch": 30
+        }
       }
     },
     "#B213": {
@@ -4459,14 +4495,27 @@
       "label": "Devotion",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Devotion?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
       "kontext": "Hingabe & Verehrung",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B214"
+        "komplementaer": "#B214",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 60,
+          "duo_flex": 45,
+          "solopoly": 35,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 25
+        }
       }
     },
     "#B214": {
@@ -4474,14 +4523,27 @@
       "label": "Anbetung",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Anbetung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
       "kontext": "Verehrung & Worship",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B213"
+        "komplementaer": "#B213",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 40,
+          "duo_flex": 45,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 30,
+          "lat": 40,
+          "aromantisch": 20
+        }
       }
     },
     "#B215": {
@@ -4489,14 +4551,27 @@
       "label": "Demütig-sein",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Demütig-sein?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
       "kontext": "Demut & Unterwerfung",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B216"
+        "komplementaer": "#B216",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 50,
+          "duo_flex": 40,
+          "solopoly": 30,
+          "polyamor": 45,
+          "ra": 25,
+          "lat": 35,
+          "aromantisch": 25
+        }
       }
     },
     "#B216": {
@@ -4504,14 +4579,27 @@
       "label": "Dominieren",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Dominieren?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B86",
       "kontext": "Dominanz ausüben",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B215"
+        "komplementaer": "#B215",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 35,
+          "duo_flex": 45,
+          "solopoly": 50,
+          "polyamor": 50,
+          "ra": 40,
+          "lat": 40,
+          "aromantisch": 35
+        }
       }
     },
     "#B217": {
@@ -4519,14 +4607,27 @@
       "label": "Bestrafung-erhalten",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Punishment (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B218"
+        "komplementaer": "#B218",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 35,
+          "duo_flex": 30,
+          "solopoly": 30,
+          "polyamor": 40,
+          "ra": 25,
+          "lat": 30,
+          "aromantisch": 20
+        }
       }
     },
     "#B218": {
@@ -4534,14 +4635,27 @@
       "label": "Bestrafen",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Bestrafen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Punishment (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B217"
+        "komplementaer": "#B217",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 30,
+          "duo_flex": 30,
+          "solopoly": 35,
+          "polyamor": 40,
+          "ra": 25,
+          "lat": 30,
+          "aromantisch": 20
+        }
       }
     },
     "#B219": {
@@ -4549,14 +4663,27 @@
       "label": "Service-geben",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Service zu geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
       "kontext": "Service geben (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B220"
+        "komplementaer": "#B220",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 65,
+          "duo_flex": 50,
+          "solopoly": 35,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 35
+        }
       }
     },
     "#B220": {
@@ -4564,14 +4691,27 @@
       "label": "Service-empfangen",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Service zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
       "kontext": "Service empfangen (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B219"
+        "komplementaer": "#B219",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 55,
+          "duo_flex": 50,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 35,
+          "lat": 45,
+          "aromantisch": 35
+        }
       }
     },
     "#B221": {
@@ -4579,14 +4719,27 @@
       "label": "Schmerzerleben",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Schmerz (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B222"
+        "komplementaer": "#B222",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 40,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 50,
+          "aromantisch": 40
+        }
       }
     },
     "#B222": {
@@ -4594,14 +4747,27 @@
       "label": "Schmerz-geben",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Schmerz (aktiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B221"
+        "komplementaer": "#B221",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 20
+        }
       }
     },
     "#B223": {
@@ -4609,14 +4775,27 @@
       "label": "Bondage-erleben",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
       "kontext": "Bondage & Fesseln (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B212"
+        "komplementaer": "#B212",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 45,
+          "duo_flex": 40,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 40,
+          "lat": 40,
+          "aromantisch": 30
+        }
       }
     },
     "#B225": {
@@ -4624,14 +4803,27 @@
       "label": "Beschützt-werden",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen beschützt zu werden?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B87",
       "kontext": "beschützt werden (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B88"
+        "komplementaer": "#B88",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 35,
+          "lat": 45,
+          "aromantisch": 30
+        }
       }
     },
     "#B226": {
@@ -4639,14 +4831,27 @@
       "label": "Vertrauen-empfangen",
       "kategorie": "#K11",
       "dimension": "#D4",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Ihnen Vertrauen zu empfangen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B80",
       "kontext": "Vertrauen empfangen (passiv)",
       "kohaerenz": {
         "rFaktor": "R3",
-        "komplementaer": "#B83"
+        "komplementaer": "#B83",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 50,
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 35
+        }
       }
     }
   }
