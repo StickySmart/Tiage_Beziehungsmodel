@@ -2416,37 +2416,47 @@ const AttributeSummaryCard = (function() {
                 { archetyp, person: currentPerson, isNewArchetyp, isNewPerson });
         }
 
-        // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
+        // Hole ALLE Bedürfnisse - PRIORITÄT: TiageState.flatNeeds (SSOT für User-Änderungen)
         let umfrageWerte = {};
 
-        // 1. Versuche berechnete Werte aus LoadedArchetypProfile zu holen (für ich ODER partner)
-        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
-            ? window.LoadedArchetypProfile[currentPerson]
-            : null;
+        // FIX v1.8.701: TiageState.flatNeeds hat PRIORITÄT über LoadedArchetypProfile
+        // TiageState enthält die aktuellen User-Änderungen (inkl. Reset-Werte)
+        // LoadedArchetypProfile ist nur ein Cache und wird nicht bei Reset aktualisiert
+        if (typeof TiageState !== 'undefined') {
+            const tiageStateFlatNeeds = TiageState.get('flatNeeds.' + currentPerson);
+            const hasTiageStateData = tiageStateFlatNeeds && Object.keys(tiageStateFlatNeeds).length > 0;
 
-        // Prüfe ob flatNeeds existiert UND nicht leer ist (leeres {} ist truthy!)
-        const loadedFlatNeeds = loadedProfile?.profileReview?.flatNeeds;
-        const hasFlatNeeds = loadedFlatNeeds && Object.keys(loadedFlatNeeds).length > 0;
-
-        if (hasFlatNeeds) {
-            umfrageWerte = loadedFlatNeeds;
-            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus TiageState.flatNeeds für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
-        } else {
-            // 2. Fallback: Statische Archetyp-Werte aus BaseArchetypProfile
-            umfrageWerte = profil.umfrageWerte || {};
-            console.log('[AttributeSummaryCard] Verwende statische umfrageWerte aus BaseArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
-
-            // Warnung wenn TiageState.flatNeeds leer ist (sollte nicht passieren)
-            if (loadedFlatNeeds && Object.keys(loadedFlatNeeds).length === 0) {
-                console.warn('[AttributeSummaryCard] TiageState.flatNeeds.' + currentPerson + ' ist leer! Verwende Fallback aus BaseArchetypProfile.');
+            if (hasTiageStateData) {
+                umfrageWerte = tiageStateFlatNeeds;
+                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (SSOT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
             }
+        }
+
+        // Fallback 1: LoadedArchetypProfile (nur wenn TiageState leer)
+        if (Object.keys(umfrageWerte).length === 0) {
+            const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+                ? window.LoadedArchetypProfile[currentPerson]
+                : null;
+
+            const loadedFlatNeeds = loadedProfile?.profileReview?.flatNeeds;
+            const hasFlatNeeds = loadedFlatNeeds && Object.keys(loadedFlatNeeds).length > 0;
+
+            if (hasFlatNeeds) {
+                umfrageWerte = loadedFlatNeeds;
+                console.log('[AttributeSummaryCard] Fallback: Verwende Werte aus LoadedArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+            }
+        }
+
+        // Fallback 2: Statische Archetyp-Werte aus BaseArchetypProfile
+        if (Object.keys(umfrageWerte).length === 0) {
+            umfrageWerte = profil.umfrageWerte || {};
+            console.log('[AttributeSummaryCard] Fallback: Verwende statische umfrageWerte aus BaseArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
         }
 
         // DEBUG: Prüfe ob umfrageWerte korrekt geladen wurden
         if (Object.keys(umfrageWerte).length === 0) {
             console.error('[AttributeSummaryCard] FEHLER: umfrageWerte ist leer!', {
-                loadedProfile: !!loadedProfile,
-                flatNeeds: loadedProfile?.profileReview?.flatNeeds,
+                tiageStateFlatNeeds: typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.' + currentPerson) : null,
                 profilUmfrageWerte: profil?.umfrageWerte,
                 archetyp: archetyp
             });
