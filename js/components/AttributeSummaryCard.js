@@ -2424,11 +2424,22 @@ const AttributeSummaryCard = (function() {
         // LoadedArchetypProfile ist nur ein Cache und wird nicht bei Reset aktualisiert
         if (typeof TiageState !== 'undefined') {
             const tiageStateFlatNeeds = TiageState.get('flatNeeds.' + currentPerson);
-            const hasTiageStateData = tiageStateFlatNeeds && Object.keys(tiageStateFlatNeeds).length > 0;
 
-            if (hasTiageStateData) {
+            // FIX v1.8.705: TiageState kann ARRAY oder OBJECT sein
+            // saveCurrentState() in needs-editor.html speichert ARRAY
+            // Aber umfrageWerte muss ein OBJECT { '#B1': value } sein
+            if (Array.isArray(tiageStateFlatNeeds) && tiageStateFlatNeeds.length > 0) {
+                // Konvertiere Array zu Object
+                tiageStateFlatNeeds.forEach(need => {
+                    if (need.id && need.value !== undefined) {
+                        umfrageWerte[need.id] = need.value;
+                    }
+                });
+                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (ARRAY→OBJECT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+            } else if (tiageStateFlatNeeds && typeof tiageStateFlatNeeds === 'object' && Object.keys(tiageStateFlatNeeds).length > 0) {
+                // Bereits Object-Format
                 umfrageWerte = tiageStateFlatNeeds;
-                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (SSOT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (OBJECT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
             }
         }
 
