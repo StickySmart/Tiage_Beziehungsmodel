@@ -1813,6 +1813,7 @@
       "kontext": "Kontrolle & Dominanz",
       "kohaerenz": {
         "rFaktor": "R3",
+        "komplementaer": "#B75",
         "typischeWerte": {
           "single": 50,
           "duo": 50,
@@ -1845,6 +1846,7 @@
       "kontext": "Hingabe & Submission",
       "kohaerenz": {
         "rFaktor": "R3",
+        "komplementaer": "#B74",
         "typischeWerte": {
           "single": 30,
           "duo": 60,
@@ -1877,6 +1879,7 @@
       "kontext": "führende Rolle",
       "kohaerenz": {
         "rFaktor": "R3",
+        "komplementaer": "#B77",
         "typischeWerte": {
           "single": 50,
           "duo": 50,
@@ -1909,6 +1912,7 @@
       "kontext": "geführt werden",
       "kohaerenz": {
         "rFaktor": "R3",
+        "komplementaer": "#B76",
         "typischeWerte": {
           "single": 30,
           "duo": 50,
@@ -2166,7 +2170,20 @@
         "#B91",
         "#B92",
         "#B93"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 30,
+          "polyamor": 50,
+          "ra": 35,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B90": {
       "id": "#B90",
@@ -2234,7 +2251,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B95",
-      "kontext": "verbindliche Partnerschaft"
+      "kontext": "verbindliche Partnerschaft",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 30,
+          "lat": 80,
+          "aromantisch": 35
+        }
+      }
     },
     "#B95": {
       "id": "#B95",
@@ -2255,7 +2285,20 @@
         "#B94",
         "#B96",
         "#B97"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 40,
+          "lat": 80,
+          "aromantisch": 30
+        }
+      }
     },
     "#B96": {
       "id": "#B96",
@@ -2322,7 +2365,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "häusliches Leben"
+      "kontext": "häusliches Leben",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 10,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 20,
+          "polyamor": 60,
+          "ra": 35,
+          "lat": 25,
+          "aromantisch": 30
+        }
+      }
     },
     "#B100": {
       "id": "#B100",
@@ -2355,7 +2411,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "Alltag gemeinsam leben"
+      "kontext": "Alltag gemeinsam leben",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 35,
+          "polyamor": 65,
+          "ra": 40,
+          "lat": 45,
+          "aromantisch": 40
+        }
+      }
     },
     "#B102": {
       "id": "#B102",
@@ -2371,7 +2440,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B98",
-      "kontext": "eigenes Zimmer/Raum"
+      "kontext": "eigenes Zimmer/Raum",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 30,
+          "duo_flex": 50,
+          "solopoly": 90,
+          "polyamor": 60,
+          "ra": 80,
+          "lat": 85,
+          "aromantisch": 80
+        }
+      }
     },
     "#B103": {
       "id": "#B103",
@@ -3387,7 +3469,20 @@
         "#B163",
         "#B164",
         "#B165"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 60,
+          "aromantisch": 30
+        }
+      }
     },
     "#B161": {
       "id": "#B161",
@@ -3660,7 +3755,20 @@
       "frage": "Wie wichtig ist sexuelle Offenheit?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "sexuelle Offenheit"
+      "kontext": "sexuelle Offenheit",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 40,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 50,
+          "aromantisch": 40
+        }
+      }
     },
     "#B176": {
       "id": "#B176",
@@ -3678,7 +3786,20 @@
       "frage": "Wie wichtig ist tiefe sexuelle Verbindung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "tiefe sexuelle Verbindung"
+      "kontext": "tiefe sexuelle Verbindung",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 20
+        }
+      }
     },
     "#B177": {
       "id": "#B177",
