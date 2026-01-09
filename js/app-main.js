@@ -11493,10 +11493,58 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
             let matching = null;
+            let rFactorSource = 'default';
 
-            // SSOT: Berechne R-Faktoren IMMER aus Bedürfnissen wenn verfügbar
-            // Nur locked (vom User manuell gesetzte) Werte überschreiben die Berechnung
-            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+            // ═══════════════════════════════════════════════════════════════════
+            // v3.6: R-FAKTOREN AUS ECHTEN NEEDS (wenn verfügbar)
+            // ═══════════════════════════════════════════════════════════════════
+            // Hilfsfunktion: Summe × Similarity Kombination
+            function combineRFactors(R_ich, R_partner) {
+                const a = R_ich || 1.0;
+                const b = R_partner || 1.0;
+                const summe = a + b;
+                const similarity = Math.min(a, b) / Math.max(a, b);
+                return Math.round(summe * similarity * 1000) / 1000;
+            }
+
+            // Wenn echte Needs vorhanden sind, berechne R-Faktoren daraus
+            if (person1.needs && person2.needs &&
+                typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.NeedsIntegration &&
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function') {
+
+                try {
+                    // Berechne individuelle R-Faktoren
+                    const resonanzIch = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: person1.archetyp,
+                        needs: person1.needs
+                    });
+                    const resonanzPartner = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: person2.archetyp,
+                        needs: person2.needs
+                    });
+
+                    if (resonanzIch && resonanzIch.enabled && resonanzPartner && resonanzPartner.enabled) {
+                        // Kombiniere mit Summe × Similarity (v3.6)
+                        R1 = combineRFactors(resonanzIch.leben || resonanzIch.R1, resonanzPartner.leben || resonanzPartner.R1);
+                        R2 = combineRFactors(resonanzIch.philosophie || resonanzIch.R2, resonanzPartner.philosophie || resonanzPartner.R2);
+                        R3 = combineRFactors(resonanzIch.dynamik || resonanzIch.R3, resonanzPartner.dynamik || resonanzPartner.R3);
+                        // R4 wird weiterhin via calculateR4Hybrid berechnet
+
+                        rFactorSource = 'realNeeds';
+                        console.log('[calculateRelationshipQuality] R1-R3 aus ECHTEN NEEDS berechnet:', {
+                            R1, R2, R3,
+                            resonanzIch: { R1: resonanzIch.leben || resonanzIch.R1, R2: resonanzIch.philosophie || resonanzIch.R2, R3: resonanzIch.dynamik || resonanzIch.R3 },
+                            resonanzPartner: { R1: resonanzPartner.leben || resonanzPartner.R1, R2: resonanzPartner.philosophie || resonanzPartner.R2, R3: resonanzPartner.dynamik || resonanzPartner.R3 }
+                        });
+                    }
+                } catch (e) {
+                    console.warn('[calculateRelationshipQuality] Fehler bei R-Faktor-Berechnung aus Needs:', e);
+                }
+            }
+
+            // Fallback: SSOT aus Archetyp-Defaults wenn keine echten Needs
+            if (rFactorSource === 'default' && typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
 
                 if (matching && !matching.fehler) {
@@ -11512,7 +11560,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     R3 = match3 * match3;
                     // R4 wird separat via calculateR4Hybrid berechnet
 
-                    console.log('[calculateRelationshipQuality] R1-R3 aus SSOT berechnet:', { R1, R2, R3, matching: matching.score });
+                    rFactorSource = 'archetypDefaults';
+                    console.log('[calculateRelationshipQuality] R1-R3 aus Archetyp-Defaults berechnet:', { R1, R2, R3, matching: matching.score });
                 }
             }
 
@@ -11874,6 +11923,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
+            // v3.6: Hole echte Needs aus TiageState für R-Faktor-Berechnung
+            let ichNeeds = null;
+            let partnerNeeds = null;
+            if (typeof TiageState !== 'undefined') {
+                ichNeeds = TiageState.get('flatNeeds.ich');
+                partnerNeeds = TiageState.get('flatNeeds.partner');
+                console.log('[findBestPartnerMatch] Echte Needs geladen:', {
+                    ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
+                    partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
+                });
+            }
+
             // Sammle ICH-Daten (feste Basis)
             const ichArchetype = currentArchetype || 'single';
             const ichDims = personDimensions.ich || {};
@@ -11999,7 +12060,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validIchDominanz,
                         geschlecht: validIchGeschlecht,
                         orientierung: validIchOrientierung,
-                        gfk: ichDims.gfk || 'mittel'
+                        gfk: ichDims.gfk || 'mittel',
+                        needs: ichNeeds  // v3.6: Echte Needs für R-Faktor-Berechnung
                     };
 
                     // Person2 = PARTNER (der Archetyp, der getestet wird)
@@ -12008,7 +12070,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validPartnerDominanz,
                         geschlecht: validPartnerGeschlecht,
                         orientierung: validPartnerOrientierung,
-                        gfk: validPartnerGfk
+                        gfk: validPartnerGfk,
+                        needs: partnerNeeds  // v3.6: Echte Needs für R-Faktor-Berechnung
                     };
 
                     let score = 0;
@@ -12723,6 +12786,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
+            // v3.6: Hole echte Needs aus TiageState für R-Faktor-Berechnung
+            let ichNeeds = null;
+            let partnerNeeds = null;
+            if (typeof TiageState !== 'undefined') {
+                ichNeeds = TiageState.get('flatNeeds.ich');
+                partnerNeeds = TiageState.get('flatNeeds.partner');
+                console.log('[findBestIchMatch] Echte Needs geladen:', {
+                    ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
+                    partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
+                });
+            }
+
             // Sammle PARTNER-Daten (DU) als Basis
             const partnerArchetype = selectedPartner || 'duo';
             const partnerDims = personDimensions.partner || {};
@@ -12842,7 +12917,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validIchDominanz,
                         geschlecht: validIchGeschlecht,
                         orientierung: validIchOrientierung,
-                        gfk: ichDims.gfk || 'mittel'
+                        gfk: ichDims.gfk || 'mittel',
+                        needs: ichNeeds  // v3.6: Echte Needs für R-Faktor-Berechnung
                     };
 
                     // Person2 = PARTNER (die festen Einstellungen)
@@ -12851,7 +12927,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validPartnerDominanz,
                         geschlecht: validPartnerGeschlecht,
                         orientierung: validPartnerOrientierung,
-                        gfk: validPartnerGfk
+                        gfk: validPartnerGfk,
+                        needs: partnerNeeds  // v3.6: Echte Needs für R-Faktor-Berechnung
                     };
 
                     let score = 0;
