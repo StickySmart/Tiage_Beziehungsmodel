@@ -3756,56 +3756,66 @@ input.resonanz-input:focus {
 /* ═══════════════════════════════════════════════════════════════════════════
    GOD-MODIFIKATOR BADGE
    Zeigt den Einfluss von Geschlecht, Orientierung und Dominanz auf Bedürfnisse
+   Format: G:+5 D:+10 O:-5 direkt auf der Card
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .god-modifier-badge {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    height: 18px;
-    padding: 0 6px;
-    margin-right: 6px;
+    gap: 4px;
+    margin-right: 8px;
     font-size: 10px;
-    font-weight: 700;
-    border-radius: 9px;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+/* Einzelne Modifikator-Teile (G:+5, D:+10, O:-5) */
+.god-mod-part {
+    padding: 1px 4px;
+    border-radius: 4px;
     cursor: help;
     transition: all 0.2s ease;
 }
 
-/* Positive Modifikation (erhöht das Bedürfnis) */
-.god-modifier-badge.god-mod-positive {
-    color: #2A9D8F;
-    background: rgba(42, 157, 143, 0.15);
-    border: 1px solid rgba(42, 157, 143, 0.4);
+/* Geschlecht (G) - Lila */
+.god-mod-part.god-mod-g {
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.5);
 }
+.god-mod-part.god-mod-g.positive { color: #A855F7; }
+.god-mod-part.god-mod-g.negative { color: #C084FC; }
 
-.god-modifier-badge.god-mod-positive:hover {
-    background: rgba(42, 157, 143, 0.25);
-    box-shadow: 0 0 8px rgba(42, 157, 143, 0.5);
+/* Orientierung (O) - Blau */
+.god-mod-part.god-mod-o {
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+}
+.god-mod-part.god-mod-o.positive { color: #3B82F6; }
+.god-mod-part.god-mod-o.negative { color: #60A5FA; }
+
+/* Dominanz (D) - Orange */
+.god-mod-part.god-mod-d {
+    background: rgba(249, 115, 22, 0.2);
+    border: 1px solid rgba(249, 115, 22, 0.5);
+}
+.god-mod-part.god-mod-d.positive { color: #F97316; }
+.god-mod-part.god-mod-d.negative { color: #FB923C; }
+
+/* Hover-Effekt */
+.god-mod-part:hover {
     transform: scale(1.1);
-}
-
-/* Negative Modifikation (reduziert das Bedürfnis) */
-.god-modifier-badge.god-mod-negative {
-    color: #E76F51;
-    background: rgba(231, 111, 81, 0.15);
-    border: 1px solid rgba(231, 111, 81, 0.4);
-}
-
-.god-modifier-badge.god-mod-negative:hover {
-    background: rgba(231, 111, 81, 0.25);
-    box-shadow: 0 0 8px rgba(231, 111, 81, 0.5);
-    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Mobile Anpassung */
 @media (max-width: 768px) {
     .god-modifier-badge {
-        min-width: 24px;
-        height: 16px;
-        padding: 0 4px;
-        font-size: 9px;
+        gap: 2px;
         margin-right: 4px;
+        font-size: 9px;
+    }
+
+    .god-mod-part {
+        padding: 0 3px;
     }
 }

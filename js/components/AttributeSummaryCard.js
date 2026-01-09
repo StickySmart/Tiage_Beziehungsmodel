@@ -3274,6 +3274,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Rendert das GOD-Modifikator Badge für ein Bedürfnis
+     * Zeigt die einzelnen Modifikatoren direkt auf der Card an (G:+5 D:+10 O:-5)
      * @param {string} needId - #B-ID
      * @returns {string} HTML für das Badge oder leerer String
      */
@@ -3281,17 +3282,27 @@ const AttributeSummaryCard = (function() {
         const mods = getGodModifiersForNeed(needId);
         if (!mods) return '';
 
-        // Baue Tooltip mit Details
+        // Baue die einzelnen Modifikator-Teile für direkte Anzeige
         const parts = [];
-        if (mods.gender !== 0) parts.push(`G: ${mods.gender > 0 ? '+' : ''}${mods.gender}`);
-        if (mods.dominance !== 0) parts.push(`D: ${mods.dominance > 0 ? '+' : ''}${mods.dominance}`);
-        if (mods.orientation !== 0) parts.push(`O: ${mods.orientation > 0 ? '+' : ''}${mods.orientation}`);
+        if (mods.gender !== 0) {
+            const val = mods.gender > 0 ? `+${mods.gender}` : `${mods.gender}`;
+            const cls = mods.gender > 0 ? 'positive' : 'negative';
+            parts.push(`<span class="god-mod-part god-mod-g ${cls}" title="Geschlecht">G:${val}</span>`);
+        }
+        if (mods.dominance !== 0) {
+            const val = mods.dominance > 0 ? `+${mods.dominance}` : `${mods.dominance}`;
+            const cls = mods.dominance > 0 ? 'positive' : 'negative';
+            parts.push(`<span class="god-mod-part god-mod-d ${cls}" title="Dominanz">D:${val}</span>`);
+        }
+        if (mods.orientation !== 0) {
+            const val = mods.orientation > 0 ? `+${mods.orientation}` : `${mods.orientation}`;
+            const cls = mods.orientation > 0 ? 'positive' : 'negative';
+            parts.push(`<span class="god-mod-part god-mod-o ${cls}" title="Orientierung">O:${val}</span>`);
+        }
 
-        const tooltip = `GOD-Modifikator: ${parts.join(', ')} = ${mods.total > 0 ? '+' : ''}${mods.total}`;
-        const totalDisplay = mods.total > 0 ? `+${mods.total}` : `${mods.total}`;
-        const colorClass = mods.total > 0 ? 'god-mod-positive' : 'god-mod-negative';
+        if (parts.length === 0) return '';
 
-        return `<span class="god-modifier-badge ${colorClass}" title="${tooltip}">${totalDisplay}</span>`;
+        return `<span class="god-modifier-badge">${parts.join(' ')}</span>`;
     }
 
     /**
