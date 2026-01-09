@@ -3846,6 +3846,7 @@
             // Sync with TiageState if available
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
+                TiageState.saveToStorage(); // Sofort speichern für Persistenz
             }
 
             // Sync all UIs
@@ -4647,6 +4648,7 @@
             // Sync with TiageState if available
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`personDimensions.${person}.dominanz`, personDimensions[person].dominanz);
+                TiageState.saveToStorage(); // Sofort speichern für Persistenz
             }
 
             // Sync all UIs
@@ -4930,6 +4932,7 @@
             // Sync with TiageState if available
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`personDimensions.${person}.orientierung`, personDimensions[person].orientierung);
+                TiageState.saveToStorage(); // Sofort speichern für Persistenz
             }
 
             // Sync all UIs
