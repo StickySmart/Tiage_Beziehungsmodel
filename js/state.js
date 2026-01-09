@@ -1063,20 +1063,13 @@ const TiageState = (function() {
 
         /**
          * Reset all state to initial values
+         * FIX: personDimensions (GOD) werden NICHT zurückgesetzt - sie bleiben persistent
          */
         reset() {
-            this.set('personDimensions', {
-                ich: {
-                    geschlecht: { primary: null, secondary: null },
-                    dominanz: { primary: null, secondary: null },
-                    orientierung: { primary: null, secondary: null }
-                },
-                partner: {
-                    geschlecht: { primary: null, secondary: null },
-                    dominanz: { primary: null, secondary: null },
-                    orientierung: { primary: null, secondary: null }
-                }
-            });
+            // FIX: personDimensions (GOD-Auswahl) NICHT zurücksetzen!
+            // Diese sind jetzt persistent und sollen bei Reset erhalten bleiben.
+            // this.set('personDimensions', { ... }); // ENTFERNT
+
             this.set('archetypes', {
                 ich: { primary: 'single', secondary: null },
                 partner: { primary: 'duo', secondary: null }

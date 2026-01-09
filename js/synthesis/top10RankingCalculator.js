@@ -19,6 +19,17 @@ const Top10RankingCalculator = (function() {
         'single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'
     ];
 
+    // Alle Dominanz-Varianten für Partner-Iteration
+    const ALL_DOMINANZ_VALUES = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+
+    // Display-Namen für Dominanz
+    const DOMINANZ_DISPLAY_NAMES = {
+        'dominant': 'Dom',
+        'submissiv': 'Sub',
+        'switch': 'Switch',
+        'ausgeglichen': 'Ausgeglichen'
+    };
+
     // Archetyp-Namen für Anzeige
     const ARCHETYPE_DISPLAY_NAMES = {
         'single': 'Single',
@@ -243,59 +254,82 @@ const Top10RankingCalculator = (function() {
 
     /**
      * Berechnet alle Kombinationen für einen gegebenen Archetyp
+     * FIX: Iteriert jetzt auch über alle GOD-Kombinationen (Dominanz) für den Partner
      * @param {string} baseArchetype - Der Basis-Archetyp
      * @param {Object} baseDimensions - Dimensionen der Person (dominanz, gfk, etc.)
      * @param {Object} archDefs - Archetyp-Definitionen
      * @param {Object} partnerDimensions - Optional: Standard-Dimensionen für Partner
+     * @param {boolean} includeGodVariants - Wenn true, werden alle GOD-Varianten berechnet (default: true)
      * @returns {Array} Sortiertes Array aller Kombinationen
      */
-    function calculateAllCombinations(baseArchetype, baseDimensions, archDefs, partnerDimensions = null) {
+    function calculateAllCombinations(baseArchetype, baseDimensions, archDefs, partnerDimensions = null, includeGodVariants = true) {
         const defaultPartnerDim = partnerDimensions || {
             dominanz: 'ausgeglichen',
             gfk: 'mittel'
         };
 
-        const combinations = ALL_ARCHETYPES.map(targetArch => {
-            // Lifestyle-Filter prüfen
-            const lifestyleResult = checkLifestyleFilter(baseArchetype, targetArch, archDefs);
+        const combinations = [];
 
-            const pathosScore = calculatePathosScore(
-                baseArchetype, targetArch,
-                baseDimensions, defaultPartnerDim,
-                archDefs
-            );
+        // Iteriere über alle Archetypen
+        ALL_ARCHETYPES.forEach(targetArch => {
+            // FIX: Wenn GOD-Varianten aktiviert, iteriere über alle Dominanz-Werte
+            const dominanzVariants = includeGodVariants ? ALL_DOMINANZ_VALUES : [defaultPartnerDim.dominanz || 'ausgeglichen'];
 
-            const logosScore = calculateLogosScore(
-                baseArchetype, targetArch,
-                baseDimensions, defaultPartnerDim,
-                archDefs
-            );
+            dominanzVariants.forEach(partnerDominanz => {
+                // Partner-Dimensionen mit dieser Dominanz-Variante
+                const partnerDim = {
+                    ...defaultPartnerDim,
+                    dominanz: partnerDominanz
+                };
 
-            const resonance = calculateResonance(
-                pathosScore, logosScore,
-                baseDimensions?.gfk, defaultPartnerDim?.gfk
-            );
+                // Lifestyle-Filter prüfen
+                const lifestyleResult = checkLifestyleFilter(baseArchetype, targetArch, archDefs);
 
-            // Bei Lifestyle-K.O. → Score = 0
-            const isLifestyleKO = lifestyleResult?.isKO || false;
-            const overallScore = isLifestyleKO ? 0 : calculateOverallScore(pathosScore, logosScore, resonance);
+                const pathosScore = calculatePathosScore(
+                    baseArchetype, targetArch,
+                    baseDimensions, partnerDim,
+                    archDefs
+                );
 
-            return {
-                archetype: targetArch,
-                displayName: ARCHETYPE_DISPLAY_NAMES[targetArch],
-                pathosScore,
-                logosScore,
-                resonance,
-                overallScore,
-                isSelf: baseArchetype === targetArch,
-                // Lifestyle-Filter Ergebnis
-                lifestyle: {
-                    isKO: isLifestyleKO,
-                    koReasons: lifestyleResult?.koReasons || [],
-                    warnings: lifestyleResult?.warnings || [],
-                    hasWarnings: (lifestyleResult?.warnings?.length || 0) > 0
-                }
-            };
+                const logosScore = calculateLogosScore(
+                    baseArchetype, targetArch,
+                    baseDimensions, partnerDim,
+                    archDefs
+                );
+
+                const resonance = calculateResonance(
+                    pathosScore, logosScore,
+                    baseDimensions?.gfk, partnerDim?.gfk
+                );
+
+                // Bei Lifestyle-K.O. → Score = 0
+                const isLifestyleKO = lifestyleResult?.isKO || false;
+                const overallScore = isLifestyleKO ? 0 : calculateOverallScore(pathosScore, logosScore, resonance);
+
+                // Display-Name mit GOD-Info wenn Varianten aktiv
+                const godSuffix = includeGodVariants ? ` (${DOMINANZ_DISPLAY_NAMES[partnerDominanz]})` : '';
+
+                combinations.push({
+                    archetype: targetArch,
+                    displayName: ARCHETYPE_DISPLAY_NAMES[targetArch] + godSuffix,
+                    archetypeOnly: ARCHETYPE_DISPLAY_NAMES[targetArch],
+                    partnerDominanz: partnerDominanz,
+                    partnerDominanzDisplay: DOMINANZ_DISPLAY_NAMES[partnerDominanz],
+                    partnerDimensions: partnerDim,
+                    pathosScore,
+                    logosScore,
+                    resonance,
+                    overallScore,
+                    isSelf: baseArchetype === targetArch && baseDimensions?.dominanz === partnerDominanz,
+                    // Lifestyle-Filter Ergebnis
+                    lifestyle: {
+                        isKO: isLifestyleKO,
+                        koReasons: lifestyleResult?.koReasons || [],
+                        warnings: lifestyleResult?.warnings || [],
+                        hasWarnings: (lifestyleResult?.warnings?.length || 0) > 0
+                    }
+                });
+            });
         });
 
         // Sortiere nach Gesamtscore (höchste zuerst)
@@ -310,22 +344,57 @@ const Top10RankingCalculator = (function() {
     }
 
     /**
+     * Berechnet alle Kombinationen und gibt die beste GOD-Variante pro Archetyp zurück
+     * @param {string} baseArchetype - Der Basis-Archetyp
+     * @param {Object} baseDimensions - Dimensionen der Person
+     * @param {Object} archDefs - Archetyp-Definitionen
+     * @returns {Array} Top-Kombination pro Archetyp (8 Einträge)
+     */
+    function calculateBestPerArchetype(baseArchetype, baseDimensions, archDefs) {
+        const allCombinations = calculateAllCombinations(baseArchetype, baseDimensions, archDefs, null, true);
+
+        // Gruppiere nach Archetyp und behalte nur den besten
+        const bestByArchetype = {};
+        allCombinations.forEach(combo => {
+            if (!bestByArchetype[combo.archetype] || combo.overallScore > bestByArchetype[combo.archetype].overallScore) {
+                bestByArchetype[combo.archetype] = combo;
+            }
+        });
+
+        // Konvertiere zu Array und sortiere
+        const result = Object.values(bestByArchetype);
+        result.sort((a, b) => b.overallScore - a.overallScore);
+
+        // Füge neuen Rang hinzu
+        result.forEach((combo, index) => {
+            combo.rankByArchetype = index + 1;
+        });
+
+        return result;
+    }
+
+    /**
      * Generiert Top 10 mit detaillierten psychologischen Texten
+     * FIX: Verwendet jetzt die partnerDimensions aus jeder Kombination (inkl. GOD-Varianten)
      * @param {string} baseArchetype - Der Basis-Archetyp
      * @param {Object} baseDimensions - Dimensionen der Person
      * @param {Object} archDefs - Archetyp-Definitionen
      * @param {Object} IntegratedGenerator - Referenz zum IntegratedSynthesisTextGenerator
+     * @param {boolean} includeGodVariants - Wenn true, werden alle GOD-Varianten berechnet (default: true)
      * @returns {Object} Top 10 mit allen Texten
      */
-    function generateTop10WithTexts(baseArchetype, baseDimensions, archDefs, IntegratedGenerator) {
-        const allCombinations = calculateAllCombinations(baseArchetype, baseDimensions, archDefs);
+    function generateTop10WithTexts(baseArchetype, baseDimensions, archDefs, IntegratedGenerator, includeGodVariants = true) {
+        const allCombinations = calculateAllCombinations(baseArchetype, baseDimensions, archDefs, null, includeGodVariants);
         const top10 = allCombinations.slice(0, 10);
 
         const enrichedTop10 = top10.map(combo => {
+            // FIX: Verwende partnerDimensions aus der Kombination (nicht hardcoded)
+            const partnerDim = combo.partnerDimensions || { dominanz: 'ausgeglichen', gfk: 'mittel' };
+
             const seed = IntegratedGenerator?.generateHash?.(
                 baseArchetype, combo.archetype,
                 baseDimensions?.dominanz || 'ausgeglichen',
-                'ausgeglichen',
+                partnerDim.dominanz || 'ausgeglichen',
                 combo.overallScore
             ) || Math.floor(Math.random() * 10000);
 
@@ -334,9 +403,9 @@ const Top10RankingCalculator = (function() {
                 ichArch: archDefs?.[baseArchetype],
                 partnerArch: archDefs?.[combo.archetype],
                 ichName: ARCHETYPE_DISPLAY_NAMES[baseArchetype],
-                partnerName: combo.displayName,
+                partnerName: combo.archetypeOnly || combo.displayName,
                 ichDimensions: baseDimensions,
-                partnerDimensions: { dominanz: 'ausgeglichen', gfk: 'mittel' },
+                partnerDimensions: partnerDim,
                 pathosScore: combo.pathosScore,
                 logosScore: combo.logosScore,
                 overallScore: combo.overallScore,
@@ -348,11 +417,11 @@ const Top10RankingCalculator = (function() {
             const ichInnerConflict = IntegratedGenerator?.generateInnerConflictText?.(baseArchetype, seed);
             const partnerInnerConflict = IntegratedGenerator?.generateInnerConflictText?.(combo.archetype, seed + 7);
 
-            // Identifiziere Paarkonflikte
+            // Identifiziere Paarkonflikte - FIX: Mit korrekten partnerDimensions
             const partnerConflicts = IntegratedGenerator?.identifyPartnerConflicts?.(
                 baseArchetype, combo.archetype,
                 baseDimensions,
-                { dominanz: 'ausgeglichen', gfk: 'mittel' }
+                partnerDim
             );
 
             return {
@@ -490,6 +559,7 @@ const Top10RankingCalculator = (function() {
     return {
         // Hauptfunktionen
         calculateAllCombinations,
+        calculateBestPerArchetype,  // NEU: Beste GOD-Variante pro Archetyp
         generateTop10WithTexts,
         formatTop10AsText,
         formatTop10AsHTML,
@@ -503,7 +573,9 @@ const Top10RankingCalculator = (function() {
 
         // Konstanten
         ALL_ARCHETYPES,
+        ALL_DOMINANZ_VALUES,        // NEU: Alle Dominanz-Varianten
         ARCHETYPE_DISPLAY_NAMES,
+        DOMINANZ_DISPLAY_NAMES,     // NEU: Dominanz Display-Namen
         COMPATIBILITY_MATRIX,
         DOMINANCE_COMPATIBILITY,
         GFK_COMPATIBILITY
