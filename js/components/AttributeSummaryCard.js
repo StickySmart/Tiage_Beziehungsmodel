@@ -2057,7 +2057,11 @@ const AttributeSummaryCard = (function() {
         // FIX v1.8.710: Verwende BaseArchetypProfile als primäre Fallback-Quelle
         // (Falls kein Baseline gesetzt ist)
         if (initialValue === undefined) {
-            const archetyp = currentFlatArchetyp || 'polyamor';
+            // FIX v1.8.710: Hole Archetyp aus TiageState für die richtige Person (SSOT)
+            // statt globaler currentFlatArchetyp Variable
+            const archetyp = (typeof TiageState !== 'undefined' && TiageState.getArchetype)
+                ? TiageState.getArchetype(currentPerson)
+                : (currentFlatArchetyp || 'polyamor');
             // Primär: BaseArchetypProfile (SSOT)
             if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
                 initialValue = BaseArchetypProfile[archetyp].umfrageWerte[needId];
