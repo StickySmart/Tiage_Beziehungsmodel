@@ -1662,6 +1662,20 @@ function generateNeedsBreakdown(data) {
     if (needsWithBreakdown.length === 0) {
         html += '<div class="memory-breakdown-info">Keine Modifikatoren für dieses Profil aktiv</div>';
     } else {
+        // Hinweis: Diese Änderungen sind durch GOD-Auswahl entstanden, nicht manuell
+        html += `<div class="memory-breakdown-hint" style="
+            background: rgba(42, 157, 143, 0.15);
+            border-left: 3px solid #2A9D8F;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-muted, #888);
+            border-radius: 0 4px 4px 0;">
+            <strong style="color: #2A9D8F;">ℹ️ GOD-Modifikatoren</strong><br>
+            Diese ${needsWithBreakdown.length} Bedürfnisse werden durch deine Auswahl von
+            <strong>G</strong>eschlecht, <strong>O</strong>rientierung und <strong>D</strong>ominanz
+            automatisch angepasst. Das ist korrekt und erwartet!
+        </div>`;
         html += '<table class="memory-breakdown-entries">';
         html += `<thead><tr>
             <th>Bedürfnis</th>

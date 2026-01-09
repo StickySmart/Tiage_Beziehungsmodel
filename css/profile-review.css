@@ -3752,3 +3752,70 @@ input.resonanz-input:focus {
         display: none;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GOD-MODIFIKATOR BADGE
+   Zeigt den Einfluss von Geschlecht, Orientierung und Dominanz auf Bedürfnisse
+   Format: G:+5 D:+10 O:-5 direkt auf der Card
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.god-modifier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+/* Einzelne Modifikator-Teile (G:+5, D:+10, O:-5) */
+.god-mod-part {
+    padding: 1px 4px;
+    border-radius: 4px;
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+/* Geschlecht (G) - Lila */
+.god-mod-part.god-mod-g {
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.5);
+}
+.god-mod-part.god-mod-g.positive { color: #A855F7; }
+.god-mod-part.god-mod-g.negative { color: #C084FC; }
+
+/* Orientierung (O) - Blau */
+.god-mod-part.god-mod-o {
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+}
+.god-mod-part.god-mod-o.positive { color: #3B82F6; }
+.god-mod-part.god-mod-o.negative { color: #60A5FA; }
+
+/* Dominanz (D) - Orange */
+.god-mod-part.god-mod-d {
+    background: rgba(249, 115, 22, 0.2);
+    border: 1px solid rgba(249, 115, 22, 0.5);
+}
+.god-mod-part.god-mod-d.positive { color: #F97316; }
+.god-mod-part.god-mod-d.negative { color: #FB923C; }
+
+/* Hover-Effekt */
+.god-mod-part:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+    .god-modifier-badge {
+        gap: 2px;
+        margin-right: 4px;
+        font-size: 9px;
+    }
+
+    .god-mod-part {
+        padding: 0 3px;
+    }
+}
