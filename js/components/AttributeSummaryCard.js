@@ -2053,11 +2053,21 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // PRIORITÄT 2: Vergleiche gegen statische Archetyp-Werte aus GfkBeduerfnisse
+        // PRIORITÄT 2: Vergleiche gegen BaseArchetypProfile (dieselbe Quelle wie Reset)
+        // FIX v1.8.710: Verwende BaseArchetypProfile als primäre Fallback-Quelle
         // (Falls kein Baseline gesetzt ist)
         if (initialValue === undefined) {
-            const archetyp = currentFlatArchetyp || 'polyamor';
-            if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+            // FIX v1.8.710: Hole Archetyp aus TiageState für die richtige Person (SSOT)
+            // statt globaler currentFlatArchetyp Variable
+            const archetyp = (typeof TiageState !== 'undefined' && TiageState.getArchetype)
+                ? TiageState.getArchetype(currentPerson)
+                : (currentFlatArchetyp || 'polyamor');
+            // Primär: BaseArchetypProfile (SSOT)
+            if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
+                initialValue = BaseArchetypProfile[archetyp].umfrageWerte[needId];
+            }
+            // Fallback: GfkBeduerfnisse
+            else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
                 initialValue = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte[needId];
             }
         }
@@ -2089,6 +2099,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Setzt das Baseline für eine Person (nur einmal pro Archetyp)
      * Wird beim ersten Laden des Profils aufgerufen
+     * FIX v1.8.710: Verwendet BaseArchetypProfile als primäre Quelle (SSOT)
      * @param {string} person - 'ich' oder 'partner'
      * @param {string} archetyp - Archetyp-ID
      */
@@ -2098,10 +2109,20 @@ const AttributeSummaryCard = (function() {
             return; // Bereits gesetzt für diesen Archetyp
         }
 
-        // Hole die berechneten Anfangswerte aus GfkBeduerfnisse
-        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+        // FIX v1.8.710: Verwende BaseArchetypProfile als primäre Quelle (SSOT)
+        // PRIORITÄT 1: BaseArchetypProfile (dieselbe Quelle wie Reset)
+        let umfrageWerte = null;
+        if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
+            umfrageWerte = BaseArchetypProfile[archetyp].umfrageWerte;
+        }
+        // FALLBACK: GfkBeduerfnisse
+        else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+            umfrageWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
+        }
+
+        if (umfrageWerte) {
             // Tiefe Kopie der Basis-Werte
-            baselineFlatNeeds[person] = { ...GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte };
+            baselineFlatNeeds[person] = { ...umfrageWerte };
             baselineArchetyp[person] = archetyp;
             console.log('[AttributeSummaryCard] Baseline gesetzt für', person, '/', archetyp, '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
         }
@@ -2110,29 +2131,43 @@ const AttributeSummaryCard = (function() {
     /**
      * FIX v1.8.700: Aktualisiert das Baseline nach einem Reset
      * Damit der "geändert"-Zähler korrekt ist (0 nach Reset)
+     * FIX v1.8.710: Verwendet BaseArchetypProfile (dieselbe Quelle wie Reset)
+     * statt GfkBeduerfnisse um Inkonsistenzen zu vermeiden
      * @param {string} person - 'ich' oder 'partner'
      * @param {string} archetyp - Archetyp-ID
      * @param {Array<string>} resetNeedIds - Array von Need-IDs die zurückgesetzt wurden
      */
     function updateBaselineAfterReset(person, archetyp, resetNeedIds) {
-        // Hole die Archetyp-Basis-Werte
-        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
-            const archetypWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
-
-            // Initialisiere baseline falls nicht vorhanden
-            if (!baselineFlatNeeds[person]) {
-                baselineFlatNeeds[person] = {};
-            }
-
-            // Aktualisiere nur die zurückgesetzten Needs im Baseline
-            resetNeedIds.forEach(needId => {
-                if (archetypWerte[needId] !== undefined) {
-                    baselineFlatNeeds[person][needId] = archetypWerte[needId];
-                }
-            });
-
-            console.log('[AttributeSummaryCard] Baseline aktualisiert nach Reset für', person, '- Aktualisiert:', resetNeedIds.length);
+        // FIX v1.8.710: Verwende BaseArchetypProfile (dieselbe Quelle wie Reset)
+        // PRIORITÄT 1: BaseArchetypProfile (SSOT für Reset)
+        let archetypWerte = null;
+        if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
+            archetypWerte = BaseArchetypProfile[archetyp].umfrageWerte;
         }
+        // FALLBACK: GfkBeduerfnisse (falls BaseArchetypProfile nicht verfügbar)
+        else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
+            archetypWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
+            console.warn('[AttributeSummaryCard] updateBaselineAfterReset: BaseArchetypProfile nicht verfügbar, verwende GfkBeduerfnisse');
+        }
+
+        if (!archetypWerte) {
+            console.warn('[AttributeSummaryCard] updateBaselineAfterReset: Keine Werte gefunden für', archetyp);
+            return;
+        }
+
+        // Initialisiere baseline falls nicht vorhanden
+        if (!baselineFlatNeeds[person]) {
+            baselineFlatNeeds[person] = {};
+        }
+
+        // Aktualisiere nur die zurückgesetzten Needs im Baseline
+        resetNeedIds.forEach(needId => {
+            if (archetypWerte[needId] !== undefined) {
+                baselineFlatNeeds[person][needId] = archetypWerte[needId];
+            }
+        });
+
+        console.log('[AttributeSummaryCard] Baseline aktualisiert nach Reset für', person, '- Aktualisiert:', resetNeedIds.length);
     }
 
     /**
