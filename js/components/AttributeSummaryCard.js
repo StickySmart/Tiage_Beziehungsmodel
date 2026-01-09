@@ -2505,8 +2505,13 @@ const AttributeSummaryCard = (function() {
 
                 // Prüfe ob Bedürfnis gesperrt ist (aus TiageState.profileReview.lockedNeeds)
                 const isLocked = savedLockedNeeds.hasOwnProperty(needId);
-                // Wenn gesperrt: verwende gespeicherten Wert, sonst umfrageWert
-                const value = isLocked ? savedLockedNeeds[needId] : umfrageWerte[needId];
+                // FIX v1.8.710: Fallback auf Archetyp-Default wenn TiageState-Wert undefined
+                // Das behebt das Problem dass manche Needs nach Reset noch als "geändert" erscheinen
+                const tiageStateValue = umfrageWerte[needId];
+                const archetypDefaultValue = profil?.umfrageWerte?.[needId];
+                const value = isLocked
+                    ? savedLockedNeeds[needId]
+                    : (tiageStateValue !== undefined ? tiageStateValue : archetypDefaultValue);
 
                 flatNeeds.push({
                     id: needId,

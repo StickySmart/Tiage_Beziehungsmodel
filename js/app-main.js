@@ -11561,7 +11561,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // R4 wird separat via calculateR4Hybrid berechnet
 
                     rFactorSource = 'archetypDefaults';
-                    console.log('[calculateRelationshipQuality] R1-R3 aus Archetyp-Defaults berechnet:', { R1, R2, R3, matching: matching.score });
+                    console.warn('[calculateRelationshipQuality] ⚠️ WARNUNG: R1-R3 aus Archetyp-Defaults berechnet (keine echten Needs verfügbar):', {
+                        R1, R2, R3,
+                        matching: matching.score,
+                        hinweis: 'Für genauere Berechnung bitte Bedürfnis-Werte im Profil anpassen'
+                    });
                 }
             }
 
