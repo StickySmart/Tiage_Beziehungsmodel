@@ -2171,6 +2171,34 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * FIX: Synchronisiert das Baseline mit den aktuellen flatNeeds aus TiageState
+     * Wird nach Reset aufgerufen, damit GOD-modifizierte Bedürfnisse NICHT als "geändert" markiert sind.
+     * Das Baseline wird auf die aktuell berechneten flatNeeds gesetzt (inklusive GOD-Modifikatoren).
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {string} archetyp - Archetyp-ID (z.B. 'single', 'duo')
+     */
+    function syncBaselineWithFlatNeeds(person, archetyp) {
+        if (typeof TiageState === 'undefined') {
+            console.warn('[AttributeSummaryCard] syncBaselineWithFlatNeeds: TiageState nicht verfügbar');
+            return;
+        }
+
+        // Hole die aktuell berechneten flatNeeds (mit GOD-Modifikatoren)
+        const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`);
+        if (!currentFlatNeeds || Object.keys(currentFlatNeeds).length === 0) {
+            console.warn('[AttributeSummaryCard] syncBaselineWithFlatNeeds: Keine flatNeeds für', person);
+            return;
+        }
+
+        // Setze Baseline auf aktuelle flatNeeds (mit GOD-Modifikatoren)
+        baselineFlatNeeds[person] = { ...currentFlatNeeds };
+        baselineArchetyp[person] = archetyp;
+
+        console.log('[AttributeSummaryCard] Baseline synchronisiert mit flatNeeds für', person, '/', archetyp,
+            '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
+    }
+
+    /**
      * Gibt die Perspektiven-ID für ein Bedürfnis zurück
      * @param {string} needId - #B-ID (z.B. '#B34')
      * @returns {string} Perspektiven-ID ('#P1', '#P2', '#P3', '#P4')
@@ -5310,7 +5338,9 @@ const AttributeSummaryCard = (function() {
         decrementSelectedNeeds,
         getSelectedNeeds: function() { return selectedNeeds; },
         // NEU: Person-spezifische Lock-Synchronisierung
-        syncLocksFromState: syncLocksFromTiageState
+        syncLocksFromState: syncLocksFromTiageState,
+        // FIX: Baseline mit aktuellen flatNeeds synchronisieren (für Reset mit GOD)
+        syncBaselineWithFlatNeeds
     };
 })();
 

@@ -20159,11 +20159,36 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // PHASE 1: PROXY-LAYER MIGRATION
             // ═══════════════════════════════════════════════════════════════════════════
             // Verwende TiageState.reset() statt direkter Zuweisung
-            // Dies resettet personDimensions über den Proxy automatisch
+            // GOD-Auswahl (personDimensions) bleibt erhalten!
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof TiageState !== 'undefined' && TiageState.reset) {
                 TiageState.reset();
                 console.log('[resetAll] TiageState reset durchgeführt');
+
+                // ═══════════════════════════════════════════════════════════════════════════
+                // FIX: Nach Reset flatNeeds und resonanzFaktoren neu berechnen
+                // mit aktuellen GOD-Modifikatoren (falls vorhanden)
+                // ═══════════════════════════════════════════════════════════════════════════
+                if (typeof ProfileCalculator !== 'undefined') {
+                    ['ich', 'partner'].forEach(person => {
+                        const archetyp = person === 'ich' ? 'single' : 'duo';
+                        const profileData = {
+                            archetyp: archetyp,
+                            geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
+                            dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
+                            orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
+                        };
+                        console.log(`[resetAll] Berechne Profil für ${person} mit GOD:`, JSON.stringify(profileData));
+                        ProfileCalculator.loadProfile(person, profileData);
+
+                        // FIX: Baseline mit berechneten flatNeeds synchronisieren
+                        // Damit nach Reset nichts als "geändert" markiert ist
+                        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.syncBaselineWithFlatNeeds) {
+                            AttributeSummaryCard.syncBaselineWithFlatNeeds(person, archetyp);
+                        }
+                    });
+                    console.log('[resetAll] flatNeeds, resonanzFaktoren und Baseline neu berechnet mit GOD-Modifikatoren');
+                }
             }
 
             // Reset dropdowns
