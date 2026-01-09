@@ -67,21 +67,47 @@ TiageCompatibility.Physical = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
+    // SSOT: Hole Konstanten aus TiageSynthesisConstants
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Holt PHYSICAL_COMPATIBILITY Konstanten aus SSOT
+     * @returns {object} Konstanten oder Defaults
+     */
+    function getConstants() {
+        if (typeof TiageSynthesisConstants !== 'undefined' && TiageSynthesisConstants.PHYSICAL_COMPATIBILITY) {
+            return TiageSynthesisConstants.PHYSICAL_COMPATIBILITY;
+        }
+        // Fallback defaults (sollte nie verwendet werden wenn constants.js geladen)
+        return {
+            SECONDARY_WEIGHT: 0.3,
+            RESULT: { POSSIBLE: 'möglich', IMPOSSIBLE: 'unmöglich', INCOMPLETE: 'unvollständig' },
+            CONFIDENCE: { HIGH: 'hoch', MEDIUM: 'mittel', LOW: 'niedrig' },
+            REQUIRE_MUTUAL_ATTRACTION: true
+        };
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // ORIENTATION PAIR CHECK
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Check single pair of orientations
+     *
+     * FIX (SSOT): Sekundäre Orientierung ist KEINE "Exploration", sondern eine
+     * vollwertige Orientierung. Die Kompatibilität prüft ob BEIDE Personen
+     * gegenseitig angezogen sein können - einseitige Anziehung ist unmöglich.
+     *
      * @param {string} type1 - Orientation type person 1
-     * @param {string} status1 - Status person 1 ('gelebt' | 'interessiert')
+     * @param {boolean} isPrimary1 - Ist dies die primäre Orientierung von Person 1?
      * @param {string} type2 - Orientation type person 2
-     * @param {string} status2 - Status person 2 ('gelebt' | 'interessiert')
+     * @param {boolean} isPrimary2 - Ist dies die primäre Orientierung von Person 2?
      * @param {string} g1 - Gender person 1
      * @param {string} g2 - Gender person 2
-     * @returns {string} 'möglich' | 'unsicher' | 'unmöglich'
+     * @returns {object} { result: 'möglich'|'unmöglich', confidence: 'hoch'|'mittel'|'niedrig' }
      */
-    function checkSingleOrientationPair(type1, status1, type2, status2, g1, g2) {
-        var isUnsicher = status1 === 'interessiert' || status2 === 'interessiert';
+    function checkSingleOrientationPair(type1, isPrimary1, type2, isPrimary2, g1, g2) {
+        var constants = getConstants();
 
         // Helper: Can this orientation be attracted to the other person's gender?
         var canBeAttractedTo = function(orientation, myGender, theirGender) {
@@ -91,20 +117,23 @@ TiageCompatibility.Physical = (function() {
             return false;
         };
 
-        // BOTH persons must be able to be attracted to each other's gender
+        // SSOT: BEIDE Personen müssen zueinander angezogen sein können
+        // Einseitige Anziehung ist unmöglich!
         var person1CanBeAttracted = canBeAttractedTo(type1, g1, g2);
         var person2CanBeAttracted = canBeAttractedTo(type2, g2, g1);
 
         if (person1CanBeAttracted && person2CanBeAttracted) {
-            return isUnsicher ? 'unsicher' : 'möglich';
+            // Beide können angezogen sein - Konfidenz basiert auf Primary/Secondary
+            var confidence = constants.CONFIDENCE.HIGH;
+            if (!isPrimary1 || !isPrimary2) {
+                confidence = constants.CONFIDENCE.MEDIUM; // Über Secondary = mittlere Konfidenz
+            }
+            return { result: constants.RESULT.POSSIBLE, confidence: confidence };
         }
 
-        // If only one person is exploring, there might be potential
-        if (isUnsicher && (person1CanBeAttracted || person2CanBeAttracted)) {
-            return 'unsicher';
-        }
-
-        return 'unmöglich';
+        // SSOT: Einseitige Anziehung ist NICHT möglich
+        // (Alte Logik gab hier fälschlicherweise "unsicher" zurück)
+        return { result: constants.RESULT.IMPOSSIBLE, confidence: null };
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -194,113 +223,106 @@ TiageCompatibility.Physical = (function() {
         if (!g1) missingItems.push('Ich: Geschlecht');
         if (!g2) missingItems.push('Partner: Geschlecht');
 
-        // Handle multi-select orientierung
+        // ═══════════════════════════════════════════════════════════════════════
+        // FIX (SSOT): Handle multi-select orientierung
+        // Sekundäre Orientierung ist KEINE "Exploration", sondern eine vollwertige
+        // Orientierung mit reduziertem Scoring-Einfluss. isPrimary bestimmt die Konfidenz.
+        // ═══════════════════════════════════════════════════════════════════════
         var oriList1 = [];
         var oriList2 = [];
 
         if (ori1 && typeof ori1 === 'object') {
             // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
             if ('primary' in ori1) {
-                if (ori1.primary) oriList1.push({ type: ori1.primary, status: 'gelebt' });
-                if (ori1.secondary) oriList1.push({ type: ori1.secondary, status: 'interessiert' });
+                if (ori1.primary) oriList1.push({ type: ori1.primary, isPrimary: true });
+                if (ori1.secondary) oriList1.push({ type: ori1.secondary, isPrimary: false });
             } else {
                 // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
-                if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', status: ori1.heterosexuell });
-                if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', status: ori1.homosexuell });
-                if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', status: ori1.bisexuell });
+                if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', isPrimary: ori1.heterosexuell === 'gelebt' });
+                if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', isPrimary: ori1.homosexuell === 'gelebt' });
+                if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', isPrimary: ori1.bisexuell === 'gelebt' });
             }
         } else if (ori1 && typeof ori1 === 'string') {
             // Backwards compatibility for old single-value format
-            oriList1.push({ type: ori1, status: person1.orientierungStatus || 'gelebt' });
+            oriList1.push({ type: ori1, isPrimary: true });
         }
 
         if (ori2 && typeof ori2 === 'object') {
             // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
             if ('primary' in ori2) {
-                if (ori2.primary) oriList2.push({ type: ori2.primary, status: 'gelebt' });
-                if (ori2.secondary) oriList2.push({ type: ori2.secondary, status: 'interessiert' });
+                if (ori2.primary) oriList2.push({ type: ori2.primary, isPrimary: true });
+                if (ori2.secondary) oriList2.push({ type: ori2.secondary, isPrimary: false });
             } else {
                 // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
-                if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', status: ori2.heterosexuell });
-                if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', status: ori2.homosexuell });
-                if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', status: ori2.bisexuell });
+                if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', isPrimary: ori2.heterosexuell === 'gelebt' });
+                if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', isPrimary: ori2.homosexuell === 'gelebt' });
+                if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', isPrimary: ori2.bisexuell === 'gelebt' });
             }
         } else if (ori2 && typeof ori2 === 'string') {
             // Backwards compatibility for old single-value format
-            oriList2.push({ type: ori2, status: person2.orientierungStatus || 'gelebt' });
+            oriList2.push({ type: ori2, isPrimary: true });
         }
 
         // Check if orientierung is missing
         if (oriList1.length === 0) missingItems.push('Ich: Orientierung');
         if (oriList2.length === 0) missingItems.push('Partner: Orientierung');
 
+        var constants = getConstants();
+
         // Return incomplete if any items are missing
         if (missingItems.length > 0) {
             return {
-                result: 'unvollständig',
+                result: constants.RESULT.INCOMPLETE,
                 reason: 'Dimensionen unvollständig',
                 explanation: 'Es fehlt noch: ' + missingItems.join(', '),
                 missingItems: missingItems
             };
         }
 
-        // Check all combinations
-        var hasPossible = false;
-        var hasUnsicher = false;
-        var hasInteressiert = false;
+        // ═══════════════════════════════════════════════════════════════════════
+        // SSOT: Check all combinations - suche nach GEGENSEITIGER Anziehung
+        // Eine Kombination ist nur "möglich" wenn BEIDE angezogen sein können!
+        // ═══════════════════════════════════════════════════════════════════════
+        var bestResult = null;
+        var bestConfidence = null;
 
         for (var i = 0; i < oriList1.length; i++) {
             var o1 = oriList1[i];
             for (var j = 0; j < oriList2.length; j++) {
                 var o2 = oriList2[j];
-                var result = checkSingleOrientationPair(o1.type, o1.status, o2.type, o2.status, g1, g2);
+                var pairResult = checkSingleOrientationPair(o1.type, o1.isPrimary, o2.type, o2.isPrimary, g1, g2);
 
-                if (result === 'möglich') {
-                    hasPossible = true;
-                } else if (result === 'unsicher') {
-                    hasUnsicher = true;
-                }
-
-                if (o1.status === 'interessiert' || o2.status === 'interessiert') {
-                    hasInteressiert = true;
+                if (pairResult.result === constants.RESULT.POSSIBLE) {
+                    // Gefunden! Speichere das beste Ergebnis (höchste Konfidenz)
+                    if (!bestResult || pairResult.confidence === constants.CONFIDENCE.HIGH) {
+                        bestResult = pairResult.result;
+                        bestConfidence = pairResult.confidence;
+                    }
+                    // Bei hoher Konfidenz können wir aufhören zu suchen
+                    if (pairResult.confidence === constants.CONFIDENCE.HIGH) {
+                        break;
+                    }
                 }
             }
+            if (bestConfidence === constants.CONFIDENCE.HIGH) break;
         }
 
         // Return best result
         console.log('[TiageCompatibility.Physical.check] Decision:', {
-            hasPossible: hasPossible,
-            hasUnsicher: hasUnsicher,
-            hasInteressiert: hasInteressiert,
+            bestResult: bestResult,
+            bestConfidence: bestConfidence,
             oriList1: oriList1,
             oriList2: oriList2
         });
 
-        if (hasPossible && !hasInteressiert) {
-            console.log('[TiageCompatibility.Physical.check] Result: möglich');
-            return { result: 'möglich', confidence: 'hoch' };
+        if (bestResult === constants.RESULT.POSSIBLE) {
+            console.log('[TiageCompatibility.Physical.check] Result:', bestResult, 'Confidence:', bestConfidence);
+            return { result: bestResult, confidence: bestConfidence };
         }
 
-        if (hasPossible && hasInteressiert) {
-            return {
-                result: 'unsicher',
-                confidence: 'mittel',
-                explanation: 'Anziehung möglich, aber mindestens eine Person ist in der Explorationsphase.',
-                note: 'Status "Interessiert" bedeutet Exploration'
-            };
-        }
-
-        if (hasUnsicher) {
-            return {
-                result: 'unsicher',
-                confidence: 'niedrig',
-                explanation: 'Anziehung ist theoretisch möglich, aber unsicher.',
-                note: 'Exploration-Phase'
-            };
-        }
-
+        // SSOT: Keine gegenseitige Anziehung möglich = unmöglich
         return {
-            result: 'unmöglich',
+            result: constants.RESULT.IMPOSSIBLE,
             reason: 'Inkompatible Orientierungen',
             explanation: 'Die sexuellen Orientierungen schließen gegenseitige Anziehung aus.'
         };
