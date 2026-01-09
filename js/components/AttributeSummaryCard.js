@@ -1139,6 +1139,31 @@ const AttributeSummaryCard = (function() {
 
         console.log(`[AttributeSummaryCard] Reset: ${resetCount} zurückgesetzt, ${skippedLocked} gesperrt übersprungen, ${skippedNoValue} ohne Originalwert`);
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // FIX v1.8.711: Schreibe ALLE 226 Needs explizit zu TiageState
+        // Damit TiageState.flatNeeds nach Reset vollständig ist und keine
+        // undefined-Werte beim nächsten Laden auftreten
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (selectedNeeds.size === 0 && typeof TiageState !== 'undefined' && TiageState.setFlatNeeds) {
+            // Vollständiger Reset: Schreibe ALLE Werte aus BaseArchetypProfile
+            const completeNeeds = {};
+            const lockedNeeds = TiageState.getLockedNeeds ? TiageState.getLockedNeeds(currentPerson) || {} : {};
+
+            // Alle Needs aus BaseArchetypProfile übernehmen
+            Object.keys(umfrageWerte).forEach(needId => {
+                // Gesperrte Needs behalten ihren Wert
+                if (lockedNeeds.hasOwnProperty(needId)) {
+                    completeNeeds[needId] = lockedNeeds[needId];
+                } else {
+                    completeNeeds[needId] = umfrageWerte[needId];
+                }
+            });
+
+            // Schreibe alle 226 Needs auf einmal zu TiageState
+            TiageState.setFlatNeeds(currentPerson, completeNeeds);
+            console.log(`[AttributeSummaryCard] VOLLSTÄNDIGER Reset: ${Object.keys(completeNeeds).length} Needs zu TiageState geschrieben für ${currentPerson}`);
+        }
+
         // Trigger event for resonance recalculation
         if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
@@ -1160,7 +1185,7 @@ const AttributeSummaryCard = (function() {
 
         // FIX v1.8.701: Explizit speichern nach Reset (nicht nur debounced)
         // Damit beim Wechsel ICH/PARTNER die Werte korrekt geladen werden
-        if (resetCount > 0 && typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+        if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
             TiageState.saveToStorage();
             console.log('[AttributeSummaryCard] Reset gespeichert für', currentPerson);
         }
@@ -1493,12 +1518,15 @@ const AttributeSummaryCard = (function() {
         const btn = document.querySelector('.bulk-lock-btn');
         if (!btn) return;
 
+        const icon = btn.querySelector('.bulk-btn-icon');
+        const label = btn.querySelector('.bulk-btn-label');
+
+        // Label bleibt immer gleich
+        if (label) label.textContent = 'Ent-/Sperren';
+
         if (selectedNeeds.size === 0) {
             // Nichts markiert
-            const icon = btn.querySelector('.bulk-btn-icon');
-            const label = btn.querySelector('.bulk-btn-label');
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle markierten Werte sperren/entsperren';
             return;
         }
@@ -1515,20 +1543,14 @@ const AttributeSummaryCard = (function() {
         const allLocked = lockedCount === selectedNeeds.size;
         const someLocked = lockedCount > 0 && lockedCount < selectedNeeds.size;
 
-        const icon = btn.querySelector('.bulk-btn-icon');
-        const label = btn.querySelector('.bulk-btn-label');
-
         if (allLocked) {
             if (icon) icon.textContent = '🔓';
-            if (label) label.textContent = 'Entsperren';
             btn.title = 'Alle markierten Werte entsperren';
         } else if (someLocked) {
-            if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren*';
+            if (icon) icon.textContent = '🔐';
             btn.title = `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} noch nicht gesperrt`;
         } else {
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle markierten Werte sperren';
         }
     }
@@ -1776,25 +1798,24 @@ const AttributeSummaryCard = (function() {
         const icon = btn.querySelector('.bulk-btn-icon');
         const label = btn.querySelector('.bulk-btn-label');
 
+        // Label bleibt immer gleich
+        if (label) label.textContent = 'Ent-/Sperren';
+
         if (!filterActive) {
             // Kein Filter aktiv
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Erst Filter setzen um gefilterte Bedürfnisse zu sperren';
         } else if (status.allLocked) {
-            // Alle gesperrt → Entsperren anzeigen
+            // Alle gesperrt → Entsperren Icon
             if (icon) icon.textContent = '🔓';
-            if (label) label.textContent = 'Entsperren';
             btn.title = 'Alle gefilterten Bedürfnisse entsperren';
         } else if (status.someLocked) {
-            // Teilweise gesperrt → Sperren mit * Indikator
-            if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren*';
-            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt - klicken zum Sperren`;
+            // Teilweise gesperrt
+            if (icon) icon.textContent = '🔐';
+            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt`;
         } else {
-            // Keine gesperrt → Sperren anzeigen
+            // Keine gesperrt → Sperren Icon
             if (icon) icon.textContent = '🔒';
-            if (label) label.textContent = 'Sperren';
             btn.title = 'Alle gefilterten Bedürfnisse sperren';
         }
     }
@@ -2509,8 +2530,13 @@ const AttributeSummaryCard = (function() {
 
                 // Prüfe ob Bedürfnis gesperrt ist (aus TiageState.profileReview.lockedNeeds)
                 const isLocked = savedLockedNeeds.hasOwnProperty(needId);
-                // Wenn gesperrt: verwende gespeicherten Wert, sonst umfrageWert
-                const value = isLocked ? savedLockedNeeds[needId] : umfrageWerte[needId];
+                // FIX v1.8.710: Fallback auf Archetyp-Default wenn TiageState-Wert undefined
+                // Das behebt das Problem dass manche Needs nach Reset noch als "geändert" erscheinen
+                const tiageStateValue = umfrageWerte[needId];
+                const archetypDefaultValue = profil?.umfrageWerte?.[needId];
+                const value = isLocked
+                    ? savedLockedNeeds[needId]
+                    : (tiageStateValue !== undefined ? tiageStateValue : archetypDefaultValue);
 
                 flatNeeds.push({
                     id: needId,
@@ -2724,7 +2750,7 @@ const AttributeSummaryCard = (function() {
                     </button>
                     <button class="bulk-lock-btn" onclick="AttributeSummaryCard.toggleLockSelectedNeeds()" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">🔒</span>
-                        <span class="bulk-btn-label">Sperren</span>
+                        <span class="bulk-btn-label">Ent-/Sperren</span>
                     </button>
                 </div>
             </div>
