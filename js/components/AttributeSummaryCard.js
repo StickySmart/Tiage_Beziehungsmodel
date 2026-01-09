@@ -1139,6 +1139,31 @@ const AttributeSummaryCard = (function() {
 
         console.log(`[AttributeSummaryCard] Reset: ${resetCount} zurückgesetzt, ${skippedLocked} gesperrt übersprungen, ${skippedNoValue} ohne Originalwert`);
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // FIX v1.8.711: Schreibe ALLE 226 Needs explizit zu TiageState
+        // Damit TiageState.flatNeeds nach Reset vollständig ist und keine
+        // undefined-Werte beim nächsten Laden auftreten
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (selectedNeeds.size === 0 && typeof TiageState !== 'undefined' && TiageState.setFlatNeeds) {
+            // Vollständiger Reset: Schreibe ALLE Werte aus BaseArchetypProfile
+            const completeNeeds = {};
+            const lockedNeeds = TiageState.getLockedNeeds ? TiageState.getLockedNeeds(currentPerson) || {} : {};
+
+            // Alle Needs aus BaseArchetypProfile übernehmen
+            Object.keys(umfrageWerte).forEach(needId => {
+                // Gesperrte Needs behalten ihren Wert
+                if (lockedNeeds.hasOwnProperty(needId)) {
+                    completeNeeds[needId] = lockedNeeds[needId];
+                } else {
+                    completeNeeds[needId] = umfrageWerte[needId];
+                }
+            });
+
+            // Schreibe alle 226 Needs auf einmal zu TiageState
+            TiageState.setFlatNeeds(currentPerson, completeNeeds);
+            console.log(`[AttributeSummaryCard] VOLLSTÄNDIGER Reset: ${Object.keys(completeNeeds).length} Needs zu TiageState geschrieben für ${currentPerson}`);
+        }
+
         // Trigger event for resonance recalculation
         if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
@@ -1160,7 +1185,7 @@ const AttributeSummaryCard = (function() {
 
         // FIX v1.8.701: Explizit speichern nach Reset (nicht nur debounced)
         // Damit beim Wechsel ICH/PARTNER die Werte korrekt geladen werden
-        if (resetCount > 0 && typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+        if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
             TiageState.saveToStorage();
             console.log('[AttributeSummaryCard] Reset gespeichert für', currentPerson);
         }
