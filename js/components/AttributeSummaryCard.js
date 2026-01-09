@@ -3218,6 +3218,83 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Holt die GOD-Modifikatoren für ein Bedürfnis
+     * @param {string} needId - #B-ID (z.B. '#B74')
+     * @returns {Object|null} { gender: number, dominance: number, orientation: number, total: number } oder null
+     */
+    function getGodModifiersForNeed(needId) {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Konvertiere #B-ID zu stringKey
+        let stringKey = needId;
+        if (needId.startsWith('#') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey) {
+            stringKey = BeduerfnisIds.getKey(needId) || needId;
+        }
+
+        // Hole aktuelle GOD-Einstellungen aus TiageState
+        if (typeof TiageState === 'undefined') return null;
+        const geschlecht = TiageState.get(`personDimensions.${currentPerson}.geschlecht`);
+        const dominanz = TiageState.get(`personDimensions.${currentPerson}.dominanz`);
+        const orientierung = TiageState.get(`personDimensions.${currentPerson}.orientierung`);
+
+        // Hole Modifikatoren von TiageProfileStore
+        if (typeof TiageProfileStore === 'undefined' || !TiageProfileStore.getNeedsModifiers) return null;
+        const allMods = TiageProfileStore.getNeedsModifiers();
+        if (!allMods) return null;
+
+        // Baue Keys für Lookup
+        let geschlechtKey = null;
+        if (geschlecht?.primary && geschlecht?.secondary) {
+            geschlechtKey = `${geschlecht.primary}-${geschlecht.secondary}`;
+        } else if (geschlecht?.primary) {
+            geschlechtKey = geschlecht.primary;
+        }
+        const dominanzKey = dominanz?.primary || null;
+        const orientierungKey = orientierung?.primary || null;
+
+        // Hole Modifikatoren für dieses Bedürfnis
+        const genderMod = geschlechtKey && allMods.gender?.[geschlechtKey]?.[stringKey] || 0;
+        const dominanceMod = dominanzKey && allMods.dominance?.[dominanzKey]?.[stringKey] || 0;
+        const orientationMod = orientierungKey && allMods.orientation?.[orientierungKey]?.[stringKey] || 0;
+
+        const total = genderMod + dominanceMod + orientationMod;
+        if (total === 0) return null;
+
+        return {
+            gender: genderMod,
+            dominance: dominanceMod,
+            orientation: orientationMod,
+            total: total
+        };
+    }
+
+    /**
+     * Rendert das GOD-Modifikator Badge für ein Bedürfnis
+     * @param {string} needId - #B-ID
+     * @returns {string} HTML für das Badge oder leerer String
+     */
+    function renderGodModifierBadge(needId) {
+        const mods = getGodModifiersForNeed(needId);
+        if (!mods) return '';
+
+        // Baue Tooltip mit Details
+        const parts = [];
+        if (mods.gender !== 0) parts.push(`G: ${mods.gender > 0 ? '+' : ''}${mods.gender}`);
+        if (mods.dominance !== 0) parts.push(`D: ${mods.dominance > 0 ? '+' : ''}${mods.dominance}`);
+        if (mods.orientation !== 0) parts.push(`O: ${mods.orientation > 0 ? '+' : ''}${mods.orientation}`);
+
+        const tooltip = `GOD-Modifikator: ${parts.join(', ')} = ${mods.total > 0 ? '+' : ''}${mods.total}`;
+        const totalDisplay = mods.total > 0 ? `+${mods.total}` : `${mods.total}`;
+        const colorClass = mods.total > 0 ? 'god-mod-positive' : 'god-mod-negative';
+
+        return `<span class="god-modifier-badge ${colorClass}" title="${tooltip}">${totalDisplay}</span>`;
+    }
+
+    /**
      * Rendert ein einzelnes Bedürfnis-Item für die flache Darstellung
      * @param {string} needId - Bedürfnis-ID
      * @param {string} label - Anzeige-Label
@@ -3246,6 +3323,8 @@ const AttributeSummaryCard = (function() {
         const changedClass = valueChanged ? ' value-changed' : '';
         // R-Faktor Badge (zeigt zu welchem R-Faktor dieses Bedürfnis beiträgt)
         const rFactorBadge = renderRFactorBadge(needId, value);
+        // GOD-Modifikator Badge (zeigt G/O/D Einfluss auf dieses Bedürfnis)
+        const godModBadge = renderGodModifierBadge(needId);
         return `
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
@@ -3254,6 +3333,7 @@ const AttributeSummaryCard = (function() {
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
                 <div class="flat-need-controls">
+                    ${godModBadge}
                     ${rFactorBadge}
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"

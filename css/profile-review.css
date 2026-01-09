@@ -3752,3 +3752,60 @@ input.resonanz-input:focus {
         display: none;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GOD-MODIFIKATOR BADGE
+   Zeigt den Einfluss von Geschlecht, Orientierung und Dominanz auf Bedürfnisse
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.god-modifier-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 18px;
+    padding: 0 6px;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 9px;
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+/* Positive Modifikation (erhöht das Bedürfnis) */
+.god-modifier-badge.god-mod-positive {
+    color: #2A9D8F;
+    background: rgba(42, 157, 143, 0.15);
+    border: 1px solid rgba(42, 157, 143, 0.4);
+}
+
+.god-modifier-badge.god-mod-positive:hover {
+    background: rgba(42, 157, 143, 0.25);
+    box-shadow: 0 0 8px rgba(42, 157, 143, 0.5);
+    transform: scale(1.1);
+}
+
+/* Negative Modifikation (reduziert das Bedürfnis) */
+.god-modifier-badge.god-mod-negative {
+    color: #E76F51;
+    background: rgba(231, 111, 81, 0.15);
+    border: 1px solid rgba(231, 111, 81, 0.4);
+}
+
+.god-modifier-badge.god-mod-negative:hover {
+    background: rgba(231, 111, 81, 0.25);
+    box-shadow: 0 0 8px rgba(231, 111, 81, 0.5);
+    transform: scale(1.1);
+}
+
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+    .god-modifier-badge {
+        min-width: 24px;
+        height: 16px;
+        padding: 0 4px;
+        font-size: 9px;
+        margin-right: 4px;
+    }
+}
