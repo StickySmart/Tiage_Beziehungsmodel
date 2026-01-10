@@ -22,13 +22,17 @@ TiageDimensions.Dominanz = (function() {
     /**
      * Modifier values for different dominance combinations.
      * Positive = bonus, Negative = penalty
+     *
+     * v3.8: Tao-Balance gleichwertig zu Komplementär
+     * - ausgeglichen/switch bieten gleiches Potential wie dominant/submissiv
+     * - Philosophie: Yin-Yang-Balance ist ebenso wertvoll wie Polarität
      */
     var modifierValues = {
-        complementary: 8,      // dominant + submissiv
-        bothBalanced: 5,       // ausgeglichen + ausgeglichen
-        bothSwitch: 3,         // switch + switch
-        sameExtreme: -5,       // dominant + dominant OR submissiv + submissiv
-        oneFlexible: 2         // switch/ausgeglichen with anything else
+        complementary: 8,      // dominant + submissiv (Komplementäre Polarität)
+        bothBalanced: 8,       // ausgeglichen + ausgeglichen (Tao-Balance) - v3.8: von 5 auf 8
+        bothSwitch: 8,         // switch + switch (Dynamische Balance) - v3.8: von 3 auf 8
+        sameExtreme: -5,       // dominant + dominant OR submissiv + submissiv (Konflikt)
+        oneFlexible: 6         // switch/ausgeglichen with dominant/submissiv - v3.8: von 2 auf 6
     };
 
     // ═══════════════════════════════════════════════════════════════════════

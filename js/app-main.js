@@ -10492,23 +10492,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // -  60%: Gleiche Pole (Dom↔Dom, Sub↔Sub) = Konflikt, fehlende Spannung
         // ═══════════════════════════════════════════════════════════════════════
         // ═══════════════════════════════════════════════════════════════════════
-        // DOMINANZ HARMONY MATRIX
+        // DOMINANZ HARMONY MATRIX - SSOT: Referenziert Constants.DOMINANCE_MATRIX
         // ═══════════════════════════════════════════════════════════════════════
-        const dominanzHarmonyMatrix = {
-            // KOMPLEMENTÄRE POLARITÄT (100%)
-            "dominant-submissiv": 100, "submissiv-dominant": 100,
-            // TAO-BALANCE (90-95%)
-            "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
-            "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
-            // POL + BALANCE (85%)
-            "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
-            "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
-            // SWITCH + POL (80%)
-            "switch-dominant": 80, "dominant-switch": 80,
-            "switch-submissiv": 80, "submissiv-switch": 80,
-            // GLEICHE POLE (55%)
-            "dominant-dominant": 55, "submissiv-submissiv": 55
-        };
+        function getDominanzHarmonyMatrix() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.DOMINANCE_MATRIX) {
+                return TiageSynthesis.Constants.DOMINANCE_MATRIX;
+            }
+            // Fallback (sollte nicht erreicht werden)
+            console.warn('[getDominanzHarmonyMatrix] SSOT nicht verfügbar, nutze Fallback');
+            return {
+                "dominant-submissiv": 100, "submissiv-dominant": 100,
+                "ausgeglichen-ausgeglichen": 100, "switch-switch": 100,
+                "switch-ausgeglichen": 100, "ausgeglichen-switch": 100,
+                "dominant-ausgeglichen": 93, "ausgeglichen-dominant": 93,
+                "submissiv-ausgeglichen": 93, "ausgeglichen-submissiv": 93,
+                "switch-dominant": 93, "dominant-switch": 93,
+                "switch-submissiv": 93, "submissiv-switch": 93,
+                "dominant-dominant": 55, "submissiv-submissiv": 55
+            };
+        }
+        const dominanzHarmonyMatrix = getDominanzHarmonyMatrix();
 
         // Calculate harmony between two single dominanz types
         function calculateSingleDominanzHarmony(type1, status1, type2, status2) {
@@ -16019,17 +16024,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         'ausgeglichen': 'ausgeglichen'
                     };
 
-                    // Harmony matrix for finding best combination
-                    const harmonyMatrix = {
-                        "dominant-submissiv": 100, "submissiv-dominant": 100,
-                        "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
-                        "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
-                        "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
-                        "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
-                        "switch-dominant": 80, "dominant-switch": 80,
-                        "switch-submissiv": 80, "submissiv-switch": 80,
-                        "dominant-dominant": 55, "submissiv-submissiv": 55
-                    };
+                    // Harmony matrix - SSOT: Referenziert Constants.DOMINANCE_MATRIX
+                    const harmonyMatrix = (typeof TiageSynthesis !== 'undefined' &&
+                        TiageSynthesis.Constants &&
+                        TiageSynthesis.Constants.DOMINANCE_MATRIX)
+                        ? TiageSynthesis.Constants.DOMINANCE_MATRIX
+                        : getDominanzHarmonyMatrix();
 
                     // Helper to get all selections with status
                     const getAllSelections = (domObj) => {

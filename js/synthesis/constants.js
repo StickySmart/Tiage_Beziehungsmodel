@@ -573,32 +573,31 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // DOMINANZ-HARMONIE-MATRIX
     // ═══════════════════════════════════════════════════════════════════════
-    // Basiert auf OSHO's Tao-Prinzip: Komplementäre Polarität = höchste Harmonie
+    // v3.8: Tao-Balance gleichwertig zu Komplementärer Polarität
+    // Philosophie: Yin-Yang-Balance ist ebenso wertvoll wie Pol-Gegenpol
 
     DOMINANCE_MATRIX: {
         // KOMPLEMENTÄRE POLARITÄT (100%)
         "dominant-submissiv": 100,
         "submissiv-dominant": 100,
 
-        // TAO-BALANCE (90-95%)
-        "ausgeglichen-ausgeglichen": 95,
-        "switch-switch": 90,
-        "switch-ausgeglichen": 88,
-        "ausgeglichen-switch": 88,
+        // TAO-BALANCE (100%) - v3.8: gleichwertig zu Komplementär
+        "ausgeglichen-ausgeglichen": 100,
+        "switch-switch": 100,
+        "switch-ausgeglichen": 100,
+        "ausgeglichen-switch": 100,
 
-        // POL + BALANCE (85%)
-        "dominant-ausgeglichen": 85,
-        "ausgeglichen-dominant": 85,
-        "submissiv-ausgeglichen": 85,
-        "ausgeglichen-submissiv": 85,
+        // FLEXIBEL + POL (93%) - v3.8: angehoben von 85/80
+        "dominant-ausgeglichen": 93,
+        "ausgeglichen-dominant": 93,
+        "submissiv-ausgeglichen": 93,
+        "ausgeglichen-submissiv": 93,
+        "switch-dominant": 93,
+        "dominant-switch": 93,
+        "switch-submissiv": 93,
+        "submissiv-switch": 93,
 
-        // SWITCH + POL (80%)
-        "switch-dominant": 80,
-        "dominant-switch": 80,
-        "switch-submissiv": 80,
-        "submissiv-switch": 80,
-
-        // GLEICHE POLE (55%) - Spannung
+        // GLEICHE POLE (55%) - Spannung (unverändert)
         "dominant-dominant": 55,
         "submissiv-submissiv": 55
     },
