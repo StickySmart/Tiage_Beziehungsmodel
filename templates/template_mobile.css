@@ -1310,3 +1310,114 @@ body {
 
 /* DevView Styles wurden nach template_desktop.css verschoben,
    damit sie IMMER geladen werden (auch wenn Browser Desktop meldet) */
+
+/* ========================================
+   MOBILE GEWICHTUNG SECTION
+   ======================================== */
+
+.mobile-settings-section {
+    padding: 0 15px;
+}
+
+.mobile-gewichtung-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mobile-gewichtung-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+}
+
+.mobile-gewichtung-label {
+    min-width: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.mobile-gewichtung-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: var(--bg-dark);
+    border-radius: 3px;
+    outline: none;
+}
+
+.mobile-gewichtung-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #F59E0B;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.mobile-gewichtung-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #F59E0B;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.mobile-gewichtung-input-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 55px;
+}
+
+.mobile-gewichtung-input {
+    width: 40px;
+    padding: 6px 4px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.mobile-gewichtung-input:focus {
+    outline: none;
+    border-color: #F59E0B;
+}
+
+.mobile-gewichtung-percent {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Geschlecht Secondary Row für Mobile */
+.geschlecht-secondary-row {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+}
+
+.geschlecht-secondary-row::before {
+    content: 'Sekundär (Identität):';
+    display: block;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.geschlecht-s-grid {
+    opacity: 0.9;
+}
+
+.geschlecht-s-grid .geschlecht-btn {
+    border-style: dashed;
+}

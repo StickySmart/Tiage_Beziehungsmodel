@@ -1064,10 +1064,15 @@
                     <div class="header-geschlecht-info" id="mobile-ich-header-orientierung"></div>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht">
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
-                        <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich"></div>
+                        <div class="geschlecht-primary-row">
+                            <div class="geschlecht-grid geschlecht-p-grid" id="mobile-ich-geschlecht-p-grid" data-person="ich"></div>
+                        </div>
+                        <div class="geschlecht-secondary-row" id="mobile-ich-geschlecht-s-row" style="display: none;">
+                            <div class="geschlecht-grid geschlecht-s-grid" id="mobile-ich-geschlecht-s-grid" data-person="ich"></div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
@@ -1228,10 +1233,15 @@
                     <div class="header-geschlecht-info" id="mobile-partner-header-orientierung"></div>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht">
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
-                        <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner"></div>
+                        <div class="geschlecht-primary-row">
+                            <div class="geschlecht-grid geschlecht-p-grid" id="mobile-partner-geschlecht-p-grid" data-person="partner"></div>
+                        </div>
+                        <div class="geschlecht-secondary-row" id="mobile-partner-geschlecht-s-row" style="display: none;">
+                            <div class="geschlecht-grid geschlecht-s-grid" id="mobile-partner-geschlecht-s-grid" data-person="partner"></div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
@@ -1360,6 +1370,55 @@
             <!-- GFK Bedürfnis-Matching Anzeige (Mobile) -->
             <div id="mobile-gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;">
                 <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
+            </div>
+        </div>
+
+        <!-- MOBILE: Gewichtung Section (am Ende, nach Synthese) -->
+        <div class="mobile-settings-section" id="mobileSettingsSection">
+            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F59E0B; padding: 15px; margin: 15px 0;">
+                <div class="mobile-gewichtung-heading" style="text-align: center; margin-bottom: 12px;">
+                    <div style="color: #F59E0B; font-size: 16px; font-weight: 600;">Gewichtung <span id="mobile-gewicht-summe-label" style="font-size: 12px; font-weight: 400; opacity: 0.7;">100%</span></div>
+                    <div style="color: var(--text-muted); font-size: 11px;">Archetyp · Geschlecht · Orientierung · Dominanz</div>
+                </div>
+                <!-- AGOD Gewichtung Slider für Mobile -->
+                <div class="mobile-gewichtung-container" id="mobileGewichtungContainer">
+                    <div class="mobile-gewichtung-row" data-factor="A">
+                        <span class="mobile-gewichtung-label">Archetyp (A)</span>
+                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-archetyp" min="0" max="100" value="25" oninput="updateMobileGewichtung('archetyp', this.value)">
+                        <div class="mobile-gewichtung-input-group">
+                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-archetyp" value="25" maxlength="3" oninput="updateMobileGewichtung('archetyp', this.value)">
+                            <span class="mobile-gewichtung-percent">%</span>
+                        </div>
+                    </div>
+                    <div class="mobile-gewichtung-row" data-factor="G">
+                        <span class="mobile-gewichtung-label">Geschlecht (G)</span>
+                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-geschlecht" min="0" max="100" value="25" oninput="updateMobileGewichtung('geschlecht', this.value)">
+                        <div class="mobile-gewichtung-input-group">
+                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-geschlecht" value="25" maxlength="3" oninput="updateMobileGewichtung('geschlecht', this.value)">
+                            <span class="mobile-gewichtung-percent">%</span>
+                        </div>
+                    </div>
+                    <div class="mobile-gewichtung-row" data-factor="O">
+                        <span class="mobile-gewichtung-label">Orientierung (O)</span>
+                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-orientierung" min="0" max="100" value="25" oninput="updateMobileGewichtung('orientierung', this.value)">
+                        <div class="mobile-gewichtung-input-group">
+                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-orientierung" value="25" maxlength="3" oninput="updateMobileGewichtung('orientierung', this.value)">
+                            <span class="mobile-gewichtung-percent">%</span>
+                        </div>
+                    </div>
+                    <div class="mobile-gewichtung-row" data-factor="D">
+                        <span class="mobile-gewichtung-label">Dominanz (D)</span>
+                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-dominanz" min="0" max="100" value="25" oninput="updateMobileGewichtung('dominanz', this.value)">
+                        <div class="mobile-gewichtung-input-group">
+                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-dominanz" value="25" maxlength="3" oninput="updateMobileGewichtung('dominanz', this.value)">
+                            <span class="mobile-gewichtung-percent">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-gewichtung-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
+                    <span style="color: var(--text-muted); font-size: 11px;">Summe: <span id="mobile-gewicht-summe" style="color: #10B981; font-weight: 600;">100%</span></span>
+                    <button onclick="resetMobileGewichtung()" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard</button>
+                </div>
             </div>
         </div>
 
