@@ -11449,7 +11449,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // SUMME: Pathos 75% + Logos 25% = 100%
         // → "Pathos vor Logos" - Das Erleben kommt vor der Interpretation
         // ═══════════════════════════════════════════════════════════════════════
-        function calculateRelationshipQuality(person1, person2) {
+        /**
+         * Berechnet die Beziehungsqualität zwischen zwei Personen
+         * @param {Object} person1 - Profil Person 1
+         * @param {Object} person2 - Profil Person 2
+         * @param {Object} options - Optionale Einstellungen
+         * @param {boolean} options.useResonanzCardOverride - Wenn false, werden R-Faktoren aus needs berechnet (für Slot-Machine)
+         */
+        function calculateRelationshipQuality(person1, person2, options) {
+            options = options || {};
+            const useResonanzCardOverride = options.useResonanzCardOverride !== false; // Default: true
+
             // ═══════════════════════════════════════════════════════════════════
             // TIAGE RECHENMODELL v3.2 - Quadratische Resonanz mit Komplementär-Mapping
             // ═══════════════════════════════════════════════════════════════════
@@ -11588,9 +11598,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 attraction2to1: r4Result.attractionDetails?.direction2to1
             });
 
-            // FIX: Verwende benutzerdefinierte R-Werte aus ResonanzCard (IMMER, nicht nur gelockt)
+            // FIX: Verwende benutzerdefinierte R-Werte aus ResonanzCard (nur wenn useResonanzCardOverride=true)
             // Damit Slider-Änderungen sofort im Score sichtbar werden
-            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
+            // Bei Slot-Machine-Berechnung (useResonanzCardOverride=false) werden die dynamisch berechneten R-Werte aus needs verwendet
+            if (useResonanzCardOverride && typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
                 const storedR = ResonanzCard.load();
 
                 // Verwende gespeicherte Werte wenn vorhanden (egal ob locked oder nicht)
@@ -11686,9 +11697,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Calculate overall with 4-factor model + category details for UI
-        function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck) {
+        // options.useResonanzCardOverride: wenn false, werden R-Faktoren aus needs berechnet (für Slot-Machine)
+        function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck, options) {
             // Use new 4-factor model for overall score
-            const qualityResult = calculateRelationshipQuality(person1, person2);
+            const qualityResult = calculateRelationshipQuality(person1, person2, options);
 
             // Calculate category scores for UI display (radar chart, category bars)
             const categories = {};
@@ -12501,6 +12513,39 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
 
+            // NEU: ICH-Needs aus TiageState holen oder berechnen
+            let ichNeeds = null;
+            if (typeof TiageState !== 'undefined') {
+                ichNeeds = TiageState.get('profiles.ich.flatNeeds');
+            }
+            if (!ichNeeds && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                ichNeeds = ProfileCalculator.calculateFlatNeeds(
+                    ichArchetype,
+                    validIchGeschlecht,
+                    validIchDominanz,
+                    validIchOrientierung
+                );
+            }
+
+            // NEU: Cache für Partner-Needs (vermeidet redundante Berechnungen)
+            const partnerNeedsCache = {};
+            function getPartnerNeeds(archetype, geschlecht, orientierung, dominanz) {
+                const cacheKey = `${archetype}-${geschlecht.primary}-${geschlecht.secondary}-${orientierung}-${dominanz}`;
+                if (!partnerNeedsCache[cacheKey]) {
+                    if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                        partnerNeedsCache[cacheKey] = ProfileCalculator.calculateFlatNeeds(
+                            archetype,
+                            geschlecht,
+                            { primary: dominanz, secondary: null },
+                            { primary: orientierung, secondary: null }
+                        );
+                    } else {
+                        partnerNeedsCache[cacheKey] = null;
+                    }
+                }
+                return partnerNeedsCache[cacheKey];
+            }
+
             // Speichere globale Variablen
             const savedCurrentArchetype = currentArchetype;
             const savedSelectedPartner = selectedPartner;
@@ -12511,22 +12556,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
                         for (const orientierung of ALL_ORIENTIERUNGEN) {
                             for (const dominanz of ALL_DOMINANZEN) {
-                                // Partner-Person erstellen
+                                // NEU: Partner-Needs berechnen (mit Cache)
+                                const partnerNeeds = getPartnerNeeds(archetype, geschlecht, orientierung, dominanz);
+
+                                // Partner-Person erstellen MIT needs
                                 const partnerObj = {
                                     archetyp: archetype,
                                     geschlecht: geschlecht,
                                     orientierung: { primary: orientierung, secondary: null },
                                     dominanz: { primary: dominanz, secondary: null },
-                                    gfk: 'mittel'
+                                    gfk: 'mittel',
+                                    needs: partnerNeeds  // NEU: Partner-spezifische needs für R-Faktor-Berechnung
                                 };
 
-                                // ICH-Person erstellen
+                                // ICH-Person erstellen MIT needs
                                 const ichObj = {
                                     archetyp: ichArchetype,
                                     geschlecht: validIchGeschlecht,
                                     orientierung: validIchOrientierung,
                                     dominanz: validIchDominanz,
-                                    gfk: ichGfk
+                                    gfk: ichGfk,
+                                    needs: ichNeeds  // NEU: ICH-needs für R-Faktor-Berechnung
                                 };
 
                                 // Globale Variablen für Berechnung setzen
@@ -12540,7 +12590,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     const logosCheck = calculatePhilosophyCompatibility(ichArchetype, archetype);
 
                                     if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck);
+                                        // NEU: useResonanzCardOverride=false damit R-Faktoren aus needs berechnet werden
+                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, { useResonanzCardOverride: false });
                                         score = result.overall || 0;
                                     } else if (pathosCheck.result === 'unvollständig') {
                                         score = logosCheck.score || 50;
