@@ -911,6 +911,24 @@ TiageSynthesis.Constants = {
             LOW: 'niedrig'     // Grenzfall
         },
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // KONFIDENZ-MULTIPLIKATOR (v3.7)
+        // ═══════════════════════════════════════════════════════════════════════
+        // Matches über sekundäre Orientierungen werden im Score reduziert.
+        // Dies stellt sicher, dass primäre Matches höher gerankt werden.
+        //
+        // Beispiel: Hetero (P) + Bi (S) Person
+        // - Match mit Frau über Hetero (P) → confidence: 'hoch' → 100% Score
+        // - Match mit Mann über Bi (S) → confidence: 'mittel' → 85% Score
+        //
+        // Der Multiplikator wird auf den Gesamt-Score angewandt:
+        // finalScore = baseScore × CONFIDENCE_MULTIPLIER[confidence]
+        CONFIDENCE_MULTIPLIER: {
+            'hoch': 1.0,       // 100% - Primäre Orientierungen kompatibel
+            'mittel': 0.85,    // 85% - Über sekundäre Orientierung kompatibel
+            'niedrig': 0.70    // 70% - Grenzfall (z.B. Exploration)
+        },
+
         // Für gegenseitige Anziehung müssen BEIDE Personen angezogen sein können
         REQUIRE_MUTUAL_ATTRACTION: true
     },
