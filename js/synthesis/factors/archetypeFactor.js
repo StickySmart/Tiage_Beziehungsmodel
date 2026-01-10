@@ -106,7 +106,8 @@ TiageSynthesis.Factors.Archetyp = {
         // Pro/Contra modifizieren den Score leicht (±5 pro Punkt, max ±15)
         var modifier = Math.min(15, Math.max(-15, (proCount - contraCount) * 5));
 
-        var finalScore = Math.min(100, Math.max(0, baseScore + modifier));
+        // Keine Obergrenze - nur Untergrenze bei 0
+        var finalScore = Math.max(0, baseScore + modifier);
         return finalScore;
     },
 
