@@ -9789,6 +9789,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // NOTE: Logic extracted to /js/compatibility/ modules
         // These wrapper functions maintain backward compatibility
 
+        /**
+         * SSOT v3.7: Holt den Konfidenz-Multiplikator für physische Kompatibilität
+         *
+         * Primäre Matches (confidence: 'hoch') werden bevorzugt gegenüber sekundären (confidence: 'mittel').
+         * Dies stellt sicher, dass ein hetero Mann primär Frauen sieht, nicht Männer über seine sekundäre Bi-Orientierung.
+         *
+         * @param {string} confidence - 'hoch', 'mittel', oder 'niedrig'
+         * @returns {number} Multiplikator (1.0 für hoch, 0.85 für mittel, 0.70 für niedrig)
+         */
+        function getConfidenceMultiplier(confidence) {
+            // SSOT: TiageSynthesis.Constants.PHYSICAL_COMPATIBILITY.CONFIDENCE_MULTIPLIER
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.PHYSICAL_COMPATIBILITY &&
+                TiageSynthesis.Constants.PHYSICAL_COMPATIBILITY.CONFIDENCE_MULTIPLIER) {
+                return TiageSynthesis.Constants.PHYSICAL_COMPATIBILITY.CONFIDENCE_MULTIPLIER[confidence] || 1.0;
+            }
+            // Fallback wenn SSOT nicht verfügbar
+            const defaults = { 'hoch': 1.0, 'mittel': 0.85, 'niedrig': 0.70 };
+            return defaults[confidence] || 1.0;
+        }
+
         function checkPhysicalCompatibility(person1, person2) {
             // Delegate to extracted module
             if (typeof TiageCompatibility !== 'undefined' && TiageCompatibility.Physical) {
@@ -12140,7 +12162,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                         if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
-                            score = result.overall || 0;
+                            let baseScore = result.overall || 0;
+
+                            // SSOT v3.7: Konfidenz-Multiplikator anwenden
+                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
                         } else if (pathosCheck.result === 'unvollständig') {
                             // Bei unvollständigen Dimensionen: Fallback auf Archetyp-Matrix
                             const logosScore = logosCheck.score || 50;
@@ -12622,7 +12648,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
                                         // NEU: useResonanzCardOverride=false damit R-Faktoren aus needs berechnet werden
                                         const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, { useResonanzCardOverride: false });
-                                        score = result.overall || 0;
+                                        let baseScore = result.overall || 0;
+
+                                        // SSOT v3.7: Konfidenz-Multiplikator anwenden
+                                        // Primäre Matches (confidence: 'hoch') werden bevorzugt gegenüber sekundären (confidence: 'mittel')
+                                        // Dies stellt sicher, dass ein hetero Mann primär Frauen sieht, nicht Männer über seine sekundäre Bi-Orientierung
+                                        const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                                        score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
                                     } else if (pathosCheck.result === 'unvollständig') {
                                         score = logosCheck.score || 50;
                                     }
@@ -13036,7 +13068,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                         if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
-                            score = result.overall || 0;
+                            let baseScore = result.overall || 0;
+
+                            // SSOT v3.7: Konfidenz-Multiplikator anwenden
+                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
                         } else if (pathosCheck.result === 'unvollständig') {
                             // Bei unvollständigen Dimensionen: Fallback auf Archetyp-Matrix
                             const logosScore = logosCheck.score || 50;
