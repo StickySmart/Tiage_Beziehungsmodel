@@ -10909,25 +10909,25 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const attractionScore = attractionResult.score;
 
             // 3. Hybrid-Kombination
-            // v3.2: R4 = (combinedScore / 100)² (quadratisch, keine Clamps)
+            // v3.7: R4 = (combinedScore / 100)² - keine Obergrenze
             const combinedScore = identityScore * IDENTITY_WEIGHT + attractionScore * ATTRACTION_WEIGHT;
             const normalized = combinedScore / 100;
             const R4 = normalized * normalized;
 
-            // v3.2: Keine Clamps mehr, Range 0-1
-            const R4Clamped = Math.max(0, Math.min(1, R4));
+            // v3.7: Keine Obergrenze - R4 kann > 1.0 sein wenn combinedScore > 100
+            const R4Final = Math.max(0, R4);
 
             console.log('[calculateR4Hybrid] Ergebnis:', {
                 identityScore,
                 attractionScore,
                 combinedScore: Math.round(combinedScore),
-                R4: Math.round(R4Clamped * 1000) / 1000,
+                R4: Math.round(R4Final * 1000) / 1000,
                 attraction1to2: attractionResult.direction1to2,
                 attraction2to1: attractionResult.direction2to1
             });
 
             return {
-                R4: Math.round(R4Clamped * 1000) / 1000,
+                R4: Math.round(R4Final * 1000) / 1000,
                 identityScore,
                 attractionScore,
                 combinedScore: Math.round(combinedScore),
@@ -11562,16 +11562,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════════════════════════════════
             // v3.6: R-FAKTOREN AUS ECHTEN NEEDS (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════════
-            // Hilfsfunktion: Summe × Similarity Kombination (normalisiert auf 0-1)
+            // Hilfsfunktion: Summe × Similarity Kombination
             function combineRFactors(R_ich, R_partner) {
                 const a = R_ich || 1.0;
                 const b = R_partner || 1.0;
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                // v3.6.1: Normalisiere auf 0-1 Range (max = 2.0 wenn beide 1.0 sind)
-                // Dividiere durch 2 um den Boost-Effekt zu erhalten aber auf 0-1 zu normalisieren
+                // v3.7: Keine Obergrenze - R kann über 1.0 gehen für Score > 100
                 const combined = (summe * similarity) / 2;
-                return Math.round(Math.min(combined, 1.0) * 1000) / 1000;
+                return Math.round(combined * 1000) / 1000;
             }
 
             // Wenn echte Needs vorhanden sind, berechne R-Faktoren daraus
