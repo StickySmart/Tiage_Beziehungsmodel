@@ -10909,25 +10909,25 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const attractionScore = attractionResult.score;
 
             // 3. Hybrid-Kombination
-            // v3.2: R4 = (combinedScore / 100)² (quadratisch, keine Clamps)
+            // v3.7: R4 = (combinedScore / 100)² - keine Obergrenze
             const combinedScore = identityScore * IDENTITY_WEIGHT + attractionScore * ATTRACTION_WEIGHT;
             const normalized = combinedScore / 100;
             const R4 = normalized * normalized;
 
-            // v3.2: Keine Clamps mehr, Range 0-1
-            const R4Clamped = Math.max(0, Math.min(1, R4));
+            // v3.7: Keine Obergrenze - R4 kann > 1.0 sein wenn combinedScore > 100
+            const R4Final = Math.max(0, R4);
 
             console.log('[calculateR4Hybrid] Ergebnis:', {
                 identityScore,
                 attractionScore,
                 combinedScore: Math.round(combinedScore),
-                R4: Math.round(R4Clamped * 1000) / 1000,
+                R4: Math.round(R4Final * 1000) / 1000,
                 attraction1to2: attractionResult.direction1to2,
                 attraction2to1: attractionResult.direction2to1
             });
 
             return {
-                R4: Math.round(R4Clamped * 1000) / 1000,
+                R4: Math.round(R4Final * 1000) / 1000,
                 identityScore,
                 attractionScore,
                 combinedScore: Math.round(combinedScore),
