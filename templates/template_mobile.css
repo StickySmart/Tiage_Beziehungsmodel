@@ -174,64 +174,43 @@ body {
     /* Zeige Mobile Multi-Page Container */
     .mobile-multipage {
         display: block !important;
-        min-height: 100vh;
         padding-top: 60px;
         position: relative;
     }
 
-    /* Einzelne Seiten */
+    /* Alle Seiten untereinander anzeigen (kein Swipe) */
     .mobile-page {
-        display: none;
-        min-height: calc(100vh - 60px);
-        padding: 15px;
-        padding-bottom: 80px;
-        animation: slideInPage 0.3s ease;
-    }
-
-    .mobile-page.active {
         display: block;
+        padding: 15px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 20px;
     }
 
-    @keyframes slideInPage {
-        from { transform: translateX(30px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
+    .mobile-page:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 40px;
     }
+
+    /* Animation deaktiviert - keine Swipe-Navigation mehr */
+    /* @keyframes slideInPage entfernt */
 
     /* ========================================
-       SEITEN-INDIKATOR (Punkte)
+       SEITEN-INDIKATOR (Punkte) - AUSGEBLENDET
+       (Nicht mehr benötigt, da alle Seiten untereinander)
        ======================================== */
 
     .page-indicator {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 8px;
-        z-index: 100;
-        background: rgba(26,26,46,0.95);
-        padding: 10px 20px;
-        border-radius: 25px;
-        border: 1px solid var(--border);
+        display: none !important;
     }
 
     .page-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--text-muted);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .page-dot.active {
-        background: var(--primary);
-        width: 24px;
-        border-radius: 4px;
+        display: none;
     }
 
     /* ========================================
-       SEITEN-HEADER
+       SEITEN-HEADER - ANGEPASST (Alle Seiten untereinander)
        ======================================== */
 
     .page-header {
@@ -241,31 +220,25 @@ body {
         margin-bottom: 20px;
     }
 
+    /* Zurück-Buttons ausblenden (nicht mehr benötigt) */
     .btn-back {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        font-size: 1.2rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-
-    .btn-back:hover {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
+        display: none !important;
     }
 
     .page-title {
         font-size: 18px;
         font-weight: 600;
         color: var(--text-primary);
+    }
+
+    /* "Weiter"-Buttons ausblenden (alle Seiten sind untereinander) */
+    .mobile-page .btn-primary-mobile[onclick*="mobileGoToPage"] {
+        display: none !important;
+    }
+
+    /* Swipe-Hinweis ausblenden (nicht mehr benötigt) */
+    .swipe-hint {
+        display: none !important;
     }
 
     /* ========================================
