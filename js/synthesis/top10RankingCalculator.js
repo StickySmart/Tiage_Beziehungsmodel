@@ -81,25 +81,44 @@ const Top10RankingCalculator = (function() {
         }
     });
 
-    // Dominanz-Kompatibilität
-    const DOMINANCE_COMPATIBILITY = {
-        'dominant-submissiv': 95,
-        'submissiv-dominant': 95,
-        'dominant-switch': 80,
-        'switch-dominant': 80,
-        'submissiv-switch': 80,
-        'switch-submissiv': 80,
-        'switch-switch': 85,
-        'dominant-dominant': 55,
-        'submissiv-submissiv': 55,
-        'ausgeglichen-ausgeglichen': 90,
-        'ausgeglichen-dominant': 75,
-        'dominant-ausgeglichen': 75,
-        'ausgeglichen-submissiv': 75,
-        'submissiv-ausgeglichen': 75,
-        'ausgeglichen-switch': 85,
-        'switch-ausgeglichen': 85
-    };
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SSOT: Dominanz-Kompatibilität aus Constants.DOMINANCE_MATRIX
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Holt Dominanz-Kompatibilität aus SSOT (Constants.DOMINANCE_MATRIX)
+     * @param {string} dom1 - Erste Dominanz
+     * @param {string} dom2 - Zweite Dominanz
+     * @returns {number} Kompatibilitätsscore 0-100
+     */
+    function getDominanceCompatibility(dom1, dom2) {
+        const key = `${dom1}-${dom2}`;
+        const reverseKey = `${dom2}-${dom1}`;
+
+        // SSOT: Nutze TiageSynthesis.Constants.DOMINANCE_MATRIX
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.Constants &&
+            TiageSynthesis.Constants.DOMINANCE_MATRIX) {
+            const matrix = TiageSynthesis.Constants.DOMINANCE_MATRIX;
+            return matrix[key] || matrix[reverseKey] || 75;
+        }
+
+        // Warnung wenn SSOT nicht verfügbar
+        console.warn('[Top10RankingCalculator] Constants.DOMINANCE_MATRIX nicht verfügbar!');
+        return 75; // Neutraler Default
+    }
+
+    // Für Rückwärtskompatibilität: DOMINANCE_COMPATIBILITY als Proxy-Objekt
+    const DOMINANCE_COMPATIBILITY = new Proxy({}, {
+        get: function(target, prop) {
+            if (typeof prop !== 'string') return undefined;
+            const parts = prop.split('-');
+            if (parts.length === 2) {
+                return getDominanceCompatibility(parts[0], parts[1]);
+            }
+            return 75;
+        }
+    });
 
     // GFK-Kompatibilität (aus Constants.GFK_MATRIX)
     const GFK_COMPATIBILITY = {
