@@ -29,6 +29,63 @@ function combineRFactors(R_ich, R_partner) {
     return Math.round(summe * similarity * 1000) / 1000;
 }
 
+/**
+ * Berechnet gewichtete Orientierungs-Openness basierend auf P/S (v3.6)
+ *
+ * Formel:
+ * - Wenn nur Primary: 100% des Primary-Wertes
+ * - Wenn Primary + Secondary: Primary × 0.7 + Secondary × 0.3
+ *
+ * @param {object} orientierung - { primary: 'heterosexuell', secondary: 'bisexuell' }
+ * @returns {object} { openness, details }
+ */
+function calculateWeightedOrientationOpenness(orientierung) {
+    if (!orientierung) {
+        return { openness: 0, details: { primary: null, secondary: null } };
+    }
+
+    const primary = orientierung.primary || 'heterosexuell';
+    const secondary = orientierung.secondary || null;
+
+    // Einzelne Openness-Werte
+    const singleOpenness = Constants.ORIENTATION_OPENNESS_SINGLE || {
+        'heterosexuell': 0,
+        'homosexuell': 0,
+        'bisexuell': 75,
+        'pansexuell': 100
+    };
+
+    // P/S-Gewichtungen
+    const resonance = Constants.ORIENTATION_RESONANCE || {};
+    const primaryWeight = resonance.PRIMARY_WEIGHT || 0.7;
+    const secondaryWeight = resonance.SECONDARY_WEIGHT || 0.3;
+
+    const primaryOpenness = singleOpenness[primary] !== undefined ? singleOpenness[primary] : 0;
+    const secondaryOpenness = secondary ? (singleOpenness[secondary] !== undefined ? singleOpenness[secondary] : 0) : 0;
+
+    let openness;
+    if (secondary && secondary !== primary) {
+        // P/S-gewichtete Berechnung
+        openness = (primaryOpenness * primaryWeight) + (secondaryOpenness * secondaryWeight);
+    } else {
+        // Nur Primary → 100%
+        openness = primaryOpenness;
+    }
+
+    return {
+        openness: Math.round(openness * 100) / 100,
+        details: {
+            primary,
+            secondary,
+            primaryOpenness,
+            secondaryOpenness,
+            primaryWeight,
+            secondaryWeight,
+            hasSecondary: !!(secondary && secondary !== primary)
+        }
+    };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // MAIN CALCULATION
 // ═══════════════════════════════════════════════════════════════════════════
@@ -157,13 +214,17 @@ export function calculate(person1, person2, options = {}) {
     const idO1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
     const idO2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
 
-    // Orientation-Openness: Bereits oben für R1 berechnet (oriO1, oriO2)
+    // Orientation-Openness: Neu gewichtet mit P/S (70%/30%) statt kombinierter Tabelle
+    const oriResultR4_1 = calculateWeightedOrientationOpenness(ori1);
+    const oriResultR4_2 = calculateWeightedOrientationOpenness(ori2);
+    const weightedOriO1 = oriResultR4_1.openness;
+    const weightedOriO2 = oriResultR4_2.openness;
 
     // GOD-kombinierte Openness berechnen
     const identityWeight = identityResonanceConst.IDENTITY_WEIGHT || 0.5;
     const orientationWeightR4 = identityResonanceConst.ORIENTATION_WEIGHT || 0.5;
-    const combinedO1 = (idO1 * identityWeight) + (oriO1 * orientationWeightR4);
-    const combinedO2 = (idO2 * identityWeight) + (oriO2 * orientationWeightR4);
+    const combinedO1 = (idO1 * identityWeight) + (weightedOriO1 * orientationWeightR4);
+    const combinedO2 = (idO2 * identityWeight) + (weightedOriO2 * orientationWeightR4);
 
     // Hybrid-Formel anwenden
     const basisR4 = 1.0; // Server-Seite: Default-Basis
@@ -186,11 +247,11 @@ export function calculate(person1, person2, options = {}) {
         secondary2,
         identityOpenness1: idO1,
         identityOpenness2: idO2,
-        // Orientierung (NEU in v3.6)
-        orientationKey1: oriKey1,
-        orientationKey2: oriKey2,
-        orientationOpenness1: oriO1,
-        orientationOpenness2: oriO2,
+        // Orientierung (v3.6: P/S-gewichtet 70%/30%)
+        orientation1: oriResultR4_1.details,
+        orientation2: oriResultR4_2.details,
+        orientationOpenness1: weightedOriO1,
+        orientationOpenness2: weightedOriO2,
         // GOD-kombiniert
         combinedOpenness1: Math.round(combinedO1 * 100) / 100,
         combinedOpenness2: Math.round(combinedO2 * 100) / 100,

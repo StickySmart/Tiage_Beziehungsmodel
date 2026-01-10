@@ -1209,13 +1209,13 @@ TiageSynthesis.Calculator = {
             var idO1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
             var idO2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
 
-            // Orientation-Openness berechnen (gleiche Logik wie bei R1)
+            // Orientation-Openness berechnen (v3.6: P/S-gewichtet mit 70%/30%)
             var ori1 = profil1.orientierung || {};
             var ori2 = profil2.orientierung || {};
-            var oriKey1 = this._getOrientationOpennessKey(ori1);
-            var oriKey2 = this._getOrientationOpennessKey(ori2);
-            var oriO1 = orientationOpenness[oriKey1] !== undefined ? orientationOpenness[oriKey1] : 0;
-            var oriO2 = orientationOpenness[oriKey2] !== undefined ? orientationOpenness[oriKey2] : 0;
+            var oriResult1 = this._calculateWeightedOrientationOpenness(ori1, constants);
+            var oriResult2 = this._calculateWeightedOrientationOpenness(ori2, constants);
+            var oriO1 = oriResult1.openness;
+            var oriO2 = oriResult2.openness;
 
             // GOD-kombinierte Openness berechnen
             var identityWeight = identityResonance.IDENTITY_WEIGHT || 0.5;
@@ -1247,9 +1247,9 @@ TiageSynthesis.Calculator = {
                 secondary2: secondary2,
                 identityOpenness1: idO1,
                 identityOpenness2: idO2,
-                // Orientierung (NEU in v3.6)
-                orientationKey1: oriKey1,
-                orientationKey2: oriKey2,
+                // Orientierung (v3.6: P/S-gewichtet 70%/30%)
+                orientation1: oriResult1.details,
+                orientation2: oriResult2.details,
                 orientationOpenness1: oriO1,
                 orientationOpenness2: oriO2,
                 // GOD-kombiniert
@@ -1425,6 +1425,71 @@ TiageSynthesis.Calculator = {
             // Primary + Secondary kombinieren
             return prim + '-' + sec;
         }
+    },
+
+    /**
+     * Berechnet gewichtete Orientierungs-Openness basierend auf P/S (v3.6)
+     *
+     * Formel:
+     * - Wenn nur Primary: 100% des Primary-Wertes
+     * - Wenn Primary + Secondary: Primary × 0.7 + Secondary × 0.3
+     *
+     * Beispiele:
+     * - hetero (P): 0 × 1.0 = 0
+     * - bi (P): 75 × 1.0 = 75
+     * - hetero (P) + bi (S): 0 × 0.7 + 75 × 0.3 = 22.5
+     * - bi (P) + hetero (S): 75 × 0.7 + 0 × 0.3 = 52.5
+     *
+     * @param {object} orientierung - { primary: 'heterosexuell', secondary: 'bisexuell' }
+     * @param {object} constants - Konstanten-Objekt
+     * @returns {object} { openness, details }
+     */
+    _calculateWeightedOrientationOpenness: function(orientierung, constants) {
+        if (!orientierung) {
+            return { openness: 0, details: { primary: null, secondary: null } };
+        }
+
+        var primary = orientierung.primary || 'heterosexuell';
+        var secondary = orientierung.secondary || null;
+
+        // Einzelne Openness-Werte (hetero=0, homo=0, bi=75, pan=100)
+        var singleOpenness = constants.ORIENTATION_OPENNESS_SINGLE || {
+            'heterosexuell': 0,
+            'homosexuell': 0,
+            'bisexuell': 75,
+            'pansexuell': 100
+        };
+
+        // P/S-Gewichtungen aus ORIENTATION_RESONANCE
+        var resonance = constants.ORIENTATION_RESONANCE || {};
+        var primaryWeight = resonance.PRIMARY_WEIGHT || 0.7;
+        var secondaryWeight = resonance.SECONDARY_WEIGHT || 0.3;
+
+        // Openness-Werte für Primary und Secondary
+        var primaryOpenness = singleOpenness[primary] !== undefined ? singleOpenness[primary] : 0;
+        var secondaryOpenness = secondary ? (singleOpenness[secondary] !== undefined ? singleOpenness[secondary] : 0) : 0;
+
+        var openness;
+        if (secondary && secondary !== primary) {
+            // P/S-gewichtete Berechnung
+            openness = (primaryOpenness * primaryWeight) + (secondaryOpenness * secondaryWeight);
+        } else {
+            // Nur Primary → 100%
+            openness = primaryOpenness;
+        }
+
+        return {
+            openness: Math.round(openness * 100) / 100,
+            details: {
+                primary: primary,
+                secondary: secondary,
+                primaryOpenness: primaryOpenness,
+                secondaryOpenness: secondaryOpenness,
+                primaryWeight: primaryWeight,
+                secondaryWeight: secondaryWeight,
+                hasSecondary: !!(secondary && secondary !== primary)
+            }
+        };
     },
 
     /**

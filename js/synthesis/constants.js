@@ -855,7 +855,19 @@ TiageSynthesis.Constants = {
 
     ORIENTATION_RESONANCE: {
         MAX_BONUS: 10,      // Maximaler Offenheits-Bonus (wie bei Identity)
-        WEIGHT: 0.25        // Gewichtung im Gesamt-Score (bereits bei WEIGHTS.orientierung)
+        WEIGHT: 0.25,       // Gewichtung im Gesamt-Score (bereits bei WEIGHTS.orientierung)
+        // NEU (v3.6): P/S-Gewichtung für Orientierungs-Openness
+        // Primäre Orientierung hat stärkeren Einfluss als sekundäre
+        PRIMARY_WEIGHT: 0.7,   // 70% für primäre Orientierung
+        SECONDARY_WEIGHT: 0.3  // 30% für sekundäre Orientierung
+    },
+
+    // Einzelne Orientierungs-Openness-Werte (für gewichtete P/S-Berechnung)
+    ORIENTATION_OPENNESS_SINGLE: {
+        "heterosexuell": 0,
+        "homosexuell": 0,
+        "bisexuell": 75,
+        "pansexuell": 100
     },
 
     // ═══════════════════════════════════════════════════════════════════════

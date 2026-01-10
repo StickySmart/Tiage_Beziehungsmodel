@@ -200,6 +200,23 @@ export const ORIENTATION_OPENNESS = {
     "bi-bi": 100
 };
 
+// ORIENTATION_RESONANCE: Konstanten für Orientierungs-Berechnung (v3.6)
+export const ORIENTATION_RESONANCE = {
+    MAX_BONUS: 10,
+    WEIGHT: 0.25,
+    // NEU (v3.6): P/S-Gewichtung für Orientierungs-Openness
+    PRIMARY_WEIGHT: 0.7,   // 70% für primäre Orientierung
+    SECONDARY_WEIGHT: 0.3  // 30% für sekundäre Orientierung
+};
+
+// Einzelne Orientierungs-Openness-Werte (für gewichtete P/S-Berechnung)
+export const ORIENTATION_OPENNESS_SINGLE = {
+    "heterosexuell": 0,
+    "homosexuell": 0,
+    "bisexuell": 75,
+    "pansexuell": 100
+};
+
 // ═══════════════════════════════════════════════════════════════════════════
 // SOFT-KO / HARD-KO KRITERIEN
 // ═══════════════════════════════════════════════════════════════════════════
@@ -374,6 +391,8 @@ export default {
     IDENTITY_OPENNESS,
     IDENTITY_RESONANCE,
     ORIENTATION_OPENNESS,
+    ORIENTATION_RESONANCE,
+    ORIENTATION_OPENNESS_SINGLE,
     HARD_KO,
     SOFT_KO,
     PS_VALIDATION,
