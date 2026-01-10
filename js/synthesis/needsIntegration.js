@@ -281,8 +281,8 @@ TiageSynthesis.NeedsIntegration = {
         var needsContribution = needsScore * weights.needs;
         var combinedScore = Math.round(matrixContribution + needsContribution);
 
-        // Clamp auf 0-100
-        combinedScore = Math.max(0, Math.min(100, combinedScore));
+        // Keine Obergrenze - nur Untergrenze bei 0
+        combinedScore = Math.max(0, combinedScore);
 
         return {
             combinedScore: combinedScore,

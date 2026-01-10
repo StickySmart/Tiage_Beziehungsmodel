@@ -10696,7 +10696,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const openness2 = IDENTITY_OPENNESS[id2] || 0;
             const opennessBonus = Math.round((openness1 + openness2) / 200 * 10); // Max 10 points
 
-            return Math.min(100, baseScore + opennessBonus);
+            // Keine Obergrenze - Score kann über 100 gehen (z.B. durch Openness-Bonus)
+            return baseScore + opennessBonus;
         }
 
         // Helper for single orientierung pair - nutzt Geschlechts-Kategorien
@@ -11190,7 +11191,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ori2 = getPrimaryOrientierung(person2.orientierung);
             if (ori1 === ori2) score += 10;
 
-            return Math.min(100, Math.max(0, score));
+            // Keine Obergrenze - nur Untergrenze bei 0
+            return Math.max(0, score);
         }
 
         /**

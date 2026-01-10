@@ -77,7 +77,8 @@ TiageSynthesis.Factors.Geschlecht = {
         }
 
         return {
-            score: Math.min(100, bestScore + secondaryBonus),
+            // Keine Obergrenze - Score kann über 100 gehen
+            score: bestScore + secondaryBonus,
             details: {
                 bestCombination: bestCombination,
                 genderCombo: g1 + '-' + g2,
@@ -220,8 +221,8 @@ TiageSynthesis.Factors.Geschlecht = {
         var maxBonus = constants.IDENTITY_RESONANCE.MAX_BONUS;
         var opennessBonus = ((openness1 + openness2) / 200) * maxBonus;
 
-        // Finale Score (max 100)
-        var finalScore = Math.min(100, Math.round(matrixScore + opennessBonus));
+        // Keine Obergrenze - Score kann über 100 gehen (z.B. durch Openness-Bonus)
+        var finalScore = Math.round(matrixScore + opennessBonus);
 
         return {
             score: finalScore,
