@@ -863,6 +863,40 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // PHYSICAL COMPATIBILITY (Pathos-Check) - SSOT
+    // ═══════════════════════════════════════════════════════════════════════
+    // Definiert wie Orientierungen in der Kompatibilitätsprüfung behandelt werden.
+    //
+    // WICHTIG: Sekundäre Orientierung ist KEINE "Exploration", sondern eine
+    // vollwertige Orientierung mit reduziertem Einfluss auf das Scoring.
+    // Die Kompatibilitätsprüfung (möglich/unmöglich) behandelt beide gleich.
+    //
+    // Regel: BEIDE Personen müssen zueinander angezogen sein können.
+    // Einseitige Anziehung = unmöglich (nicht "unsicher"!)
+
+    PHYSICAL_COMPATIBILITY: {
+        // Sekundäre Orientierung: Gewichtung im Scoring (nicht in Kompatibilität!)
+        SECONDARY_WEIGHT: 0.3,  // 30% Einfluss auf Score
+
+        // Ergebnis-Typen
+        RESULT: {
+            POSSIBLE: 'möglich',           // Gegenseitige Anziehung möglich
+            IMPOSSIBLE: 'unmöglich',       // Keine gegenseitige Anziehung möglich
+            INCOMPLETE: 'unvollständig'    // Fehlende Daten
+        },
+
+        // Konfidenz-Stufen
+        CONFIDENCE: {
+            HIGH: 'hoch',      // Beide Primary-Orientierungen kompatibel
+            MEDIUM: 'mittel',  // Kompatibel über Secondary-Orientierung
+            LOW: 'niedrig'     // Grenzfall
+        },
+
+        // Für gegenseitige Anziehung müssen BEIDE Personen angezogen sein können
+        REQUIRE_MUTUAL_ATTRACTION: true
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // BEDÜRFNIS-INTEGRATION PRO FAKTOR
     // ═══════════════════════════════════════════════════════════════════════
     // Jeder Faktor (A, O, D, G) hat relevante Bedürfnisse die in die
