@@ -11562,16 +11562,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════════════════════════════════
             // v3.6: R-FAKTOREN AUS ECHTEN NEEDS (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════════
-            // Hilfsfunktion: Summe × Similarity Kombination (normalisiert auf 0-1)
+            // Hilfsfunktion: Summe × Similarity Kombination
             function combineRFactors(R_ich, R_partner) {
                 const a = R_ich || 1.0;
                 const b = R_partner || 1.0;
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                // v3.6.1: Normalisiere auf 0-1 Range (max = 2.0 wenn beide 1.0 sind)
-                // Dividiere durch 2 um den Boost-Effekt zu erhalten aber auf 0-1 zu normalisieren
+                // v3.7: Keine Obergrenze - R kann über 1.0 gehen für Score > 100
                 const combined = (summe * similarity) / 2;
-                return Math.round(Math.min(combined, 1.0) * 1000) / 1000;
+                return Math.round(combined * 1000) / 1000;
             }
 
             // Wenn echte Needs vorhanden sind, berechne R-Faktoren daraus
