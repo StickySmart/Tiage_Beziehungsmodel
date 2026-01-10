@@ -14718,33 +14718,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             window.scrollTo(0, 0);
         }
 
+        // DEAKTIVIERT: Swipe-Navigation entfernt - alle Seiten sind jetzt untereinander angeordnet
         function initMobileSwipe() {
-            const mobileContainer = document.getElementById('mobileMultipage');
-            if (!mobileContainer) return;
-
-            mobileContainer.addEventListener('touchstart', (e) => {
-                mobileTouchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-
-            mobileContainer.addEventListener('touchend', (e) => {
-                mobileTouchEndX = e.changedTouches[0].screenX;
-                handleMobileSwipe();
-            }, { passive: true });
+            // Swipe-Funktionalität deaktiviert
+            // Alle mobilen Seiten werden nun untereinander angezeigt
+            return;
         }
 
         function handleMobileSwipe() {
-            const swipeThreshold = 100;
-            const diff = mobileTouchStartX - mobileTouchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMobilePage < 3) {
-                    // Swipe left -> next page (max 3 pages)
-                    mobileGoToPage(currentMobilePage + 1);
-                } else if (diff < 0 && currentMobilePage > 1) {
-                    // Swipe right -> previous page
-                    mobileGoToPage(currentMobilePage - 1);
-                }
-            }
+            // Swipe-Funktionalität deaktiviert
+            return;
         }
 
         function initMobileDimensionListeners() {
