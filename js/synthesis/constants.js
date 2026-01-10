@@ -811,8 +811,10 @@ TiageSynthesis.Constants = {
         // NEU (v3.6): GOD-kombinierte Openness für R4
         // R4 berücksichtigt jetzt sowohl Geschlechts-Identität als auch Orientierung
         // Formel: combinedOpenness = (identityO × IDENTITY_WEIGHT) + (orientationO × ORIENTATION_WEIGHT)
-        IDENTITY_WEIGHT: 0.5,            // 50% Gewichtung für Geschlechts-Identität (cis/trans/nb)
-        ORIENTATION_WEIGHT: 0.5          // 50% Gewichtung für Orientierung (hetero/homo/bi)
+        // v3.6.1: 30/70 Gewichtung - Orientierung zählt mehr als Identität
+        // Damit Cis+Bi (52.5) > NB+Hetero (15)
+        IDENTITY_WEIGHT: 0.3,            // 30% Gewichtung für Geschlechts-Identität (cis/trans/nb)
+        ORIENTATION_WEIGHT: 0.7          // 70% Gewichtung für Orientierung (hetero/homo/bi)
     },
 
     // ═══════════════════════════════════════════════════════════════════════
