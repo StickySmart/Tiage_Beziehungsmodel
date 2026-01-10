@@ -66,6 +66,21 @@ TiageCompatibility.Physical = (function() {
                (isFemaleGender(g1) && isMaleGender(g2));
     }
 
+    /**
+     * Check if gender is non-binary category
+     * SSOT: Nonbinäre Geschlechter können nur von Bi/Pan angezogen werden
+     * @param {string} gender - Gender value
+     * @returns {boolean}
+     */
+    function isNonBinaryGender(gender) {
+        if (!gender) return false;
+        var g = gender.toLowerCase();
+        return g === 'nonbinaer' || g === 'non-binär' || g === 'nonbinary' ||
+               g === 'fluid' || g === 'genderfluid' ||
+               g === 'inter' || g === 'intersex' ||
+               g === 'suchend' || g === 'divers';
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // SSOT: Hole Konstanten aus TiageSynthesisConstants
     // ═══════════════════════════════════════════════════════════════════════
@@ -110,8 +125,19 @@ TiageCompatibility.Physical = (function() {
         var constants = getConstants();
 
         // Helper: Can this orientation be attracted to the other person's gender?
+        // SSOT: Nur Bi/Pan kann zu Nonbinär angezogen sein (nicht Hetero/Homo)
         var canBeAttractedTo = function(orientation, myGender, theirGender) {
-            if (orientation === 'bisexuell') return true; // Bi can be attracted to any gender
+            // Bi/Pan kann zu jedem Geschlecht angezogen sein
+            if (orientation === 'bisexuell') return true;
+
+            // SSOT: Nonbinäre Geschlechter (nonbinaer, fluid, inter, suchend, divers)
+            // können NUR von Bi/Pan-Orientierungen angezogen werden!
+            // Hetero und Homo sind binäre Orientierungen und schließen Nonbinär aus.
+            if (isNonBinaryGender(theirGender)) {
+                return false; // Hetero/Homo können nicht zu Nonbinär angezogen sein
+            }
+
+            // Binäre Geschlechter: normale Logik
             if (orientation === 'heterosexuell') return isDifferentBinaryGender(myGender, theirGender);
             if (orientation === 'homosexuell') return isSameGenderCategory(myGender, theirGender);
             return false;
@@ -340,6 +366,7 @@ TiageCompatibility.Physical = (function() {
         extractEffectiveGender: extractEffectiveGender,
         isMaleGender: isMaleGender,
         isFemaleGender: isFemaleGender,
+        isNonBinaryGender: isNonBinaryGender,
         isSameGenderCategory: isSameGenderCategory,
         isDifferentBinaryGender: isDifferentBinaryGender,
         checkSingleOrientationPair: checkSingleOrientationPair
