@@ -807,7 +807,12 @@ TiageSynthesis.Constants = {
         OPENNESS_DIVISOR: 200,           // Teiler für Openness-Normalisierung (0-1)
         // Legacy (für Score-Berechnung)
         MAX_BONUS: 10,
-        WEIGHT: 0.15
+        WEIGHT: 0.15,
+        // NEU (v3.6): GOD-kombinierte Openness für R4
+        // R4 berücksichtigt jetzt sowohl Geschlechts-Identität als auch Orientierung
+        // Formel: combinedOpenness = (identityO × IDENTITY_WEIGHT) + (orientationO × ORIENTATION_WEIGHT)
+        IDENTITY_WEIGHT: 0.5,            // 50% Gewichtung für Geschlechts-Identität (cis/trans/nb)
+        ORIENTATION_WEIGHT: 0.5          // 50% Gewichtung für Orientierung (hetero/homo/bi)
     },
 
     // ═══════════════════════════════════════════════════════════════════════

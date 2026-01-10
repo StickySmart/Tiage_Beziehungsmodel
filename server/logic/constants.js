@@ -164,6 +164,21 @@ export const IDENTITY_OPENNESS = {
     "suchend": 100
 };
 
+// IDENTITY_RESONANCE: Konstanten für R4-Berechnung (v3.6)
+export const IDENTITY_RESONANCE = {
+    // Hybrid-Formel: R4 = BASIS + (SIMILARITY_FACTOR × Openness-Bonus)
+    SIMILARITY_FACTOR_MATCH: 1.3,    // Faktor wenn gleiche Identität
+    SIMILARITY_FACTOR_DIFF: 1.0,     // Faktor wenn unterschiedliche Identität
+    OPENNESS_DIVISOR: 200,           // Teiler für Openness-Normalisierung (0-1)
+    // Legacy
+    MAX_BONUS: 10,
+    WEIGHT: 0.15,
+    // NEU (v3.6): GOD-kombinierte Openness für R4
+    // R4 berücksichtigt jetzt sowohl Geschlechts-Identität als auch Orientierung
+    IDENTITY_WEIGHT: 0.5,            // 50% Gewichtung für Geschlechts-Identität (cis/trans/nb)
+    ORIENTATION_WEIGHT: 0.5          // 50% Gewichtung für Orientierung (hetero/homo/bi)
+};
+
 // ORIENTIERUNGS-OFFENHEIT (für R1 Leben)
 // Basiert auf Similarity-Attraction Theorie
 export const ORIENTATION_OPENNESS = {
@@ -357,6 +372,7 @@ export default {
     ORIENTATION,
     IDENTITY_MATRIX,
     IDENTITY_OPENNESS,
+    IDENTITY_RESONANCE,
     ORIENTATION_OPENNESS,
     HARD_KO,
     SOFT_KO,

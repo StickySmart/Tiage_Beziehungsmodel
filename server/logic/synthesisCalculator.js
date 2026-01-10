@@ -108,25 +108,32 @@ export function calculate(person1, person2, options = {}) {
     console.log('[SynthesisCalculator] R1 (Leben/Orientierung) berechnet:', orientationResonance);
 
     // ═══════════════════════════════════════════════════════════════════
-    // R4 (IDENTITÄT) - HYBRID-BERECHNUNG (v3.5)
+    // R4 (IDENTITÄT) - GOD-KOMBINIERTE BERECHNUNG (v3.6)
     // ═══════════════════════════════════════════════════════════════════
     //
-    // Kombiniert zwei Ansätze:
+    // Kombiniert drei Ansätze:
     //   1. EMPIRISCH: Ähnlichkeits-Bonus bei gleicher Identität (T4T-Effekt)
     //   2. PIRSIG: Openness-Bonus basierend auf "Dynamischer Qualität"
+    //   3. NEU: Orientierungs-Openness fließt mit ein (Bi/Pan = höhere Offenheit)
     //
     // IDENTITY_OPENNESS (Pirsig-inspiriert):
     //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
     //
-    // Hybrid-Formel:
+    // ORIENTATION_OPENNESS (aus R1-Berechnung):
+    //   hetero=0, homo=0, bi=75, bi-bi=100
+    //
+    // GOD-kombinierte Formel:
     //   BASIS = 1.0 (Server hat keinen individuellen Archetypen-Vergleich)
     //   Ähnlichkeits-Faktor = 1.3 (wenn gleiche Identität) oder 1.0
-    //   Openness-Bonus = (O1 + O2) / 200
-    //   R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+    //   Identity-Openness = (idO1 + idO2) × IDENTITY_WEIGHT
+    //   Orientation-Openness = (oriO1 + oriO2) × ORIENTATION_WEIGHT
+    //   Combined-Openness = (Identity-Openness + Orientation-Openness) / DIVISOR
+    //   R4 = BASIS + (Ähnlichkeits-Faktor × Combined-Openness)
     //
     // Wissenschaftliche Grundlage:
     //   - Similarity-Attraction Effect (Byrne, 1971)
     //   - T4T-Beziehungen zeigen höhere Zufriedenheit durch Partner-Affirmation
+    //   - Bi/Pan-Personen zeigen höhere Beziehungs-Flexibilität (Journal of Bisexuality)
     //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
     //
     const secondary1 = person1.geschlecht?.secondary || 'cis';
@@ -137,15 +144,26 @@ export function calculate(person1, person2, options = {}) {
         'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
     };
 
-    // IDENTITY_RESONANCE Konstanten
+    // IDENTITY_RESONANCE Konstanten (erweitert mit GOD-Gewichtungen)
     const identityResonanceConst = Constants.IDENTITY_RESONANCE || {
         SIMILARITY_FACTOR_MATCH: 1.3,
         SIMILARITY_FACTOR_DIFF: 1.0,
-        OPENNESS_DIVISOR: 200
+        OPENNESS_DIVISOR: 200,
+        IDENTITY_WEIGHT: 0.5,
+        ORIENTATION_WEIGHT: 0.5
     };
 
-    const O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
-    const O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+    // Identity-Openness berechnen
+    const idO1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
+    const idO2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+
+    // Orientation-Openness: Bereits oben für R1 berechnet (oriO1, oriO2)
+
+    // GOD-kombinierte Openness berechnen
+    const identityWeight = identityResonanceConst.IDENTITY_WEIGHT || 0.5;
+    const orientationWeightR4 = identityResonanceConst.ORIENTATION_WEIGHT || 0.5;
+    const combinedO1 = (idO1 * identityWeight) + (oriO1 * orientationWeightR4);
+    const combinedO2 = (idO2 * identityWeight) + (oriO2 * orientationWeightR4);
 
     // Hybrid-Formel anwenden
     const basisR4 = 1.0; // Server-Seite: Default-Basis
@@ -156,17 +174,27 @@ export function calculate(person1, person2, options = {}) {
         ? identityResonanceConst.SIMILARITY_FACTOR_MATCH
         : identityResonanceConst.SIMILARITY_FACTOR_DIFF;
 
-    // Openness-Bonus: (O1 + O2) / 200 → Range 0-1
-    const opennessBonus = (O1 + O2) / identityResonanceConst.OPENNESS_DIVISOR;
+    // Combined-Openness-Bonus: (combinedO1 + combinedO2) / 200 → Range 0-1
+    const opennessBonus = (combinedO1 + combinedO2) / identityResonanceConst.OPENNESS_DIVISOR;
 
-    // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+    // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Combined-Openness)
     const R4 = Math.round((basisR4 + (aehnlichkeitsFaktor * opennessBonus)) * 1000) / 1000;
 
     const identityResonance = {
+        // Geschlechts-Identität
         secondary1,
         secondary2,
-        openness1: O1,
-        openness2: O2,
+        identityOpenness1: idO1,
+        identityOpenness2: idO2,
+        // Orientierung (NEU in v3.6)
+        orientationKey1: oriKey1,
+        orientationKey2: oriKey2,
+        orientationOpenness1: oriO1,
+        orientationOpenness2: oriO2,
+        // GOD-kombiniert
+        combinedOpenness1: Math.round(combinedO1 * 100) / 100,
+        combinedOpenness2: Math.round(combinedO2 * 100) / 100,
+        // Berechnung
         gleicheIdentitaet,
         aehnlichkeitsFaktor,
         basisR4,
@@ -175,7 +203,7 @@ export function calculate(person1, person2, options = {}) {
         finalR4: R4
     };
 
-    console.log('[SynthesisCalculator] R4 (Identität) Hybrid berechnet:', identityResonance);
+    console.log('[SynthesisCalculator] R4 (Identität) GOD-kombiniert berechnet:', identityResonance);
 
     // ═══════════════════════════════════════════════════════════════════
     // SCHRITT 2: Faktor-Scores berechnen

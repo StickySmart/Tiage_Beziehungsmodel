@@ -1151,25 +1151,32 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // R4 (IDENTITÄT) - HYBRID-BERECHNUNG (v3.5)
+        // R4 (IDENTITÄT) - GOD-KOMBINIERTE BERECHNUNG (v3.6)
         // ═══════════════════════════════════════════════════════════════════
         //
-        // Kombiniert zwei Ansätze:
+        // Kombiniert drei Ansätze:
         //   1. EMPIRISCH: Ähnlichkeits-Bonus bei gleicher Identität (T4T-Effekt)
         //   2. PIRSIG: Openness-Bonus basierend auf "Dynamischer Qualität"
+        //   3. NEU: Orientierungs-Openness fließt mit ein (Bi/Pan = höhere Offenheit)
         //
         // IDENTITY_OPENNESS (Pirsig-inspiriert):
         //   cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100
         //
-        // Hybrid-Formel:
+        // ORIENTATION_OPENNESS (aus R1-Berechnung):
+        //   hetero=0, homo=0, bi=75, bi-bi=100
+        //
+        // GOD-kombinierte Formel:
         //   BASIS = R4_ich × R4_partner (individueller Archetypen-Vergleich)
         //   Ähnlichkeits-Faktor = 1.3 (wenn gleiche Identität) oder 1.0
-        //   Openness-Bonus = (O1 + O2) / 200
-        //   R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+        //   Identity-Openness = (idO1 + idO2) × IDENTITY_WEIGHT
+        //   Orientation-Openness = (oriO1 + oriO2) × ORIENTATION_WEIGHT
+        //   Combined-Openness = (Identity-Openness + Orientation-Openness) / DIVISOR
+        //   R4 = BASIS + (Ähnlichkeits-Faktor × Combined-Openness)
         //
         // Wissenschaftliche Grundlage:
         //   - Similarity-Attraction Effect (Byrne, 1971)
         //   - T4T-Beziehungen zeigen höhere Zufriedenheit durch Partner-Affirmation
+        //   - Bi/Pan-Personen zeigen höhere Beziehungs-Flexibilität (Journal of Bisexuality)
         //   - Paare mit ähnlich hoher Openness → bessere Beziehungsqualität (Frontiers 2017)
         //
         if (perspectiveResult) {
@@ -1181,15 +1188,40 @@ TiageSynthesis.Calculator = {
                 'cis': 0, 'trans': 30, 'nonbinaer': 50, 'fluid': 80, 'suchend': 100
             };
 
-            // IDENTITY_RESONANCE Konstanten
+            // ORIENTATION_OPENNESS aus constants holen (auch für R4 verwenden)
+            var orientationOpenness = constants.ORIENTATION_OPENNESS || {
+                'hetero': 0, 'homo': 0,
+                'hetero-homo': 25, 'homo-hetero': 25,
+                'hetero-bi': 50, 'homo-bi': 50,
+                'bi': 75, 'bi-hetero': 90, 'bi-homo': 90, 'bi-bi': 100
+            };
+
+            // IDENTITY_RESONANCE Konstanten (erweitert mit GOD-Gewichtungen)
             var identityResonance = constants.IDENTITY_RESONANCE || {
                 SIMILARITY_FACTOR_MATCH: 1.3,
                 SIMILARITY_FACTOR_DIFF: 1.0,
-                OPENNESS_DIVISOR: 200
+                OPENNESS_DIVISOR: 200,
+                IDENTITY_WEIGHT: 0.5,
+                ORIENTATION_WEIGHT: 0.5
             };
 
-            var O1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
-            var O2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+            // Identity-Openness berechnen
+            var idO1 = identityOpenness[secondary1] !== undefined ? identityOpenness[secondary1] : 0;
+            var idO2 = identityOpenness[secondary2] !== undefined ? identityOpenness[secondary2] : 0;
+
+            // Orientation-Openness berechnen (gleiche Logik wie bei R1)
+            var ori1 = profil1.orientierung || {};
+            var ori2 = profil2.orientierung || {};
+            var oriKey1 = this._getOrientationOpennessKey(ori1);
+            var oriKey2 = this._getOrientationOpennessKey(ori2);
+            var oriO1 = orientationOpenness[oriKey1] !== undefined ? orientationOpenness[oriKey1] : 0;
+            var oriO2 = orientationOpenness[oriKey2] !== undefined ? orientationOpenness[oriKey2] : 0;
+
+            // GOD-kombinierte Openness berechnen
+            var identityWeight = identityResonance.IDENTITY_WEIGHT || 0.5;
+            var orientationWeight = identityResonance.ORIENTATION_WEIGHT || 0.5;
+            var combinedO1 = (idO1 * identityWeight) + (oriO1 * orientationWeight);
+            var combinedO2 = (idO2 * identityWeight) + (oriO2 * orientationWeight);
 
             // Hybrid-Formel anwenden
             // BASIS = perspectiveResult.R4 (bereits aus R4_ich × R4_partner berechnet)
@@ -1201,19 +1233,29 @@ TiageSynthesis.Calculator = {
                 ? identityResonance.SIMILARITY_FACTOR_MATCH
                 : identityResonance.SIMILARITY_FACTOR_DIFF;
 
-            // Openness-Bonus: (O1 + O2) / 200 → Range 0-1
-            var opennessBonus = (O1 + O2) / identityResonance.OPENNESS_DIVISOR;
+            // Combined-Openness-Bonus: (combinedO1 + combinedO2) / 200 → Range 0-1
+            var opennessBonus = (combinedO1 + combinedO2) / identityResonance.OPENNESS_DIVISOR;
 
-            // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Openness-Bonus)
+            // Finale Formel: R4 = BASIS + (Ähnlichkeits-Faktor × Combined-Openness)
             var calculatedR4 = Math.round((basisR4 + (aehnlichkeitsFaktor * opennessBonus)) * 1000) / 1000;
 
-            // R4 mit Hybrid-Berechnung aktualisieren
+            // R4 mit GOD-kombinierter Berechnung aktualisieren
             perspectiveResult.R4 = calculatedR4;
             perspectiveResult.identityResonance = {
+                // Geschlechts-Identität
                 secondary1: secondary1,
                 secondary2: secondary2,
-                openness1: O1,
-                openness2: O2,
+                identityOpenness1: idO1,
+                identityOpenness2: idO2,
+                // Orientierung (NEU in v3.6)
+                orientationKey1: oriKey1,
+                orientationKey2: oriKey2,
+                orientationOpenness1: oriO1,
+                orientationOpenness2: oriO2,
+                // GOD-kombiniert
+                combinedOpenness1: Math.round(combinedO1 * 100) / 100,
+                combinedOpenness2: Math.round(combinedO2 * 100) / 100,
+                // Berechnung
                 gleicheIdentitaet: gleicheIdentitaet,
                 aehnlichkeitsFaktor: aehnlichkeitsFaktor,
                 basisR4: Math.round(basisR4 * 1000) / 1000,
@@ -1222,7 +1264,7 @@ TiageSynthesis.Calculator = {
                 finalR4: calculatedR4
             };
 
-            console.log('[TIAGE Calculator] R4 (Identität) Hybrid berechnet:', perspectiveResult.identityResonance);
+            console.log('[TIAGE Calculator] R4 (Identität) GOD-kombiniert berechnet:', perspectiveResult.identityResonance);
         }
 
         if (perspectiveResult) {
