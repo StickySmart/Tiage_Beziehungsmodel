@@ -18,6 +18,9 @@
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
+        // Warning throttle flag - prevents console spam for archetype defaults warning
+        let _archetypDefaultsWarningShown = false;
+
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
@@ -11632,11 +11635,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // R4 wird separat via calculateR4Hybrid berechnet
 
                     rFactorSource = 'archetypDefaults';
-                    console.warn('[calculateRelationshipQuality] ⚠️ WARNUNG: R1-R3 aus Archetyp-Defaults berechnet (keine echten Needs verfügbar):', {
-                        R1, R2, R3,
-                        matching: matching.score,
-                        hinweis: 'Für genauere Berechnung bitte Bedürfnis-Werte im Profil anpassen'
-                    });
+                    // Only show warning once per session to avoid console spam (was 910+ warnings)
+                    if (!_archetypDefaultsWarningShown) {
+                        _archetypDefaultsWarningShown = true;
+                        console.warn('[calculateRelationshipQuality] ⚠️ WARNUNG: R1-R3 aus Archetyp-Defaults berechnet (keine echten Needs verfügbar). Diese Warnung erscheint nur einmal pro Session.', {
+                            hinweis: 'Für genauere Berechnung bitte Bedürfnis-Werte im Profil anpassen'
+                        });
+                    }
                 }
             }
 
