@@ -10492,23 +10492,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // -  60%: Gleiche Pole (Dom↔Dom, Sub↔Sub) = Konflikt, fehlende Spannung
         // ═══════════════════════════════════════════════════════════════════════
         // ═══════════════════════════════════════════════════════════════════════
-        // DOMINANZ HARMONY MATRIX
+        // DOMINANZ HARMONY MATRIX - SSOT: Referenziert Constants.DOMINANCE_MATRIX
         // ═══════════════════════════════════════════════════════════════════════
-        const dominanzHarmonyMatrix = {
-            // KOMPLEMENTÄRE POLARITÄT (100%)
-            "dominant-submissiv": 100, "submissiv-dominant": 100,
-            // TAO-BALANCE (90-95%)
-            "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
-            "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
-            // POL + BALANCE (85%)
-            "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
-            "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
-            // SWITCH + POL (80%)
-            "switch-dominant": 80, "dominant-switch": 80,
-            "switch-submissiv": 80, "submissiv-switch": 80,
-            // GLEICHE POLE (55%)
-            "dominant-dominant": 55, "submissiv-submissiv": 55
-        };
+        function getDominanzHarmonyMatrix() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.DOMINANCE_MATRIX) {
+                return TiageSynthesis.Constants.DOMINANCE_MATRIX;
+            }
+            // Fallback (sollte nicht erreicht werden)
+            console.warn('[getDominanzHarmonyMatrix] SSOT nicht verfügbar, nutze Fallback');
+            return {
+                "dominant-submissiv": 100, "submissiv-dominant": 100,
+                "ausgeglichen-ausgeglichen": 100, "switch-switch": 100,
+                "switch-ausgeglichen": 100, "ausgeglichen-switch": 100,
+                "dominant-ausgeglichen": 93, "ausgeglichen-dominant": 93,
+                "submissiv-ausgeglichen": 93, "ausgeglichen-submissiv": 93,
+                "switch-dominant": 93, "dominant-switch": 93,
+                "switch-submissiv": 93, "submissiv-switch": 93,
+                "dominant-dominant": 55, "submissiv-submissiv": 55
+            };
+        }
+        const dominanzHarmonyMatrix = getDominanzHarmonyMatrix();
 
         // Calculate harmony between two single dominanz types
         function calculateSingleDominanzHarmony(type1, status1, type2, status2) {
@@ -12231,7 +12236,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Globale Variablen für Slot Machine
         let slotMachineResult = null;
-        let slotMachineTop4Results = []; // NEU: Top 4 Ergebnisse
+        let slotMachineTop4Results = []; // Top 4 Ergebnisse
+        let slotMachineTop10Results = []; // NEU: Top 10 Ergebnisse für erweiterte Ansicht
+        let slotMachineExpanded = false; // NEU: Zustand der erweiterten Ansicht
         let slotMachineBindung = { primary: null, secondary: null };
 
         // Bindungsmuster Präferenzen für Tie-Breaker
@@ -12344,7 +12351,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             document.getElementById('slotPhase2').style.display = 'none';
             document.getElementById('slotPhase3').style.display = 'none';
             slotMachineResult = null;
-            slotMachineTop4Results = []; // NEU: Top 4 zurücksetzen
+            slotMachineTop4Results = [];
+            slotMachineTop10Results = []; // NEU: Top 10 zurücksetzen
+            slotMachineExpanded = false; // NEU: Expanded-Zustand zurücksetzen
             // Bindungsmuster nicht zurücksetzen - die bleiben erhalten
             updateBindungsmusterUI();
             checkStartButtonState();
@@ -12487,8 +12496,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const bestResult = allResults[0];
             slotMachineResult = bestResult;
-            // NEU: Top 4 speichern
+            // Top 4 und Top 10 speichern für erweiterbare Ansicht
             slotMachineTop4Results = allResults.slice(0, 4);
+            slotMachineTop10Results = allResults.slice(0, 10);
 
             // Animation starten
             const reelA = document.getElementById('slotReelA');
@@ -12716,14 +12726,25 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Zeigt die Top 4 Ergebnisse in Phase 3
+         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-10)
          */
         function showSlotResult(result) {
             document.getElementById('slotPhase2').style.display = 'none';
             document.getElementById('slotPhase3').style.display = 'block';
 
             const listContainer = document.getElementById('slotTop4List');
+            const expandedContainer = document.getElementById('slotExpandedList');
+            const expandBtn = document.getElementById('slotExpandBtn');
             if (!listContainer) return;
+
+            // Reset expanded state
+            slotMachineExpanded = false;
+            if (expandedContainer) expandedContainer.style.display = 'none';
+            if (expandBtn) {
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                // Nur anzeigen wenn es mehr als 4 Ergebnisse gibt
+                expandBtn.style.display = slotMachineTop10Results.length > 4 ? 'inline-block' : 'none';
+            }
 
             // Top 4 HTML generieren
             const rankIcons = ['🥇', '🥈', '🥉', '4.'];
@@ -12754,17 +12775,71 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     </div>
                 `;
             });
-
             listContainer.innerHTML = html;
+
+            // Erweiterte Liste (Position 5-10) generieren
+            if (expandedContainer && slotMachineTop10Results.length > 4) {
+                let expandedHtml = '';
+                for (let i = 4; i < slotMachineTop10Results.length; i++) {
+                    const res = slotMachineTop10Results[i];
+                    const geschlechtLabel = `${GESCHLECHT_LABELS[res.geschlecht.primary]}-${GESCHLECHT_LABELS[res.geschlecht.secondary]}`;
+                    const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung;
+                    const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz;
+                    const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
+
+                    expandedHtml += `
+                        <div class="slot-top4-item rank-${i + 1}" style="opacity: 0.85;">
+                            <div class="slot-top4-rank" style="background: rgba(255,255,255,0.1); color: #888;">${i + 1}.</div>
+                            <div class="slot-top4-info">
+                                <div class="slot-top4-main">
+                                    <span class="slot-top4-archetyp">${archetypLabel}</span>
+                                    <span class="slot-top4-score">${res.score}</span>
+                                </div>
+                                <div class="slot-top4-details">
+                                    <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
+                                    <span class="slot-top4-detail">O: ${orientierungLabel}</span>
+                                    <span class="slot-top4-detail">D: ${dominanzLabel}</span>
+                                </div>
+                            </div>
+                            <button class="slot-top4-apply-btn" onclick="applySlotResult(${i})">✓ Übernehmen</button>
+                        </div>
+                    `;
+                }
+                expandedContainer.innerHTML = expandedHtml;
+            }
         }
 
         /**
+         * Toggle-Funktion für erweiterte Liste (Position 5-10)
+         */
+        function toggleSlotExpand() {
+            const expandedContainer = document.getElementById('slotExpandedList');
+            const expandBtn = document.getElementById('slotExpandBtn');
+            const titleEl = document.getElementById('slotResultTitle');
+
+            if (!expandedContainer || !expandBtn) return;
+
+            slotMachineExpanded = !slotMachineExpanded;
+
+            if (slotMachineExpanded) {
+                expandedContainer.style.display = 'block';
+                expandBtn.innerHTML = '▲ Weniger anzeigen';
+                if (titleEl) titleEl.innerHTML = `🏆 Top ${slotMachineTop10Results.length} Partner gefunden!`;
+            } else {
+                expandedContainer.style.display = 'none';
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                if (titleEl) titleEl.innerHTML = '🏆 Top 4 Partner gefunden!';
+            }
+        }
+        window.toggleSlotExpand = toggleSlotExpand;
+
+        /**
          * Wendet das Slot Machine Ergebnis auf das Partner-Profil an
-         * @param {number} index - Index des Ergebnisses in slotMachineTop4Results (0-3), default 0
+         * @param {number} index - Index des Ergebnisses in slotMachineTop10Results (0-9), default 0
          */
         function applySlotResult(index = 0) {
-            // NEU: Wähle Ergebnis aus Top 4 basierend auf Index
-            const result = slotMachineTop4Results[index] || slotMachineResult;
+            // Wähle Ergebnis aus Top 10 basierend auf Index (unterstützt Position 1-10)
+            const result = slotMachineTop10Results[index] || slotMachineTop4Results[index] || slotMachineResult;
             if (!result) return;
 
             // 1. Archetyp setzen
@@ -15949,17 +16024,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         'ausgeglichen': 'ausgeglichen'
                     };
 
-                    // Harmony matrix for finding best combination
-                    const harmonyMatrix = {
-                        "dominant-submissiv": 100, "submissiv-dominant": 100,
-                        "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
-                        "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
-                        "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
-                        "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
-                        "switch-dominant": 80, "dominant-switch": 80,
-                        "switch-submissiv": 80, "submissiv-switch": 80,
-                        "dominant-dominant": 55, "submissiv-submissiv": 55
-                    };
+                    // Harmony matrix - SSOT: Referenziert Constants.DOMINANCE_MATRIX
+                    const harmonyMatrix = (typeof TiageSynthesis !== 'undefined' &&
+                        TiageSynthesis.Constants &&
+                        TiageSynthesis.Constants.DOMINANCE_MATRIX)
+                        ? TiageSynthesis.Constants.DOMINANCE_MATRIX
+                        : getDominanzHarmonyMatrix();
 
                     // Helper to get all selections with status
                     const getAllSelections = (domObj) => {

@@ -553,12 +553,23 @@
                     <div class="slot-progress-text" id="slotProgressText">0 / 864 Kombinationen</div>
                 </div>
 
-                <!-- Phase 3: Top 4 Ergebnisse -->
+                <!-- Phase 3: Top N Ergebnisse (erweiterbar) -->
                 <div id="slotPhase3" class="slot-phase" style="display: none;">
-                    <h3 style="color: #00d26a; margin-bottom: 15px; text-align: center;">🏆 Top 4 Partner gefunden!</h3>
+                    <h3 id="slotResultTitle" style="color: #00d26a; margin-bottom: 15px; text-align: center;">🏆 Top 4 Partner gefunden!</h3>
 
                     <div class="slot-top4-list" id="slotTop4List">
                         <!-- Wird dynamisch gefüllt -->
+                    </div>
+
+                    <!-- Erweiterte Liste (Position 5+) -->
+                    <div class="slot-expanded-list" id="slotExpandedList" style="display: none;">
+                        <!-- Wird dynamisch gefüllt -->
+                    </div>
+
+                    <div class="slot-expand-toggle" style="text-align: center; margin: 10px 0;">
+                        <button id="slotExpandBtn" class="slot-expand-btn" onclick="toggleSlotExpand()" style="background: rgba(0,210,106,0.2); border: 1px solid #00d26a; color: #00d26a; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+                            ▼ Mehr anzeigen (5-10)
+                        </button>
                     </div>
 
                     <div class="slot-result-actions" style="margin-top: 15px;">
