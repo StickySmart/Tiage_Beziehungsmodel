@@ -11656,18 +11656,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 attraction2to1: r4Result.attractionDetails?.direction2to1
             });
 
-            // FIX: Verwende benutzerdefinierte R-Werte aus ResonanzCard (nur wenn useResonanzCardOverride=true)
+            // FIX v3.8: Verwende benutzerdefinierte R-Werte aus ResonanzCard für BEIDE Personen
             // Damit Slider-Änderungen sofort im Score sichtbar werden
             // Bei Slot-Machine-Berechnung (useResonanzCardOverride=false) werden die dynamisch berechneten R-Werte aus needs verwendet
             if (useResonanzCardOverride && typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
-                const storedR = ResonanzCard.load();
+                const storedRIch = ResonanzCard.load('ich');
+                const storedRPartner = ResonanzCard.load('partner');
 
-                // Verwende gespeicherte Werte wenn vorhanden (egal ob locked oder nicht)
-                // Dies ermöglicht Live-Preview der Slider-Änderungen
-                if (storedR && storedR.R1 && storedR.R1.value !== undefined) R1 = storedR.R1.value;
-                if (storedR && storedR.R2 && storedR.R2.value !== undefined) R2 = storedR.R2.value;
-                if (storedR && storedR.R3 && storedR.R3.value !== undefined) R3 = storedR.R3.value;
-                if (storedR && storedR.R4 && storedR.R4.value !== undefined) R4 = storedR.R4.value;
+                // Kombiniere ICH und Partner R-Faktoren (beide aus ResonanzCard)
+                if (storedRIch && storedRPartner) {
+                    const getR = (stored, key) => (stored && stored[key] && stored[key].value !== undefined) ? stored[key].value : 1.0;
+
+                    // Kombiniere R-Faktoren von beiden Personen
+                    R1 = combineRFactors(getR(storedRIch, 'R1'), getR(storedRPartner, 'R1'));
+                    R2 = combineRFactors(getR(storedRIch, 'R2'), getR(storedRPartner, 'R2'));
+                    R3 = combineRFactors(getR(storedRIch, 'R3'), getR(storedRPartner, 'R3'));
+                    R4 = combineRFactors(getR(storedRIch, 'R4'), getR(storedRPartner, 'R4'));
+
+                    console.log('[calculateRelationshipQuality] R-Faktoren aus ResonanzCard kombiniert:', {
+                        ich: { R1: getR(storedRIch, 'R1'), R2: getR(storedRIch, 'R2'), R3: getR(storedRIch, 'R3'), R4: getR(storedRIch, 'R4') },
+                        partner: { R1: getR(storedRPartner, 'R1'), R2: getR(storedRPartner, 'R2'), R3: getR(storedRPartner, 'R3'), R4: getR(storedRPartner, 'R4') },
+                        combined: { R1, R2, R3, R4 }
+                    });
+                }
             }
 
             // ═══════════════════════════════════════
