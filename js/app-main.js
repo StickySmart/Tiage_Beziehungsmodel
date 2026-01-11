@@ -12657,8 +12657,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     const logosCheck = calculatePhilosophyCompatibility(ichArchetype, archetype);
 
                                     if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                                        // NEU: useResonanzCardOverride=false damit R-Faktoren aus needs berechnet werden
-                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, { useResonanzCardOverride: false });
+                                        // v3.8: useResonanzCardOverride=true damit Slot Machine konsistente R-Faktoren mit Hauptberechnung verwendet
+                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, { useResonanzCardOverride: true });
                                         let baseScore = result.overall || 0;
 
                                         // SSOT v3.7: Konfidenz-Multiplikator anwenden
