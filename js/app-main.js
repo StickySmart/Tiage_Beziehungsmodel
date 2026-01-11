@@ -18,9 +18,6 @@
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
-        // Warning throttle flag - prevents console spam for archetype defaults warning
-        let _archetypDefaultsWarningShown = false;
-
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
@@ -11617,33 +11614,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
 
-            // Fallback: SSOT aus Archetyp-Defaults wenn keine echten Needs
-            if (rFactorSource === 'default' && typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
-                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-
-                if (matching && !matching.fehler) {
-                    // Berechne Bedürfnis-Match pro Kategorie (0-1)
-                    const match1 = calculateKSubfaktor('K1', matching);  // Orientierung
-                    const match2 = calculateKSubfaktor('K2', matching);  // Archetyp
-                    const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
-                    // R4 wird unten via calculateR4Hybrid berechnet (nicht mehr aus K4)
-
-                    // v3.2: R = match² (rein quadratisch, Range 0-1)
-                    R1 = match1 * match1;
-                    R2 = match2 * match2;
-                    R3 = match3 * match3;
-                    // R4 wird separat via calculateR4Hybrid berechnet
-
-                    rFactorSource = 'archetypDefaults';
-                    // Only show warning once per session to avoid console spam (was 910+ warnings)
-                    if (!_archetypDefaultsWarningShown) {
-                        _archetypDefaultsWarningShown = true;
-                        console.warn('[calculateRelationshipQuality] ⚠️ WARNUNG: R1-R3 aus Archetyp-Defaults berechnet (keine echten Needs verfügbar). Diese Warnung erscheint nur einmal pro Session.', {
-                            hinweis: 'Für genauere Berechnung bitte Bedürfnis-Werte im Profil anpassen'
-                        });
-                    }
-                }
-            }
+            // NO FALLBACK: R1-R3 bleiben bei 1.0 wenn keine echten Needs verfügbar
+            // Die UI zeigt eine Warnung an, wenn rFactorSource === 'default'
 
             // ═══════════════════════════════════════
             // R4 HYBRID: Identität + Bidirektionale Attraktion
@@ -11727,6 +11699,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             return {
                 score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle
                 blocked: false,
+                noRealNeeds: rFactorSource === 'default',  // Flag für UI-Warnung
                 breakdown: {
                     archetyp: archetypeScore,
                     dominanz: dominanceScore,
@@ -15158,6 +15131,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 } else if (koWarning) {
                     // K.O.-Warnung anzeigen
                     mobileScoreNote.innerHTML = '<div class="ko-warning-message" style="color: #e74c3c; background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: center;"><strong style="display: block; margin-bottom: 4px;">⚠️ K.O.-Kriterium</strong><span style="font-size: 0.9em; opacity: 0.95;">' + koWarning.message + '</span></div>';
+                    mobileScoreNote.style.display = 'block';
+                } else if (qualityResult.noRealNeeds) {
+                    // Warnung: Keine echten Needs verfügbar - R1-R3 sind neutral (1.0)
+                    mobileScoreNote.innerHTML = '<div class="needs-warning-message" style="color: #f39c12; background: rgba(243, 156, 18, 0.15); border: 1px solid #f39c12; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: center;"><strong style="display: block; margin-bottom: 4px;">⚠️ Keine Bedürfnis-Daten</strong><span style="font-size: 0.9em; opacity: 0.95;">R1-R3 Resonanz-Faktoren können nicht berechnet werden. Bitte Bedürfnis-Werte im Profil anpassen.</span></div>';
                     mobileScoreNote.style.display = 'block';
                 } else {
                     // Bestimme Resonanzlevel basierend auf Score
