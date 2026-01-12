@@ -26,7 +26,9 @@ function combineRFactors(R_ich, R_partner) {
     const b = R_partner || 1.0;
     const summe = a + b;
     const similarity = Math.min(a, b) / Math.max(a, b);
-    return Math.round(summe * similarity * 1000) / 1000;
+    // v3.7: Division durch 2 für korrekte Normalisierung (wie Client)
+    const combined = (summe * similarity) / 2;
+    return Math.round(combined * 1000) / 1000;
 }
 
 /**
