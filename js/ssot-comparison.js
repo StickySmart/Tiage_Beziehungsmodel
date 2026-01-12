@@ -19,12 +19,20 @@ var SSOTComparison = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const config = {
-        enabled: false,
+        enabled: true,             // Logging standardmäßig AN
         logToConsole: true,
         tolerance: 0.01,           // 1% Toleranz für Floating-Point
         maxHistory: 100,           // Max gespeicherte Vergleiche
         serverEndpoint: '/api/calculate/synthesis',
-        compareOnEveryCalculation: true
+        compareOnEveryCalculation: true,
+
+        // ═══════════════════════════════════════════════════════════════════
+        // PHASE 3: SERVER-FIRST MIT FALLBACK (AKTIV!)
+        // ═══════════════════════════════════════════════════════════════════
+        // Server = primäre Quelle, Client = Fallback bei Fehler/Timeout
+        useServerSSOT: true,       // AKTIVIERT - Server-First!
+        serverTimeout: 5000,       // 5s Timeout
+        fallbackOnError: true      // Bei Fehler → Client-Berechnung
     };
 
     // Speicher für Vergleichs-Historie
@@ -658,6 +666,191 @@ var SSOTComparison = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // PHASE 3: SERVER-FIRST BERECHNUNG MIT FALLBACK
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ruft die Server-API auf und gibt das Ergebnis zurück
+     * @returns {Promise<object|null>} Server-Ergebnis oder null bei Fehler
+     */
+    async function fetchServerResult(person1, person2, options) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), config.serverTimeout);
+
+            const response = await fetch(config.serverEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ich: person1,
+                    partner: person2,
+                    options: options || {}
+                }),
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`Server responded with ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.result || data;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                console.warn('[SSOT] Server-Timeout nach', config.serverTimeout, 'ms');
+            } else {
+                console.warn('[SSOT] Server-Fehler:', error.message);
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Server-First Wrapper mit Client-Fallback
+     *
+     * PHASE 3: Wenn useServerSSOT=true, wird zuerst der Server gefragt.
+     * Bei Fehler oder Timeout fällt es auf die Client-Berechnung zurück.
+     *
+     * @param {function} clientCalculation - Die originale Client-Berechnungsfunktion
+     * @returns {function} Async Wrapper-Funktion
+     */
+    function wrapWithServerFirst(clientCalculation) {
+        return async function(person1, person2, options) {
+            const startTime = performance.now();
+
+            // Wenn Server-SSOT deaktiviert: Normales Client-Verhalten
+            if (!config.useServerSSOT) {
+                const clientResult = clientCalculation(person1, person2, options);
+
+                // Optional: Vergleichs-Logging im Hintergrund
+                if (config.enabled && config.compareOnEveryCalculation) {
+                    compare(clientResult, person1, person2, options).catch(() => {});
+                }
+
+                return clientResult;
+            }
+
+            // ═══════════════════════════════════════════════════════════════════
+            // SERVER-FIRST MODUS (useServerSSOT = true)
+            // ═══════════════════════════════════════════════════════════════════
+
+            console.log('[SSOT] Server-First Modus aktiv - frage Server...');
+
+            // Server-Anfrage
+            const serverResult = await fetchServerResult(person1, person2, options);
+            const serverTime = performance.now() - startTime;
+
+            if (serverResult && serverResult.score !== undefined) {
+                // Server-Ergebnis erfolgreich
+                console.log('[SSOT] Server-Ergebnis erhalten:', serverResult.score, `(${serverTime.toFixed(0)}ms)`);
+
+                // Markiere als Server-Quelle
+                serverResult._source = 'server';
+                serverResult._responseTime = serverTime;
+
+                // Optional: Client-Vergleich im Hintergrund für Monitoring
+                if (config.enabled) {
+                    const clientResult = clientCalculation(person1, person2, options);
+                    compare(clientResult, person1, person2, options).catch(() => {});
+                }
+
+                return serverResult;
+            }
+
+            // ═══════════════════════════════════════════════════════════════════
+            // FALLBACK: Client-Berechnung
+            // ═══════════════════════════════════════════════════════════════════
+
+            if (!config.fallbackOnError) {
+                console.error('[SSOT] Server nicht erreichbar und Fallback deaktiviert');
+                return {
+                    score: 0,
+                    blocked: true,
+                    reason: 'Server nicht erreichbar',
+                    _source: 'error'
+                };
+            }
+
+            console.warn('[SSOT] Fallback auf Client-Berechnung');
+            const clientResult = clientCalculation(person1, person2, options);
+            clientResult._source = 'client_fallback';
+            clientResult._fallbackReason = 'server_unavailable';
+
+            return clientResult;
+        };
+    }
+
+    /**
+     * Synchroner Wrapper für Kompatibilität mit bestehendem Code
+     * Verwendet einen Cache für Server-Ergebnisse
+     */
+    const serverResultCache = new Map();
+
+    function wrapWithServerFirstSync(clientCalculation) {
+        return function(person1, person2, options) {
+            // Wenn Server-SSOT deaktiviert: Normales Client-Verhalten
+            if (!config.useServerSSOT) {
+                const clientResult = clientCalculation(person1, person2, options);
+
+                if (config.enabled && config.compareOnEveryCalculation) {
+                    compare(clientResult, person1, person2, options).catch(() => {});
+                }
+
+                return clientResult;
+            }
+
+            // Erstelle Cache-Key
+            const cacheKey = JSON.stringify({
+                a1: person1?.archetyp,
+                a2: person2?.archetyp,
+                o1: person1?.orientierung?.primary,
+                o2: person2?.orientierung?.primary,
+                d1: person1?.dominanz?.gelebt,
+                d2: person2?.dominanz?.gelebt
+            });
+
+            // Prüfe Cache (5 Sekunden gültig)
+            const cached = serverResultCache.get(cacheKey);
+            if (cached && (Date.now() - cached.timestamp) < 5000) {
+                console.log('[SSOT] Cache-Hit für Server-Ergebnis');
+                return { ...cached.result, _source: 'server_cached' };
+            }
+
+            // Client-Berechnung als Sofort-Ergebnis
+            const clientResult = clientCalculation(person1, person2, options);
+
+            // Server-Anfrage im Hintergrund für nächsten Aufruf
+            fetchServerResult(person1, person2, options).then(serverResult => {
+                if (serverResult && serverResult.score !== undefined) {
+                    serverResultCache.set(cacheKey, {
+                        result: serverResult,
+                        timestamp: Date.now()
+                    });
+
+                    // Divergenz-Check
+                    if (config.enabled) {
+                        const diff = Math.abs(clientResult.score - serverResult.score);
+                        if (diff > config.tolerance * 100) {
+                            console.warn('[SSOT] DIVERGENZ:', {
+                                client: clientResult.score,
+                                server: serverResult.score,
+                                diff: diff.toFixed(2)
+                            });
+                        }
+                    }
+                }
+            }).catch(() => {});
+
+            // Sofort Client-Ergebnis zurückgeben
+            clientResult._source = 'client';
+            clientResult._serverPending = true;
+            return clientResult;
+        };
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -680,10 +873,48 @@ var SSOTComparison = (function() {
             return config.enabled;
         },
 
+        // ═══════════════════════════════════════════════════════════════════
+        // PHASE 3: SERVER-SSOT STEUERUNG
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Aktiviert Server-First Modus (Server = primäre Quelle)
+         */
+        enableServerSSOT: function() {
+            config.useServerSSOT = true;
+            config.enabled = true;  // Aktiviere auch Logging
+            console.log('[SSOT] ══════════════════════════════════════════════');
+            console.log('[SSOT] SERVER-SSOT AKTIVIERT');
+            console.log('[SSOT] Server ist jetzt primäre Berechnungsquelle');
+            console.log('[SSOT] Client-Fallback:', config.fallbackOnError ? 'AN' : 'AUS');
+            console.log('[SSOT] ══════════════════════════════════════════════');
+            updateStatusWidget();
+        },
+
+        /**
+         * Deaktiviert Server-First Modus (zurück zu Client-Berechnung)
+         */
+        disableServerSSOT: function() {
+            config.useServerSSOT = false;
+            console.log('[SSOT] SERVER-SSOT DEAKTIVIERT - Client ist primäre Quelle');
+            updateStatusWidget();
+        },
+
+        /**
+         * Prüft ob Server-SSOT aktiv ist
+         */
+        isServerSSOTEnabled: function() {
+            return config.useServerSSOT;
+        },
+
         // Konfiguration
         configure: function(options) {
             Object.assign(config, options);
             console.log('[SSOT] Konfiguration aktualisiert:', config);
+        },
+
+        getConfig: function() {
+            return { ...config };
         },
 
         // Manueller Vergleich
@@ -691,6 +922,10 @@ var SSOTComparison = (function() {
 
         // Wrapper für automatischen Vergleich
         wrapCalculation: wrapCalculation,
+
+        // Phase 3: Server-First Wrapper
+        wrapWithServerFirst: wrapWithServerFirst,
+        wrapWithServerFirstSync: wrapWithServerFirstSync,
 
         // Reports
         getReport: getReport,
@@ -712,7 +947,8 @@ var SSOTComparison = (function() {
         clearHistory: function() {
             history.length = 0;
             divergences.length = 0;
-            console.log('[SSOT] Historie gelöscht');
+            serverResultCache.clear();
+            console.log('[SSOT] Historie und Cache gelöscht');
             updateStatusWidget();
         }
     };

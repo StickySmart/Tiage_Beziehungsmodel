@@ -317,7 +317,17 @@
                 <button id="run-single-test" class="btn btn-primary">Einzeltest durchführen</button>
                 <button id="run-batch-test" class="btn btn-success">Batch-Test (alle Kombinationen)</button>
                 <button id="run-random-test" class="btn btn-warning">10 zufällige Tests</button>
-                <button id="toggle-ssot" class="btn btn-secondary">SSOT aktivieren</button>
+                <button id="toggle-ssot" class="btn btn-secondary">Logging aktivieren</button>
+                <button id="toggle-server-ssot" class="btn btn-danger">Server-SSOT aktivieren</button>
+            </div>
+
+            <!-- Phase 3 Info Box -->
+            <div id="server-ssot-info" style="margin-top: 15px; padding: 15px; background: #16213e; border-radius: 8px; border-left: 4px solid #f44336; display: none;">
+                <strong style="color: #f44336;">Phase 3: Server-First Modus</strong>
+                <p style="margin: 8px 0 0; color: #aaa; font-size: 13px;">
+                    Wenn aktiviert, werden alle Berechnungen zuerst vom Server durchgeführt.<br>
+                    Bei Server-Fehler oder Timeout (5s) fällt das System auf die Client-Berechnung zurück.
+                </p>
             </div>
         </div>
 
@@ -571,16 +581,45 @@
         document.getElementById('toggle-ssot').addEventListener('click', function() {
             if (SSOTComparison.isEnabled()) {
                 SSOTComparison.disable();
-                this.textContent = 'SSOT aktivieren';
+                this.textContent = 'Logging aktivieren';
                 this.classList.remove('btn-success');
                 this.classList.add('btn-secondary');
-                log('SSOT-Vergleich DEAKTIVIERT');
+                log('SSOT-Vergleichs-Logging DEAKTIVIERT');
             } else {
                 SSOTComparison.enable();
-                this.textContent = 'SSOT deaktivieren';
+                this.textContent = 'Logging deaktivieren';
                 this.classList.remove('btn-secondary');
                 this.classList.add('btn-success');
-                log('SSOT-Vergleich AKTIVIERT - Server-Endpoint: /api/calculate/synthesis');
+                log('SSOT-Vergleichs-Logging AKTIVIERT - Server-Endpoint: /api/calculate/synthesis');
+            }
+            SSOTComparison.renderUI('ssot-report-container');
+        });
+
+        // Phase 3: Server-SSOT Toggle
+        document.getElementById('toggle-server-ssot').addEventListener('click', function() {
+            const infoBox = document.getElementById('server-ssot-info');
+
+            if (SSOTComparison.isServerSSOTEnabled()) {
+                SSOTComparison.disableServerSSOT();
+                this.textContent = 'Server-SSOT aktivieren';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-danger');
+                infoBox.style.display = 'none';
+                log('══════════════════════════════════════════════');
+                log('SERVER-SSOT DEAKTIVIERT');
+                log('Client-Berechnung ist wieder primäre Quelle');
+                log('══════════════════════════════════════════════');
+            } else {
+                SSOTComparison.enableServerSSOT();
+                this.textContent = 'Server-SSOT deaktivieren';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-success');
+                infoBox.style.display = 'block';
+                log('══════════════════════════════════════════════');
+                log('SERVER-SSOT AKTIVIERT (Phase 3)');
+                log('Server ist jetzt primäre Berechnungsquelle');
+                log('Client-Fallback: aktiviert (Timeout: 5s)');
+                log('══════════════════════════════════════════════');
             }
             SSOTComparison.renderUI('ssot-report-container');
         });
@@ -600,11 +639,26 @@
 
             // Auto-Aktivierung via URL-Parameter
             const params = new URLSearchParams(window.location.search);
+
+            // Logging aktivieren
             if (params.get('ssot') === 'true' || params.get('auto') === 'true') {
                 SSOTComparison.enable();
-                document.getElementById('toggle-ssot').textContent = 'SSOT deaktivieren';
+                document.getElementById('toggle-ssot').textContent = 'Logging deaktivieren';
+                document.getElementById('toggle-ssot').classList.remove('btn-secondary');
                 document.getElementById('toggle-ssot').classList.add('btn-success');
-                log('SSOT automatisch aktiviert (URL-Parameter)');
+                log('SSOT-Logging automatisch aktiviert (URL-Parameter)');
+            }
+
+            // Phase 3: Server-SSOT aktivieren
+            if (params.get('server-ssot') === 'true' || params.get('phase3') === 'true') {
+                SSOTComparison.enableServerSSOT();
+                document.getElementById('toggle-server-ssot').textContent = 'Server-SSOT deaktivieren';
+                document.getElementById('toggle-server-ssot').classList.remove('btn-danger');
+                document.getElementById('toggle-server-ssot').classList.add('btn-success');
+                document.getElementById('server-ssot-info').style.display = 'block';
+                log('══════════════════════════════════════════════');
+                log('SERVER-SSOT automatisch aktiviert (URL: ?phase3=true)');
+                log('══════════════════════════════════════════════');
             }
         });
     </script>
