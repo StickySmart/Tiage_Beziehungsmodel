@@ -11707,7 +11707,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const logos = archetypeScore;
             const pathos = (orientationScore + dominanceScore + genderScore) / 3;
 
-            return {
+            // ═══════════════════════════════════════
+            // SSOT-VERGLEICH (async, blockiert nicht)
+            // ═══════════════════════════════════════
+            const result = {
                 score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle
                 blocked: false,
                 noRealNeeds: rFactorSource === 'default',  // Flag für UI-Warnung
@@ -11741,6 +11744,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 logos: logos,
                 pathos: pathos
             };
+
+            // SSOT-Vergleich im Hintergrund (wenn aktiviert)
+            if (typeof SSOTComparison !== 'undefined' && SSOTComparison.isEnabled()) {
+                SSOTComparison.compare(result, person1, person2, options).catch(function(e) {
+                    console.warn('[SSOT] Vergleich fehlgeschlagen:', e.message);
+                });
+            }
+
+            return result;
         }
 
         // Calculate overall with 4-factor model + category details for UI
