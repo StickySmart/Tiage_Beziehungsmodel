@@ -327,7 +327,8 @@ export function calculate(person1, person2, options = {}) {
     // ═══════════════════════════════════════════════════════════════════
 
     return {
-        score: Math.max(0, Math.min(100, finalScore)),
+        // v3.8: Keine Obergrenze - Score kann über 100 gehen (wie Client)
+        score: Math.max(0, finalScore),
         baseScore: Math.round(baseScore),
 
         resonanz: {
