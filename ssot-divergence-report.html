@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSOT Divergenz-Report | Client vs. Server Vergleich</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: #eee;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            color: #00d9ff;
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .page-header p {
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .test-controls {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .test-controls h3 {
+            margin-top: 0;
+            color: #00d9ff;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-card {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .profile-card h4 {
+            margin-top: 0;
+            color: #ff9800;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            background: #0f3460;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #eee;
+            font-size: 14px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d9ff, #0066ff);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: #eee;
+        }
+
+        #ssot-report-container {
+            margin-top: 20px;
+        }
+
+        .test-results {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .test-results h3 {
+            margin-top: 0;
+            color: #00d9ff;
+        }
+
+        .result-item {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-item.match {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .result-item.divergence {
+            border-left: 4px solid #ff9800;
+        }
+
+        .result-item.error {
+            border-left: 4px solid #f44336;
+        }
+
+        .batch-progress {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d9ff, #4CAF50);
+            transition: width 0.3s ease;
+        }
+
+        .log-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1>SSOT Divergenz-Report</h1>
+            <p>Vergleicht Client- und Server-Berechnungen zur Validierung des Single Source of Truth Prinzips</p>
+        </div>
+
+        <!-- Test Controls -->
+        <div class="test-controls">
+            <h3>Test-Konfiguration</h3>
+
+            <div class="profile-grid">
+                <!-- Person 1 -->
+                <div class="profile-card">
+                    <h4>Person 1 (Ich)</h4>
+                    <div class="form-group">
+                        <label>Archetyp</label>
+                        <select id="person1-archetyp">
+                            <option value="protector">Protector</option>
+                            <option value="caregiver">Caregiver</option>
+                            <option value="companion">Companion</option>
+                            <option value="romantic">Romantic</option>
+                            <option value="explorer">Explorer</option>
+                            <option value="independent">Independent</option>
+                            <option value="networker">Networker</option>
+                            <option value="duo" selected>Duo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Orientierung (Primary)</label>
+                        <select id="person1-orientation">
+                            <option value="heterosexuell" selected>Heterosexuell</option>
+                            <option value="homosexuell">Homosexuell</option>
+                            <option value="bisexuell">Bisexuell</option>
+                            <option value="pansexuell">Pansexuell</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Dominanz</label>
+                        <select id="person1-dominanz">
+                            <option value="dominant">Dominant</option>
+                            <option value="switch" selected>Switch</option>
+                            <option value="submissiv">Submissiv</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Geschlecht</label>
+                        <select id="person1-geschlecht">
+                            <option value="mann" selected>Mann</option>
+                            <option value="frau">Frau</option>
+                            <option value="divers">Divers</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Person 2 -->
+                <div class="profile-card">
+                    <h4>Person 2 (Partner)</h4>
+                    <div class="form-group">
+                        <label>Archetyp</label>
+                        <select id="person2-archetyp">
+                            <option value="protector">Protector</option>
+                            <option value="caregiver">Caregiver</option>
+                            <option value="companion" selected>Companion</option>
+                            <option value="romantic">Romantic</option>
+                            <option value="explorer">Explorer</option>
+                            <option value="independent">Independent</option>
+                            <option value="networker">Networker</option>
+                            <option value="duo">Duo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Orientierung (Primary)</label>
+                        <select id="person2-orientation">
+                            <option value="heterosexuell" selected>Heterosexuell</option>
+                            <option value="homosexuell">Homosexuell</option>
+                            <option value="bisexuell">Bisexuell</option>
+                            <option value="pansexuell">Pansexuell</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Dominanz</label>
+                        <select id="person2-dominanz">
+                            <option value="dominant">Dominant</option>
+                            <option value="switch" selected>Switch</option>
+                            <option value="submissiv">Submissiv</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Geschlecht</label>
+                        <select id="person2-geschlecht">
+                            <option value="mann">Mann</option>
+                            <option value="frau" selected>Frau</option>
+                            <option value="divers">Divers</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button id="run-single-test" class="btn btn-primary">Einzeltest durchführen</button>
+                <button id="run-batch-test" class="btn btn-success">Batch-Test (alle Kombinationen)</button>
+                <button id="run-random-test" class="btn btn-warning">10 zufällige Tests</button>
+                <button id="toggle-ssot" class="btn btn-secondary">SSOT aktivieren</button>
+            </div>
+        </div>
+
+        <!-- Batch Progress -->
+        <div id="batch-progress" class="batch-progress hidden">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span id="batch-status">Test läuft...</span>
+                <span id="batch-count">0/0</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Report Container -->
+        <div id="ssot-report-container"></div>
+
+        <!-- Test Log -->
+        <div class="test-results">
+            <h3>Test-Log</h3>
+            <div id="test-log" class="log-output">Bereit für Tests. Klicken Sie auf "SSOT aktivieren" und dann auf einen Test-Button.</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/synthesis/needsIntegration.js"></script>
+    <script src="js/synthesis/factors/archetypeFactor.js"></script>
+    <script src="js/synthesis/factors/orientationFactor.js"></script>
+    <script src="js/synthesis/factors/dominanceFactor.js"></script>
+    <script src="js/synthesis/factors/genderFactor.js"></script>
+    <script src="js/synthesis/synthesisCalculator.js"></script>
+    <script src="js/ssot-comparison.js"></script>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TEST HELPERS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        const archetypes = ['protector', 'caregiver', 'companion', 'romantic', 'explorer', 'independent', 'networker', 'duo'];
+        const orientations = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell'];
+        const dominances = ['dominant', 'switch', 'submissiv'];
+        const genders = ['mann', 'frau', 'divers'];
+
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('test-log');
+            const timestamp = new Date().toLocaleTimeString('de-DE');
+            const prefix = type === 'error' ? '[ERROR]' : type === 'success' ? '[OK]' : '[INFO]';
+            logEl.textContent += `\n${timestamp} ${prefix} ${message}`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function getFormProfile(prefix) {
+            return {
+                archetyp: document.getElementById(`${prefix}-archetyp`).value,
+                orientierung: {
+                    primary: document.getElementById(`${prefix}-orientation`).value,
+                    secondary: null
+                },
+                dominanz: {
+                    gelebt: document.getElementById(`${prefix}-dominanz`).value
+                },
+                geschlecht: {
+                    primary: document.getElementById(`${prefix}-geschlecht`).value,
+                    secondary: 'cis'
+                },
+                needs: {}  // Leer für Basis-Tests
+            };
+        }
+
+        function generateRandomProfile() {
+            return {
+                archetyp: archetypes[Math.floor(Math.random() * archetypes.length)],
+                orientierung: {
+                    primary: orientations[Math.floor(Math.random() * orientations.length)],
+                    secondary: Math.random() > 0.7 ? orientations[Math.floor(Math.random() * orientations.length)] : null
+                },
+                dominanz: {
+                    gelebt: dominances[Math.floor(Math.random() * dominances.length)]
+                },
+                geschlecht: {
+                    primary: genders[Math.floor(Math.random() * genders.length)],
+                    secondary: 'cis'
+                },
+                needs: {}
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TEST FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        async function runSingleTest() {
+            const person1 = getFormProfile('person1');
+            const person2 = getFormProfile('person2');
+
+            log(`Test: ${person1.archetyp} + ${person2.archetyp}`);
+
+            try {
+                // Client-Berechnung
+                let clientResult = null;
+                if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
+                    clientResult = TiageSynthesis.Calculator.calculate(person1, person2, null, null, {});
+                    log(`Client-Score: ${clientResult.score}`);
+                } else {
+                    log('TiageSynthesis.Calculator nicht verfügbar', 'error');
+                    return;
+                }
+
+                // SSOT-Vergleich triggern
+                if (SSOTComparison.isEnabled()) {
+                    const comparison = await SSOTComparison.compare(clientResult, person1, person2, {});
+
+                    if (comparison.status === 'match') {
+                        log(`Ergebnis: MATCH - Client = Server (${clientResult.score})`, 'success');
+                    } else if (comparison.status === 'divergence') {
+                        log(`Ergebnis: DIVERGENZ - Client: ${clientResult.score}, Server: ${comparison.serverResult?.score}`, 'error');
+                        log(`  Unterschiede: ${comparison.differences.length} Felder`);
+                    } else {
+                        log(`Ergebnis: Server-Fehler - ${comparison.error || 'Unbekannt'}`, 'error');
+                    }
+                } else {
+                    log('SSOT-Vergleich ist deaktiviert. Nur Client-Berechnung durchgeführt.');
+                }
+
+                // UI aktualisieren
+                SSOTComparison.renderUI('ssot-report-container');
+
+            } catch (error) {
+                log(`Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        async function runBatchTest() {
+            const progressEl = document.getElementById('batch-progress');
+            const progressFill = document.getElementById('progress-fill');
+            const batchStatus = document.getElementById('batch-status');
+            const batchCount = document.getElementById('batch-count');
+
+            progressEl.classList.remove('hidden');
+
+            // Alle Archetyp-Kombinationen (8x8 = 64)
+            const combinations = [];
+            for (const a1 of archetypes) {
+                for (const a2 of archetypes) {
+                    combinations.push({ arch1: a1, arch2: a2 });
+                }
+            }
+
+            const total = combinations.length;
+            let completed = 0;
+            let matches = 0;
+            let divergences = 0;
+            let errors = 0;
+
+            log(`\n═══ BATCH-TEST GESTARTET: ${total} Kombinationen ═══`);
+
+            for (const combo of combinations) {
+                const person1 = {
+                    archetyp: combo.arch1,
+                    orientierung: { primary: 'bisexuell', secondary: null },
+                    dominanz: { gelebt: 'switch' },
+                    geschlecht: { primary: 'mann', secondary: 'cis' },
+                    needs: {}
+                };
+
+                const person2 = {
+                    archetyp: combo.arch2,
+                    orientierung: { primary: 'bisexuell', secondary: null },
+                    dominanz: { gelebt: 'switch' },
+                    geschlecht: { primary: 'frau', secondary: 'cis' },
+                    needs: {}
+                };
+
+                try {
+                    const clientResult = TiageSynthesis.Calculator.calculate(person1, person2, null, null, {});
+
+                    if (SSOTComparison.isEnabled()) {
+                        const comparison = await SSOTComparison.compare(clientResult, person1, person2, {});
+
+                        if (comparison.status === 'match') {
+                            matches++;
+                        } else if (comparison.status === 'divergence') {
+                            divergences++;
+                            log(`DIVERGENZ: ${combo.arch1} + ${combo.arch2} | Client: ${clientResult.score}, Server: ${comparison.serverResult?.score}`);
+                        } else {
+                            errors++;
+                        }
+                    }
+                } catch (e) {
+                    errors++;
+                }
+
+                completed++;
+                const percent = Math.round((completed / total) * 100);
+                progressFill.style.width = `${percent}%`;
+                batchCount.textContent = `${completed}/${total}`;
+                batchStatus.textContent = `Matches: ${matches} | Divergenzen: ${divergences} | Fehler: ${errors}`;
+
+                // Kleine Pause für UI-Updates
+                if (completed % 10 === 0) {
+                    await new Promise(r => setTimeout(r, 10));
+                }
+            }
+
+            log(`\n═══ BATCH-TEST ABGESCHLOSSEN ═══`);
+            log(`Gesamt: ${total} | Matches: ${matches} | Divergenzen: ${divergences} | Fehler: ${errors}`, matches === total ? 'success' : 'error');
+
+            SSOTComparison.renderUI('ssot-report-container');
+        }
+
+        async function runRandomTests(count = 10) {
+            log(`\n═══ ${count} ZUFÄLLIGE TESTS ═══`);
+
+            for (let i = 0; i < count; i++) {
+                const person1 = generateRandomProfile();
+                const person2 = generateRandomProfile();
+
+                try {
+                    const clientResult = TiageSynthesis.Calculator.calculate(person1, person2, null, null, {});
+
+                    if (SSOTComparison.isEnabled()) {
+                        const comparison = await SSOTComparison.compare(clientResult, person1, person2, {});
+
+                        if (comparison.status === 'match') {
+                            log(`#${i + 1} MATCH: ${person1.archetyp} + ${person2.archetyp} = ${clientResult.score}`, 'success');
+                        } else if (comparison.status === 'divergence') {
+                            log(`#${i + 1} DIVERGENZ: ${person1.archetyp} + ${person2.archetyp} | C: ${clientResult.score}, S: ${comparison.serverResult?.score}`, 'error');
+                        } else {
+                            log(`#${i + 1} ERROR: Server nicht erreichbar`, 'error');
+                        }
+                    } else {
+                        log(`#${i + 1}: ${person1.archetyp} + ${person2.archetyp} = ${clientResult.score}`);
+                    }
+                } catch (e) {
+                    log(`#${i + 1} FEHLER: ${e.message}`, 'error');
+                }
+            }
+
+            SSOTComparison.renderUI('ssot-report-container');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // EVENT LISTENERS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        document.getElementById('run-single-test').addEventListener('click', runSingleTest);
+        document.getElementById('run-batch-test').addEventListener('click', runBatchTest);
+        document.getElementById('run-random-test').addEventListener('click', () => runRandomTests(10));
+
+        document.getElementById('toggle-ssot').addEventListener('click', function() {
+            if (SSOTComparison.isEnabled()) {
+                SSOTComparison.disable();
+                this.textContent = 'SSOT aktivieren';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-secondary');
+                log('SSOT-Vergleich DEAKTIVIERT');
+            } else {
+                SSOTComparison.enable();
+                this.textContent = 'SSOT deaktivieren';
+                this.classList.remove('btn-secondary');
+                this.classList.add('btn-success');
+                log('SSOT-Vergleich AKTIVIERT - Server-Endpoint: /api/calculate/synthesis');
+            }
+            SSOTComparison.renderUI('ssot-report-container');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initiales Rendering
+            SSOTComparison.renderUI('ssot-report-container');
+
+            log('SSOT Divergenz-Report geladen');
+            log('Verfügbare Module:');
+            log(`  - TiageSynthesis.Calculator: ${typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator ? 'OK' : 'NICHT GELADEN'}`);
+            log(`  - SSOTComparison: ${typeof SSOTComparison !== 'undefined' ? 'OK' : 'NICHT GELADEN'}`);
+
+            // Auto-Aktivierung via URL-Parameter
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('ssot') === 'true' || params.get('auto') === 'true') {
+                SSOTComparison.enable();
+                document.getElementById('toggle-ssot').textContent = 'SSOT deaktivieren';
+                document.getElementById('toggle-ssot').classList.add('btn-success');
+                log('SSOT automatisch aktiviert (URL-Parameter)');
+            }
+        });
+    </script>
+</body>
+</html>

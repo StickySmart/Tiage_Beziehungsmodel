@@ -289,6 +289,349 @@ var SSOTComparison = (function() {
         return report;
     }
 
+    /**
+     * Berechnet detaillierte Score-Statistiken
+     */
+    function getScoreStatistics() {
+        const scoreDiffs = divergences
+            .filter(d => d.clientResult?.score !== undefined && d.serverResult?.score !== undefined)
+            .map(d => ({
+                diff: Math.abs(d.clientResult.score - d.serverResult.score),
+                client: d.clientResult.score,
+                server: d.serverResult.score,
+                timestamp: d.timestamp
+            }));
+
+        if (scoreDiffs.length === 0) {
+            return { count: 0, avgDiff: 0, maxDiff: 0, minDiff: 0 };
+        }
+
+        const diffs = scoreDiffs.map(s => s.diff);
+        return {
+            count: scoreDiffs.length,
+            avgDiff: Math.round((diffs.reduce((a, b) => a + b, 0) / diffs.length) * 100) / 100,
+            maxDiff: Math.round(Math.max(...diffs) * 100) / 100,
+            minDiff: Math.round(Math.min(...diffs) * 100) / 100,
+            details: scoreDiffs
+        };
+    }
+
+    /**
+     * Exportiert Report als JSON
+     */
+    function exportJSON() {
+        const report = {
+            exportedAt: new Date().toISOString(),
+            summary: getReport().summary,
+            statistics: getScoreStatistics(),
+            hotspots: getDivergenceHotspots(),
+            divergences: divergences.map(d => ({
+                timestamp: d.timestamp,
+                input: d.input,
+                clientScore: d.clientResult?.score,
+                serverScore: d.serverResult?.score,
+                differences: d.differences
+            })),
+            history: history.map(h => ({
+                timestamp: h.timestamp,
+                status: h.status,
+                clientScore: h.clientResult?.score,
+                serverScore: h.serverResult?.score
+            }))
+        };
+
+        return JSON.stringify(report, null, 2);
+    }
+
+    /**
+     * Exportiert Report als CSV
+     */
+    function exportCSV() {
+        const lines = ['timestamp,status,clientScore,serverScore,scoreDiff,divergentPaths'];
+
+        for (const h of history) {
+            const clientScore = h.clientResult?.score ?? '';
+            const serverScore = h.serverResult?.score ?? '';
+            const scoreDiff = (clientScore !== '' && serverScore !== '')
+                ? Math.abs(clientScore - serverScore).toFixed(2)
+                : '';
+            const paths = h.differences?.map(d => d.path).join(';') || '';
+
+            lines.push(`${h.timestamp},${h.status},${clientScore},${serverScore},${scoreDiff},"${paths}"`);
+        }
+
+        return lines.join('\n');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // UI-RENDERING
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Rendert ein Divergenz-Report UI in einem Container
+     */
+    function renderUI(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error('[SSOT] Container nicht gefunden:', containerId);
+            return;
+        }
+
+        const report = getReport();
+        const stats = getScoreStatistics();
+        const hotspots = getDivergenceHotspots().slice(0, 10);
+
+        // Status-Farbe bestimmen
+        let statusColor = '#4CAF50';  // Grün
+        let statusText = 'SSOT OK';
+        if (report.summary.divergences > 0) {
+            statusColor = '#ff9800';  // Orange
+            statusText = 'DIVERGENZEN';
+        }
+        if (report.summary.errors > report.summary.total / 2) {
+            statusColor = '#f44336';  // Rot
+            statusText = 'SERVER-FEHLER';
+        }
+
+        container.innerHTML = `
+            <div class="ssot-report" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #1a1a2e; color: #eee; border-radius: 12px;">
+
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; color: #00d9ff;">SSOT Divergenz-Report</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="ssot-toggle-btn" style="padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; background: ${config.enabled ? '#4CAF50' : '#666'}; color: white;">
+                            ${config.enabled ? 'Aktiv' : 'Inaktiv'}
+                        </button>
+                        <button id="ssot-export-json" style="padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; background: #2196F3; color: white;">
+                            JSON
+                        </button>
+                        <button id="ssot-export-csv" style="padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; background: #2196F3; color: white;">
+                            CSV
+                        </button>
+                        <button id="ssot-clear" style="padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; background: #f44336; color: white;">
+                            Löschen
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status-Banner -->
+                <div style="background: ${statusColor}; color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                    <span style="font-size: 24px; font-weight: bold;">${statusText}</span>
+                    <span style="margin-left: 20px; font-size: 18px;">${report.summary.matchRate} Übereinstimmung</span>
+                </div>
+
+                <!-- Statistik-Karten -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #16213e; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 32px; font-weight: bold; color: #00d9ff;">${report.summary.total}</div>
+                        <div style="color: #888;">Vergleiche</div>
+                    </div>
+                    <div style="background: #16213e; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 32px; font-weight: bold; color: #4CAF50;">${report.summary.matches}</div>
+                        <div style="color: #888;">Übereinstimmungen</div>
+                    </div>
+                    <div style="background: #16213e; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 32px; font-weight: bold; color: #ff9800;">${report.summary.divergences}</div>
+                        <div style="color: #888;">Divergenzen</div>
+                    </div>
+                    <div style="background: #16213e; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 32px; font-weight: bold; color: #f44336;">${report.summary.errors}</div>
+                        <div style="color: #888;">Server-Fehler</div>
+                    </div>
+                </div>
+
+                <!-- Score-Statistiken -->
+                ${stats.count > 0 ? `
+                <div style="background: #16213e; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #00d9ff;">Score-Abweichungen</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <div>
+                            <span style="color: #888;">Durchschnitt:</span>
+                            <span style="font-weight: bold; color: #ff9800;"> ${stats.avgDiff} Punkte</span>
+                        </div>
+                        <div>
+                            <span style="color: #888;">Maximum:</span>
+                            <span style="font-weight: bold; color: #f44336;"> ${stats.maxDiff} Punkte</span>
+                        </div>
+                        <div>
+                            <span style="color: #888;">Minimum:</span>
+                            <span style="font-weight: bold; color: #4CAF50;"> ${stats.minDiff} Punkte</span>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Hotspots -->
+                ${hotspots.length > 0 ? `
+                <div style="background: #16213e; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #00d9ff;">Häufigste Divergenzen (Hotspots)</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        ${hotspots.map(h => `
+                            <span style="background: #ff9800; color: #000; padding: 5px 12px; border-radius: 15px; font-size: 13px;">
+                                ${h.path} <strong>(${h.count}x)</strong>
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Letzte Divergenzen -->
+                ${divergences.length > 0 ? `
+                <div style="background: #16213e; padding: 15px; border-radius: 8px;">
+                    <h3 style="margin-top: 0; color: #00d9ff;">Letzte Divergenzen</h3>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        ${divergences.slice(-10).reverse().map(d => `
+                            <div style="background: #0f3460; padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #ff9800;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: #888; font-size: 12px;">${new Date(d.timestamp).toLocaleString('de-DE')}</span>
+                                    <span>
+                                        <span style="color: #00d9ff;">Client: ${d.clientResult?.score ?? '?'}</span>
+                                        <span style="color: #888;"> vs </span>
+                                        <span style="color: #ff9800;">Server: ${d.serverResult?.score ?? '?'}</span>
+                                    </span>
+                                </div>
+                                <div style="font-size: 12px; color: #aaa;">
+                                    ${d.input?.person1?.archetyp || '?'} + ${d.input?.person2?.archetyp || '?'}
+                                </div>
+                                <div style="margin-top: 8px; font-size: 11px;">
+                                    ${d.differences.slice(0, 5).map(diff => `
+                                        <span style="background: #1a1a2e; padding: 2px 8px; border-radius: 4px; margin-right: 5px;">
+                                            ${diff.path}: ${typeof diff.client === 'number' ? diff.client.toFixed(2) : diff.client} != ${typeof diff.server === 'number' ? diff.server.toFixed(2) : diff.server}
+                                        </span>
+                                    `).join('')}
+                                    ${d.differences.length > 5 ? `<span style="color: #888;">+${d.differences.length - 5} weitere</span>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : `
+                <div style="background: #16213e; padding: 30px; border-radius: 8px; text-align: center; color: #4CAF50;">
+                    <span style="font-size: 48px;">✓</span>
+                    <p>Keine Divergenzen gefunden!</p>
+                    <p style="color: #888; font-size: 13px;">
+                        ${config.enabled
+                            ? 'SSOT-Vergleich ist aktiv. Führen Sie Berechnungen durch, um Vergleiche zu sammeln.'
+                            : 'Aktivieren Sie den SSOT-Vergleich, um Client vs. Server zu testen.'}
+                    </p>
+                </div>
+                `}
+
+                <!-- Footer -->
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; font-size: 12px; color: #666; text-align: center;">
+                    SSOT Comparison Module v1.0 | Toleranz: ${config.tolerance * 100}% |
+                    Aktivierung: <code style="background: #333; padding: 2px 6px; border-radius: 3px;">?ssot=true</code>
+                </div>
+            </div>
+        `;
+
+        // Event-Listener hinzufügen
+        document.getElementById('ssot-toggle-btn')?.addEventListener('click', function() {
+            if (config.enabled) {
+                SSOTComparison.disable();
+            } else {
+                SSOTComparison.enable();
+            }
+            renderUI(containerId);
+        });
+
+        document.getElementById('ssot-export-json')?.addEventListener('click', function() {
+            const json = exportJSON();
+            downloadFile('ssot-report.json', json, 'application/json');
+        });
+
+        document.getElementById('ssot-export-csv')?.addEventListener('click', function() {
+            const csv = exportCSV();
+            downloadFile('ssot-report.csv', csv, 'text/csv');
+        });
+
+        document.getElementById('ssot-clear')?.addEventListener('click', function() {
+            if (confirm('Alle SSOT-Vergleichsdaten löschen?')) {
+                SSOTComparison.clearHistory();
+                renderUI(containerId);
+            }
+        });
+    }
+
+    /**
+     * Hilfsfunktion: Datei herunterladen
+     */
+    function downloadFile(filename, content, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Erstellt ein schwebendes Mini-Widget für Status-Anzeige
+     */
+    function createStatusWidget() {
+        // Prüfen ob Widget bereits existiert
+        if (document.getElementById('ssot-status-widget')) return;
+
+        const widget = document.createElement('div');
+        widget.id = 'ssot-status-widget';
+        widget.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 10000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+        widget.innerHTML = '<span id="ssot-widget-content">SSOT: Laden...</span>';
+
+        widget.addEventListener('click', function() {
+            printReport();
+        });
+
+        document.body.appendChild(widget);
+        updateStatusWidget();
+
+        // Auto-Update alle 5 Sekunden
+        setInterval(updateStatusWidget, 5000);
+    }
+
+    /**
+     * Aktualisiert das Status-Widget
+     */
+    function updateStatusWidget() {
+        const widget = document.getElementById('ssot-widget-content');
+        if (!widget) return;
+
+        const report = getReport();
+
+        if (!config.enabled) {
+            widget.innerHTML = '<span style="color: #666;">SSOT: Inaktiv</span>';
+            return;
+        }
+
+        let color = '#4CAF50';
+        if (report.summary.divergences > 0) color = '#ff9800';
+        if (report.summary.errors > 0) color = '#f44336';
+
+        widget.innerHTML = `
+            <span style="color: ${color};">SSOT</span>:
+            ${report.summary.matches}/${report.summary.total}
+            <span style="color: #888;">(${report.summary.matchRate})</span>
+            ${report.summary.divergences > 0 ? `<span style="color: #ff9800;"> | ${report.summary.divergences} Div.</span>` : ''}
+        `;
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════
     // WRAPPER FÜR BESTEHENDE FUNKTION
     // ═══════════════════════════════════════════════════════════════════════════
@@ -324,11 +667,13 @@ var SSOTComparison = (function() {
             config.enabled = true;
             console.log('[SSOT] Vergleichs-Logging AKTIVIERT');
             console.log('[SSOT] Server-Endpoint:', config.serverEndpoint);
+            updateStatusWidget();
         },
 
         disable: function() {
             config.enabled = false;
             console.log('[SSOT] Vergleichs-Logging DEAKTIVIERT');
+            updateStatusWidget();
         },
 
         isEnabled: function() {
@@ -351,6 +696,15 @@ var SSOTComparison = (function() {
         getReport: getReport,
         getDivergenceHotspots: getDivergenceHotspots,
         printReport: printReport,
+        getScoreStatistics: getScoreStatistics,
+
+        // Export
+        exportJSON: exportJSON,
+        exportCSV: exportCSV,
+
+        // UI
+        renderUI: renderUI,
+        createStatusWidget: createStatusWidget,
 
         // Historie
         getHistory: function() { return [...history]; },
@@ -359,6 +713,7 @@ var SSOTComparison = (function() {
             history.length = 0;
             divergences.length = 0;
             console.log('[SSOT] Historie gelöscht');
+            updateStatusWidget();
         }
     };
 
