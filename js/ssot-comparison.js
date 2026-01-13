@@ -19,7 +19,7 @@ var SSOTComparison = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const config = {
-        enabled: true,             // Logging standardmäßig AN
+        enabled: false,            // Logging aus bis Server funktioniert
         logToConsole: true,
         tolerance: 0.01,           // 1% Toleranz für Floating-Point
         maxHistory: 100,           // Max gespeicherte Vergleiche
@@ -27,10 +27,11 @@ var SSOTComparison = (function() {
         compareOnEveryCalculation: true,
 
         // ═══════════════════════════════════════════════════════════════════
-        // PHASE 3: SERVER-FIRST MIT FALLBACK (AKTIV!)
+        // PHASE 3: SERVER-FIRST MIT FALLBACK
         // ═══════════════════════════════════════════════════════════════════
-        // Server = primäre Quelle, Client = Fallback bei Fehler/Timeout
-        useServerSSOT: true,       // AKTIVIERT - Server-First!
+        // DEAKTIVIERT - Server-Endpoint nicht verfügbar (405)
+        // Aktivieren wenn Server /api/calculate/synthesis bereitstellt
+        useServerSSOT: false,      // DEAKTIVIERT - Server nicht bereit
         serverTimeout: 5000,       // 5s Timeout
         fallbackOnError: true      // Bei Fehler → Client-Berechnung
     };
