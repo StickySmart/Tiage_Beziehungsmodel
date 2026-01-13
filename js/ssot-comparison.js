@@ -19,7 +19,7 @@ var SSOTComparison = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const config = {
-        enabled: false,            // Logging aus bis Server funktioniert
+        enabled: true,             // Logging aktiviert für Monitoring
         logToConsole: true,
         tolerance: 0.01,           // 1% Toleranz für Floating-Point
         maxHistory: 100,           // Max gespeicherte Vergleiche
@@ -29,9 +29,9 @@ var SSOTComparison = (function() {
         // ═══════════════════════════════════════════════════════════════════
         // PHASE 3: SERVER-FIRST MIT FALLBACK
         // ═══════════════════════════════════════════════════════════════════
-        // DEAKTIVIERT - Server-Endpoint nicht verfügbar (405)
-        // Aktivieren wenn Server /api/calculate/synthesis bereitstellt
-        useServerSSOT: false,      // DEAKTIVIERT - Server nicht bereit
+        // AKTIVIERT - Vercel Serverless API verfügbar
+        // Deaktivieren: SSOTComparison.disableServerSSOT()
+        useServerSSOT: true,       // AKTIVIERT - Server bereit
         serverTimeout: 5000,       // 5s Timeout
         fallbackOnError: true      // Bei Fehler → Client-Berechnung
     };
