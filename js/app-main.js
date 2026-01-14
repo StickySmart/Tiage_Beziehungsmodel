@@ -12554,9 +12554,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const bestResult = allResults[0];
             slotMachineResult = bestResult;
-            // Top 4 und Top 10 speichern für erweiterbare Ansicht
-            slotMachineTop4Results = allResults.slice(0, 4);
-            slotMachineTop10Results = allResults.slice(0, 10);
+
+            // NEU: Bester Match PRO ARCHETYP (8 Ergebnisse statt Top 10)
+            const bestPerArchetype = {};
+            const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Finde den besten Match für jeden Archetyp
+            for (const result of allResults) {
+                if (!bestPerArchetype[result.archetyp]) {
+                    bestPerArchetype[result.archetyp] = result;
+                }
+                // Stoppe wenn wir für alle 8 Archetypen einen Match haben
+                if (Object.keys(bestPerArchetype).length === 8) break;
+            }
+
+            // Sortiere nach Archetyp-Reihenfolge, dann nach Score
+            const archetypeResults = archetypeOrder
+                .filter(arch => bestPerArchetype[arch])
+                .map(arch => bestPerArchetype[arch])
+                .sort((a, b) => b.score - a.score);
+
+            // Top 4 = die 4 besten Archetyp-Matches, Top 10 = alle 8 Archetyp-Matches
+            slotMachineTop4Results = archetypeResults.slice(0, 4);
+            slotMachineTop10Results = archetypeResults;
 
             // Animation starten
             const reelA = document.getElementById('slotReelA');
@@ -12793,7 +12813,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-10)
+         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-8)
+         * NEU: Zeigt den besten Match PRO ARCHETYP (max. 8 Ergebnisse)
          */
         function showSlotResult(result) {
             document.getElementById('slotPhase2').style.display = 'none';
@@ -12808,7 +12829,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             slotMachineExpanded = false;
             if (expandedContainer) expandedContainer.style.display = 'none';
             if (expandBtn) {
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
                 // Nur anzeigen wenn es mehr als 4 Ergebnisse gibt
                 expandBtn.style.display = slotMachineTop10Results.length > 4 ? 'inline-block' : 'none';
             }
@@ -12877,7 +12898,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Toggle-Funktion für erweiterte Liste (Position 5-10)
+         * Toggle-Funktion für erweiterte Liste (Position 5-8)
+         * NEU: Zeigt besten Match PRO ARCHETYP
          */
         function toggleSlotExpand() {
             const expandedContainer = document.getElementById('slotExpandedList');
@@ -12894,7 +12916,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (titleEl) titleEl.innerHTML = `🏆 Top ${slotMachineTop10Results.length} Partner gefunden!`;
             } else {
                 expandedContainer.style.display = 'none';
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
                 if (titleEl) titleEl.innerHTML = '🏆 Top 4 Partner gefunden!';
             }
         }
