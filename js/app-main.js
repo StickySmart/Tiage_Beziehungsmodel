@@ -12627,12 +12627,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const results = [];
 
             // ICH-Daten (fix)
-            const ichArchetype = currentArchetype || 'single';
-            const ichDims = personDimensions.ich || {};
+            // FIX: Hole Dimensionen aus TiageState (SSOT), nicht aus globaler Variable
+            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
+            const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
+
+            console.log('[calculateAllCombinations] ICH-Dimensionen aus SSOT:', {
+                archetyp: ichArchetype,
+                geschlecht: validIchGeschlecht,
+                orientierung: validIchOrientierung,
+                dominanz: validIchDominanz
+            });
 
             // NEU: ICH-Needs aus TiageState holen oder berechnen
             // FIX: Korrekter Pfad ist 'flatNeeds.ich', nicht 'profiles.ich.flatNeeds'
