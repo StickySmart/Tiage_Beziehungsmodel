@@ -799,11 +799,76 @@
         }
     }
 
+    /**
+     * Berechnet und aktualisiert Resonanzfaktoren für eine Person basierend auf aktuellem State
+     * SSOT: Wird reaktiv aufgerufen wenn sich Archetyp, Dimensionen oder flatNeeds ändern
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function recalculateResonanzForPerson(person) {
+        if (typeof TiageState === 'undefined') return;
+
+        // Hole aktuellen Archetyp
+        const archetyp = TiageState.get(`archetypes.${person}.primary`);
+        if (!archetyp) return;
+
+        // Hole aktuelle flatNeeds (werden für Resonanz-Berechnung benötigt)
+        const flatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+
+        // Hole aktuelle Dimensionen
+        const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+        const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+
+        console.log(`[ProfileCalculator] recalculateResonanz für ${person.toUpperCase()}:`, {
+            archetyp: archetyp,
+            needsCount: Object.keys(flatNeeds).length
+        });
+
+        // Berechne Resonanzfaktoren
+        const profileContext = {
+            archetyp: archetyp,
+            needs: flatNeeds,
+            geschlecht: geschlecht,
+            dominanz: dominanz,
+            orientierung: orientierung
+        };
+
+        const calculatedResonanz = calculateResonanzFaktoren(profileContext);
+
+        if (calculatedResonanz) {
+            // Respektiere Locks: Nur nicht-gelockte R-Faktoren überschreiben
+            const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`) || {};
+            const newResonanz = {};
+
+            ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                const current = currentResonanz[key];
+                const calculated = calculatedResonanz[key];
+
+                // Nur überschreiben wenn nicht locked
+                if (!current?.locked) {
+                    newResonanz[key] = calculated;
+                } else {
+                    newResonanz[key] = current;
+                }
+            });
+
+            // Prüfe ob sich die Werte tatsächlich geändert haben
+            const resonanzChanged = !currentResonanz.R1 ||
+                JSON.stringify(newResonanz) !== JSON.stringify(currentResonanz);
+
+            if (resonanzChanged) {
+                TiageState.setResonanzFaktoren(person, newResonanz);
+                console.log(`[ProfileCalculator] Resonanzfaktoren reaktiv aktualisiert für ${person}:`, JSON.stringify(newResonanz));
+            }
+        }
+    }
+
     // Flag um doppelte Subscriber-Registrierung zu vermeiden
     let subscribersRegistered = false;
 
     /**
-     * Registriert die Subscriber für automatische flatNeeds-Aktualisierung
+     * Registriert die Subscriber für automatische flatNeeds- und Resonanz-Aktualisierung
+     * SSOT: Zentrale reaktive Updates bei State-Änderungen
      */
     function registerFlatNeedsSubscribers() {
         // Verhindere doppelte Registrierung
@@ -819,28 +884,36 @@
         subscribersRegistered = true;
 
         // Subscriber für Archetyp-Änderungen
+        // SSOT: Bei Archetyp-Wechsel werden flatNeeds UND Resonanzfaktoren neu berechnet
         TiageState.subscribe('archetypes.ich', (event) => {
             if (event.path === 'archetypes.ich.primary' || event.path === 'archetypes.ich') {
                 recalculateFlatNeedsForPerson('ich');
+                // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
+                recalculateResonanzForPerson('ich');
             }
         });
 
         TiageState.subscribe('archetypes.partner', (event) => {
             if (event.path === 'archetypes.partner.primary' || event.path === 'archetypes.partner') {
                 recalculateFlatNeedsForPerson('partner');
+                // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
+                recalculateResonanzForPerson('partner');
             }
         });
 
         // Subscriber für Dimensions-Änderungen (geschlecht, dominanz, orientierung)
+        // SSOT: Bei Dimensions-Änderung werden flatNeeds UND Resonanzfaktoren neu berechnet
         TiageState.subscribe('personDimensions.ich', (event) => {
             recalculateFlatNeedsForPerson('ich');
+            recalculateResonanzForPerson('ich');
         });
 
         TiageState.subscribe('personDimensions.partner', (event) => {
             recalculateFlatNeedsForPerson('partner');
+            recalculateResonanzForPerson('partner');
         });
 
-        console.log('[ProfileCalculator] SSOT Subscriber für reaktive flatNeeds-Updates registriert');
+        console.log('[ProfileCalculator] SSOT Subscriber für reaktive flatNeeds- und Resonanz-Updates registriert');
     }
 
     // Subscriber nach kurzer Verzögerung registrieren (TiageState muss bereit sein)

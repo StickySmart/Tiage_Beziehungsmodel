@@ -11915,6 +11915,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Sync with TiageState for persistence
+            // SSOT: setArchetype() löst synchron die Subscriber aus, die
+            // flatNeeds UND Resonanzfaktoren automatisch neu berechnen
             if (typeof TiageState !== 'undefined') {
                 TiageState.setArchetype(person, archetype);
             }
