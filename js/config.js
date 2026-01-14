@@ -84,23 +84,36 @@ const TiageConfig = (function() {
     // ═══════════════════════════════════════════════════════════════════════
 
     // PRIMÄR = Sexuelle Anziehung (wen begehre ich körperlich?)
-    const ORIENTIERUNG_PRIMARY_TYPES = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'asexuell'];
+    // v2.0: Neue Struktur - bihomo (bi+homo zusammengelegt), pansexuell separat
+    const ORIENTIERUNG_PRIMARY_TYPES = ['heterosexuell', 'bihomo', 'pansexuell', 'asexuell'];
 
     const ORIENTIERUNG_PRIMARY_SHORT = {
         heterosexuell: 'Hetero',
-        homosexuell: 'Homo',
-        bisexuell: 'Bi',
+        bihomo: 'Bi/Homo',
         pansexuell: 'Pan',
-        asexuell: 'Ace'
+        asexuell: 'Ace',
+        // LEGACY: Alte Keys für Rückwärtskompatibilität (werden zu bihomo gemappt)
+        homosexuell: 'Bi/Homo',
+        bisexuell: 'Bi/Homo'
     };
 
     const ORIENTIERUNG_PRIMARY_LABELS = {
         heterosexuell: 'Heterosexuell',
-        homosexuell: 'Homosexuell',
-        bisexuell: 'Bisexuell',
+        bihomo: 'Bi-/Homosexuell',
         pansexuell: 'Pansexuell',
-        asexuell: 'Asexuell'
+        asexuell: 'Asexuell',
+        // LEGACY: Alte Keys für Rückwärtskompatibilität
+        homosexuell: 'Bi-/Homosexuell',
+        bisexuell: 'Bi-/Homosexuell'
     };
+
+    // Migration-Helper: Konvertiert alte Orientierungs-Keys zu neuen
+    function migrateOrientierung(oldValue) {
+        if (oldValue === 'homosexuell' || oldValue === 'bisexuell') {
+            return 'bihomo';
+        }
+        return oldValue;
+    }
 
     // SEKUNDÄR = Romantische Anziehung (in wen verliebe ich mich?)
     const ORIENTIERUNG_SECONDARY_TYPES = ['heteroromantisch', 'homoromantisch', 'biromantisch', 'panromantisch', 'aromantisch'];
@@ -122,11 +135,15 @@ const TiageConfig = (function() {
     };
 
     // LEGACY: Alte ORIENTIERUNG_TYPES für Rückwärtskompatibilität
-    const ORIENTIERUNG_TYPES = ORIENTIERUNG_PRIMARY_TYPES.slice(0, 3); // nur hetero, homo, bi
+    // v2.0: Jetzt nur noch 3 aktive: hetero, bihomo, pan
+    const ORIENTIERUNG_TYPES = ['heterosexuell', 'bihomo', 'pansexuell'];
     const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
-        homosexuell: 'Homo',
-        bisexuell: 'Bi/Pan'
+        bihomo: 'Bi/Homo',
+        pansexuell: 'Pan',
+        // LEGACY: Alte Keys
+        homosexuell: 'Bi/Homo',
+        bisexuell: 'Bi/Homo'
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -340,13 +357,22 @@ const TiageConfig = (function() {
             title: "Heterosexuell",
             text: "Anziehung zum anderen Geschlecht."
         },
+        bihomo: {
+            title: "Bi-/Homosexuell",
+            text: "Anziehung zum gleichen Geschlecht (homo) oder zu mehreren binären Geschlechtern (bi)."
+        },
+        pansexuell: {
+            title: "Pansexuell",
+            text: "Anziehung zu allen Geschlechtern, unabhängig von Geschlechtsidentität - inkl. non-binär, inter, etc."
+        },
+        // LEGACY: Alte Keys für Rückwärtskompatibilität
         homosexuell: {
-            title: "Homosexuell",
-            text: "Anziehung zum gleichen Geschlecht."
+            title: "Bi-/Homosexuell",
+            text: "Anziehung zum gleichen Geschlecht (homo) oder zu mehreren binären Geschlechtern (bi)."
         },
         bisexuell: {
-            title: "Bi-/Pansexuell",
-            text: "Anziehung zu mehreren oder allen Geschlechtern, unabhängig von Geschlechtsidentität."
+            title: "Bi-/Homosexuell",
+            text: "Anziehung zum gleichen Geschlecht (homo) oder zu mehreren binären Geschlechtern (bi)."
         }
     };
 
@@ -648,6 +674,11 @@ const TiageConfig = (function() {
         // Helper: Person-Label (i18n aware) - ICH/ME, PARTNER
         getPersonLabel(person) {
             return i18n(`ui.${person}`, person === 'ich' ? 'ICH' : 'PARTNER');
+        },
+
+        // Helper: Migriert alte Orientierungs-Keys (homosexuell/bisexuell → bihomo)
+        migrateOrientierung(oldValue) {
+            return migrateOrientierung(oldValue);
         }
     };
 })();

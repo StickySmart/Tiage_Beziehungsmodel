@@ -136,6 +136,7 @@ TiageSynthesis.Factors.Orientierung = {
 
     /**
      * Extrahiert Orientierungen aus Person-Objekt
+     * v2.0: Migriert alte Keys (homosexuell/bisexuell → bihomo)
      */
     _extractOrientations: function(person) {
         var list = [];
@@ -143,26 +144,33 @@ TiageSynthesis.Factors.Orientierung = {
 
         if (!ori) return list;
 
+        // v2.0: Migration helper
+        var migrateType = function(type) {
+            if (type === 'homosexuell' || type === 'bisexuell') return 'bihomo';
+            return type;
+        };
+
         if (typeof ori === 'object') {
-            // Neues P/S-Format: { primary: 'heterosexuell', secondary: 'bisexuell' }
+            // Neues P/S-Format: { primary: 'heterosexuell', secondary: 'bihomo' }
             if ('primary' in ori) {
                 if (ori.primary) {
-                    list.push({ type: ori.primary, status: 'gelebt' });
+                    list.push({ type: migrateType(ori.primary), status: 'gelebt' });
                 }
                 if (ori.secondary) {
                     // SSOT-FIX: Sekundäre Orientierung ist NICHT 'interessiert' (Exploration),
                     // sondern 'sekundaer' (auch gelebt, aber nicht primär).
                     // 'interessiert' bleibt für echte Exploration (unsicher/suchend).
-                    list.push({ type: ori.secondary, status: 'sekundaer' });
+                    list.push({ type: migrateType(ori.secondary), status: 'sekundaer' });
                 }
             }
             // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
             else {
-                var types = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell'];
+                // v2.0: Neue Types + Legacy-Keys
+                var types = ['heterosexuell', 'bihomo', 'pansexuell', 'homosexuell', 'bisexuell'];
                 for (var i = 0; i < types.length; i++) {
                     var type = types[i];
                     if (ori[type]) {
-                        list.push({ type: type, status: ori[type] });
+                        list.push({ type: migrateType(type), status: ori[type] });
                     }
                 }
             }
@@ -170,7 +178,7 @@ TiageSynthesis.Factors.Orientierung = {
         // Altes String-Format (Rückwärtskompatibilität)
         else if (typeof ori === 'string') {
             list.push({
-                type: ori,
+                type: migrateType(ori),
                 status: person.orientierungStatus || 'gelebt'
             });
         }
@@ -306,6 +314,11 @@ TiageSynthesis.Factors.Orientierung = {
     /**
      * Prüft einzelnes Orientierungs-Paar
      *
+     * v2.0: Neue Orientierungs-Struktur:
+     * - heterosexuell: Nur anderes binäres Geschlecht
+     * - bihomo: Alle binären Geschlechter (ersetzt bi+homo)
+     * - pansexuell: ALLE Geschlechter inkl. nonbinär
+     *
      * SSOT-FIX: 'sekundaer' wird wie 'gelebt' behandelt (keine Exploration)
      * Nur 'interessiert' führt zu isExploring = true
      *
@@ -316,9 +329,34 @@ TiageSynthesis.Factors.Orientierung = {
         // 'sekundaer' ist eine gelebte Orientierung, keine Unsicherheit
         var isExploring = (status1 === 'interessiert' || status2 === 'interessiert');
 
-        // Bisexuell/Pansexuell ist immer kompatibel
-        if (type1 === 'bisexuell' || type1 === 'pansexuell' ||
-            type2 === 'bisexuell' || type2 === 'pansexuell') {
+        // v2.0: Migration - falls alte Keys noch durchkommen
+        var normalizeType = function(t) {
+            if (t === 'homosexuell' || t === 'bisexuell') return 'bihomo';
+            return t;
+        };
+        type1 = normalizeType(type1);
+        type2 = normalizeType(type2);
+
+        // Pansexuell ist zu ALLEN Geschlechtern angezogen (inkl. nonbinär)
+        if (type1 === 'pansexuell' || type2 === 'pansexuell') {
+            return {
+                result: isExploring ? 'unsicher' : 'moeglich',
+                isHardKO: false
+            };
+        }
+
+        // Bihomo ist zu allen BINÄREN Geschlechtern angezogen
+        // Bihomo + Bihomo: Immer möglich
+        if (type1 === 'bihomo' && type2 === 'bihomo') {
+            return {
+                result: isExploring ? 'unsicher' : 'moeglich',
+                isHardKO: false
+            };
+        }
+
+        // Bihomo + Heterosexuell: Immer möglich (bihomo ist flexibel)
+        if ((type1 === 'bihomo' && type2 === 'heterosexuell') ||
+            (type1 === 'heterosexuell' && type2 === 'bihomo')) {
             return {
                 result: isExploring ? 'unsicher' : 'moeglich',
                 isHardKO: false
@@ -327,7 +365,8 @@ TiageSynthesis.Factors.Orientierung = {
 
         // Beide heterosexuell
         if (type1 === 'heterosexuell' && type2 === 'heterosexuell') {
-            if (g1 !== g2) {
+            // Verschiedene binäre Geschlechter: möglich
+            if (this._isDifferentBinaryGender(g1, g2)) {
                 return {
                     result: isExploring ? 'unsicher' : 'moeglich',
                     isHardKO: false
@@ -341,34 +380,19 @@ TiageSynthesis.Factors.Orientierung = {
             };
         }
 
-        // Beide homosexuell
-        if (type1 === 'homosexuell' && type2 === 'homosexuell') {
-            if (g1 === g2) {
-                return {
-                    result: isExploring ? 'unsicher' : 'moeglich',
-                    isHardKO: false
-                };
-            }
-            // HARD-KO: Verschiedenes Geschlecht, beide homo → beide suchen jemand anderen
-            return {
-                result: 'hardKO',
-                isHardKO: true,
-                reason: 'homo_different_gender'
-            };
-        }
-
-        // Gemischt: hetero + homo
-        // Prüfe ob es ein Hard-KO ist (BEIDE suchen jemand anderen)
-        var hardKOCheck = this._checkHeteroHomoHardKO(type1, type2, g1, g2);
-        if (hardKOCheck.isHardKO) {
-            return hardKOCheck;
-        }
-
-        // Soft-KO: Mindestens einer könnte sich angezogen fühlen
+        // Fallback: Soft-KO
         if (isExploring) {
             return { result: 'unsicher', isHardKO: false };
         }
         return { result: 'unmoeglich', isHardKO: false };
+    },
+
+    /**
+     * Prüft ob Geschlechter verschiedene binäre Kategorien sind
+     */
+    _isDifferentBinaryGender: function(g1, g2) {
+        return (this._isMaleGender(g1) && this._isFemaleGender(g2)) ||
+               (this._isFemaleGender(g1) && this._isMaleGender(g2));
     },
 
     /**

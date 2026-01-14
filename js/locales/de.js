@@ -78,17 +78,24 @@ const TiageLocale_DE = {
     // ORIENTIERUNG
     // ═══════════════════════════════════════════════════════════════════════
 
+    // v2.0: Neue Orientierungs-Struktur
     orientierung: {
         label: 'Sexuelle Orientierung',
         types: {
             heterosexuell: 'Heterosexuell',
-            homosexuell: 'Homosexuell',
-            bisexuell: 'Bi-/Pansexuell'
+            bihomo: 'Bi-/Homosexuell',
+            pansexuell: 'Pansexuell',
+            // LEGACY
+            homosexuell: 'Bi-/Homosexuell',
+            bisexuell: 'Bi-/Homosexuell'
         },
         short: {
             heterosexuell: 'Hetero',
-            homosexuell: 'Homo',
-            bisexuell: 'Bi/Pan'
+            bihomo: 'Bi/Homo',
+            pansexuell: 'Pan',
+            // LEGACY
+            homosexuell: 'Bi/Homo',
+            bisexuell: 'Bi/Homo'
         }
     },
 

@@ -1184,11 +1184,41 @@ const TiageState = (function() {
                 return id;
             };
 
+            // v2.0: Migriert alte Orientierungs-Keys (homosexuell/bisexuell → bihomo)
+            const migrateOrientierung = (orientierung) => {
+                if (!orientierung) return orientierung;
+                if (typeof orientierung === 'object' && 'primary' in orientierung) {
+                    const migrated = { ...orientierung };
+                    if (migrated.primary === 'homosexuell' || migrated.primary === 'bisexuell') {
+                        console.log(`[TiageState] Migriere Orientierung ${migrated.primary} → bihomo`);
+                        migrated.primary = 'bihomo';
+                    }
+                    if (migrated.secondary === 'homosexuell' || migrated.secondary === 'bisexuell') {
+                        console.log(`[TiageState] Migriere sekundäre Orientierung ${migrated.secondary} → bihomo`);
+                        migrated.secondary = 'bihomo';
+                    }
+                    return migrated;
+                }
+                // String-Format
+                if (orientierung === 'homosexuell' || orientierung === 'bisexuell') {
+                    console.log(`[TiageState] Migriere Orientierung ${orientierung} → bihomo`);
+                    return 'bihomo';
+                }
+                return orientierung;
+            };
+
             try {
                 const saved = localStorage.getItem('tiage_state');
                 if (saved) {
                     const parsed = JSON.parse(saved);
+                    // v2.0: Migriere Orientierung in personDimensions
                     if (parsed.personDimensions) {
+                        if (parsed.personDimensions.ich?.orientierung) {
+                            parsed.personDimensions.ich.orientierung = migrateOrientierung(parsed.personDimensions.ich.orientierung);
+                        }
+                        if (parsed.personDimensions.partner?.orientierung) {
+                            parsed.personDimensions.partner.orientierung = migrateOrientierung(parsed.personDimensions.partner.orientierung);
+                        }
                         this.set('personDimensions', parsed.personDimensions);
                     }
                     if (parsed.archetypes) {
