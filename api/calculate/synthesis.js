@@ -70,6 +70,12 @@ const ORIENTATION_OPENNESS_SINGLE = {
     "heterosexuell": 0, "homosexuell": 0, "bisexuell": 75, "pansexuell": 100
 };
 
+// ORIENTATION_RESONANCE: P/S-Gewichtung für Orientierungs-Openness (SSOT aus constants.js)
+const ORIENTATION_RESONANCE = {
+    PRIMARY_WEIGHT: 0.7,   // 70% für primäre Orientierung
+    SECONDARY_WEIGHT: 0.3  // 30% für sekundäre Orientierung
+};
+
 const ARCHETYP_MATRIX = {
     'duo-duo': 95, 'duo-duo_flex': 85, 'duo-lat': 70, 'duo-single': 40,
     'duo-polyamor': 50, 'duo-solopoly': 35, 'duo-ra': 45, 'duo-aromantisch': 25,
@@ -187,6 +193,51 @@ function getOrientationOpennessKey(orientierung) {
     return prim + '-' + sec;
 }
 
+/**
+ * Berechnet gewichtete Orientierungs-Openness basierend auf P/S (v3.6)
+ * SSOT: Gleiche Formel wie in server/logic/synthesisCalculator.js
+ *
+ * Formel:
+ * - Wenn nur Primary: 100% des Primary-Wertes
+ * - Wenn Primary + Secondary: Primary × 0.7 + Secondary × 0.3
+ */
+function calculateWeightedOrientationOpenness(orientierung) {
+    if (!orientierung) {
+        return { openness: 0, details: { primary: null, secondary: null } };
+    }
+
+    var primary = orientierung.primary || 'heterosexuell';
+    var secondary = orientierung.secondary || null;
+
+    var primaryWeight = ORIENTATION_RESONANCE.PRIMARY_WEIGHT || 0.7;
+    var secondaryWeight = ORIENTATION_RESONANCE.SECONDARY_WEIGHT || 0.3;
+
+    var primaryOpenness = ORIENTATION_OPENNESS_SINGLE[primary] !== undefined ? ORIENTATION_OPENNESS_SINGLE[primary] : 0;
+    var secondaryOpenness = secondary ? (ORIENTATION_OPENNESS_SINGLE[secondary] !== undefined ? ORIENTATION_OPENNESS_SINGLE[secondary] : 0) : 0;
+
+    var openness;
+    if (secondary && secondary !== primary) {
+        // P/S-gewichtete Berechnung
+        openness = (primaryOpenness * primaryWeight) + (secondaryOpenness * secondaryWeight);
+    } else {
+        // Nur Primary → 100%
+        openness = primaryOpenness;
+    }
+
+    return {
+        openness: Math.round(openness * 100) / 100,
+        details: {
+            primary: primary,
+            secondary: secondary,
+            primaryOpenness: primaryOpenness,
+            secondaryOpenness: secondaryOpenness,
+            primaryWeight: primaryWeight,
+            secondaryWeight: secondaryWeight,
+            hasSecondary: !!(secondary && secondary !== primary)
+        }
+    };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // R-FAKTOR BERECHNUNG (SSOT)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -258,10 +309,13 @@ function calculateR4(person1, person2) {
 
     var ori1 = person1.orientierung || {};
     var ori2 = person2.orientierung || {};
-    var primary1 = ori1.primary || 'heterosexuell';
-    var primary2 = ori2.primary || 'heterosexuell';
-    var weightedOriO1 = ORIENTATION_OPENNESS_SINGLE[primary1] || 0;
-    var weightedOriO2 = ORIENTATION_OPENNESS_SINGLE[primary2] || 0;
+
+    // FIX v3.8: Verwende P/S-gewichtete Orientierungs-Openness (wie Server)
+    // statt nur primary Orientierung
+    var oriResult1 = calculateWeightedOrientationOpenness(ori1);
+    var oriResult2 = calculateWeightedOrientationOpenness(ori2);
+    var weightedOriO1 = oriResult1.openness;
+    var weightedOriO2 = oriResult2.openness;
 
     var idWeight = IDENTITY_RESONANCE.IDENTITY_WEIGHT;
     var oriWeight = IDENTITY_RESONANCE.ORIENTATION_WEIGHT;
@@ -277,7 +331,22 @@ function calculateR4(person1, person2) {
 
     return {
         value: Math.round((basisR4 + (aehnlichkeitsFaktor * opennessBonus)) * 1000) / 1000,
-        details: { secondary1: secondary1, secondary2: secondary2, idO1: idO1, idO2: idO2, combinedO1: combinedO1, combinedO2: combinedO2, gleicheIdentitaet: gleicheIdentitaet, aehnlichkeitsFaktor: aehnlichkeitsFaktor, opennessBonus: opennessBonus }
+        details: {
+            secondary1: secondary1,
+            secondary2: secondary2,
+            idO1: idO1,
+            idO2: idO2,
+            // FIX v3.8: P/S-gewichtete Orientierungs-Openness
+            orientationOpenness1: weightedOriO1,
+            orientationOpenness2: weightedOriO2,
+            orientation1: oriResult1.details,
+            orientation2: oriResult2.details,
+            combinedO1: combinedO1,
+            combinedO2: combinedO2,
+            gleicheIdentitaet: gleicheIdentitaet,
+            aehnlichkeitsFaktor: aehnlichkeitsFaktor,
+            opennessBonus: opennessBonus
+        }
     };
 }
 
