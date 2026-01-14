@@ -11880,24 +11880,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Sync with TiageState for persistence
+            // SSOT: setArchetype() löst synchron die Subscriber aus, die
+            // flatNeeds UND Resonanzfaktoren automatisch neu berechnen
             if (typeof TiageState !== 'undefined') {
                 TiageState.setArchetype(person, archetype);
-            }
-
-            // ═══════════════════════════════════════════════════════════════
-            // SSOT: Berechne flatNeeds + Resonanzfaktoren bei Archetyp-Wechsel
-            // ProfileCalculator.loadProfile() schreibt direkt in TiageState
-            // WICHTIG: Muss VOR updateComparisonView() aufgerufen werden!
-            // ═══════════════════════════════════════════════════════════════
-            if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
-                const profileData = {
-                    archetyp: archetype,
-                    geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
-                    dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
-                    orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
-                };
-                ProfileCalculator.loadProfile(person, profileData);
-                console.log(`[selectArchetypeFromGrid] Profil für ${person.toUpperCase()} neu berechnet:`, archetype);
             }
 
             // Update archetype grid highlighting
