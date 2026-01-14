@@ -12635,9 +12635,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichGfk = ichDims.gfk || 'mittel';
 
             // NEU: ICH-Needs aus TiageState holen oder berechnen
+            // FIX: Korrekter Pfad ist 'flatNeeds.ich', nicht 'profiles.ich.flatNeeds'
             let ichNeeds = null;
             if (typeof TiageState !== 'undefined') {
-                ichNeeds = TiageState.get('profiles.ich.flatNeeds');
+                ichNeeds = TiageState.get('flatNeeds.ich');
             }
             if (!ichNeeds && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
                 ichNeeds = ProfileCalculator.calculateFlatNeeds(
