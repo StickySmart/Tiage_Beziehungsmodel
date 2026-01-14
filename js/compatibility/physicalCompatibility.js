@@ -125,21 +125,39 @@ TiageCompatibility.Physical = (function() {
         var constants = getConstants();
 
         // Helper: Can this orientation be attracted to the other person's gender?
-        // SSOT: Nur Bi/Pan kann zu Nonbinär angezogen sein (nicht Hetero/Homo)
+        // v2.0: Neue Orientierungs-Struktur: hetero, bihomo, pan
+        // - heterosexuell: Nur anderes binäres Geschlecht
+        // - bihomo: Alle binären Geschlechter (Mann/Frau) - ersetzt bi+homo
+        // - pansexuell: ALLE Geschlechter inkl. non-binär
         var canBeAttractedTo = function(orientation, myGender, theirGender) {
-            // Bi/Pan kann zu jedem Geschlecht angezogen sein
-            if (orientation === 'bisexuell') return true;
-
-            // SSOT: Nonbinäre Geschlechter (nonbinaer, fluid, inter, suchend, divers)
-            // können NUR von Bi/Pan-Orientierungen angezogen werden!
-            // Hetero und Homo sind binäre Orientierungen und schließen Nonbinär aus.
-            if (isNonBinaryGender(theirGender)) {
-                return false; // Hetero/Homo können nicht zu Nonbinär angezogen sein
+            // MIGRATION: Alte Keys zu neuen mappen
+            var normalizedOrientation = orientation;
+            if (orientation === 'homosexuell' || orientation === 'bisexuell') {
+                normalizedOrientation = 'bihomo';
             }
 
-            // Binäre Geschlechter: normale Logik
-            if (orientation === 'heterosexuell') return isDifferentBinaryGender(myGender, theirGender);
-            if (orientation === 'homosexuell') return isSameGenderCategory(myGender, theirGender);
+            // Pansexuell kann zu JEDEM Geschlecht angezogen sein (inkl. nonbinär!)
+            if (normalizedOrientation === 'pansexuell') return true;
+
+            // Bihomo kann zu allen BINÄREN Geschlechtern angezogen sein
+            if (normalizedOrientation === 'bihomo') {
+                // Nonbinäre Geschlechter: nur Pan kann angezogen sein!
+                if (isNonBinaryGender(theirGender)) {
+                    return false;
+                }
+                // Binäre Geschlechter: bihomo ist zu beiden angezogen
+                return true;
+            }
+
+            // SSOT: Nonbinäre Geschlechter (nonbinaer, fluid, inter, suchend, divers)
+            // können NUR von Pansexuell angezogen werden!
+            if (isNonBinaryGender(theirGender)) {
+                return false; // Hetero kann nicht zu Nonbinär angezogen sein
+            }
+
+            // Hetero: nur anderes binäres Geschlecht
+            if (normalizedOrientation === 'heterosexuell') return isDifferentBinaryGender(myGender, theirGender);
+
             return false;
         };
 
@@ -257,36 +275,46 @@ TiageCompatibility.Physical = (function() {
         var oriList1 = [];
         var oriList2 = [];
 
+        // v2.0: Migration helper für alte Orientierungs-Keys
+        var migrateOriType = function(type) {
+            if (type === 'homosexuell' || type === 'bisexuell') return 'bihomo';
+            return type;
+        };
+
         if (ori1 && typeof ori1 === 'object') {
-            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            // New format: { primary: 'bihomo', secondary: 'heterosexuell' }
             if ('primary' in ori1) {
-                if (ori1.primary) oriList1.push({ type: ori1.primary, isPrimary: true });
-                if (ori1.secondary) oriList1.push({ type: ori1.secondary, isPrimary: false });
+                if (ori1.primary) oriList1.push({ type: migrateOriType(ori1.primary), isPrimary: true });
+                if (ori1.secondary) oriList1.push({ type: migrateOriType(ori1.secondary), isPrimary: false });
             } else {
                 // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
                 if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', isPrimary: ori1.heterosexuell === 'gelebt' });
-                if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', isPrimary: ori1.homosexuell === 'gelebt' });
-                if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', isPrimary: ori1.bisexuell === 'gelebt' });
+                if (ori1.homosexuell) oriList1.push({ type: 'bihomo', isPrimary: ori1.homosexuell === 'gelebt' });
+                if (ori1.bisexuell) oriList1.push({ type: 'bihomo', isPrimary: ori1.bisexuell === 'gelebt' });
+                if (ori1.bihomo) oriList1.push({ type: 'bihomo', isPrimary: ori1.bihomo === 'gelebt' });
+                if (ori1.pansexuell) oriList1.push({ type: 'pansexuell', isPrimary: ori1.pansexuell === 'gelebt' });
             }
         } else if (ori1 && typeof ori1 === 'string') {
             // Backwards compatibility for old single-value format
-            oriList1.push({ type: ori1, isPrimary: true });
+            oriList1.push({ type: migrateOriType(ori1), isPrimary: true });
         }
 
         if (ori2 && typeof ori2 === 'object') {
-            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            // New format: { primary: 'bihomo', secondary: 'heterosexuell' }
             if ('primary' in ori2) {
-                if (ori2.primary) oriList2.push({ type: ori2.primary, isPrimary: true });
-                if (ori2.secondary) oriList2.push({ type: ori2.secondary, isPrimary: false });
+                if (ori2.primary) oriList2.push({ type: migrateOriType(ori2.primary), isPrimary: true });
+                if (ori2.secondary) oriList2.push({ type: migrateOriType(ori2.secondary), isPrimary: false });
             } else {
                 // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
                 if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', isPrimary: ori2.heterosexuell === 'gelebt' });
-                if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', isPrimary: ori2.homosexuell === 'gelebt' });
-                if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', isPrimary: ori2.bisexuell === 'gelebt' });
+                if (ori2.homosexuell) oriList2.push({ type: 'bihomo', isPrimary: ori2.homosexuell === 'gelebt' });
+                if (ori2.bisexuell) oriList2.push({ type: 'bihomo', isPrimary: ori2.bisexuell === 'gelebt' });
+                if (ori2.bihomo) oriList2.push({ type: 'bihomo', isPrimary: ori2.bihomo === 'gelebt' });
+                if (ori2.pansexuell) oriList2.push({ type: 'pansexuell', isPrimary: ori2.pansexuell === 'gelebt' });
             }
         } else if (ori2 && typeof ori2 === 'string') {
             // Backwards compatibility for old single-value format
-            oriList2.push({ type: ori2, isPrimary: true });
+            oriList2.push({ type: migrateOriType(ori2), isPrimary: true });
         }
 
         // Check if orientierung is missing

@@ -4517,11 +4517,11 @@
                 { value: 'ausgeglichen', label: 'ausgeglichen' }
             ];
 
-            // Orientierung Optionen
+            // Orientierung Optionen - v2.0: hetero, bihomo, pan
             const orientierungOptions = [
                 { value: 'heterosexuell', label: 'heterosexuell' },
-                { value: 'homosexuell', label: 'homosexuell' },
-                { value: 'bisexuell', label: 'bi-/pansexuell' }
+                { value: 'bihomo', label: 'bi-/homosexuell' },
+                { value: 'pansexuell', label: 'pansexuell' }
             ];
 
             // GFK Optionen (Gewaltfreie Kommunikation / NVC)
@@ -12328,7 +12328,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             { primary: 'inter', secondary: 'fluid' },
             { primary: 'inter', secondary: 'suchend' }
         ];
-        const ALL_ORIENTIERUNGEN = ['heterosexuell', 'homosexuell', 'bisexuell'];
+        // v2.0: Neue Orientierungs-Struktur: hetero, bihomo, pan
+        const ALL_ORIENTIERUNGEN = ['heterosexuell', 'bihomo', 'pansexuell'];
         const ALL_DOMINANZEN = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
 
         // Labels für die Anzeige
@@ -12340,8 +12341,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             'mann': 'Mann', 'frau': 'Frau', 'inter': 'Inter',
             'cis': 'Cis', 'trans': 'Trans', 'nonbinaer': 'NB', 'fluid': 'Fluid', 'suchend': 'Such.'
         };
+        // v2.0: Neue Labels
         const ORIENTIERUNG_LABELS = {
-            'heterosexuell': 'Hetero', 'homosexuell': 'Homo', 'bisexuell': 'Bi/Pan'
+            'heterosexuell': 'Hetero', 'bihomo': 'Bi/Homo', 'pansexuell': 'Pan',
+            // LEGACY
+            'homosexuell': 'Bi/Homo', 'bisexuell': 'Bi/Homo'
         };
         const DOMINANZ_LABELS = {
             'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
