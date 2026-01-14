@@ -204,12 +204,13 @@ export function calculate(person1, person2, options = {}) {
     };
 
     // IDENTITY_RESONANCE Konstanten (erweitert mit GOD-Gewichtungen)
+    // FIX v3.8: Korrekte SSOT-Werte als Fallback (30%/70% statt 50%/50%)
     const identityResonanceConst = Constants.IDENTITY_RESONANCE || {
         SIMILARITY_FACTOR_MATCH: 1.3,
         SIMILARITY_FACTOR_DIFF: 1.0,
         OPENNESS_DIVISOR: 200,
-        IDENTITY_WEIGHT: 0.5,
-        ORIENTATION_WEIGHT: 0.5
+        IDENTITY_WEIGHT: 0.3,       // 30% für Geschlechts-Identität
+        ORIENTATION_WEIGHT: 0.7    // 70% für Orientierung
     };
 
     // Identity-Openness berechnen
@@ -223,8 +224,9 @@ export function calculate(person1, person2, options = {}) {
     const weightedOriO2 = oriResultR4_2.openness;
 
     // GOD-kombinierte Openness berechnen
-    const identityWeight = identityResonanceConst.IDENTITY_WEIGHT || 0.5;
-    const orientationWeightR4 = identityResonanceConst.ORIENTATION_WEIGHT || 0.5;
+    // FIX v3.8: Korrekte SSOT-Werte als Fallback (30%/70% statt 50%/50%)
+    const identityWeight = identityResonanceConst.IDENTITY_WEIGHT || 0.3;
+    const orientationWeightR4 = identityResonanceConst.ORIENTATION_WEIGHT || 0.7;
     const combinedO1 = (idO1 * identityWeight) + (weightedOriO1 * orientationWeightR4);
     const combinedO2 = (idO2 * identityWeight) + (weightedOriO2 * orientationWeightR4);
 

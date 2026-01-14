@@ -1197,12 +1197,13 @@ TiageSynthesis.Calculator = {
             };
 
             // IDENTITY_RESONANCE Konstanten (erweitert mit GOD-Gewichtungen)
+            // FIX v3.8: Korrekte SSOT-Werte als Fallback (30%/70% statt 50%/50%)
             var identityResonance = constants.IDENTITY_RESONANCE || {
                 SIMILARITY_FACTOR_MATCH: 1.3,
                 SIMILARITY_FACTOR_DIFF: 1.0,
                 OPENNESS_DIVISOR: 200,
-                IDENTITY_WEIGHT: 0.5,
-                ORIENTATION_WEIGHT: 0.5
+                IDENTITY_WEIGHT: 0.3,       // 30% für Geschlechts-Identität
+                ORIENTATION_WEIGHT: 0.7    // 70% für Orientierung
             };
 
             // Identity-Openness berechnen
@@ -1218,8 +1219,9 @@ TiageSynthesis.Calculator = {
             var oriO2 = oriResult2.openness;
 
             // GOD-kombinierte Openness berechnen
-            var identityWeight = identityResonance.IDENTITY_WEIGHT || 0.5;
-            var orientationWeight = identityResonance.ORIENTATION_WEIGHT || 0.5;
+            // FIX v3.8: Korrekte SSOT-Werte als Fallback (30%/70% statt 50%/50%)
+            var identityWeight = identityResonance.IDENTITY_WEIGHT || 0.3;
+            var orientationWeight = identityResonance.ORIENTATION_WEIGHT || 0.7;
             var combinedO1 = (idO1 * identityWeight) + (oriO1 * orientationWeight);
             var combinedO2 = (idO2 * identityWeight) + (oriO2 * orientationWeight);
 
