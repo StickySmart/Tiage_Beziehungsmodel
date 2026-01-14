@@ -1897,26 +1897,50 @@
         }
 
         /**
-         * Save weights to sessionStorage (for current session synthesis use)
+         * Save weights to TiageState (SSOT - persistent)
+         * @param {string} person - 'ich' oder 'partner' (default: 'ich')
          */
-        function saveAgodWeightsToSession() {
+        function saveAgodWeightsToSession(person) {
+            person = person || 'ich';
             try {
-                sessionStorage.setItem('tiageAgodWeights', JSON.stringify(agodWeights));
+                if (typeof TiageState !== 'undefined') {
+                    const gewData = {
+                        O: { value: agodWeights.O, locked: false },
+                        A: { value: agodWeights.A, locked: false },
+                        D: { value: agodWeights.D, locked: false },
+                        G: { value: agodWeights.G, locked: false },
+                        summeLock: { enabled: false, target: 100 }
+                    };
+                    TiageState.set(`gewichtungen.${person}`, gewData);
+                    console.log(`[AGOD] Weights saved to TiageState (${person}):`, agodWeights);
+                }
             } catch (e) {
-                console.warn('[AGOD] Could not save to sessionStorage:', e);
+                console.warn('[AGOD] Could not save to TiageState:', e);
             }
         }
 
         /**
-         * Get weights from sessionStorage (for synthesis integration)
-         * @returns {object|null}
+         * Get weights from TiageState (SSOT - persistent)
+         * @param {string} person - 'ich' oder 'partner' (default: 'ich')
+         * @returns {object|null} { O, A, D, G }
          */
-        function getAgodWeightsFromSession() {
+        function getAgodWeightsFromSession(person) {
+            person = person || 'ich';
             try {
-                const stored = sessionStorage.getItem('tiageAgodWeights');
-                return stored ? JSON.parse(stored) : null;
+                if (typeof TiageState !== 'undefined') {
+                    const stored = TiageState.get(`gewichtungen.${person}`);
+                    if (stored && stored.O && typeof stored.O.value === 'number') {
+                        return {
+                            O: stored.O.value,
+                            A: stored.A.value,
+                            D: stored.D.value,
+                            G: stored.G.value
+                        };
+                    }
+                }
+                return null;
             } catch (e) {
-                console.warn('[AGOD] Could not read from sessionStorage:', e);
+                console.warn('[AGOD] Could not read from TiageState:', e);
                 return null;
             }
         }
@@ -11662,16 +11686,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // SCHRITT 3: Score-Berechnung mit Resonanz
             // ═══════════════════════════════════════
             // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
-            // PRIORITÄT: 1. AGOD-Gewichte aus sessionStorage, 2. GewichtungCard, 3. Standard
+            // SSOT: TiageState ist Single Source of Truth für Gewichtungen
 
-            // Versuche AGOD-Gewichte aus sessionStorage zu laden
+            // Gewichte aus TiageState laden (SSOT)
             let gew = { O: 25, A: 25, D: 25, G: 25 };
             try {
-                const agodStored = sessionStorage.getItem('tiageAgodWeights');
-                if (agodStored) {
-                    gew = JSON.parse(agodStored);
-                } else if (typeof getGewichtungen === 'function') {
-                    gew = getGewichtungen();
+                if (typeof TiageState !== 'undefined') {
+                    const stored = TiageState.get('gewichtungen.ich');
+                    if (stored && stored.O && typeof stored.O.value === 'number') {
+                        gew = {
+                            O: stored.O.value,
+                            A: stored.A.value,
+                            D: stored.D.value,
+                            G: stored.G.value
+                        };
+                    }
+                }
+                // Fallback: GewichtungCard
+                if (gew.O === 25 && gew.A === 25 && gew.D === 25 && gew.G === 25) {
+                    if (typeof getGewichtungen === 'function') {
+                        gew = getGewichtungen();
+                    }
                 }
             } catch (e) {
                 if (typeof getGewichtungen === 'function') {

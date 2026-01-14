@@ -93,49 +93,50 @@ TiageSynthesis.Constants = {
     // - Dominanz:     20% Logos / 80% Pathos (Energetische Dynamik)
     // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
-    // WEIGHTS werden dynamisch aus UI geladen (Standard: 25/25/25/25)
+    // WEIGHTS werden dynamisch aus TiageState geladen (SSOT)
     // Getter-Funktion für aktuelle Gewichtungen
-    getWeights: function() {
-        // PRIORITÄT 1: AGOD-Gewichtungen aus sessionStorage (Synthese-Eingabefelder)
-        // Diese werden bei jedem Seitenladen auf 4x 25% zurückgesetzt
+    getWeights: function(person) {
+        person = person || 'ich';
+
+        // PRIORITÄT 1: TiageState (Single Source of Truth - persistent)
         try {
-            var agodStored = sessionStorage.getItem('tiageAgodWeights');
-            if (agodStored) {
-                var agod = JSON.parse(agodStored);
-                // FIX: typeof check statt || operator, damit 0 korrekt als 0 behandelt wird
-                var oValAgod = typeof agod.O === 'number' ? agod.O : 25;
-                var aValAgod = typeof agod.A === 'number' ? agod.A : 25;
-                var dValAgod = typeof agod.D === 'number' ? agod.D : 25;
-                var gValAgod = typeof agod.G === 'number' ? agod.G : 25;
-                var sum = oValAgod + aValAgod + dValAgod + gValAgod;
-                var divisor = sum > 0 ? sum : 100;
-                return {
-                    orientierung: oValAgod / divisor,
-                    archetyp: aValAgod / divisor,
-                    dominanz: dValAgod / divisor,
-                    geschlecht: gValAgod / divisor
-                };
+            if (typeof TiageState !== 'undefined') {
+                var stored = TiageState.get('gewichtungen.' + person);
+                if (stored && stored.O && typeof stored.O.value === 'number') {
+                    var oVal = stored.O.value;
+                    var aVal = stored.A.value;
+                    var dVal = stored.D.value;
+                    var gVal = stored.G.value;
+                    var sum = oVal + aVal + dVal + gVal;
+                    var divisor = sum > 0 ? sum : 100;
+                    return {
+                        orientierung: oVal / divisor,
+                        archetyp: aVal / divisor,
+                        dominanz: dVal / divisor,
+                        geschlecht: gVal / divisor
+                    };
+                }
             }
         } catch (e) {
-            console.warn('[TiageSynthesis] Could not load AGOD weights from sessionStorage:', e);
+            console.warn('[TiageSynthesis] Could not load weights from TiageState:', e);
         }
 
-        // PRIORITÄT 2: UI-Gewichtungen (GewichtungCard)
+        // PRIORITÄT 2: UI-Gewichtungen (GewichtungCard) als Fallback
         if (typeof getGewichtungen === 'function') {
             var gew = getGewichtungen();
             // FIX: typeof check statt || operator, damit 0 korrekt als 0 behandelt wird
-            var oVal = typeof gew.O === 'number' ? gew.O : 25;
-            var aVal = typeof gew.A === 'number' ? gew.A : 25;
-            var dVal = typeof gew.D === 'number' ? gew.D : 25;
-            var gVal = typeof gew.G === 'number' ? gew.G : 25;
+            var oValUI = typeof gew.O === 'number' ? gew.O : 25;
+            var aValUI = typeof gew.A === 'number' ? gew.A : 25;
+            var dValUI = typeof gew.D === 'number' ? gew.D : 25;
+            var gValUI = typeof gew.G === 'number' ? gew.G : 25;
             // Relative Gewichte: Nutzer gibt beliebige Werte, System normalisiert auf Summe=1.0
-            var sum2 = oVal + aVal + dVal + gVal;
+            var sum2 = oValUI + aValUI + dValUI + gValUI;
             var divisor2 = sum2 > 0 ? sum2 : 100;
             return {
-                orientierung: oVal / divisor2,
-                archetyp: aVal / divisor2,
-                dominanz: dVal / divisor2,
-                geschlecht: gVal / divisor2
+                orientierung: oValUI / divisor2,
+                archetyp: aValUI / divisor2,
+                dominanz: dValUI / divisor2,
+                geschlecht: gValUI / divisor2
             };
         }
         // Fallback: Standard-Gewichtungen
