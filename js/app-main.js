@@ -11487,6 +11487,54 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // ═══════════════════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════
+        // SSOT v3.9: R-FAKTOREN HILFSFUNKTION
+        // ═══════════════════════════════════════════════════════════════════════
+        /**
+         * Berechnet R-Faktoren (R1-R4) aus Needs für eine Person
+         * SSOT: Diese Funktion ist die einzige Quelle für Needs-basierte R-Faktoren
+         *
+         * @param {Object} personData - { archetyp, needs }
+         * @param {Object} personData.needs - Die 220 Bedürfnis-Werte
+         * @param {string} personData.archetyp - Archetyp der Person
+         * @returns {Object|null} { R1, R2, R3, R4 } oder null wenn nicht berechenbar
+         */
+        function calculateRFactorsFromNeeds(personData) {
+            if (!personData || !personData.needs) {
+                return null;
+            }
+
+            // Prüfe ob TiageSynthesis verfügbar ist
+            if (typeof TiageSynthesis === 'undefined' ||
+                !TiageSynthesis.NeedsIntegration ||
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance !== 'function') {
+                console.warn('[calculateRFactorsFromNeeds] TiageSynthesis nicht verfügbar');
+                return null;
+            }
+
+            try {
+                const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                    archetyp: personData.archetyp,
+                    needs: personData.needs
+                });
+
+                if (!resonanz || !resonanz.enabled) {
+                    return null;
+                }
+
+                // R1-R3 aus Needs, R4 benötigt beide Personen (wird separat berechnet)
+                return {
+                    R1: resonanz.leben || resonanz.R1 || 1.0,
+                    R2: resonanz.philosophie || resonanz.R2 || 1.0,
+                    R3: resonanz.dynamik || resonanz.R3 || 1.0,
+                    R4: 1.0  // R4 wird via calculateR4Hybrid berechnet (benötigt beide Personen)
+                };
+            } catch (e) {
+                console.warn('[calculateRFactorsFromNeeds] Fehler:', e);
+                return null;
+            }
+        }
+
         // HAUPTBERECHNUNG: 5-Faktoren Beziehungsqualität (inkl. Resonanz)
         // ═══════════════════════════════════════════════════════════════════════
         // Philosophische Grundlage: Tiage-Modell + MOQ (Pirsig) + OSHO
@@ -11531,14 +11579,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // ═══════════════════════════════════════════════════════════════════════
         /**
          * Berechnet die Beziehungsqualität zwischen zwei Personen
-         * @param {Object} person1 - Profil Person 1
-         * @param {Object} person2 - Profil Person 2
+         * SSOT v3.10: R-Faktoren werden IMMER aus Needs berechnet
+         *
+         * @param {Object} person1 - Profil Person 1 (mit .needs)
+         * @param {Object} person2 - Profil Person 2 (mit .needs)
          * @param {Object} options - Optionale Einstellungen
-         * @param {boolean} options.useResonanzCardOverride - Wenn false, werden R-Faktoren aus needs berechnet (für Slot-Machine)
+         * @param {Object} options.rFaktoren - Explizit übergebene R-Faktoren (nur für Best-Match mit fiktiven Partnern)
          */
         function calculateRelationshipQuality(person1, person2, options) {
             options = options || {};
-            const useResonanzCardOverride = options.useResonanzCardOverride !== false; // Default: true
+            const explicitRFaktoren = options.rFaktoren || null;
 
             // ═══════════════════════════════════════════════════════════════════
             // TIAGE RECHENMODELL v3.2 - Quadratische Resonanz mit Komplementär-Mapping
@@ -11577,8 +11627,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════
             // SCHRITT 2: Resonanz-Faktoren R1-R4 (0-1, v3.2 quadratisch)
             // ═══════════════════════════════════════
-            // Basierend auf 224 Bedürfnissen (#B1-#B224), aufgeteilt nach Faktor
-            // ODER benutzerdefinierten Werten aus ResonanzCard
+            // SSOT v3.10: R-Faktoren werden IMMER aus Needs berechnet
+            // Basierend auf 220 Bedürfnissen, aufgeteilt nach Faktor
 
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
@@ -11657,30 +11707,32 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 attraction2to1: r4Result.attractionDetails?.direction2to1
             });
 
-            // FIX v3.8: Verwende benutzerdefinierte R-Werte aus ResonanzCard für BEIDE Personen
-            // Damit Slider-Änderungen sofort im Score sichtbar werden
-            // Bei Slot-Machine-Berechnung (useResonanzCardOverride=false) werden die dynamisch berechneten R-Werte aus needs verwendet
-            if (useResonanzCardOverride && typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
-                const storedRIch = ResonanzCard.load('ich');
-                const storedRPartner = ResonanzCard.load('partner');
+            // ═══════════════════════════════════════════════════════════════════
+            // SSOT v3.10: R-FAKTOREN NUR AUS NEEDS
+            // ═══════════════════════════════════════════════════════════════════
+            // Priorität 1: Explizit übergebene rFaktoren (NUR für Best-Match mit fiktiven Partnern)
+            // Priorität 2: Aus Needs berechnet (bereits oben geschehen)
+            // Priorität 3: Default 1.0 (wenn keine Needs verfügbar)
+            //
+            // KEIN ResonanzCard-Override mehr! R-Faktoren = f(Needs), immer.
 
-                // Kombiniere ICH und Partner R-Faktoren (beide aus ResonanzCard)
-                if (storedRIch && storedRPartner) {
-                    const getR = (stored, key) => (stored && stored[key] && stored[key].value !== undefined) ? stored[key].value : 1.0;
+            if (explicitRFaktoren && explicitRFaktoren.ich && explicitRFaktoren.partner) {
+                // Best-Match: Explizit übergebene R-Faktoren für fiktive Partner
+                const getR = (obj, key) => (obj && obj[key] !== undefined) ? obj[key] : 1.0;
 
-                    // Kombiniere R-Faktoren von beiden Personen
-                    R1 = combineRFactors(getR(storedRIch, 'R1'), getR(storedRPartner, 'R1'));
-                    R2 = combineRFactors(getR(storedRIch, 'R2'), getR(storedRPartner, 'R2'));
-                    R3 = combineRFactors(getR(storedRIch, 'R3'), getR(storedRPartner, 'R3'));
-                    R4 = combineRFactors(getR(storedRIch, 'R4'), getR(storedRPartner, 'R4'));
+                R1 = combineRFactors(getR(explicitRFaktoren.ich, 'R1'), getR(explicitRFaktoren.partner, 'R1'));
+                R2 = combineRFactors(getR(explicitRFaktoren.ich, 'R2'), getR(explicitRFaktoren.partner, 'R2'));
+                R3 = combineRFactors(getR(explicitRFaktoren.ich, 'R3'), getR(explicitRFaktoren.partner, 'R3'));
+                R4 = combineRFactors(getR(explicitRFaktoren.ich, 'R4'), getR(explicitRFaktoren.partner, 'R4'));
 
-                    console.log('[calculateRelationshipQuality] R-Faktoren aus ResonanzCard kombiniert:', {
-                        ich: { R1: getR(storedRIch, 'R1'), R2: getR(storedRIch, 'R2'), R3: getR(storedRIch, 'R3'), R4: getR(storedRIch, 'R4') },
-                        partner: { R1: getR(storedRPartner, 'R1'), R2: getR(storedRPartner, 'R2'), R3: getR(storedRPartner, 'R3'), R4: getR(storedRPartner, 'R4') },
-                        combined: { R1, R2, R3, R4 }
-                    });
-                }
+                rFactorSource = 'explicit';
+                console.log('[calculateRelationshipQuality] SSOT: R-Faktoren EXPLIZIT für fiktiven Partner:', {
+                    ich: explicitRFaktoren.ich,
+                    partner: explicitRFaktoren.partner,
+                    combined: { R1, R2, R3, R4 }
+                });
             }
+            // Sonst: R1-R4 bleiben bei den aus Needs berechneten Werten (oder Default 1.0)
 
             // ═══════════════════════════════════════
             // SCHRITT 3: Score-Berechnung mit Resonanz
@@ -11791,7 +11843,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Calculate overall with 4-factor model + category details for UI
-        // options.useResonanzCardOverride: wenn false, werden R-Faktoren aus needs berechnet (für Slot-Machine)
+        // SSOT v3.10: R-Faktoren werden IMMER aus person.needs berechnet
         function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck, options) {
             // Use new 4-factor model for overall score
             const qualityResult = calculateRelationshipQuality(person1, person2, options);
@@ -12221,6 +12273,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArch);
 
                         if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                            // SSOT v3.10: R-Faktoren aus person.needs
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                             let baseScore = result.overall || 0;
 
@@ -12554,9 +12607,29 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             const bestResult = allResults[0];
             slotMachineResult = bestResult;
-            // Top 4 und Top 10 speichern für erweiterbare Ansicht
-            slotMachineTop4Results = allResults.slice(0, 4);
-            slotMachineTop10Results = allResults.slice(0, 10);
+
+            // NEU: Bester Match PRO ARCHETYP (8 Ergebnisse statt Top 10)
+            const bestPerArchetype = {};
+            const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Finde den besten Match für jeden Archetyp
+            for (const result of allResults) {
+                if (!bestPerArchetype[result.archetyp]) {
+                    bestPerArchetype[result.archetyp] = result;
+                }
+                // Stoppe wenn wir für alle 8 Archetypen einen Match haben
+                if (Object.keys(bestPerArchetype).length === 8) break;
+            }
+
+            // Sortiere nach Archetyp-Reihenfolge, dann nach Score
+            const archetypeResults = archetypeOrder
+                .filter(arch => bestPerArchetype[arch])
+                .map(arch => bestPerArchetype[arch])
+                .sort((a, b) => b.score - a.score);
+
+            // Top 4 = die 4 besten Archetyp-Matches, Top 10 = alle 8 Archetyp-Matches
+            slotMachineTop4Results = archetypeResults.slice(0, 4);
+            slotMachineTop10Results = archetypeResults;
 
             // Animation starten
             const reelA = document.getElementById('slotReelA');
@@ -12724,8 +12797,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     const logosCheck = calculatePhilosophyCompatibility(ichArchetype, archetype);
 
                                     if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                                        // v3.8: useResonanzCardOverride=true damit Slot Machine konsistente R-Faktoren mit Hauptberechnung verwendet
-                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, { useResonanzCardOverride: true });
+                                        // SSOT v3.10: R-Faktoren EXPLIZIT aus fiktiven Partner-Needs berechnen
+                                        const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                        const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                            rFaktoren: {
+                                                ich: ichRFaktoren,
+                                                partner: partnerRFaktoren
+                                            }
+                                        });
                                         let baseScore = result.overall || 0;
 
                                         // SSOT v3.7: Konfidenz-Multiplikator anwenden
@@ -12793,7 +12874,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-10)
+         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-8)
+         * NEU: Zeigt den besten Match PRO ARCHETYP (max. 8 Ergebnisse)
          */
         function showSlotResult(result) {
             document.getElementById('slotPhase2').style.display = 'none';
@@ -12808,7 +12890,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             slotMachineExpanded = false;
             if (expandedContainer) expandedContainer.style.display = 'none';
             if (expandBtn) {
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
                 // Nur anzeigen wenn es mehr als 4 Ergebnisse gibt
                 expandBtn.style.display = slotMachineTop10Results.length > 4 ? 'inline-block' : 'none';
             }
@@ -12877,7 +12959,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Toggle-Funktion für erweiterte Liste (Position 5-10)
+         * Toggle-Funktion für erweiterte Liste (Position 5-8)
+         * NEU: Zeigt besten Match PRO ARCHETYP
          */
         function toggleSlotExpand() {
             const expandedContainer = document.getElementById('slotExpandedList');
@@ -12894,7 +12977,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (titleEl) titleEl.innerHTML = `🏆 Top ${slotMachineTop10Results.length} Partner gefunden!`;
             } else {
                 expandedContainer.style.display = 'none';
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-10)';
+                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
                 if (titleEl) titleEl.innerHTML = '🏆 Top 4 Partner gefunden!';
             }
         }
@@ -13210,6 +13293,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         const logosCheck = calculatePhilosophyCompatibility(ichArch, partnerArchetype);
 
                         if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                            // SSOT v3.10: R-Faktoren aus person.needs
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                             let baseScore = result.overall || 0;
 
@@ -13457,11 +13541,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             document.getElementById('resultPartnerType').textContent = partnerArch?.name || selectedPartner;
 
             // Calculate compatibility
-            const person1 = { archetyp: currentArchetype, ...personDimensions.ich };
-            const person2 = { archetyp: selectedPartner, ...personDimensions.partner };
+            // SSOT v3.10: Needs aus TiageState laden für R-Faktor-Berechnung
+            const ichNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+
+            const person1 = { archetyp: currentArchetype, ...personDimensions.ich, needs: ichNeeds };
+            const person2 = { archetyp: selectedPartner, ...personDimensions.partner, needs: partnerNeeds };
 
             console.log('[updateComparisonView] person1:', JSON.stringify(person1));
             console.log('[updateComparisonView] person2:', JSON.stringify(person2));
+            console.log('[updateComparisonView] SSOT: ichNeeds:', !!ichNeeds, 'partnerNeeds:', !!partnerNeeds);
 
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
             console.log('[updateComparisonView] pathosCheck:', JSON.stringify(pathosCheck));
@@ -13548,6 +13637,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             if (pathosCheck.result !== 'unmöglich') {
                 try {
+                    // SSOT v3.10: R-Faktoren aus person.needs (TiageState)
                     const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                     overallScore = result.overall;
                     qualityBreakdown = result.breakdown || qualityBreakdown;
@@ -15314,11 +15404,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const container = document.getElementById('mobileCategoriesAccordion');
             if (!container) return;
 
-            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich };
-            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner };
+            // SSOT v3.10: Needs aus TiageState laden für R-Faktor-Berechnung
+            const ichNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+
+            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich, needs: ichNeeds };
+            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner, needs: partnerNeeds };
 
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
             const logosCheck = calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
+            // SSOT v3.10: R-Faktoren aus person.needs
             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
 
             const categoryNamesMap = {
