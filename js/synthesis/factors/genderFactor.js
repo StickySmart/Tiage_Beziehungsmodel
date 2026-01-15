@@ -1,11 +1,10 @@
 /**
- * TIAGE SYNTHESE - Geschlechts-Faktor
+ * TIAGE SYNTHESE - Geschlechts-Faktor (v4.0)
  *
- * PATHOS (Gefühl) - 15% Gewichtung
+ * PATHOS (Gefühl) - 25% Gewichtung
  *
- * Feinjustierung der Gender-Chemie als Ergänzung zum Orientierungs-Faktor.
- * Berücksichtigt die spezifische Geschlechterkombination im Kontext
- * der sexuellen Orientierungen.
+ * v4.0: Vereinfacht - Geschlecht ist jetzt ein String, Orientierung ein Array (Multi-Select).
+ * R4 (Identitäts-Resonanz) basiert auf Orientierung statt Cis/Trans.
  */
 
 var TiageSynthesis = TiageSynthesis || {};
@@ -14,24 +13,20 @@ TiageSynthesis.Factors = TiageSynthesis.Factors || {};
 TiageSynthesis.Factors.Geschlecht = {
 
     /**
-     * Berechnet die Gender-Attraktion
+     * Berechnet die Gender-Attraktion (v4.0)
      *
-     * @param {object} person1 - { geschlecht: { primary, secondary }, orientierung }
-     * @param {object} person2 - { geschlecht: { primary, secondary }, orientierung }
+     * @param {object} person1 - { geschlecht: string, orientierung: string[] }
+     * @param {object} person2 - { geschlecht: string, orientierung: string[] }
      * @returns {object} { score: 0-100, details: {...} }
      */
     calculate: function(person1, person2) {
         var constants = TiageSynthesis.Constants;
 
-        // Extrahiere primäres Geschlecht (unterstützt altes und neues Format)
-        var g1 = this._extractPrimaryGeschlecht(person1.geschlecht);
-        var g2 = this._extractPrimaryGeschlecht(person2.geschlecht);
+        // v4.0: Geschlecht ist jetzt ein String
+        var g1 = this._extractGeschlecht(person1.geschlecht);
+        var g2 = this._extractGeschlecht(person2.geschlecht);
 
-        // Sekundäre Geschlechter für zusätzliche Kompatibilitätslogik
-        var g1Secondary = this._extractSecondaryGeschlecht(person1.geschlecht);
-        var g2Secondary = this._extractSecondaryGeschlecht(person2.geschlecht);
-
-        // Orientierungen extrahieren
+        // v4.0: Orientierung ist jetzt ein Array
         var oriList1 = this._extractOrientations(person1);
         var oriList2 = this._extractOrientations(person2);
 
@@ -46,7 +41,7 @@ TiageSynthesis.Factors.Geschlecht = {
             };
         }
 
-        // Finde beste Kombination mit Primary-Geschlechtern
+        // Finde beste Kombination
         var bestScore = 0;
         var bestCombination = null;
 
@@ -67,255 +62,188 @@ TiageSynthesis.Factors.Geschlecht = {
             }
         }
 
-        // Bonus für kompatible sekundäre Geschlechter (max +5 Punkte)
-        var secondaryBonus = this._calculateSecondaryBonus(g1, g1Secondary, g2, g2Secondary, oriList1, oriList2, constants);
-
-        // NEU: Identitäts-Resonanz berechnen (wenn sekundäre Geschlechter vorhanden)
-        var identityResonance = null;
-        if (g1Secondary && g2Secondary && constants.IDENTITY_MATRIX) {
-            identityResonance = this._calculateIdentityResonance(g1Secondary, g2Secondary, constants);
-        }
+        // v4.0: Orientierungs-Resonanz (ersetzt Identity-Resonanz)
+        var orientierungResonance = this._calculateOrientierungResonance(oriList1, oriList2, constants);
+        var resonanceBonus = Math.round((orientierungResonance.score / 100) * 5);
 
         return {
-            // Keine Obergrenze - Score kann über 100 gehen
-            score: bestScore + secondaryBonus,
+            score: bestScore + resonanceBonus,
             details: {
                 bestCombination: bestCombination,
                 genderCombo: g1 + '-' + g2,
                 attractionLevel: this._getAttractionLevel(bestScore),
-                hasSecondary: !!(g1Secondary || g2Secondary),
-                secondaryBonus: secondaryBonus,
-                // NEU: Identitäts-Resonanz-Details
-                identityResonance: identityResonance
+                resonanceBonus: resonanceBonus,
+                // v4.0: Orientierungs-Resonanz statt Identitäts-Resonanz
+                orientierungResonance: orientierungResonance
             }
         };
     },
 
     /**
-     * Extrahiert das Geschlecht für Orientierungslogik
-     *
-     * NEUES SYSTEM mit P/S (kontextabhängig):
-     * - P = Körper (mann, frau, inter)
-     * - S = Identität:
-     *   - Binär (Mann/Frau): cis, trans, nonbinaer
-     *   - Divers (Inter): nonbinaer, fluid, suchend
-     *
-     * Logik für Orientierung:
-     * - P=Mann + S=Cis → mann (identifiziert als Mann)
-     * - P=Mann + S=Trans → frau (identifiziert als Frau)
-     * - P=Mann + S=Nonbinär → mann_nonbinaer (männlicher Körper, nonbinäre Seele)
-     * - P=Frau + S=Cis → frau (identifiziert als Frau)
-     * - P=Frau + S=Trans → mann (identifiziert als Mann)
-     * - P=Frau + S=Nonbinär → frau_nonbinaer (weiblicher Körper, nonbinäre Seele)
-     * - P=Inter + S=Nonbinär → nonbinaer
-     * - P=Inter + S=Fluid → fluid
-     * - P=Inter + S=Suchend → suchend
+     * Extrahiert das Geschlecht (v4.0: vereinfacht)
+     * v4.0: Geschlecht ist ein String ('mann', 'frau', 'nonbinaer')
      */
-    _extractPrimaryGeschlecht: function(geschlecht) {
+    _extractGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
 
-        // Neues Format: { primary, secondary }
+        // v4.0: String direkt
+        if (typeof geschlecht === 'string') {
+            return geschlecht;
+        }
+
+        // LEGACY: Altes Format { primary, secondary } - migrieren
         if (typeof geschlecht === 'object') {
-            var primary = geschlecht.primary;   // Körper: mann, frau, inter
-            var secondary = geschlecht.secondary; // Identität: cis, trans, unsicher, nonbinaer, fluid
+            var primary = geschlecht.primary;
+            var secondary = geschlecht.secondary;
 
-            // Wenn S gesetzt ist, berechne effektive Identität
-            if (secondary !== undefined && secondary !== null) {
-                // Cis: Identität = Körper
-                if (secondary === 'cis') {
-                    return primary; // mann → mann, frau → frau
-                }
-                // Trans: Identität = Gegenteil des Körpers
-                if (secondary === 'trans') {
-                    if (primary === 'mann') return 'frau';
-                    if (primary === 'frau') return 'mann';
-                    return primary; // inter bleibt inter
-                }
-                // Nonbinär: Bei Mann/Frau eigene Kategorie, bei Inter direkt
-                if (secondary === 'nonbinaer') {
-                    if (primary === 'mann') return 'mann_nonbinaer';
-                    if (primary === 'frau') return 'frau_nonbinaer';
-                    return 'nonbinaer';  // Inter+Nonbinär bleibt 'nonbinaer'
-                }
-                // Fluid, Suchend: direkt verwenden
-                if (secondary === 'fluid' || secondary === 'suchend') {
-                    return secondary;
-                }
-                // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
-                return secondary;
+            // Trans: Identität umkehren
+            if (secondary === 'trans') {
+                if (primary === 'mann') return 'frau';
+                if (primary === 'frau') return 'mann';
             }
-
-            // Kein S gesetzt: Fallback auf P (Körper)
-            if (primary !== undefined) {
-                return primary;
+            // Nonbinär/Fluid: zu nonbinaer
+            if (secondary === 'nonbinaer' || secondary === 'fluid') {
+                return 'nonbinaer';
             }
+            // Inter → nonbinaer in v4.0
+            if (primary === 'inter') return 'nonbinaer';
+            // Cis oder default: primary
+            return primary;
         }
 
-        // Altes Format: String direkt
-        if (typeof geschlecht === 'string') {
-            return geschlecht;
-        }
         return null;
     },
 
-    /**
-     * Extrahiert das biologische/körperliche Geschlecht (Primär)
-     */
-    _extractBodyGeschlecht: function(geschlecht) {
-        if (!geschlecht) return null;
-        if (typeof geschlecht === 'object' && geschlecht.primary !== undefined) {
-            return geschlecht.primary;
-        }
-        if (typeof geschlecht === 'string') {
-            return geschlecht;
-        }
-        return null;
+    // LEGACY: Aliase für Rückwärtskompatibilität
+    _extractPrimaryGeschlecht: function(geschlecht) {
+        return this._extractGeschlecht(geschlecht);
     },
-
-    /**
-     * Extrahiert sekundäres Geschlecht (Identität)
-     */
     _extractSecondaryGeschlecht: function(geschlecht) {
-        if (!geschlecht) return null;
-        if (typeof geschlecht === 'object' && geschlecht.secondary !== undefined) {
-            return geschlecht.secondary;
-        }
-        return null;
+        return null; // v4.0: Kein Secondary mehr
+    },
+    _extractBodyGeschlecht: function(geschlecht) {
+        return this._extractGeschlecht(geschlecht);
     },
 
     /**
-     * Berechnet Identitäts-Resonanz basierend auf Matrix + Offenheits-Bonus
+     * Berechnet Orientierungs-Resonanz (v4.0: ersetzt Identity-Resonanz)
      *
-     * Philosophie:
-     * - Pirsig: "Qualität entsteht, wenn Muster resonieren" → Matrix
-     * - Osho: "Je offener zwei Flüsse, desto leichter münden sie ineinander" → Bonus
+     * R4 basiert jetzt auf der Offenheit der sexuellen Orientierung.
+     * Multi-Select: Höchster Openness-Wert wird verwendet.
      *
-     * @param {string} identity1 - Geschlechtsidentität Person 1 (cis, trans, nonbinaer, fluid, suchend)
-     * @param {string} identity2 - Geschlechtsidentität Person 2
+     * @param {string[]} oriList1 - Orientierungen Person 1
+     * @param {string[]} oriList2 - Orientierungen Person 2
      * @param {object} constants - Konstanten-Objekt
-     * @returns {object} { score: 0-100, matrixScore, opennessBonus, details }
+     * @returns {object} { score: 0-100, openness1, openness2, details }
      */
-    _calculateIdentityResonance: function(identity1, identity2, constants) {
-        // Normalisiere Identitäten zu Lowercase
-        var id1 = (identity1 || 'cis').toLowerCase();
-        var id2 = (identity2 || 'cis').toLowerCase();
+    _calculateOrientierungResonance: function(oriList1, oriList2, constants) {
+        // Openness-Werte aus Config oder Constants
+        var opennessMap = (constants.ORIENTIERUNG_OPENNESS_V4 || {
+            'heterosexuell': 0,
+            'gay_lesbisch': 30,
+            'bisexuell': 70,
+            'pansexuell_queer': 100,
+            // Legacy
+            'homosexuell': 30,
+            'bihomo': 50,
+            'pansexuell': 100
+        });
 
-        // Matrix-Lookup
-        var matrixKey = id1 + '-' + id2;
-        var matrixScore = constants.IDENTITY_MATRIX[matrixKey];
-
-        // Fallback wenn Kombination nicht in Matrix (z.B. alte Daten)
-        if (matrixScore === undefined) {
-            matrixScore = 75; // Neutraler Wert
+        // Höchsten Openness-Wert für jede Person ermitteln (Multi-Select)
+        var openness1 = 0;
+        for (var i = 0; i < oriList1.length; i++) {
+            var val = opennessMap[oriList1[i]] || 0;
+            if (val > openness1) openness1 = val;
         }
 
-        // Offenheits-Werte holen
-        var openness1 = constants.IDENTITY_OPENNESS[id1];
-        var openness2 = constants.IDENTITY_OPENNESS[id2];
+        var openness2 = 0;
+        for (var j = 0; j < oriList2.length; j++) {
+            var val2 = opennessMap[oriList2[j]] || 0;
+            if (val2 > openness2) openness2 = val2;
+        }
 
-        // Fallback für unbekannte Identitäten
-        if (openness1 === undefined) openness1 = 50;
-        if (openness2 === undefined) openness2 = 50;
+        // Matrix-Score: Beste Übereinstimmung zwischen Orientierungen
+        var matrixMap = (constants.ORIENTIERUNG_MATRIX_V4 || {});
+        var bestMatrixScore = 75; // Default
 
-        // Offenheits-Bonus berechnen: (O1 + O2) / 200 × MAX_BONUS
-        var maxBonus = constants.IDENTITY_RESONANCE.MAX_BONUS;
+        for (var a = 0; a < oriList1.length; a++) {
+            for (var b = 0; b < oriList2.length; b++) {
+                var key = oriList1[a] + '-' + oriList2[b];
+                var score = matrixMap[key];
+                if (score !== undefined && score > bestMatrixScore) {
+                    bestMatrixScore = score;
+                }
+                // Gleiche Orientierung = 100
+                if (oriList1[a] === oriList2[b]) {
+                    bestMatrixScore = Math.max(bestMatrixScore, 100);
+                }
+            }
+        }
+
+        // Openness-Bonus berechnen: (O1 + O2) / 200 × MAX_BONUS
+        var maxBonus = (constants.IDENTITY_RESONANCE && constants.IDENTITY_RESONANCE.MAX_BONUS) || 10;
         var opennessBonus = ((openness1 + openness2) / 200) * maxBonus;
 
-        // Keine Obergrenze - Score kann über 100 gehen (z.B. durch Openness-Bonus)
-        var finalScore = Math.round(matrixScore + opennessBonus);
+        var finalScore = Math.round(bestMatrixScore + opennessBonus);
 
         return {
             score: finalScore,
-            matrixScore: matrixScore,
+            matrixScore: bestMatrixScore,
             opennessBonus: Math.round(opennessBonus * 10) / 10,
-            identity1: id1,
-            identity2: id2,
             openness1: openness1,
-            openness2: openness2
+            openness2: openness2,
+            orientations1: oriList1,
+            orientations2: oriList2
         };
     },
 
-    /**
-     * Berechnet Bonus wenn sekundäre Geschlechter zusätzliche Kompatibilität bieten
-     * ERWEITERT: Nutzt jetzt Identitäts-Resonanz für den Bonus
-     */
-    _calculateSecondaryBonus: function(g1, g1Sec, g2, g2Sec, oriList1, oriList2, constants) {
-        if (!g1Sec && !g2Sec) return 0;
-
-        var bonus = 0;
-
-        // NEU: Identitäts-Resonanz zwischen sekundären Geschlechtern
-        if (g1Sec && g2Sec && constants.IDENTITY_MATRIX) {
-            var resonance = this._calculateIdentityResonance(g1Sec, g2Sec, constants);
-            // Bonus proportional zur Resonanz (max +5 bei Score 100)
-            bonus = Math.round((resonance.score / 100) * 5);
-        } else {
-            // Fallback: Alte Logik wenn Matrix nicht verfügbar
-            if (g1Sec) {
-                for (var i = 0; i < oriList2.length; i++) {
-                    var testResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2, oriList2[i], constants);
-                    if (testResult.score >= 80) {
-                        bonus = Math.max(bonus, 3);
-                    }
-                }
-            }
-
-            if (g2Sec) {
-                for (var j = 0; j < oriList1.length; j++) {
-                    var testResult = this._calculateSingleAttraction(g1, oriList1[j], g2Sec, oriList2[0], constants);
-                    if (testResult.score >= 80) {
-                        bonus = Math.max(bonus, 3);
-                    }
-                }
-            }
-
-            if (g1Sec && g2Sec) {
-                var secResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2Sec, oriList2[0], constants);
-                if (secResult.score >= 80) {
-                    bonus = Math.max(bonus, 5);
-                }
-            }
-        }
-
-        return bonus;
+    // LEGACY: Alte Identity-Resonanz für Rückwärtskompatibilität
+    _calculateIdentityResonance: function(identity1, identity2, constants) {
+        // v4.0: Leitet an Orientierungs-Resonanz weiter mit Dummy-Werten
+        console.warn('[GenderFactor] _calculateIdentityResonance is deprecated in v4.0');
+        return { score: 75, matrixScore: 75, opennessBonus: 0 };
+    },
+    _calculateSecondaryBonus: function() {
+        return 0; // v4.0: Kein Secondary mehr
     },
 
     /**
-     * Extrahiert Orientierungen als String-Array
-     *
-     * Unterstützt drei Formate:
-     * 1. String: 'heterosexuell' → ['heterosexuell']
-     * 2. NEU P/S-Format: { primary: 'heterosexuell', secondary: 'bisexuell' }
-     * 3. Altes Multi-Select: { heterosexuell: 'gelebt', bisexuell: 'interessiert' }
+     * Extrahiert Orientierungen als String-Array (v4.0)
      */
     _extractOrientations: function(person) {
-        var list = [];
         var ori = person.orientierung;
+        if (!ori) return [];
 
-        if (!ori) return list;
-
-        if (typeof ori === 'object') {
-            // NEU: Handle Primary/Secondary Format aus UI
-            if ('primary' in ori) {
-                if (ori.primary) {
-                    list.push(ori.primary);
-                }
-                if (ori.secondary) {
-                    list.push(ori.secondary);
-                }
-                return list;
-            }
-
-            // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
-            if (ori.heterosexuell) list.push('heterosexuell');
-            if (ori.homosexuell) list.push('homosexuell');
-            if (ori.bisexuell) list.push('bisexuell');
-            if (ori.pansexuell) list.push('pansexuell');
-        } else if (typeof ori === 'string') {
-            list.push(ori);
+        // v4.0: Array direkt
+        if (Array.isArray(ori)) {
+            return ori;
         }
 
-        return list;
+        // String zu Array
+        if (typeof ori === 'string') {
+            return [ori];
+        }
+
+        // LEGACY: { primary, secondary } Format
+        if (typeof ori === 'object' && 'primary' in ori) {
+            var list = [];
+            if (ori.primary) list.push(ori.primary);
+            if (ori.secondary && ori.secondary !== ori.primary) list.push(ori.secondary);
+            return list;
+        }
+
+        // LEGACY: { heterosexuell: 'gelebt', ... } Format
+        if (typeof ori === 'object') {
+            var list2 = [];
+            if (ori.heterosexuell) list2.push('heterosexuell');
+            if (ori.homosexuell) list2.push('gay_lesbisch');
+            if (ori.gay_lesbisch) list2.push('gay_lesbisch');
+            if (ori.bisexuell) list2.push('bisexuell');
+            if (ori.pansexuell || ori.pansexuell_queer) list2.push('pansexuell_queer');
+            return list2;
+        }
+
+        return [];
     },
 
     /**

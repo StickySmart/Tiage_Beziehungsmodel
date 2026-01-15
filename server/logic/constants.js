@@ -125,37 +125,20 @@ export const ORIENTATION = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// IDENTITÄTS-RESONANZ-MATRIX
+// IDENTITÄTS-RESONANZ (v4.0: Basiert jetzt auf Orientierung statt Cis/Trans)
 // ═══════════════════════════════════════════════════════════════════════════
 
+// LEGACY: Alte Identity-Matrix (deprecated in v4.0)
+// @deprecated v4.0 - R4 wird jetzt aus ORIENTIERUNG_OPENNESS berechnet
 export const IDENTITY_MATRIX = {
+    // Wird nicht mehr aktiv verwendet, aber für Migration beibehalten
     "cis-cis": 100,
-    "cis-trans": 85,
-    "cis-suchend": 70,
-    "trans-cis": 85,
     "trans-trans": 100,
-    "trans-suchend": 75,
-    "nonbinaer-nonbinaer": 100,
-    "nonbinaer-fluid": 90,
-    "nonbinaer-suchend": 80,
-    "fluid-nonbinaer": 90,
-    "fluid-fluid": 100,
-    "fluid-suchend": 85,
-    "suchend-cis": 70,
-    "suchend-trans": 75,
-    "suchend-nonbinaer": 80,
-    "suchend-fluid": 85,
-    "suchend-suchend": 100,
-    "cis-nonbinaer": 65,
-    "cis-fluid": 55,
-    "trans-nonbinaer": 75,
-    "trans-fluid": 65,
-    "nonbinaer-cis": 65,
-    "nonbinaer-trans": 75,
-    "fluid-cis": 55,
-    "fluid-trans": 65
+    "nonbinaer-nonbinaer": 100
 };
 
+// LEGACY: Alte Identity-Openness (deprecated in v4.0)
+// @deprecated v4.0 - Verwende ORIENTIERUNG_OPENNESS_V4
 export const IDENTITY_OPENNESS = {
     "cis": 0,
     "trans": 30,
@@ -164,21 +147,56 @@ export const IDENTITY_OPENNESS = {
     "suchend": 100
 };
 
-// IDENTITY_RESONANCE: Konstanten für R4-Berechnung (v3.6)
+// NEU v4.0: Orientierungs-basierte Openness für R4
+// Ersetzt IDENTITY_OPENNESS - R4 kommt jetzt aus der sexuellen Orientierung
+export const ORIENTIERUNG_OPENNESS_V4 = {
+    "heterosexuell": 0,        // Konventionell
+    "gay_lesbisch": 30,        // Spezifisch
+    "bisexuell": 70,           // Offen
+    "pansexuell_queer": 100,   // Maximal offen
+    // LEGACY: Alte Keys für Migration
+    "homosexuell": 30,
+    "bihomo": 50,
+    "pansexuell": 100
+};
+
+// NEU v4.0: Orientierungs-Matrix für R4
+// Berechnet Resonanz zwischen zwei Orientierungen
+export const ORIENTIERUNG_MATRIX_V4 = {
+    // Gleiche Orientierung = perfekte Resonanz
+    "heterosexuell-heterosexuell": 100,
+    "gay_lesbisch-gay_lesbisch": 100,
+    "bisexuell-bisexuell": 100,
+    "pansexuell_queer-pansexuell_queer": 100,
+    // Hetero mit anderen
+    "heterosexuell-gay_lesbisch": 40,    // Unterschiedliche Welten
+    "heterosexuell-bisexuell": 70,       // Bi ist offen für Hetero
+    "heterosexuell-pansexuell_queer": 65, // Pan ist offen für alle
+    // Gay mit anderen
+    "gay_lesbisch-heterosexuell": 40,
+    "gay_lesbisch-bisexuell": 85,        // Gute Überlappung
+    "gay_lesbisch-pansexuell_queer": 80,
+    // Bi mit anderen
+    "bisexuell-heterosexuell": 70,
+    "bisexuell-gay_lesbisch": 85,
+    "bisexuell-pansexuell_queer": 95,    // Sehr ähnliche Offenheit
+    // Pan/Queer mit anderen
+    "pansexuell_queer-heterosexuell": 65,
+    "pansexuell_queer-gay_lesbisch": 80,
+    "pansexuell_queer-bisexuell": 95
+};
+
+// IDENTITY_RESONANCE: Konstanten für R4-Berechnung (v4.0)
 export const IDENTITY_RESONANCE = {
     // Hybrid-Formel: R4 = BASIS + (SIMILARITY_FACTOR × Openness-Bonus)
-    SIMILARITY_FACTOR_MATCH: 1.3,    // Faktor wenn gleiche Identität
-    SIMILARITY_FACTOR_DIFF: 1.0,     // Faktor wenn unterschiedliche Identität
+    SIMILARITY_FACTOR_MATCH: 1.3,    // Faktor wenn gleiche Orientierung
+    SIMILARITY_FACTOR_DIFF: 1.0,     // Faktor wenn unterschiedliche Orientierung
     OPENNESS_DIVISOR: 200,           // Teiler für Openness-Normalisierung (0-1)
-    // Legacy
     MAX_BONUS: 10,
     WEIGHT: 0.15,
-    // NEU (v3.6): GOD-kombinierte Openness für R4
-    // R4 berücksichtigt jetzt sowohl Geschlechts-Identität als auch Orientierung
-    // v3.6.1: 30/70 Gewichtung - Orientierung zählt mehr als Identität
-    // Damit Cis+Bi (52.5) > NB+Hetero (15)
-    IDENTITY_WEIGHT: 0.3,            // 30% Gewichtung für Geschlechts-Identität (cis/trans/nb)
-    ORIENTATION_WEIGHT: 0.7          // 70% Gewichtung für Orientierung (hetero/homo/bi)
+    // v4.0: R4 basiert jetzt zu 100% auf Orientierung (Cis/Trans entfernt)
+    IDENTITY_WEIGHT: 0.0,            // 0% - Geschlechts-Identität nicht mehr verwendet
+    ORIENTATION_WEIGHT: 1.0          // 100% - Nur noch Orientierung zählt
 };
 
 // ORIENTIERUNGS-OFFENHEIT (für R1 Leben)
@@ -389,6 +407,10 @@ export default {
     GFK_LEVELS,
     DOMINANCE_MATRIX,
     ORIENTATION,
+    // v4.0: Neue Orientierungs-basierte R4-Konstanten
+    ORIENTIERUNG_OPENNESS_V4,
+    ORIENTIERUNG_MATRIX_V4,
+    // Legacy: Alte Identity-Konstanten (deprecated)
     IDENTITY_MATRIX,
     IDENTITY_OPENNESS,
     IDENTITY_RESONANCE,
