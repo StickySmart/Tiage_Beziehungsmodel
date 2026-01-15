@@ -16,20 +16,28 @@
 
     /**
      * Mapper von Profil-Werten zu Modifier-Keys
+     * v4.0: Vereinfacht - Geschlecht ist jetzt ein String
      */
+    const GENDER_MAP_V4 = {
+        'mann': 'Mann',
+        'frau': 'Frau',
+        'nonbinaer': 'Nonbinaer'
+    };
+
+    // LEGACY: Alte Map für Rückwärtskompatibilität mit altem Format
     const GENDER_IDENTITY_MAP = {
         // Mann + Identität (Cis, Trans, Nonbinär)
-        'mann-cis': 'MannCis',
-        'mann-trans': 'MannTrans',
-        'mann-nonbinaer': 'MannNonbinaer',
+        'mann-cis': 'Mann',           // v4.0: → Mann
+        'mann-trans': 'Frau',         // v4.0: Trans-Mann → Frau (Identität)
+        'mann-nonbinaer': 'Nonbinaer',
         // Frau + Identität (Cis, Trans, Nonbinär)
-        'frau-cis': 'FrauCis',
-        'frau-trans': 'FrauTrans',
-        'frau-nonbinaer': 'FrauNonbinaer',
+        'frau-cis': 'Frau',           // v4.0: → Frau
+        'frau-trans': 'Mann',         // v4.0: Trans-Frau → Mann (Identität)
+        'frau-nonbinaer': 'Nonbinaer',
         // Inter + Identität (Nonbinär, Fluid, Suchend)
-        'inter-nonbinaer': 'InterNonbinaer',
-        'inter-fluid': 'InterFluid',
-        'inter-suchend': 'InterSuchend'
+        'inter-nonbinaer': 'Nonbinaer',
+        'inter-fluid': 'Nonbinaer',
+        'inter-suchend': 'Nonbinaer'
     };
 
     const DOMINANZ_MAP = {
@@ -40,31 +48,53 @@
         'ausgeglichen': 'Ausgeglichen'
     };
 
+    // v4.0: Orientierung ist jetzt Multi-Select Array
+    const ORIENTIERUNG_MAP_V4 = {
+        'heterosexuell': 'Heterosexuell',
+        'gay_lesbisch': 'Bisexuell',      // Mapped to Bisexuell (keine eigene Modifier-Datei)
+        'bisexuell': 'Bisexuell',
+        'pansexuell_queer': 'Bisexuell'   // Mapped to Bisexuell (TODO: eigener Modifier)
+    };
+
+    // LEGACY: Alte Map für Rückwärtskompatibilität
     const ORIENTIERUNG_MAP = {
         'heterosexuell': 'Heterosexuell',
-        'homosexuell': 'Bisexuell',      // Legacy → mapped to Bisexuell
-        'bisexuell': 'Bisexuell',         // Legacy → mapped to Bisexuell
-        'bihomo': 'Bisexuell',            // NEU: Bi-/Homosexuell → Bisexuell-Modifier
-        'pansexuell': 'Bisexuell'         // NEU: Pansexuell → Bisexuell-Modifier (TODO: eigener Modifier)
+        'homosexuell': 'Bisexuell',       // v4.0: → Bisexuell
+        'bisexuell': 'Bisexuell',
+        'bihomo': 'Bisexuell',            // Legacy: Bi-/Homosexuell → Bisexuell
+        'pansexuell': 'Bisexuell'         // Legacy: Pansexuell → Bisexuell
     };
 
     /**
-     * Holt einen Gender-Modifier basierend auf Körper + Identität
-     * @param {string} primary - Körper: mann, frau, inter
-     * @param {string} secondary - Identität: cis, trans, suchend, nonbinaer, fluid
+     * Holt einen Gender-Modifier (v4.0)
+     *
+     * v4.0: Akzeptiert einen String ('mann', 'frau', 'nonbinaer')
+     * LEGACY: Akzeptiert auch primary+secondary für Rückwärtskompatibilität
+     *
+     * @param {string} geschlechtOrPrimary - v4.0: 'mann'/'frau'/'nonbinaer' | LEGACY: Körper
+     * @param {string} [secondary] - LEGACY: Identität (cis, trans, nonbinaer, fluid)
      * @returns {Object|null} Modifier-Objekt mit deltas
      */
-    function getGenderModifier(primary, secondary) {
-        if (!primary || !secondary || typeof primary !== 'string' || typeof secondary !== 'string') return null;
+    function getGenderModifier(geschlechtOrPrimary, secondary) {
+        if (!geschlechtOrPrimary || typeof geschlechtOrPrimary !== 'string') return null;
 
-        const key = (primary + '-' + secondary).toLowerCase();
-        const modifierKey = GENDER_IDENTITY_MAP[key];
+        let modifierKey;
+
+        // v4.0: Einfacher String (kein secondary übergeben)
+        if (!secondary) {
+            const key = geschlechtOrPrimary.toLowerCase();
+            modifierKey = GENDER_MAP_V4[key];
+        } else {
+            // LEGACY: primary + secondary Format
+            const key = (geschlechtOrPrimary + '-' + secondary).toLowerCase();
+            modifierKey = GENDER_IDENTITY_MAP[key];
+        }
 
         if (modifierKey && TiageModifiers.Gender[modifierKey]) {
             return TiageModifiers.Gender[modifierKey];
         }
 
-        console.warn('[ModifierLoader] Gender-Modifier nicht gefunden:', key);
+        console.warn('[ModifierLoader] Gender-Modifier nicht gefunden:', geschlechtOrPrimary, secondary || '');
         return null;
     }
 
@@ -87,15 +117,16 @@
     }
 
     /**
-     * Holt einen Orientierungs-Modifier
-     * @param {string} orientierung - heterosexuell, homosexuell, bisexuell
+     * Holt einen Orientierungs-Modifier (v4.0)
+     * @param {string} orientierung - v4.0: heterosexuell, gay_lesbisch, bisexuell, pansexuell_queer
      * @returns {Object|null} Modifier-Objekt mit deltas
      */
     function getOrientierungModifier(orientierung) {
         if (!orientierung || typeof orientierung !== 'string') return null;
 
         const key = orientierung.toLowerCase();
-        const modifierKey = ORIENTIERUNG_MAP[key];
+        // v4.0 zuerst versuchen, dann Legacy
+        const modifierKey = ORIENTIERUNG_MAP_V4[key] || ORIENTIERUNG_MAP[key];
 
         if (modifierKey && TiageModifiers.Orientierung[modifierKey]) {
             return TiageModifiers.Orientierung[modifierKey];
@@ -105,18 +136,30 @@
     }
 
     /**
-     * Berechnet alle Deltas für ein Profil
+     * Berechnet alle Deltas für ein Profil (v4.0)
+     *
+     * v4.0: geschlecht ist String, orientierung ist Array
+     * LEGACY: Unterstützt auch alte Formate
+     *
      * @param {Object} profile - Profil mit geschlecht, dominanz, orientierung
      * @returns {Object} Kombinierte Deltas aus allen Modifiern
      */
     function calculateProfileDeltas(profile) {
         const deltas = {};
 
-        // Gender-Modifier (Körper + Identität)
+        // Gender-Modifier (v4.0: String, LEGACY: { primary, secondary })
         if (profile.geschlecht) {
-            const primary = profile.geschlecht.primary || profile.geschlecht;
-            const secondary = profile.geschlecht.secondary || 'cis';
-            const genderMod = getGenderModifier(primary, secondary);
+            let genderMod;
+
+            if (typeof profile.geschlecht === 'string') {
+                // v4.0: Einfacher String
+                genderMod = getGenderModifier(profile.geschlecht);
+            } else if (typeof profile.geschlecht === 'object') {
+                // LEGACY: { primary, secondary } Format
+                const primary = profile.geschlecht.primary;
+                const secondary = profile.geschlecht.secondary || 'cis';
+                genderMod = getGenderModifier(primary, secondary);
+            }
 
             if (genderMod && genderMod.deltas) {
                 Object.keys(genderMod.deltas).forEach(key => {
@@ -127,7 +170,10 @@
 
         // Dominanz-Modifier
         if (profile.dominanz) {
-            const dominanzMod = getDominanzModifier(profile.dominanz);
+            const dominanzVal = typeof profile.dominanz === 'object'
+                ? profile.dominanz.primary
+                : profile.dominanz;
+            const dominanzMod = getDominanzModifier(dominanzVal);
             if (dominanzMod && dominanzMod.deltas) {
                 Object.keys(dominanzMod.deltas).forEach(key => {
                     deltas[key] = (deltas[key] || 0) + dominanzMod.deltas[key];
@@ -135,57 +181,41 @@
             }
         }
 
-        // Orientierungs-Modifier (SSOT v3.10: P/S mit Gewichtung)
+        // Orientierungs-Modifier (v4.0: Array, LEGACY: String oder Object)
         if (profile.orientierung) {
-            const PRIMARY_WEIGHT = 0.70;
-            const SECONDARY_WEIGHT = 0.30;
+            let orientierungen = [];
 
-            let primaryOri = null;
-            let secondaryOri = null;
-
-            // Extrahiere P/S aus verschiedenen Formaten
-            if (typeof profile.orientierung === 'object') {
-                if (profile.orientierung.primary) {
-                    // Neues Format: { primary: 'hetero', secondary: 'pan' }
-                    primaryOri = profile.orientierung.primary;
-                    secondaryOri = profile.orientierung.secondary || null;
-                } else {
-                    // Legacy Format: { heterosexuell: true, ... }
-                    if (profile.orientierung.heterosexuell) primaryOri = 'heterosexuell';
-                    else if (profile.orientierung.homosexuell) primaryOri = 'homosexuell';
-                    else if (profile.orientierung.bisexuell) primaryOri = 'bisexuell';
-                    else if (profile.orientierung.bihomo) primaryOri = 'bihomo';
-                    else if (profile.orientierung.pansexuell) primaryOri = 'pansexuell';
-                }
+            if (Array.isArray(profile.orientierung)) {
+                // v4.0: Array
+                orientierungen = profile.orientierung;
             } else if (typeof profile.orientierung === 'string') {
-                primaryOri = profile.orientierung;
-            }
-
-            // Primary-Modifier anwenden (70% oder 100% wenn kein Secondary)
-            if (primaryOri) {
-                const primaryMod = getOrientierungModifier(primaryOri);
-                if (primaryMod && primaryMod.deltas) {
-                    const weight = secondaryOri ? PRIMARY_WEIGHT : 1.0;
-                    Object.keys(primaryMod.deltas).forEach(key => {
-                        deltas[key] = (deltas[key] || 0) + (primaryMod.deltas[key] * weight);
-                    });
+                // String
+                orientierungen = [profile.orientierung];
+            } else if (typeof profile.orientierung === 'object') {
+                // LEGACY: { primary, secondary } oder { heterosexuell: 'gelebt', ... }
+                if (profile.orientierung.primary) {
+                    orientierungen.push(profile.orientierung.primary);
+                    if (profile.orientierung.secondary) {
+                        orientierungen.push(profile.orientierung.secondary);
+                    }
+                } else {
+                    // Legacy object format
+                    if (profile.orientierung.heterosexuell) orientierungen.push('heterosexuell');
+                    if (profile.orientierung.homosexuell) orientierungen.push('gay_lesbisch');
+                    if (profile.orientierung.bisexuell) orientierungen.push('bisexuell');
+                    if (profile.orientierung.bihomo) orientierungen.push('bihomo');
+                    if (profile.orientierung.pansexuell) orientierungen.push('pansexuell');
                 }
             }
 
-            // Secondary-Modifier anwenden (30%)
-            if (secondaryOri) {
-                const secondaryMod = getOrientierungModifier(secondaryOri);
-                if (secondaryMod && secondaryMod.deltas) {
-                    Object.keys(secondaryMod.deltas).forEach(key => {
-                        deltas[key] = (deltas[key] || 0) + (secondaryMod.deltas[key] * SECONDARY_WEIGHT);
+            // v4.0: Wende alle Orientierungs-Modifier an (Multi-Select)
+            orientierungen.forEach(ori => {
+                const oriMod = getOrientierungModifier(ori);
+                if (oriMod && oriMod.deltas) {
+                    Object.keys(oriMod.deltas).forEach(key => {
+                        deltas[key] = (deltas[key] || 0) + oriMod.deltas[key];
                     });
                 }
-            }
-
-            console.log('[ProfileModifiers] Orientierung P/S Deltas:', {
-                primary: primaryOri,
-                secondary: secondaryOri,
-                hasSecondaryDeltas: !!secondaryOri
             });
         }
 
@@ -234,7 +264,10 @@
         calculateProfileDeltas: calculateProfileDeltas,
         applyDeltas: applyDeltas,
         getLoadStatus: getLoadStatus,
-        // Maps für externe Nutzung
+        // v4.0 Maps
+        GENDER_MAP_V4: GENDER_MAP_V4,
+        ORIENTIERUNG_MAP_V4: ORIENTIERUNG_MAP_V4,
+        // LEGACY Maps für externe Nutzung
         GENDER_IDENTITY_MAP: GENDER_IDENTITY_MAP,
         DOMINANZ_MAP: DOMINANZ_MAP,
         ORIENTIERUNG_MAP: ORIENTIERUNG_MAP

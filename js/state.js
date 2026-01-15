@@ -33,38 +33,26 @@ const TiageState = (function() {
 
     const state = {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
-        // Data Structure v3.0:
-        // - geschlecht: { primary, secondary }
-        // - dominanz: { primary, secondary }
-        // - orientierung: { primary, secondary }
+        // Data Structure v4.0:
+        // - geschlecht: string ('mann', 'frau', 'nonbinaer') - vereinfacht, kein primary/secondary mehr
+        // - dominanz: { primary, secondary } - unverändert
+        // - orientierung: string[] (Multi-Select Array) - z.B. ['heterosexuell', 'bisexuell']
         personDimensions: {
             ich: {
-                geschlecht: {
-                    primary: null,    // Körper: 'mann', 'frau', 'inter'
-                    secondary: null   // Identität: 'cis', 'trans', 'suchend', 'nonbinaer', 'fluid'
-                },
+                geschlecht: null,     // v4.0: String - 'mann', 'frau', 'nonbinaer'
                 dominanz: {
                     primary: null,    // 'dominant', 'submissiv', 'switch', 'ausgeglichen'
                     secondary: null   // Optional zweite Präferenz
                 },
-                orientierung: {
-                    primary: null,    // 'heterosexuell', 'homosexuell', 'bisexuell'
-                    secondary: null   // Optional zweite Präferenz
-                }
+                orientierung: []      // v4.0: Multi-Select Array - ['heterosexuell', 'gay_lesbisch', ...]
             },
             partner: {
-                geschlecht: {
-                    primary: null,
-                    secondary: null
-                },
+                geschlecht: null,
                 dominanz: {
                     primary: null,
                     secondary: null
                 },
-                orientierung: {
-                    primary: null,
-                    secondary: null
-                }
+                orientierung: []
             }
         },
 
@@ -328,32 +316,31 @@ const TiageState = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // GESCHLECHT NORMALISIERUNG
+    // GESCHLECHT NORMALISIERUNG (v4.0)
     // ═══════════════════════════════════════════════════════════════════════
     //
-    // Stellt sicher, dass Geschlechts-Werte konsistent mit ProfileModifiers sind.
-    // Konvertiert alte/alternative Werte zu den erwarteten Keys.
+    // v4.0: Geschlecht ist jetzt ein einfacher String ('mann', 'frau', 'nonbinaer')
+    // Konvertiert alte Formate und alternative Werte.
     //
     // MAPPING:
-    //   primary:   'divers' → 'inter'
-    //   secondary: 'nb' → 'nonbinaer'
+    //   'divers'/'inter' → 'nonbinaer' (v4.0: Inter wird zu Nonbinär)
+    //   Altes { primary, secondary } Format → String (primary wird verwendet)
     // ═══════════════════════════════════════════════════════════════════════
 
-    const GESCHLECHT_PRIMARY_MAP = {
-        'divers': 'inter',
-        'diverse': 'inter',
-        'd': 'inter'
-    };
-
-    const GESCHLECHT_SECONDARY_MAP = {
+    const GESCHLECHT_NORMALIZE_MAP = {
+        'divers': 'nonbinaer',
+        'diverse': 'nonbinaer',
+        'inter': 'nonbinaer',
+        'intersex': 'nonbinaer',
+        'd': 'nonbinaer',
         'nb': 'nonbinaer',
         'non-binary': 'nonbinaer',
         'non-binär': 'nonbinaer',
-        'unsicher': 'suchend'
+        'nonbinär': 'nonbinaer'
     };
 
     /**
-     * Normalisiert Geschlechts-Werte für Konsistenz mit ProfileModifiers
+     * Normalisiert Geschlechts-Werte für v4.0
      * @param {string} path - Der State-Pfad
      * @param {*} value - Der zu setzende Wert
      * @returns {*} Der normalisierte Wert
@@ -362,39 +349,92 @@ const TiageState = (function() {
         if (value === null || value === undefined) return value;
 
         // Prüfe ob es ein Geschlechts-Pfad ist
-        if (path.includes('.geschlecht.primary')) {
-            const normalized = GESCHLECHT_PRIMARY_MAP[value.toLowerCase?.()];
-            if (normalized) {
-                console.log(`[TiageState] Geschlecht primary normalisiert: '${value}' → '${normalized}'`);
-                return normalized;
+        if (!path.includes('.geschlecht')) return value;
+
+        // v4.0: Konvertiere altes { primary, secondary } Format zu String
+        if (typeof value === 'object' && value !== null) {
+            // Extrahiere den effektiven Wert aus dem alten Format
+            let effectiveValue = value.primary;
+
+            // Bei Trans: Identität basierend auf primary+secondary berechnen
+            if (value.secondary === 'trans') {
+                // Trans-Mann (Körper Frau → Identität Mann) oder Trans-Frau (Körper Mann → Identität Frau)
+                if (value.primary === 'mann') effectiveValue = 'frau';
+                else if (value.primary === 'frau') effectiveValue = 'mann';
+            } else if (value.secondary === 'nonbinaer' || value.secondary === 'fluid') {
+                effectiveValue = 'nonbinaer';
             }
+            // Bei Cis: primary bleibt primary
+
+            console.log(`[TiageState] v4.0 Migration: { primary: '${value.primary}', secondary: '${value.secondary}' } → '${effectiveValue}'`);
+            value = effectiveValue;
         }
 
-        if (path.includes('.geschlecht.secondary')) {
-            const normalized = GESCHLECHT_SECONDARY_MAP[value.toLowerCase?.()];
+        // String-Normalisierung
+        if (typeof value === 'string') {
+            const lower = value.toLowerCase();
+            const normalized = GESCHLECHT_NORMALIZE_MAP[lower];
             if (normalized) {
-                console.log(`[TiageState] Geschlecht secondary normalisiert: '${value}' → '${normalized}'`);
+                console.log(`[TiageState] Geschlecht normalisiert: '${value}' → '${normalized}'`);
                 return normalized;
             }
-        }
-
-        // Wenn ein ganzes Geschlechts-Objekt gesetzt wird
-        if (path.includes('.geschlecht') && typeof value === 'object' && value !== null) {
-            const result = { ...value };
-            if (result.primary && GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase?.()]) {
-                const old = result.primary;
-                result.primary = GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase()];
-                console.log(`[TiageState] Geschlecht primary normalisiert: '${old}' → '${result.primary}'`);
-            }
-            if (result.secondary && GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase?.()]) {
-                const old = result.secondary;
-                result.secondary = GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase()];
-                console.log(`[TiageState] Geschlecht secondary normalisiert: '${old}' → '${result.secondary}'`);
-            }
-            return result;
         }
 
         return value;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ORIENTIERUNG NORMALISIERUNG (v4.0)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // v4.0: Orientierung ist jetzt ein Array (Multi-Select)
+    // Konvertiert alte Formate zu Array.
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const ORIENTIERUNG_MIGRATE_MAP = {
+        'homosexuell': 'gay_lesbisch',
+        'bihomo': 'bisexuell',
+        'pansexuell': 'pansexuell_queer',
+        'asexuell': 'heterosexuell'  // Fallback
+    };
+
+    /**
+     * Normalisiert Orientierungs-Werte für v4.0 Multi-Select
+     * @param {string} path - Der State-Pfad
+     * @param {*} value - Der zu setzende Wert
+     * @returns {*} Der normalisierte Wert (Array)
+     */
+    function normalizeOrientierungValue(path, value) {
+        if (!path.includes('.orientierung')) return value;
+        if (value === null || value === undefined) return [];
+
+        // Bereits ein Array - nur Werte migrieren
+        if (Array.isArray(value)) {
+            return value.map(v => ORIENTIERUNG_MIGRATE_MAP[v] || v);
+        }
+
+        // v4.0: Konvertiere altes { primary, secondary } Format zu Array
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            const result = [];
+            if (value.primary) {
+                const migrated = ORIENTIERUNG_MIGRATE_MAP[value.primary] || value.primary;
+                result.push(migrated);
+            }
+            if (value.secondary && value.secondary !== value.primary) {
+                const migrated = ORIENTIERUNG_MIGRATE_MAP[value.secondary] || value.secondary;
+                if (!result.includes(migrated)) result.push(migrated);
+            }
+            console.log(`[TiageState] v4.0 Migration: { primary: '${value.primary}', secondary: '${value.secondary}' } → [${result.join(', ')}]`);
+            return result;
+        }
+
+        // String zu Array konvertieren
+        if (typeof value === 'string') {
+            const migrated = ORIENTIERUNG_MIGRATE_MAP[value] || value;
+            return [migrated];
+        }
+
+        return [];
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -418,8 +458,9 @@ const TiageState = (function() {
          * @param {*} value - The new value
          */
         set(path, value) {
-            // Normalisiere Geschlechts-Werte für Konsistenz mit ProfileModifiers
-            const normalizedValue = normalizeGeschlechtValue(path, value);
+            // v4.0: Normalisiere Geschlechts- und Orientierungs-Werte
+            let normalizedValue = normalizeGeschlechtValue(path, value);
+            normalizedValue = normalizeOrientierungValue(path, normalizedValue);
 
             const oldValue = deepClone(getByPath(state, path));
             setByPath(state, path, deepClone(normalizedValue));
@@ -485,63 +526,45 @@ const TiageState = (function() {
         },
 
         /**
-         * Set primary geschlecht
+         * Set geschlecht (v4.0: vereinfachter String)
          * @param {string} person - 'ich' or 'partner'
-         * @param {string|null} value - The geschlecht value
+         * @param {string|null} value - 'mann', 'frau', 'nonbinaer' or null
          */
         setGeschlecht(person, value) {
-            // Für Rückwärtskompatibilität: setze als primary
-            this.set(`personDimensions.${person}.geschlecht.primary`, value);
+            // v4.0: Geschlecht ist jetzt ein einfacher String
+            this.set(`personDimensions.${person}.geschlecht`, value);
         },
 
         /**
-         * Set secondary geschlecht
+         * Get geschlecht (v4.0: vereinfachter String)
          * @param {string} person - 'ich' or 'partner'
-         * @param {string|null} value - The geschlecht value
+         * @returns {string|null} 'mann', 'frau', 'nonbinaer' or null
          */
-        setSecondaryGeschlecht(person, value) {
-            // Secondary kann nicht gleich primary sein
-            const primary = this.get(`personDimensions.${person}.geschlecht.primary`);
-            if (value === primary) {
-                console.warn('[TiageState] Secondary geschlecht cannot be same as primary');
-                return;
-            }
-            this.set(`personDimensions.${person}.geschlecht.secondary`, value);
-        },
-
-        /**
-         * Get primary geschlecht
-         * @param {string} person - 'ich' or 'partner'
-         * @returns {string|null} The primary geschlecht
-         */
-        getPrimaryGeschlecht(person) {
-            return this.get(`personDimensions.${person}.geschlecht.primary`);
-        },
-
-        /**
-         * Get secondary geschlecht
-         * @param {string} person - 'ich' or 'partner'
-         * @returns {string|null} The secondary geschlecht
-         */
-        getSecondaryGeschlecht(person) {
-            return this.get(`personDimensions.${person}.geschlecht.secondary`);
-        },
-
-        /**
-         * Get both geschlechter
-         * @param {string} person - 'ich' or 'partner'
-         * @returns {Object} { primary: string|null, secondary: string|null }
-         */
-        getGeschlechter(person) {
+        getGeschlecht(person) {
             return this.get(`personDimensions.${person}.geschlecht`);
         },
 
-        /**
-         * Clear secondary geschlecht
-         * @param {string} person - 'ich' or 'partner'
-         */
+        // LEGACY: Alias für Rückwärtskompatibilität
+        // @deprecated v4.0 - Verwende setGeschlecht/getGeschlecht
+        setSecondaryGeschlecht(person, value) {
+            console.warn('[TiageState] setSecondaryGeschlecht is deprecated in v4.0 - secondary removed');
+            // Ignorieren - v4.0 hat kein secondary mehr
+        },
+        getPrimaryGeschlecht(person) {
+            // v4.0: Geschlecht ist jetzt direkt der Wert
+            return this.getGeschlecht(person);
+        },
+        getSecondaryGeschlecht(person) {
+            console.warn('[TiageState] getSecondaryGeschlecht is deprecated in v4.0 - secondary removed');
+            return null;
+        },
+        getGeschlechter(person) {
+            // v4.0: Rückwärtskompatibilität - gibt altes Format zurück
+            const geschlecht = this.getGeschlecht(person);
+            return { primary: geschlecht, secondary: null };
+        },
         clearSecondaryGeschlecht(person) {
-            this.set(`personDimensions.${person}.geschlecht.secondary`, null);
+            // v4.0: Keine Operation mehr nötig
         },
 
         /**
@@ -568,26 +591,53 @@ const TiageState = (function() {
         },
 
         /**
-         * Set primary orientierung
+         * Set orientierung (v4.0: Multi-Select Array)
          * @param {string} person - 'ich' or 'partner'
-         * @param {string|null} value - 'heterosexuell', 'homosexuell', 'bisexuell' or null
+         * @param {string|string[]} value - Single value or array of orientations
          */
         setOrientierung(person, value) {
-            this.set(`personDimensions.${person}.orientierung.primary`, value);
+            // v4.0: Konvertiere zu Array wenn nötig
+            const arrayValue = Array.isArray(value) ? value : (value ? [value] : []);
+            this.set(`personDimensions.${person}.orientierung`, arrayValue);
         },
 
         /**
-         * Set secondary orientierung
+         * Add orientierung to multi-select (v4.0)
          * @param {string} person - 'ich' or 'partner'
-         * @param {string|null} value - 'heterosexuell', 'homosexuell', 'bisexuell' or null
+         * @param {string} value - Orientation to add
          */
-        setSecondaryOrientierung(person, value) {
-            const primary = this.get(`personDimensions.${person}.orientierung.primary`);
-            if (value === primary) {
-                console.warn('[TiageState] Secondary orientierung cannot be same as primary');
-                return;
+        addOrientierung(person, value) {
+            const current = this.getOrientierungen(person);
+            if (!current.includes(value)) {
+                this.set(`personDimensions.${person}.orientierung`, [...current, value]);
             }
-            this.set(`personDimensions.${person}.orientierung.secondary`, value);
+        },
+
+        /**
+         * Remove orientierung from multi-select (v4.0)
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} value - Orientation to remove
+         */
+        removeOrientierung(person, value) {
+            const current = this.getOrientierungen(person);
+            this.set(`personDimensions.${person}.orientierung`, current.filter(o => o !== value));
+        },
+
+        /**
+         * Get all orientierungen (v4.0: Multi-Select Array)
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {string[]} Array of orientations
+         */
+        getOrientierungen(person) {
+            const value = this.get(`personDimensions.${person}.orientierung`);
+            return Array.isArray(value) ? value : (value ? [value] : []);
+        },
+
+        // LEGACY: Alias für Rückwärtskompatibilität
+        // @deprecated v4.0 - Verwende setOrientierung/getOrientierungen
+        setSecondaryOrientierung(person, value) {
+            // v4.0: Füge als zusätzliche Orientierung hinzu
+            if (value) this.addOrientierung(person, value);
         },
 
         /**
@@ -605,46 +655,48 @@ const TiageState = (function() {
         },
 
         /**
-         * Get the primary orientierung
+         * Get the primary orientierung (v4.0: erstes Element des Arrays)
+         * @deprecated v4.0 - Verwende getOrientierungen() für Multi-Select
          */
         getPrimaryOrientierung(person) {
-            return this.get(`personDimensions.${person}.orientierung.primary`);
+            const orientierungen = this.getOrientierungen(person);
+            return orientierungen.length > 0 ? orientierungen[0] : null;
         },
 
         /**
-         * Get the secondary orientierung
+         * Get the secondary orientierung (v4.0: zweites Element des Arrays)
+         * @deprecated v4.0 - Verwende getOrientierungen() für Multi-Select
          */
         getSecondaryOrientierung(person) {
-            return this.get(`personDimensions.${person}.orientierung.secondary`);
+            const orientierungen = this.getOrientierungen(person);
+            return orientierungen.length > 1 ? orientierungen[1] : null;
         },
 
         /**
          * Check if all required dimensions are set for a person
+         * v4.0: Geschlecht ist String, Orientierung ist Array
          */
         isPersonComplete(person) {
-            const dims = this.get(`personDimensions.${person}`);
-            // Geschlecht hat jetzt primary/secondary - nur primary ist erforderlich
-            const hasPrimaryGeschlecht = dims.geschlecht && dims.geschlecht.primary !== null;
-            return hasPrimaryGeschlecht &&
+            const geschlecht = this.getGeschlecht(person);
+            const orientierungen = this.getOrientierungen(person);
+            return geschlecht !== null &&
                    this.getPrimaryDominanz(person) !== null &&
-                   this.getPrimaryOrientierung(person) !== null;
+                   orientierungen.length > 0;
         },
 
         /**
          * Get missing dimensions for validation
+         * v4.0: Geschlecht ist String, Orientierung ist Array
          */
         getMissingDimensions() {
             const missing = [];
 
             ['ich', 'partner'].forEach(person => {
                 const label = person === 'ich' ? 'Ich' : 'Partner';
-                const dims = this.get(`personDimensions.${person}`);
 
-                // Geschlecht primary ist erforderlich
-                const hasPrimaryGeschlecht = dims.geschlecht && dims.geschlecht.primary !== null;
-                if (!hasPrimaryGeschlecht) missing.push(`${label}: Geschlecht`);
+                if (!this.getGeschlecht(person)) missing.push(`${label}: Geschlecht`);
                 if (!this.getPrimaryDominanz(person)) missing.push(`${label}: Dominanz`);
-                if (!this.getPrimaryOrientierung(person)) missing.push(`${label}: Orientierung`);
+                if (this.getOrientierungen(person).length === 0) missing.push(`${label}: Orientierung`);
             });
 
             return missing;

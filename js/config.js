@@ -80,44 +80,78 @@ const TiageConfig = (function() {
     const DOMINANZ_SHORT = DOMINANZ_PRIMARY_SHORT;
 
     // ═══════════════════════════════════════════════════════════════════════
-    // ORIENTIERUNG (Zwei-Dimensionales System: Sexuell + Romantisch)
+    // ORIENTIERUNG (Multi-Select System v4.0)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // v4.0: Multi-Select - User kann mehrere Orientierungen wählen
+    // - Heterosexuell: Angezogen vom anderen Geschlecht
+    // - Gay/Lesbisch: Angezogen vom gleichen Geschlecht
+    // - Bisexuell: Angezogen von Mann und Frau
+    // - Pansexuell/Queer: Angezogen unabhängig vom Geschlecht / Umbrella-Term
+    //
+    // R4 (Identitäts-Resonanz) wird jetzt aus Orientierung berechnet statt aus Cis/Trans
     // ═══════════════════════════════════════════════════════════════════════
 
-    // PRIMÄR = Sexuelle Anziehung (wen begehre ich körperlich?)
-    // v2.0: Neue Struktur - bihomo (bi+homo zusammengelegt), pansexuell separat
-    const ORIENTIERUNG_PRIMARY_TYPES = ['heterosexuell', 'bihomo', 'pansexuell', 'asexuell'];
+    // Multi-Select fähige Orientierungen
+    const ORIENTIERUNG_TYPES = ['heterosexuell', 'gay_lesbisch', 'bisexuell', 'pansexuell_queer'];
 
-    const ORIENTIERUNG_PRIMARY_SHORT = {
+    const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
-        bihomo: 'Bi/Homo',
-        pansexuell: 'Pan',
-        asexuell: 'Ace',
-        // LEGACY: Alte Keys für Rückwärtskompatibilität (werden zu bihomo gemappt)
-        homosexuell: 'Bi/Homo',
-        bisexuell: 'Bi/Homo'
+        gay_lesbisch: 'Gay',
+        bisexuell: 'Bi',
+        pansexuell_queer: 'Pan/Q',
+        // LEGACY: Alte Keys für Rückwärtskompatibilität
+        homosexuell: 'Gay',
+        bihomo: 'Gay/Bi',
+        pansexuell: 'Pan/Q',
+        asexuell: 'Ace'
     };
 
-    const ORIENTIERUNG_PRIMARY_LABELS = {
+    const ORIENTIERUNG_LABELS = {
         heterosexuell: 'Heterosexuell',
-        bihomo: 'Bi-/Homosexuell',
-        pansexuell: 'Pansexuell',
-        asexuell: 'Asexuell',
+        gay_lesbisch: 'Gay / Lesbisch',
+        bisexuell: 'Bisexuell',
+        pansexuell_queer: 'Pansexuell / Queer',
         // LEGACY: Alte Keys für Rückwärtskompatibilität
-        homosexuell: 'Bi-/Homosexuell',
-        bisexuell: 'Bi-/Homosexuell'
+        homosexuell: 'Gay / Lesbisch',
+        bihomo: 'Gay / Bisexuell',
+        pansexuell: 'Pansexuell / Queer',
+        asexuell: 'Asexuell'
+    };
+
+    // R4 Openness - bestimmt Identitäts-Resonanz (ersetzt IDENTITY_OPENNESS)
+    // Je höher, desto offener/flexibler
+    const ORIENTIERUNG_OPENNESS = {
+        heterosexuell: 0,        // Konventionell
+        gay_lesbisch: 30,        // Spezifisch
+        bisexuell: 70,           // Offen
+        pansexuell_queer: 100,   // Maximal offen
+        // LEGACY
+        homosexuell: 30,
+        bihomo: 50,
+        pansexuell: 100
     };
 
     // Migration-Helper: Konvertiert alte Orientierungs-Keys zu neuen
     function migrateOrientierung(oldValue) {
-        if (oldValue === 'homosexuell' || oldValue === 'bisexuell') {
-            return 'bihomo';
-        }
-        return oldValue;
+        const migration = {
+            'homosexuell': 'gay_lesbisch',
+            'bisexuell': 'bisexuell',
+            'bihomo': 'bisexuell',  // bihomo → bisexuell (oder gay_lesbisch je nach Kontext)
+            'pansexuell': 'pansexuell_queer',
+            'asexuell': 'heterosexuell'  // Fallback
+        };
+        return migration[oldValue] || oldValue;
     }
 
-    // SEKUNDÄR = Romantische Anziehung (in wen verliebe ich mich?)
-    const ORIENTIERUNG_SECONDARY_TYPES = ['heteroromantisch', 'homoromantisch', 'biromantisch', 'panromantisch', 'aromantisch'];
+    // LEGACY: Alte Primary/Secondary Struktur für Rückwärtskompatibilität
+    // @deprecated v4.0 - Verwende ORIENTIERUNG_TYPES direkt (Multi-Select Array)
+    const ORIENTIERUNG_PRIMARY_TYPES = ORIENTIERUNG_TYPES;
+    const ORIENTIERUNG_PRIMARY_SHORT = ORIENTIERUNG_SHORT;
+    const ORIENTIERUNG_PRIMARY_LABELS = ORIENTIERUNG_LABELS;
 
+    // LEGACY: Secondary (Romantisch) wird beibehalten für komplexere Modelle
+    const ORIENTIERUNG_SECONDARY_TYPES = ['heteroromantisch', 'homoromantisch', 'biromantisch', 'panromantisch', 'aromantisch'];
     const ORIENTIERUNG_SECONDARY_SHORT = {
         heteroromantisch: 'HetRom',
         homoromantisch: 'HomRom',
@@ -125,7 +159,6 @@ const TiageConfig = (function() {
         panromantisch: 'PanRom',
         aromantisch: 'ARom'
     };
-
     const ORIENTIERUNG_SECONDARY_LABELS = {
         heteroromantisch: 'Heteroromantisch',
         homoromantisch: 'Homoromantisch',
@@ -134,70 +167,51 @@ const TiageConfig = (function() {
         aromantisch: 'Aromantisch'
     };
 
-    // LEGACY: Alte ORIENTIERUNG_TYPES für Rückwärtskompatibilität
-    // v2.0: Jetzt nur noch 3 aktive: hetero, bihomo, pan
-    const ORIENTIERUNG_TYPES = ['heterosexuell', 'bihomo', 'pansexuell'];
-    const ORIENTIERUNG_SHORT = {
-        heterosexuell: 'Hetero',
-        bihomo: 'Bi/Homo',
-        pansexuell: 'Pan',
-        // LEGACY: Alte Keys
-        homosexuell: 'Bi/Homo',
-        bisexuell: 'Bi/Homo'
-    };
-
     // ═══════════════════════════════════════════════════════════════════════
-    // GESCHLECHT (Zwei-Dimensionales System: Körper + Identität)
+    // GESCHLECHT (Vereinfachtes System v4.0: Nur Identität)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // v4.0: Biologischer Zwang entfernt. Nur noch Geschlechtsidentität:
+    // - Mann: Identifiziert sich als männlich
+    // - Frau: Identifiziert sich als weiblich
+    // - Nonbinär: Identifiziert sich weder ausschließlich als Mann noch als Frau
+    //
+    // Cis/Trans/Inter wurden entfernt - R4 wird jetzt aus Orientierung berechnet.
     // ═══════════════════════════════════════════════════════════════════════
 
-    // PRIMÄR = Körper/Geburt (biologisches Geschlecht)
-    const GESCHLECHT_PRIMARY_TYPES = ['mann', 'frau', 'inter'];
+    const GESCHLECHT_TYPES = ['mann', 'frau', 'nonbinaer'];
 
-    const GESCHLECHT_PRIMARY_SHORT = {
+    const GESCHLECHT_SHORT = {
         'mann': 'M',
         'frau': 'F',
-        'inter': 'I'
+        'nonbinaer': 'NB'
     };
 
-    const GESCHLECHT_PRIMARY_LABELS = {
+    const GESCHLECHT_LABELS = {
         'mann': 'Mann',
         'frau': 'Frau',
-        'inter': 'Inter'
+        'nonbinaer': 'Nonbinär'
     };
 
-    // SEKUNDÄR = Geist/Identität (wie man sich fühlt)
-    // Kontextabhängig je nach PRIMARY:
-    // - Mann/Frau (binär): Cis, Trans, Nonbinär
-    // - Inter (divers): Nonbinär, Fluid
-    const GESCHLECHT_SECONDARY_TYPES = ['cis', 'trans', 'nonbinaer', 'fluid'];
+    // LEGACY: Alte Primary/Secondary Struktur für Rückwärtskompatibilität
+    // @deprecated v4.0 - Verwende GESCHLECHT_TYPES direkt
+    const GESCHLECHT_PRIMARY_TYPES = GESCHLECHT_TYPES;
+    const GESCHLECHT_PRIMARY_SHORT = GESCHLECHT_SHORT;
+    const GESCHLECHT_PRIMARY_LABELS = GESCHLECHT_LABELS;
 
-    // Kontextabhängige Optionen je nach Primary
+    // LEGACY: Secondary wird nicht mehr verwendet, aber für Migration beibehalten
+    // @deprecated v4.0 - Wird ignoriert, R4 kommt aus Orientierung
+    const GESCHLECHT_SECONDARY_TYPES = []; // Leer - nicht mehr verwendet
     const GESCHLECHT_SECONDARY_BY_PRIMARY = {
-        'mann': ['cis', 'trans', 'nonbinaer'],  // Binär: Kongruenz, Transition, Nonbinär
-        'frau': ['cis', 'trans', 'nonbinaer'],  // Binär: Kongruenz, Transition, Nonbinär
-        'inter': ['nonbinaer', 'fluid']         // Divers: NB, Fluid
+        'mann': [],
+        'frau': [],
+        'nonbinaer': []
     };
+    const GESCHLECHT_SECONDARY_SHORT = {};
+    const GESCHLECHT_SECONDARY_LABELS = {};
 
-    const GESCHLECHT_SECONDARY_SHORT = {
-        'cis': 'Cis',
-        'trans': 'Tr',
-        'nonbinaer': 'NB',
-        'fluid': 'Fl',
-        'suchend': 'Su'
-    };
-
-    const GESCHLECHT_SECONDARY_LABELS = {
-        'cis': 'Cis',
-        'trans': 'Trans',
-        'nonbinaer': 'Nonbinär',
-        'fluid': 'Fluid',
-        'suchend': 'Suchend'
-    };
-
-    // LEGACY: Alte GESCHLECHT_TYPES für Rückwärtskompatibilität (deprecated)
-    const GESCHLECHT_TYPES = GESCHLECHT_PRIMARY_TYPES;
-    const GESCHLECHT_SHORT = GESCHLECHT_PRIMARY_SHORT;
-    const GESCHLECHT_LABELS = GESCHLECHT_PRIMARY_LABELS;
+    // LEGACY: Alte Definitionen wurden in v4.0 nach oben verschoben
+    // GESCHLECHT_TYPES, GESCHLECHT_SHORT, GESCHLECHT_LABELS sind jetzt die primären Definitionen
 
     // EXPERTEN-MODUS: Detaillierte Geschlechtsidentitäten (alte 9-Optionen-Liste)
     const GESCHLECHT_DETAILED_TYPES = [
@@ -229,16 +243,17 @@ const TiageConfig = (function() {
         'divers': 'Divers'
     };
 
-    // Mapping für Orientierungslogik: Sekundär (Identität) bestimmt die Kategorie
-    // Cis/Trans werden kontextabhängig aufgelöst (braucht Primary)
+    // Mapping für Orientierungslogik: Geschlecht → Kategorie
+    // v4.0: Vereinfacht - direkte Zuordnung ohne Cis/Trans
     const GESCHLECHT_CATEGORY = {
-        // Sekundär-Werte -> Orientierungskategorie
-        'cis': 'kongruent',      // Entspricht Primary (mann→maennlich, frau→weiblich)
-        'trans': 'gewandelt',    // Gegenteil von Primary (mann→weiblich, frau→maennlich)
+        'mann': 'maennlich',
+        'frau': 'weiblich',
         'nonbinaer': 'nonbinaer',
+        // LEGACY: Alte Werte für Migration
+        'cis': 'kongruent',
+        'trans': 'gewandelt',
         'fluid': 'fluid',
-        'suchend': 'suchend',    // Suchend = eigene Kategorie (Exploration)
-        // Primär-Werte (Fallback)
+        'suchend': 'suchend',
         'inter': 'inter'
     };
 
@@ -260,50 +275,62 @@ const TiageConfig = (function() {
 
     const DIMENSION_TOOLTIPS = {
         geschlecht: {
-            title: "Geschlecht",
-            text: "Zwei Dimensionen: Körper (biologisch) und Identität / Psychologische Seele (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
+            title: "Geschlechtsidentität",
+            text: "Wie identifizierst du dich? Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
         },
+        // v4.0: Vereinfachte Geschlechts-Tooltips
+        mann: {
+            title: "Mann",
+            text: "Du identifizierst dich als männlich."
+        },
+        frau: {
+            title: "Frau",
+            text: "Du identifizierst dich als weiblich."
+        },
+        nonbinaer: {
+            title: "Nonbinär",
+            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau."
+        },
+        // LEGACY: Alte Tooltips für Migration (deprecated)
         geschlecht_primary: {
-            title: "Körper (Primär)",
-            text: "Dein biologisches/bei Geburt zugewiesenes Geschlecht."
+            title: "Geschlechtsidentität",
+            text: "Wie identifizierst du dich?"
         },
         geschlecht_secondary: {
-            title: "Identität / Psychologische Seele (Sekundär)",
-            text: "Wie du dich innerlich fühlst und identifizierst."
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
-        // Primär-Werte (Körper)
         primary_mann: {
-            title: "Mann (Körper)",
-            text: "Bei Geburt männlich zugewiesen."
+            title: "Mann",
+            text: "Du identifizierst dich als männlich."
         },
         primary_frau: {
-            title: "Frau (Körper)",
-            text: "Bei Geburt weiblich zugewiesen."
+            title: "Frau",
+            text: "Du identifizierst dich als weiblich."
         },
         primary_inter: {
-            title: "Inter (Körper)",
-            text: "Angeborene körperliche Geschlechtsmerkmale, die nicht eindeutig männlich oder weiblich sind."
+            title: "Nonbinär",
+            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau."
         },
-        // Sekundär-Werte (Identität) - kontextabhängig
         secondary_cis: {
-            title: "Cis (Identität)",
-            text: "Deine Geschlechtsidentität entspricht deinem Körper."
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
         secondary_trans: {
-            title: "Trans (Identität)",
-            text: "Du hast einen Wandel durchlebt - deine Identität ist das Gegenteil deines Geburtskörpers."
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
         secondary_nonbinaer: {
-            title: "Nonbinär (Identität)",
-            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau. (Nur bei Inter)"
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
         secondary_fluid: {
-            title: "Fluid (Identität)",
-            text: "Deine Geschlechtsidentität verändert sich über Zeit oder wechselt. (Nur bei Inter)"
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
         secondary_suchend: {
-            title: "Suchend (Identität)",
-            text: "Du bist dir über deine Geschlechtsidentität noch nicht sicher oder befindest dich in einer Explorationsphase."
+            title: "(nicht mehr verwendet)",
+            text: "Diese Option wurde in v4.0 entfernt."
         },
         dominanz: {
             title: "Dominanz-Präferenz",
@@ -508,16 +535,18 @@ const TiageConfig = (function() {
         DOMINANZ_TYPES,
         DOMINANZ_SHORT,
 
-        // Dimensionen - Orientierung (Primär/Sekundär)
+        // Dimensionen - Orientierung (v4.0 Multi-Select)
+        ORIENTIERUNG_TYPES,
+        ORIENTIERUNG_SHORT,
+        ORIENTIERUNG_LABELS,
+        ORIENTIERUNG_OPENNESS,  // Für R4-Berechnung
+        // Legacy (für Rückwärtskompatibilität)
         ORIENTIERUNG_PRIMARY_TYPES,
         ORIENTIERUNG_PRIMARY_SHORT,
         ORIENTIERUNG_PRIMARY_LABELS,
         ORIENTIERUNG_SECONDARY_TYPES,
         ORIENTIERUNG_SECONDARY_SHORT,
         ORIENTIERUNG_SECONDARY_LABELS,
-        // Legacy Orientierung (für Rückwärtskompatibilität)
-        ORIENTIERUNG_TYPES,
-        ORIENTIERUNG_SHORT,
 
         // Geschlechts-System (Primär/Sekundär)
         GESCHLECHT_PRIMARY_TYPES,
