@@ -3945,32 +3945,26 @@
         }
 
         /**
-         * Handle click on P (Körper) geschlecht button
-         * P = Primary = Körper (Mann, Frau, Inter)
+         * Handle click on geschlecht button
+         * v4.0: Geschlecht ist jetzt ein einfacher String (mann, frau, nonbinaer)
          */
         function handleGeschlechtPClick(person, value, btn) {
-            console.log('[TIAGE] handleGeschlechtPClick:', person, value);
+            console.log('[TIAGE] handleGeschlechtPClick (v4.0):', person, value);
 
-            // Ensure geschlecht has correct structure
-            if (!personDimensions[person].geschlecht ||
-                !('primary' in personDimensions[person].geschlecht)) {
-                personDimensions[person].geschlecht = { primary: null, secondary: null };
-            }
+            // v4.0: Geschlecht als einfacher String
+            const currentGeschlecht = personDimensions[person].geschlecht;
 
-            const currentPrimary = personDimensions[person].geschlecht.primary;
-
-            if (value === currentPrimary) {
-                // Click on same P: Deselect both P and S
-                personDimensions[person].geschlecht.primary = null;
-                personDimensions[person].geschlecht.secondary = null;
+            if (value === currentGeschlecht) {
+                // Click on same: Deselect
+                personDimensions[person].geschlecht = null;
             } else {
-                // Click on different P: Set new P, clear S (S options change)
-                personDimensions[person].geschlecht.primary = value;
-                personDimensions[person].geschlecht.secondary = null;
+                // Click on different: Set new value
+                personDimensions[person].geschlecht = value;
             }
 
-            // Update S-Grid based on new P selection
-            updateGeschlechtSGrid(person);
+            // v4.0: Kein S-Grid mehr nötig - verstecken falls noch sichtbar
+            const sRow = document.getElementById(`${person}-geschlecht-s-row`);
+            if (sRow) sRow.style.display = 'none';
 
             // Sync and save
             syncGeschlechtState(person);
@@ -4173,27 +4167,33 @@
 
         /**
          * Sync geschlecht state with mobile/TiageState
+         * v4.0: Geschlecht ist jetzt ein einfacher String
          */
         function syncGeschlechtState(person) {
-            // Sync with mobilePersonDimensions
+            // v4.0: Geschlecht als String
+            const geschlecht = personDimensions[person].geschlecht;
+
+            // Sync with mobilePersonDimensions (für Legacy-Kompatibilität)
             if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].geschlecht.primary = personDimensions[person].geschlecht.primary;
-                mobilePersonDimensions[person].geschlecht.secondary = personDimensions[person].geschlecht.secondary;
+                mobilePersonDimensions[person].geschlecht = geschlecht;
             }
 
             // Sync with TiageState
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
+                TiageState.set(`personDimensions.${person}.geschlecht`, geschlecht);
             }
         }
 
         /**
          * Update needs-selection class for geschlecht
+         * v4.0: Prüft ob Geschlecht als String gesetzt ist
          */
         function updateGeschlechtNeedsSelection(person) {
-            const hasPrimary = personDimensions[person].geschlecht?.primary !== null;
+            // v4.0: Geschlecht ist String, nicht Object
+            const geschlecht = personDimensions[person].geschlecht;
+            const hasGeschlecht = geschlecht !== null && geschlecht !== undefined;
             document.querySelectorAll(`[data-dimension="${person}-geschlecht-multi"], [data-dimension="mobile-${person}-geschlecht"], [data-dimension="mobile-${person}-geschlecht-multi"], [data-dimension="${person}-geschlecht"]`).forEach(dim => {
-                if (hasPrimary) {
+                if (hasGeschlecht) {
                     dim.classList.remove('needs-selection');
                 } else {
                     dim.classList.add('needs-selection');
@@ -4214,63 +4214,46 @@
 
         /**
          * Sync Geschlecht UI across all views (Desktop, Mobile, Modal)
-         * P/S SYSTEM: P = Körper, S = Identität (kontextabhängig)
+         * v4.0: Geschlecht als einfacher String (kein P/S System mehr)
          */
         function syncGeschlechtUI(person) {
-            const primary = personDimensions[person].geschlecht?.primary;     // Körper
-            const secondary = personDimensions[person].geschlecht?.secondary; // Identität
+            // v4.0: Geschlecht als String
+            const geschlecht = personDimensions[person].geschlecht;
 
-            // Update P-Grid buttons (Körper) - Desktop and Mobile
-            const pGridSelectors = [
+            // Update Geschlecht buttons - Desktop and Mobile
+            const gridSelectors = [
                 `#${person}-geschlecht-p-grid .geschlecht-btn`,
-                `#mobile-${person}-geschlecht-p-grid .geschlecht-btn`
+                `#mobile-${person}-geschlecht-p-grid .geschlecht-btn`,
+                `#mobile-${person}-geschlecht-grid .geschlecht-btn`,
+                `#modal-${person}-geschlecht-grid .geschlecht-btn`
             ];
-            pGridSelectors.forEach(selector => {
+            gridSelectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
-                    btn.classList.remove('primary-selected', 'primary-strikethrough');
+                    btn.classList.remove('primary-selected', 'primary-strikethrough', 'secondary-selected', 'selected');
 
                     // Remove existing indicators
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) existingIndicator.remove();
 
-                    if (value === primary) {
-                        btn.classList.add('primary-selected');
-                        // Strikethrough wenn Trans als Secondary ausgewählt
-                        if (secondary === 'trans') {
-                            btn.classList.add('primary-strikethrough');
-                        }
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-primary';
-                        indicator.textContent = 'P';
-                        indicator.title = 'Körper (Primär)';
-                        btn.appendChild(indicator);
+                    if (value === geschlecht) {
+                        btn.classList.add('selected', 'primary-selected');
                     }
                 });
             });
 
-            // Update S-Grid buttons (Identität) - Desktop and Mobile
+            // v4.0: S-Grid verstecken (nicht mehr benötigt)
+            const sRow = document.getElementById(`${person}-geschlecht-s-row`);
+            if (sRow) sRow.style.display = 'none';
+
+            // LEGACY: S-Grid buttons leeren
             const sGridSelectors = [
                 `#${person}-geschlecht-s-grid .geschlecht-btn`,
                 `#mobile-${person}-geschlecht-s-grid .geschlecht-btn`
             ];
             sGridSelectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
-                    const value = btn.dataset.value;
                     btn.classList.remove('secondary-selected');
-
-                    // Remove existing indicators
-                    const existingIndicator = btn.querySelector('.geschlecht-indicator');
-                    if (existingIndicator) existingIndicator.remove();
-
-                    if (value === secondary) {
-                        btn.classList.add('secondary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-secondary';
-                        indicator.textContent = 'S';
-                        indicator.title = 'Identität (Sekundär)';
-                        btn.appendChild(indicator);
-                    }
                 });
             });
 
@@ -4489,14 +4472,14 @@
         function initDimensionButtons() {
             console.log('[TIAGE DEBUG] initDimensionButtons called');
 
-            // Geschlecht: P-Optionen (Körper) - immer sichtbar
+            // v4.0: Geschlecht als einfacher String (kein Primary/Secondary mehr)
             const geschlechtPOptions = [
                 { value: 'mann', label: TiageI18n.t('geschlecht.primary.mann', 'Mann') },
                 { value: 'frau', label: TiageI18n.t('geschlecht.primary.frau', 'Frau') },
-                { value: 'inter', label: TiageI18n.t('geschlecht.primary.inter', 'Inter') }
+                { value: 'nonbinaer', label: TiageI18n.t('geschlecht.primary.nonbinaer', 'Nonbinär') }
             ];
 
-            // Geschlecht: S-Optionen (Identität) - kontextabhängig von P
+            // LEGACY: S-Optionen bleiben für eventuelle Rückwärtskompatibilität
             // Für P = Mann/Frau: Cis, Trans, Nonbinär (3 options - matches profile-config.js)
             const geschlechtSOptionsMannFrau = [
                 { value: 'cis', label: TiageI18n.t('geschlecht.secondary.cis', 'Cis') },
@@ -4517,11 +4500,12 @@
                 { value: 'ausgeglichen', label: 'ausgeglichen' }
             ];
 
-            // Orientierung Optionen - v2.0: hetero, bihomo, pan
+            // v4.0: Orientierung als Multi-Select Array
             const orientierungOptions = [
                 { value: 'heterosexuell', label: 'heterosexuell' },
-                { value: 'bihomo', label: 'bi-/homosexuell' },
-                { value: 'pansexuell', label: 'pansexuell' }
+                { value: 'gay_lesbisch', label: 'gay / lesbisch' },
+                { value: 'bisexuell', label: 'bisexuell' },
+                { value: 'pansexuell_queer', label: 'pansexuell / queer' }
             ];
 
             // GFK Optionen (Gewaltfreie Kommunikation / NVC)
