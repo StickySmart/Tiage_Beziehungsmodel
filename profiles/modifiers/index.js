@@ -42,8 +42,10 @@
 
     const ORIENTIERUNG_MAP = {
         'heterosexuell': 'Heterosexuell',
-        'homosexuell': 'Homosexuell',
-        'bisexuell': 'Bisexuell'
+        'homosexuell': 'Bisexuell',      // Legacy → mapped to Bisexuell
+        'bisexuell': 'Bisexuell',         // Legacy → mapped to Bisexuell
+        'bihomo': 'Bisexuell',            // NEU: Bi-/Homosexuell → Bisexuell-Modifier
+        'pansexuell': 'Bisexuell'         // NEU: Pansexuell → Bisexuell-Modifier (TODO: eigener Modifier)
     };
 
     /**
@@ -133,23 +135,58 @@
             }
         }
 
-        // Orientierungs-Modifier
+        // Orientierungs-Modifier (SSOT v3.10: P/S mit Gewichtung)
         if (profile.orientierung) {
-            // Kann einzelner String oder Objekt sein
-            let ori = profile.orientierung;
-            if (typeof ori === 'object') {
-                // Nimm erste aktive Orientierung
-                if (ori.heterosexuell) ori = 'heterosexuell';
-                else if (ori.homosexuell) ori = 'homosexuell';
-                else if (ori.bisexuell) ori = 'bisexuell';
+            const PRIMARY_WEIGHT = 0.70;
+            const SECONDARY_WEIGHT = 0.30;
+
+            let primaryOri = null;
+            let secondaryOri = null;
+
+            // Extrahiere P/S aus verschiedenen Formaten
+            if (typeof profile.orientierung === 'object') {
+                if (profile.orientierung.primary) {
+                    // Neues Format: { primary: 'hetero', secondary: 'pan' }
+                    primaryOri = profile.orientierung.primary;
+                    secondaryOri = profile.orientierung.secondary || null;
+                } else {
+                    // Legacy Format: { heterosexuell: true, ... }
+                    if (profile.orientierung.heterosexuell) primaryOri = 'heterosexuell';
+                    else if (profile.orientierung.homosexuell) primaryOri = 'homosexuell';
+                    else if (profile.orientierung.bisexuell) primaryOri = 'bisexuell';
+                    else if (profile.orientierung.bihomo) primaryOri = 'bihomo';
+                    else if (profile.orientierung.pansexuell) primaryOri = 'pansexuell';
+                }
+            } else if (typeof profile.orientierung === 'string') {
+                primaryOri = profile.orientierung;
             }
 
-            const oriMod = getOrientierungModifier(ori);
-            if (oriMod && oriMod.deltas) {
-                Object.keys(oriMod.deltas).forEach(key => {
-                    deltas[key] = (deltas[key] || 0) + oriMod.deltas[key];
-                });
+            // Primary-Modifier anwenden (70% oder 100% wenn kein Secondary)
+            if (primaryOri) {
+                const primaryMod = getOrientierungModifier(primaryOri);
+                if (primaryMod && primaryMod.deltas) {
+                    const weight = secondaryOri ? PRIMARY_WEIGHT : 1.0;
+                    Object.keys(primaryMod.deltas).forEach(key => {
+                        deltas[key] = (deltas[key] || 0) + (primaryMod.deltas[key] * weight);
+                    });
+                }
             }
+
+            // Secondary-Modifier anwenden (30%)
+            if (secondaryOri) {
+                const secondaryMod = getOrientierungModifier(secondaryOri);
+                if (secondaryMod && secondaryMod.deltas) {
+                    Object.keys(secondaryMod.deltas).forEach(key => {
+                        deltas[key] = (deltas[key] || 0) + (secondaryMod.deltas[key] * SECONDARY_WEIGHT);
+                    });
+                }
+            }
+
+            console.log('[ProfileModifiers] Orientierung P/S Deltas:', {
+                primary: primaryOri,
+                secondary: secondaryOri,
+                hasSecondaryDeltas: !!secondaryOri
+            });
         }
 
         return deltas;
