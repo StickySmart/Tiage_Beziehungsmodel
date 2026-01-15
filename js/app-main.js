@@ -4925,58 +4925,57 @@
 
         /**
          * Handle click on an Orientierung button
-         * Logic (same as Geschlechtsidentität):
-         * - First click = Primary (I indicator)
-         * - Second click on different = Secondary (G indicator)
-         * - Click on Primary = Clear both (primary and secondary)
-         * - Click on Secondary = Clear only secondary
+         * v4.0: Multi-Select Array - Klick togglet Wert im Array
          */
         function handleOrientierungClick(person, orientierungValue, btn) {
-            console.log('[TIAGE] handleOrientierungClick:', person, orientierungValue);
+            console.log('[TIAGE] handleOrientierungClick (v4.0 Multi-Select):', person, orientierungValue);
 
-            // Ensure orientierung has correct structure (migration from old format)
-            if (!personDimensions[person].orientierung ||
-                !('primary' in personDimensions[person].orientierung)) {
-                personDimensions[person].orientierung = { primary: null, secondary: null };
+            // v4.0: Orientierung als Array (Multi-Select)
+            if (!Array.isArray(personDimensions[person].orientierung)) {
+                // Migration: Falls altes Format, zu Array konvertieren
+                const oldOri = personDimensions[person].orientierung;
+                personDimensions[person].orientierung = [];
+                if (oldOri) {
+                    if (typeof oldOri === 'string') {
+                        personDimensions[person].orientierung.push(oldOri);
+                    } else if (oldOri.primary) {
+                        personDimensions[person].orientierung.push(oldOri.primary);
+                        if (oldOri.secondary) {
+                            personDimensions[person].orientierung.push(oldOri.secondary);
+                        }
+                    }
+                }
             }
 
-            const currentPrimary = personDimensions[person].orientierung.primary;
-            const currentSecondary = personDimensions[person].orientierung.secondary;
+            const orientierungen = personDimensions[person].orientierung;
+            const index = orientierungen.indexOf(orientierungValue);
 
-            if (orientierungValue === currentPrimary) {
-                // Click on Primary: Clear both
-                personDimensions[person].orientierung.primary = null;
-                personDimensions[person].orientierung.secondary = null;
-            } else if (orientierungValue === currentSecondary) {
-                // Click on Secondary: Clear only secondary
-                personDimensions[person].orientierung.secondary = null;
-            } else if (!currentPrimary) {
-                // No primary yet: Set as primary (handles both null and undefined)
-                personDimensions[person].orientierung.primary = orientierungValue;
+            if (index > -1) {
+                // Bereits ausgewählt: Entfernen (Toggle off)
+                orientierungen.splice(index, 1);
             } else {
-                // Primary exists, different value clicked: Set as secondary
-                personDimensions[person].orientierung.secondary = orientierungValue;
+                // Noch nicht ausgewählt: Hinzufügen (Toggle on)
+                orientierungen.push(orientierungValue);
             }
 
-            // Sync with mobilePersonDimensions for mobile view consistency
+            // Sync with mobilePersonDimensions
             if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].orientierung.primary = personDimensions[person].orientierung.primary;
-                mobilePersonDimensions[person].orientierung.secondary = personDimensions[person].orientierung.secondary;
+                mobilePersonDimensions[person].orientierung = [...orientierungen];
             }
 
-            // Sync with TiageState if available
+            // Sync with TiageState
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.orientierung`, personDimensions[person].orientierung);
-                TiageState.saveToStorage(); // Sofort speichern für Persistenz
+                TiageState.set(`personDimensions.${person}.orientierung`, orientierungen);
+                TiageState.saveToStorage();
             }
 
-            // Sync all UIs
+            // Sync UI
             syncOrientierungUI(person);
 
-            // Remove needs-selection if primary is set
-            const hasPrimary = personDimensions[person].orientierung.primary !== null;
+            // Update needs-selection class
+            const hasOrientierung = orientierungen.length > 0;
             document.querySelectorAll(`[data-dimension="${person}-orientierung-multi"], [data-dimension="mobile-${person}-orientierung"], [data-dimension="${person}-orientierung"]`).forEach(dim => {
-                if (hasPrimary) {
+                if (hasOrientierung) {
                     dim.classList.remove('needs-selection');
                 } else {
                     dim.classList.add('needs-selection');
@@ -5041,9 +5040,47 @@
             }
         }
 
-        // Wrapper für Rückwärtskompatibilität
+        /**
+         * v4.0: Sync Orientierung UI für Multi-Select Array
+         */
         function syncOrientierungUI(person) {
-            syncDimensionUI(person, 'orientierung');
+            const orientierungen = personDimensions[person].orientierung;
+
+            // Falls noch altes Format, nicht crashen
+            if (!Array.isArray(orientierungen)) {
+                // Fallback auf alte Logik
+                syncDimensionUI(person, 'orientierung');
+                return;
+            }
+
+            // Button-Selektoren für Orientierung
+            const selectors = [
+                `.orientierung-grid[data-person="${person}"] .orientierung-btn`,
+                `#${person}-orientierung-grid .orientierung-btn`,
+                `#mobile-${person}-orientierung-grid .orientierung-btn`,
+                `#modal-${person}-orientierung-grid .orientierung-btn`
+            ];
+
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(btn => {
+                    const value = btn.dataset.value;
+
+                    // Alle States entfernen
+                    btn.classList.remove('primary-selected', 'secondary-selected', 'selected');
+
+                    // Bestehende Indikatoren entfernen
+                    const existingIndicator = btn.querySelector('.geschlecht-indicator');
+                    if (existingIndicator) existingIndicator.remove();
+
+                    // v4.0: Prüfen ob Wert im Array
+                    if (orientierungen.includes(value)) {
+                        btn.classList.add('selected', 'primary-selected');
+                    }
+                });
+            });
+
+            // Summary aktualisieren
+            updateOrientierungSummary(person);
         }
 
         // Wrapper für Rückwärtskompatibilität (nutzen getDimensionSummary)
@@ -5057,11 +5094,29 @@
 
         /**
          * Update header summary for orientierung (only in header area, not in collapsed-summary)
+         * v4.0: Unterstützt Multi-Select Array
          */
         function updateOrientierungSummary(person) {
-            const summaryText = getOrientierungSummary(person);
-            const gridSummaryText = getOrientierungGridSummary(person);
-            const isMissing = !personDimensions[person].orientierung.primary;
+            const orientierungen = personDimensions[person].orientierung;
+
+            // v4.0: Array-basierte Prüfung
+            const isMissing = !Array.isArray(orientierungen) || orientierungen.length === 0;
+
+            // v4.0: Summary aus Array erstellen
+            let summaryText = 'Orientierung fehlt';
+            let gridSummaryText = '';
+            if (Array.isArray(orientierungen) && orientierungen.length > 0) {
+                // Labels für die Werte
+                const labels = {
+                    'heterosexuell': 'hetero',
+                    'gay_lesbisch': 'gay/lesbisch',
+                    'bisexuell': 'bi',
+                    'pansexuell_queer': 'pan/queer'
+                };
+                const labelList = orientierungen.map(o => labels[o] || o);
+                summaryText = labelList.join(', ');
+                gridSummaryText = summaryText;
+            }
 
             // Update header element (shows 'fehlt' if nothing selected) - Desktop and Mobile
             ['', 'mobile-'].forEach(prefix => {
@@ -5094,8 +5149,11 @@
         }
 
         // Helper: Check if any orientierung is selected (for backwards compatibility)
+        // v4.0: Prüft Array-Länge
         function hasAnyOrientierungSelected(person) {
-            return personDimensions[person].orientierung.primary !== null;
+            const ori = personDimensions[person].orientierung;
+            if (Array.isArray(ori)) return ori.length > 0;
+            return ori && ori.primary !== null;
         }
 
         // ═══════════════════════════════════════════════════════════════════════
