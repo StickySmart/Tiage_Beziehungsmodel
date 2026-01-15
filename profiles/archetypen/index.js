@@ -366,10 +366,12 @@
 
         // 2. Modifier berechnen und anwenden
         if (window.ProfileModifiers) {
+            // SSOT v3.10: Vollständige Orientierung übergeben (P+S)
+            // ProfileModifiers.calculateProfileDeltas() verarbeitet P/S mit Gewichtung
             const profileContext = {
                 geschlecht: geschlecht,
                 dominanz: dominanz?.primary || dominanz,
-                orientierung: orientierung?.primary || orientierung
+                orientierung: orientierung  // Vollständiges Objekt: { primary, secondary }
             };
 
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
@@ -527,11 +529,12 @@
         const gewichtungen = storageData.gewichtungen || getDefaultGewichtungen();
 
         // 3.3 Resonanzfaktoren berechnen
+        // SSOT v3.10: Vollständige Orientierung übergeben (P+S)
         const profileContext = {
             archetyp: archetyp,
             needs: flatNeeds,
             dominanz: dominanz?.primary || dominanz,
-            orientierung: orientierung?.primary || orientierung,
+            orientierung: orientierung,  // Vollständiges Objekt: { primary, secondary }
             geschlecht: geschlecht
         };
         const resonanzFaktoren = storageData.resonanzfaktoren || calculateResonanzFaktoren(profileContext);

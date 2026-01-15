@@ -61,8 +61,8 @@
         'heterosexuell': 'Heterosexuell',
         'homosexuell': 'Bisexuell',       // v4.0: → Bisexuell
         'bisexuell': 'Bisexuell',
-        'bihomo': 'Bisexuell',
-        'pansexuell': 'Bisexuell'
+        'bihomo': 'Bisexuell',            // Legacy: Bi-/Homosexuell → Bisexuell
+        'pansexuell': 'Bisexuell'         // Legacy: Pansexuell → Bisexuell
     };
 
     /**
@@ -203,6 +203,8 @@
                     if (profile.orientierung.heterosexuell) orientierungen.push('heterosexuell');
                     if (profile.orientierung.homosexuell) orientierungen.push('gay_lesbisch');
                     if (profile.orientierung.bisexuell) orientierungen.push('bisexuell');
+                    if (profile.orientierung.bihomo) orientierungen.push('bihomo');
+                    if (profile.orientierung.pansexuell) orientierungen.push('pansexuell');
                 }
             }
 
