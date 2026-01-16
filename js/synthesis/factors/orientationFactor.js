@@ -137,6 +137,7 @@ TiageSynthesis.Factors.Orientierung = {
     /**
      * Extrahiert Orientierungen aus Person-Objekt
      * v2.0: Migriert alte Keys (homosexuell/bisexuell → bihomo)
+     * v4.1: Unterstützt Array-Format + neue Typen (gay_lesbisch, pansexuell, queer)
      */
     _extractOrientations: function(person) {
         var list = [];
@@ -144,13 +145,29 @@ TiageSynthesis.Factors.Orientierung = {
 
         if (!ori) return list;
 
-        // v2.0: Migration helper
+        // v4.1: Migration helper (Legacy + neue Typen)
         var migrateType = function(type) {
+            // Legacy v2.0: homosexuell/bisexuell → bihomo
             if (type === 'homosexuell' || type === 'bisexuell') return 'bihomo';
+            // v4.1: Neue Typen zu internen Legacy-Äquivalenten
+            if (type === 'gay_lesbisch') return 'homosexuell';  // v4.1 → intern homosexuell
+            if (type === 'pansexuell_queer') return 'pansexuell';  // v4.0 → pansexuell
+            if (type === 'queer') return 'pansexuell';  // v4.1: Queer ≈ Pan (beide sehr offen)
             return type;
         };
 
-        if (typeof ori === 'object') {
+        // v4.1: Array-Format (Multi-Select): ['heterosexuell', 'bisexuell', 'pansexuell']
+        if (Array.isArray(ori)) {
+            for (var i = 0; i < ori.length; i++) {
+                if (ori[i]) {
+                    // Erstes Element = primary (gelebt), weitere = sekundär
+                    var status = (i === 0) ? 'gelebt' : 'sekundaer';
+                    list.push({ type: migrateType(ori[i]), status: status });
+                }
+            }
+        }
+        // Object-Formate
+        else if (typeof ori === 'object') {
             // Neues P/S-Format: { primary: 'heterosexuell', secondary: 'bihomo' }
             if ('primary' in ori) {
                 if (ori.primary) {
@@ -165,8 +182,8 @@ TiageSynthesis.Factors.Orientierung = {
             }
             // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
             else {
-                // v2.0: Neue Types + Legacy-Keys
-                var types = ['heterosexuell', 'bihomo', 'pansexuell', 'homosexuell', 'bisexuell'];
+                // v2.0: Neue Types + Legacy-Keys + v4.1 neue Typen
+                var types = ['heterosexuell', 'bihomo', 'pansexuell', 'homosexuell', 'bisexuell', 'gay_lesbisch', 'queer', 'pansexuell_queer'];
                 for (var i = 0; i < types.length; i++) {
                     var type = types[i];
                     if (ori[type]) {
@@ -329,9 +346,14 @@ TiageSynthesis.Factors.Orientierung = {
         // 'sekundaer' ist eine gelebte Orientierung, keine Unsicherheit
         var isExploring = (status1 === 'interessiert' || status2 === 'interessiert');
 
-        // v2.0: Migration - falls alte Keys noch durchkommen
+        // v4.1: Migration - falls alte/neue Keys noch durchkommen
         var normalizeType = function(t) {
+            // Legacy v2.0
             if (t === 'homosexuell' || t === 'bisexuell') return 'bihomo';
+            // v4.1: Neue Typen zu Legacy-Äquivalenten
+            if (t === 'gay_lesbisch') return 'homosexuell';
+            if (t === 'pansexuell_queer') return 'pansexuell';
+            if (t === 'queer') return 'pansexuell';
             return t;
         };
         type1 = normalizeType(type1);
