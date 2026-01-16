@@ -9922,7 +9922,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const oriList1 = [];
             const oriList2 = [];
 
-            if (ori1 && typeof ori1 === 'object') {
+            // v4.0: Array-Format
+            if (Array.isArray(ori1)) {
+                ori1.forEach(o => oriList1.push({ type: o, status: 'gelebt' }));
+            } else if (ori1 && typeof ori1 === 'object') {
                 // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
                 if ('primary' in ori1) {
                     if (ori1.primary) oriList1.push({ type: ori1.primary, status: 'gelebt' });
@@ -9938,7 +9941,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 oriList1.push({ type: ori1, status: person1.orientierungStatus || 'gelebt' });
             }
 
-            if (ori2 && typeof ori2 === 'object') {
+            // v4.0: Array-Format
+            if (Array.isArray(ori2)) {
+                ori2.forEach(o => oriList2.push({ type: o, status: 'gelebt' }));
+            } else if (ori2 && typeof ori2 === 'object') {
                 // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
                 if ('primary' in ori2) {
                     if (ori2.primary) oriList2.push({ type: ori2.primary, status: 'gelebt' });
