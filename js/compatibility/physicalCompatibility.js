@@ -281,7 +281,10 @@ TiageCompatibility.Physical = (function() {
             return type;
         };
 
-        if (ori1 && typeof ori1 === 'object') {
+        // v4.0: Array-Format
+        if (Array.isArray(ori1)) {
+            ori1.forEach(function(o) { oriList1.push({ type: migrateOriType(o), isPrimary: true }); });
+        } else if (ori1 && typeof ori1 === 'object') {
             // New format: { primary: 'bihomo', secondary: 'heterosexuell' }
             if ('primary' in ori1) {
                 if (ori1.primary) oriList1.push({ type: migrateOriType(ori1.primary), isPrimary: true });
@@ -299,7 +302,10 @@ TiageCompatibility.Physical = (function() {
             oriList1.push({ type: migrateOriType(ori1), isPrimary: true });
         }
 
-        if (ori2 && typeof ori2 === 'object') {
+        // v4.0: Array-Format
+        if (Array.isArray(ori2)) {
+            ori2.forEach(function(o) { oriList2.push({ type: migrateOriType(o), isPrimary: true }); });
+        } else if (ori2 && typeof ori2 === 'object') {
             // New format: { primary: 'bihomo', secondary: 'heterosexuell' }
             if ('primary' in ori2) {
                 if (ori2.primary) oriList2.push({ type: migrateOriType(ori2.primary), isPrimary: true });
