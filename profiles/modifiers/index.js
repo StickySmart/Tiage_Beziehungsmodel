@@ -48,12 +48,15 @@
         'ausgeglichen': 'Ausgeglichen'
     };
 
-    // v4.0: Orientierung ist jetzt Multi-Select Array
+    // v4.1: Orientierung mit 5 separaten Optionen
     const ORIENTIERUNG_MAP_V4 = {
         'heterosexuell': 'Heterosexuell',
-        'gay_lesbisch': 'Bisexuell',      // Mapped to Bisexuell (keine eigene Modifier-Datei)
+        'gay_lesbisch': 'Homosexuell',    // v4.1: Nutzt existierenden Homosexuell-Modifier
         'bisexuell': 'Bisexuell',
-        'pansexuell_queer': 'Bisexuell'   // Mapped to Bisexuell (TODO: eigener Modifier)
+        'pansexuell': 'Pansexuell',       // v4.1: Neue Modifier-Datei
+        'queer': 'Queer',                 // v4.1: Neue Modifier-Datei
+        // Legacy v4.0
+        'pansexuell_queer': 'Pansexuell'  // v4.0→v4.1: Mapped zu Pansexuell
     };
 
     // LEGACY: Alte Map für Rückwärtskompatibilität

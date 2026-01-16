@@ -4501,11 +4501,13 @@
             ];
 
             // v4.0: Orientierung als Multi-Select Array
+            // v4.1: 5 separate Orientierungs-Optionen
             const orientierungOptions = [
-                { value: 'heterosexuell', label: 'heterosexuell' },
-                { value: 'gay_lesbisch', label: 'gay / lesbisch' },
-                { value: 'bisexuell', label: 'bisexuell' },
-                { value: 'pansexuell_queer', label: 'pansexuell / queer' }
+                { value: 'heterosexuell', label: 'Hetero' },
+                { value: 'gay_lesbisch', label: 'Gay/L' },
+                { value: 'bisexuell', label: 'Bi' },
+                { value: 'pansexuell', label: 'Pan' },
+                { value: 'queer', label: 'Queer' }
             ];
 
             // GFK Optionen (Gewaltfreie Kommunikation / NVC)
@@ -4928,7 +4930,7 @@
          * v4.0: Multi-Select Array - Klick togglet Wert im Array
          */
         function handleOrientierungClick(person, orientierungValue, btn) {
-            console.log('[TIAGE] handleOrientierungClick (v4.0 Multi-Select):', person, orientierungValue);
+            console.log('[TIAGE] handleOrientierungClick (v4.1 Multi-Select + KO):', person, orientierungValue);
 
             // v4.0: Orientierung als Array (Multi-Select)
             if (!Array.isArray(personDimensions[person].orientierung)) {
@@ -4951,11 +4953,50 @@
             const index = orientierungen.indexOf(orientierungValue);
 
             if (index > -1) {
-                // Bereits ausgewählt: Entfernen (Toggle off)
+                // Bereits ausgewählt: Entfernen (Toggle off) - immer erlaubt
                 orientierungen.splice(index, 1);
             } else {
-                // Noch nicht ausgewählt: Hinzufügen (Toggle on)
-                orientierungen.push(orientierungValue);
+                // ═══════════════════════════════════════════════════════════════════════
+                // v4.1: KO-Kriterien - Validierung vor dem Hinzufügen
+                // ═══════════════════════════════════════════════════════════════════════
+                // Hetero und Gay/Lesbisch sind exklusiv (schließen alle anderen aus)
+                // Bi, Pan, Queer können frei kombiniert werden
+                const exclusionRules = TiageConfig.ORIENTIERUNG_EXCLUSION_RULES || {};
+                const excludedByNew = exclusionRules[orientierungValue] || [];
+
+                // Prüfe ob die neue Auswahl exklusiv ist (Hetero/Gay)
+                const isExclusiveChoice = excludedByNew.length > 0;
+
+                if (isExclusiveChoice) {
+                    // Hetero oder Gay: Entferne alle anderen zuerst (exklusiv)
+                    orientierungen.length = 0;  // Clear array
+                    orientierungen.push(orientierungValue);
+                    console.log('[TIAGE] Exklusive Orientierung gewählt:', orientierungValue, '→ Andere entfernt');
+                } else {
+                    // Bi/Pan/Queer: Prüfe ob bereits eine exklusive Option (Hetero/Gay) selected ist
+                    const hasExclusiveSelection = orientierungen.some(ori => {
+                        const excluded = exclusionRules[ori] || [];
+                        return excluded.includes(orientierungValue);
+                    });
+
+                    if (hasExclusiveSelection) {
+                        // KO: Kann nicht kombiniert werden
+                        const existingExclusive = orientierungen.find(ori => {
+                            const excluded = exclusionRules[ori] || [];
+                            return excluded.includes(orientierungValue);
+                        });
+                        const existingLabel = TiageConfig.ORIENTIERUNG_LABELS[existingExclusive] || existingExclusive;
+                        const newLabel = TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue;
+
+                        alert(`Diese Kombination ist nicht möglich.\n\n"${existingLabel}" schließt "${newLabel}" aus.\n\nHetero und Gay/Lesbisch können nicht mit anderen Orientierungen kombiniert werden.`);
+                        console.log('[TIAGE] KO-Kriterium verletzt:', existingExclusive, 'schließt', orientierungValue, 'aus');
+                        return;  // Abbrechen
+                    }
+
+                    // Hinzufügen erlaubt
+                    orientierungen.push(orientierungValue);
+                    console.log('[TIAGE] Orientierung hinzugefügt:', orientierungValue);
+                }
             }
 
             // Sync with mobilePersonDimensions

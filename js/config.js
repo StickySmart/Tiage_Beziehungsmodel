@@ -80,30 +80,37 @@ const TiageConfig = (function() {
     const DOMINANZ_SHORT = DOMINANZ_PRIMARY_SHORT;
 
     // ═══════════════════════════════════════════════════════════════════════
-    // ORIENTIERUNG (Multi-Select System v4.0)
+    // ORIENTIERUNG (Multi-Select System v4.1)
     // ═══════════════════════════════════════════════════════════════════════
     //
-    // v4.0: Multi-Select - User kann mehrere Orientierungen wählen
-    // - Heterosexuell: Angezogen vom anderen Geschlecht
-    // - Gay/Lesbisch: Angezogen vom gleichen Geschlecht
-    // - Bisexuell: Angezogen von Mann und Frau
-    // - Pansexuell/Queer: Angezogen unabhängig vom Geschlecht / Umbrella-Term
+    // v4.1: Multi-Select mit Validierung (KO-Kriterien)
+    // - Heterosexuell: Angezogen vom anderen Geschlecht (EXKLUSIV)
+    // - Gay/Lesbisch: Angezogen vom gleichen Geschlecht (EXKLUSIV)
+    // - Bisexuell: Angezogen von Mann und Frau (kombinierbar)
+    // - Pansexuell: Angezogen unabhängig vom Geschlecht (kombinierbar)
+    // - Queer: Umbrella-Term für nicht-heteronormative Orientierungen (kombinierbar)
     //
-    // R4 (Identitäts-Resonanz) wird jetzt aus Orientierung berechnet statt aus Cis/Trans
+    // KO-Regeln:
+    // - Hetero schließt alle anderen aus (logisch exklusiv)
+    // - Gay/Lesbisch schließt alle anderen aus (logisch exklusiv)
+    // - Bi, Pan, Queer können frei kombiniert werden (fluide Identitäten)
+    //
+    // R4 (Identitäts-Resonanz) wird aus Orientierung berechnet
     // ═══════════════════════════════════════════════════════════════════════
 
-    // Multi-Select fähige Orientierungen
-    const ORIENTIERUNG_TYPES = ['heterosexuell', 'gay_lesbisch', 'bisexuell', 'pansexuell_queer'];
+    // Multi-Select fähige Orientierungen (v4.1: 5 separate Optionen)
+    const ORIENTIERUNG_TYPES = ['heterosexuell', 'gay_lesbisch', 'bisexuell', 'pansexuell', 'queer'];
 
     const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
-        gay_lesbisch: 'Gay',
+        gay_lesbisch: 'Gay/L',
         bisexuell: 'Bi',
-        pansexuell_queer: 'Pan/Q',
+        pansexuell: 'Pan',
+        queer: 'Queer',
         // LEGACY: Alte Keys für Rückwärtskompatibilität
+        pansexuell_queer: 'Pan/Q',
         homosexuell: 'Gay',
         bihomo: 'Gay/Bi',
-        pansexuell: 'Pan/Q',
         asexuell: 'Ace'
     };
 
@@ -111,11 +118,12 @@ const TiageConfig = (function() {
         heterosexuell: 'Heterosexuell',
         gay_lesbisch: 'Gay / Lesbisch',
         bisexuell: 'Bisexuell',
-        pansexuell_queer: 'Pansexuell / Queer',
+        pansexuell: 'Pansexuell',
+        queer: 'Queer',
         // LEGACY: Alte Keys für Rückwärtskompatibilität
+        pansexuell_queer: 'Pansexuell / Queer',
         homosexuell: 'Gay / Lesbisch',
         bihomo: 'Gay / Bisexuell',
-        pansexuell: 'Pansexuell / Queer',
         asexuell: 'Asexuell'
     };
 
@@ -125,20 +133,36 @@ const TiageConfig = (function() {
         heterosexuell: 0,        // Konventionell
         gay_lesbisch: 30,        // Spezifisch
         bisexuell: 70,           // Offen
-        pansexuell_queer: 100,   // Maximal offen
+        pansexuell: 90,          // Sehr offen (geschlechtsunabhängig)
+        queer: 100,              // Maximal offen (Umbrella-Term)
         // LEGACY
+        pansexuell_queer: 100,
         homosexuell: 30,
         bihomo: 50,
-        pansexuell: 100
+        pansexuell: 90
     };
 
-    // Migration-Helper: Konvertiert alte Orientierungs-Keys zu neuen
+    // KO-Kriterien für Orientierungs-Kombinationen (v4.1)
+    // Definiert welche Orientierungen sich gegenseitig ausschließen
+    const ORIENTIERUNG_EXCLUSION_RULES = {
+        // Hetero ist exklusiv - schließt alle anderen aus
+        heterosexuell: ['gay_lesbisch', 'bisexuell', 'pansexuell', 'queer'],
+        // Gay/Lesbisch ist exklusiv - schließt alle anderen aus
+        gay_lesbisch: ['heterosexuell', 'bisexuell', 'pansexuell', 'queer'],
+        // Bi, Pan, Queer können frei kombiniert werden
+        bisexuell: [],
+        pansexuell: [],
+        queer: []
+    };
+
+    // Migration-Helper: Konvertiert alte Orientierungs-Keys zu neuen (v4.1)
     function migrateOrientierung(oldValue) {
         const migration = {
             'homosexuell': 'gay_lesbisch',
             'bisexuell': 'bisexuell',
             'bihomo': 'bisexuell',  // bihomo → bisexuell (oder gay_lesbisch je nach Kontext)
-            'pansexuell': 'pansexuell_queer',
+            'pansexuell': 'pansexuell',  // v4.1: Separate Option
+            'pansexuell_queer': 'pansexuell',  // v4.0→v4.1: Pan/Q zusammen → Pan
             'asexuell': 'heterosexuell'  // Fallback
         };
         return migration[oldValue] || oldValue;
@@ -535,11 +559,12 @@ const TiageConfig = (function() {
         DOMINANZ_TYPES,
         DOMINANZ_SHORT,
 
-        // Dimensionen - Orientierung (v4.0 Multi-Select)
+        // Dimensionen - Orientierung (v4.1 Multi-Select mit KO-Kriterien)
         ORIENTIERUNG_TYPES,
         ORIENTIERUNG_SHORT,
         ORIENTIERUNG_LABELS,
         ORIENTIERUNG_OPENNESS,  // Für R4-Berechnung
+        ORIENTIERUNG_EXCLUSION_RULES,  // v4.1: KO-Kriterien für Kombinationen
         // Legacy (für Rückwärtskompatibilität)
         ORIENTIERUNG_PRIMARY_TYPES,
         ORIENTIERUNG_PRIMARY_SHORT,
