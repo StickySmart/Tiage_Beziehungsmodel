@@ -4325,23 +4325,16 @@
          * Get summary text for geschlecht selection
          */
         function getGeschlechtSummary(person) {
-            const primary = personDimensions[person].geschlecht.primary;
-            const secondary = personDimensions[person].geschlecht.secondary;
+            // v4.0: geschlecht is a simple string, not an object with .primary/.secondary
+            const geschlecht = personDimensions[person].geschlecht;
+            const primary = typeof geschlecht === 'string' ? geschlecht : (geschlecht?.primary || null);
 
             if (!primary) {
                 return 'Geschlecht fehlt';
             }
 
-            const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            parts.push(primaryLabel + ' (P)');
-
-            if (secondary) {
-                const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
-                parts.push(secondaryLabel + ' (S)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return '✓ ' + primaryLabel + ' (P)';
         }
 
         /**
@@ -4349,28 +4342,16 @@
          * Returns selected values in green, or empty string if nothing selected
          */
         function getGeschlechtGridSummary(person) {
-            const primary = personDimensions[person].geschlecht.primary;
-            const secondary = personDimensions[person].geschlecht.secondary;
+            // v4.0: geschlecht is a simple string, not an object with .primary/.secondary
+            const geschlecht = personDimensions[person].geschlecht;
+            const primary = typeof geschlecht === 'string' ? geschlecht : (geschlecht?.primary || null);
 
             if (!primary) {
                 return ''; // No 'fehlt' text for grid - only show selections
             }
 
-            const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            // Strikethrough für Primary wenn Trans als Secondary
-            if (secondary === 'trans') {
-                parts.push('<span class="summary-strikethrough">' + primaryLabel + '</span> (P)');
-            } else {
-                parts.push(primaryLabel + ' (P)');
-            }
-
-            if (secondary) {
-                const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
-                parts.push(secondaryLabel + ' (S)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return '✓ ' + primaryLabel + ' (P)';
         }
 
         /**
@@ -4379,7 +4360,10 @@
         function updateGeschlechtSummary(person) {
             const summaryText = getGeschlechtSummary(person);
             const gridSummaryText = getGeschlechtGridSummary(person);
-            const isMissing = !personDimensions[person].geschlecht.primary;
+            // v4.0: geschlecht is a simple string, not an object with .primary
+            const geschlecht = personDimensions[person].geschlecht;
+            const primary = typeof geschlecht === 'string' ? geschlecht : (geschlecht?.primary || null);
+            const isMissing = !primary;
 
             // Update header element (shows 'fehlt' if nothing selected) - Desktop and Mobile
             ['', 'mobile-'].forEach(prefix => {
@@ -4406,7 +4390,10 @@
          * Check if geschlecht has any selection (primary)
          */
         function hasGeschlechtSelected(person) {
-            return personDimensions[person].geschlecht.primary !== null;
+            // v4.0: geschlecht is a simple string, not an object with .primary
+            const geschlecht = personDimensions[person].geschlecht;
+            const primary = typeof geschlecht === 'string' ? geschlecht : (geschlecht?.primary || null);
+            return primary !== null;
         }
 
         /**
