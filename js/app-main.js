@@ -4275,32 +4275,19 @@
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) existingIndicator.remove();
 
-                    if (value === primary) {
+                    // v4.0: Geschlecht ist jetzt ein einfacher String, kein P/S System
+                    if (value === geschlecht) {
                         btn.classList.add('primary-selected');
-                        // Strikethrough wenn Trans als Secondary ausgewählt
-                        if (secondary === 'trans') {
-                            btn.classList.add('primary-strikethrough');
-                        }
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-primary';
-                        indicator.textContent = 'P';
-                        btn.appendChild(indicator);
-                    } else if (value === secondary) {
-                        btn.classList.add('secondary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-secondary';
-                        indicator.textContent = 'S';
-                        btn.appendChild(indicator);
                     }
                 });
             });
 
             // Also sync legacy radio buttons if they exist
             document.querySelectorAll(`input[name="${person}-geschlecht"]`).forEach(radio => {
-                radio.checked = (radio.value === primary);
+                radio.checked = (radio.value === geschlecht);
             });
             document.querySelectorAll(`input[name="mobile-${person}-geschlecht"]`).forEach(radio => {
-                radio.checked = (radio.value === primary);
+                radio.checked = (radio.value === geschlecht);
             });
 
             // Ensure S-Grid visibility is correct
