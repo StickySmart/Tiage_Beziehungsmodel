@@ -15932,27 +15932,51 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
                 }
 
-                // Sync orientierung - handle both formats
+                // Sync orientierung - handle all formats and migrate to v4.1 Array format
                 if (savedDims.orientierung) {
-                    if (typeof savedDims.orientierung === 'object') {
-                        // New format: { primary: 'heterosexuell', secondary: null }
+                    let orientierungen = [];
+
+                    // Convert from various formats to Array
+                    if (Array.isArray(savedDims.orientierung)) {
+                        // Already array format (v4.0+)
+                        orientierungen = [...savedDims.orientierung];
+                    } else if (typeof savedDims.orientierung === 'object') {
                         if ('primary' in savedDims.orientierung) {
-                            personDimensions[person].orientierung = savedDims.orientierung;
+                            // Format: { primary: 'heterosexuell', secondary: null }
+                            if (savedDims.orientierung.primary) {
+                                orientierungen.push(savedDims.orientierung.primary);
+                            }
+                            if (savedDims.orientierung.secondary) {
+                                orientierungen.push(savedDims.orientierung.secondary);
+                            }
                         } else {
                             // Old format: { heterosexuell: 'gelebt', homosexuell: null, ... }
-                            // Convert to new format
-                            let primary = null;
-                            let secondary = null;
                             for (const [type, status] of Object.entries(savedDims.orientierung)) {
-                                if (status === 'gelebt' && !primary) {
-                                    primary = type;
-                                } else if (status === 'interessiert' && !secondary) {
-                                    secondary = type;
+                                if (status === 'gelebt') {
+                                    orientierungen.push(type);
+                                } else if (status === 'interessiert') {
+                                    orientierungen.push(type);
                                 }
                             }
-                            personDimensions[person].orientierung = { primary, secondary };
                         }
                     }
+
+                    // v4.1: Migrate legacy values
+                    orientierungen = orientierungen.map(ori => {
+                        if (ori === 'pansexuell_queer') return 'pansexuell';
+                        if (ori === 'homosexuell') return 'gay_lesbisch';
+                        return ori;
+                    });
+
+                    // Remove duplicates and invalid values
+                    orientierungen = [...new Set(orientierungen)].filter(o =>
+                        o && typeof o === 'string' && o.trim() !== ''
+                    );
+
+                    // Store as Array (v4.1 format)
+                    personDimensions[person].orientierung = orientierungen;
+
+                    console.log(`[loadDimensionsFromState] ${person} orientierung migriert:`, orientierungen);
                 }
 
                 // Sync GFK if present
