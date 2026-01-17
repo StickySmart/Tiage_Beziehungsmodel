@@ -142,14 +142,17 @@ const TiageConfig = (function() {
         pansexuell: 90
     };
 
-    // KO-Kriterien für Orientierungs-Kombinationen (v4.1)
-    // Definiert welche Orientierungen sich gegenseitig ausschließen
+    // KO-Kriterien für Orientierungs-Kombinationen (v4.1.1)
+    // PRIMÄR/SEKUNDÄR System: Erste Auswahl = Primär, weitere = Sekundär
+    // Nur primäre Konflikte werden blockiert (Hetero+Gay)
     const ORIENTIERUNG_EXCLUSION_RULES = {
-        // Hetero ist exklusiv - schließt alle anderen aus
-        heterosexuell: ['gay_lesbisch', 'bisexuell', 'pansexuell', 'queer'],
-        // Gay/Lesbisch ist exklusiv - schließt alle anderen aus
-        gay_lesbisch: ['heterosexuell', 'bisexuell', 'pansexuell', 'queer'],
-        // Bi, Pan, Queer können frei kombiniert werden
+        // Hetero ist nur mit Gay inkompatibel (als PRIMÄRE Kombination)
+        // Erlaubt: Hetero (primär) + Pan/Queer/Bi (sekundär)
+        heterosexuell: ['gay_lesbisch'],
+        // Gay/Lesbisch ist nur mit Hetero inkompatibel (als PRIMÄRE Kombination)
+        // Erlaubt: Gay (primär) + Pan/Queer/Bi (sekundär)
+        gay_lesbisch: ['heterosexuell'],
+        // Bi, Pan, Queer können frei mit allem kombiniert werden
         bisexuell: [],
         pansexuell: [],
         queer: []

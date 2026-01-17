@@ -49,6 +49,10 @@
                 title: "Sexuelle Orientierung",
                 text: "Zu welchem Geschlecht fühlst du dich romantisch und/oder sexuell hingezogen?\n\n• Heterosexuell: Anziehung zum anderen Geschlecht\n• Homosexuell: Anziehung zum gleichen Geschlecht\n• Bi-/Pansexuell: Anziehung zu mehreren oder allen Geschlechtern\n\nDie sexuelle Orientierung beeinflusst, ob eine körperliche/romantische Anziehung zwischen zwei Personen möglich ist. Bei inkompatiblen Orientierungen zeigt das Modell dies als Blocker an."
             },
+            orientierungKO: {
+                title: "KO-Kriterien für Orientierung (v4.1.1 - Primär/Sekundär)",
+                text: "<strong>📌 PRIMÄR / SEKUNDÄR System:</strong>\n\n• <span style=\"color: #3498db; font-weight: bold;\">Erste Auswahl = PRIMÄR</span> (Hauptorientierung)\n• <span style=\"color: #9b59b6; font-weight: bold;\">Weitere Auswahlen = SEKUNDÄR</span> (Exploration, Offenheit)\n\n<strong>🚫 Nur EINE Regel:</strong>\n\n• <span style=\"color: #e74c3c; font-weight: bold;\">Hetero + Gay/Lesbisch</span> sind inkompatibel (logischer Widerspruch)\n\n<strong>✅ ERLAUBTE Kombinationen:</strong>\n\n• <span style=\"color: #2ecc71;\">Hetero (primär) + Pan (sekundär)</span>\n• <span style=\"color: #2ecc71;\">Hetero (primär) + Queer (sekundär)</span>\n• <span style=\"color: #2ecc71;\">Gay (primär) + Pan (sekundär)</span>\n• <span style=\"color: #2ecc71;\">Gay (primär) + Bi (sekundär)</span>\n• <span style=\"color: #2ecc71;\">Bi + Pan + Queer</span> (alle Kombinationen)\n\n<strong>❌ NICHT erlaubt:</strong>\n\n• <span style=\"color: #e74c3c;\">Hetero + Gay</span> (Widerspruch)\n• <span style=\"color: #e74c3c;\">Gay + Hetero</span> (Widerspruch)\n\n<strong>💡 Beispiel:</strong>\n\"Ich bin hauptsächlich heterosexuell (primär), aber offen für pansexuelle Erfahrungen (sekundär)\" → ✅ Hetero + Pan\n\n<em>Warum?</em> Orientierung ist nicht binär. Viele Menschen haben eine primäre Präferenz mit sekundärer Offenheit."
+            },
             status: {
                 title: "Orientierungs-Status",
                 text: "Gelebt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar."
@@ -4957,45 +4961,48 @@
                 orientierungen.splice(index, 1);
             } else {
                 // ═══════════════════════════════════════════════════════════════════════
-                // v4.1: KO-Kriterien - Validierung vor dem Hinzufügen
+                // v4.1.1: KO-Kriterien mit PRIMÄR/SEKUNDÄR System
                 // ═══════════════════════════════════════════════════════════════════════
-                // Hetero und Gay/Lesbisch sind exklusiv (schließen alle anderen aus)
-                // Bi, Pan, Queer können frei kombiniert werden
+                // Erstes Element im Array = PRIMÄR (Hauptorientierung)
+                // Weitere Elemente = SEKUNDÄR (Exploration, Offenheit)
+                // Nur primäre Konflikte werden blockiert (Hetero+Gay)
                 const exclusionRules = TiageConfig.ORIENTIERUNG_EXCLUSION_RULES || {};
-                const excludedByNew = exclusionRules[orientierungValue] || [];
 
-                // Prüfe ob die neue Auswahl exklusiv ist (Hetero/Gay)
-                const isExclusiveChoice = excludedByNew.length > 0;
-
-                if (isExclusiveChoice) {
-                    // Hetero oder Gay: Entferne alle anderen zuerst (exklusiv)
-                    orientierungen.length = 0;  // Clear array
+                if (orientierungen.length === 0) {
+                    // Array leer: Neue Auswahl wird PRIMÄR
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Exklusive Orientierung gewählt:', orientierungValue, '→ Andere entfernt');
+                    console.log('[TIAGE] Primäre Orientierung gesetzt:', orientierungValue);
                 } else {
-                    // Bi/Pan/Queer: Prüfe ob bereits eine exklusive Option (Hetero/Gay) selected ist
-                    const hasExclusiveSelection = orientierungen.some(ori => {
-                        const excluded = exclusionRules[ori] || [];
-                        return excluded.includes(orientierungValue);
-                    });
+                    // Array nicht leer: Neue Auswahl wird SEKUNDÄR
+                    // Prüfe ob primäre Orientierung (erstes Element) mit neuer kompatibel ist
+                    const primaryOrientation = orientierungen[0];
+                    const excludedByPrimary = exclusionRules[primaryOrientation] || [];
 
-                    if (hasExclusiveSelection) {
-                        // KO: Kann nicht kombiniert werden
-                        const existingExclusive = orientierungen.find(ori => {
-                            const excluded = exclusionRules[ori] || [];
-                            return excluded.includes(orientierungValue);
-                        });
-                        const existingLabel = TiageConfig.ORIENTIERUNG_LABELS[existingExclusive] || existingExclusive;
+                    if (excludedByPrimary.includes(orientierungValue)) {
+                        // KO: Primäre Orientierung ist mit neuer inkompatibel
+                        const primaryLabel = TiageConfig.ORIENTIERUNG_LABELS[primaryOrientation] || primaryOrientation;
                         const newLabel = TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue;
 
-                        alert(`Diese Kombination ist nicht möglich.\n\n"${existingLabel}" schließt "${newLabel}" aus.\n\nHetero und Gay/Lesbisch können nicht mit anderen Orientierungen kombiniert werden.`);
-                        console.log('[TIAGE] KO-Kriterium verletzt:', existingExclusive, 'schließt', orientierungValue, 'aus');
+                        alert(`Diese Kombination ist nicht möglich.\n\n"${primaryLabel}" (primär) ist mit "${newLabel}" inkompatibel.\n\nNur Hetero und Gay/Lesbisch können nicht kombiniert werden.\n\nAber erlaubt ist z.B.:\n✅ Hetero (primär) + Pan (sekundär)\n✅ Gay (primär) + Queer (sekundär)`);
+                        console.log('[TIAGE] KO-Kriterium verletzt:', primaryOrientation, '(primär) schließt', orientierungValue, 'aus');
                         return;  // Abbrechen
                     }
 
-                    // Hinzufügen erlaubt
+                    // Prüfe umgekehrt: Würde neue Auswahl die primäre ausschließen?
+                    const excludedByNew = exclusionRules[orientierungValue] || [];
+                    if (excludedByNew.includes(primaryOrientation)) {
+                        // KO: Neue Auswahl ist mit primärer inkompatibel
+                        const primaryLabel = TiageConfig.ORIENTIERUNG_LABELS[primaryOrientation] || primaryOrientation;
+                        const newLabel = TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue;
+
+                        alert(`Diese Kombination ist nicht möglich.\n\n"${newLabel}" ist mit "${primaryLabel}" (primär) inkompatibel.\n\nWenn Sie "${newLabel}" als primäre Orientierung setzen möchten, entfernen Sie zuerst "${primaryLabel}".`);
+                        console.log('[TIAGE] KO-Kriterium verletzt:', orientierungValue, 'schließt', primaryOrientation, '(primär) aus');
+                        return;  // Abbrechen
+                    }
+
+                    // Hinzufügen erlaubt als SEKUNDÄR
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Orientierung hinzugefügt:', orientierungValue);
+                    console.log('[TIAGE] Sekundäre Orientierung hinzugefügt:', orientierungValue);
                 }
             }
 
@@ -5113,9 +5120,26 @@
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) existingIndicator.remove();
 
-                    // v4.0: Prüfen ob Wert im Array
-                    if (orientierungen.includes(value)) {
-                        btn.classList.add('selected', 'primary-selected');
+                    // v4.1.1: Prüfen ob Wert im Array und ob Primär/Sekundär
+                    const index = orientierungen.indexOf(value);
+                    if (index > -1) {
+                        if (index === 0) {
+                            // Primär (erstes Element)
+                            btn.classList.add('selected', 'primary-selected');
+                            // P-Indikator hinzufügen
+                            const indicator = document.createElement('span');
+                            indicator.className = 'geschlecht-indicator';
+                            indicator.textContent = 'P';
+                            btn.appendChild(indicator);
+                        } else {
+                            // Sekundär (weitere Elemente)
+                            btn.classList.add('selected', 'secondary-selected');
+                            // S-Indikator hinzufügen
+                            const indicator = document.createElement('span');
+                            indicator.className = 'geschlecht-indicator';
+                            indicator.textContent = 'S';
+                            btn.appendChild(indicator);
+                        }
                     }
                 });
             });
@@ -5147,16 +5171,27 @@
             let summaryText = 'Orientierung fehlt';
             let gridSummaryText = '';
             if (Array.isArray(orientierungen) && orientierungen.length > 0) {
-                // Labels für die Werte
+                // Labels für die Werte (v4.1.1: 5 separate Optionen + P/S Indikatoren)
                 const labels = {
                     'heterosexuell': 'hetero',
-                    'gay_lesbisch': 'gay/lesbisch',
+                    'gay_lesbisch': 'gay/L',
                     'bisexuell': 'bi',
+                    'pansexuell': 'pan',
+                    'queer': 'queer',
+                    // Legacy v4.0
                     'pansexuell_queer': 'pan/queer'
                 };
-                const labelList = orientierungen.map(o => labels[o] || o);
-                summaryText = labelList.join(', ');
-                gridSummaryText = summaryText;
+                // v4.1.1: Erste = Primär (P), weitere = Sekundär (S)
+                const labelList = orientierungen.map((o, index) => {
+                    const label = labels[o] || o;
+                    if (index === 0) {
+                        return label + ' (P)';  // Primär
+                    } else {
+                        return label + ' (S)';  // Sekundär
+                    }
+                });
+                summaryText = '✓ ' + labelList.join(', ');
+                gridSummaryText = labelList.join(', ');
             }
 
             // Update header element (shows 'fehlt' if nothing selected) - Desktop and Mobile

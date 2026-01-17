@@ -53,6 +53,15 @@ TiageSynthesis.Factors.Orientierung = {
         // Score basierend auf Ergebnis
         var score = this._resultToScore(bestResult.result, constants);
 
+        // v4.1.1: Sekundär-Bonus anwenden
+        // Wenn beide eine kompatible sekundäre Orientierung haben → Bonus
+        var secondaryBonus = 0;
+        if (bestResult.hasSecondaryBonus && bestResult.result === 'moeglich') {
+            // Basis-Bonus: 5% zusätzlich (relativ zum Score)
+            secondaryBonus = score * constants.ORIENTATION.SECONDARY_BONUS_BASE;
+            score = Math.min(100, score + secondaryBonus);  // Cap bei 100
+        }
+
         return {
             score: score,
             details: {
@@ -62,6 +71,8 @@ TiageSynthesis.Factors.Orientierung = {
                 isHardKO: bestResult.isHardKO || false,
                 hardKOReason: bestResult.hardKOReason || null,
                 bestCombination: bestResult.bestCombination,
+                hasSecondaryBonus: bestResult.hasSecondaryBonus || false,  // v4.1.1
+                secondaryBonus: secondaryBonus,  // v4.1.1
                 allOptions1: oriList1,
                 allOptions2: oriList2
             }
