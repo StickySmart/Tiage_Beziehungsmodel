@@ -1055,24 +1055,37 @@ var SSOTComparison = (function() {
 // AUTO-AKTIVIERUNG (optional via URL-Parameter)
 // ═══════════════════════════════════════════════════════════════════════════
 // Aktiviere mit: ?ssot=true oder ?ssot-compare=true
-// SSOT-FIX: Automatische Server-Verfügbarkeitsprüfung beim Start
+// SSOT-FIX: Kein automatischer HTTP-Check mehr (GitHub Pages akzeptiert keine OPTIONS/POST)
 
 (function() {
     if (typeof window !== 'undefined' && window.location) {
         const params = new URLSearchParams(window.location.search);
+        const hostname = window.location.hostname;
+
+        // SSOT-FIX: Prüfe ob wir auf einer statischen Hosting-Plattform sind
+        // Diese unterstützen keine serverseitigen APIs (POST/OPTIONS werden abgelehnt)
+        const isStaticHost =
+            hostname.endsWith('.github.io') ||
+            hostname.endsWith('.pages.dev') ||      // Cloudflare Pages
+            hostname.endsWith('.netlify.app') ||    // Netlify (ohne Functions)
+            hostname === 'app.ti-age.de' ||         // Bekannte GitHub Pages Domain
+            hostname === 'localhost' ||             // Lokale Entwicklung ohne API
+            hostname === '127.0.0.1';
+
+        if (isStaticHost) {
+            // Statisches Hosting erkannt - kein Server-Check nötig
+            // Server-Modus bleibt deaktiviert (useServerSSOT: false)
+            console.info('[SSOT] Statisches Hosting erkannt (' + hostname + ') - Client-Berechnung aktiv');
+            SSOTComparison.configure({ serverChecked: true, serverAvailable: false });
+        }
+
+        // URL-Parameter Aktivierung (für Vercel/dynamisches Hosting)
         if (params.get('ssot') === 'true' || params.get('ssot-compare') === 'true') {
             SSOTComparison.enable();
         }
 
-        // SSOT-FIX: Automatische Server-Verfügbarkeitsprüfung beim Laden
-        // Prüft ob API verfügbar ist und aktiviert Server-Modus nur bei Erfolg
-        // Bei 405 (GitHub Pages) bleibt Client-Berechnung aktiv (keine 321 Fehler mehr)
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                SSOTComparison.checkServerAvailability();
-            });
-        } else {
-            // DOM bereits geladen
+        // Explizite Server-Aktivierung via URL-Parameter (nur für Vercel-Hosting)
+        if (params.get('ssot-server') === 'true' && !isStaticHost) {
             SSOTComparison.checkServerAvailability();
         }
     }
