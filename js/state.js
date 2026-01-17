@@ -394,7 +394,7 @@ const TiageState = (function() {
     const ORIENTIERUNG_MIGRATE_MAP = {
         'homosexuell': 'gay_lesbisch',
         'bihomo': 'bisexuell',
-        'pansexuell': 'pansexuell_queer',
+        'pansexuell_queer': 'pansexuell',  // v4.0→v4.1: Pan/Q combined → Pan
         'asexuell': 'heterosexuell'  // Fallback
     };
 
@@ -408,9 +408,10 @@ const TiageState = (function() {
         if (!path.includes('.orientierung')) return value;
         if (value === null || value === undefined) return [];
 
-        // Bereits ein Array - nur Werte migrieren
+        // Bereits ein Array - Werte migrieren und Duplikate entfernen
         if (Array.isArray(value)) {
-            return value.map(v => ORIENTIERUNG_MIGRATE_MAP[v] || v);
+            const migrated = value.map(v => ORIENTIERUNG_MIGRATE_MAP[v] || v);
+            return [...new Set(migrated)];  // Duplikate entfernen
         }
 
         // v4.0: Konvertiere altes { primary, secondary } Format zu Array
