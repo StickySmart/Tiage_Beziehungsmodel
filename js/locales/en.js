@@ -122,16 +122,18 @@ const TiageLocale_EN = {
         secondaryLabel: 'Identity',
         primaryHint: 'Biological / assigned at birth',
         secondaryHint: 'How you feel',
-        // Primary (Body)
+        // Primary (Body) - v4.0: nonbinaer as direct value
         primary: {
             mann: 'Male',
             frau: 'Female',
-            inter: 'Inter'
+            inter: 'Inter',
+            nonbinaer: 'Non-binary'
         },
         primaryShort: {
             mann: 'M',
             frau: 'F',
-            inter: 'I'
+            inter: 'I',
+            nonbinaer: 'NB'
         },
         // Secondary (Identity) - context-dependent on Primary
         secondary: {

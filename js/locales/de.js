@@ -122,16 +122,18 @@ const TiageLocale_DE = {
         secondaryLabel: 'Identität / Psychologische Seele',
         primaryHint: 'Biologisch / bei Geburt',
         secondaryHint: 'Wie du dich fühlst',
-        // Primär (Körper)
+        // Primär (Körper) - v4.0: nonbinaer als direkter Wert
         primary: {
             mann: 'Mann',
             frau: 'Frau',
-            inter: 'Inter'
+            inter: 'Inter',
+            nonbinaer: 'Nonbinär'
         },
         primaryShort: {
             mann: 'M',
             frau: 'F',
-            inter: 'I'
+            inter: 'I',
+            nonbinaer: 'NB'
         },
         // Sekundär (Identität) - kontextabhängig von Primär
         secondary: {
