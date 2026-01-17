@@ -4917,6 +4917,134 @@
         // ═══════════════════════════════════════════════════════════════════════
 
         /**
+         * Soft Warning Card - Sanftere Warnung im Card-Style
+         * Ersetzt die harten browser alert() Dialoge
+         * @param {Object} options - Konfiguration
+         * @param {string} options.title - Titel der Warnung
+         * @param {string} options.message - Hauptnachricht
+         * @param {string} [options.detail] - Detailtext (optional)
+         * @param {Array} [options.examples] - Erlaubte Beispiele (optional)
+         * @param {Function} [options.onClose] - Callback beim Schließen
+         */
+        function showSoftWarning(options = {}) {
+            const {
+                title = 'Hinweis',
+                message = '',
+                detail = '',
+                examples = [],
+                onClose = null
+            } = options;
+
+            // Overlay erstellen
+            const overlay = document.createElement('div');
+            overlay.className = 'soft-warning-overlay';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+            overlay.setAttribute('aria-label', title);
+
+            // Card erstellen
+            const card = document.createElement('div');
+            card.className = 'soft-warning-card';
+
+            // Icon
+            const icon = document.createElement('div');
+            icon.className = 'soft-warning-card__icon';
+            icon.innerHTML = '💡';
+
+            // Title
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'soft-warning-card__title';
+            titleEl.textContent = title;
+
+            // Message
+            const messageEl = document.createElement('p');
+            messageEl.className = 'soft-warning-card__message';
+            messageEl.textContent = message;
+
+            // Detail (optional)
+            let detailEl = null;
+            if (detail) {
+                detailEl = document.createElement('p');
+                detailEl.className = 'soft-warning-card__detail';
+                detailEl.textContent = detail;
+            }
+
+            // Examples (optional)
+            let examplesEl = null;
+            if (examples && examples.length > 0) {
+                examplesEl = document.createElement('div');
+                examplesEl.className = 'soft-warning-card__examples';
+
+                const examplesTitle = document.createElement('span');
+                examplesTitle.className = 'soft-warning-card__examples-title';
+                examplesTitle.textContent = 'Aber erlaubt ist z.B.:';
+                examplesEl.appendChild(examplesTitle);
+
+                examples.forEach(example => {
+                    const item = document.createElement('div');
+                    item.className = 'soft-warning-card__example-item';
+                    item.textContent = example;
+                    examplesEl.appendChild(item);
+                });
+            }
+
+            // Button
+            const btn = document.createElement('button');
+            btn.className = 'soft-warning-card__btn';
+            btn.textContent = 'Verstanden';
+
+            // Card zusammenbauen
+            card.appendChild(icon);
+            card.appendChild(titleEl);
+            card.appendChild(messageEl);
+            if (detailEl) card.appendChild(detailEl);
+            if (examplesEl) card.appendChild(examplesEl);
+            card.appendChild(btn);
+            overlay.appendChild(card);
+
+            // Zum Body hinzufügen
+            document.body.appendChild(overlay);
+
+            // Animation triggern
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    overlay.classList.add('soft-warning-overlay--visible');
+                });
+            });
+
+            // Close-Handler
+            function handleClose() {
+                overlay.classList.remove('soft-warning-overlay--visible');
+                setTimeout(() => {
+                    overlay.remove();
+                    if (typeof onClose === 'function') {
+                        onClose();
+                    }
+                }, 250);
+            }
+
+            // Event-Listener
+            btn.addEventListener('click', handleClose);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    handleClose();
+                }
+            });
+
+            // Escape/Enter schließen
+            function handleKeydown(e) {
+                if (e.key === 'Escape' || e.key === 'Enter') {
+                    handleClose();
+                    document.removeEventListener('keydown', handleKeydown);
+                }
+            }
+            document.addEventListener('keydown', handleKeydown);
+
+            // Focus auf Button
+            btn.focus();
+        }
+
+        /**
          * Handle click on an Orientierung button
          * v4.0: Multi-Select Array - Klick togglet Wert im Array
          */
@@ -4970,7 +5098,15 @@
                         const primaryLabel = TiageConfig.ORIENTIERUNG_LABELS[primaryOrientation] || primaryOrientation;
                         const newLabel = TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue;
 
-                        alert(`Diese Kombination ist nicht möglich.\n\n"${primaryLabel}" (primär) ist mit "${newLabel}" inkompatibel.\n\nNur Hetero und Gay/Lesbisch können nicht kombiniert werden.\n\nAber erlaubt ist z.B.:\n✅ Hetero (primär) + Pan (sekundär)\n✅ Gay (primär) + Queer (sekundär)`);
+                        showSoftWarning({
+                            title: 'Diese Kombination ist nicht möglich',
+                            message: `"${primaryLabel}" (primär) ist mit "${newLabel}" inkompatibel.`,
+                            detail: 'Nur Hetero und Gay/Lesbisch können nicht kombiniert werden.',
+                            examples: [
+                                'Hetero (primär) + Pan (sekundär)',
+                                'Gay (primär) + Queer (sekundär)'
+                            ]
+                        });
                         console.log('[TIAGE] KO-Kriterium verletzt:', primaryOrientation, '(primär) schließt', orientierungValue, 'aus');
                         return;  // Abbrechen
                     }
@@ -4982,7 +5118,11 @@
                         const primaryLabel = TiageConfig.ORIENTIERUNG_LABELS[primaryOrientation] || primaryOrientation;
                         const newLabel = TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue;
 
-                        alert(`Diese Kombination ist nicht möglich.\n\n"${newLabel}" ist mit "${primaryLabel}" (primär) inkompatibel.\n\nWenn Sie "${newLabel}" als primäre Orientierung setzen möchten, entfernen Sie zuerst "${primaryLabel}".`);
+                        showSoftWarning({
+                            title: 'Diese Kombination ist nicht möglich',
+                            message: `"${newLabel}" ist mit "${primaryLabel}" (primär) inkompatibel.`,
+                            detail: `Wenn Sie "${newLabel}" als primäre Orientierung setzen möchten, entfernen Sie zuerst "${primaryLabel}".`
+                        });
                         console.log('[TIAGE] KO-Kriterium verletzt:', orientierungValue, 'schließt', primaryOrientation, '(primär) aus');
                         return;  // Abbrechen
                     }
