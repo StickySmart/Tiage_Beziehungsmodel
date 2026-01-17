@@ -29,11 +29,14 @@ var SSOTComparison = (function() {
         // ═══════════════════════════════════════════════════════════════════
         // PHASE 3: SERVER-FIRST MIT FALLBACK
         // ═══════════════════════════════════════════════════════════════════
-        // AKTIVIERT - Vercel Serverless API verfügbar
-        // Deaktivieren: SSOTComparison.disableServerSSOT()
-        useServerSSOT: true,       // AKTIVIERT - Server bereit
+        // DEAKTIVIERT - Wird automatisch aktiviert wenn Server verfügbar
+        // Aktivieren: SSOTComparison.enableServerSSOT()
+        // SSOT-FIX: Standard=false, da GitHub Pages keine API unterstützt
+        useServerSSOT: false,      // DEAKTIVIERT - wird bei Health-Check aktiviert
         serverTimeout: 5000,       // 5s Timeout
-        fallbackOnError: true      // Bei Fehler → Client-Berechnung
+        fallbackOnError: true,     // Bei Fehler → Client-Berechnung
+        serverChecked: false,      // Flag: Server-Verfügbarkeit wurde geprüft
+        serverAvailable: false     // Flag: Server ist verfügbar
     };
 
     // Speicher für Vergleichs-Historie
@@ -168,6 +171,7 @@ var SSOTComparison = (function() {
 
     /**
      * Server-API aufrufen
+     * SSOT-FIX: Bei 405-Fehler wird Server-Modus automatisch deaktiviert
      */
     async function fetchServerCalculation(person1, person2, options) {
         const response = await fetch(config.serverEndpoint, {
@@ -179,6 +183,14 @@ var SSOTComparison = (function() {
                 options: options
             })
         });
+
+        // SSOT-FIX: Bei 405 Server-Modus deaktivieren
+        if (response.status === 405) {
+            config.useServerSSOT = false;
+            config.serverAvailable = false;
+            config.serverChecked = true;
+            throw new Error('HTTP 405 - Server-Modus deaktiviert');
+        }
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -671,7 +683,68 @@ var SSOTComparison = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * SSOT-FIX: Prüft ob der Server (API) verfügbar ist
+     * Wird einmalig beim Start aufgerufen und setzt config.serverAvailable
+     * Bei 405 (Method Not Allowed) wird der Server-Modus dauerhaft deaktiviert
+     * @returns {Promise<boolean>} true wenn Server verfügbar
+     */
+    async function checkServerAvailability() {
+        // Bereits geprüft? Nicht erneut prüfen
+        if (config.serverChecked) {
+            return config.serverAvailable;
+        }
+
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s Timeout für Check
+
+            // OPTIONS-Request für CORS-Preflight (weniger invasiv als POST)
+            const response = await fetch(config.serverEndpoint, {
+                method: 'OPTIONS',
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            config.serverChecked = true;
+
+            // 200 oder 204 = Server verfügbar
+            if (response.ok || response.status === 204) {
+                config.serverAvailable = true;
+                console.log('[SSOT] ✓ Server-API verfügbar - aktiviere Server-Modus');
+                config.useServerSSOT = true;
+                return true;
+            }
+
+            // 405 = Server existiert, akzeptiert aber keine Anfragen (GitHub Pages)
+            if (response.status === 405) {
+                config.serverAvailable = false;
+                config.useServerSSOT = false;
+                console.info('[SSOT] Server-API nicht verfügbar (405) - bleibe bei Client-Berechnung');
+                return false;
+            }
+
+            // Andere Fehler
+            config.serverAvailable = false;
+            console.info('[SSOT] Server-API Status:', response.status, '- bleibe bei Client-Berechnung');
+            return false;
+
+        } catch (error) {
+            config.serverChecked = true;
+            config.serverAvailable = false;
+
+            if (error.name === 'AbortError') {
+                console.info('[SSOT] Server-API Timeout - bleibe bei Client-Berechnung');
+            } else {
+                console.info('[SSOT] Server-API nicht erreichbar - bleibe bei Client-Berechnung');
+            }
+            return false;
+        }
+    }
+
+    /**
      * Ruft die Server-API auf und gibt das Ergebnis zurück
+     * SSOT-FIX: Bei 405-Fehler wird Server-Modus automatisch deaktiviert
      * @returns {Promise<object|null>} Server-Ergebnis oder null bei Fehler
      */
     async function fetchServerResult(person1, person2, options) {
@@ -691,6 +764,15 @@ var SSOTComparison = (function() {
             });
 
             clearTimeout(timeoutId);
+
+            // SSOT-FIX: Bei 405 Server-Modus deaktivieren und keine weiteren Anfragen senden
+            if (response.status === 405) {
+                console.warn('[SSOT] 405 Method Not Allowed - deaktiviere Server-Modus');
+                config.useServerSSOT = false;
+                config.serverAvailable = false;
+                config.serverChecked = true;
+                return null;
+            }
 
             if (!response.ok) {
                 throw new Error(`Server responded with ${response.status}`);
@@ -908,6 +990,19 @@ var SSOTComparison = (function() {
             return config.useServerSSOT;
         },
 
+        /**
+         * SSOT-FIX: Prüft Server-Verfügbarkeit und aktiviert Server-Modus bei Erfolg
+         * @returns {Promise<boolean>} true wenn Server verfügbar
+         */
+        checkServerAvailability: checkServerAvailability,
+
+        /**
+         * SSOT-FIX: Gibt zurück ob Server verfügbar ist (nach Check)
+         */
+        isServerAvailable: function() {
+            return config.serverAvailable;
+        },
+
         // Konfiguration
         configure: function(options) {
             Object.assign(config, options);
@@ -960,12 +1055,25 @@ var SSOTComparison = (function() {
 // AUTO-AKTIVIERUNG (optional via URL-Parameter)
 // ═══════════════════════════════════════════════════════════════════════════
 // Aktiviere mit: ?ssot=true oder ?ssot-compare=true
+// SSOT-FIX: Automatische Server-Verfügbarkeitsprüfung beim Start
 
 (function() {
     if (typeof window !== 'undefined' && window.location) {
         const params = new URLSearchParams(window.location.search);
         if (params.get('ssot') === 'true' || params.get('ssot-compare') === 'true') {
             SSOTComparison.enable();
+        }
+
+        // SSOT-FIX: Automatische Server-Verfügbarkeitsprüfung beim Laden
+        // Prüft ob API verfügbar ist und aktiviert Server-Modus nur bei Erfolg
+        // Bei 405 (GitHub Pages) bleibt Client-Berechnung aktiv (keine 321 Fehler mehr)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                SSOTComparison.checkServerAvailability();
+            });
+        } else {
+            // DOM bereits geladen
+            SSOTComparison.checkServerAvailability();
         }
     }
 })();
