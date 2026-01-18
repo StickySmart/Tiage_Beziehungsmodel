@@ -1067,11 +1067,6 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für ICH (Mobile) - öffnet Slot Machine Modal -->
-                    <button class="best-match-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen">
-                        <span class="match-icon">🎰</span>
-                        <span class="match-text">FINDE PASSENDEN PARTNER</span>
-                    </button>
                 </div>
                 <div class="mobile-header-info-container">
                     <div class="header-geschlecht-info" id="mobile-ich-header-geschlecht"></div>
@@ -1149,7 +1144,7 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Weiter zum Partner →</button>
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Weiter →</button>
 
             <!-- Reset Button -->
             <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
@@ -1157,10 +1152,45 @@
             </button>
         </div>
 
-        <!-- PAGE 2: Partner-Auswahl (NEU) -->
-        <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: PARTNER">
+        <!-- PAGE 2: Best Match Karte (NEU) -->
+        <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: BEST MATCH">
             <div class="page-header">
                 <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
+                <span class="page-title">Partner finden</span>
+            </div>
+
+            <!-- Best Match Card -->
+            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F4A261; padding: 20px; margin-bottom: 15px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="color: #F4A261; font-weight: 700; font-size: var(--font-lg); margin-bottom: 8px;">
+                        🎰 Best Match Finder
+                    </div>
+                    <div style="color: var(--text-secondary); font-size: var(--font-sm);">
+                        Finde den besten Partner basierend auf deinem Profil
+                    </div>
+                </div>
+
+                <button class="best-match-btn mobile-best-match-card-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
+                    <span class="match-icon" style="font-size: 32px;">🎰</span>
+                    <span class="match-text" style="font-size: 14px;">FINDE PASSENDEN PARTNER</span>
+                </button>
+
+                <div style="text-align: center; margin-top: 15px; color: var(--text-muted); font-size: 11px;">
+                    Testet alle 864 Archetyp-Kombinationen
+                </div>
+            </div>
+
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Weiter zum Partner →</button>
+
+            <button class="btn-secondary-mobile" onclick="mobileGoToPage(3)" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+                Partner manuell auswählen →
+            </button>
+        </div>
+
+        <!-- PAGE 3: Partner-Auswahl (vorher PAGE 2) -->
+        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
                 <span class="page-title">Dein Partner</span>
             </div>
 
@@ -1297,13 +1327,13 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Analysieren →</button>
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(4)">Analysieren →</button>
         </div>
 
-        <!-- PAGE 3: Ergebnis/Synthese (vorher PAGE 2) -->
-        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: ERGEBNIS">
+        <!-- PAGE 4: Ergebnis/Synthese (vorher PAGE 3) -->
+        <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: ERGEBNIS">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
                 <span class="page-title">Synthese</span>
             </div>
 
@@ -1400,11 +1430,12 @@
             </div>
         </div>
 
-        <!-- Page Indicator (nur 3 Seiten) -->
+        <!-- Page Indicator (4 Seiten: DU, Best Match, Partner, Synthese) -->
         <div class="page-indicator">
             <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
             <span class="page-dot" onclick="mobileGoToPage(2)"></span>
             <span class="page-dot" onclick="mobileGoToPage(3)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
         </div>
     </div>
 
