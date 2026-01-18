@@ -5203,7 +5203,213 @@
         }
 
         /**
+         * v4.2: Handler für Mobile Orientierung Status Toggle (Primär/Sekundär Buttons)
+         * Styled wie Dominanz für konsistente Mobile UX
+         */
+        function handleOrientierungStatusToggle(person, orientierungValue, status, btn) {
+            console.log('[TIAGE] handleOrientierungStatusToggle:', person, orientierungValue, status);
+
+            // Ensure array format
+            if (!Array.isArray(personDimensions[person].orientierung)) {
+                const oldOri = personDimensions[person].orientierung;
+                personDimensions[person].orientierung = [];
+                if (oldOri) {
+                    if (typeof oldOri === 'string') {
+                        personDimensions[person].orientierung.push(oldOri);
+                    } else if (oldOri.primary) {
+                        personDimensions[person].orientierung.push(oldOri.primary);
+                        if (oldOri.secondary) {
+                            personDimensions[person].orientierung.push(oldOri.secondary);
+                        }
+                    }
+                }
+            }
+
+            const orientierungen = personDimensions[person].orientierung;
+            const currentIndex = orientierungen.indexOf(orientierungValue);
+            const exclusionRules = TiageConfig.ORIENTIERUNG_EXCLUSION_RULES || {};
+
+            if (status === 'primaer') {
+                // Handle Primär button click
+                if (currentIndex === 0) {
+                    // Already primary - toggle off (remove)
+                    orientierungen.splice(0, 1);
+                    console.log('[TIAGE] Primäre Orientierung entfernt:', orientierungValue);
+                } else if (currentIndex > 0) {
+                    // Currently secondary - promote to primary
+                    // Check if current primary is compatible
+                    const currentPrimary = orientierungen[0];
+                    const excludedByNew = exclusionRules[orientierungValue] || [];
+
+                    if (excludedByNew.includes(currentPrimary)) {
+                        // KO: Would conflict with current primary as secondary
+                        showSoftWarning({
+                            title: 'Diese Kombination ist nicht möglich',
+                            message: `"${TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue}" ist mit "${TiageConfig.ORIENTIERUNG_LABELS[currentPrimary] || currentPrimary}" inkompatibel.`,
+                            detail: 'Nur Hetero und Gay/Lesbisch können nicht kombiniert werden.'
+                        });
+                        return;
+                    }
+
+                    // Remove from current position
+                    orientierungen.splice(currentIndex, 1);
+                    // Insert at front as new primary
+                    orientierungen.unshift(orientierungValue);
+                    console.log('[TIAGE] Orientierung zu Primär befördert:', orientierungValue);
+                } else {
+                    // Not selected - add as primary
+                    if (orientierungen.length > 0) {
+                        // Check if new primary is compatible with existing secondaries
+                        const excludedByNew = exclusionRules[orientierungValue] || [];
+                        for (const existing of orientierungen) {
+                            if (excludedByNew.includes(existing)) {
+                                showSoftWarning({
+                                    title: 'Diese Kombination ist nicht möglich',
+                                    message: `"${TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue}" ist mit "${TiageConfig.ORIENTIERUNG_LABELS[existing] || existing}" inkompatibel.`,
+                                    detail: 'Nur Hetero und Gay/Lesbisch können nicht kombiniert werden.'
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    // Insert at front as new primary
+                    orientierungen.unshift(orientierungValue);
+                    console.log('[TIAGE] Neue Primäre Orientierung:', orientierungValue);
+                }
+            } else if (status === 'sekundaer') {
+                // Handle Sekundär button click
+                if (currentIndex > 0) {
+                    // Already secondary - toggle off (remove)
+                    orientierungen.splice(currentIndex, 1);
+                    console.log('[TIAGE] Sekundäre Orientierung entfernt:', orientierungValue);
+                } else if (currentIndex === 0) {
+                    // Currently primary - demote to secondary (needs another primary)
+                    if (orientierungen.length === 1) {
+                        // Only this one selected - cannot demote without another primary
+                        showSoftWarning({
+                            title: 'Primär erforderlich',
+                            message: 'Bitte wähle zuerst eine andere Orientierung als Primär.',
+                            detail: 'Mindestens eine Primäre Orientierung muss ausgewählt sein.'
+                        });
+                        return;
+                    }
+                    // Remove from front
+                    orientierungen.shift();
+                    // Add at end as secondary
+                    orientierungen.push(orientierungValue);
+                    console.log('[TIAGE] Orientierung zu Sekundär degradiert:', orientierungValue);
+                } else {
+                    // Not selected - add as secondary
+                    if (orientierungen.length === 0) {
+                        // No primary yet - suggest selecting primary first
+                        showSoftWarning({
+                            title: 'Primär erforderlich',
+                            message: 'Bitte wähle zuerst eine Primäre Orientierung.',
+                            detail: 'Sekundäre Orientierungen ergänzen die Primäre.'
+                        });
+                        return;
+                    }
+
+                    // Check KO rules
+                    const primary = orientierungen[0];
+                    const excludedByPrimary = exclusionRules[primary] || [];
+                    const excludedByNew = exclusionRules[orientierungValue] || [];
+
+                    if (excludedByPrimary.includes(orientierungValue) || excludedByNew.includes(primary)) {
+                        showSoftWarning({
+                            title: 'Diese Kombination ist nicht möglich',
+                            message: `"${TiageConfig.ORIENTIERUNG_LABELS[primary] || primary}" (primär) ist mit "${TiageConfig.ORIENTIERUNG_LABELS[orientierungValue] || orientierungValue}" inkompatibel.`,
+                            detail: 'Nur Hetero und Gay/Lesbisch können nicht kombiniert werden.'
+                        });
+                        return;
+                    }
+
+                    // Add as secondary
+                    orientierungen.push(orientierungValue);
+                    console.log('[TIAGE] Neue Sekundäre Orientierung:', orientierungValue);
+                }
+            }
+
+            // Sync with mobilePersonDimensions
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].orientierung = [...orientierungen];
+            }
+
+            // Sync with TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.orientierung`, orientierungen);
+                TiageState.saveToStorage();
+            }
+
+            // Sync UI
+            syncOrientierungUI(person);
+
+            // Update needs-selection class
+            const hasOrientierung = orientierungen.length > 0;
+            document.querySelectorAll(`[data-dimension="${person}-orientierung-multi"], [data-dimension="mobile-${person}-orientierung"], [data-dimension="${person}-orientierung"]`).forEach(dim => {
+                if (hasOrientierung) {
+                    dim.classList.remove('needs-selection');
+                } else {
+                    dim.classList.add('needs-selection');
+                }
+            });
+
+            // Update Resonanzfaktoren (same as handleOrientierungClick)
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                    if (resonanzLoaded) {
+                        console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
+                    }
+                }
+            }
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
          * v4.0: Sync Orientierung UI für Multi-Select Array
+         * v4.2: Added support for mobile list-style UI with Primär/Sekundär toggle buttons
          */
         function syncOrientierungUI(person) {
             const orientierungen = personDimensions[person].orientierung;
@@ -5215,11 +5421,10 @@
                 return;
             }
 
-            // Button-Selektoren für Orientierung
+            // === Desktop/Modal Button-Selektoren (old style with P/S badges) ===
             const selectors = [
                 `.orientierung-grid[data-person="${person}"] .orientierung-btn`,
                 `#${person}-orientierung-grid .orientierung-btn`,
-                `#mobile-${person}-orientierung-grid .orientierung-btn`,
                 `#modal-${person}-orientierung-grid .orientierung-btn`
             ];
 
@@ -5257,6 +5462,38 @@
                     }
                 });
             });
+
+            // === Mobile List-Style UI (v4.2 - Dominanz-like with Primär/Sekundär buttons) ===
+            const mobileGrid = document.querySelector(`#mobile-${person}-orientierung-grid.orientierung-multi-select`);
+            if (mobileGrid) {
+                // Update each row
+                mobileGrid.querySelectorAll('.orientierung-option-row').forEach(row => {
+                    const value = row.dataset.value;
+                    const index = orientierungen.indexOf(value);
+
+                    // Reset row classes
+                    row.classList.remove('has-primary', 'has-secondary');
+
+                    // Reset button states
+                    row.querySelectorAll('.status-toggle-btn').forEach(btn => {
+                        btn.classList.remove('active-primaer', 'active-sekundaer');
+                    });
+
+                    if (index > -1) {
+                        if (index === 0) {
+                            // This is the primary orientation
+                            row.classList.add('has-primary');
+                            const primaerBtn = row.querySelector('.status-toggle-btn[data-status="primaer"]');
+                            if (primaerBtn) primaerBtn.classList.add('active-primaer');
+                        } else {
+                            // This is a secondary orientation
+                            row.classList.add('has-secondary');
+                            const sekundaerBtn = row.querySelector('.status-toggle-btn[data-status="sekundaer"]');
+                            if (sekundaerBtn) sekundaerBtn.classList.add('active-sekundaer');
+                        }
+                    }
+                });
+            }
 
             // Summary aktualisieren
             updateOrientierungSummary(person);

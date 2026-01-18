@@ -764,10 +764,71 @@ body {
     }
 
     /* ========================================
+       MOBILE ORIENTIERUNG MULTI-SELECT (List Style)
+       Styled like Dominanz for consistent mobile UX
+       ======================================== */
+
+    .orientierung-multi-select {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .orientierung-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+    }
+
+    .orientierung-option-row.has-primary {
+        border-color: var(--primary);
+        background: rgba(255, 0, 255, 0.08);
+    }
+
+    .orientierung-option-row.has-secondary {
+        border-color: rgba(234, 179, 8, 0.6);
+        background: rgba(234, 179, 8, 0.08);
+    }
+
+    .orientierung-option-row.has-primary.has-secondary {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, rgba(255, 0, 255, 0.08) 0%, rgba(234, 179, 8, 0.08) 100%);
+    }
+
+    .orientierung-label {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    /* Primär Status - Active (magenta like primary) */
+    .orientierung-option-row .status-toggle-btn.active-primaer {
+        background: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+        font-weight: 600;
+    }
+
+    /* Sekundär Status - Active (yellow/gold) */
+    .orientierung-option-row .status-toggle-btn.active-sekundaer {
+        background: #eab308 !important;
+        color: #1a1a2e !important;
+        border-color: #eab308 !important;
+        box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+        font-weight: 600;
+    }
+
+    /* ========================================
        BLINKEN DEAKTIVIEREN (Mobile)
        ======================================== */
     .compact-dimension.needs-selection .compact-option,
     .compact-dimension.needs-selection .dominanz-option-row,
+    .compact-dimension.needs-selection .orientierung-option-row,
     .needs-selection {
         animation: none !important;
     }
