@@ -1421,3 +1421,74 @@ body {
 .geschlecht-s-grid .geschlecht-btn {
     border-style: dashed;
 }
+
+/* ========================================
+   MOBILE ORIENTIERUNG GRID (v4.1 Multi-Select)
+   ======================================== */
+
+.mobile-orientierung-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    padding: 4px;
+}
+
+.mobile-orientierung-grid .orientierung-btn {
+    flex: 0 1 auto;
+    min-width: 70px;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.mobile-orientierung-grid .orientierung-btn:hover,
+.mobile-orientierung-grid .orientierung-btn:active {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+.mobile-orientierung-grid .orientierung-btn.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.mobile-orientierung-grid .orientierung-btn.primary-selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.mobile-orientierung-grid .orientierung-btn.secondary-selected {
+    background: rgba(234, 179, 8, 0.25);
+    border-color: rgba(234, 179, 8, 0.6);
+    color: var(--text-primary);
+}
+
+.mobile-orientierung-grid .orientierung-btn .geschlecht-indicator {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--bg-card);
+}
+
+.mobile-orientierung-grid .orientierung-btn.secondary-selected .geschlecht-indicator {
+    background: rgba(234, 179, 8, 0.9);
+}

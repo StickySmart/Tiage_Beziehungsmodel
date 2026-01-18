@@ -1132,42 +1132,12 @@
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
-                        <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row" id="m-ich-o-het-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</span>
-                                <div id="m-ich-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-ich-o-hom-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</span>
-                                <div id="m-ich-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-ich-o-bi-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</span>
-                                <div id="m-ich-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-ich-o-pan-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('pansexuell')" style="cursor: pointer;">pansexuell</span>
-                                <div id="m-ich-o-pan-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'pansexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'pansexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-ich-o-queer-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('queer')" style="cursor: pointer;">queer</span>
-                                <div id="m-ich-o-queer-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'queer', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'queer', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
+                        <div class="orientierung-grid mobile-orientierung-grid" id="mobile-ich-orientierung-grid" data-person="ich">
+                            <button type="button" class="orientierung-btn" data-value="heterosexuell" onclick="handleOrientierungClick('ich', 'heterosexuell', this)">Hetero</button>
+                            <button type="button" class="orientierung-btn" data-value="homosexuell" onclick="handleOrientierungClick('ich', 'homosexuell', this)">Gay/Lesbisch</button>
+                            <button type="button" class="orientierung-btn" data-value="bisexuell" onclick="handleOrientierungClick('ich', 'bisexuell', this)">Bisexuell</button>
+                            <button type="button" class="orientierung-btn" data-value="pansexuell" onclick="handleOrientierungClick('ich', 'pansexuell', this)">Pansexuell</button>
+                            <button type="button" class="orientierung-btn" data-value="queer" onclick="handleOrientierungClick('ich', 'queer', this)">Queer</button>
                         </div>
                     </div>
                     <!-- GFK-Kompetenz Grid für ICH (Mobile) -->
@@ -1310,42 +1280,12 @@
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
-                        <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row" id="m-partner-o-het-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</span>
-                                <div id="m-partner-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-o-hom-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</span>
-                                <div id="m-partner-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-o-bi-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</span>
-                                <div id="m-partner-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-o-pan-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('pansexuell')" style="cursor: pointer;">pansexuell</span>
-                                <div id="m-partner-o-pan-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'pansexuell', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'pansexuell', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-o-queer-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('queer')" style="cursor: pointer;">queer</span>
-                                <div id="m-partner-o-queer-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'queer', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'queer', 'interessiert', this)">Interessiert</button>
-                                </div>
-                            </div>
+                        <div class="orientierung-grid mobile-orientierung-grid" id="mobile-partner-orientierung-grid" data-person="partner">
+                            <button type="button" class="orientierung-btn" data-value="heterosexuell" onclick="handleOrientierungClick('partner', 'heterosexuell', this)">Hetero</button>
+                            <button type="button" class="orientierung-btn" data-value="homosexuell" onclick="handleOrientierungClick('partner', 'homosexuell', this)">Gay/Lesbisch</button>
+                            <button type="button" class="orientierung-btn" data-value="bisexuell" onclick="handleOrientierungClick('partner', 'bisexuell', this)">Bisexuell</button>
+                            <button type="button" class="orientierung-btn" data-value="pansexuell" onclick="handleOrientierungClick('partner', 'pansexuell', this)">Pansexuell</button>
+                            <button type="button" class="orientierung-btn" data-value="queer" onclick="handleOrientierungClick('partner', 'queer', this)">Queer</button>
                         </div>
                     </div>
                     <!-- GFK-Kompetenz Grid für PARTNER (Mobile) -->
