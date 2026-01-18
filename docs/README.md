@@ -119,12 +119,12 @@ Die App bietet vier philosophische Perspektiven auf jeden Bedürfnis-Eintrag:
 Alle Entitäten verwenden eindeutige IDs für konsistente Referenzierung:
 
 - **#AID** - Archetyp-IDs (#A01-#A08)
-- **#BID** - Bedürfnis-IDs (#B01-#B220)
+- **#BID** - Bedürfnis-IDs (#B01-#B226)
 - **#PID** - Perspektiven-IDs (#P1-#P4)
 
 ### Bedürfnis-Matching
 
-220 Bedürfnisse (inkl. 88 GFK-spezifische) werden zwischen Partnern verglichen:
+226 Bedürfnisse (#B1-#B226) werden zwischen Partnern verglichen:
 
 - Wildcard-Suche über Name, Kategorie, Dimension
 - Sortierung nach Erfüllungsgrad

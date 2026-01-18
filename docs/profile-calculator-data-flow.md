@@ -43,7 +43,7 @@ Der **ProfileCalculator** ist das zentrale Modul für die Berechnung und Verwalt
 │   │    geschlecht: { primary, secondary },                       │          │
 │   │    dominanz: { primary, secondary },                         │          │
 │   │    orientierung: { primary, secondary },                     │          │
-│   │    profileReview: { flatNeeds: {...} },    ← 220 Bedürfnisse │          │
+│   │    profileReview: { flatNeeds: {...} },    ← 226 Bedürfnisse │          │
 │   │    gewichtungen: { O, A, D, G },           ← Faktor-Gewichte │          │
 │   │    resonanzFaktoren: { R1, R2, R3, R4 }    ← Resonanzwerte   │          │
 │   │  }                                                           │          │
@@ -214,10 +214,10 @@ function calculateResonanzFaktoren(profileContext) {
 
 | Faktor | Dimension | Kategorien | Wertebereich |
 |--------|-----------|------------|--------------|
-| R1 | Leben | existenz, zuneigung, musse | 0.5 - 1.5 |
-| R2 | Philosophie | freiheit, teilnahme, identitaet | 0.5 - 1.5 |
-| R3 | Kink | dynamik, sicherheit | 0.5 - 1.5 |
-| R4 | Identität | verstaendnis, erschaffen, verbundenheit | 0.5 - 1.5 |
+| R1 | Leben | existenz, zuneigung, musse | 0 - 2 (praktisch 0.8-1.3) |
+| R2 | Philosophie | freiheit, teilnahme, identitaet | 0 - 2 (praktisch 0.8-1.3) |
+| R3 | Dynamik | dynamik, sicherheit | 0 - 2 (praktisch 0.8-1.3) |
+| R4 | Identität | verstaendnis, erschaffen, verbundenheit | 0 - 2 (praktisch 0.8-1.3) |
 
 ---
 
@@ -317,7 +317,7 @@ function applyMeData(data) {
         orientierung: { primary: 'hetero', secondary: null },
         profileReview: {
             flatNeeds: {
-                '#B1': 75,    // 220 Bedürfnisse
+                '#B1': 75,    // 226 Bedürfnisse
                 '#B2': 60,
                 // ...
             }
@@ -444,7 +444,7 @@ MemoryManager ──────────────┬──────> P
 
 - Archetyp-Key muss in `BaseArchetypProfile` existieren
 - flatNeeds-Werte werden auf 0-100 begrenzt
-- Resonanzfaktoren werden auf 0.5-1.5 begrenzt
+- Resonanzfaktoren: Wertebereich 0-2 (praktisch 0.8-1.3)
 
 ---
 

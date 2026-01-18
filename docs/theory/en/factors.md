@@ -155,10 +155,10 @@ R_dim = 0.9 + (Match_dim × 0.2)
 | R-Value | Status | Symbol |
 |---------|--------|--------|
 | ≥ 1.05 | Resonance | ⬆️ |
-| 0.97-1.05 | Neutral | ➡️ |
-| ≤ 0.97 | Dissonance | ⬇️ |
+| 0.95-1.05 | Neutral | ➡️ |
+| ≤ 0.95 | Dissonance | ⬇️ |
 
-The resonance coefficient moves between **0.9 and 1.1** per dimension.
+The resonance coefficient moves between **0 and 2** (practically 0.8 - 1.3) per dimension.
 
 ---
 
@@ -176,7 +176,7 @@ Where:
 
 ### Important Distinction
 
-- **88 NVC Needs** → Emotional Match in the resonance formula
+- **226 Needs** (#B1-#B226) → Emotional Match in the resonance formula
 - **30 baseAttributes** → Lifestyle filter (K.O. criteria like desire for children, living arrangement)
 
 ---
