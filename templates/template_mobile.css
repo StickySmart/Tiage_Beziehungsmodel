@@ -769,20 +769,35 @@ body {
        ======================================== */
 
     .orientierung-multi-select {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
     }
 
     .orientierung-option-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
         padding: 8px 12px;
         background: rgba(255,255,255,0.03);
         border-radius: 8px;
         border: 1px solid var(--border);
         transition: all 0.2s ease;
+    }
+
+    .orientierung-option-row .orientierung-label {
+        flex: 1 1 auto;
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .orientierung-option-row .status-toggle-group {
+        flex: 0 0 auto;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 6px;
     }
 
     .orientierung-option-row.has-primary {
@@ -798,11 +813,6 @@ body {
     .orientierung-option-row.has-primary.has-secondary {
         border-color: var(--primary);
         background: linear-gradient(135deg, rgba(255, 0, 255, 0.08) 0%, rgba(234, 179, 8, 0.08) 100%);
-    }
-
-    .orientierung-label {
-        font-size: var(--font-sm);
-        color: var(--text-secondary);
     }
 
     /* Primär Status - Active (magenta like primary) */
