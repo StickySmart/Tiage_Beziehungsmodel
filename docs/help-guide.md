@@ -31,7 +31,7 @@ Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
 ### Schritt 1: Eingabe
 
-Jede Person gibt ein: **Archetyp** (8 Typen), **Orientierung**, **Dominanz**, **Geschlecht** und **224 Bedürfnisse** (0-100).
+Jede Person gibt ein: **Archetyp** (8 Typen), **Orientierung**, **Dominanz**, **Geschlecht** und **226 Bedürfnisse** (0-100).
 
 ### Schritt 2: Archetyp-Abweichung
 
@@ -45,7 +45,7 @@ Die R-Faktoren beider Personen fließen in die Kompatibilitätsberechnung ein:
 
 1. **Lifestyle-Filter** – K.O.-Kriterien prüfen (z.B. Kinderwunsch)
 2. **Faktor-Scores** – Matrix-basierte Kompatibilität pro Faktor
-3. **Bedürfnis-Match** – Alle 224 Bedürfnisse vergleichen
+3. **Bedürfnis-Match** – Alle 226 Bedürfnisse vergleichen
 4. **Finale Berechnung** – Mit R-Faktoren multiplizieren
 
 ---
@@ -72,22 +72,23 @@ Q = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
 Die R-Faktoren messen die Kohärenz zwischen deinen Bedürfnissen und dem Archetyp-Ideal:
 
 ```
-R = 0.5 + (Match × 1.0)    // Range: 0.5 - 1.5
+R = avgMatch² (quadratisch mit Komplementär-Mapping)
+similarity = 1 - (avgDiff / 100)
+R = similarity²
+// Wertebereich: 0 - 2 (praktisch 0.8 - 1.3)
 ```
 
 | R-Wert | Status | Bedeutung |
 |--------|--------|-----------|
-| ≥ 1.3 | ⬆️⬆️ Starke Resonanz | Sehr hohe Kohärenz mit Archetyp |
-| 1.05-1.29 | ⬆️ Resonanz | Gute Kohärenz |
+| ≥ 1.05 | ⬆️ Resonanz | Verstärkter Match |
 | 0.95-1.04 | ➡️ Neutral | Durchschnittliche Kohärenz |
-| 0.7-0.94 | ⬇️ Dissonanz | Geringe Kohärenz |
-| < 0.7 | ⬇️⬇️ Starke Dissonanz | Archetyp passt nicht zu Bedürfnissen |
+| ≤ 0.95 | ⬇️ Dissonanz | Geschwächter Match |
 
 ---
 
-## Bedürfnis-Übereinstimmung (224 Bedürfnisse)
+## Bedürfnis-Übereinstimmung (226 Bedürfnisse)
 
-Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über alle 224 Bedürfnisse:
+Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über alle 226 Bedürfnisse:
 
 ```
 Für JEDES Bedürfnis:
@@ -102,7 +103,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 
 | Kategorie | IDs | Anzahl |
 |-----------|-----|--------|
-| GFK-Kern | #B1-#B88 | 88 |
+| Kernbedürfnisse | #B1-#B88 | 88 |
 | Spezial | #B89 | 1 |
 | Lebensplanung | #B90-#B126 | 37 |
 | Finanzen & Karriere | #B127-#B148 | 22 |
@@ -110,8 +111,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 | Soziales Leben | #B177-#B203 | 27 |
 | Intimität & Romantik | #B204-#B208 | 5 |
 | Dynamik erweitert | #B209-#B220 | 12 |
-| Osho-Zen Integration | #B221-#B224 | 4 |
-| **Total** | | **224** |
+| Sexuelle Bedürfnisse | #B221-#B224 | 4 |
+| Symmetrische Paare | #B225-#B226 | 2 |
+| **Total** | | **226** |
 
 ### Bewertung
 

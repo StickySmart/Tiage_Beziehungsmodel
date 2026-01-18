@@ -4,7 +4,7 @@
 
 ## Was ist Resonanz?
 
-Resonanz (R) ist ein **Meta-Faktor** (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.
+Resonanz (R) ist ein **Meta-Faktor** (0-2, praktisch 0.8-1.3), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.
 
 > *"Wahrnehmung basiert auf Schwingungen und Mustern. Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen."*
 
@@ -15,11 +15,11 @@ Resonanz (R) ist ein **Meta-Faktor** (0.9-1.1), der moduliert, wie gut Kopf (Log
 R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
-### Multi-Dimensionale Resonanz (v3.3)
+### Multi-Dimensionale Resonanz (v3.4)
 
-**Aktuell:** Resonanz basiert auf **18 GFK-Kategorien**, die auf 4 Resonanzfaktoren aggregiert werden.
+**Aktuell:** Resonanz basiert auf **18 Kategorien**, die auf 4 Resonanzfaktoren aggregiert werden.
 
-#### Sekundäre Kategorien (NEU in v3.3)
+#### Sekundäre Kategorien
 
 Bedürfnisse können zu **mehreren Kategorien** beitragen:
 - **Primäre Kategorie:** 100% Gewichtung
@@ -28,35 +28,39 @@ Bedürfnisse können zu **mehreren Kategorien** beitragen:
 *Beispiel:* "Berührung" (primär: Existenz, sekundär: Zuneigung, Dynamik, Sicherheit)
 → Bei Wert 80: Existenz +80, Zuneigung +24, Dynamik +24, Sicherheit +24
 
-#### R-Formel (v3.3)
+#### R-Formel (v3.4)
 
 ```
-R = 0.5 + (Score / 100)
+R = avgMatch² (quadratisch mit Komplementär-Mapping)
 
-Score 0   → R = 0.5  (minimale Resonanz)
-Score 50  → R = 1.0  (neutral)
-Score 100 → R = 1.5  (maximale Resonanz)
+similarity = 1 - (avgDiff / 100)
+R = similarity²
+
+Beispiele:
+similarity 1.0  → R = 1.0  (perfekte Übereinstimmung)
+similarity 0.9  → R = 0.81 (gute Übereinstimmung)
+similarity 1.1  → R = 1.21 (leicht über Archetyp-typisch)
 
 Finale Berechnung:
 Q = (A×w_A×R2) + (O×w_O×R1) + (D×w_D×R3) + (G×w_G×R4)
 ```
 
 **Faktor-Resonanz-Mapping:**
-| Faktor | Gewicht | × | Resonanz | Kategorien |
-|--------|---------|---|----------|------------|
-| A (Archetyp) | 25% | × | 🧠 R2 Philosophie | 8 Kategorien |
-| O (Orientierung) | 25% | × | 🔥 R1 Leben | 4 Kategorien |
-| D (Dominanz) | 25% | × | ⚡ R3 Dynamik | 2 Kategorien |
-| G (Geschlecht) | 25% | × | 💚 R4 Identität | 4 Kategorien |
+| Faktor | Gewicht | × | Resonanz | Needs |
+|--------|---------|---|----------|-------|
+| A (Archetyp) | 25% | × | 🧠 R2 Philosophie | 19 Needs |
+| O (Orientierung) | 25% | × | 🔥 R1 Leben | 18 Needs |
+| D (Dominanz) | 25% | × | ⚡ R3 Dynamik | 18 Needs |
+| G (Geschlecht) | 25% | × | 💚 R4 Identität | 10 Needs |
 
 **Interpretation pro Dimension:**
 | R-Wert | Status | Symbol |
 |--------|--------|--------|
-| ≥ 1.1 | Starke Resonanz | ⬆️ |
-| 0.9-1.1 | Neutral | ➡️ |
-| ≤ 0.9 | Dissonanz | ⬇️ |
+| ≥ 1.05 | Resonanz | ⬆️ |
+| 0.95-1.05 | Neutral | ➡️ |
+| ≤ 0.95 | Dissonanz | ⬇️ |
 
-**Wertebereich:** R variiert zwischen 0.5 (minimale Resonanz) und 1.5 (maximale Resonanz).
+**Wertebereich:** R variiert zwischen 0 und 2 (praktisch 0.8 - 1.3).
 
 ## Die 18 Kategorien und ihre Zuordnung (v3.3)
 
@@ -92,7 +96,7 @@ Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
 │  Profil1_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
 │  Profil2_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
 │                                                                             │
-│  → Jedes Profil hat ~220 Bedürfnisse mit Werten 0-100                       │
+│  → Jedes Profil hat 226 Bedürfnisse mit Werten 0-100                        │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │
                                       ▼
@@ -140,13 +144,13 @@ Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
                                       │
                                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 4: R-Werte berechnen (v3.3)                            │
-│              R = 0.5 + (Score / 100)                                        │
+│              SCHRITT 4: R-Werte berechnen (v3.4)                            │
+│              R = similarity² (quadratisch)                                  │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  Score=80  → R=0.5+(80/100)=1.30  ⬆️ Starke Resonanz (≥1.1)                 │
-│  Score=50  → R=0.5+(50/100)=1.00  ➡️ Neutral         (0.9-1.1)              │
-│  Score=30  → R=0.5+(30/100)=0.80  ⬇️ Dissonanz       (≤0.9)                 │
+│  similarity=1.10  → R=1.10²=1.21  ⬆️ Resonanz     (≥1.05)                   │
+│  similarity=1.00  → R=1.00²=1.00  ➡️ Neutral      (0.95-1.05)               │
+│  similarity=0.90  → R=0.90²=0.81  ⬇️ Dissonanz    (≤0.95)                   │
 │                                                                             │
 │  ┌──────────────┬──────────────┬──────────────┬──────────────┐              │
 │  │ 🔥 R1 Leben  │ 🧠 R2 Phil   │ ⚡ R3 Dyn    │ 💚 R4 Ident  │              │
@@ -208,10 +212,10 @@ Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
 
 ### Komponente 1: Profil-Match (M)
 
-Ähnlichkeit der **88 GFK-Bedürfnisse** zwischen zwei Profilen.
+Ähnlichkeit der **226 Bedürfnisse** (#B1-#B226) zwischen zwei Profilen.
 
 > **Hinweis:** Das System unterscheidet zwischen zwei Matching-Ebenen:
-> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **226 Bedürfnisse** (#B1-#B226) → Emotionaler Match (M) in der Resonanz-Formel
 > - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
 #### Berechnung
@@ -236,9 +240,9 @@ M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
 
 *Beispiel: Bei 72% gewichteter Übereinstimmung: M = 72*
 
-#### Die 88 GFK-Bedürfnisse (Auszug)
+#### Die 226 Bedürfnisse (Auszug)
 
-Die Bedürfnisse basieren auf Marshall Rosenbergs Gewaltfreier Kommunikation:
+Die Bedürfnisse umfassen verschiedene Kategorien:
 
 - **Verbindung:** Nähe, Akzeptanz, Vertrauen, Empathie, Gemeinschaft
 - **Autonomie:** Unabhängigkeit, Selbstbestimmung, Raum haben, Wahlfreiheit

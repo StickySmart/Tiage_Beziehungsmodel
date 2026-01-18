@@ -141,24 +141,26 @@ Jeder Faktor hat seine **eigene Resonanz-Dimension** basierend auf dem Bedürfni
 
 | Dimension | Emoji | Faktor | Bedürfnisse |
 |-----------|-------|--------|-------------|
-| **R_Philosophie** | 🧠 | Archetyp | 17 Needs (Bindung, Autonomie, Lebensplanung) |
+| **R_Philosophie** | 🧠 | Archetyp | 19 Needs (Bindung, Autonomie, Lebensplanung) |
 | **R_Leben** | 🔥 | Orientierung | 18 Needs (Sexualität, Intimität, Tantra) |
 | **R_Dynamik** | ⚡ | Dominanz | 18 Needs (Führung, Hingabe, Machtdynamik) |
 | **R_Identität** | 💚 | Geschlecht | 10 Needs (Authentizität, Selbstausdruck) |
 
-**Formel pro Dimension:**
+**Formel pro Dimension (v3.4):**
 ```
-R_dim = 0.9 + (Match_dim × 0.2)
+R = avgMatch² (quadratisch mit Komplementär-Mapping)
+similarity = 1 - (avgDiff / 100)
+R = similarity²
 ```
 
 **Interpretation:**
 | R-Wert | Status | Symbol |
 |--------|--------|--------|
 | ≥ 1.05 | Resonanz | ⬆️ |
-| 0.97-1.05 | Neutral | ➡️ |
-| ≤ 0.97 | Dissonanz | ⬇️ |
+| 0.95-1.05 | Neutral | ➡️ |
+| ≤ 0.95 | Dissonanz | ⬇️ |
 
-Der Resonanz-Koeffizient bewegt sich zwischen **0.9 und 1.1** pro Dimension.
+Der Resonanz-Koeffizient bewegt sich zwischen **0 und 2** (praktisch 0.8 - 1.3) pro Dimension.
 
 ---
 
@@ -176,7 +178,7 @@ Wobei:
 
 ### Wichtige Unterscheidung
 
-- **88 GFK-Bedürfnisse** → Emotionaler Match in der Resonanz-Formel
+- **226 Bedürfnisse** (#B1-#B226) → Emotionaler Match in der Resonanz-Formel
 - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
 ---

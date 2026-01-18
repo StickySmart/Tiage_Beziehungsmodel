@@ -51,7 +51,7 @@ Factor = (Matrix × matrixWeight) + (NeedsMatch × needsWeight)
 | **O** | Orientation Score | 25% | PATHOS | `constants.js:25` | `orientationFactor.js` |
 | **D** | Dominance Score | 25% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
 | **G** | Gender Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
-| **R** | Resonance Coefficient | ×0.9-1.1 | Meta | `synthesisCalculator.js:747-776` | Calculated |
+| **R** | Resonance Coefficient | 0-2 (practically 0.8-1.3) | Meta | `synthesisCalculator.js` (v3.4) | Calculated |
 
 ---
 

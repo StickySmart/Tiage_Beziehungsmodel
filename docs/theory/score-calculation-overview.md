@@ -7,7 +7,7 @@
 ## Hauptformel (v3.1)
 
 ```
-Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
+Q = (A × 0.25 × R_Philosophie) + (O × 0.25 × R_Leben) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
 
 Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
@@ -19,7 +19,9 @@ Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
 | D (Dominanz) | 25% | ⚡ R_Dynamik |
 | G (Geschlecht) | 25% | 💚 R_Identität |
 
-**Quelle:** `js/synthesis/synthesisCalculator.js:6` und `js/synthesis/constants.js:7`
+> **Hinweis:** Die Gewichtungen sind dynamisch via UI-Slider anpassbar. 25% ist der Default.
+
+**Quelle:** `js/synthesis/synthesisCalculator.js:8` und `js/synthesis/constants.js:147-152`
 
 ---
 
@@ -67,7 +69,7 @@ Dominanz:
 | **O** | Orientierungs-Score | 25% | PATHOS | `constants.js:25` | `orientationFactor.js` |
 | **D** | Dominanz-Score | 25% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
 | **G** | Geschlechts-Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
-| **R** | Resonanz-Koeffizient | ×0.9-1.1 | Meta | `synthesisCalculator.js:747-776` | Berechnet |
+| **R** | Resonanz-Koeffizient | 0-2 (praktisch 0.8-1.3) | Meta | `synthesisCalculator.js` (v3.4) | Berechnet |
 
 ---
 
@@ -133,16 +135,18 @@ Dominanz:
 │                                                                                 │
 │   Jeder Faktor hat seine EIGENE Resonanz-Dimension:                             │
 │                                                                                 │
-│   R_Philosophie = 0.9 + (Match_archetyp × 0.2)      🧠 17 Needs                 │
-│   R_Leben       = 0.9 + (Match_orientierung × 0.2)  🔥 18 Needs                 │
-│   R_Dynamik     = 0.9 + (Match_dominanz × 0.2)      ⚡ 18 Needs                 │
-│   R_Identität   = 0.9 + (Match_geschlecht × 0.2)    💚 10 Needs                 │
+│   R = avgMatch² (v3.4 quadratisch mit Komplementär-Mapping)                    │
+│                                                                                 │
+│   R_Philosophie = similarity²      🧠 19 Needs                                  │
+│   R_Leben       = similarity²      🔥 18 Needs                                  │
+│   R_Dynamik     = similarity²      ⚡ 18 Needs                                  │
+│   R_Identität   = similarity²      💚 10 Needs                                  │
 │                                                                                 │
 │   ┌───────────────────────────────────────────────────────────────────────┐     │
 │   │ BEDÜRFNIS-DIMENSIONEN (disjunkt, keine Überlappung)                   │     │
 │   │ Quelle: constants.js:NEEDS_INTEGRATION                                │     │
 │   │                                                                       │     │
-│   │ 🧠 ARCHETYP_NEEDS (17):                                               │     │
+│   │ 🧠 ARCHETYP_NEEDS (19):                                               │     │
 │   │    kinderwunsch, langfristige_bindung, nicht_anhaften...              │     │
 │   │                                                                       │     │
 │   │ 🔥 ORIENTIERUNG_NEEDS (18):                                           │     │
@@ -156,20 +160,20 @@ Dominanz:
 │   └───────────────────────────────────────────────────────────────────────┘     │
 │                                                                                 │
 │   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ INTERPRETATION PRO DIMENSION                                          │     │
-│   │ Quelle: constants.js:RESONANCE_DIMENSIONAL.THRESHOLDS                 │     │
+│   │ INTERPRETATION PRO DIMENSION (v3.4)                                   │     │
+│   │ Quelle: constants.js:FORMULAS.r_factor.thresholds                     │     │
 │   │                                                                       │     │
-│   │   R ≥ 1.05  →  Resonanz ⬆️   (gute Schwingung)                        │     │
-│   │   R 0.97-1.05 → Neutral ➡️   (ausgewogen)                             │     │
-│   │   R ≤ 0.97  →  Dissonanz ⬇️  (Spannung)                               │     │
+│   │   R ≥ 1.05  →  Resonanz ⬆️   (verstärkter Match)                      │     │
+│   │   R 0.95-1.05 → Neutral ➡️   (ausgewogen)                             │     │
+│   │   R ≤ 0.95  →  Dissonanz ⬇️  (geschwächter Match)                     │     │
 │   │                                                                       │     │
-│   │ Wertebereich: 0.9 - 1.1 pro Dimension                                 │     │
+│   │ Wertebereich: 0 - 2 (praktisch 0.8 - 1.3)                             │     │
 │   └───────────────────────────────────────────────────────────────────────┘     │
 │                                                                                 │
-│   RESONANZ-KONSTANTEN (constants.js:66-103):                                    │
-│   - RESONANCE_DIMENSIONAL.ENABLED: true                                         │
-│   - THRESHOLDS.resonanz: 1.05                                                   │
-│   - THRESHOLDS.dissonanz: 0.97                                                  │
+│   RESONANZ-KONSTANTEN (constants.js:28-45):                                     │
+│   - R-Formel: R = avgMatch² (v3.4 quadratisch)                                  │
+│   - THRESHOLDS.resonance: 1.05                                                  │
+│   - THRESHOLDS.dissonance: 0.95                                                 │
 │   - Alle 4 Dimensionen: weight = 0.25                                           │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
@@ -183,19 +187,19 @@ Dominanz:
 │   Jeder Faktor wird mit SEINER Resonanz-Dimension multipliziert:                │
 │                                                                                 │
 │   finalScore = Math.round(                                                      │
-│       (A × 0.15 × R_Philosophie) +                               🧠             │
-│       (O × 0.40 × R_Leben) +                                     🔥             │
-│       (D × 0.20 × R_Dynamik) +                                   ⚡             │
+│       (A × 0.25 × R_Philosophie) +                               🧠             │
+│       (O × 0.25 × R_Leben) +                                     🔥             │
+│       (D × 0.25 × R_Dynamik) +                                   ⚡             │
 │       (G × 0.25 × R_Identität)                                   💚             │
 │   )                                                                             │
 │                                                                                 │
-│   Beispiel:                                                                     │
-│   A=75 × 0.15 × R_Phil=0.96   = 10.8  🧠                                        │
-│   O=100 × 0.40 × R_Leben=1.08 = 43.2  🔥                                        │
-│   D=100 × 0.20 × R_Dyn=1.02   = 20.4  ⚡                                        │
+│   Beispiel (mit Default-Gewichtungen 25%):                                      │
+│   A=75 × 0.25 × R_Phil=0.96   = 18.0  🧠                                        │
+│   O=100 × 0.25 × R_Leben=1.08 = 27.0  🔥                                        │
+│   D=100 × 0.25 × R_Dyn=1.02   = 25.5  ⚡                                        │
 │   G=90 × 0.25 × R_Ident=1.06  = 23.9  💚                                        │
 │   ─────────────────────────────────────                                         │
-│   finalScore = 98                                                               │
+│   finalScore = 94                                                               │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                         │
@@ -209,16 +213,16 @@ Dominanz:
 │     score: finalScore,              // 0-100 (Zeile 127)                        │
 │     baseScore: baseScore,           // Vor Resonanz (Zeile 128)                 │
 │                                                                                 │
-│     logos: {                        // (Zeile 209-213)                          │
+│     logos: {                        // Archetyp-Beitrag                         │
 │       score: A,                                                                 │
-│       weight: 0.15,                                                             │
-│       contribution: A × 0.15                                                    │
+│       weight: 0.25,                 // Default, via UI anpassbar                │
+│       contribution: A × 0.25                                                    │
 │     },                                                                          │
 │                                                                                 │
-│     pathos: {                       // (Zeile 214-222)                          │
+│     pathos: {                       // O+D+G-Beitrag                            │
 │       score: (O+D+G)/3,                                                         │
-│       weight: 0.85,                                                             │
-│       contribution: (O×0.40) + (D×0.20) + (G×0.25)                              │
+│       weight: 0.75,                 // Default (3 × 0.25)                        │
+│       contribution: (O×0.25) + (D×0.25) + (G×0.25)                              │
 │     },                                                                          │
 │                                                                                 │
 │     resonanz: {                     // (Zeile 568-575)                          │
@@ -228,12 +232,12 @@ Dominanz:
 │       gfk: { value: K, ... }                                                    │
 │     },                                                                          │
 │                                                                                 │
-│     breakdown: {                    // Einzelne Faktoren (Zeile 225-250)        │
-│       archetyp:     { score: A, weight: 0.15, category: 'logos' },              │
-│       orientierung: { score: O, weight: 0.40, category: 'pathos' },             │
-│       dominanz:     { score: D, weight: 0.20, category: 'pathos' },             │
+│     breakdown: {                    // Einzelne Faktoren                        │
+│       archetyp:     { score: A, weight: 0.25, category: 'logos' },              │
+│       orientierung: { score: O, weight: 0.25, category: 'pathos' },             │
+│       dominanz:     { score: D, weight: 0.25, category: 'pathos' },             │
 │       geschlecht:   { score: G, weight: 0.25, category: 'pathos' }              │
-│     },                                                                          │
+│     },   // Gewichtungen sind via UI-Slider anpassbar (Default: je 25%)         │                                                                          │
 │                                                                                 │
 │     meta: {                         // (Zeile 178-194)                          │
 │       isHardKO: boolean,            // Orientierung geometrisch unmöglich       │
@@ -293,7 +297,7 @@ ORIENTATION: {
 
 ---
 
-### 3. Dominanz (D) - 20% PATHOS
+### 3. Dominanz (D) - 25% PATHOS
 
 **Quelle:** `js/synthesis/factors/dominanceFactor.js`
 **Matrix:** `constants.js:96-122`
@@ -326,19 +330,21 @@ GENDER: {
 
 ---
 
-## Resonanz-Berechnung im Detail (v3.1)
+## Resonanz-Berechnung im Detail (v3.4)
 
-**Multi-Dimensionale Formel** (Quelle: `synthesisCalculator.js:852-907`):
+**Multi-Dimensionale Formel** (Quelle: `js/synthesis/constants.js:28-40`):
 
 ```
-R_dim = 0.9 + (Match_dim × 0.2)
+R = avgMatch² (quadratisch mit Komplementär-Mapping)
+similarity = 1 - (avgDiff / 100)
+R = similarity²
 ```
 
 Jede der 4 Dimensionen berechnet ihren eigenen R-Wert basierend auf dem Bedürfnis-Match:
 
 | Dimension | Bedürfnis-Quelle | Anzahl Needs |
 |-----------|------------------|--------------|
-| 🧠 R_Philosophie | ARCHETYP_NEEDS | 17 |
+| 🧠 R_Philosophie | ARCHETYP_NEEDS | 19 |
 | 🔥 R_Leben | ORIENTIERUNG_NEEDS | 18 |
 | ⚡ R_Dynamik | DOMINANZ_NEEDS | 18 |
 | 💚 R_Identität | GESCHLECHT_NEEDS | 10 |
@@ -359,13 +365,13 @@ Für jedes Bedürfnis in der Dimension wird die Ähnlichkeit berechnet und gemit
 
 ### Interpretation pro Dimension
 
-**Quelle:** `constants.js:98-102`
+**Quelle:** `constants.js:41-45`
 
 | R-Wert | Status | Bedeutung |
 |--------|--------|-----------|
-| ≥ 1.05 | ⬆️ Resonanz | Gute Schwingung in dieser Dimension |
-| 0.97-1.05 | ➡️ Neutral | Ausgewogen |
-| ≤ 0.97 | ⬇️ Dissonanz | Spannung in dieser Dimension |
+| ≥ 1.05 | ⬆️ Resonanz | Verstärkter Match in dieser Dimension |
+| 0.95-1.05 | ➡️ Neutral | Ausgewogen |
+| ≤ 0.95 | ⬇️ Dissonanz | Geschwächter Match in dieser Dimension |
 
 ---
 
@@ -392,29 +398,29 @@ logos = A = 75
 pathos = (100 + 100 + 100) / 3 = 100
 ```
 
-**Schritt 3: Multi-Dimensionale Resonanz (v3.1)**
+**Schritt 3: Multi-Dimensionale Resonanz (v3.4)**
 ```
 Match pro Dimension (angenommen):
-  Match_Philosophie  = 0.30  → R_Phil   = 0.9 + (0.30 × 0.2) = 0.96  🧠
-  Match_Leben        = 0.90  → R_Leben  = 0.9 + (0.90 × 0.2) = 1.08  🔥
-  Match_Dynamik      = 0.60  → R_Dyn    = 0.9 + (0.60 × 0.2) = 1.02  ⚡
-  Match_Identität    = 0.80  → R_Ident  = 0.9 + (0.80 × 0.2) = 1.06  💚
+  similarity_Phil   = 0.98  → R_Phil   = 0.98² = 0.96  🧠
+  similarity_Leben  = 1.04  → R_Leben  = 1.04² = 1.08  🔥
+  similarity_Dyn    = 1.01  → R_Dyn    = 1.01² = 1.02  ⚡
+  similarity_Ident  = 1.03  → R_Ident  = 1.03² = 1.06  💚
 ```
 
-**Schritt 4: Dimensionale Multiplikation (v3.1)**
+**Schritt 4: Dimensionale Multiplikation (v3.4)**
 ```
 finalScore = Math.round(
-  (75 × 0.15 × 0.96) +     = 10.8  🧠 (Archetyp × R_Philosophie)
-  (100 × 0.40 × 1.08) +    = 43.2  🔥 (Orientierung × R_Leben)
-  (100 × 0.20 × 1.02) +    = 20.4  ⚡ (Dominanz × R_Dynamik)
+  (75 × 0.25 × 0.96) +     = 18.0  🧠 (Archetyp × R_Philosophie)
+  (100 × 0.25 × 1.08) +    = 27.0  🔥 (Orientierung × R_Leben)
+  (100 × 0.25 × 1.02) +    = 25.5  ⚡ (Dominanz × R_Dynamik)
   (100 × 0.25 × 1.06)      = 26.5  💚 (Geschlecht × R_Identität)
 )
 ────────────────────────────────────
-finalScore = 101 → gecapped auf 100
+finalScore = 97
 ```
 
-> **Hinweis:** v3.1 kann durch dimensionale Resonanz-Unterschiede
-> andere Ergebnisse als die Legacy-Berechnung liefern.
+> **Hinweis:** v3.4 verwendet quadratische R-Formel (R = similarity²)
+> mit Komplementär-Mapping für Geben/Empfangen-Paare.
 
 ---
 

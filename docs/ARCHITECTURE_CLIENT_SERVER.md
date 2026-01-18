@@ -67,7 +67,7 @@ Alle Daten haben genau EINE autoritative Quelle:
 │  SSOT-VERZEICHNIS                                                           │
 │  ═══════════════════════════════════════════════════════════════════════════│
 │                                                                             │
-│  BEDÜRFNISSE (224 Stück, #B1-#B224)                                         │
+│  BEDÜRFNISSE (226 Stück, #B1-#B226)                                         │
 │  └── profiles/data/beduerfnis-katalog.json                                  │
 │      ├── Wrapper: profiles/definitions/beduerfnis-katalog.js                │
 │      └── Stellt BeduerfnisIds API bereit (beduerfnis-ids.js existiert nicht)│
@@ -78,7 +78,7 @@ Alle Daten haben genau EINE autoritative Quelle:
 │      ├── #D1-#D6  → 6 Dimensionen (Kurzform A-F)                           │
 │      └── #K1-#K18 → 18 Kategorien                                          │
 │                                                                             │
-│  ARCHETYP-PROFILE (8 Archetypen mit je 224 Bedürfnissen)                    │
+│  ARCHETYP-PROFILE (8 Archetypen mit je 226 Bedürfnissen)                    │
 │  └── profiles/archetypen/*.js                                               │
 │      ├── single.js, duo.js, duo_flex.js, lat.js                            │
 │      ├── solopoly.js, polyamor.js, ra.js, aromantisch.js                   │
@@ -169,7 +169,7 @@ Alle Daten haben genau EINE autoritative Quelle:
 │                                     ▼                                       │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │  DATA LAYER                                                         │    │
-│  │  ├── profiles/archetypen/*.js (224 Bedürfnisse pro Archetyp)        │    │
+│  │  ├── profiles/archetypen/*.js (226 Bedürfnisse pro Archetyp)        │    │
 │  │  ├── beduerfnis-katalog.json (Bedürfnis-Definitionen)               │    │
 │  │  ├── archetype-matrix.json (nur Archetyp-Definitionen, keine Matrix)│    │
 │  │  ├── Profile-Storage (MongoDB / PostgreSQL)                         │    │
@@ -196,7 +196,7 @@ Alle Daten haben genau EINE autoritative Quelle:
 │                                                                             │
 │  SORTIERUNG (2)                                                             │
 │  ──────────────────────────────────────────────────────────────────────────│
-│  POST /api/sort/needs               → 224 Bedürfnisse sortieren            │
+│  POST /api/sort/needs               → 226 Bedürfnisse sortieren            │
 │  POST /api/sort/categories          → 18 Kategorien nach Durchschnitt      │
 │                                                                             │
 │  FILTER (2)                                                                 │
@@ -224,7 +224,7 @@ Alle Daten haben genau EINE autoritative Quelle:
 │                                                                             │
 │  STAMMDATEN - READ-ONLY (4)                                                 │
 │  ──────────────────────────────────────────────────────────────────────────│
-│  GET /api/data/needs                → 224 Bedürfnisse (Katalog/Definition) │
+│  GET /api/data/needs                → 226 Bedürfnisse (Katalog/Definition) │
 │  GET /api/data/archetypes           → 8 Archetypen-Definitionen            │
 │  GET /api/data/taxonomy             → Perspektiven, Dimensionen, Kategorien│
 │  GET /api/data/archetype-profile/:name → 224 Gewichtungen für Archetyp     │
@@ -579,9 +579,9 @@ Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 │    }                                                                        │
 │  }                                                                          │
 │                                                                             │
-│  Wertebereich: 0.5 - 1.5                                                    │
+│  Wertebereich: 0 - 2 (praktisch 0.8 - 1.3)                                  │
 │  BERECHNUNG: NeedsIntegration.calculateDimensionalResonance(person)         │
-│  FORMEL: R = 0.5 + (Übereinstimmung × 1.0)                                  │
+│  FORMEL: R = avgMatch² (quadratisch mit Komplementär-Mapping)               │
 │                                                                             │
 │  HINWEIS: R-Faktoren werden AUTOMATISCH aus dem Profil berechnet.          │
 │           Es gibt KEINE Slider zur manuellen Anpassung.                    │
@@ -625,7 +625,7 @@ Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 │    ├── personDimensions (geschlecht, dominanz, orientierung)                │
 │    ├── gewichtungen (O, A, D, G mit value + locked)                         │
 │    ├── resonanzFaktoren (R1-R4 mit value + locked)                          │
-│    ├── flatNeeds (224 Bedürfnisse als Array)                                │
+│    ├── flatNeeds (226 Bedürfnisse als Array)                                │
 │    ├── lockedNeeds (manuell überschriebene Werte)                           │
 │    └── savedAt (Timestamp)                                                  │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -742,7 +742,7 @@ function validateSliderValue(value) {
 - [ ] `needsIntegration.js` → Server
 - [ ] `archetypeMatrixCalculator.js` → Server (berechnet Matrix aus Bedürfnissen)
 - [ ] Text-Generatoren → Server
-- [ ] `profiles/archetypen/*.js` → Server (224 Bedürfnisse/Archetyp)
+- [ ] `profiles/archetypen/*.js` → Server (226 Bedürfnisse/Archetyp)
 
 **Hinweis:** `top10RankingCalculator.js` ist bereits Dead Code (nicht in HTML geladen)
 

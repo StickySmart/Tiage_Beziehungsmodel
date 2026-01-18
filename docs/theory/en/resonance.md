@@ -4,7 +4,7 @@
 
 ## What is Resonance?
 
-Resonance (R) is a **meta-factor** (0.9-1.1) that modulates how well head (Logos) and heart (Pathos) resonate together.
+Resonance (R) is a **meta-factor** (0-2, practically 0.8-1.3) that modulates how well head (Logos) and heart (Pathos) resonate together.
 
 > *"Perception is based on vibrations and patterns. Resonance = synchronicity between internal neural rhythms and external signals."*
 
@@ -15,36 +15,40 @@ Resonance (R) is a **meta-factor** (0.9-1.1) that modulates how well head (Logos
 R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
-### Multi-Dimensional Resonance (v3.1)
+### Multi-Dimensional Resonance (v3.4)
 
-**NEW:** Resonance is calculated across 4 **disjoint** dimensions:
+**NEW:** Resonance is calculated across 4 **disjoint** dimensions using quadratic formula:
 
 ```
-R_Identity    = 0.9 + (Match_gender × 0.2)      💚  (10 Needs)
-R_Philosophy  = 0.9 + (Match_archetype × 0.2)   🧠  (17 Needs)
-R_Life        = 0.9 + (Match_orientation × 0.2) 🔥  (18 Needs)
-R_Dynamics    = 0.9 + (Match_dominance × 0.2)   ⚡  (18 Needs)
+R = avgMatch² (quadratic with complementary mapping)
+similarity = 1 - (avgDiff / 100)
+R = similarity²
 
-Final calculation (v3.1):
+R_Identity    = similarity²      💚  (10 Needs)
+R_Philosophy  = similarity²      🧠  (19 Needs)
+R_Life        = similarity²      🔥  (18 Needs)
+R_Dynamics    = similarity²      ⚡  (18 Needs)
+
+Final calculation (v3.4):
 Q = (A×w_A×R_Phil) + (O×w_O×R_Life) + (D×w_D×R_Dyn) + (G×w_G×R_Ident)
 ```
 
 **Factor-Resonance Mapping:**
-| Factor | Weight | × | Resonance |
-|--------|--------|---|-----------|
-| A (Archetype) | 25% | × | 🧠 R_Philosophy |
-| O (Orientation) | 25% | × | 🔥 R_Life |
-| D (Dominance) | 25% | × | ⚡ R_Dynamics |
-| G (Gender) | 25% | × | 💚 R_Identity |
+| Factor | Weight | × | Resonance | Needs |
+|--------|--------|---|-----------|-------|
+| A (Archetype) | 25% | × | 🧠 R_Philosophy | 19 |
+| O (Orientation) | 25% | × | 🔥 R_Life | 18 |
+| D (Dominance) | 25% | × | ⚡ R_Dynamics | 18 |
+| G (Gender) | 25% | × | 💚 R_Identity | 10 |
 
 **Interpretation per dimension:**
 | R-Value | Status | Symbol |
 |---------|--------|--------|
 | ≥ 1.05 | Resonance | ⬆️ |
-| 0.97-1.05 | Neutral | ➡️ |
-| ≤ 0.97 | Dissonance | ⬇️ |
+| 0.95-1.05 | Neutral | ➡️ |
+| ≤ 0.95 | Dissonance | ⬇️ |
 
-**Value range:** R varies between 0.9 (minimal resonance) and 1.1 (maximal resonance).
+**Value range:** R varies between 0 and 2 (practically 0.8 - 1.3).
 
 ## The Four Dimensions of Compatibility (v3.1)
 
@@ -53,7 +57,7 @@ Multi-dimensional resonance captures relationship compatibility across **four di
 | Dimension | Emoji | Question | Needs Source | Count |
 |-----------|-------|----------|--------------|-------|
 | **Identity** | 💚 | *Who am I, who are you?* | GENDER_NEEDS | 10 |
-| **Philosophy** | 🧠 | *How do we want to live relationships?* | ARCHETYPE_NEEDS | 17 |
+| **Philosophy** | 🧠 | *How do we want to live relationships?* | ARCHETYPE_NEEDS | 19 |
 | **Life** | 🔥 | *What attracts us?* | ORIENTATION_NEEDS | 18 |
 | **Dynamics** | ⚡ | *Who leads, who follows?* | DOMINANCE_NEEDS | 18 |
 
@@ -69,10 +73,10 @@ These dimensions are **disjoint** – no overlap, each need is counted only once
 
 ### Component 1: Profile Match (M)
 
-Similarity of the **88 NVC needs** between two profiles.
+Similarity of the **226 needs** (#B1-#B226) between two profiles.
 
 > **Note:** The system distinguishes between two matching levels:
-> - **88 NVC Needs** → Emotional Match (M) in the resonance formula
+> - **226 Needs** (#B1-#B226) → Emotional Match (M) in the resonance formula
 > - **30 baseAttributes** → Lifestyle filter (K.O. criteria like desire for children, living arrangement)
 
 #### Calculation
