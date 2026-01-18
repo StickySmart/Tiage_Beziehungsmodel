@@ -5469,8 +5469,8 @@
                     letter: 'd'
                 },
                 orientierung: {
-                    types: ['heterosexuell', 'homosexuell', 'bisexuell'],
-                    abbrevs: ['het', 'hom', 'bi'],
+                    types: ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'],
+                    abbrevs: ['het', 'hom', 'bi', 'pan', 'queer'],
                     letter: 'o'
                 }
             };
