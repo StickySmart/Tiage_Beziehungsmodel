@@ -15268,8 +15268,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 saveSelectionToStorage();
             }
 
-            // Validate before moving to page 3 (Synthese) - ensure all dimensions are complete
-            if (currentMobilePage === 2 && pageNumber === 3 && !validateDimensionsComplete()) {
+            // Validate before moving to page 4 (Synthese) - ensure all dimensions are complete
+            if (currentMobilePage === 3 && pageNumber === 4 && !validateDimensionsComplete()) {
                 showValidationWarning();
                 return;
             }
@@ -15293,7 +15293,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             currentMobilePage = pageNumber;
 
             // Update page content when navigating
-            if (pageNumber === 3) {
+            if (pageNumber === 4) {
                 updateMobileResultPage();
             }
 
