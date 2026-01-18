@@ -4793,20 +4793,23 @@
         }
 
         .orientierung-btn:hover {
-            border-color: var(--primary);
+            border-color: rgba(46, 204, 113, 0.6);
             color: var(--text-primary);
+            box-shadow: 0 0 6px rgba(46, 204, 113, 0.2);
         }
 
         .orientierung-btn.primary-selected {
-            background: var(--primary);
-            border-color: var(--primary);
+            background: #2ecc71;
+            border-color: #2ecc71;
             color: white;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
         }
 
         .orientierung-btn.secondary-selected {
-            background: rgba(234, 179, 8, 0.25);
-            border-color: rgba(234, 179, 8, 0.6);
+            background: rgba(243, 156, 18, 0.25);
+            border-color: rgba(243, 156, 18, 0.6);
             color: var(--text-primary);
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.3);
         }
 
         /* GFK (Gewaltfreie Kommunikation) Buttons */
