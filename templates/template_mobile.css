@@ -815,6 +815,31 @@ body {
         background: linear-gradient(135deg, rgba(46, 204, 113, 0.08) 0%, rgba(243, 156, 18, 0.08) 100%);
     }
 
+    /* Orientierung Buttons - Default State (green/yellow hints like Dominanz) */
+    .orientierung-option-row .status-toggle-btn[data-status="primaer"] {
+        background: rgba(46, 204, 113, 0.1);
+        border: 1px solid rgba(46, 204, 113, 0.4);
+        color: #2ecc71;
+    }
+
+    .orientierung-option-row .status-toggle-btn[data-status="primaer"]:hover {
+        background: rgba(46, 204, 113, 0.2);
+        border-color: rgba(46, 204, 113, 0.6);
+        box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+    }
+
+    .orientierung-option-row .status-toggle-btn[data-status="sekundaer"] {
+        background: rgba(243, 156, 18, 0.1);
+        border: 1px solid rgba(243, 156, 18, 0.4);
+        color: #f39c12;
+    }
+
+    .orientierung-option-row .status-toggle-btn[data-status="sekundaer"]:hover {
+        background: rgba(243, 156, 18, 0.2);
+        border-color: rgba(243, 156, 18, 0.6);
+        box-shadow: 0 0 8px rgba(243, 156, 18, 0.3);
+    }
+
     /* Primär Status - Active (green like Gelebt) */
     .orientierung-option-row .status-toggle-btn.active-primaer {
         background: #2ecc71 !important;
