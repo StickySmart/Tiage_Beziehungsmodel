@@ -286,12 +286,14 @@ TiageSynthesis.Factors.Orientierung = {
 
         // Sekundäre Orientierungen passen, primäre nicht explizit geprüft
         // → Trotzdem 'moeglich', da sekundäre auch gelebt sind
+        // FIX: hasSecondaryBonus auch hier setzen wenn sekundäre Orientierungen matchen
         if (hasMoeglich && !hasInteressiert) {
             return {
                 result: 'moeglich',
-                confidence: 'hoch',
+                confidence: hasMoeglichSekundaer ? 'hoch' : 'mittel',
                 hasExploration: false,
                 isHardKO: false,
+                hasSecondaryBonus: hasMoeglichSekundaer,  // FIX: Bonus auch bei sekundär-basiertem Match
                 bestCombination: bestCombination
             };
         }
