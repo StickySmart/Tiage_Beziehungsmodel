@@ -12590,11 +12590,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Hilfsfunktion: Stellt sicher, dass Orientierungs-Objekt valide Werte hat
+        // FIX: Unterstützt sowohl Array-Format ['pan', 'bi'] als auch Objekt-Format {primary, secondary}
         function ensureValidOrientierung(orientierungObj) {
+            // v4.1.1: Array-Format (UI speichert als Array)
+            if (Array.isArray(orientierungObj) && orientierungObj.length > 0) {
+                return {
+                    primary: orientierungObj[0] || 'heterosexuell',
+                    secondary: orientierungObj.length > 1 ? orientierungObj[1] : null,
+                    // Alle weiteren Orientierungen für erweiterte Kompatibilität
+                    all: orientierungObj
+                };
+            }
+            // Legacy: Objekt-Format {primary, secondary}
             const o = orientierungObj || {};
             return {
                 primary: o.primary || 'heterosexuell',
-                secondary: o.secondary || null
+                secondary: o.secondary || null,
+                all: o.all || [o.primary || 'heterosexuell'].concat(o.secondary ? [o.secondary] : [])
             };
         }
 
