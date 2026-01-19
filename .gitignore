@@ -1,2 +1,5 @@
 # HTML Backups (lokal behalten)
 backups/
+
+# Image generation progress (local temp file)
+.generation-progress.json
