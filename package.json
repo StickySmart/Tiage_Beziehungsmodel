@@ -9,7 +9,9 @@
     "test": "node tests/ssot-validation.test.js && node tests/statistics.test.js",
     "test:ssot": "node tests/ssot-validation.test.js",
     "test:statistics": "node tests/statistics.test.js",
-    "validate": "node tests/ssot-validation.test.js"
+    "validate": "node tests/ssot-validation.test.js",
+    "generate:images": "node scripts/generate-beduerfnis-images.js",
+    "generate:images:dry": "node scripts/generate-beduerfnis-images.js --dry-run"
   },
   "repository": {
     "type": "git",
