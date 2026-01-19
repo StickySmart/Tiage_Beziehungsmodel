@@ -21360,9 +21360,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // to check for legacy 'tiage-selection' data if TiageState is empty
         setTimeout(() => {
             // Check if TiageState already has data (loaded in DOMContentLoaded)
+            // v4.0: geschlecht is a direct string, not an object with .primary
             const hasStateData = typeof TiageState !== 'undefined' &&
-                (TiageState.get('personDimensions.ich.geschlecht.primary') ||
-                 TiageState.get('personDimensions.partner.geschlecht.primary'));
+                (TiageState.get('personDimensions.ich.geschlecht') ||
+                 TiageState.get('personDimensions.partner.geschlecht') ||
+                 TiageState.get('personDimensions.ich.dominanz.primary') ||
+                 TiageState.get('personDimensions.partner.dominanz.primary'));
 
             // Only load from legacy storage if TiageState is empty
             if (!hasStateData) {
