@@ -5341,6 +5341,78 @@
             font-weight: 600;
         }
 
+        /* ========================================
+           ORIENTIERUNG - Primär/Sekundär Active States
+           (Identisch mit Gelebt/Interessiert Styling)
+           ======================================== */
+
+        /* Primär Status - Active (green like Gelebt) */
+        .status-toggle-btn.active-primaer {
+            background: #2ecc71 !important;
+            border-color: #2ecc71 !important;
+            color: white !important;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+            font-weight: 600;
+        }
+
+        /* Sekundär Status - Active (orange like Interessiert) */
+        .status-toggle-btn.active-sekundaer {
+            background: #f39c12 !important;
+            border-color: #f39c12 !important;
+            color: #1a1a2e !important;
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+            font-weight: 600;
+        }
+
+        /* Orientierung Option Row Styling */
+        .orientierung-option-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        /* Row background when Primär is active */
+        .orientierung-option-row:has(.status-toggle-btn.active-primaer) {
+            background: rgba(46, 204, 113, 0.1);
+            border-color: rgba(46, 204, 113, 0.6);
+        }
+
+        /* Row background when Sekundär is active */
+        .orientierung-option-row:has(.status-toggle-btn.active-sekundaer) {
+            background: rgba(243, 156, 18, 0.1);
+            border-color: rgba(243, 156, 18, 0.4);
+        }
+
+        /* Orientierung Buttons - Default State (green/yellow hints) */
+        .orientierung-option-row .status-toggle-btn[data-status="primaer"] {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            color: #2ecc71;
+        }
+
+        .orientierung-option-row .status-toggle-btn[data-status="primaer"]:hover {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: rgba(46, 204, 113, 0.6);
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+        }
+
+        .orientierung-option-row .status-toggle-btn[data-status="sekundaer"] {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid rgba(243, 156, 18, 0.4);
+            color: #f39c12;
+        }
+
+        .orientierung-option-row .status-toggle-btn[data-status="sekundaer"]:hover {
+            background: rgba(243, 156, 18, 0.2);
+            border-color: rgba(243, 156, 18, 0.6);
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.3);
+        }
+
         @keyframes yellowPulse {
             0%, 100% {
                 box-shadow: 0 0 5px rgba(234, 179, 8, 0.4);
