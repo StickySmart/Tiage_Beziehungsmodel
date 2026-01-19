@@ -5207,33 +5207,34 @@
          * Styled wie Dominanz für konsistente Mobile UX
          */
         function handleOrientierungStatusToggle(person, orientierungValue, status, btn) {
-            console.log('[TIAGE] handleOrientierungStatusToggle:', person, orientierungValue, status);
+            console.log('[TIAGE] handleOrientierungStatusToggle CALLED:', person, orientierungValue, status);
 
-            // Validate inputs
-            if (!person || !orientierungValue || !status) {
-                console.error('[TIAGE] handleOrientierungStatusToggle: Missing parameters', { person, orientierungValue, status });
-                return;
-            }
+            try {
+                // Validate inputs
+                if (!person || !orientierungValue || !status) {
+                    console.error('[TIAGE] handleOrientierungStatusToggle: Missing parameters', { person, orientierungValue, status });
+                    return;
+                }
 
-            // Ensure personDimensions exists
-            if (typeof personDimensions === 'undefined' || !personDimensions) {
-                console.error('[TIAGE] handleOrientierungStatusToggle: personDimensions is undefined');
-                return;
-            }
+                // Ensure personDimensions exists
+                if (typeof personDimensions === 'undefined' || !personDimensions) {
+                    console.error('[TIAGE] handleOrientierungStatusToggle: personDimensions is undefined');
+                    return;
+                }
 
-            // Ensure person object exists
-            if (!personDimensions[person]) {
-                console.error('[TIAGE] handleOrientierungStatusToggle: personDimensions[' + person + '] is undefined');
-                personDimensions[person] = { orientierung: [] };
-            }
+                // Ensure person object exists
+                if (!personDimensions[person]) {
+                    console.error('[TIAGE] handleOrientierungStatusToggle: personDimensions[' + person + '] is undefined');
+                    personDimensions[person] = { orientierung: [] };
+                }
 
-            // Ensure orientierung property exists
-            if (typeof personDimensions[person].orientierung === 'undefined') {
-                personDimensions[person].orientierung = [];
-            }
+                // Ensure orientierung property exists
+                if (typeof personDimensions[person].orientierung === 'undefined') {
+                    personDimensions[person].orientierung = [];
+                }
 
-            // Ensure array format
-            if (!Array.isArray(personDimensions[person].orientierung)) {
+                // Ensure array format
+                if (!Array.isArray(personDimensions[person].orientierung)) {
                 const oldOri = personDimensions[person].orientierung;
                 personDimensions[person].orientierung = [];
                 if (oldOri) {
@@ -5427,6 +5428,11 @@
 
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
+            }
+
+            console.log('[TIAGE] handleOrientierungStatusToggle SUCCESS');
+            } catch (error) {
+                console.error('[TIAGE] handleOrientierungStatusToggle ERROR:', error);
             }
         }
 
