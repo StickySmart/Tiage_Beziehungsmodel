@@ -13514,16 +13514,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 TiageState.set('personDimensions.partner.geschlecht', personDimensions.partner.geschlecht);
             }
 
-            // 3. Orientierung setzen
-            personDimensions.partner.orientierung = {
-                primary: result.orientierung,
-                secondary: null
-            };
+            // 3. Orientierung setzen (als Array, da UI-Sync-Funktionen Array erwarten)
+            personDimensions.partner.orientierung = result.orientierung ? [result.orientierung] : [];
             if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions.partner.orientierung = {
-                    primary: result.orientierung,
-                    secondary: null
-                };
+                mobilePersonDimensions.partner.orientierung = result.orientierung ? [result.orientierung] : [];
             }
             if (typeof TiageState !== 'undefined') {
                 TiageState.set('personDimensions.partner.orientierung', personDimensions.partner.orientierung);
