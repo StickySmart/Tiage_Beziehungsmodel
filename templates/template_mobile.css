@@ -1152,6 +1152,38 @@ body {
         transform: rotate(-90deg);
     }
 
+    /* Collapsed state - hide grids on mobile */
+    .collapsible-dimension.collapsed .orientierung-multi-select,
+    .collapsible-dimension.collapsed .dominanz-multi-select,
+    .collapsible-dimension.collapsed .geschlecht-multi-select,
+    .collapsible-dimension.collapsed .gfk-grid {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+
+    /* Expanded state - show grids on mobile */
+    .collapsible-dimension:not(.collapsed) .orientierung-multi-select,
+    .collapsible-dimension:not(.collapsed) .dominanz-multi-select,
+    .collapsible-dimension:not(.collapsed) .geschlecht-multi-select,
+    .collapsible-dimension:not(.collapsed) .gfk-grid {
+        max-height: 500px;
+        opacity: 1;
+        transition: max-height 0.3s ease, opacity 0.2s ease 0.1s;
+    }
+
+    /* Show collapsed-summary when collapsed */
+    .collapsible-dimension.collapsed .collapsed-summary {
+        display: block;
+    }
+
+    .collapsible-dimension:not(.collapsed) .collapsed-summary {
+        display: none;
+    }
+
     /* ========================================
        STATUS TOGGLE BUTTONS (Responsive)
        ======================================== */
