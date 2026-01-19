@@ -688,6 +688,11 @@
                 }
             }
 
+            // Persist changes to localStorage for cross-page consistency
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+
             updateArchetypeDisplay();
             renderContent();
         }
