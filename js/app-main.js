@@ -13553,7 +13553,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // 5. UI aktualisieren - Sync all dimension buttons and summaries for partner
             syncGeschlechtUI('partner');
             syncDimensionUI('partner', 'dominanz');
-            syncDimensionUI('partner', 'orientierung');
+            syncOrientierungUI('partner');
             updateGeschlechtSummary('partner');
             updateDominanzSummary('partner');
             updateOrientierungSummary('partner');
