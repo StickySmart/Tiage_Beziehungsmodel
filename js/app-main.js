@@ -13129,8 +13129,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ANIMATION_DURATION = 2000; // 2 Sekunden
             const UPDATE_INTERVAL = 50; // Update alle 50ms
 
-            // Berechne alle Kombinationen im Hintergrund
-            const allResults = calculateAllCombinations();
+            // Berechne alle Kombinationen mit Chunking (verhindert UI-Freeze)
+            const allResults = await calculateAllCombinationsChunked();
             const totalCombinations = allResults.length;
 
             // Sortiere nach Score (beste zuerst)
@@ -13233,7 +13233,131 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Berechnet alle möglichen Kombinationen
+         * Async-Version: Berechnet alle Kombinationen in Chunks
+         * Gibt nach jedem Chunk dem Browser Zeit zum Rendern
+         */
+        async function calculateAllCombinationsChunked() {
+            const CHUNK_SIZE = 48; // ~8% der 576 Kombinationen pro Chunk
+
+            // Generiere alle Kombinationen als Array
+            const combinations = [];
+            for (const archetype of ALL_ARCHETYPES_SLOT) {
+                for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
+                    for (const orientierung of ALL_ORIENTIERUNGEN) {
+                        for (const dominanz of ALL_DOMINANZEN) {
+                            combinations.push({ archetype, geschlecht, orientierung, dominanz });
+                        }
+                    }
+                }
+            }
+
+            // ICH-Daten vorbereiten (einmalig)
+            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
+            const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
+            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
+            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
+            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
+            const ichGfk = ichDims.gfk || 'mittel';
+
+            let ichNeeds = null;
+            if (typeof TiageState !== 'undefined') {
+                ichNeeds = TiageState.get('flatNeeds.ich');
+            }
+            if (!ichNeeds && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                ichNeeds = ProfileCalculator.calculateFlatNeeds(ichArchetype, validIchGeschlecht, validIchDominanz, validIchOrientierung);
+            }
+
+            const ichObj = {
+                archetyp: ichArchetype,
+                geschlecht: validIchGeschlecht,
+                orientierung: validIchOrientierung,
+                dominanz: validIchDominanz,
+                gfk: ichGfk,
+                needs: ichNeeds
+            };
+
+            // Partner-Needs Cache
+            const partnerNeedsCache = {};
+            function getPartnerNeedsCached(archetype, geschlecht, orientierung, dominanz) {
+                const cacheKey = `${archetype}-${geschlecht.primary}-${geschlecht.secondary}-${orientierung}-${dominanz}`;
+                if (!partnerNeedsCache[cacheKey]) {
+                    if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                        partnerNeedsCache[cacheKey] = ProfileCalculator.calculateFlatNeeds(
+                            archetype, geschlecht,
+                            { primary: dominanz, secondary: null },
+                            { primary: orientierung, secondary: null }
+                        );
+                    } else {
+                        partnerNeedsCache[cacheKey] = null;
+                    }
+                }
+                return partnerNeedsCache[cacheKey];
+            }
+
+            const results = [];
+            const savedCurrentArchetype = currentArchetype;
+            const savedSelectedPartner = selectedPartner;
+
+            // Verarbeite in Chunks
+            for (let i = 0; i < combinations.length; i += CHUNK_SIZE) {
+                const chunk = combinations.slice(i, i + CHUNK_SIZE);
+
+                for (const combo of chunk) {
+                    const partnerNeeds = getPartnerNeedsCached(combo.archetype, combo.geschlecht, combo.orientierung, combo.dominanz);
+                    const partnerObj = {
+                        archetyp: combo.archetype,
+                        geschlecht: combo.geschlecht,
+                        orientierung: { primary: combo.orientierung, secondary: null },
+                        dominanz: { primary: combo.dominanz, secondary: null },
+                        gfk: 'mittel',
+                        needs: partnerNeeds
+                    };
+
+                    currentArchetype = ichArchetype;
+                    selectedPartner = combo.archetype;
+
+                    let score = 0;
+                    try {
+                        const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                        const logosCheck = calculatePhilosophyCompatibility(ichArchetype, combo.archetype);
+
+                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                            const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                            const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+                            const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
+                            });
+                            let baseScore = result.overall || 0;
+                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                        } else if (pathosCheck.result === 'unvollständig') {
+                            score = logosCheck.score || 50;
+                        }
+                    } catch (e) { /* Fehler ignorieren */ }
+
+                    results.push({
+                        archetyp: combo.archetype,
+                        geschlecht: combo.geschlecht,
+                        orientierung: combo.orientierung,
+                        dominanz: combo.dominanz,
+                        score: score
+                    });
+                }
+
+                // Yield zum Main Thread nach jedem Chunk
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
+
+            // Globale Variablen wiederherstellen
+            currentArchetype = savedCurrentArchetype;
+            selectedPartner = savedSelectedPartner;
+
+            return results;
+        }
+
+        /**
+         * Berechnet alle möglichen Kombinationen (synchron - Fallback)
          */
         function calculateAllCombinations() {
             const results = [];
