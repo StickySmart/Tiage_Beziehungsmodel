@@ -942,7 +942,7 @@
                 <!-- Score Label -->
                 <div class="score-label">Ti-Age Synthese Score</div>
                 <!-- Lightbulb Button (moved to top) -->
-                <div class="lightbulb-button" onclick="if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseUebersicht.html'" title="Ti-Age Synthese öffnen">
+                <div class="lightbulb-button" onclick="if(typeof stopLightbulbBlink!=='undefined')stopLightbulbBlink();if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseUebersicht.html'" title="Ti-Age Synthese öffnen">
                     <span class="lightbulb-icon">💡</span>
                 </div>
                 <!-- Score Circle (moved to bottom) -->
@@ -1492,7 +1492,7 @@
                     <div class="score-circle-value" id="mobileScoreCircle">0</div>
                 </div>
                 <!-- Mobile Lightbulb Button -->
-                <div class="lightbulb-button mobile-lightbulb-button" onclick="if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseUebersicht.html'" title="Ti-Age Synthese öffnen">
+                <div class="lightbulb-button mobile-lightbulb-button" onclick="if(typeof stopLightbulbBlink!=='undefined')stopLightbulbBlink();if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseUebersicht.html'" title="Ti-Age Synthese öffnen">
                     <span class="lightbulb-icon">💡</span>
                     <span class="lightbulb-text">Ti-Age Synthese</span>
                 </div>

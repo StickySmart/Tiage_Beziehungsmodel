@@ -4208,6 +4208,23 @@
         .lightbulb-icon {
             font-size: 36px;
             line-height: 1;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Blink animation for lightbulb when score is calculated */
+        @keyframes lightbulbBlink {
+            0%, 100% {
+                filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+                transform: scale(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 1)) drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.5));
+                transform: scale(1.1);
+            }
+        }
+
+        .lightbulb-icon.blink-active {
+            animation: lightbulbBlink 0.8s ease-in-out infinite;
         }
 
         .lightbulb-text {
