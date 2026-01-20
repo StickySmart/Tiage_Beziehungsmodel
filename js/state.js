@@ -391,16 +391,26 @@ const TiageState = (function() {
     // Konvertiert alte Formate zu Array.
     // ═══════════════════════════════════════════════════════════════════════
 
-    // v5.0 SSOT: Migriert Legacy-Keys zu aktuellen Keys
-    // Aktuelle Keys: heterosexuell, homosexuell, bisexuell, pansexuell, queer
-    const ORIENTIERUNG_MIGRATE_MAP = {
-        'bihomo': 'bisexuell',           // v2.0 Legacy → bisexuell
-        'gay_lesbisch': 'homosexuell',   // v4.0 Alternative → homosexuell
-        'pansexuell_queer': 'pansexuell' // v4.0 Alternative → pansexuell
-    };
+    // v5.0 SSOT: Holt Migration-Map aus TiageSynthesis.Constants
+    // Fallback auf lokale Map falls SSOT noch nicht geladen
+    function getOrientierungMigrateMap() {
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.Constants &&
+            TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS &&
+            TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION) {
+            return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION;
+        }
+        // Fallback (muss konsistent mit SSOT sein!)
+        return {
+            'bihomo': 'bisexuell',
+            'gay_lesbisch': 'homosexuell',
+            'pansexuell_queer': 'pansexuell'
+        };
+    }
 
     /**
      * Normalisiert Orientierungs-Werte für v4.0 Multi-Select
+     * v5.0 SSOT: Verwendet getOrientierungMigrateMap() für Migration
      * @param {string} path - Der State-Pfad
      * @param {*} value - Der zu setzende Wert
      * @returns {*} Der normalisierte Wert (Array)
@@ -409,9 +419,11 @@ const TiageState = (function() {
         if (!path.includes('.orientierung')) return value;
         if (value === null || value === undefined) return [];
 
+        const migrateMap = getOrientierungMigrateMap();
+
         // Bereits ein Array - Werte migrieren und Duplikate entfernen
         if (Array.isArray(value)) {
-            const migrated = value.map(v => ORIENTIERUNG_MIGRATE_MAP[v] || v);
+            const migrated = value.map(v => migrateMap[v] || v);
             return [...new Set(migrated)];  // Duplikate entfernen
         }
 
@@ -419,20 +431,20 @@ const TiageState = (function() {
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
             const result = [];
             if (value.primary) {
-                const migrated = ORIENTIERUNG_MIGRATE_MAP[value.primary] || value.primary;
+                const migrated = migrateMap[value.primary] || value.primary;
                 result.push(migrated);
             }
             if (value.secondary && value.secondary !== value.primary) {
-                const migrated = ORIENTIERUNG_MIGRATE_MAP[value.secondary] || value.secondary;
+                const migrated = migrateMap[value.secondary] || value.secondary;
                 if (!result.includes(migrated)) result.push(migrated);
             }
-            console.log(`[TiageState] v4.0 Migration: { primary: '${value.primary}', secondary: '${value.secondary}' } → [${result.join(', ')}]`);
+            console.log(`[TiageState] v5.0 Migration: { primary: '${value.primary}', secondary: '${value.secondary}' } → [${result.join(', ')}]`);
             return result;
         }
 
         // String zu Array konvertieren
         if (typeof value === 'string') {
-            const migrated = ORIENTIERUNG_MIGRATE_MAP[value] || value;
+            const migrated = migrateMap[value] || value;
             return [migrated];
         }
 
@@ -1239,18 +1251,28 @@ const TiageState = (function() {
             };
 
             // v5.0 SSOT: Migriert Legacy-Orientierungs-Keys zu aktuellen Keys
-            // Aktuelle Keys: heterosexuell, homosexuell, bisexuell, pansexuell, queer
-            // Legacy-Keys: bihomo, gay_lesbisch, pansexuell_queer
+            // WICHTIG: Greift auf TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION zu
+            // Fallback auf lokale Map falls SSOT noch nicht geladen
             const migrateOrientierung = (orientierung) => {
                 if (!orientierung) return orientierung;
 
-                // v5.0 SSOT: Migration-Map (Legacy → Aktuell)
-                const migrationMap = {
-                    'bihomo': 'bisexuell',           // v2.0 Legacy
-                    'gay_lesbisch': 'homosexuell',   // v4.0 Alternative
-                    'pansexuell_queer': 'pansexuell' // v4.0 Alternative
+                // v5.0 SSOT: Migration-Map aus Constants (falls verfügbar)
+                const getMigrationMap = () => {
+                    if (typeof TiageSynthesis !== 'undefined' &&
+                        TiageSynthesis.Constants &&
+                        TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS &&
+                        TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION) {
+                        return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION;
+                    }
+                    // Fallback (muss konsistent mit SSOT sein!)
+                    return {
+                        'bihomo': 'bisexuell',
+                        'gay_lesbisch': 'homosexuell',
+                        'pansexuell_queer': 'pansexuell'
+                    };
                 };
 
+                const migrationMap = getMigrationMap();
                 const migrateKey = (key) => migrationMap[key] || key;
 
                 if (typeof orientierung === 'object' && 'primary' in orientierung) {

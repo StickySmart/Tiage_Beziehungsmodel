@@ -164,13 +164,24 @@ const TiageConfig = (function() {
     };
 
     // v5.0 SSOT: Migration-Helper - Konvertiert Legacy-Keys zu aktuellen Keys
+    // WICHTIG: Greift auf TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION zu
+    // Fallback auf lokale Map falls SSOT noch nicht geladen
     function migrateOrientierung(oldValue) {
-        const migration = {
-            'gay_lesbisch': 'homosexuell',  // v4.0 Alternative → v5.0 Standard
-            'bihomo': 'bisexuell',          // v2.0 Legacy → v5.0 Standard
-            'pansexuell_queer': 'pansexuell' // v4.0 Alternative → v5.0 Standard
+        // Versuche SSOT zu verwenden
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.Constants &&
+            TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS &&
+            TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION) {
+            const migrated = TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION[oldValue];
+            if (migrated) return migrated;
+        }
+        // Fallback: Lokale Migration-Map (muss konsistent mit SSOT sein!)
+        const fallbackMigration = {
+            'gay_lesbisch': 'homosexuell',
+            'bihomo': 'bisexuell',
+            'pansexuell_queer': 'pansexuell'
         };
-        return migration[oldValue] || oldValue;
+        return fallbackMigration[oldValue] || oldValue;
     }
 
     // LEGACY: Alte Primary/Secondary Struktur für Rückwärtskompatibilität
