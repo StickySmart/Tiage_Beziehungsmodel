@@ -14051,7 +14051,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             updateComparisonView();
         }
 
+        // Throttle für updateComparisonView (max 1x pro 150ms)
+        let _updateComparisonViewScheduled = false;
+        let _updateComparisonViewPending = false;
+
         function updateComparisonView() {
+            // Performance: Verhindere zu häufige Updates
+            if (_updateComparisonViewScheduled) {
+                _updateComparisonViewPending = true;
+                return;
+            }
+
+            _updateComparisonViewScheduled = true;
+            setTimeout(function() {
+                _updateComparisonViewScheduled = false;
+                if (_updateComparisonViewPending) {
+                    _updateComparisonViewPending = false;
+                    updateComparisonView();
+                }
+            }, 150);
+
             if (!data) return;
 
             console.log('[TIAGE] updateComparisonView called - dimensions:', JSON.stringify({

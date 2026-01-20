@@ -25,93 +25,144 @@
     <!-- Slot Machine Modal Styling -->
     <link rel="stylesheet" href="css/slot-machine.css">
 
+    <!-- Resource Hints für bessere Performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://script.google.com">
+
+    <!-- Critical Loading Indicator Styles (inline für sofortige Anzeige) -->
+    <style id="critical-loading-styles">
+        .app-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.3s ease-out;
+        }
+        .app-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .app-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(168, 85, 247, 0.2);
+            border-top-color: #A855F7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .app-loading-text {
+            color: #A855F7;
+            margin-top: 16px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
     <!-- TIAGE i18n - Internationalisierung -->
-    <script src="js/locales/de.js"></script>
-    <script src="js/locales/en.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/utils/tts.js"></script>
-    <script src="js/version.js"></script>
+    <script defer src="js/locales/de.js"></script>
+    <script defer src="js/locales/en.js"></script>
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/utils/tts.js"></script>
+    <script defer src="js/version.js"></script>
 
     <!-- TIAGE Micro-Statements Databases -->
-    <script src="statements/archetypeStatements.js"></script>
-    <script src="statements/archetypeStatements_EN.js"></script>
-    <script src="statements/dominanceStatements.js"></script>
-    <script src="statements/orientationStatements.js"></script>
-    <script src="statements/statusStatements.js"></script>
-    <script src="statements/gfkStatements.js"></script>
-    <script src="statements/resonanceQuotesTable.js"></script>
+    <script defer src="statements/archetypeStatements.js"></script>
+    <script defer src="statements/archetypeStatements_EN.js"></script>
+    <script defer src="statements/dominanceStatements.js"></script>
+    <script defer src="statements/orientationStatements.js"></script>
+    <script defer src="statements/statusStatements.js"></script>
+    <script defer src="statements/gfkStatements.js"></script>
+    <script defer src="statements/resonanceQuotesTable.js"></script>
 
     <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
-    <script src="js/synthesis/constants.js"></script>
-    <script src="js/help-texts.js"></script>
-    <script src="js/synthesis/needsIntegration.js"></script>
-    <script src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
-    <script src="js/synthesis/factors/archetypeFactor.js"></script>
-    <script src="js/synthesis/factors/dominanceFactor.js"></script>
-    <script src="js/synthesis/factors/orientationFactor.js"></script>
-    <script src="js/synthesis/factors/genderFactor.js"></script>
-    <script src="js/synthesis/lifestyleFilter.js"></script>
-    <script src="js/utils/statistics.js"></script>
-    <script src="js/utils/hauptfrageAggregation.js"></script>
-    <script src="js/synthesis/synthesisCalculator.js"></script>
-    <script src="js/synthesis/pathosTextGenerator.js"></script>
-    <script src="js/synthesis/logosTextGenerator.js"></script>
-    <script src="js/synthesis/oshoZenTextGenerator.js"></script>
-    <script src="js/synthesis/integratedSynthesisTextGenerator.js"></script>
+    <script defer src="js/synthesis/constants.js"></script>
+    <script defer src="js/help-texts.js"></script>
+    <script defer src="js/synthesis/needsIntegration.js"></script>
+    <script defer src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
+    <script defer src="js/synthesis/factors/archetypeFactor.js"></script>
+    <script defer src="js/synthesis/factors/dominanceFactor.js"></script>
+    <script defer src="js/synthesis/factors/orientationFactor.js"></script>
+    <script defer src="js/synthesis/factors/genderFactor.js"></script>
+    <script defer src="js/synthesis/lifestyleFilter.js"></script>
+    <script defer src="js/utils/statistics.js"></script>
+    <script defer src="js/utils/hauptfrageAggregation.js"></script>
+    <!-- Performance Utilities für UI-Freeze-Prävention -->
+    <script defer src="js/utils/performance.js"></script>
+    <script defer src="js/synthesis/synthesisCalculator.js"></script>
+    <script defer src="js/synthesis/pathosTextGenerator.js"></script>
+    <script defer src="js/synthesis/logosTextGenerator.js"></script>
+    <script defer src="js/synthesis/oshoZenTextGenerator.js"></script>
+    <script defer src="js/synthesis/integratedSynthesisTextGenerator.js"></script>
 
     <!-- SSOT VERGLEICHS-LOGGING (aktivieren mit ?ssot=true) -->
-    <script src="js/ssot-comparison.js"></script>
+    <script defer src="js/ssot-comparison.js"></script>
 
     <!-- TIAGE COMPATIBILITY - Extrahierte Kompatibilitätslogik -->
-    <script src="js/compatibility/physicalCompatibility.js"></script>
-    <script src="js/compatibility/philosophyCompatibility.js"></script>
-    <script src="js/compatibility/compatibilityOrchestrator.js"></script>
+    <script defer src="js/compatibility/physicalCompatibility.js"></script>
+    <script defer src="js/compatibility/philosophyCompatibility.js"></script>
+    <script defer src="js/compatibility/compatibilityOrchestrator.js"></script>
 
     <!-- TIAGE DIMENSIONS - Extrahierte Dimensions-Modifikatoren -->
-    <script src="js/dimensions/tagDimensionRelevance.js"></script>
-    <script src="js/dimensions/dominanzModifier.js"></script>
-    <script src="js/dimensions/tagCalculator.js"></script>
+    <script defer src="js/dimensions/tagDimensionRelevance.js"></script>
+    <script defer src="js/dimensions/dominanzModifier.js"></script>
+    <script defer src="js/dimensions/tagCalculator.js"></script>
     <!-- BEDÜRFNIS-KATALOG (SSOT - lädt JSON direkt, MUSS vor Archetypen) -->
-    <script src="profiles/definitions/beduerfnis-katalog.js"></script>
+    <script defer src="profiles/definitions/beduerfnis-katalog.js"></script>
     <!-- ARCHETYP PROFILE (88 Bedürfnisse pro Profil) -->
-    <script src="profiles/archetypen/single.js"></script>
-    <script src="profiles/archetypen/duo.js"></script>
-    <script src="profiles/archetypen/duo-flex.js"></script>
-    <script src="profiles/archetypen/solopoly.js"></script>
-    <script src="profiles/archetypen/polyamor.js"></script>
-    <script src="profiles/archetypen/ra.js"></script>
-    <script src="profiles/archetypen/lat.js"></script>
-    <script src="profiles/archetypen/aromantisch.js"></script>
-    <script src="profiles/archetypen/index.js"></script>
+    <script defer src="profiles/archetypen/single.js"></script>
+    <script defer src="profiles/archetypen/duo.js"></script>
+    <script defer src="profiles/archetypen/duo-flex.js"></script>
+    <script defer src="profiles/archetypen/solopoly.js"></script>
+    <script defer src="profiles/archetypen/polyamor.js"></script>
+    <script defer src="profiles/archetypen/ra.js"></script>
+    <script defer src="profiles/archetypen/lat.js"></script>
+    <script defer src="profiles/archetypen/aromantisch.js"></script>
+    <script defer src="profiles/archetypen/index.js"></script>
     <!-- GESCHLECHTSIDENTITÄT MODIFIER (v4.0: 3 Typen mit Legacy-Aliases) -->
-    <script src="profiles/modifiers/gender/mann.js"></script>
-    <script src="profiles/modifiers/gender/frau.js"></script>
-    <script src="profiles/modifiers/gender/nonbinaer.js"></script>
+    <script defer src="profiles/modifiers/gender/mann.js"></script>
+    <script defer src="profiles/modifiers/gender/frau.js"></script>
+    <script defer src="profiles/modifiers/gender/nonbinaer.js"></script>
     <!-- DOMINANZ MODIFIER (4 Typen) -->
-    <script src="profiles/modifiers/dominanz/dominant.js"></script>
-    <script src="profiles/modifiers/dominanz/submissiv.js"></script>
-    <script src="profiles/modifiers/dominanz/switch.js"></script>
-    <script src="profiles/modifiers/dominanz/ausgeglichen.js"></script>
+    <script defer src="profiles/modifiers/dominanz/dominant.js"></script>
+    <script defer src="profiles/modifiers/dominanz/submissiv.js"></script>
+    <script defer src="profiles/modifiers/dominanz/switch.js"></script>
+    <script defer src="profiles/modifiers/dominanz/ausgeglichen.js"></script>
     <!-- ORIENTIERUNG MODIFIER (v4.1: 5 Typen) -->
-    <script src="profiles/modifiers/orientierung/heterosexuell.js"></script>
-    <script src="profiles/modifiers/orientierung/homosexuell.js"></script>
-    <script src="profiles/modifiers/orientierung/bisexuell.js"></script>
-    <script src="profiles/modifiers/orientierung/pansexuell.js"></script>
-    <script src="profiles/modifiers/orientierung/queer.js"></script>
+    <script defer src="profiles/modifiers/orientierung/heterosexuell.js"></script>
+    <script defer src="profiles/modifiers/orientierung/homosexuell.js"></script>
+    <script defer src="profiles/modifiers/orientierung/bisexuell.js"></script>
+    <script defer src="profiles/modifiers/orientierung/pansexuell.js"></script>
+    <script defer src="profiles/modifiers/orientierung/queer.js"></script>
     <!-- MODIFIER INDEX (lädt alle) -->
-    <script src="profiles/modifiers/index.js"></script>
+    <script defer src="profiles/modifiers/index.js"></script>
     <!-- SSOT Taxonomie (MUSS vor anderen Definitionen geladen werden) -->
-    <script src="profiles/definitions/taxonomie.js"></script>
+    <script defer src="profiles/definitions/taxonomie.js"></script>
     <!-- GFK Bedürfnisse & Modifikatoren -->
-    <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
-    <script src="profiles/beduerfnis-modifikatoren.js"></script>
-    <script src="profiles/definitions/archetyp-definitions.js"></script>
-    <script src="profiles/profile-store.js"></script>
+    <script defer src="profiles/definitions/tiage-beduerfnisse.js"></script>
+    <script defer src="profiles/beduerfnis-modifikatoren.js"></script>
+    <script defer src="profiles/definitions/archetyp-definitions.js"></script>
+    <script defer src="profiles/profile-store.js"></script>
 </head>
 <body>
+    <!-- Loading Overlay - sofort sichtbar während JS lädt -->
+    <div id="appLoadingOverlay" class="app-loading-overlay">
+        <div class="app-loading-spinner"></div>
+        <div class="app-loading-text">Ti-Age lädt...</div>
+    </div>
+
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
         // =====
@@ -2366,37 +2417,37 @@
     </div>
 
     <!-- State Management - Single Source of Truth -->
-    <script src="js/state.js"></script>
+    <script defer src="js/state.js"></script>
     <!-- Configuration - Dimension Types & Rules -->
-    <script src="js/config.js"></script>
+    <script defer src="js/config.js"></script>
     <!-- Memory Manager -->
-    <script src="js/memory-manager.js"></script>
-    <script src="js/markdown-loader.js"></script>
+    <script defer src="js/memory-manager.js"></script>
+    <script defer src="js/markdown-loader.js"></script>
 
-    <script src="js/app-i18n.js"></script>
+    <script defer src="js/app-i18n.js"></script>
 
     <!-- Profile UI Components -->
-    <script src="js/components/TripleButtonGroup.js"></script>
-    <script src="js/components/ProfileCard.js"></script>
-    <script src="js/components/GewichtungCard.js"></script>
-    <script src="js/components/ResonanzCard.js"></script>
-    <script src="js/components/CategorySection.js"></script>
-    <script src="js/components/profile-config.js"></script>
+    <script defer src="js/components/TripleButtonGroup.js"></script>
+    <script defer src="js/components/ProfileCard.js"></script>
+    <script defer src="js/components/GewichtungCard.js"></script>
+    <script defer src="js/components/ResonanzCard.js"></script>
+    <script defer src="js/components/CategorySection.js"></script>
+    <script defer src="js/components/profile-config.js"></script>
     <!-- NEU: Universeller Dimension-Kategorie-Filter -->
-    <script src="js/components/DimensionKategorieFilter.js"></script>
+    <script defer src="js/components/DimensionKategorieFilter.js"></script>
     <!-- NEU: Resonanz Tree View (für hierarchische Filter-Darstellung) -->
-    <script src="js/components/ResonanzTreeView.js"></script>
-    <script src="js/components/AttributeSummaryCard.js"></script>
-    <script src="js/components/profile-components.js"></script>
-    <script src="js/components/PerspektivenModal.js"></script>
+    <script defer src="js/components/ResonanzTreeView.js"></script>
+    <script defer src="js/components/AttributeSummaryCard.js"></script>
+    <script defer src="js/components/profile-components.js"></script>
+    <script defer src="js/components/PerspektivenModal.js"></script>
 
     <!-- Philosophy Hints Components -->
-    <script src="js/components/PhilosophyHint.js"></script>
-    <script src="js/components/hints/HintState.js"></script>
-    <script src="js/components/hints/index.js"></script>
-    <script src="js/components/hints/MomentsToggle.js"></script>
+    <script defer src="js/components/PhilosophyHint.js"></script>
+    <script defer src="js/components/hints/HintState.js"></script>
+    <script defer src="js/components/hints/index.js"></script>
+    <script defer src="js/components/hints/MomentsToggle.js"></script>
 
-    <script src="js/app-main.js?v=20251231"></script>
+    <script defer src="js/app-main.js?v=20251231"></script>
 
     <!-- Resonanz Profile Modal Card Update Script -->
     <script>
@@ -2493,6 +2544,48 @@
 
             // Navigiere zur Bedürfnis-Editor Seite
             window.location.href = 'needs-editor.html?archetype=' + encodeURIComponent(archetype) + '&person=' + encodeURIComponent(person);
+        }
+
+        // Loading Overlay ausblenden wenn App bereit ist
+        function hideLoadingOverlay() {
+            var overlay = document.getElementById('appLoadingOverlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                // Entferne nach Animation
+                setTimeout(function() {
+                    overlay.remove();
+                    // Entferne auch die kritischen Styles
+                    var criticalStyles = document.getElementById('critical-loading-styles');
+                    if (criticalStyles) criticalStyles.remove();
+                }, 300);
+            }
+        }
+
+        // Warte auf App-Initialisierung oder Timeout
+        if (document.readyState === 'complete') {
+            // Kurze Verzögerung für UI-Initialisierung
+            setTimeout(hideLoadingOverlay, 100);
+        } else {
+            window.addEventListener('load', function() {
+                // Kurze Verzögerung für UI-Initialisierung
+                setTimeout(hideLoadingOverlay, 100);
+            });
+        }
+
+        // Fallback: Loader nach 5 Sekunden ausblenden
+        setTimeout(hideLoadingOverlay, 5000);
+
+        // Service Worker registrieren für Offline-Caching
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+                        console.log('[SW] Registriert:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('[SW] Registrierung fehlgeschlagen:', error);
+                    });
+            });
         }
     </script>
 </body>
