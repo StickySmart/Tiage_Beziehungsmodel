@@ -13526,7 +13526,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 TiageState.set('personDimensions.partner.geschlecht', personDimensions.partner.geschlecht);
             }
 
-            // 3. Orientierung setzen (als Array, da UI-Sync-Funktionen Array erwarten)
+            // 3. Orientierung setzen (als Array für UI - wird in Berechnung via ensureValidOrientierung konvertiert)
             personDimensions.partner.orientierung = result.orientierung ? [result.orientierung] : [];
             if (typeof mobilePersonDimensions !== 'undefined') {
                 mobilePersonDimensions.partner.orientierung = result.orientierung ? [result.orientierung] : [];
@@ -13557,9 +13557,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             updateGeschlechtSummary('partner');
             updateDominanzSummary('partner');
             updateOrientierungSummary('partner');
-            updateComparisonView();
 
-            // Profil neu berechnen
+            // FIX: Profil ZUERST neu berechnen, DANN Score aktualisieren
+            // ProfileCalculator.loadProfile() schreibt flatNeeds in TiageState,
+            // die für die R-Faktor-Berechnung in updateComparisonView() benötigt werden
             if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
                 ProfileCalculator.loadProfile('partner', {
                     archetyp: result.archetyp,
@@ -13568,6 +13569,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     orientierung: personDimensions.partner.orientierung
                 });
             }
+
+            // JETZT Score neu berechnen (mit aktualisierten Needs)
+            updateComparisonView();
 
             // Modal schließen und zurücksetzen
             const modal = document.getElementById('slotMachineModal');
@@ -14055,8 +14059,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
             const partnerNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
 
-            const person1 = { archetyp: currentArchetype, ...personDimensions.ich, needs: ichNeeds };
-            const person2 = { archetyp: selectedPartner, ...personDimensions.partner, needs: partnerNeeds };
+            // FIX: Konvertiere Orientierung von Array (UI-Format) zu Object (Berechnungs-Format)
+            // UI speichert Orientierung als Array ['hetero', 'bi'], Berechnung erwartet {primary, secondary}
+            const person1 = {
+                archetyp: currentArchetype,
+                ...personDimensions.ich,
+                orientierung: ensureValidOrientierung(personDimensions.ich.orientierung),
+                needs: ichNeeds
+            };
+            const person2 = {
+                archetyp: selectedPartner,
+                ...personDimensions.partner,
+                orientierung: ensureValidOrientierung(personDimensions.partner.orientierung),
+                needs: partnerNeeds
+            };
 
             console.log('[updateComparisonView] person1:', JSON.stringify(person1));
             console.log('[updateComparisonView] person2:', JSON.stringify(person2));
