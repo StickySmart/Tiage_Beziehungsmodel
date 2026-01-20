@@ -1,10 +1,10 @@
 /**
  * Ti-Age Service Worker für Offline-Caching und Performance
- * Version: 1.0.0
+ * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v1';
-const STATIC_CACHE_NAME = 'tiage-static-v1';
+const CACHE_NAME = 'tiage-v2';
+const STATIC_CACHE_NAME = 'tiage-static-v2';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [
@@ -16,7 +16,12 @@ const PRECACHE_URLS = [
     '/js/state.js',
     '/js/config.js',
     '/js/i18n.js',
-    '/js/locales/de.js'
+    '/js/locales/de.js',
+    '/js/locales/loader.js',
+    '/js/utils/performance.js',
+    '/js/synthesis/constants.js',
+    '/js/synthesis/synthesisCalculator.js',
+    '/css/slot-machine.css'
 ];
 
 // URLs die nicht gecacht werden sollen
