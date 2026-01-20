@@ -604,6 +604,131 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // SSOT: ORIENTIERUNGS-OPTIONEN (v5.0)
+    // ═══════════════════════════════════════════════════════════════════════
+    // SINGLE SOURCE OF TRUTH für alle Orientierungs-Varianten.
+    // Alle anderen Dateien MÜSSEN diese Definition verwenden!
+    //
+    // Aktuelle Optionen (5 Varianten):
+    // - heterosexuell: Anziehung zum anderen binären Geschlecht
+    // - homosexuell: Anziehung zum gleichen Geschlecht (gay/lesbisch)
+    // - bisexuell: Anziehung zu beiden binären Geschlechtern
+    // - pansexuell: Anziehung zu allen Geschlechtern (inkl. nonbinär)
+    // - queer: Umbrella-Term, flexibel, meist wie pansexuell behandelt
+
+    ORIENTIERUNG_OPTIONS: {
+        // Alle verfügbaren Orientierungen (für Iteration in Best Match etc.)
+        ALL: ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'],
+
+        // Kategorien für Kompatibilitäts-Logik
+        CATEGORIES: {
+            // Monosexuell: Nur ein Geschlecht
+            MONO: ['heterosexuell', 'homosexuell'],
+            // Multisexuell: Mehrere Geschlechter
+            MULTI: ['bisexuell', 'pansexuell', 'queer'],
+            // Kann zu Nonbinär angezogen sein
+            ATTRACTS_NONBINARY: ['pansexuell', 'queer'],
+            // Kann zu beiden binären Geschlechtern angezogen sein
+            ATTRACTS_BINARY_BOTH: ['bisexuell', 'pansexuell', 'queer']
+        },
+
+        // Labels für UI-Anzeige
+        LABELS: {
+            'heterosexuell': 'Hetero',
+            'homosexuell': 'Homo',
+            'bisexuell': 'Bi',
+            'pansexuell': 'Pan',
+            'queer': 'Queer'
+        },
+
+        // Openness-Werte für Resonanz-Berechnung (0-100)
+        // Höherer Wert = offener für verschiedene Partner
+        OPENNESS: {
+            'heterosexuell': 0,
+            'homosexuell': 0,
+            'bisexuell': 70,
+            'pansexuell': 100,
+            'queer': 100
+        },
+
+        // Legacy-Migration: Alte Keys zu neuen Keys
+        // WICHTIG: Wird für Rückwärtskompatibilität verwendet
+        LEGACY_MIGRATION: {
+            'bihomo': 'bisexuell',           // v2.0 Legacy
+            'gay_lesbisch': 'homosexuell',   // v4.0 Alternative
+            'pansexuell_queer': 'pansexuell' // v4.0 Alternative
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SSOT: GESCHLECHTS-OPTIONEN (v5.0)
+    // ═══════════════════════════════════════════════════════════════════════
+    // SINGLE SOURCE OF TRUTH für alle Geschlechts-Varianten.
+    // Format: { primary: 'körper', secondary: 'identität' }
+
+    GESCHLECHT_OPTIONS: {
+        // Primary-Optionen (Körper)
+        PRIMARY: ['mann', 'frau', 'inter'],
+
+        // Secondary-Optionen je nach Primary
+        SECONDARY: {
+            'mann': ['cis', 'trans', 'nonbinaer'],
+            'frau': ['cis', 'trans', 'nonbinaer'],
+            'inter': ['nonbinaer', 'fluid', 'suchend']
+        },
+
+        // Alle gültigen Kombinationen (für Iteration in Best Match)
+        ALL_COMBINATIONS: [
+            { primary: 'mann', secondary: 'cis' },
+            { primary: 'mann', secondary: 'trans' },
+            { primary: 'mann', secondary: 'nonbinaer' },
+            { primary: 'frau', secondary: 'cis' },
+            { primary: 'frau', secondary: 'trans' },
+            { primary: 'frau', secondary: 'nonbinaer' },
+            { primary: 'inter', secondary: 'nonbinaer' },
+            { primary: 'inter', secondary: 'fluid' },
+            { primary: 'inter', secondary: 'suchend' }
+        ],
+
+        // Labels für UI-Anzeige
+        LABELS: {
+            PRIMARY: {
+                'mann': 'Mann',
+                'frau': 'Frau',
+                'inter': 'Inter'
+            },
+            SECONDARY: {
+                'cis': 'Cis',
+                'trans': 'Trans',
+                'nonbinaer': 'NB',
+                'fluid': 'Fluid',
+                'suchend': 'Suchend'
+            }
+        },
+
+        // Effektive Identität berechnen (für Orientierungs-Kompatibilität)
+        // P + S → effektive Identität für Anziehungs-Logik
+        EFFECTIVE_IDENTITY: {
+            'mann-cis': 'mann',
+            'mann-trans': 'frau',        // Trans-Mann → identifiziert als Frau (körperlich Mann)
+            'mann-nonbinaer': 'nonbinaer',
+            'frau-cis': 'frau',
+            'frau-trans': 'mann',        // Trans-Frau → identifiziert als Mann (körperlich Frau)
+            'frau-nonbinaer': 'nonbinaer',
+            'inter-nonbinaer': 'nonbinaer',
+            'inter-fluid': 'nonbinaer',
+            'inter-suchend': 'nonbinaer'
+        },
+
+        // Kategorien für Kompatibilitäts-Logik
+        CATEGORIES: {
+            BINARY_MALE: ['mann'],
+            BINARY_FEMALE: ['frau'],
+            NONBINARY: ['nonbinaer', 'fluid', 'suchend', 'inter']
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // ORIENTIERUNGS-KOMPATIBILITÄT
     // ═══════════════════════════════════════════════════════════════════════
     // Hard-KO bei geometrisch unmöglichen Kombinationen

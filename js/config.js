@@ -98,75 +98,77 @@ const TiageConfig = (function() {
     // R4 (Identitäts-Resonanz) wird aus Orientierung berechnet
     // ═══════════════════════════════════════════════════════════════════════
 
-    // Multi-Select fähige Orientierungen (v4.1: 5 separate Optionen)
-    const ORIENTIERUNG_TYPES = ['heterosexuell', 'gay_lesbisch', 'bisexuell', 'pansexuell', 'queer'];
+    // ═══════════════════════════════════════════════════════════════════════
+    // v5.0 SSOT: Multi-Select fähige Orientierungen (5 Optionen)
+    // WICHTIG: Diese Definition MUSS konsistent sein mit:
+    // - TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS (SSOT Quelle)
+    // - js/synthesis/constants.js
+    // ═══════════════════════════════════════════════════════════════════════
+    const ORIENTIERUNG_TYPES = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'];
 
     const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
-        gay_lesbisch: 'Gay/L',
+        homosexuell: 'Homo',
         bisexuell: 'Bi',
         pansexuell: 'Pan',
         queer: 'Queer',
         // LEGACY: Alte Keys für Rückwärtskompatibilität
-        pansexuell_queer: 'Pan/Q',
-        homosexuell: 'Gay',
-        bihomo: 'Gay/Bi',
-        asexuell: 'Ace'
+        gay_lesbisch: 'Homo',
+        pansexuell_queer: 'Pan',
+        bihomo: 'Bi'
     };
 
     const ORIENTIERUNG_LABELS = {
         heterosexuell: 'Heterosexuell',
-        gay_lesbisch: 'Gay / Lesbisch',
+        homosexuell: 'Homosexuell',
         bisexuell: 'Bisexuell',
         pansexuell: 'Pansexuell',
         queer: 'Queer',
         // LEGACY: Alte Keys für Rückwärtskompatibilität
-        pansexuell_queer: 'Pansexuell / Queer',
-        homosexuell: 'Gay / Lesbisch',
-        bihomo: 'Gay / Bisexuell',
-        asexuell: 'Asexuell'
+        gay_lesbisch: 'Homosexuell',
+        pansexuell_queer: 'Pansexuell',
+        bihomo: 'Bisexuell'
     };
 
     // R4 Openness - bestimmt Identitäts-Resonanz (ersetzt IDENTITY_OPENNESS)
     // Je höher, desto offener/flexibler
+    // v5.0 SSOT: Konsistent mit TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.OPENNESS
     const ORIENTIERUNG_OPENNESS = {
         heterosexuell: 0,        // Konventionell
-        gay_lesbisch: 30,        // Spezifisch
-        bisexuell: 70,           // Offen
-        pansexuell: 90,          // Sehr offen (geschlechtsunabhängig)
+        homosexuell: 0,          // Spezifisch auf gleiches Geschlecht
+        bisexuell: 70,           // Offen für beide binäre Geschlechter
+        pansexuell: 100,         // Maximal offen (alle Geschlechter)
         queer: 100,              // Maximal offen (Umbrella-Term)
-        // LEGACY
+        // LEGACY: Alte Keys für Rückwärtskompatibilität
+        gay_lesbisch: 0,
         pansexuell_queer: 100,
-        homosexuell: 30,
-        bihomo: 50,
-        pansexuell: 90
+        bihomo: 70
     };
 
-    // KO-Kriterien für Orientierungs-Kombinationen (v4.1.1)
+    // KO-Kriterien für Orientierungs-Kombinationen (v5.0)
     // PRIMÄR/SEKUNDÄR System: Erste Auswahl = Primär, weitere = Sekundär
-    // Nur primäre Konflikte werden blockiert (Hetero+Gay)
+    // Nur primäre Konflikte werden blockiert (Hetero+Homo)
     const ORIENTIERUNG_EXCLUSION_RULES = {
-        // Hetero ist nur mit Gay inkompatibel (als PRIMÄRE Kombination)
+        // Hetero ist nur mit Homo inkompatibel (als PRIMÄRE Kombination)
         // Erlaubt: Hetero (primär) + Pan/Queer/Bi (sekundär)
-        heterosexuell: ['gay_lesbisch'],
-        // Gay/Lesbisch ist nur mit Hetero inkompatibel (als PRIMÄRE Kombination)
-        // Erlaubt: Gay (primär) + Pan/Queer/Bi (sekundär)
-        gay_lesbisch: ['heterosexuell'],
+        heterosexuell: ['homosexuell'],
+        // Homo ist nur mit Hetero inkompatibel (als PRIMÄRE Kombination)
+        // Erlaubt: Homo (primär) + Pan/Queer/Bi (sekundär)
+        homosexuell: ['heterosexuell'],
         // Bi, Pan, Queer können frei mit allem kombiniert werden
         bisexuell: [],
         pansexuell: [],
-        queer: []
+        queer: [],
+        // LEGACY
+        gay_lesbisch: ['heterosexuell']
     };
 
-    // Migration-Helper: Konvertiert alte Orientierungs-Keys zu neuen (v4.1)
+    // v5.0 SSOT: Migration-Helper - Konvertiert Legacy-Keys zu aktuellen Keys
     function migrateOrientierung(oldValue) {
         const migration = {
-            'homosexuell': 'gay_lesbisch',
-            'bisexuell': 'bisexuell',
-            'bihomo': 'bisexuell',  // bihomo → bisexuell (oder gay_lesbisch je nach Kontext)
-            'pansexuell': 'pansexuell',  // v4.1: Separate Option
-            'pansexuell_queer': 'pansexuell',  // v4.0→v4.1: Pan/Q zusammen → Pan
-            'asexuell': 'heterosexuell'  // Fallback
+            'gay_lesbisch': 'homosexuell',  // v4.0 Alternative → v5.0 Standard
+            'bihomo': 'bisexuell',          // v2.0 Legacy → v5.0 Standard
+            'pansexuell_queer': 'pansexuell' // v4.0 Alternative → v5.0 Standard
         };
         return migration[oldValue] || oldValue;
     }

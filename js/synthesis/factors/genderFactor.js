@@ -137,17 +137,29 @@ TiageSynthesis.Factors.Geschlecht = {
      * @returns {object} { score: 0-100, openness1, openness2, details }
      */
     _calculateOrientierungResonance: function(oriList1, oriList2, constants) {
-        // Openness-Werte aus Config oder Constants
-        var opennessMap = (constants.ORIENTIERUNG_OPENNESS_V4 || {
-            'heterosexuell': 0,
-            'gay_lesbisch': 30,
-            'bisexuell': 70,
-            'pansexuell_queer': 100,
-            // Legacy
-            'homosexuell': 30,
-            'bihomo': 50,
-            'pansexuell': 100
-        });
+        // v5.0 SSOT: Openness-Werte aus TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.OPENNESS
+        var opennessMap = (function() {
+            // Versuche SSOT zu verwenden
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS &&
+                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.OPENNESS) {
+                return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.OPENNESS;
+            }
+            // Fallback mit allen 5 aktuellen + Legacy-Optionen
+            return {
+                // v5.0 SSOT: Aktuelle Optionen
+                'heterosexuell': 0,
+                'homosexuell': 0,
+                'bisexuell': 70,
+                'pansexuell': 100,
+                'queer': 100,
+                // Legacy-Keys (für Rückwärtskompatibilität)
+                'gay_lesbisch': 0,
+                'bihomo': 70,
+                'pansexuell_queer': 100
+            };
+        })();
 
         // Höchsten Openness-Wert für jede Person ermitteln (Multi-Select)
         var openness1 = 0;
@@ -208,38 +220,59 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
-     * Extrahiert Orientierungen als String-Array (v4.0)
+     * Extrahiert Orientierungen als String-Array
+     * v5.0 SSOT: Alle 5 Orientierungen: heterosexuell, homosexuell, bisexuell, pansexuell, queer
      */
     _extractOrientations: function(person) {
         var ori = person.orientierung;
         if (!ori) return [];
 
-        // v4.0: Array direkt
+        // v5.0 SSOT: Migration-Helper
+        var migrateType = function(type) {
+            // Hole Legacy-Migration aus SSOT
+            var constants = TiageSynthesis.Constants;
+            if (constants && constants.ORIENTIERUNG_OPTIONS && constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION) {
+                var migrated = constants.ORIENTIERUNG_OPTIONS.LEGACY_MIGRATION[type];
+                if (migrated) return migrated;
+            }
+            // Fallback-Migration
+            if (type === 'bihomo') return 'bisexuell';
+            if (type === 'gay_lesbisch') return 'homosexuell';
+            if (type === 'pansexuell_queer') return 'pansexuell';
+            return type;
+        };
+
+        // v5.0: Array direkt (mit Migration)
         if (Array.isArray(ori)) {
-            return ori;
+            return ori.map(function(o) { return migrateType(o); });
         }
 
-        // String zu Array
+        // String zu Array (mit Migration)
         if (typeof ori === 'string') {
-            return [ori];
+            return [migrateType(ori)];
         }
 
         // LEGACY: { primary, secondary } Format
         if (typeof ori === 'object' && 'primary' in ori) {
             var list = [];
-            if (ori.primary) list.push(ori.primary);
-            if (ori.secondary && ori.secondary !== ori.primary) list.push(ori.secondary);
+            if (ori.primary) list.push(migrateType(ori.primary));
+            if (ori.secondary && ori.secondary !== ori.primary) list.push(migrateType(ori.secondary));
             return list;
         }
 
         // LEGACY: { heterosexuell: 'gelebt', ... } Format
+        // v5.0 SSOT: Alle 5 aktuellen + Legacy-Keys
         if (typeof ori === 'object') {
             var list2 = [];
             if (ori.heterosexuell) list2.push('heterosexuell');
-            if (ori.homosexuell) list2.push('gay_lesbisch');
-            if (ori.gay_lesbisch) list2.push('gay_lesbisch');
+            if (ori.homosexuell) list2.push('homosexuell');
             if (ori.bisexuell) list2.push('bisexuell');
-            if (ori.pansexuell || ori.pansexuell_queer) list2.push('pansexuell_queer');
+            if (ori.pansexuell) list2.push('pansexuell');
+            if (ori.queer) list2.push('queer');
+            // Legacy-Keys (migrieren)
+            if (ori.gay_lesbisch) list2.push('homosexuell');
+            if (ori.pansexuell_queer) list2.push('pansexuell');
+            if (ori.bihomo) list2.push('bisexuell');
             return list2;
         }
 

@@ -391,11 +391,12 @@ const TiageState = (function() {
     // Konvertiert alte Formate zu Array.
     // ═══════════════════════════════════════════════════════════════════════
 
+    // v5.0 SSOT: Migriert Legacy-Keys zu aktuellen Keys
+    // Aktuelle Keys: heterosexuell, homosexuell, bisexuell, pansexuell, queer
     const ORIENTIERUNG_MIGRATE_MAP = {
-        'homosexuell': 'gay_lesbisch',
-        'bihomo': 'bisexuell',
-        'pansexuell_queer': 'pansexuell',  // v4.0→v4.1: Pan/Q combined → Pan
-        'asexuell': 'heterosexuell'  // Fallback
+        'bihomo': 'bisexuell',           // v2.0 Legacy → bisexuell
+        'gay_lesbisch': 'homosexuell',   // v4.0 Alternative → homosexuell
+        'pansexuell_queer': 'pansexuell' // v4.0 Alternative → pansexuell
     };
 
     /**
@@ -1237,25 +1238,37 @@ const TiageState = (function() {
                 return id;
             };
 
-            // v2.0: Migriert alte Orientierungs-Keys (homosexuell/bisexuell → bihomo)
+            // v5.0 SSOT: Migriert Legacy-Orientierungs-Keys zu aktuellen Keys
+            // Aktuelle Keys: heterosexuell, homosexuell, bisexuell, pansexuell, queer
+            // Legacy-Keys: bihomo, gay_lesbisch, pansexuell_queer
             const migrateOrientierung = (orientierung) => {
                 if (!orientierung) return orientierung;
+
+                // v5.0 SSOT: Migration-Map (Legacy → Aktuell)
+                const migrationMap = {
+                    'bihomo': 'bisexuell',           // v2.0 Legacy
+                    'gay_lesbisch': 'homosexuell',   // v4.0 Alternative
+                    'pansexuell_queer': 'pansexuell' // v4.0 Alternative
+                };
+
+                const migrateKey = (key) => migrationMap[key] || key;
+
                 if (typeof orientierung === 'object' && 'primary' in orientierung) {
                     const migrated = { ...orientierung };
-                    if (migrated.primary === 'homosexuell' || migrated.primary === 'bisexuell') {
-                        console.log(`[TiageState] Migriere Orientierung ${migrated.primary} → bihomo`);
-                        migrated.primary = 'bihomo';
+                    if (migrationMap[migrated.primary]) {
+                        console.log(`[TiageState] v5.0 Migriere Orientierung ${migrated.primary} → ${migrateKey(migrated.primary)}`);
+                        migrated.primary = migrateKey(migrated.primary);
                     }
-                    if (migrated.secondary === 'homosexuell' || migrated.secondary === 'bisexuell') {
-                        console.log(`[TiageState] Migriere sekundäre Orientierung ${migrated.secondary} → bihomo`);
-                        migrated.secondary = 'bihomo';
+                    if (migrationMap[migrated.secondary]) {
+                        console.log(`[TiageState] v5.0 Migriere sekundäre Orientierung ${migrated.secondary} → ${migrateKey(migrated.secondary)}`);
+                        migrated.secondary = migrateKey(migrated.secondary);
                     }
                     return migrated;
                 }
                 // String-Format
-                if (orientierung === 'homosexuell' || orientierung === 'bisexuell') {
-                    console.log(`[TiageState] Migriere Orientierung ${orientierung} → bihomo`);
-                    return 'bihomo';
+                if (migrationMap[orientierung]) {
+                    console.log(`[TiageState] v5.0 Migriere Orientierung ${orientierung} → ${migrateKey(orientierung)}`);
+                    return migrateKey(orientierung);
                 }
                 return orientierung;
             };

@@ -4478,11 +4478,11 @@
                 { value: 'ausgeglichen', label: 'ausgeglichen' }
             ];
 
-            // v4.0: Orientierung als Multi-Select Array
-            // v4.1: 5 separate Orientierungs-Optionen
+            // v5.0 SSOT: Orientierung als Multi-Select Array (5 Optionen)
+            // Konsistent mit TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.ALL
             const orientierungOptions = [
                 { value: 'heterosexuell', label: 'Hetero' },
-                { value: 'gay_lesbisch', label: 'Gay/L' },
+                { value: 'homosexuell', label: 'Homo' },
                 { value: 'bisexuell', label: 'Bi' },
                 { value: 'pansexuell', label: 'Pan' },
                 { value: 'queer', label: 'Queer' }
@@ -5547,19 +5547,21 @@
             // v4.0: Array-basierte Prüfung
             const isMissing = !Array.isArray(orientierungen) || orientierungen.length === 0;
 
-            // v4.0: Summary aus Array erstellen
+            // v5.0 SSOT: Summary aus Array erstellen
             let summaryText = 'Orientierung fehlt';
             let gridSummaryText = '';
             if (Array.isArray(orientierungen) && orientierungen.length > 0) {
-                // Labels für die Werte (v4.1.1: 5 separate Optionen + P/S Indikatoren)
+                // v5.0 SSOT: Labels für alle 5 aktuellen + Legacy-Optionen
                 const labels = {
                     'heterosexuell': 'hetero',
-                    'gay_lesbisch': 'gay/L',
+                    'homosexuell': 'homo',
                     'bisexuell': 'bi',
                     'pansexuell': 'pan',
                     'queer': 'queer',
-                    // Legacy v4.0
-                    'pansexuell_queer': 'pan/queer'
+                    // Legacy-Keys für Rückwärtskompatibilität
+                    'gay_lesbisch': 'homo',
+                    'pansexuell_queer': 'pan',
+                    'bihomo': 'bi'
                 };
                 // v4.1.1: Erste = Primär (P), weitere = Sekundär (S)
                 const labelList = orientierungen.map((o, index) => {
@@ -12905,19 +12907,42 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Alle möglichen Werte
         const ALL_ARCHETYPES_SLOT = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-        const ALL_GESCHLECHT_COMBINATIONS = [
-            { primary: 'mann', secondary: 'cis' },
-            { primary: 'mann', secondary: 'trans' },
-            { primary: 'mann', secondary: 'nonbinaer' },
-            { primary: 'frau', secondary: 'cis' },
-            { primary: 'frau', secondary: 'trans' },
-            { primary: 'frau', secondary: 'nonbinaer' },
-            { primary: 'inter', secondary: 'nonbinaer' },
-            { primary: 'inter', secondary: 'fluid' },
-            { primary: 'inter', secondary: 'suchend' }
-        ];
-        // v2.0: Neue Orientierungs-Struktur: hetero, bihomo, pan
-        const ALL_ORIENTIERUNGEN = ['heterosexuell', 'bihomo', 'pansexuell'];
+
+        // v5.0 SSOT: Geschlechts-Kombinationen aus TiageSynthesis.Constants
+        const ALL_GESCHLECHT_COMBINATIONS = (function() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.GESCHLECHT_OPTIONS) {
+                return TiageSynthesis.Constants.GESCHLECHT_OPTIONS.ALL_COMBINATIONS;
+            }
+            // Fallback (sollte nie verwendet werden wenn constants.js geladen)
+            console.warn('[SlotMachine] SSOT nicht verfügbar, verwende Fallback für GESCHLECHT_COMBINATIONS');
+            return [
+                { primary: 'mann', secondary: 'cis' },
+                { primary: 'mann', secondary: 'trans' },
+                { primary: 'mann', secondary: 'nonbinaer' },
+                { primary: 'frau', secondary: 'cis' },
+                { primary: 'frau', secondary: 'trans' },
+                { primary: 'frau', secondary: 'nonbinaer' },
+                { primary: 'inter', secondary: 'nonbinaer' },
+                { primary: 'inter', secondary: 'fluid' },
+                { primary: 'inter', secondary: 'suchend' }
+            ];
+        })();
+
+        // v5.0 SSOT: Orientierungs-Optionen aus TiageSynthesis.Constants
+        // WICHTIG: Enthält jetzt alle 5 Optionen: heterosexuell, homosexuell, bisexuell, pansexuell, queer
+        const ALL_ORIENTIERUNGEN = (function() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS) {
+                return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.ALL;
+            }
+            // Fallback (sollte nie verwendet werden wenn constants.js geladen)
+            console.warn('[SlotMachine] SSOT nicht verfügbar, verwende Fallback für ORIENTIERUNGEN');
+            return ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'];
+        })();
+
         const ALL_DOMINANZEN = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
 
         // Labels für die Anzeige
@@ -12925,16 +12950,37 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             'single': 'Single', 'duo': 'Duo', 'duo_flex': 'Duo-Flex', 'ra': 'RA',
             'lat': 'LAT', 'aromantisch': 'Aromantisch', 'solopoly': 'Solopoly', 'polyamor': 'Polyamor'
         };
-        const GESCHLECHT_LABELS = {
-            'mann': 'Mann', 'frau': 'Frau', 'inter': 'Inter',
-            'cis': 'Cis', 'trans': 'Trans', 'nonbinaer': 'NB', 'fluid': 'Fluid', 'suchend': 'Such.'
-        };
-        // v2.0: Neue Labels
-        const ORIENTIERUNG_LABELS = {
-            'heterosexuell': 'Hetero', 'bihomo': 'Bi/Homo', 'pansexuell': 'Pan',
-            // LEGACY
-            'homosexuell': 'Bi/Homo', 'bisexuell': 'Bi/Homo'
-        };
+
+        // v5.0 SSOT: Geschlechts-Labels aus TiageSynthesis.Constants
+        const GESCHLECHT_LABELS = (function() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.GESCHLECHT_OPTIONS) {
+                const labels = TiageSynthesis.Constants.GESCHLECHT_OPTIONS.LABELS;
+                return { ...labels.PRIMARY, ...labels.SECONDARY };
+            }
+            return {
+                'mann': 'Mann', 'frau': 'Frau', 'inter': 'Inter',
+                'cis': 'Cis', 'trans': 'Trans', 'nonbinaer': 'NB', 'fluid': 'Fluid', 'suchend': 'Suchend'
+            };
+        })();
+
+        // v5.0 SSOT: Orientierungs-Labels aus TiageSynthesis.Constants
+        const ORIENTIERUNG_LABELS = (function() {
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Constants &&
+                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS) {
+                return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LABELS;
+            }
+            return {
+                'heterosexuell': 'Hetero',
+                'homosexuell': 'Homo',
+                'bisexuell': 'Bi',
+                'pansexuell': 'Pan',
+                'queer': 'Queer'
+            };
+        })();
+
         const DOMINANZ_LABELS = {
             'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
         };
@@ -16525,10 +16571,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         }
                     }
 
-                    // v4.1: Migrate legacy values
+                    // v5.0 SSOT: Migrate legacy values zu aktuellen Keys
                     orientierungen = orientierungen.map(ori => {
                         if (ori === 'pansexuell_queer') return 'pansexuell';
-                        if (ori === 'homosexuell') return 'gay_lesbisch';
+                        if (ori === 'gay_lesbisch') return 'homosexuell';
+                        if (ori === 'bihomo') return 'bisexuell';
                         return ori;
                     });
 
