@@ -12186,6 +12186,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             resonanzIch: { R1: resonanzIch.leben || resonanzIch.R1, R2: resonanzIch.philosophie || resonanzIch.R2, R3: resonanzIch.dynamik || resonanzIch.R3 },
                             resonanzPartner: { R1: resonanzPartner.leben || resonanzPartner.R1, R2: resonanzPartner.philosophie || resonanzPartner.R2, R3: resonanzPartner.dynamik || resonanzPartner.R3 }
                         });
+
+                        // ═══════════════════════════════════════════════════════════════════
+                        // FIX v1.8.785: R-Faktoren zu TiageState speichern für Modal-Konsistenz
+                        // ═══════════════════════════════════════════════════════════════════
+                        if (typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
+                            const ichR = {
+                                R1: resonanzIch.leben || resonanzIch.R1 || 1.0,
+                                R2: resonanzIch.philosophie || resonanzIch.R2 || 1.0,
+                                R3: resonanzIch.dynamik || resonanzIch.R3 || 1.0,
+                                R4: resonanzIch.identitaet || resonanzIch.R4 || 1.0
+                            };
+                            const partnerR = {
+                                R1: resonanzPartner.leben || resonanzPartner.R1 || 1.0,
+                                R2: resonanzPartner.philosophie || resonanzPartner.R2 || 1.0,
+                                R3: resonanzPartner.dynamik || resonanzPartner.R3 || 1.0,
+                                R4: resonanzPartner.identitaet || resonanzPartner.R4 || 1.0
+                            };
+                            // Speichere individuelle R-Faktoren (respektiert gesperrte Werte)
+                            ResonanzCard.setCalculatedValues(ichR, false, 'ich');
+                            ResonanzCard.setCalculatedValues(partnerR, false, 'partner');
+                            console.log('[calculateRelationshipQuality] R-Faktoren zu TiageState gespeichert:', { ich: ichR, partner: partnerR });
+                        }
                     }
                 } catch (e) {
                     console.warn('[calculateRelationshipQuality] Fehler bei R-Faktor-Berechnung aus Needs:', e);
@@ -18597,66 +18619,107 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (!modal) return;
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // Resonanzwerte für BEIDE Personen laden und kombinieren
-            // Kombination via Produkt (wie im synthesisCalculator)
+            // FIX v1.8.785: Resonanzwerte DIREKT aus Needs berechnen (SSOT)
+            // Vorher: Werte aus ResonanzCard.load() → oft Default-Werte (1.0)
+            // Jetzt: Dieselbe Berechnung wie calculateRelationshipQuality()
             // ═══════════════════════════════════════════════════════════════════════════
 
-            // ICH Resonanzwerte laden (inkl. Lock-Status)
+            // ICH Resonanzwerte - DIREKT aus Needs berechnen
             let resonanzIch = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
             let lockStatusIch = { R1: false, R2: false, R3: false, R4: false };
 
-            if (typeof ResonanzCard !== 'undefined') {
-                const fullDataIch = ResonanzCard.load('ich');
-                resonanzIch = {
-                    R1: fullDataIch.R1?.value || 1.0,
-                    R2: fullDataIch.R2?.value || 1.0,
-                    R3: fullDataIch.R3?.value || 1.0,
-                    R4: fullDataIch.R4?.value || 1.0
-                };
-                lockStatusIch = {
-                    R1: fullDataIch.R1?.locked || false,
-                    R2: fullDataIch.R2?.locked || false,
-                    R3: fullDataIch.R3?.locked || false,
-                    R4: fullDataIch.R4?.locked || false
-                };
-            } else {
-                const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
-                if (loadedIch) {
+            // PARTNER Resonanzwerte - DIREKT aus Needs berechnen
+            let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            let lockStatusPartner = { R1: false, R2: false, R3: false, R4: false };
+
+            // Hole Needs für beide Personen aus TiageState
+            const needsIch = typeof TiageState !== 'undefined' ? TiageState.getFlatNeeds?.('ich') : null;
+            const needsPartner = typeof TiageState !== 'undefined' ? TiageState.getFlatNeeds?.('partner') : null;
+
+            // Berechne R-Faktoren aus Needs (wie in calculateRelationshipQuality)
+            if (needsIch && Object.keys(needsIch).length > 0 &&
+                typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.NeedsIntegration &&
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function') {
+
+                try {
+                    const calcResultIch = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: currentArchetype || 'duo',
+                        needs: needsIch
+                    });
+
+                    if (calcResultIch && calcResultIch.enabled) {
+                        resonanzIch = {
+                            R1: calcResultIch.leben || calcResultIch.R1 || 1.0,
+                            R2: calcResultIch.philosophie || calcResultIch.R2 || 1.0,
+                            R3: calcResultIch.dynamik || calcResultIch.R3 || 1.0,
+                            R4: calcResultIch.identitaet || calcResultIch.R4 || 1.0
+                        };
+                        console.log('[ResonanzModal] ICH R-Faktoren aus Needs berechnet:', resonanzIch);
+                    }
+                } catch (e) {
+                    console.warn('[ResonanzModal] Fehler bei ICH R-Faktor-Berechnung:', e);
+                }
+            }
+
+            if (needsPartner && Object.keys(needsPartner).length > 0 &&
+                typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.NeedsIntegration &&
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function') {
+
+                try {
+                    const calcResultPartner = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: selectedPartner || 'duo',
+                        needs: needsPartner
+                    });
+
+                    if (calcResultPartner && calcResultPartner.enabled) {
+                        resonanzPartner = {
+                            R1: calcResultPartner.leben || calcResultPartner.R1 || 1.0,
+                            R2: calcResultPartner.philosophie || calcResultPartner.R2 || 1.0,
+                            R3: calcResultPartner.dynamik || calcResultPartner.R3 || 1.0,
+                            R4: calcResultPartner.identitaet || calcResultPartner.R4 || 1.0
+                        };
+                        console.log('[ResonanzModal] PARTNER R-Faktoren aus Needs berechnet:', resonanzPartner);
+                    }
+                } catch (e) {
+                    console.warn('[ResonanzModal] Fehler bei PARTNER R-Faktor-Berechnung:', e);
+                }
+            }
+
+            // Fallback: Falls keine Needs vorhanden, lade aus ResonanzCard (Legacy)
+            if (resonanzIch.R1 === 1.0 && resonanzIch.R2 === 1.0 && resonanzIch.R3 === 1.0 && resonanzIch.R4 === 1.0) {
+                if (typeof ResonanzCard !== 'undefined') {
+                    const fullDataIch = ResonanzCard.load('ich');
                     resonanzIch = {
-                        R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
-                        R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
-                        R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
-                        R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
+                        R1: fullDataIch.R1?.value || 1.0,
+                        R2: fullDataIch.R2?.value || 1.0,
+                        R3: fullDataIch.R3?.value || 1.0,
+                        R4: fullDataIch.R4?.value || 1.0
+                    };
+                    lockStatusIch = {
+                        R1: fullDataIch.R1?.locked || false,
+                        R2: fullDataIch.R2?.locked || false,
+                        R3: fullDataIch.R3?.locked || false,
+                        R4: fullDataIch.R4?.locked || false
                     };
                 }
             }
 
-            // PARTNER Resonanzwerte laden (inkl. Lock-Status)
-            let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-            let lockStatusPartner = { R1: false, R2: false, R3: false, R4: false };
-
-            if (typeof ResonanzCard !== 'undefined') {
-                const fullDataPartner = ResonanzCard.load('partner');
-                resonanzPartner = {
-                    R1: fullDataPartner.R1?.value || 1.0,
-                    R2: fullDataPartner.R2?.value || 1.0,
-                    R3: fullDataPartner.R3?.value || 1.0,
-                    R4: fullDataPartner.R4?.value || 1.0
-                };
-                lockStatusPartner = {
-                    R1: fullDataPartner.R1?.locked || false,
-                    R2: fullDataPartner.R2?.locked || false,
-                    R3: fullDataPartner.R3?.locked || false,
-                    R4: fullDataPartner.R4?.locked || false
-                };
-            } else {
-                const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-                if (loadedPartner) {
+            if (resonanzPartner.R1 === 1.0 && resonanzPartner.R2 === 1.0 && resonanzPartner.R3 === 1.0 && resonanzPartner.R4 === 1.0) {
+                if (typeof ResonanzCard !== 'undefined') {
+                    const fullDataPartner = ResonanzCard.load('partner');
                     resonanzPartner = {
-                        R1: loadedPartner.R1?.value ?? loadedPartner.R1 ?? 1.0,
-                        R2: loadedPartner.R2?.value ?? loadedPartner.R2 ?? 1.0,
-                        R3: loadedPartner.R3?.value ?? loadedPartner.R3 ?? 1.0,
-                        R4: loadedPartner.R4?.value ?? loadedPartner.R4 ?? 1.0
+                        R1: fullDataPartner.R1?.value || 1.0,
+                        R2: fullDataPartner.R2?.value || 1.0,
+                        R3: fullDataPartner.R3?.value || 1.0,
+                        R4: fullDataPartner.R4?.value || 1.0
+                    };
+                    lockStatusPartner = {
+                        R1: fullDataPartner.R1?.locked || false,
+                        R2: fullDataPartner.R2?.locked || false,
+                        R3: fullDataPartner.R3?.locked || false,
+                        R4: fullDataPartner.R4?.locked || false
                     };
                 }
             }
