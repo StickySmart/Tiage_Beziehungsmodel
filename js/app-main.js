@@ -2000,6 +2000,11 @@
                 mobileScoreProgressEl.style.stroke = color;
             }
 
+            // Trigger lightbulb blink animation when score is calculated
+            if (currentScore > 0) {
+                triggerLightbulbBlink();
+            }
+
             // Update Score Summary Line in Synthese Modal
             const scoreSummaryValueEl = document.getElementById('syntheseScoreSummaryValue');
             const needsSummaryValueEl = document.getElementById('syntheseNeedsSummaryValue');
@@ -2017,6 +2022,26 @@
                 const needsColor = getScoreGradientColor(needsScore);
                 needsSummaryValueEl.style.color = needsColor;
             }
+        }
+
+        // Trigger lightbulb blink animation to encourage clicking
+        function triggerLightbulbBlink() {
+            const lightbulbIcons = document.querySelectorAll('.lightbulb-icon');
+            lightbulbIcons.forEach(icon => {
+                // Add blink-active class if not already present
+                if (!icon.classList.contains('blink-active')) {
+                    icon.classList.add('blink-active');
+                    console.log('[TIAGE] Lightbulb blink animation activated');
+                }
+            });
+        }
+
+        // Stop lightbulb blink animation (can be called when user clicks the lightbulb)
+        function stopLightbulbBlink() {
+            const lightbulbIcons = document.querySelectorAll('.lightbulb-icon');
+            lightbulbIcons.forEach(icon => {
+                icon.classList.remove('blink-active');
+            });
         }
 
         function getBarClass(value) {
