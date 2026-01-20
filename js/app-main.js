@@ -5707,12 +5707,9 @@
             handleStatusToggle(person, 'dominanz', dominanzType, status);
         }
 
-        /**
-         * Wrapper für Orientierung (behält alte onclick-Aufrufe funktionsfähig)
-         */
-        function handleOrientierungStatusToggle(person, orientierungType, status, btn) {
-            handleStatusToggle(person, 'orientierung', orientierungType, status);
-        }
+        // NOTE: handleOrientierungStatusToggle wurde zu Zeile 5209 verschoben
+        // Die vollständige Implementierung dort unterstützt das Array-basierte
+        // Multi-Select-System mit Primär/Sekundär Buttons (nicht Gelebt/Interessiert)
 
         /**
          * GEMEINSAME Funktion: Sync mobile status buttons für eine Dimension
