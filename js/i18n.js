@@ -22,11 +22,21 @@ const TiageI18n = (function() {
     let currentLocale = null;
     const subscribers = [];
 
-    // Locale references (loaded from external files)
+    // Locale references (lazy-loaded via TiageLocaleLoader)
     const locales = {
         de: typeof TiageLocale_DE !== 'undefined' ? TiageLocale_DE : null,
         en: typeof TiageLocale_EN !== 'undefined' ? TiageLocale_EN : null
     };
+
+    /**
+     * Aktualisiert locale-Referenz (für Lazy-Loading)
+     */
+    function updateLocaleReference(lang, locale) {
+        locales[lang] = locale;
+        if (lang === currentLanguage) {
+            currentLocale = locale;
+        }
+    }
 
     // ═══════════════════════════════════════════════════════════════════════
     // HELPER FUNCTIONS
@@ -182,21 +192,34 @@ const TiageI18n = (function() {
         },
 
         /**
-         * Set the current language
+         * Set the current language (supports lazy-loading)
          * @param {string} lang - The language code ('de' or 'en')
-         * @returns {boolean} True if successful
+         * @returns {Promise<boolean>} True if successful
          */
-        setLanguage(lang) {
+        async setLanguage(lang) {
             if (!SUPPORTED_LANGUAGES.includes(lang)) {
                 console.warn(`[TiageI18n] Unsupported language: ${lang}`);
                 return false;
             }
 
-            if (lang === currentLanguage) {
+            if (lang === currentLanguage && currentLocale) {
                 return true; // Already set
             }
 
             const oldLang = currentLanguage;
+
+            // Lazy-Load: Falls Locale nicht geladen, jetzt laden
+            if (!locales[lang] && typeof TiageLocaleLoader !== 'undefined') {
+                try {
+                    console.log(`[TiageI18n] Lazy-Loading Sprache: ${lang}...`);
+                    const locale = await TiageLocaleLoader.loadLocale(lang);
+                    updateLocaleReference(lang, locale);
+                } catch (e) {
+                    console.error(`[TiageI18n] Fehler beim Laden von ${lang}:`, e);
+                    return false;
+                }
+            }
+
             currentLanguage = lang;
             currentLocale = locales[lang];
 

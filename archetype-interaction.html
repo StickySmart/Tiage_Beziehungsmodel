@@ -71,9 +71,20 @@
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
-    <!-- TIAGE i18n - Internationalisierung -->
-    <script defer src="js/locales/de.js"></script>
-    <script defer src="js/locales/en.js"></script>
+    <!-- TIAGE i18n - Lazy Language Loading (spart ~70KB) -->
+    <script src="js/locales/loader.js"></script>
+    <script>
+        // Lade nur die benötigte Sprache (lazy-loading)
+        (function() {
+            var lang = TiageLocaleLoader.detectLanguage();
+            var script = document.createElement('script');
+            script.src = 'js/locales/' + lang + '.js';
+            script.onload = function() {
+                console.log('[LazyLang] Initiale Sprache geladen: ' + lang);
+            };
+            document.head.appendChild(script);
+        })();
+    </script>
     <script defer src="js/i18n.js"></script>
     <script defer src="js/utils/tts.js"></script>
     <script defer src="js/version.js"></script>
