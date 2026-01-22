@@ -186,6 +186,21 @@ const OshoZenTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * Konvertiert eine Bedürfnis-ID zu einem Bildpfad
+     * @param {string} needId - z.B. "#B21" oder "B21"
+     * @returns {string} - z.B. "/assets/images/beduerfnisse-v2/B021.webp"
+     */
+    function getNeedImagePath(needId) {
+        if (!needId) return '';
+        const id = needId.replace('#', '').replace('B', '');
+        const num = parseInt(id, 10);
+        if (isNaN(num) || num < 1 || num > 226) {
+            return '';
+        }
+        return `/assets/images/beduerfnisse-v2/B${num.toString().padStart(3, '0')}.webp`;
+    }
+
+    /**
      * Extrahiert den ersten Satz aus einem Text
      * @param {string} text - Der vollständige Text
      * @returns {Object} { firstSentence, rest }
@@ -253,19 +268,27 @@ const OshoZenTextGenerator = (function() {
                         <span class="osho-zen-karte-icon">🃏</span>
                         <strong>${match.karte}:</strong> ${firstSentence}
                     </div>
+                    ${match.bild ? `
+                    <div class="osho-zen-bild-text">
+                        ${match.bild}
+                    </div>
+                    ` : ''}
+                    ${match.osho ? `
+                    <div class="osho-zen-osho-quote">
+                        <blockquote class="osho-zen-statement">${match.osho}</blockquote>
+                        ${match.quelle ? `<cite>— ${match.quelle}</cite>` : ''}
+                    </div>
+                    ` : ''}
                     ${hasExpandableContent ? `
                     <div class="osho-zen-item-content" style="display: block;">
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
-                        ${match.bild || match.osho ? `
-                        <div class="osho-zen-bild">
-                            <div class="osho-zen-section-title">🎴 Stell Dir vor ...</div>
-                            ${match.bild ? `<p>${match.bild}</p>` : ''}
-                            ${match.osho ? `
-                            <blockquote class="osho-zen-statement">${match.osho}</blockquote>
-                            ${match.quelle ? `<cite>— ${match.quelle}</cite>` : ''}
-                            ` : ''}
+                        <div class="osho-zen-image-container">
+                            <img src="${getNeedImagePath(match.id)}"
+                                 alt="Bedürfnis ${match.label}"
+                                 class="osho-zen-need-image"
+                                 loading="lazy"
+                                 onerror="this.style.display='none'">
                         </div>
-                        ` : ''}
                     </div>
                     ` : ''}
                     <div class="osho-zen-item-footer">
@@ -524,6 +547,52 @@ const OshoZenTextGenerator = (function() {
                 color: var(--text-color);
                 line-height: 1.5;
                 border-top: 1px solid var(--border-color);
+            }
+
+            .osho-zen-bild-text {
+                padding: 0.75rem 1rem;
+                color: var(--text-color);
+                line-height: 1.6;
+                font-size: 0.95rem;
+                background: var(--bild-bg);
+                border-left: 3px solid var(--primary-color);
+            }
+
+            .osho-zen-osho-quote {
+                padding: 0.75rem 1rem;
+                background: var(--osho-bg);
+                border-left: 3px solid var(--osho-accent);
+            }
+
+            .osho-zen-osho-quote .osho-zen-statement {
+                margin: 0;
+                padding: 0;
+                font-style: italic;
+                color: var(--text-color);
+                line-height: 1.6;
+                font-size: 0.9rem;
+            }
+
+            .osho-zen-osho-quote cite {
+                display: block;
+                margin-top: 0.5rem;
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                font-style: normal;
+            }
+
+            .osho-zen-image-container {
+                display: flex;
+                justify-content: center;
+                padding: 1rem 0;
+            }
+
+            .osho-zen-need-image {
+                max-width: 200px;
+                max-height: 300px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                object-fit: contain;
             }
 
             .osho-zen-item-content {
