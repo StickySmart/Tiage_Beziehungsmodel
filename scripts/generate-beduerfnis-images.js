@@ -22,86 +22,196 @@ const https = require('https');
 const CONFIG = {
     outputDir: path.join(__dirname, '..', 'assets', 'images', 'beduerfnisse'),
     mappingFile: path.join(__dirname, '..', 'assets', 'images', 'beduerfnisse', 'image-mapping.json'),
+    tarotKartenFile: path.join(__dirname, '..', 'profiles', 'data', 'osho-zen-tarot-karten.json'),
     model: 'dall-e-3',
     size: '1024x1792', // Hochformat, wird später auf 400x600 skaliert
     quality: 'standard',
     delayBetweenRequests: 2000, // 2 Sekunden zwischen Anfragen
 };
 
-// Basis-Stil für alle Bilder
-const STYLE_PREFIX = `Mystical Osho Zen Tarot card illustration, spiritual meditation art,
-soft ethereal lighting, warm earth tones with deep purple and gold accents,
+// Basis-Stil für alle Bilder (DALL-E 3 Prompt-Präfix)
+// Hinweis: Die visuellen Beschreibungen kommen aus osho-zen-tarot-karten.json
+const STYLE_PREFIX = `Osho Zen Tarot card illustration in the style of Ma Deva Padma,
+mystical spiritual meditation art, soft ethereal lighting,
+warm earth tones with deep purple and gold accents,
 contemplative sacred atmosphere, symbolic mystical imagery,
-digital painting style, centered composition, no text, no words, no letters, no writing`;
+digital painting style, vertical tarot card format, centered composition,
+no text, no words, no letters, no writing, no watermarks`;
 
-// Prompt-Templates für jede Karte
-const CARD_PROMPTS = {
-    "The Master": "an enlightened wise figure radiating infinite peace, surrounded by cosmic light and disciples",
-    "Healing": "gentle healing energy flowing like water, crystals emanating soft blue light, lotus flowers",
-    "Conditioning": "roots breaking through old stone patterns, transformation of conditioned mind",
-    "Adventure": "a figure stepping boldly into vast unknown landscape, sunrise of possibilities",
-    "Touch": "two hands meeting with golden healing light between them, intimate energy connection",
-    "No-Thingness": "vast peaceful void with single meditating figure, starfield of pure potential",
-    "Passion": "sacred flames of creative fire rising like kundalini energy, red and gold",
-    "Courage": "a delicate flower blooming through solid rock, strength in vulnerability",
-    "Harmony": "perfect balance of elements, peaceful sanctuary with golden light dome",
-    "Completion": "perfect luminous circle, seasons merging into wholeness, eternal cycle",
-    "Trust": "figure leaping into cosmic void with serene faith, golden safety net of light",
-    "Protection": "gentle guardian energy surrounding vulnerable being, soft protective shield",
-    "Maturity": "ancient wise tree with deep roots and expansive branches, grounded presence",
-    "Playfulness": "dancing light particles, childlike joy energy, feathers floating freely",
-    "We Are the World": "interconnected web of luminous souls, global unity consciousness",
-    "Warmth": "gentle sun rays embracing figure, heart radiating golden comfort light",
-    "Success": "figure seen in true radiant essence, inner worth shining brightly",
-    "The Lovers": "two souls in sacred intimate connection, energy bridge between hearts",
-    "Participation": "figures in harmonious gathering circle, shared creation energy",
-    "Intimacy": "souls revealing essence to each other, deep vulnerable beauty",
-    "Love": "expansive heart energy filling infinite space, unconditional radiance",
-    "Compassion": "hands offering healing light selflessly, nurturing energy flow",
-    "Support": "invisible loving hands holding figure, foundation of cosmic trust",
-    "Friendliness": "two figures in comfortable peaceful silence together, gentle presence",
-    "Acceptance": "figure breathing freely in total release, embracing what is",
-    "Receptivity": "empty golden chalice ready to receive, heart as open vessel",
-    "Change": "butterfly emerging from cocoon, trusting beautiful transformation",
-    "Awareness": "conscious luminous eye seeing deeply, focused attention beam",
-    "Understanding": "bridge of light between two minds, hearts speaking same language",
-    "Rebirth": "phoenix rising from ashes, old dissolving for glorious new",
-    "Aloneness": "figure in peaceful sacred solitude, sovereignty of sovereign self",
-    "Transformation": "crossroads with multiple glowing paths, power of conscious choice",
-    "The Rebel": "figure walking own authentic path against crowd, inner truth compass",
-    "Going With The Flow": "figure flowing with cosmic river current, natural ease",
-    "Ripeness": "fruit at perfect golden maturity, significance revealed beautifully",
-    "Creativity": "soul speaking through artistic form, endless creative universe flow",
-    "Integration": "all parts coming together in joyful wholeness, unified being",
-    "Celebration": "life as ecstatic festival, joyful existence celebration",
-    "Source": "inner wellspring of light, deep motivation and inspiration rising",
-    "Inner Voice": "wisdom whispering from heart center, intuitive sacred guidance",
-    "Sorrow": "rain of grief flowing as cleansing tears, emotional healing release",
-    "New Vision": "perspective shifting dramatically, fresh insight dawning",
-    "Control": "releasing control to gain true mastery, flowing non-grasping power",
-    "Letting Go": "empty open hands ready to receive, surrender liberation",
-    "Guidance": "lighting the path walked, authentic inspiring leadership",
-    "Intensity": "pure life force burning brightly, fully alive present moment",
-    "Flowering": "life wanting to bloom magnificently, creative generative desire",
-    "Slowing Down": "peaceful stillness, unhurried being in quiet freedom",
-    "Commitment": "conscious sacred yes, all-seasons eternal promise",
-    "Traveling": "freedom of joyful movement, unfolding journey adventure",
-    "Experiencing": "fully living intense experience, vibrant life abundance",
-    "Ordinariness": "sacred in the ordinary everyday, mundane becomes divine",
-    "Abundance": "overflowing golden prosperity, material and spiritual wealth",
-    "Totality": "complete wholehearted commitment, full presence engagement",
-    "Silence": "deep profound stillness, meaning emerging from quiet",
-    "Sharing": "giving from overflowing abundance, natural generous contribution",
-    "Breakthrough": "fog lifting suddenly, clear vision finally emerging",
-    "The Creator": "mastery developing through loving practice, creative competence",
-    "Consciousness": "vast sky mind, thoughts as passing clouds, pure awareness",
-    "Turning In": "inward sacred turning, pause for profound depth",
-    "Possibilities": "infinite doors opening, limitless potential paths",
-    "Compromise": "wise flexible balancing, healthy mutual adjustment",
-    "Patience": "patient seeds growing, trusting future harvest timing",
-    "Moment to Moment": "only eternal now exists, present moment perfection",
-    "Surrender": "complete letting go into trust, paradox of bound freedom"
-};
+// Lade Tarot-Karten-Daten mit Bildbeschreibungen
+let tarotKartenCache = null;
+
+function loadTarotKarten() {
+    if (tarotKartenCache) return tarotKartenCache;
+
+    const data = fs.readFileSync(CONFIG.tarotKartenFile, 'utf8');
+    const tarotData = JSON.parse(data);
+
+    // Erstelle ein Lookup-Dictionary: Kartenname -> Bildbeschreibung
+    const kartenLookup = {};
+
+    // Major Arcana
+    for (const [key, karte] of Object.entries(tarotData.major_arcana || {})) {
+        if (karte.name && karte.bild) {
+            kartenLookup[karte.name] = karte.bild;
+        }
+    }
+
+    // Minor Arcana (Fire, Water, Clouds, Rainbows)
+    for (const [element, suite] of Object.entries(tarotData.minor_arcana || {})) {
+        for (const [key, karte] of Object.entries(suite.karten || {})) {
+            if (karte.name && karte.bild) {
+                kartenLookup[karte.name] = karte.bild;
+            }
+        }
+    }
+
+    // Zusätzliche Karten
+    for (const [key, karte] of Object.entries(tarotData.zusaetzliche_karten?.karten || {})) {
+        if (karte.name && karte.bild) {
+            kartenLookup[karte.name] = karte.bild;
+        }
+    }
+
+    tarotKartenCache = kartenLookup;
+    console.log(`📖 ${Object.keys(kartenLookup).length} Tarot-Karten mit Bildbeschreibungen geladen`);
+    return kartenLookup;
+}
+
+// Übersetze deutsche Bildbeschreibung zu englischem DALL-E Prompt
+function translateToEnglishPrompt(germanBild) {
+    // DALL-E versteht Englisch besser - einfache Keyword-basierte Übersetzung
+    // für die wichtigsten Begriffe
+    const translations = {
+        'Gestalt': 'figure',
+        'sitzt': 'sits',
+        'steht': 'stands',
+        'schwebt': 'floats',
+        'meditiert': 'meditates',
+        'Lotusposition': 'lotus position',
+        'Licht': 'light',
+        'golden': 'golden',
+        'Aura': 'aura',
+        'Regenbogen': 'rainbow',
+        'Farben': 'colors',
+        'Himmel': 'sky',
+        'Sterne': 'stars',
+        'Galaxien': 'galaxies',
+        'Universum': 'universe',
+        'kosmisch': 'cosmic',
+        'Herz': 'heart',
+        'Seele': 'soul',
+        'Flammen': 'flames',
+        'Feuer': 'fire',
+        'Wasser': 'water',
+        'Erde': 'earth',
+        'Luft': 'air',
+        'Blume': 'flower',
+        'Lotus': 'lotus',
+        'Baum': 'tree',
+        'Wurzeln': 'roots',
+        'Augen': 'eyes',
+        'Hände': 'hands',
+        'nackt': 'ethereal',  // DALL-E Policy: "nackt" -> "ethereal"
+        'Liebe': 'love',
+        'Freiheit': 'freedom',
+        'Weisheit': 'wisdom',
+        'Stille': 'silence',
+        'friedlich': 'peaceful',
+        'strahlend': 'radiant',
+        'leuchtend': 'luminous',
+        'Energie': 'energy',
+        'heilig': 'sacred',
+        'mystisch': 'mystical',
+        'Schmetterling': 'butterfly',
+        'Vogel': 'bird',
+        'Adler': 'eagle',
+        'Schwan': 'swan',
+        'Phönix': 'phoenix',
+        'Schlange': 'serpent',
+        'Delphin': 'dolphin',
+        'Delphine': 'dolphins',
+        'Klippe': 'cliff',
+        'Felsen': 'rocks',
+        'Stein': 'stone',
+        'Berg': 'mountain',
+        'Tal': 'valley',
+        'Ozean': 'ocean',
+        'Meer': 'sea',
+        'Wellen': 'waves',
+        'Fluss': 'river',
+        'Quelle': 'spring',
+        'Brunnen': 'fountain',
+        'Regen': 'rain',
+        'Tränen': 'tears',
+        'Sonne': 'sun',
+        'Mond': 'moon',
+        'Nacht': 'night',
+        'Tag': 'day',
+        'Morgen': 'dawn',
+        'Abend': 'dusk',
+        'Kreis': 'circle',
+        'Spirale': 'spiral',
+        'Symbol': 'symbol',
+        'Mandala': 'mandala',
+        'Chakra': 'chakra',
+        'drittes Auge': 'third eye',
+        'Stirn': 'forehead',
+        'Krone': 'crown',
+        'Flügel': 'wings',
+        'geflügelt': 'winged',
+        'tanzt': 'dances',
+        'fliegt': 'flies',
+        'springt': 'leaps',
+        'umarmt': 'embraces',
+        'hält': 'holds',
+        'öffnet': 'opens',
+        'schließt': 'closes',
+        'Tür': 'door',
+        'Tor': 'gate',
+        'Weg': 'path',
+        'Brücke': 'bridge',
+        'Turm': 'tower',
+        'Tempel': 'temple',
+        'Altar': 'altar',
+        'Kelch': 'chalice',
+        'Schwert': 'sword',
+        'Stab': 'staff',
+        'Kette': 'chain',
+        'Käfig': 'cage',
+        'frei': 'free',
+        'gefangen': 'bound',
+        'Befreiung': 'liberation',
+        'Transformation': 'transformation',
+        'Wiedergeburt': 'rebirth',
+        'Erwachen': 'awakening',
+        'Erleuchtung': 'enlightenment',
+        'Meister': 'master',
+        'Schüler': 'disciples',
+        'weise': 'wise',
+        'alt': 'ancient',
+        'jung': 'young',
+        'Kind': 'child',
+        'Mann': 'man',
+        'Frau': 'woman',
+        'weiblich': 'feminine',
+        'männlich': 'masculine',
+        'Liebende': 'lovers',
+        'Paar': 'couple',
+        'Einheit': 'unity',
+        'Vereinigung': 'union',
+        'Yin': 'yin',
+        'Yang': 'yang',
+        'Gleichgewicht': 'balance',
+        'Harmonie': 'harmony'
+    };
+
+    let result = germanBild;
+    for (const [de, en] of Object.entries(translations)) {
+        result = result.replace(new RegExp(de, 'gi'), en);
+    }
+    return result;
+}
 
 // Lade das Mapping
 function loadMapping() {
@@ -110,9 +220,20 @@ function loadMapping() {
 }
 
 // Erstelle den vollständigen Prompt für ein Bedürfnis
-function createPrompt(info) {
-    const cardPrompt = CARD_PROMPTS[info.karte] || `mystical ${info.karte} tarot card energy`;
-    return `${STYLE_PREFIX}, representing "${info.label}" (${info.karte}): ${cardPrompt}`;
+// Verwendet die Original-Bildbeschreibungen aus osho-zen-tarot-karten.json
+function createPrompt(info, tarotKarten) {
+    const karteName = info.karte;
+    const oshoDescription = tarotKarten[karteName];
+
+    if (oshoDescription) {
+        // Übersetze die deutsche Osho-Beschreibung für DALL-E
+        const translatedDescription = translateToEnglishPrompt(oshoDescription);
+        return `${STYLE_PREFIX}. Visual scene for "${info.label}" based on Osho Zen Tarot card "${karteName}": ${translatedDescription}`;
+    } else {
+        // Fallback: Generischer Prompt wenn keine Beschreibung gefunden
+        console.warn(`⚠️  Keine Bildbeschreibung für Karte "${karteName}" gefunden`);
+        return `${STYLE_PREFIX}, mystical spiritual tarot card representing "${info.label}" (${karteName})`;
+    }
 }
 
 // API-Aufruf an DALL-E
@@ -232,6 +353,7 @@ function saveProgress(progress) {
 async function main() {
     const args = parseArgs();
     const mapping = loadMapping();
+    const tarotKarten = loadTarotKarten();
     const progress = loadProgress();
 
     console.log('='.repeat(60));
@@ -241,6 +363,7 @@ async function main() {
     console.log(`Modus: ${args.dryRun ? 'DRY RUN (keine Generierung)' : 'LIVE'}`);
     console.log(`Verzögerung: ${args.delay}ms zwischen Bildern`);
     console.log(`Bereits generiert: ${progress.completed.length} Bilder`);
+    console.log(`Tarot-Karten mit Bildbeschreibungen: ${Object.keys(tarotKarten).length}`);
     console.log('='.repeat(60));
 
     if (!args.dryRun && !process.env.OPENAI_API_KEY) {
@@ -285,12 +408,13 @@ async function main() {
             continue;
         }
 
-        const prompt = createPrompt(info);
+        const prompt = createPrompt(info, tarotKarten);
 
         if (args.dryRun) {
             console.log(`\n📝 ${id} - ${info.label} (${info.karte}):`);
             console.log(`   Datei: ${filename}`);
-            console.log(`   Prompt: ${prompt.substring(0, 100)}...`);
+            console.log(`   Prompt (${prompt.length} Zeichen):`);
+            console.log(`   ${prompt.substring(0, 200)}...`);
             continue;
         }
 
