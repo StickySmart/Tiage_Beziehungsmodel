@@ -130,6 +130,24 @@
             color: var(--text-primary);
         }
 
+        /* Fire tab blink animation - lockt zurück zur Feuer-Seite */
+        @keyframes fireBlink {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(255, 100, 0, 0.6), 0 0 10px rgba(255, 50, 0, 0.4);
+                background: rgba(255, 100, 0, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(255, 100, 0, 1), 0 0 30px rgba(255, 50, 0, 0.8), 0 0 45px rgba(255, 150, 0, 0.5);
+                background: rgba(255, 100, 0, 0.6);
+                transform: scale(1.2);
+            }
+        }
+
+        .synthese-tab.fire-blink {
+            animation: fireBlink 0.6s ease-in-out 4;
+        }
+
         .synthese-close {
             display: flex;
             align-items: center;
@@ -539,7 +557,7 @@
             </div>
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht">📊</a>
-                <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
                 <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
                 <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
             </div>
