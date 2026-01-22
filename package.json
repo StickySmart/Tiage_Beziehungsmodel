@@ -18,5 +18,8 @@
     "url": "git+https://github.com/StickySmart/Tiage_Beziehungsmodel.git"
   },
   "author": "Ti-Age",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
 }
