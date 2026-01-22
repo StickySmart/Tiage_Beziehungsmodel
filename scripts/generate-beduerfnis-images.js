@@ -429,20 +429,23 @@ function parseArgs() {
     return args;
 }
 
-// Fortschritts-Datei für Resume-Funktion
-const PROGRESS_FILE = path.join(CONFIG.outputDir, '.generation-progress.json');
+// Fortschritts-Datei für Resume-Funktion (dynamisch basierend auf outputDir)
+function getProgressFile() {
+    return path.join(CONFIG.outputDir, '.generation-progress.json');
+}
 
 function loadProgress() {
     try {
-        if (fs.existsSync(PROGRESS_FILE)) {
-            return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
+        const progressFile = getProgressFile();
+        if (fs.existsSync(progressFile)) {
+            return JSON.parse(fs.readFileSync(progressFile, 'utf8'));
         }
     } catch (e) {}
     return { completed: [], failed: [] };
 }
 
 function saveProgress(progress) {
-    fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress, null, 2));
+    fs.writeFileSync(getProgressFile(), JSON.stringify(progress, null, 2));
 }
 
 // Hauptfunktion
