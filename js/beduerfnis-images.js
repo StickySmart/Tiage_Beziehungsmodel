@@ -2,7 +2,7 @@
  * Bedürfnis Image Loader
  *
  * Hilfsmodul zum Laden und Anzeigen von Bedürfnis-Bildern
- * Die Bilder müssen im Ordner /assets/images/beduerfnisse/ liegen
+ * Die Bilder müssen im Ordner /assets/images/beduerfnisse-v2/ liegen
  *
  * Erwartetes Format: WebP, 400x600px, 8-bit Farbtiefe
  * Dateinamen: B001.webp bis B226.webp
@@ -11,7 +11,7 @@
 const BeduerfnisImages = (function() {
     'use strict';
 
-    const BASE_PATH = '/assets/images/beduerfnisse/';
+    const BASE_PATH = '/assets/images/beduerfnisse-v2/';
     const PLACEHOLDER_SVG = `data:image/svg+xml,${encodeURIComponent(`
         <svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
             <rect fill="#1a1625" width="400" height="600"/>
