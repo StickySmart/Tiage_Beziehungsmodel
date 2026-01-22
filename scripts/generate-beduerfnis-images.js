@@ -398,6 +398,7 @@ function parseArgs() {
         end: 226,
         dryRun: false,
         delay: CONFIG.delayBetweenRequests,
+        outputDir: null,  // null = use default CONFIG.outputDir
     };
 
     process.argv.slice(2).forEach(arg => {
@@ -409,8 +410,21 @@ function parseArgs() {
             args.dryRun = true;
         } else if (arg.startsWith('--delay=')) {
             args.delay = parseInt(arg.split('=')[1], 10);
+        } else if (arg.startsWith('--output=')) {
+            args.outputDir = arg.split('=')[1];
         }
     });
+
+    // Override output directory if specified
+    if (args.outputDir) {
+        CONFIG.outputDir = path.resolve(args.outputDir);
+        console.log(`📁 Ausgabeverzeichnis: ${CONFIG.outputDir}`);
+        // Create directory if it doesn't exist
+        if (!fs.existsSync(CONFIG.outputDir)) {
+            fs.mkdirSync(CONFIG.outputDir, { recursive: true });
+            console.log(`   (Verzeichnis erstellt)`);
+        }
+    }
 
     return args;
 }
