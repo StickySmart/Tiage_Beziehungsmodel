@@ -287,7 +287,9 @@ const OshoZenTextGenerator = (function() {
                                  alt="Bedürfnis ${match.label}"
                                  class="osho-zen-need-image"
                                  loading="lazy"
-                                 onerror="this.style.display='none'">
+                                 onerror="this.style.display='none'"
+                                 onclick="OshoZenTextGenerator.openLightbox(this.src, this.alt)"
+                                 style="cursor: pointer;">
                         </div>
                     </div>
                     ` : ''}
@@ -715,12 +717,150 @@ const OshoZenTextGenerator = (function() {
                 padding: 2rem;
                 color: var(--text-muted);
             }
+
+            /* Lightbox Styles */
+            .osho-zen-lightbox {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .osho-zen-lightbox.active {
+                display: flex;
+            }
+
+            .osho-zen-lightbox-backdrop {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                cursor: pointer;
+            }
+
+            .osho-zen-lightbox-content {
+                position: relative;
+                z-index: 1;
+                max-width: 90vw;
+                max-height: 90vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .osho-zen-lightbox-image {
+                max-width: 90vw;
+                max-height: 85vh;
+                object-fit: contain;
+                border-radius: 12px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+                animation: osho-zen-lightbox-zoom 0.3s ease-out;
+            }
+
+            @keyframes osho-zen-lightbox-zoom {
+                from {
+                    transform: scale(0.8);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            .osho-zen-lightbox-close {
+                position: absolute;
+                top: -40px;
+                right: -10px;
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: rgba(255, 255, 255, 0.15);
+                color: white;
+                font-size: 24px;
+                line-height: 1;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: background 0.2s, transform 0.2s;
+            }
+
+            .osho-zen-lightbox-close:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
         `;
 
         const styleElement = document.createElement('style');
         styleElement.id = 'osho-zen-styles';
         styleElement.textContent = styles;
         document.head.appendChild(styleElement);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LIGHTBOX FUNKTION
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Öffnet ein Bild in einer Lightbox
+     * @param {string} src - Bild-URL
+     * @param {string} alt - Alt-Text für das Bild
+     */
+    function openLightbox(src, alt) {
+        // Prüfe ob Lightbox bereits existiert
+        let lightbox = document.getElementById('osho-zen-lightbox');
+
+        if (!lightbox) {
+            // Erstelle Lightbox-Container
+            lightbox = document.createElement('div');
+            lightbox.id = 'osho-zen-lightbox';
+            lightbox.className = 'osho-zen-lightbox';
+            lightbox.innerHTML = `
+                <div class="osho-zen-lightbox-backdrop"></div>
+                <div class="osho-zen-lightbox-content">
+                    <button class="osho-zen-lightbox-close" aria-label="Schließen">&times;</button>
+                    <img class="osho-zen-lightbox-image" src="" alt="">
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+
+            // Event-Listener für Schließen
+            const backdrop = lightbox.querySelector('.osho-zen-lightbox-backdrop');
+            const closeBtn = lightbox.querySelector('.osho-zen-lightbox-close');
+
+            backdrop.addEventListener('click', closeLightbox);
+            closeBtn.addEventListener('click', closeLightbox);
+
+            // Escape-Taste zum Schließen
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        }
+
+        // Setze Bild und zeige Lightbox
+        const img = lightbox.querySelector('.osho-zen-lightbox-image');
+        img.src = src;
+        img.alt = alt || '';
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Schließt die Lightbox
+     */
+    function closeLightbox() {
+        const lightbox = document.getElementById('osho-zen-lightbox');
+        if (lightbox) {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -736,6 +876,8 @@ const OshoZenTextGenerator = (function() {
         // UI-Funktionen
         toggleItem: toggleItem,
         injectStyles: injectStyles,
+        openLightbox: openLightbox,
+        closeLightbox: closeLightbox,
 
         // Hilfsfunktionen
         calculateTopMatches: calculateTopMatches,
