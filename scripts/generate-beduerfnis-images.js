@@ -78,10 +78,62 @@ function loadTarotKarten() {
     return kartenLookup;
 }
 
+// Spezielle Ersatz-Beschreibungen für problematische Karten (DALL-E Policy)
+const CARD_OVERRIDES = {
+    // "The Master" enthält "Porträt von Osho selbst" - echte Person nicht erlaubt!
+    "The Master": "An enlightened spiritual master figure sitting in deep meditation, surrounded by golden cosmic light. His eyes show infinite depth and wisdom, a knowing smile on his face. He radiates perfect stillness and peace. Disciples sit around him in reverence. This is the archetype of one who has mastered themselves - not a master over others, but a master of the self.",
+
+    // "Existence" enthält "nackte Gestalt"
+    "Existence": "An ethereal luminous figure floating in cosmic space, surrounded by stars and galaxies. Arms outstretched, the body radiates pure light. The figure is one with the universe - not separate, but part of the greater whole. Pure consciousness experiencing itself.",
+
+    // "Healing" enthält "nackt, verletzlich"
+    "Healing": "A translucent figure bathed in soft healing light, open and vulnerable to the loving touch of existence. The aura around the body is full of light, with a quality of relaxation, care and love dissolving struggle and suffering. Lotus flowers of light appear around the physical and subtle energy bodies. Healing crystals appear in each of these subtle layers.",
+
+    // "Flowering" enthält "erotisch"
+    "Flowering": "An imaginative tree at the peak of its bloom and freshness. She is vibrant, alive and full of surprises. Her branches contain many seeds, and when the wind blows, the seeds scatter to take root wherever they may. She spreads them everywhere while enjoying life and love - inviting bees and birds to drink her nectar.",
+};
+
 // Übersetze deutsche Bildbeschreibung zu englischem DALL-E Prompt
-function translateToEnglishPrompt(germanBild) {
-    // DALL-E versteht Englisch besser - einfache Keyword-basierte Übersetzung
-    // für die wichtigsten Begriffe
+function translateToEnglishPrompt(germanBild, karteName) {
+    // Prüfe ob es eine spezielle Ersatz-Beschreibung gibt
+    if (CARD_OVERRIDES[karteName]) {
+        console.log(`   📝 Verwende DALL-E-sichere Beschreibung für "${karteName}"`);
+        return CARD_OVERRIDES[karteName];
+    }
+
+    // DALL-E Policy: Ersetze problematische Phrasen ZUERST (vor Wort-für-Wort)
+    const policyReplacements = {
+        // Nacktheit -> ethereal/luminous
+        'Eine nackte Gestalt': 'An ethereal luminous figure',
+        'eine nackte Gestalt': 'an ethereal luminous figure',
+        'nackte Gestalt': 'ethereal figure',
+        'ist nackt': 'is ethereal and luminous',
+        'Nackte Seelen': 'Souls revealed in their essence',
+        'nackte Seelen': 'souls revealed',
+        'nackt': 'ethereal',
+        'Nackt': 'Ethereal',
+        // Erotik -> vibrant/sensual energy
+        'sehr erotisch': 'vibrantly alive with sensual energy',
+        'erotisch': 'sensually alive',
+        // Tod -> transition (im spirituellen Kontext OK, aber sicherer)
+        'Leben und Tod': 'life and transition',
+        'Geburt und Tod': 'birth and transformation',
+        'den Tod': 'transformation',
+        // Porträt von echten Personen
+        'Porträt von Osho': 'portrait of a wise spiritual master',
+        'Osho selbst': 'an enlightened master figure',
+        'Osho': 'a spiritual master',
+    };
+
+    let result = germanBild;
+
+    // Wende Policy-Ersetzungen zuerst an (längere Phrasen zuerst)
+    const sortedPolicyKeys = Object.keys(policyReplacements).sort((a, b) => b.length - a.length);
+    for (const phrase of sortedPolicyKeys) {
+        result = result.replace(new RegExp(phrase, 'g'), policyReplacements[phrase]);
+    }
+
+    // Standard-Übersetzungen (Wort für Wort)
     const translations = {
         'Gestalt': 'figure',
         'sitzt': 'sits',
@@ -112,7 +164,6 @@ function translateToEnglishPrompt(germanBild) {
         'Wurzeln': 'roots',
         'Augen': 'eyes',
         'Hände': 'hands',
-        'nackt': 'ethereal',  // DALL-E Policy: "nackt" -> "ethereal"
         'Liebe': 'love',
         'Freiheit': 'freedom',
         'Weisheit': 'wisdom',
@@ -203,10 +254,40 @@ function translateToEnglishPrompt(germanBild) {
         'Yin': 'yin',
         'Yang': 'yang',
         'Gleichgewicht': 'balance',
-        'Harmonie': 'harmony'
+        'Harmonie': 'harmony',
+        'verletzlich': 'vulnerable',
+        'offen': 'open',
+        'Berührung': 'touch',
+        'Existenz': 'existence',
+        'umgeben': 'surrounded',
+        'erscheint': 'appears',
+        'zeigt': 'shows',
+        'voller': 'full of',
+        'tiefe': 'deep',
+        'unendlich': 'infinite',
+        'Güte': 'kindness',
+        'Lächeln': 'smile',
+        'vollkommen': 'complete',
+        'Kristall': 'crystal',
+        'Kristalle': 'crystals',
+        'subtil': 'subtle',
+        'Körper': 'body',
+        'physisch': 'physical',
+        'Schicht': 'layer',
+        'Schichten': 'layers',
+        'Blüte': 'bloom',
+        'Samen': 'seeds',
+        'Wind': 'wind',
+        'Äste': 'branches',
+        'Nektar': 'nectar',
+        'Bienen': 'bees',
+        'Vögel': 'birds',
+        'genießt': 'enjoys',
+        'lebendig': 'alive',
+        'Überraschungen': 'surprises',
+        'verstreut': 'scatters'
     };
 
-    let result = germanBild;
     for (const [de, en] of Object.entries(translations)) {
         result = result.replace(new RegExp(de, 'gi'), en);
     }
@@ -221,13 +302,14 @@ function loadMapping() {
 
 // Erstelle den vollständigen Prompt für ein Bedürfnis
 // Verwendet die Original-Bildbeschreibungen aus osho-zen-tarot-karten.json
+// mit DALL-E Policy-sicheren Anpassungen
 function createPrompt(info, tarotKarten) {
     const karteName = info.karte;
     const oshoDescription = tarotKarten[karteName];
 
     if (oshoDescription) {
-        // Übersetze die deutsche Osho-Beschreibung für DALL-E
-        const translatedDescription = translateToEnglishPrompt(oshoDescription);
+        // Übersetze die deutsche Osho-Beschreibung für DALL-E (mit Policy-Anpassungen)
+        const translatedDescription = translateToEnglishPrompt(oshoDescription, karteName);
         return `${STYLE_PREFIX}. Visual scene for "${info.label}" based on Osho Zen Tarot card "${karteName}": ${translatedDescription}`;
     } else {
         // Fallback: Generischer Prompt wenn keine Beschreibung gefunden
