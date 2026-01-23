@@ -141,12 +141,23 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // FLAT NEEDS - Die 220 Bedürfniswerte
         // ═══════════════════════════════════════════════════════════════════════
-        // Werden aus Archetyp + Modifiern berechnet.
+        // ICH: Pro Archetyp gespeichert (8 Slots) - User kann seine Vorstellung jedes Archetyps abbilden
+        // PARTNER: Ein Slot (dynamisch berechnet aus Archetyp + AGOD, nicht manuell editierbar)
         // Keys sind Bedürfnis-IDs wie '#B1', '#B2', etc.
         // Werte: 0-100
         flatNeeds: {
-            ich: {},    // z.B. { '#B1': 75, '#B2': 60, ... }
-            partner: {}
+            ich: {
+                // 8 Archetyp-Slots für ICH - User-Anpassungen werden pro Archetyp gespeichert
+                single: {},
+                duo: {},
+                'duo-flex': {},
+                solopoly: {},
+                polyamor: {},
+                ra: {},
+                lat: {},
+                aromantisch: {}
+            },
+            partner: {}  // Bleibt flach - wird dynamisch berechnet, nicht manuell editierbar
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -154,12 +165,22 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // Wenn User im Survey einzelne Bedürfnisse manuell setzt, werden sie hier gespeichert.
         // Diese überschreiben die berechneten flatNeeds.
+        // ICH: Pro Archetyp gespeichert (8 Slots)
+        // PARTNER: Nicht mehr verwendet (keine manuellen Overrides)
         profileReview: {
             ich: {
-                lockedNeeds: {}  // z.B. { '#B15': 90, '#B42': 30 } - manuell gesetzte Werte
+                // 8 Archetyp-Slots für lockedNeeds
+                single: {},
+                duo: {},
+                'duo-flex': {},
+                solopoly: {},
+                polyamor: {},
+                ra: {},
+                lat: {},
+                aromantisch: {}
             },
             partner: {
-                lockedNeeds: {}
+                lockedNeeds: {}  // Legacy - wird nicht mehr verwendet
             }
         },
 
@@ -213,6 +234,14 @@ const TiageState = (function() {
         'resonanzFaktoren.partner': [],
         'flatNeeds': [],
         'flatNeeds.ich': [],
+        'flatNeeds.ich.single': [],
+        'flatNeeds.ich.duo': [],
+        'flatNeeds.ich.duo-flex': [],
+        'flatNeeds.ich.solopoly': [],
+        'flatNeeds.ich.polyamor': [],
+        'flatNeeds.ich.ra': [],
+        'flatNeeds.ich.lat': [],
+        'flatNeeds.ich.aromantisch': [],
         'flatNeeds.partner': [],
         'profileReview': [],
         'profileReview.ich': [],
@@ -458,16 +487,51 @@ const TiageState = (function() {
     return {
         /**
          * Get state value (returns a deep clone to prevent external mutation)
+         * SMART-GETTER: Automatische Umleitung für flatNeeds.ich und profileReview.ich
+         * - flatNeeds.ich → flatNeeds.ich.[currentArchetype]
+         * - profileReview.ich → profileReview.ich.[currentArchetype]
+         * Dies ermöglicht Abwärtskompatibilität mit bestehendem Code.
          * @param {string} path - Dot-notation path (e.g., 'personDimensions.ich.geschlecht')
          * @returns {*} The value at the path
          */
         get(path) {
             if (!path) return deepClone(state);
+
+            // Smart-Getter für flatNeeds.ich - leitet auf aktuellen Archetyp-Slot um
+            if (path === 'flatNeeds.ich' || path.startsWith('flatNeeds.ich.#B')) {
+                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
+                if (path === 'flatNeeds.ich') {
+                    // flatNeeds.ich → flatNeeds.ich.[archetyp]
+                    return deepClone(getByPath(state, `flatNeeds.ich.${currentArchetype}`)) || {};
+                } else {
+                    // flatNeeds.ich.#Bxx → flatNeeds.ich.[archetyp].#Bxx
+                    const needId = path.replace('flatNeeds.ich.', '');
+                    return deepClone(getByPath(state, `flatNeeds.ich.${currentArchetype}.${needId}`));
+                }
+            }
+
+            // Smart-Getter für profileReview.ich.lockedNeeds - leitet auf aktuellen Archetyp-Slot um
+            if (path === 'profileReview.ich.lockedNeeds' || path.startsWith('profileReview.ich.lockedNeeds.')) {
+                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
+                if (path === 'profileReview.ich.lockedNeeds') {
+                    // profileReview.ich.lockedNeeds → profileReview.ich.[archetyp]
+                    return deepClone(getByPath(state, `profileReview.ich.${currentArchetype}`)) || {};
+                } else {
+                    // profileReview.ich.lockedNeeds.#Bxx → profileReview.ich.[archetyp].#Bxx
+                    const needId = path.replace('profileReview.ich.lockedNeeds.', '');
+                    return deepClone(getByPath(state, `profileReview.ich.${currentArchetype}.${needId}`));
+                }
+            }
+
             return deepClone(getByPath(state, path));
         },
 
         /**
          * Set state value and notify subscribers
+         * SMART-SETTER: Automatische Umleitung für flatNeeds.ich und profileReview.ich
+         * - flatNeeds.ich → flatNeeds.ich.[currentArchetype]
+         * - profileReview.ich.lockedNeeds → profileReview.ich.[currentArchetype]
+         * Dies ermöglicht Abwärtskompatibilität mit bestehendem Code.
          * @param {string} path - Dot-notation path
          * @param {*} value - The new value
          */
@@ -476,8 +540,32 @@ const TiageState = (function() {
             let normalizedValue = normalizeGeschlechtValue(path, value);
             normalizedValue = normalizeOrientierungValue(path, normalizedValue);
 
-            const oldValue = deepClone(getByPath(state, path));
-            setByPath(state, path, deepClone(normalizedValue));
+            // Smart-Setter für flatNeeds.ich - leitet auf aktuellen Archetyp-Slot um
+            let actualPath = path;
+            if (path === 'flatNeeds.ich' || path.startsWith('flatNeeds.ich.#B')) {
+                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
+                if (path === 'flatNeeds.ich') {
+                    actualPath = `flatNeeds.ich.${currentArchetype}`;
+                } else {
+                    const needId = path.replace('flatNeeds.ich.', '');
+                    actualPath = `flatNeeds.ich.${currentArchetype}.${needId}`;
+                }
+            }
+
+            // Smart-Setter für profileReview.ich.lockedNeeds - leitet auf aktuellen Archetyp-Slot um
+            if (path === 'profileReview.ich.lockedNeeds' || path.startsWith('profileReview.ich.lockedNeeds.')) {
+                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
+                if (path === 'profileReview.ich.lockedNeeds') {
+                    actualPath = `profileReview.ich.${currentArchetype}`;
+                } else {
+                    const needId = path.replace('profileReview.ich.lockedNeeds.', '');
+                    actualPath = `profileReview.ich.${currentArchetype}.${needId}`;
+                }
+            }
+
+            const oldValue = deepClone(getByPath(state, actualPath));
+            setByPath(state, actualPath, deepClone(normalizedValue));
+            // Notify mit originalem Pfad für Subscriber-Kompatibilität
             notify(path, normalizedValue, oldValue);
         },
 
@@ -937,6 +1025,137 @@ const TiageState = (function() {
             return result;
         },
 
+        /**
+         * Migrate flatNeeds from old format (flat for ich) to new format (per-archetype for ich)
+         * Old: { ich: { '#B1': 75, ... }, partner: { '#B1': 70, ... } }
+         * New: { ich: { single: {...}, duo: {...}, ... }, partner: { '#B1': 70, ... } }
+         * @private
+         * @param {Object} flatNeeds - Old format flatNeeds
+         * @returns {Object} Migrated flatNeeds
+         */
+        _migrateFlatNeeds(flatNeeds) {
+            if (!flatNeeds) return flatNeeds;
+
+            const archetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Prüfen ob bereits neues Format (ich hat Archetyp-Keys)
+            if (flatNeeds.ich && typeof flatNeeds.ich === 'object') {
+                const ichKeys = Object.keys(flatNeeds.ich);
+                const hasArchetypeKeys = ichKeys.some(key => archetypes.includes(key));
+
+                if (hasArchetypeKeys) {
+                    // Bereits im neuen Format - sicherstellen dass alle Archetypen existieren
+                    const migrated = {
+                        ich: {},
+                        partner: flatNeeds.partner || {}
+                    };
+                    for (const arch of archetypes) {
+                        migrated.ich[arch] = flatNeeds.ich[arch] || {};
+                    }
+                    console.log('[TiageState] flatNeeds bereits im neuen Format');
+                    return migrated;
+                }
+
+                // Altes flaches Format - kopiere in alle Archetyp-Slots
+                const oldIchNeeds = { ...flatNeeds.ich };
+                console.log('[TiageState] Migriere flatNeeds.ich von flachem Format zu Archetyp-Slots');
+                console.log('[TiageState] Alte ICH-Needs:', Object.keys(oldIchNeeds).length, 'Werte');
+
+                const migrated = {
+                    ich: {},
+                    partner: flatNeeds.partner || {}
+                };
+
+                // Kopiere alte Werte in alle 8 Archetyp-Slots als Startbasis
+                for (const arch of archetypes) {
+                    migrated.ich[arch] = { ...oldIchNeeds };
+                }
+
+                console.log('[TiageState] flatNeeds migriert - jeder Archetyp hat jetzt eigenen Slot');
+                return migrated;
+            }
+
+            // Leeres oder unerwartetes Format - initialisiere neu
+            return {
+                ich: {
+                    single: {},
+                    duo: {},
+                    'duo-flex': {},
+                    solopoly: {},
+                    polyamor: {},
+                    ra: {},
+                    lat: {},
+                    aromantisch: {}
+                },
+                partner: flatNeeds?.partner || {}
+            };
+        },
+
+        /**
+         * Migrate profileReview from old format (lockedNeeds) to new format (per-archetype)
+         * Old: { ich: { lockedNeeds: {...} }, partner: { lockedNeeds: {...} } }
+         * New: { ich: { single: {...}, duo: {...}, ... }, partner: { lockedNeeds: {} } }
+         * @private
+         * @param {Object} profileReview - Old format profileReview
+         * @returns {Object} Migrated profileReview
+         */
+        _migrateProfileReview(profileReview) {
+            if (!profileReview) return profileReview;
+
+            const archetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Prüfen ob bereits neues Format (ich hat Archetyp-Keys statt lockedNeeds)
+            if (profileReview.ich && typeof profileReview.ich === 'object') {
+                const ichKeys = Object.keys(profileReview.ich);
+                const hasArchetypeKeys = ichKeys.some(key => archetypes.includes(key));
+
+                if (hasArchetypeKeys) {
+                    // Bereits im neuen Format - sicherstellen dass alle Archetypen existieren
+                    const migrated = {
+                        ich: {},
+                        partner: { lockedNeeds: {} }  // Partner: Legacy, wird nicht mehr verwendet
+                    };
+                    for (const arch of archetypes) {
+                        migrated.ich[arch] = profileReview.ich[arch] || {};
+                    }
+                    console.log('[TiageState] profileReview bereits im neuen Format');
+                    return migrated;
+                }
+
+                // Altes Format mit lockedNeeds - kopiere in alle Archetyp-Slots
+                const oldLockedNeeds = profileReview.ich.lockedNeeds || {};
+                console.log('[TiageState] Migriere profileReview.ich von lockedNeeds zu Archetyp-Slots');
+
+                const migrated = {
+                    ich: {},
+                    partner: { lockedNeeds: {} }
+                };
+
+                // Kopiere alte lockedNeeds in alle 8 Archetyp-Slots
+                for (const arch of archetypes) {
+                    migrated.ich[arch] = { ...oldLockedNeeds };
+                }
+
+                console.log('[TiageState] profileReview migriert');
+                return migrated;
+            }
+
+            // Leeres oder unerwartetes Format - initialisiere neu
+            return {
+                ich: {
+                    single: {},
+                    duo: {},
+                    'duo-flex': {},
+                    solopoly: {},
+                    polyamor: {},
+                    ra: {},
+                    lat: {},
+                    aromantisch: {}
+                },
+                partner: { lockedNeeds: {} }
+            };
+        },
+
         // ═══════════════════════════════════════════════════════════════════
         // RESONANZFAKTOREN METHODS
         // ═══════════════════════════════════════════════════════════════════
@@ -1040,86 +1259,148 @@ const TiageState = (function() {
 
         /**
          * Get all flatNeeds for a person
+         * ICH: Lädt aus dem aktuellen Archetyp-Slot
+         * PARTNER: Lädt aus dem flachen Slot
          * @param {string} person - 'ich' or 'partner'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          * @returns {Object} { '#B1': value, '#B2': value, ... }
          */
-        getFlatNeeds(person) {
-            return this.get(`flatNeeds.${person}`);
+        getFlatNeeds(person, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                return this.get(`flatNeeds.ich.${arch}`) || {};
+            }
+            return this.get(`flatNeeds.partner`) || {};
         },
 
         /**
          * Set all flatNeeds for a person
+         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * PARTNER: Speichert in den flachen Slot
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} needs - { '#B1': value, ... }
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setFlatNeeds(person, needs) {
-            this.set(`flatNeeds.${person}`, needs);
+        setFlatNeeds(person, needs, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`flatNeeds.ich.${arch}`, needs);
+            } else {
+                this.set(`flatNeeds.partner`, needs);
+            }
         },
 
         /**
          * Get a single need value
+         * ICH: Liest aus dem aktuellen Archetyp-Slot
+         * PARTNER: Liest aus dem flachen Slot
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B1'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          * @returns {number} 0-100
          */
-        getNeed(person, needId) {
-            return this.get(`flatNeeds.${person}.${needId}`);
+        getNeed(person, needId, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                return this.get(`flatNeeds.ich.${arch}.${needId}`);
+            }
+            return this.get(`flatNeeds.partner.${needId}`);
         },
 
         /**
          * Set a single need value
+         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * PARTNER: Speichert in den flachen Slot
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B1'
          * @param {number} value - 0-100
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setNeed(person, needId, value) {
+        setNeed(person, needId, value, archetyp = null) {
             const clampedValue = Math.min(100, Math.max(0, value));
-            this.set(`flatNeeds.${person}.${needId}`, clampedValue);
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`flatNeeds.ich.${arch}.${needId}`, clampedValue);
+            } else {
+                this.set(`flatNeeds.partner.${needId}`, clampedValue);
+            }
         },
 
         // ═══════════════════════════════════════════════════════════════════
         // PROFILE REVIEW METHODS (Survey Overrides)
         // ═══════════════════════════════════════════════════════════════════
+        // ICH: LockedNeeds werden pro Archetyp gespeichert
+        // PARTNER: Nicht mehr verwendet (keine manuellen Overrides)
 
         /**
          * Get all locked (survey-overridden) needs for a person
+         * ICH: Liest aus dem aktuellen Archetyp-Slot
+         * PARTNER: Gibt leeres Objekt zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          * @returns {Object} { '#B15': value, ... }
          */
-        getLockedNeeds(person) {
-            return this.get(`profileReview.${person}.lockedNeeds`);
+        getLockedNeeds(person, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                return this.get(`profileReview.ich.${arch}`) || {};
+            }
+            // Partner: Keine manuellen Overrides mehr
+            return {};
         },
 
         /**
          * Lock a need value (from survey)
+         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
          * @param {number} value - 0-100
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        lockNeed(person, needId, value) {
+        lockNeed(person, needId, value, archetyp = null) {
+            if (person === 'partner') {
+                console.warn('[TiageState] lockNeed für Partner wird ignoriert - keine manuellen Overrides');
+                return;
+            }
             const clampedValue = Math.min(100, Math.max(0, value));
-            this.set(`profileReview.${person}.lockedNeeds.${needId}`, clampedValue);
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            this.set(`profileReview.ich.${arch}.${needId}`, clampedValue);
         },
 
         /**
          * Unlock a need (remove survey override)
+         * ICH: Entfernt aus dem aktuellen Archetyp-Slot
+         * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        unlockNeed(person, needId) {
-            const current = this.get(`profileReview.${person}.lockedNeeds`) || {};
+        unlockNeed(person, needId, archetyp = null) {
+            if (person === 'partner') {
+                return;
+            }
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            const current = this.get(`profileReview.ich.${arch}`) || {};
             delete current[needId];
-            this.set(`profileReview.${person}.lockedNeeds`, current);
+            this.set(`profileReview.ich.${arch}`, current);
         },
 
         /**
          * Check if a need is locked
+         * ICH: Prüft im aktuellen Archetyp-Slot
+         * PARTNER: Gibt immer false zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          * @returns {boolean}
          */
-        isNeedLocked(person, needId) {
-            const locked = this.get(`profileReview.${person}.lockedNeeds.${needId}`);
+        isNeedLocked(person, needId, archetyp = null) {
+            if (person === 'partner') {
+                return false;
+            }
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            const locked = this.get(`profileReview.ich.${arch}.${needId}`);
             return locked !== undefined && locked !== null;
         },
 
@@ -1351,20 +1632,21 @@ const TiageState = (function() {
                     } else {
                         console.log('[TiageState] loadFromStorage - KEINE resonanzFaktoren in localStorage!');
                     }
+                    // profileReview Migration: Altes Format (lockedNeeds) zu neuem Format (pro Archetyp)
                     if (parsed.profileReview) {
-                        this.set('profileReview', parsed.profileReview);
+                        const migratedProfileReview = this._migrateProfileReview(parsed.profileReview);
+                        this.set('profileReview', migratedProfileReview);
                     }
                     // Bindungsmuster laden
                     if (parsed.bindungsmuster) {
                         this.set('bindungsmuster', parsed.bindungsmuster);
                         console.log('[TiageState] loadFromStorage - bindungsmuster geladen:', JSON.stringify(parsed.bindungsmuster));
                     }
-                    // flatNeeds laden - die 220 Bedürfniswerte
+                    // flatNeeds Migration: Altes Format (flach) zu neuem Format (pro Archetyp für ICH)
                     if (parsed.flatNeeds) {
-                        this.set('flatNeeds', parsed.flatNeeds);
-                        console.log('[TiageState] loadFromStorage - flatNeeds geladen:',
-                            'ich:', Object.keys(parsed.flatNeeds.ich || {}).length, 'Werte,',
-                            'partner:', Object.keys(parsed.flatNeeds.partner || {}).length, 'Werte');
+                        const migratedFlatNeeds = this._migrateFlatNeeds(parsed.flatNeeds);
+                        this.set('flatNeeds', migratedFlatNeeds);
+                        console.log('[TiageState] loadFromStorage - flatNeeds geladen/migriert');
                     }
                     // UI Settings laden
                     if (parsed.ui) {

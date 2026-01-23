@@ -442,7 +442,8 @@ const AttributeSummaryCard = (function() {
             return flatNeeds;
         }
 
-        const stateValues = TiageState.get(`flatNeeds.${person}`) || {};
+        // Verwendet getFlatNeeds() das für ICH den aktuellen Archetyp-Slot liest
+        const stateValues = TiageState.getFlatNeeds?.(person) || {};
         const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
 
         // Metadaten aus BeduerfnisIds
