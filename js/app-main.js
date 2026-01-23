@@ -13194,7 +13194,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.startSlotMachine = startSlotMachine;
 
         /**
-         * Führt die Slot Machine Animation und Berechnung durch
+         * SSOT v1.8.806: Führt die Slot Machine Animation und Berechnung durch
+         *
+         * Zeigt den besten Match PRO ICH-ARCHETYP an:
+         * "Wenn du als [ICH-Archetyp] lebst, ist dein bester Partner [Partner-Archetyp]"
          */
         async function runSlotMachineAnimation() {
             const ANIMATION_DURATION = 2000; // 2 Sekunden
@@ -13214,26 +13217,30 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const bestResult = allResults[0];
             slotMachineResult = bestResult;
 
-            // NEU: Bester Match PRO ARCHETYP (8 Ergebnisse statt Top 10)
-            const bestPerArchetype = {};
+            // SSOT v1.8.806: Bester Match PRO ICH-ARCHETYP (8 Ergebnisse)
+            // Für jeden der 8 ICH-Archetypen wird der beste Partner gefunden
+            const bestPerIchArchetype = {};
             const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
-            // Finde den besten Match für jeden Archetyp
+            // Finde den besten Match für jeden ICH-Archetyp
             for (const result of allResults) {
-                if (!bestPerArchetype[result.archetyp]) {
-                    bestPerArchetype[result.archetyp] = result;
+                const ichArch = result.ichArchetyp || result.archetyp; // Fallback für alte Ergebnisse
+                if (!bestPerIchArchetype[ichArch]) {
+                    bestPerIchArchetype[ichArch] = result;
                 }
-                // Stoppe wenn wir für alle 8 Archetypen einen Match haben
-                if (Object.keys(bestPerArchetype).length === 8) break;
+                // Stoppe wenn wir für alle 8 ICH-Archetypen einen Match haben
+                if (Object.keys(bestPerIchArchetype).length === 8) break;
             }
 
-            // Sortiere nach Archetyp-Reihenfolge, dann nach Score
+            console.log('[Best Match] Bester Match pro ICH-Archetyp:', bestPerIchArchetype);
+
+            // Sortiere nach Score (höchster zuerst)
             const archetypeResults = archetypeOrder
-                .filter(arch => bestPerArchetype[arch])
-                .map(arch => bestPerArchetype[arch])
+                .filter(arch => bestPerIchArchetype[arch])
+                .map(arch => bestPerIchArchetype[arch])
                 .sort((a, b) => b.score - a.score);
 
-            // Top 4 = die 4 besten Archetyp-Matches, Top 10 = alle 8 Archetyp-Matches
+            // Top 4 = die 4 besten ICH-Archetyp-Matches, Top 10 = alle 8 ICH-Archetyp-Matches
             slotMachineTop4Results = archetypeResults.slice(0, 4);
             slotMachineTop10Results = archetypeResults;
 
@@ -13307,45 +13314,65 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          * Async-Version: Berechnet alle Kombinationen in Chunks
          * Gibt nach jedem Chunk dem Browser Zeit zum Rendern
          */
+        /**
+         * SSOT v1.8.806: Best Match Suche mit per-Archetyp ICH-Needs
+         *
+         * Für jeden der 8 ICH-Archetypen werden die gespeicherten Needs verwendet,
+         * kombiniert mit den konstanten GOD-Werten (Geschlecht, Orientierung, Dominanz).
+         * Das Ergebnis ist der beste Match pro ICH-Archetyp.
+         */
         async function calculateAllCombinationsChunked() {
-            const CHUNK_SIZE = 48; // ~8% der 576 Kombinationen pro Chunk
+            const CHUNK_SIZE = 48; // ~8% der 576 Partner-Kombinationen pro Chunk
 
-            // Generiere alle Kombinationen als Array
-            const combinations = [];
+            // Generiere alle Partner-Kombinationen als Array
+            const partnerCombinations = [];
             for (const archetype of ALL_ARCHETYPES_SLOT) {
                 for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
                     for (const orientierung of ALL_ORIENTIERUNGEN) {
                         for (const dominanz of ALL_DOMINANZEN) {
-                            combinations.push({ archetype, geschlecht, orientierung, dominanz });
+                            partnerCombinations.push({ archetype, geschlecht, orientierung, dominanz });
                         }
                     }
                 }
             }
 
-            // ICH-Daten vorbereiten (einmalig)
-            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
+            // GOD-Werte KONSTANT aus TiageState (diese bleiben für alle ICH-Archetypen gleich!)
             const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
 
-            let ichNeeds = null;
-            if (typeof TiageState !== 'undefined') {
-                ichNeeds = TiageState.get('flatNeeds.ich');
-            }
-            if (!ichNeeds && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                ichNeeds = ProfileCalculator.calculateFlatNeeds(ichArchetype, validIchGeschlecht, validIchDominanz, validIchOrientierung);
-            }
-
-            const ichObj = {
-                archetyp: ichArchetype,
+            console.log('[Best Match] Konstante GOD-Werte für alle ICH-Archetypen:', {
                 geschlecht: validIchGeschlecht,
-                orientierung: validIchOrientierung,
                 dominanz: validIchDominanz,
-                gfk: ichGfk,
-                needs: ichNeeds
-            };
+                orientierung: validIchOrientierung
+            });
+
+            // ICH-Needs Cache pro Archetyp (aus TiageState Slots oder berechnet)
+            const ichNeedsCache = {};
+            function getIchNeedsCached(ichArchetyp) {
+                if (!ichNeedsCache[ichArchetyp]) {
+                    // Versuche aus TiageState Slot zu laden
+                    if (typeof TiageState !== 'undefined') {
+                        // Normalisiere Archetyp-Key für State-Zugriff
+                        const stateKey = ichArchetyp.replace('_', '-'); // duo_flex -> duo-flex
+                        const storedNeeds = TiageState.get(`flatNeeds.ich.${stateKey}`);
+                        if (storedNeeds && Object.keys(storedNeeds).length > 0) {
+                            ichNeedsCache[ichArchetyp] = storedNeeds;
+                            console.log(`[Best Match] ICH-Needs für ${ichArchetyp} aus State geladen:`, Object.keys(storedNeeds).length, 'Bedürfnisse');
+                        }
+                    }
+                    // Falls nicht vorhanden: berechnen mit konstanten GOD-Werten
+                    if (!ichNeedsCache[ichArchetyp] && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                        ichNeedsCache[ichArchetyp] = ProfileCalculator.calculateFlatNeeds(
+                            ichArchetyp, validIchGeschlecht, validIchDominanz, validIchOrientierung
+                        );
+                        console.log(`[Best Match] ICH-Needs für ${ichArchetyp} berechnet:`, Object.keys(ichNeedsCache[ichArchetyp] || {}).length, 'Bedürfnisse');
+                    }
+                }
+                return ichNeedsCache[ichArchetyp] || {};
+            }
 
             // Partner-Needs Cache
             const partnerNeedsCache = {};
@@ -13369,102 +13396,127 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const savedCurrentArchetype = currentArchetype;
             const savedSelectedPartner = selectedPartner;
 
-            // Verarbeite in Chunks
-            for (let i = 0; i < combinations.length; i += CHUNK_SIZE) {
-                const chunk = combinations.slice(i, i + CHUNK_SIZE);
+            // Für jeden ICH-Archetyp gegen alle Partner-Kombinationen matchen
+            for (const ichArchetyp of ALL_ARCHETYPES_SLOT) {
+                const ichNeeds = getIchNeedsCached(ichArchetyp);
 
-                for (const combo of chunk) {
-                    const partnerNeeds = getPartnerNeedsCached(combo.archetype, combo.geschlecht, combo.orientierung, combo.dominanz);
-                    const partnerObj = {
-                        archetyp: combo.archetype,
-                        geschlecht: combo.geschlecht,
-                        orientierung: { primary: combo.orientierung, secondary: null },
-                        dominanz: { primary: combo.dominanz, secondary: null },
-                        gfk: 'mittel',
-                        needs: partnerNeeds
-                    };
+                // ICH-Objekt mit Archetyp-spezifischen Needs aber konstanten GOD-Werten
+                const ichObj = {
+                    archetyp: ichArchetyp,
+                    geschlecht: validIchGeschlecht,
+                    orientierung: validIchOrientierung,
+                    dominanz: validIchDominanz,
+                    gfk: ichGfk,
+                    needs: ichNeeds
+                };
 
-                    currentArchetype = ichArchetype;
-                    selectedPartner = combo.archetype;
+                // Verarbeite Partner-Kombinationen in Chunks
+                for (let i = 0; i < partnerCombinations.length; i += CHUNK_SIZE) {
+                    const chunk = partnerCombinations.slice(i, i + CHUNK_SIZE);
 
-                    let score = 0;
-                    try {
-                        const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                        const logosCheck = calculatePhilosophyCompatibility(ichArchetype, combo.archetype);
+                    for (const combo of chunk) {
+                        const partnerNeeds = getPartnerNeedsCached(combo.archetype, combo.geschlecht, combo.orientierung, combo.dominanz);
+                        const partnerObj = {
+                            archetyp: combo.archetype,
+                            geschlecht: combo.geschlecht,
+                            orientierung: { primary: combo.orientierung, secondary: null },
+                            dominanz: { primary: combo.dominanz, secondary: null },
+                            gfk: 'mittel',
+                            needs: partnerNeeds
+                        };
 
-                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                            const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                            const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                        currentArchetype = ichArchetyp;
+                        selectedPartner = combo.archetype;
 
-                            const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
-                            });
-                            let baseScore = result.overall || 0;
-                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                        } else if (pathosCheck.result === 'unvollständig') {
-                            score = logosCheck.score || 50;
-                        }
-                    } catch (e) { /* Fehler ignorieren */ }
+                        let score = 0;
+                        try {
+                            const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                            const logosCheck = calculatePhilosophyCompatibility(ichArchetyp, combo.archetype);
 
-                    results.push({
-                        archetyp: combo.archetype,
-                        geschlecht: combo.geschlecht,
-                        orientierung: combo.orientierung,
-                        dominanz: combo.dominanz,
-                        score: score
-                    });
+                            if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+                                const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                    rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
+                                });
+                                let baseScore = result.overall || 0;
+                                const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                                score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                            } else if (pathosCheck.result === 'unvollständig') {
+                                score = logosCheck.score || 50;
+                            }
+                        } catch (e) { /* Fehler ignorieren */ }
+
+                        results.push({
+                            ichArchetyp: ichArchetyp,  // NEU: ICH-Archetyp für Gruppierung
+                            archetyp: combo.archetype,
+                            geschlecht: combo.geschlecht,
+                            orientierung: combo.orientierung,
+                            dominanz: combo.dominanz,
+                            score: score
+                        });
+                    }
+
+                    // Yield zum Main Thread nach jedem Chunk
+                    await new Promise(resolve => setTimeout(resolve, 0));
                 }
-
-                // Yield zum Main Thread nach jedem Chunk
-                await new Promise(resolve => setTimeout(resolve, 0));
             }
 
             // Globale Variablen wiederherstellen
             currentArchetype = savedCurrentArchetype;
             selectedPartner = savedSelectedPartner;
 
+            console.log(`[Best Match] Berechnung abgeschlossen: ${results.length} Kombinationen (8 ICH-Archetypen × ${partnerCombinations.length} Partner)`);
+
             return results;
         }
 
         /**
-         * Berechnet alle möglichen Kombinationen (synchron - Fallback)
+         * SSOT v1.8.806: Berechnet alle möglichen Kombinationen (synchron - Fallback)
+         *
+         * Verwendet die gleiche Logik wie calculateAllCombinationsChunked:
+         * - Für jeden ICH-Archetyp die Needs aus dem State-Slot holen
+         * - GOD-Werte bleiben konstant
+         * - Bester Match pro ICH-Archetyp
          */
         function calculateAllCombinations() {
             const results = [];
 
-            // ICH-Daten (fix)
-            // FIX: Hole Dimensionen aus TiageState (SSOT), nicht aus globaler Variable
-            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
+            // GOD-Werte KONSTANT aus TiageState
             const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
 
-            console.log('[calculateAllCombinations] ICH-Dimensionen aus SSOT:', {
-                archetyp: ichArchetype,
+            console.log('[calculateAllCombinations] Konstante GOD-Werte:', {
                 geschlecht: validIchGeschlecht,
                 orientierung: validIchOrientierung,
                 dominanz: validIchDominanz
             });
 
-            // NEU: ICH-Needs aus TiageState holen oder berechnen
-            // FIX: Korrekter Pfad ist 'flatNeeds.ich', nicht 'profiles.ich.flatNeeds'
-            let ichNeeds = null;
-            if (typeof TiageState !== 'undefined') {
-                ichNeeds = TiageState.get('flatNeeds.ich');
-            }
-            if (!ichNeeds && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                ichNeeds = ProfileCalculator.calculateFlatNeeds(
-                    ichArchetype,
-                    validIchGeschlecht,
-                    validIchDominanz,
-                    validIchOrientierung
-                );
+            // ICH-Needs Cache pro Archetyp
+            const ichNeedsCache = {};
+            function getIchNeedsCached(ichArchetyp) {
+                if (!ichNeedsCache[ichArchetyp]) {
+                    if (typeof TiageState !== 'undefined') {
+                        const stateKey = ichArchetyp.replace('_', '-');
+                        const storedNeeds = TiageState.get(`flatNeeds.ich.${stateKey}`);
+                        if (storedNeeds && Object.keys(storedNeeds).length > 0) {
+                            ichNeedsCache[ichArchetyp] = storedNeeds;
+                        }
+                    }
+                    if (!ichNeedsCache[ichArchetyp] && typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                        ichNeedsCache[ichArchetyp] = ProfileCalculator.calculateFlatNeeds(
+                            ichArchetyp, validIchGeschlecht, validIchDominanz, validIchOrientierung
+                        );
+                    }
+                }
+                return ichNeedsCache[ichArchetyp] || {};
             }
 
-            // NEU: Cache für Partner-Needs (vermeidet redundante Berechnungen)
+            // Partner-Needs Cache
             const partnerNeedsCache = {};
             function getPartnerNeeds(archetype, geschlecht, orientierung, dominanz) {
                 const cacheKey = `${archetype}-${geschlecht.primary}-${geschlecht.secondary}-${orientierung}-${dominanz}`;
@@ -13488,76 +13540,73 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const savedSelectedPartner = selectedPartner;
 
             try {
-                // Iteriere durch alle Kombinationen
-                for (const archetype of ALL_ARCHETYPES_SLOT) {
-                    for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
-                        for (const orientierung of ALL_ORIENTIERUNGEN) {
-                            for (const dominanz of ALL_DOMINANZEN) {
-                                // NEU: Partner-Needs berechnen (mit Cache)
-                                const partnerNeeds = getPartnerNeeds(archetype, geschlecht, orientierung, dominanz);
+                // Für jeden ICH-Archetyp gegen alle Partner-Kombinationen matchen
+                for (const ichArchetyp of ALL_ARCHETYPES_SLOT) {
+                    const ichNeeds = getIchNeedsCached(ichArchetyp);
 
-                                // Partner-Person erstellen MIT needs
-                                const partnerObj = {
-                                    archetyp: archetype,
-                                    geschlecht: geschlecht,
-                                    orientierung: { primary: orientierung, secondary: null },
-                                    dominanz: { primary: dominanz, secondary: null },
-                                    gfk: 'mittel',
-                                    needs: partnerNeeds  // NEU: Partner-spezifische needs für R-Faktor-Berechnung
-                                };
+                    const ichObj = {
+                        archetyp: ichArchetyp,
+                        geschlecht: validIchGeschlecht,
+                        orientierung: validIchOrientierung,
+                        dominanz: validIchDominanz,
+                        gfk: ichGfk,
+                        needs: ichNeeds
+                    };
 
-                                // ICH-Person erstellen MIT needs
-                                const ichObj = {
-                                    archetyp: ichArchetype,
-                                    geschlecht: validIchGeschlecht,
-                                    orientierung: validIchOrientierung,
-                                    dominanz: validIchDominanz,
-                                    gfk: ichGfk,
-                                    needs: ichNeeds  // NEU: ICH-needs für R-Faktor-Berechnung
-                                };
+                    // Iteriere durch alle Partner-Kombinationen
+                    for (const archetype of ALL_ARCHETYPES_SLOT) {
+                        for (const geschlecht of ALL_GESCHLECHT_COMBINATIONS) {
+                            for (const orientierung of ALL_ORIENTIERUNGEN) {
+                                for (const dominanz of ALL_DOMINANZEN) {
+                                    const partnerNeeds = getPartnerNeeds(archetype, geschlecht, orientierung, dominanz);
 
-                                // Globale Variablen für Berechnung setzen
-                                currentArchetype = ichArchetype;
-                                selectedPartner = archetype;
+                                    const partnerObj = {
+                                        archetyp: archetype,
+                                        geschlecht: geschlecht,
+                                        orientierung: { primary: orientierung, secondary: null },
+                                        dominanz: { primary: dominanz, secondary: null },
+                                        gfk: 'mittel',
+                                        needs: partnerNeeds
+                                    };
 
-                                let score = 0;
+                                    currentArchetype = ichArchetyp;
+                                    selectedPartner = archetype;
 
-                                try {
-                                    const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                                    const logosCheck = calculatePhilosophyCompatibility(ichArchetype, archetype);
+                                    let score = 0;
 
-                                    if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                                        // SSOT v3.10: R-Faktoren EXPLIZIT aus fiktiven Partner-Needs berechnen
-                                        const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                                        const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                    try {
+                                        const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                                        const logosCheck = calculatePhilosophyCompatibility(ichArchetyp, archetype);
 
-                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                            rFaktoren: {
-                                                ich: ichRFaktoren,
-                                                partner: partnerRFaktoren
-                                            }
-                                        });
-                                        let baseScore = result.overall || 0;
+                                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                            const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                            const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-                                        // SSOT v3.7: Konfidenz-Multiplikator anwenden
-                                        // Primäre Matches (confidence: 'hoch') werden bevorzugt gegenüber sekundären (confidence: 'mittel')
-                                        // Dies stellt sicher, dass ein hetero Mann primär Frauen sieht, nicht Männer über seine sekundäre Bi-Orientierung
-                                        const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                                        score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                                    } else if (pathosCheck.result === 'unvollständig') {
-                                        score = logosCheck.score || 50;
+                                            const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                                rFaktoren: {
+                                                    ich: ichRFaktoren,
+                                                    partner: partnerRFaktoren
+                                                }
+                                            });
+                                            let baseScore = result.overall || 0;
+                                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                                        } else if (pathosCheck.result === 'unvollständig') {
+                                            score = logosCheck.score || 50;
+                                        }
+                                    } catch (e) {
+                                        // Fehler ignorieren
                                     }
-                                } catch (e) {
-                                    // Fehler ignorieren
-                                }
 
-                                results.push({
-                                    archetyp: archetype,
-                                    geschlecht: geschlecht,
-                                    orientierung: orientierung,
-                                    dominanz: dominanz,
-                                    score: score
-                                });
+                                    results.push({
+                                        ichArchetyp: ichArchetyp,
+                                        archetyp: archetype,
+                                        geschlecht: geschlecht,
+                                        orientierung: orientierung,
+                                        dominanz: dominanz,
+                                        score: score
+                                    });
+                                }
                             }
                         }
                     }
@@ -13604,8 +13653,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Zeigt die Top 4 Ergebnisse in Phase 3 (mit erweiterbarer Liste für Position 5-8)
-         * NEU: Zeigt den besten Match PRO ARCHETYP (max. 8 Ergebnisse)
+         * SSOT v1.8.806: Zeigt die Best Match Ergebnisse pro ICH-Archetyp
+         *
+         * Jede Karte zeigt:
+         * - Haupt-Label: ICH-Archetyp (wie du leben würdest)
+         * - Details: Die Partner-GOD Werte für den besten Match
          */
         function showSlotResult(result) {
             document.getElementById('slotPhase2').style.display = 'none';
@@ -13634,14 +13686,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 const geschlechtLabel = `${GESCHLECHT_LABELS[res.geschlecht.primary]}-${GESCHLECHT_LABELS[res.geschlecht.secondary]}`;
                 const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung;
                 const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz;
-                const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
+                // SSOT v1.8.806: ICH-Archetyp als Haupt-Label (nicht Partner-Archetyp)
+                const ichArchetypLabel = ARCHETYP_LABELS[res.ichArchetyp] || ARCHETYP_LABELS[res.archetyp] || res.ichArchetyp || res.archetyp;
 
                 html += `
                     <div class="slot-top4-item rank-${index + 1}">
                         <div class="slot-top4-rank ${rankClasses[index]}">${rankIcons[index]}</div>
                         <div class="slot-top4-info">
                             <div class="slot-top4-main">
-                                <span class="slot-top4-archetyp">${archetypLabel}</span>
+                                <span class="slot-top4-archetyp">${ichArchetypLabel}</span>
                                 <span class="slot-top4-score">${res.score}</span>
                             </div>
                             <div class="slot-top4-details">
@@ -13664,14 +13717,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     const geschlechtLabel = `${GESCHLECHT_LABELS[res.geschlecht.primary]}-${GESCHLECHT_LABELS[res.geschlecht.secondary]}`;
                     const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung;
                     const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz;
-                    const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
+                    // SSOT v1.8.806: ICH-Archetyp als Haupt-Label
+                    const ichArchetypLabel = ARCHETYP_LABELS[res.ichArchetyp] || ARCHETYP_LABELS[res.archetyp] || res.ichArchetyp || res.archetyp;
 
                     expandedHtml += `
                         <div class="slot-top4-item rank-${i + 1}" style="opacity: 0.85;">
                             <div class="slot-top4-rank" style="background: rgba(255,255,255,0.1); color: #888;">${i + 1}.</div>
                             <div class="slot-top4-info">
                                 <div class="slot-top4-main">
-                                    <span class="slot-top4-archetyp">${archetypLabel}</span>
+                                    <span class="slot-top4-archetyp">${ichArchetypLabel}</span>
                                     <span class="slot-top4-score">${res.score}</span>
                                 </div>
                                 <div class="slot-top4-details">
@@ -13714,7 +13768,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.toggleSlotExpand = toggleSlotExpand;
 
         /**
-         * Wendet das Slot Machine Ergebnis auf das Partner-Profil an
+         * SSOT v1.8.806: Wendet das Slot Machine Ergebnis auf ICH und Partner-Profil an
+         *
+         * Setzt:
+         * - ICH-Archetyp auf das gewählte Ergebnis (ichArchetyp)
+         * - Partner-Archetyp und GOD-Werte für den besten Match
+         *
          * @param {number} index - Index des Ergebnisses in slotMachineTop10Results (0-9), default 0
          */
         function applySlotResult(index = 0) {
@@ -13722,7 +13781,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const result = slotMachineTop10Results[index] || slotMachineTop4Results[index] || slotMachineResult;
             if (!result) return;
 
-            // 1. Archetyp setzen
+            // 0. ICH-Archetyp setzen (NEU in v1.8.806)
+            const ichArchetyp = result.ichArchetyp || result.archetyp;
+            selectArchetypeFromGrid('ich', ichArchetyp);
+            console.log('[applySlotResult] ICH-Archetyp gesetzt:', ichArchetyp);
+
+            // 1. Partner-Archetyp setzen
             selectArchetypeFromGrid('partner', result.archetyp);
 
             // 2. Geschlecht setzen
