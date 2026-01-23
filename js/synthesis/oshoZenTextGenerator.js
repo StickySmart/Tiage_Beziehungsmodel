@@ -479,6 +479,7 @@ const OshoZenTextGenerator = (function() {
                 padding: 0.75rem 1rem;
                 cursor: pointer;
                 user-select: none;
+                transform: none !important;
             }
 
             .osho-zen-item-header:hover {
@@ -490,6 +491,7 @@ const OshoZenTextGenerator = (function() {
                 align-items: center;
                 gap: 0.75rem;
                 flex: 1;
+                transform: none !important;
             }
 
             .osho-zen-rank {
@@ -510,12 +512,14 @@ const OshoZenTextGenerator = (function() {
                 font-size: 1.3rem;
                 color: #FFD700;  /* Gold/Gelb */
                 text-transform: uppercase;
+                transform: none !important;
             }
 
             .osho-zen-karte {
                 color: var(--text-muted);
                 font-style: italic;
                 font-size: 0.9rem;
+                transform: none !important;
             }
 
             .osho-zen-item-right {
@@ -587,6 +591,7 @@ const OshoZenTextGenerator = (function() {
                 display: flex;
                 justify-content: center;
                 padding: 1rem 0;
+                transform: none !important;
             }
 
             .osho-zen-need-image {
@@ -595,6 +600,7 @@ const OshoZenTextGenerator = (function() {
                 border-radius: 8px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
                 object-fit: contain;
+                transform: none !important;
             }
 
             .osho-zen-item-content {
