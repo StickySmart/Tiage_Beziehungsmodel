@@ -230,35 +230,75 @@
             max-height: none;
         }
 
-        /* Person toggle */
+        /* Person toggle - Enhanced ICH display with archetype */
         .needs-editor-person-toggle {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             justify-content: center;
         }
 
         .needs-editor-person-btn {
-            padding: 10px 24px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 16px 32px;
+            border-radius: 16px;
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
             color: var(--text-secondary, #999);
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            min-width: 160px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .needs-editor-person-btn .person-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--success, #22c55e);
+            opacity: 0.9;
+        }
+
+        .needs-editor-person-btn .archetype-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .needs-editor-person-btn.active {
-            background: var(--primary, #FFD700);
-            color: #000;
-            border-color: var(--primary, #FFD700);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(168, 85, 247, 0.3) 100%);
+            border-color: rgba(168, 85, 247, 0.8);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4),
+                        0 0 30px rgba(139, 92, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .needs-editor-person-btn.active .archetype-name {
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(168, 85, 247, 0.6);
         }
 
         .needs-editor-person-btn:hover:not(.active) {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-color: rgba(139, 92, 246, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Pulsing animation for active state */
+        @keyframes ichPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2); }
+            50% { box-shadow: 0 4px 24px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3); }
+        }
+
+        .needs-editor-person-btn.active {
+            animation: ichPulse 3s ease-in-out infinite;
         }
 
         /* Mobile adjustments */
@@ -351,12 +391,12 @@
 
         <!-- Main Content -->
         <main class="needs-editor-content">
-            <!-- Person Toggle - Partner-Button entfernt, da Partner-Bedürfnisse nicht manuell editierbar sind -->
+            <!-- Person Toggle - Enhanced ICH display with dynamic archetype name -->
             <div class="needs-editor-person-toggle">
                 <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
-                    ICH
+                    <span class="person-label">ICH</span>
+                    <span class="archetype-name" id="ichArchetypeDisplay">Profil</span>
                 </button>
-                <!-- Partner-Button entfernt: Partner-Bedürfnisse werden dynamisch berechnet -->
             </div>
 
             <!-- Active Filter Card Container -->
@@ -880,6 +920,7 @@
 
         function updateBadge() {
             const badge = document.getElementById('needsEditorBadge');
+            const ichArchetypeDisplay = document.getElementById('ichArchetypeDisplay');
             const archetypeLabels = {
                 'single': 'Single',
                 'duo': 'Duo',
@@ -890,7 +931,13 @@
                 'lat': 'LAT',
                 'aromantisch': 'Aromantisch'
             };
-            badge.textContent = archetypeLabels[currentArchetype] || currentArchetype;
+            const archetypeName = archetypeLabels[currentArchetype] || currentArchetype;
+            badge.textContent = archetypeName;
+
+            // Update the prominent ICH archetype display
+            if (ichArchetypeDisplay) {
+                ichArchetypeDisplay.textContent = archetypeName;
+            }
         }
 
         function loadNeedsData() {
