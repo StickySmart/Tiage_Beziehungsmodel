@@ -351,14 +351,12 @@
 
         <!-- Main Content -->
         <main class="needs-editor-content">
-            <!-- Person Toggle -->
+            <!-- Person Toggle - Partner-Button entfernt, da Partner-Bedürfnisse nicht manuell editierbar sind -->
             <div class="needs-editor-person-toggle">
                 <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
                     ICH
                 </button>
-                <button class="needs-editor-person-btn" id="btnPersonPartner" onclick="switchPerson('partner')">
-                    PARTNER
-                </button>
+                <!-- Partner-Button entfernt: Partner-Bedürfnisse werden dynamisch berechnet -->
             </div>
 
             <!-- Active Filter Card Container -->
@@ -757,7 +755,15 @@
 
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
-            currentPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
+            // WICHTIG: Partner-Bedürfnisse sind nicht mehr manuell editierbar!
+            // Nur ICH wird akzeptiert - Partner wird auf ICH umgeleitet
+            const requestedPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
+            if (requestedPerson === 'partner') {
+                console.warn('[NeedsEditor] Partner-Zugriff blockiert - Partner-Bedürfnisse werden dynamisch berechnet');
+                currentPerson = 'ich';
+            } else {
+                currentPerson = requestedPerson;
+            }
             // Priorität: URL-Parameter > TiageState > localStorage > Fallback
             currentArchetype = urlParams.get('archetype') ||
                 (typeof TiageState !== 'undefined' ? TiageState.getArchetype(currentPerson) : null) ||
@@ -869,7 +875,7 @@
 
         function updatePersonToggle() {
             document.getElementById('btnPersonIch').classList.toggle('active', currentPerson === 'ich');
-            document.getElementById('btnPersonPartner').classList.toggle('active', currentPerson === 'partner');
+            // Partner-Button entfernt - nur noch ICH verfügbar
         }
 
         function updateBadge() {
@@ -1001,6 +1007,12 @@
         }
 
         function switchPerson(person) {
+            // WICHTIG: Partner-Bedürfnisse sind nicht mehr manuell editierbar!
+            if (person === 'partner') {
+                console.warn('[NeedsEditor] Partner-Wechsel blockiert - Partner-Bedürfnisse werden dynamisch berechnet');
+                return;
+            }
+
             // Save current state first
             saveCurrentState();
 
