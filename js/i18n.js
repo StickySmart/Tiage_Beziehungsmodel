@@ -156,18 +156,49 @@ const TiageI18n = (function() {
     // INITIALIZATION
     // ═══════════════════════════════════════════════════════════════════════
 
+    let initWarningShown = false;
+
     function init() {
         // Priority: 1. Storage, 2. Browser detection, 3. Default
         const storedLang = loadFromStorage();
         const browserLang = detectBrowserLanguage();
 
         currentLanguage = storedLang || browserLang || DEFAULT_LANGUAGE;
+
+        // Try to get locale from multiple sources
         currentLocale = locales[currentLanguage];
+
+        // If not in cache, try global variable (might be loaded by now)
+        if (!currentLocale) {
+            if (currentLanguage === 'de' && typeof TiageLocale_DE !== 'undefined') {
+                locales.de = TiageLocale_DE;
+                currentLocale = TiageLocale_DE;
+            } else if (currentLanguage === 'en' && typeof TiageLocale_EN !== 'undefined') {
+                locales.en = TiageLocale_EN;
+                currentLocale = TiageLocale_EN;
+            }
+        }
+
+        // If still not loaded, try TiageLocaleLoader
+        if (!currentLocale && typeof TiageLocaleLoader !== 'undefined') {
+            const cachedLocale = TiageLocaleLoader.getLocale(currentLanguage);
+            if (cachedLocale) {
+                locales[currentLanguage] = cachedLocale;
+                currentLocale = cachedLocale;
+            }
+        }
 
         // Update HTML lang attribute
         updateHtmlLang(currentLanguage);
 
-        console.log(`[TiageI18n] Initialized with language: ${currentLanguage}`);
+        if (currentLocale) {
+            console.log(`[TiageI18n] Initialized with language: ${currentLanguage}`);
+        } else {
+            // Schedule retry when locale might be available
+            setTimeout(() => {
+                if (!currentLocale) init();
+            }, 100);
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -254,7 +285,13 @@ const TiageI18n = (function() {
          */
         t(path, fallback = null) {
             if (!currentLocale) {
-                console.warn('[TiageI18n] No locale loaded');
+                // Only warn once to avoid console spam
+                if (!initWarningShown) {
+                    initWarningShown = true;
+                    console.warn('[TiageI18n] No locale loaded yet - translations will be available shortly');
+                    // Try to reinitialize
+                    init();
+                }
                 return fallback || path;
             }
 
