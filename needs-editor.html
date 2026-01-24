@@ -373,6 +373,68 @@
             color: #a78bfa;
             font-weight: 600;
         }
+
+        /* Person Section with Navigation */
+        .needs-editor-person-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .needs-editor-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary, #999);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .needs-editor-nav-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+            color: var(--text-primary, #fff);
+        }
+
+        .needs-editor-separator {
+            color: var(--text-muted, #666);
+            font-size: 18px;
+            padding: 0 8px;
+            opacity: 0.5;
+        }
+
+        /* Partner button styling */
+        .needs-editor-person-btn#btnPersonPartner {
+            border-color: rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+        }
+
+        .needs-editor-person-btn#btnPersonPartner.active {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(220, 38, 38, 0.3) 100%);
+            border-color: rgba(220, 38, 38, 0.8);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4),
+                        0 0 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .needs-editor-person-btn#btnPersonPartner:hover:not(.active) {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        @keyframes partnerPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2); }
+            50% { box-shadow: 0 4px 24px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3); }
+        }
+
+        .needs-editor-person-btn#btnPersonPartner.active {
+            animation: partnerPulse 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -391,12 +453,28 @@
 
         <!-- Main Content -->
         <main class="needs-editor-content">
-            <!-- Person Toggle - Enhanced ICH display with dynamic archetype name -->
+            <!-- Person/Archetype Selector with Navigation -->
             <div class="needs-editor-person-toggle">
-                <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
-                    <span class="person-label">ICH</span>
-                    <span class="archetype-name" id="ichArchetypeDisplay">Profil</span>
-                </button>
+                <!-- ICH Section -->
+                <div class="needs-editor-person-section" id="sectionIch">
+                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
+                        <span class="person-label">ICH</span>
+                        <span class="archetype-name" id="ichArchetypeDisplay">Profil</span>
+                    </button>
+                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('ich', 1)" title="Nächster Archetyp">&#9654;</button>
+                </div>
+                <!-- Separator -->
+                <span class="needs-editor-separator">×</span>
+                <!-- PARTNER Section -->
+                <div class="needs-editor-person-section" id="sectionPartner">
+                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="needs-editor-person-btn" id="btnPersonPartner" onclick="switchPerson('partner')">
+                        <span class="person-label" style="color: var(--danger, #ef4444);">PARTNER</span>
+                        <span class="archetype-name" id="partnerArchetypeDisplay">Profil</span>
+                    </button>
+                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('partner', 1)" title="Nächster Archetyp">&#9654;</button>
+                </div>
             </div>
 
             <!-- Active Filter Card Container -->
@@ -795,15 +873,9 @@
 
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
-            // WICHTIG: Partner-Bedürfnisse sind nicht mehr manuell editierbar!
-            // Nur ICH wird akzeptiert - Partner wird auf ICH umgeleitet
+            // Partner-Bedürfnisse können jetzt auch bearbeitet werden
             const requestedPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
-            if (requestedPerson === 'partner') {
-                console.warn('[NeedsEditor] Partner-Zugriff blockiert - Partner-Bedürfnisse werden dynamisch berechnet');
-                currentPerson = 'ich';
-            } else {
-                currentPerson = requestedPerson;
-            }
+            currentPerson = requestedPerson;
             // Priorität: URL-Parameter > TiageState > localStorage > Fallback
             currentArchetype = urlParams.get('archetype') ||
                 (typeof TiageState !== 'undefined' ? TiageState.getArchetype(currentPerson) : null) ||
@@ -915,15 +987,124 @@
 
         function updatePersonToggle() {
             document.getElementById('btnPersonIch').classList.toggle('active', currentPerson === 'ich');
-            // Partner-Button entfernt - nur noch ICH verfügbar
+            const partnerBtn = document.getElementById('btnPersonPartner');
+            if (partnerBtn) {
+                partnerBtn.classList.toggle('active', currentPerson === 'partner');
+            }
+            // Update archetype displays for both persons
+            updateArchetypeDisplays();
+        }
+
+        /**
+         * Aktualisiert die Archetyp-Anzeige für beide Personen
+         */
+        function updateArchetypeDisplays() {
+            const archetypeLabels = {
+                'single': 'Single',
+                'duo': 'Duo',
+                'duo_flex': 'Duo-Flex',
+                'duo-flex': 'Duo-Flex',
+                'solopoly': 'Solo-Poly',
+                'polyamor': 'Polyamor',
+                'ra': 'RA',
+                'lat': 'LAT',
+                'aromantisch': 'Aromantisch'
+            };
+
+            // ICH Archetyp
+            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.getArchetype('ich') : null) ||
+                localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor';
+            const ichDisplay = document.getElementById('ichArchetypeDisplay');
+            if (ichDisplay) {
+                ichDisplay.textContent = archetypeLabels[ichArchetype] || ichArchetype;
+            }
+
+            // Partner Archetyp
+            const partnerArchetype = (typeof TiageState !== 'undefined' ? TiageState.getArchetype('partner') : null) ||
+                localStorage.getItem('tiage_selected_archetype_partner') || 'duo';
+            const partnerDisplay = document.getElementById('partnerArchetypeDisplay');
+            if (partnerDisplay) {
+                partnerDisplay.textContent = archetypeLabels[partnerArchetype] || partnerArchetype;
+            }
+        }
+
+        /**
+         * Navigiert zum vorherigen/nächsten Archetyp für eine Person
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {number} direction - -1 für vorheriger, 1 für nächster
+         */
+        function navigateArchetypeInEditor(person, direction) {
+            const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Aktuellen Archetyp ermitteln
+            let currentArch = (typeof TiageState !== 'undefined' ? TiageState.getArchetype(person) : null) ||
+                localStorage.getItem('tiage_selected_archetype_' + person) ||
+                (person === 'ich' ? 'polyamor' : 'duo');
+
+            // Normalisiere duo-flex zu duo_flex für Array-Lookup
+            const normalizedArch = currentArch.replace('-', '_');
+            let currentIndex = archetypes.indexOf(normalizedArch);
+            if (currentIndex === -1) currentIndex = 0;
+
+            // Neuen Index berechnen (wrap-around)
+            let newIndex = (currentIndex + direction + archetypes.length) % archetypes.length;
+            const newArchetype = archetypes[newIndex];
+
+            console.log('[NeedsEditor] Archetyp-Wechsel für', person, ':', currentArch, '→', newArchetype);
+
+            // Wenn diese Person die aktive ist, aktuellen State speichern
+            if (person === currentPerson) {
+                saveCurrentState();
+            }
+
+            // Neuen Archetyp setzen
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype(person, newArchetype);
+            }
+            localStorage.setItem('tiage_selected_archetype_' + person, newArchetype);
+
+            // Profil neu laden mit locked needs (wenn ProfileCalculator verfügbar)
+            if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
+                const profileData = {
+                    archetyp: newArchetype,
+                    geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
+                    dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
+                    orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                };
+                ProfileCalculator.loadProfile(person, profileData);
+                console.log('[NeedsEditor] Profil neu geladen für', person, 'mit Archetyp:', newArchetype);
+            }
+
+            // UI aktualisieren
+            updateArchetypeDisplays();
+
+            // Wenn diese Person die aktive ist, Bedürfnisse neu rendern
+            if (person === currentPerson) {
+                currentArchetype = newArchetype;
+                updateBadge();
+                loadNeedsData();
+                renderNeedsList();
+
+                // R-Faktoren neu berechnen
+                if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
+                    setTimeout(function() {
+                        ResonanzCard.recalculate(person);
+                    }, 100);
+                }
+            }
+
+            // Event für andere Komponenten feuern
+            window.dispatchEvent(new CustomEvent('archetypeChangedInEditor', {
+                detail: { person: person, archetype: newArchetype }
+            }));
         }
 
         function updateBadge() {
             const badge = document.getElementById('needsEditorBadge');
-            const ichArchetypeDisplay = document.getElementById('ichArchetypeDisplay');
             const archetypeLabels = {
                 'single': 'Single',
                 'duo': 'Duo',
+                'duo_flex': 'Duo-Flex',
                 'duo-flex': 'Duo-Flex',
                 'solopoly': 'Solo-Poly',
                 'polyamor': 'Polyamor',
@@ -934,10 +1115,17 @@
             const archetypeName = archetypeLabels[currentArchetype] || currentArchetype;
             badge.textContent = archetypeName;
 
-            // Update the prominent ICH archetype display
-            if (ichArchetypeDisplay) {
-                ichArchetypeDisplay.textContent = archetypeName;
+            // Badge-Farbe basierend auf Person
+            if (badge) {
+                if (currentPerson === 'partner') {
+                    badge.style.background = 'var(--danger, #ef4444)';
+                } else {
+                    badge.style.background = 'var(--primary, #FFD700)';
+                }
             }
+
+            // Update archetype displays for both persons
+            updateArchetypeDisplays();
         }
 
         function loadNeedsData() {
@@ -1054,12 +1242,7 @@
         }
 
         function switchPerson(person) {
-            // WICHTIG: Partner-Bedürfnisse sind nicht mehr manuell editierbar!
-            if (person === 'partner') {
-                console.warn('[NeedsEditor] Partner-Wechsel blockiert - Partner-Bedürfnisse werden dynamisch berechnet');
-                return;
-            }
-
+            // Partner-Bedürfnisse können jetzt auch bearbeitet werden
             // Save current state first
             saveCurrentState();
 

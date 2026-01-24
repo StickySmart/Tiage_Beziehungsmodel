@@ -408,7 +408,7 @@
                                 ['ich', 'partner'].forEach(person => {
                                     const personArchetyp = TiageState.get(`archetypes.${person}.primary`);
                                     if (personArchetyp) {
-                                        recalculateFlatNeeds(person);
+                                        recalculateFlatNeedsForPerson(person);
                                     }
                                 });
                             }
