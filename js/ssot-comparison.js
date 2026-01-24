@@ -116,6 +116,17 @@ var SSOTComparison = (function() {
         };
 
         try {
+            // SSOT-FIX: Nur Server aufrufen wenn verfügbar (vermeidet 405-Spam)
+            if (config.serverChecked && !config.serverAvailable) {
+                comparison.status = 'server_disabled';
+                comparison.error = 'Server nicht verfügbar (GitHub Pages)';
+                history.push(comparison);
+                if (history.length > config.maxHistory) {
+                    history.shift();
+                }
+                return comparison;
+            }
+
             // Server-Berechnung parallel ausführen
             const serverResult = await fetchServerCalculation(person1, person2, options);
             comparison.serverResult = sanitizeResult(serverResult);
@@ -184,11 +195,12 @@ var SSOTComparison = (function() {
             })
         });
 
-        // SSOT-FIX: Bei 405 Server-Modus deaktivieren
+        // SSOT-FIX: Bei 405 Server-Modus dauerhaft deaktivieren (vermeidet Spam)
         if (response.status === 405) {
             config.useServerSSOT = false;
             config.serverAvailable = false;
             config.serverChecked = true;
+            console.info('[SSOT] Server-API nicht verfügbar (405) - Modus deaktiviert');
             throw new Error('HTTP 405 - Server-Modus deaktiviert');
         }
 
