@@ -1706,8 +1706,22 @@ const TiageState = (function() {
                 // FIX v1.8.687: Flag zurücksetzen nach dem Laden
                 isLoadingFromStorage = false;
                 console.log('[TiageState] loadFromStorage - END (isLoadingFromStorage = false)');
+                this._ensureFlatNeedsInitialized();
             }
         },
+
+_ensureFlatNeedsInitialized: function() {
+    if (this.flatNeeds && Object.keys(this.flatNeeds).length === 0) {
+        var dominated = this.profileReview?.dominatedArchetype;
+        if (dominated && window.NEED_PROFILES?.[dominated]) {
+            this.flatNeeds = JSON.parse(JSON.stringify(window.NEED_PROFILES[dominated]));
+            console.log('[State] flatNeeds aus Archetyp-Profil initialisiert:', dominated);
+        }
+    }
+},
+
+
+
 
         /**
          * Prüft ob gerade aus localStorage geladen wird

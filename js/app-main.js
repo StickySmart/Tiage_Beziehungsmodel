@@ -16784,6 +16784,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     showLockSavedToast(locked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
                 });
 
+var flatNeedSaveDebounceTimer = null;
+var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
+
+
+
                 // ═══════════════════════════════════════════════════════════════════════════
                 // Event-Listener für Bedürfnis-Wert-Änderungen
                 // FIX v1.8.455: Speichere ALLE Wert-Änderungen in TiageState.flatNeeds
@@ -16811,6 +16816,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         TiageState.saveToStorage();
                         console.log('[flatNeedChange] Gesperrter Wert auch in lockedNeeds gespeichert:', needId);
                     }
+
+   // FIX: Debounced Save für ALLE Änderungen
+    if (flatNeedSaveDebounceTimer) {
+        clearTimeout(flatNeedSaveDebounceTimer);
+    }
+    flatNeedSaveDebounceTimer = setTimeout(function() {
+        TiageState.saveToStorage();
+        console.log('[flatNeedChange] Debounced saveToStorage ausgeführt');
+    }, FLAT_NEED_SAVE_DEBOUNCE_MS);
+    
+
                 });
 
                 // Initialize MomentsToggle in header
