@@ -110,6 +110,12 @@ const TiageAPIClient = (function() {
      * Q-Formel: Q = Σ(Faktor × Gewicht × R)
      */
     async function calculateSynthesis(ichProfile, partnerProfile, options = {}) {
+
+// FIX: Skip API on GitHub Pages - use local calculation directly
+    if (typeof TiageSynthesis !== 'undefined') {
+        return TiageSynthesis.Calculator.calculate(ichProfile, partnerProfile, options);
+    }
+
         return withFallback(
             () => apiRequest('/calculate/synthesis', {
                 method: 'POST',
