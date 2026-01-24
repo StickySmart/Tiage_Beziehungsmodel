@@ -24,7 +24,7 @@ var SSOTComparison = (function() {
         tolerance: 0.01,           // 1% Toleranz für Floating-Point
         maxHistory: 100,           // Max gespeicherte Vergleiche
         serverEndpoint: '/api/calculate/synthesis',
-        compareOnEveryCalculation: true,
+ compareOnEveryCalculation: false,    // WAR: true
 
         // ═══════════════════════════════════════════════════════════════════
         // PHASE 3: SERVER-FIRST MIT FALLBACK
