@@ -334,7 +334,12 @@
                 appliedDeltas.push(`${stringKey}: ${oldVal} → ${flatNeeds[stringKey]}`);
                 appliedCount++;
             } else {
-                console.warn(`[ProfileCalculator] Delta-Key nicht gefunden: ${stringKey} (hashId: ${hashId})`);
+                // Nur beim ersten Mal loggen um Spam zu vermeiden
+                if (!window._deltaKeyWarningsShown) window._deltaKeyWarningsShown = new Set();
+                if (!window._deltaKeyWarningsShown.has(stringKey)) {
+                    window._deltaKeyWarningsShown.add(stringKey);
+                    console.info(`[ProfileCalculator] Delta-Key nicht in Basis-Profil: ${stringKey}`);
+                }
             }
         });
 
