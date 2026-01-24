@@ -19,7 +19,7 @@ var SSOTComparison = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const config = {
-        enabled: true,             // Logging aktiviert für Monitoring
+        enabled: false,             // Logging aktiviert für Monitoring
         logToConsole: true,
         tolerance: 0.01,           // 1% Toleranz für Floating-Point
         maxHistory: 100,           // Max gespeicherte Vergleiche
