@@ -259,9 +259,9 @@ const ResonanzCard = (function() {
     function save(values, person) {
         person = person || getCurrentPerson();
 
-        // DEBUG: Zeige JEDEN save Aufruf mit Stacktrace
-        console.log('%c[ResonanzCard] SAVE ' + person + ': R1=' + values.R1?.value + ' R2=' + values.R2?.value + ' R3=' + values.R3?.value + ' R4=' + values.R4?.value, 'background: orange; color: black; font-size: 12px;');
-        console.trace('[ResonanzCard] SAVE Stacktrace');
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('%c[ResonanzCard] SAVE ' + person + ': R1=' + values.R1?.value + ' R2=' + values.R2?.value + ' R3=' + values.R3?.value + ' R4=' + values.R4?.value, 'background: orange; color: black; font-size: 12px;');
+        // console.trace('[ResonanzCard] SAVE Stacktrace');
 
         try {
             // v3.2: TiageState mit Clamping (Single Source of Truth)
@@ -475,7 +475,8 @@ const ResonanzCard = (function() {
             updateDisplay();
         }
 
-        console.log('[ResonanzCard] Änderung notifiziert für', person, '- Quelle:', source);
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard] Änderung notifiziert für', person, '- Quelle:', source);
     }
 
     /**
@@ -1480,7 +1481,8 @@ const ResonanzCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function recalculateResonanzForPerson(person) {
-        console.log('[ResonanzCard.recalculate] START für', person);
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard.recalculate] START für', person);
 
         // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
@@ -1494,11 +1496,12 @@ const ResonanzCard = (function() {
                 archetypeKey = selectedPartner;
             }
         }
-        console.log('[ResonanzCard.recalculate] Archetyp:', archetypeKey);
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard.recalculate] Archetyp:', archetypeKey);
 
         // Hole Bedürfnisse (getPersonNeeds ist Teil von ResonanzCard)
         const needs = ResonanzCard.getPersonNeeds(person, archetypeKey);
-        console.log('[ResonanzCard.recalculate] Needs geladen:', needs ? Object.keys(needs).length : 0, 'Bedürfnisse');
+        // console.log('[ResonanzCard.recalculate] Needs geladen:', needs ? Object.keys(needs).length : 0, 'Bedürfnisse');
 
         if (!needs || Object.keys(needs).length === 0) {
             console.warn('[ResonanzCard.recalculate] ABBRUCH: Keine Needs für', person);
@@ -1526,12 +1529,13 @@ const ResonanzCard = (function() {
             orientierung: orientierung,
             geschlecht: geschlecht
         };
-        console.log('[ResonanzCard.recalculate] ProfileContext:', {
-            archetyp: profileContext.archetyp,
-            needsCount: Object.keys(profileContext.needs).length,
-            dominanz: profileContext.dominanz,
-            orientierung: profileContext.orientierung
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard.recalculate] ProfileContext:', {
+        //     archetyp: profileContext.archetyp,
+        //     needsCount: Object.keys(profileContext.needs).length,
+        //     dominanz: profileContext.dominanz,
+        //     orientierung: profileContext.orientierung
+        // });
 
         // Prüfe ob NeedsIntegration verfügbar ist
         const hasNeedsIntegration = typeof TiageSynthesis !== 'undefined' &&
@@ -1539,19 +1543,22 @@ const ResonanzCard = (function() {
         const hasKohaerenz = hasNeedsIntegration &&
                             typeof TiageSynthesis.Constants !== 'undefined' &&
                             TiageSynthesis.Constants.ARCHETYP_KOHAERENZ;
-        console.log('[ResonanzCard.recalculate] Dependencies:', {
-            hasNeedsIntegration: hasNeedsIntegration,
-            hasKohaerenz: !!hasKohaerenz
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard.recalculate] Dependencies:', {
+        //     hasNeedsIntegration: hasNeedsIntegration,
+        //     hasKohaerenz: !!hasKohaerenz
+        // });
 
         // Berechne neue Resonanzwerte
         const calculatedValues = ResonanzCard.calculateFromProfile(profileContext);
-        console.log('[ResonanzCard.recalculate] Berechnete Werte:', calculatedValues);
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard.recalculate] Berechnete Werte:', calculatedValues);
 
         if (calculatedValues) {
             // Setze die berechneten Werte (respektiert gesperrte Werte)
             ResonanzCard.setCalculatedValues(calculatedValues, false, person);
-            console.log('[ResonanzCard.recalculate] ERFOLG für', person, ':', calculatedValues);
+            // DEBUG disabled - was causing infinite console messages
+            // console.log('[ResonanzCard.recalculate] ERFOLG für', person, ':', calculatedValues);
         } else {
             console.warn('[ResonanzCard.recalculate] FEHLER: Keine Werte berechnet für', person);
         }
@@ -1664,14 +1671,16 @@ const ResonanzCard = (function() {
     document.addEventListener('attributeNeedChange', function(event) {
         const { attrId, needId, value } = event.detail || {};
 
-        console.log('%c[ResonanzCard] attributeNeedChange EVENT!', 'background: blue; color: white; font-size: 14px;', { attrId, needId, value });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('%c[ResonanzCard] attributeNeedChange EVENT!', 'background: blue; color: white; font-size: 14px;', { attrId, needId, value });
 
         if (!needId || value === undefined) {
             console.warn('[ResonanzCard] attributeNeedChange ohne gültige Daten:', event.detail);
             return;
         }
 
-        console.log('[ResonanzCard] attributeNeedChange empfangen:', attrId, needId, value);
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[ResonanzCard] attributeNeedChange empfangen:', attrId, needId, value);
 
         // Ermittle aktuelle Person aus ProfileReview-Kontext
         let person = 'ich';
