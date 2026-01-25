@@ -531,12 +531,13 @@ TiageSynthesis.NeedsIntegration = {
         result.R3 = result.dynamik;
         result.R4 = result.identitaet;
 
-        console.log('[NeedsIntegration.calculatePaarungsResonance] PAARUNG Ergebnis:', {
-            R1_leben: result.R1,
-            R2_philosophie: result.R2,
-            R3_dynamik: result.R3,
-            R4_identitaet: result.R4
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[NeedsIntegration.calculatePaarungsResonance] PAARUNG Ergebnis:', {
+        //     R1_leben: result.R1,
+        //     R2_philosophie: result.R2,
+        //     R3_dynamik: result.R3,
+        //     R4_identitaet: result.R4
+        // });
 
         return result;
     },
@@ -665,14 +666,14 @@ TiageSynthesis.NeedsIntegration = {
         var hasKatalogKohaerenz = katalog && katalog.beduerfnisse &&
             this.getNeedsByRFaktor('R1').length > 0;
 
-        // Debug-Logging für Diagnose
-        console.log('[NeedsIntegration.calculateDimensionalResonance] Input:', {
-            hasKatalogKohaerenz: hasKatalogKohaerenz,
-            archetyp: person.archetyp,
-            needsType: needs ? (Array.isArray(needs) ? 'array' : 'object') : 'null',
-            needsCount: needs ? Object.keys(needs).length : 0,
-            sampleNeeds: needs ? Object.keys(needs).slice(0, 5) : []
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[NeedsIntegration.calculateDimensionalResonance] Input:', {
+        //     hasKatalogKohaerenz: hasKatalogKohaerenz,
+        //     archetyp: person.archetyp,
+        //     needsType: needs ? (Array.isArray(needs) ? 'array' : 'object') : 'null',
+        //     needsCount: needs ? Object.keys(needs).length : 0,
+        //     sampleNeeds: needs ? Object.keys(needs).slice(0, 5) : []
+        // });
 
         if (!person.archetyp || !needs) {
             console.warn('[NeedsIntegration.calculateDimensionalResonance] ABBRUCH - Fehlende Daten:', {
@@ -700,13 +701,13 @@ TiageSynthesis.NeedsIntegration = {
             archetyp: archetyp
         };
 
-        // Log das Ergebnis für Diagnose
-        console.log('[NeedsIntegration.calculateDimensionalResonance] Ergebnis für', archetyp + ':', {
-            R1_leben: result.leben,
-            R2_philosophie: result.philosophie,
-            R3_dynamik: result.dynamik,
-            R4_identitaet: result.identitaet
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[NeedsIntegration.calculateDimensionalResonance] Ergebnis für', archetyp + ':', {
+        //     R1_leben: result.leben,
+        //     R2_philosophie: result.philosophie,
+        //     R3_dynamik: result.dynamik,
+        //     R4_identitaet: result.identitaet
+        // });
 
         return result;
     },
@@ -734,8 +735,9 @@ TiageSynthesis.NeedsIntegration = {
 
         // Fallback auf alte Methode wenn Katalog keine Daten hat
         if (!expectedNeeds || Object.keys(expectedNeeds).length === 0) {
-            console.log('[NeedsIntegration._calculateSingleResonanceV35] Keine Katalog-Daten für',
-                rFaktor, archetyp, '- verwende Legacy-Fallback');
+            // DEBUG disabled - was causing infinite console messages
+            // console.log('[NeedsIntegration._calculateSingleResonanceV35] Keine Katalog-Daten für',
+            //     rFaktor, archetyp, '- verwende Legacy-Fallback');
             // Fallback: Alte Methode mit ARCHETYP_KOHAERENZ
             var constants = TiageSynthesis.Constants;
             var kohaerenz = constants.ARCHETYP_KOHAERENZ;
@@ -795,14 +797,15 @@ TiageSynthesis.NeedsIntegration = {
         var avgMatch = totalMatch / count;
         var rValue = avgMatch * avgMatch;
 
-        console.log('[NeedsIntegration._calculateSingleResonanceV35] Katalog-Berechnung:', {
-            rFaktor: rFaktor,
-            archetyp: archetyp,
-            avgMatch: (avgMatch * 100).toFixed(1) + '%',
-            R: rValue.toFixed(3),
-            count: count,
-            matches: debugMatches
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[NeedsIntegration._calculateSingleResonanceV35] Katalog-Berechnung:', {
+        //     rFaktor: rFaktor,
+        //     archetyp: archetyp,
+        //     avgMatch: (avgMatch * 100).toFixed(1) + '%',
+        //     R: rValue.toFixed(3),
+        //     count: count,
+        //     matches: debugMatches
+        // });
 
         return Math.round(rValue * 1000) / 1000;
     },
@@ -893,13 +896,14 @@ TiageSynthesis.NeedsIntegration = {
         var avgMatch = totalMatch / count;
         var rValue = avgMatch * avgMatch;
 
-        console.log('[NeedsIntegration._calculateSingleResonance] SSOT-Berechnung:', {
-            archetyp: archetyp,
-            avgMatch: (avgMatch * 100).toFixed(1) + '%',
-            R: rValue.toFixed(3),
-            count: count,
-            matches: debugMatches
-        });
+        // DEBUG disabled - was causing infinite console messages
+        // console.log('[NeedsIntegration._calculateSingleResonance] SSOT-Berechnung:', {
+        //     archetyp: archetyp,
+        //     avgMatch: (avgMatch * 100).toFixed(1) + '%',
+        //     R: rValue.toFixed(3),
+        //     count: count,
+        //     matches: debugMatches
+        // });
 
         return Math.round(rValue * 1000) / 1000;
     },
