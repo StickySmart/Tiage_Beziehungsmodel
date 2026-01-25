@@ -12618,7 +12618,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          * ═══════════════════════════════════════════════════════════════════════
          */
         // Hilfsfunktion: Stellt sicher, dass Geschlechts-Objekt valide Werte hat
+        // FIX v4.1.2: Unterstützt sowohl String-Format (v4.0) als auch Objekt-Format {primary, secondary}
         function ensureValidGeschlecht(geschlechtObj) {
+            // v4.0: String-Format (z.B. "frau", "mann", "nonbinaer")
+            if (typeof geschlechtObj === 'string' && geschlechtObj) {
+                return {
+                    primary: geschlechtObj,
+                    secondary: 'cis'    // Default für v4.0 String-Format
+                };
+            }
+            // Legacy/Full: Objekt-Format {primary, secondary}
             const g = geschlechtObj || {};
             return {
                 primary: g.primary || 'mann',      // Default: mann
@@ -12627,7 +12636,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Hilfsfunktion: Stellt sicher, dass Dominanz-Objekt valide Werte hat
+        // FIX v4.1.2: Unterstützt sowohl String-Format (v4.0) als auch Objekt-Format {primary, secondary}
         function ensureValidDominanz(dominanzObj) {
+            // v4.0: String-Format (z.B. "dominant", "submissiv", "switch", "ausgeglichen")
+            if (typeof dominanzObj === 'string' && dominanzObj) {
+                return {
+                    primary: dominanzObj,
+                    secondary: null
+                };
+            }
+            // Legacy/Full: Objekt-Format {primary, secondary}
             const d = dominanzObj || {};
             return {
                 primary: d.primary || 'ausgeglichen',
@@ -12636,8 +12654,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // Hilfsfunktion: Stellt sicher, dass Orientierungs-Objekt valide Werte hat
-        // FIX: Unterstützt sowohl Array-Format ['pan', 'bi'] als auch Objekt-Format {primary, secondary}
+        // FIX v4.1.2: Unterstützt String, Array und Objekt-Format
         function ensureValidOrientierung(orientierungObj) {
+            // v4.0: String-Format (z.B. "heterosexuell", "homosexuell", "bisexuell")
+            if (typeof orientierungObj === 'string' && orientierungObj) {
+                return {
+                    primary: orientierungObj,
+                    secondary: null,
+                    all: [orientierungObj]
+                };
+            }
             // v4.1.1: Array-Format (UI speichert als Array)
             if (Array.isArray(orientierungObj) && orientierungObj.length > 0) {
                 return {
