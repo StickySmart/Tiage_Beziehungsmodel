@@ -4361,6 +4361,31 @@
             transition: all 0.2s ease;
             border: 2px solid transparent;
             background: rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        /* Settings-Link für ICH-Archetypen (nur bei aktivem Item sichtbar) */
+        .archetype-settings-link {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 10px;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+            padding: 2px;
+            text-decoration: none;
+        }
+
+        .archetype-symbol-item.active .archetype-settings-link,
+        .archetype-symbol-item:hover .archetype-settings-link {
+            opacity: 0.6;
+        }
+
+        .archetype-settings-link:hover {
+            opacity: 1 !important;
+            color: var(--primary);
         }
 
         .archetype-symbol-item:hover {
