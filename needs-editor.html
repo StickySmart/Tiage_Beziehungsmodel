@@ -409,32 +409,11 @@
             opacity: 0.5;
         }
 
-        /* Partner button styling */
-        .needs-editor-person-btn#btnPersonPartner {
-            border-color: rgba(239, 68, 68, 0.4);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
-        }
-
-        .needs-editor-person-btn#btnPersonPartner.active {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(220, 38, 38, 0.3) 100%);
-            border-color: rgba(220, 38, 38, 0.8);
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4),
-                        0 0 30px rgba(239, 68, 68, 0.2);
-        }
-
-        .needs-editor-person-btn#btnPersonPartner:hover:not(.active) {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.1) 100%);
-            border-color: rgba(239, 68, 68, 0.6);
-        }
-
-        @keyframes partnerPulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2); }
-            50% { box-shadow: 0 4px 24px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3); }
-        }
-
-        .needs-editor-person-btn#btnPersonPartner.active {
-            animation: partnerPulse 3s ease-in-out infinite;
-        }
+        /* SSOT v2.0: Partner-Bearbeitung deaktiviert - CSS nicht mehr verwendet
+         * Partner-Werte werden dynamisch berechnet aus: Archetyp-Basis + AGOD-Modifikatoren
+         * Partner button styling - DEPRECATED, kept for reference
+        .needs-editor-person-btn#btnPersonPartner { ... }
+        */
     </style>
 </head>
 <body>
@@ -862,9 +841,11 @@
 
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
-            // Partner-Bedürfnisse können jetzt auch bearbeitet werden
+            // SSOT v2.0: Partner-Bedürfnisse sind NICHT mehr manuell editierbar
+            // Partner-Werte werden dynamisch berechnet aus: Archetyp-Basis + AGOD-Modifikatoren
+            // Daher: Immer auf 'ich' setzen, auch wenn 'partner' angefordert wird
             const requestedPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
-            currentPerson = requestedPerson;
+            currentPerson = (requestedPerson === 'partner') ? 'ich' : requestedPerson;
             // Priorität: URL-Parameter > TiageState > localStorage > Fallback
             currentArchetype = urlParams.get('archetype') ||
                 (typeof TiageState !== 'undefined' ? TiageState.getArchetype(currentPerson) : null) ||
@@ -975,12 +956,9 @@
         }
 
         function updatePersonToggle() {
+            // SSOT v2.0: Nur ICH ist editierbar, Partner-Button existiert nicht mehr
             document.getElementById('btnPersonIch').classList.toggle('active', currentPerson === 'ich');
-            const partnerBtn = document.getElementById('btnPersonPartner');
-            if (partnerBtn) {
-                partnerBtn.classList.toggle('active', currentPerson === 'partner');
-            }
-            // Update archetype displays for both persons
+            // Update archetype displays
             updateArchetypeDisplays();
         }
 
@@ -1231,7 +1209,12 @@
         }
 
         function switchPerson(person) {
-            // Partner-Bedürfnisse können jetzt auch bearbeitet werden
+            // SSOT v2.0: Partner-Bedürfnisse sind NICHT mehr manuell editierbar
+            // Partner-Werte werden dynamisch berechnet aus: Archetyp-Basis + AGOD-Modifikatoren
+            if (person === 'partner') {
+                console.warn('[NeedsEditor] Partner-Bedürfnisse sind nicht editierbar - bleibe bei ICH');
+                return;
+            }
             // Save current state first
             saveCurrentState();
 

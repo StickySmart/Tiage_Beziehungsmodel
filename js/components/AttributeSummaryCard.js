@@ -1400,6 +1400,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse inkl. deren Nuancen
+     * SSOT v2.0: Partner-Bedürfnisse sind NICHT manuell editierbar
      * @param {boolean} lockState - true = sperren, false = entsperren
      */
     function lockSelectedNeeds(lockState) {
@@ -1407,6 +1408,12 @@ const AttributeSummaryCard = (function() {
         let currentPerson = 'ich';
         if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
             currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // SSOT v2.0: Partner-Bedürfnisse sind nicht editierbar
+        if (currentPerson === 'partner') {
+            console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
+            return;
         }
 
         // Hole Hauptfragen-Daten für Nuancen-Zugriff
@@ -4178,8 +4185,14 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Aktualisiert einen Bedürfniswert in der flachen Darstellung
+     * SSOT v2.0: Partner-Bedürfnisse sind NICHT manuell editierbar
      */
     function updateFlatNeedValue(needId, value) {
+        // SSOT v2.0: Partner-Bedürfnisse sind nicht manuell editierbar
+        if (currentFlatPerson === 'partner') {
+            console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
+            return;
+        }
         const needObj = findNeedById(needId);
         if (needObj?.locked) return;
 
@@ -4221,8 +4234,14 @@ const AttributeSummaryCard = (function() {
     /**
      * Toggle Lock für ein Bedürfnis in der flachen Darstellung
      * BULK-EDIT: Wenn das Bedürfnis markiert ist, werden alle markierten mit gesperrt/entsperrt
+     * SSOT v2.0: Partner-Bedürfnisse sind NICHT manuell editierbar
      */
     function toggleFlatNeedLock(needId, lockElement) {
+        // SSOT v2.0: Partner-Bedürfnisse sind nicht editierbar (keine Locks möglich)
+        if (currentFlatPerson === 'partner') {
+            console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
+            return;
+        }
         console.log('[DEBUG toggleFlatNeedLock] Called with:', needId);
         const needObj = findNeedById(needId);
         const newLockState = needObj ? !needObj.locked : true;
