@@ -1831,7 +1831,7 @@
                 updateComparisonView();
             }
 
-            console.log('[AGOD] Weight updated:', factor, '=', numValue, '| Total:', getAgodWeightSum());
+            // console.log('[AGOD] Weight updated:', factor, '=', numValue, '| Total:', getAgodWeightSum()); // DISABLED: verursacht Message-Overflow
         }
 
         /**
@@ -1961,7 +1961,7 @@
             const currentScore = percentage ? parseFloat(percentage.textContent) || 0 : 0;
             const displayScore = currentScore.toFixed(1);
 
-            console.log('[TIAGE] updateSyntheseScoreCycle - score:', currentScore, 'mainScoreValueEl:', !!mainScoreValueEl);
+            // console.log('[TIAGE] updateSyntheseScoreCycle - score:', currentScore, 'mainScoreValueEl:', !!mainScoreValueEl); // DISABLED: verursacht Message-Overflow
 
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
@@ -14234,10 +14234,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             if (!data) return;
 
-            console.log('[TIAGE] updateComparisonView called - dimensions:', JSON.stringify({
-                ich: personDimensions.ich,
-                partner: personDimensions.partner
-            }));
+            // console.log('[TIAGE] updateComparisonView called - dimensions:', JSON.stringify({
+            //     ich: personDimensions.ich,
+            //     partner: personDimensions.partner
+            // })); // DISABLED: verursacht Message-Overflow
 
             const ichArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
@@ -14273,12 +14273,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 needs: partnerNeeds
             };
 
-            console.log('[updateComparisonView] person1:', JSON.stringify(person1));
-            console.log('[updateComparisonView] person2:', JSON.stringify(person2));
-            console.log('[updateComparisonView] SSOT: ichNeeds:', !!ichNeeds, 'partnerNeeds:', !!partnerNeeds);
+            // console.log('[updateComparisonView] person1:', JSON.stringify(person1)); // DISABLED: verursacht Message-Overflow
+            // console.log('[updateComparisonView] person2:', JSON.stringify(person2)); // DISABLED: verursacht Message-Overflow
+            // console.log('[updateComparisonView] SSOT: ichNeeds:', !!ichNeeds, 'partnerNeeds:', !!partnerNeeds); // DISABLED: verursacht Message-Overflow
 
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
-            console.log('[updateComparisonView] pathosCheck:', JSON.stringify(pathosCheck));
+            // console.log('[updateComparisonView] pathosCheck:', JSON.stringify(pathosCheck)); // DISABLED: verursacht Message-Overflow
             const logosCheck = calculatePhilosophyCompatibility(currentArchetype, selectedPartner);
 
             // Update warnings
@@ -16708,10 +16708,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                 // IMPORTANT: Update comparison view AFTER loading dimensions
                 // This ensures the score is calculated with the correct data
-                console.log('[TIAGE DEBUG] Before updateComparisonView');
+                // console.log('[TIAGE DEBUG] Before updateComparisonView'); // DISABLED: verursacht Message-Overflow
                 updateComparisonView();
                 updateSyntheseScoreCycle();
-                console.log('[TIAGE DEBUG] After updateComparisonView');
+                // console.log('[TIAGE DEBUG] After updateComparisonView'); // DISABLED: verursacht Message-Overflow
 
                 // Note: openComments=1 parameter is now handled in handleAgeConfirm()
                 // to ensure age verification is completed before opening comments modal
@@ -16731,7 +16731,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // save() in ResonanzCard hat TiageState bereits aktualisiert.
                     // Hier NICHT separat schreiben, da 'values' nur Werte ohne Lock-Status enthält.
                     // Das würde die Lock-Struktur {value, locked} mit nur Werten überschreiben.
-                    console.log('[TIAGE] resonanzfaktoren-changed Event für', person, '- Quelle:', source);
+                    // console.log('[TIAGE] resonanzfaktoren-changed Event für', person, '- Quelle:', source); // DISABLED: verursacht Message-Overflow
 
                     // FIX: Aktualisiere Comparison View für ALLE Quellen (inkl. Slider)
                     // Debounce bei Slider-Änderungen um Performance zu optimieren
@@ -22168,9 +22168,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             }
 
             // Update Source Explanation with current factors
-            console.log('[DEBUG] Step 2: before updateSourceExplanation');
+            // console.log('[DEBUG] Step 2: before updateSourceExplanation'); // DISABLED: verursacht Message-Overflow
             updateSourceExplanation(archetypeKey, personData, dominanz, orientierung);
-            console.log('[DEBUG] Step 3: after updateSourceExplanation');
+            // console.log('[DEBUG] Step 3: after updateSourceExplanation'); // DISABLED: verursacht Message-Overflow
 
             // Load default values from profile
             if (inferences) {
