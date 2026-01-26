@@ -29,10 +29,10 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://script.google.com">
 
-    <!-- Preload kritische Ressourcen (werden definitiv gebraucht) -->
-    <link rel="preload" href="js/state.js" as="script">
-    <link rel="preload" href="js/app-main.js" as="script">
-    <link rel="preload" href="templates/variables.css" as="style">
+    <!-- Preload entfernt - verursachte Browser-Warnings weil Ressourcen
+         nicht sofort nach dem Load-Event verwendet wurden.
+         variables.css wird bereits als Stylesheet geladen (Zeile 14).
+         JS-Dateien werden später via script-Tags geladen. -->
 
     <!-- Critical Loading Indicator Styles (inline für sofortige Anzeige) -->
     <style id="critical-loading-styles">

@@ -350,8 +350,8 @@ const ResonanzProfileHeaderCard = (function() {
 
         const person = getCurrentPerson();
         const values = getCurrentValues();
-        console.log('%c[ResonanzProfileHeaderCard] update() für ' + person, 'background: purple; color: white;');
-        console.log('[ResonanzProfileHeaderCard] Werte:', JSON.stringify(values));
+        // console.log('%c[ResonanzProfileHeaderCard] update() für ' + person, 'background: purple; color: white;'); // DISABLED: verursacht Message-Overflow
+        // console.log('[ResonanzProfileHeaderCard] Werte:', JSON.stringify(values)); // DISABLED: verursacht Message-Overflow
 
         // Aktualisiere Werte und zeige Impact-Badge
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
