@@ -1520,6 +1520,38 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Speichert alle Änderungen sofort (manueller Speicher-Button)
+     * Gibt visuelles Feedback beim Speichern
+     */
+    function saveAllChanges() {
+        const btn = document.querySelector('.bulk-save-btn');
+
+        if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+            TiageState.saveToStorage();
+            console.log('[AttributeSummaryCard] Manuelles Speichern ausgeführt');
+
+            // Visuelles Feedback
+            if (btn) {
+                btn.classList.add('save-success');
+                const icon = btn.querySelector('.bulk-btn-icon');
+                const originalIcon = icon ? icon.textContent : '💾';
+                if (icon) icon.textContent = '✓';
+
+                setTimeout(() => {
+                    btn.classList.remove('save-success');
+                    if (icon) icon.textContent = originalIcon;
+                }, 1500);
+            }
+        } else {
+            console.warn('[AttributeSummaryCard] TiageState.saveToStorage nicht verfügbar');
+            if (btn) {
+                btn.classList.add('save-error');
+                setTimeout(() => btn.classList.remove('save-error'), 1500);
+            }
+        }
+    }
+
+    /**
      * Aktualisiert den Lock-Button für markierte Needs (Icon und Label)
      */
     function updateSelectedLockButtonState() {
@@ -2824,6 +2856,10 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-label">Ent-/Sperren</span>
                     </button>
                 </div>
+                <button class="bulk-save-btn" onclick="AttributeSummaryCard.saveAllChanges()" title="Alle Änderungen jetzt speichern">
+                    <span class="bulk-btn-icon">💾</span>
+                    <span class="bulk-btn-label">Speichern</span>
+                </button>
             </div>
         </div>`;
 
@@ -5352,6 +5388,7 @@ const AttributeSummaryCard = (function() {
         updateSelectedNeedsValue,
         lockSelectedNeeds,
         toggleLockSelectedNeeds,
+        saveAllChanges,
         updateSelectedLockButtonState,
         // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
         incrementSelectedNeeds,
