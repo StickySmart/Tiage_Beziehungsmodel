@@ -537,7 +537,7 @@
         <div class="age-verification-modal" onclick="event.stopPropagation()">
             <!-- Language Toggle in Age Check -->
             <div class="age-verification-lang" style="position: absolute; top: 15px; right: 15px;">
-                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations(); updateAgeVerificationTexts();" title="Switch Language / Sprache wechseln">
+                <button class="lang-btn" data-action="toggle-language-full" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="ageVerifyLangCode">DE</span>
                 </button>
@@ -842,19 +842,19 @@
                 <div class="merge-line" id="mergeLine"></div>
             </div>
             <div class="header-buttons">
-                <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
+                <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" data-action="toggle-all-dimensions" title="Fold/Unfold all fields">
                     <span class="fold-unfold-icon">▼</span>
                     <span class="fold-unfold-text">Fold</span>
                 </button>
-                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
+                <button class="lang-btn" data-action="toggle-language" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="currentLangCode">DE</span>
                 </button>
-                <button class="memory-btn" onclick="openMemoryModal()" title="Speichern / Laden">
+                <button class="memory-btn" data-action="open-memory-modal" title="Speichern / Laden">
                     <span class="memory-icon">💾</span>
                     <span class="memory-text">Save</span>
                 </button>
-                <button class="clear-storage-btn" onclick="clearAllStorage()" title="Alle gespeicherten Daten löschen und UI zurücksetzen">
+                <button class="clear-storage-btn" data-action="clear-all-storage" title="Alle gespeicherten Daten löschen und UI zurücksetzen">
                     <span class="clear-icon">🗑️</span>
                     <span class="clear-text">Leeren</span>
                 </button>
@@ -886,7 +886,7 @@
                     <div class="column-title">DU <span id="ich-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="ichSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -897,47 +897,47 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-info-btn" data-action="show-archetype-info" data-person="ich" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
+                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
@@ -1042,7 +1042,7 @@
                     <div class="column-title">PARTNER <span id="partner-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="partnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1053,40 +1053,40 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-info-btn" data-action="show-archetype-info" data-person="partner" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER -->
                 <div class="archetype-symbols-grid" id="partner-archetype-grid">
-                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1156,7 +1156,7 @@
                     <span>👤</span> DU <span id="mobile-ich-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobileIchSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1167,47 +1167,47 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
+                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
@@ -1375,7 +1375,7 @@
                     <span>👥</span> DEIN PARTNER <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobilePartnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1386,40 +1386,40 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
-                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
