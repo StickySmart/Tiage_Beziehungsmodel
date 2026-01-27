@@ -71,6 +71,51 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* Mobile Blocker - Work in Progress */
+        .mobile-wip-blocker {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: 999999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .mobile-wip-blocker h1 {
+            color: #A855F7;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .mobile-wip-blocker p {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+        .mobile-wip-blocker .emoji {
+            font-size: 4rem;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .mobile-wip-blocker {
+                display: flex !important;
+            }
+            .mobile-multipage,
+            .main-container,
+            .app-loading-overlay {
+                display: none !important;
+            }
+        }
     </style>
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
@@ -173,6 +218,13 @@
     <script defer src="profiles/profile-store.js"></script>
 </head>
 <body>
+    <!-- Mobile Work-in-Progress Blocker -->
+    <div class="mobile-wip-blocker">
+        <div class="emoji">🚧</div>
+        <h1>In Arbeit</h1>
+        <p>BITTE NUTZEN SIE<br>EINEN COMPUTER</p>
+    </div>
+
     <!-- Loading Overlay - sofort sichtbar während JS lädt -->
     <div id="appLoadingOverlay" class="app-loading-overlay">
         <div class="app-loading-spinner"></div>
