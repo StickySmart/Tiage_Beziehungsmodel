@@ -131,6 +131,7 @@
     <script defer src="js/core/actions/definitionModal.js"></script>
     <script defer src="js/core/actions/factorModal.js"></script>
     <script defer src="js/core/actions/syntheseModal.js"></script>
+    <script defer src="js/core/actions/explanationModals.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -291,15 +292,15 @@
         };
     </script>
 
-    <!-- GFK Explanation Modal -->
-    <div class="gfk-modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)">
-        <div class="gfk-modal" onclick="event.stopPropagation()">
+    <!-- GFK Explanation Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="gfk-modal-overlay" id="gfkExplanationModal" data-action="close-gfk-modal">
+        <div class="gfk-modal" data-stop-propagation>
             <div class="gfk-modal-header">
                 <div class="gfk-modal-title">
                     <span>GFK-Kompetenz</span>
                     <span id="gfkModalLevelBadge" class="gfk-level-indicator"></span>
                 </div>
-                <button class="gfk-modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+                <button class="gfk-modal-close" data-action="close-gfk-modal">&times;</button>
             </div>
             <div class="gfk-modal-content">
                 <div class="gfk-explanation-text" id="gfkModalExplanation">
@@ -315,12 +316,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Vergleich Modal -->
-    <div class="modal-overlay" id="needsCompareModal" onclick="closeNeedsCompareModal(event)" style="z-index: 2200;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+    <!-- Bedürfnis-Vergleich Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needsCompareModal" data-action="close-needs-compare-modal" style="z-index: 2200;">
+        <div class="modal" data-stop-propagation style="max-width: 500px;">
             <div class="modal-header">
                 <span class="modal-title" id="needsCompareModalTitle">Bedürfnis-Vergleich</span>
-                <button class="modal-close" onclick="closeNeedsCompareModal()">&times;</button>
+                <button class="modal-close" data-action="close-needs-compare-modal">&times;</button>
             </div>
             <div class="modal-body" id="needsCompareModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -341,12 +342,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Score Erklärung Modal -->
-    <div class="modal-overlay" id="needsScoreExplanationModal" onclick="closeNeedsScoreExplanation(event)" style="z-index: 2600;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
+    <!-- Bedürfnis-Score Erklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needsScoreExplanationModal" data-action="close-needs-score-explanation" style="z-index: 2600;">
+        <div class="modal" data-stop-propagation style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(34,197,94,0.3);">
                 <span class="modal-title" style="color: #22c55e;">Bedürfnis-Übereinstimmung - Berechnung</span>
-                <button class="modal-close" onclick="closeNeedsScoreExplanation()">&times;</button>
+                <button class="modal-close" data-action="close-needs-score-explanation">&times;</button>
             </div>
             <div class="modal-body" id="needsScoreExplanationBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -354,12 +355,12 @@
         </div>
     </div>
 
-    <!-- GFK Begriffserklärung Modal -->
-    <div class="modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- GFK Begriffserklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="gfkExplanationModal" data-action="close-gfk-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 400px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                 <span class="modal-title" style="color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</span>
-                <button class="modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+                <button class="modal-close" data-action="close-gfk-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
@@ -372,12 +373,12 @@
         </div>
     </div>
 
-    <!-- Paarung Begriffserklärung Modal -->
-    <div class="modal-overlay" id="paarungExplanationModal" onclick="closePaarungExplanationModal(event)" style="z-index: 2500;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- Paarung Begriffserklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="paarungExplanationModal" data-action="close-paarung-modal" style="z-index: 2500;">
+        <div class="modal" data-stop-propagation style="max-width: 400px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(232,67,147,0.3);">
                 <span class="modal-title" style="color: #E84393;">Paarung</span>
-                <button class="modal-close" onclick="closePaarungExplanationModal()">&times;</button>
+                <button class="modal-close" data-action="close-paarung-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
