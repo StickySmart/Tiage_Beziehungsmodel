@@ -123,6 +123,13 @@
 
     <!-- TIAGE i18n - Lazy Language Loading (spart ~70KB) -->
     <script src="js/locales/loader.js"></script>
+
+    <!-- TIAGE Core Modules (Phase 2 Refactoring) -->
+    <script src="js/core/eventBus.js"></script>
+    <script src="js/core/actionHandler.js"></script>
+    <script defer src="js/core/actions/commentModal.js"></script>
+    <script defer src="js/core/actions/definitionModal.js"></script>
+    <script defer src="js/core/actions/factorModal.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -320,12 +327,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Definition Modal -->
-    <div class="modal-overlay" id="needDefinitionModal" onclick="closeNeedDefinitionModal(event)" style="z-index: 2500;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Bedürfnis-Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needDefinitionModal" data-action="close-need-definition-modal" style="z-index: 2500;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header">
                 <span class="modal-title" id="needDefinitionModalTitle">Definition</span>
-                <button class="modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+                <button class="modal-close" data-action="close-need-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="needDefinitionModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -382,12 +389,12 @@
         </div>
     </div>
 
-    <!-- Attribut-Definition Modal (für Profile-Review Attribute) -->
-    <div class="modal-overlay" id="attributeDefinitionModal" onclick="closeAttributeDefinitionModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Attribut-Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="attributeDefinitionModal" data-action="close-attribute-definition-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header">
                 <span class="modal-title" id="attributeDefinitionModalTitle">Definition</span>
-                <button class="modal-close" onclick="closeAttributeDefinitionModal()">&times;</button>
+                <button class="modal-close" data-action="close-attribute-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="attributeDefinitionModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -408,12 +415,12 @@
         </div>
     </div>
 
-    <!-- Comment Modal -->
-    <div class="comment-modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
-        <div class="comment-modal" onclick="event.stopPropagation()">
+    <!-- Comment Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="comment-modal-overlay" id="commentModal" data-action="close-comment-modal">
+        <div class="comment-modal" data-stop-propagation>
             <div class="comment-modal-header">
                 <h3>Kommentar senden</h3>
-                <button class="comment-modal-close" onclick="closeCommentModal()">&times;</button>
+                <button class="comment-modal-close" data-action="close-comment-modal">&times;</button>
             </div>
             <div class="comment-modal-body">
                 <div class="comment-form-group">
@@ -425,7 +432,7 @@
                     <textarea id="commentText" placeholder="Schreibe hier deine Gedanken..." maxlength="2000" required></textarea>
                     <small class="input-hint">Max. 2000 Zeichen</small>
                 </div>
-                <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
+                <button class="comment-submit-btn" id="commentSubmitBtn" data-action="submit-comment">Absenden</button>
             </div>
         </div>
     </div>
@@ -492,7 +499,7 @@
                 <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
             </div>
             <div class="comments-actions-bar">
-                <button class="new-comment-btn" onclick="closeCommentsListModal(); openCommentModal();">
+                <button class="new-comment-btn" data-action="open-comment-modal" data-close-list="true">
                     ✏️ Neuen Kommentar schreiben
                 </button>
             </div>
@@ -698,12 +705,12 @@
         </div>
     </div>
 
-    <!-- Factor Detail Modal (Feature 1) -->
-    <div class="modal-overlay" id="factorModal" onclick="closeFactorModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
+    <!-- Factor Detail Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="factorModal" data-action="close-factor-modal">
+        <div class="modal" data-stop-propagation>
             <div class="modal-header">
                 <span class="modal-title" id="factorModalTitle">Faktor-Details</span>
-                <button class="modal-close" onclick="closeFactorModal()">&times;</button>
+                <button class="modal-close" data-action="close-factor-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <p class="modal-subtitle" id="factorModalSubtitle"></p>
@@ -711,15 +718,15 @@
                 <div id="factorModalArchetypeNav" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">DU:</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                         <span id="factorModalIchCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Single</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', 1)" title="Nächster Archetyp">&#8250;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#8250;</button>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">Partner:</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                         <span id="factorModalPartnerCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Duo</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', 1)" title="Nächster Archetyp">&#8250;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#8250;</button>
                     </div>
                 </div>
                 <div id="factorModalComboCode" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; font-family: monospace;"></div>
@@ -2200,14 +2207,14 @@
 
     <!-- feedbackModal entfernt - commentModal wird verwendet -->
 
-    <!-- Definition Modal -->
-    <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
-        <div class="modal definition-modal" onclick="event.stopPropagation()">
+    <!-- Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="definitionModal" data-action="close-definition-modal">
+        <div class="modal definition-modal" data-stop-propagation>
             <div class="modal-header">
-                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(-1)" title="Vorheriger Archetyp">&#8249;</button>
+                <button class="archetype-nav-btn" data-action="navigate-definition-modal" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="definitionModalTitle">Typ-Definition</span>
-                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(1)" title="Nächster Archetyp">&#8250;</button>
-                <button class="modal-close" onclick="closeDefinitionModal()">&times;</button>
+                <button class="archetype-nav-btn" data-action="navigate-definition-modal" data-direction="1" title="Nächster Archetyp">&#8250;</button>
+                <button class="modal-close" data-action="close-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="definitionModalBody"></div>
         </div>
