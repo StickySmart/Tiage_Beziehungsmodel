@@ -133,6 +133,7 @@
     <script defer src="js/core/actions/syntheseModal.js"></script>
     <script defer src="js/core/actions/explanationModals.js"></script>
     <script defer src="js/core/actions/listModals.js"></script>
+    <script defer src="js/core/actions/dimensionInfoModals.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -2223,21 +2224,21 @@
         </div>
     </div>
 
-    <!-- Dimension Info Tooltip Modal -->
-    <div class="dimension-tooltip-overlay" id="dimensionTooltipOverlay" onclick="closeDimensionTooltip()">
-        <div class="dimension-tooltip-content" onclick="event.stopPropagation()">
+    <!-- Dimension Info Tooltip Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="dimensionTooltipOverlay" data-action="close-dimension-tooltip">
+        <div class="dimension-tooltip-content" data-stop-propagation>
             <div class="dimension-tooltip-title" id="dimensionTooltipTitle">Info</div>
             <div class="dimension-tooltip-text" id="dimensionTooltipText">...</div>
-            <button class="dimension-tooltip-close" onclick="closeDimensionTooltip()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-dimension-tooltip">Verstanden</button>
         </div>
     </div>
 
-    <!-- Geschlecht Info Modal (scrollable) - NEUES 2-DIMENSIONALES SYSTEM -->
-    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" onclick="closeGeschlechtInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Geschlecht Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" data-action="close-geschlecht-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Geschlecht</div>
-                <button class="geschlecht-info-close-btn" onclick="closeGeschlechtInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-geschlecht-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item" style="background: rgba(69, 123, 157, 0.1); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
@@ -2316,16 +2317,16 @@
                     </div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-geschlecht-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Dominanz Info Modal (scrollable) -->
-    <div class="dimension-tooltip-overlay" id="dominanzInfoModal" onclick="closeDominanzInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Dominanz Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="dominanzInfoModal" data-action="close-dominanz-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Dominanz-Präferenzen</div>
-                <button class="geschlecht-info-close-btn" onclick="closeDominanzInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-dominanz-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item">
@@ -2345,16 +2346,16 @@
                     <div class="geschlecht-info-desc"><strong>Der Zentrierte</strong> – Du bevorzugst eine gleichberechtigte Dynamik ohne feste Rollen. Balanciert, harmonisch, stabil. Ruhige, konstruktive Kommunikation.</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeDominanzInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-dominanz-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Orientierung Info Modal (scrollable) -->
-    <div class="dimension-tooltip-overlay" id="orientierungInfoModal" onclick="closeOrientierungInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Orientierung Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="orientierungInfoModal" data-action="close-orientierung-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Sexuelle Orientierungen</div>
-                <button class="geschlecht-info-close-btn" onclick="closeOrientierungInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-orientierung-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item">
@@ -2370,16 +2371,16 @@
                     <div class="geschlecht-info-desc"><strong>Anziehung zu mehreren oder allen Geschlechtern</strong> – Du fühlst dich romantisch und/oder sexuell zu Menschen verschiedener Geschlechter hingezogen, unabhängig von deren Geschlechtsidentität.</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeOrientierungInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-orientierung-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Body & Soul Info Modal (kurz und bündig) -->
-    <div class="dimension-tooltip-overlay" id="bodySoulModal" onclick="closeBodySoulModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- Body & Soul Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="bodySoulModal" data-action="close-body-soul-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation style="max-width: 400px;">
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Body & Soul</div>
-                <button class="geschlecht-info-close-btn" onclick="closeBodySoulModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-body-soul-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container" style="padding: 16px;">
                 <div class="geschlecht-info-item" style="margin-bottom: 12px;">
@@ -2391,7 +2392,7 @@
                     <div class="geschlecht-info-desc">Deine seelische/psychologische Dimension</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeBodySoulModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-body-soul-modal">Verstanden</button>
         </div>
     </div>
 
