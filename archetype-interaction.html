@@ -132,6 +132,7 @@
     <script defer src="js/core/actions/factorModal.js"></script>
     <script defer src="js/core/actions/syntheseModal.js"></script>
     <script defer src="js/core/actions/explanationModals.js"></script>
+    <script defer src="js/core/actions/listModals.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -439,12 +440,12 @@
         </div>
     </div>
 
-    <!-- Profile Review Info Modal -->
-    <div class="modal-overlay" id="profileReviewInfoModal" onclick="closeProfileReviewInfoModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Profile Review Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="profileReviewInfoModal" data-action="close-profile-review-info-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header" style="background: var(--primary); color: white;">
                 <span class="modal-title" id="profileReviewInfoTitle">ℹ️ Information</span>
-                <button class="modal-close" onclick="closeProfileReviewInfoModal()" style="color: white;">&times;</button>
+                <button class="modal-close" data-action="close-profile-review-info-modal" style="color: white;">&times;</button>
             </div>
             <div class="modal-body" style="padding: 24px; max-height: 60vh; overflow-y: auto;">
 
@@ -486,19 +487,19 @@
 
             </div>
             <div class="modal-footer" style="padding: 16px 20px; border-top: 1px solid var(--border);">
-                <button class="btn-primary" onclick="closeProfileReviewInfoModal()" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;">
+                <button class="btn-primary" data-action="close-profile-review-info-modal" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;">
                     Verstanden
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Comments List Modal -->
-    <div class="comments-list-overlay" id="commentsListModal" onclick="closeCommentsListModal(event)">
-        <div class="comments-list-modal" onclick="event.stopPropagation()">
+    <!-- Comments List Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="comments-list-overlay" id="commentsListModal" data-action="close-comments-list-modal">
+        <div class="comments-list-modal" data-stop-propagation>
             <div class="comments-list-header">
                 <h2>📋 Alle Kommentare</h2>
-                <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
+                <button class="help-modal-close" data-action="close-comments-list-modal">&times;</button>
             </div>
             <div class="comments-actions-bar">
                 <button class="new-comment-btn" data-action="open-comment-modal" data-close-list="true">
@@ -513,7 +514,7 @@
                            class="comments-search-input"
                            placeholder="Suche... (* als Platzhalter)"
                            oninput="filterComments(this.value)">
-                    <button class="comments-search-clear" id="commentsSearchClear" onclick="clearCommentsSearch()">&times;</button>
+                    <button class="comments-search-clear" id="commentsSearchClear" data-action="clear-comments-search">&times;</button>
                 </div>
                 <div class="comments-search-hint">Beispiel: *fehler* findet alle Kommentare mit "fehler" im Text</div>
             </div>
