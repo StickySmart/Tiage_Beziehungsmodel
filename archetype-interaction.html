@@ -123,6 +123,24 @@
 
     <!-- TIAGE i18n - Lazy Language Loading (spart ~70KB) -->
     <script src="js/locales/loader.js"></script>
+
+    <!-- TIAGE Core Modules (Phase 2 Refactoring) -->
+    <script src="js/core/eventBus.js"></script>
+    <script src="js/core/actionHandler.js"></script>
+    <script defer src="js/core/actions/commentModal.js"></script>
+    <script defer src="js/core/actions/definitionModal.js"></script>
+    <script defer src="js/core/actions/factorModal.js"></script>
+    <script defer src="js/core/actions/syntheseModal.js"></script>
+    <script defer src="js/core/actions/explanationModals.js"></script>
+    <script defer src="js/core/actions/listModals.js"></script>
+    <script defer src="js/core/actions/dimensionInfoModals.js"></script>
+    <script defer src="js/core/actions/archetypeGrid.js"></script>
+    <script defer src="js/core/actions/slotMachine.js"></script>
+    <script defer src="js/core/actions/headerControls.js"></script>
+    <script defer src="js/core/actions/statusToggles.js"></script>
+    <script defer src="js/core/actions/navigationActions.js"></script>
+    <script defer src="js/core/actions/modalActions.js"></script>
+    <script defer src="js/core/actions/secondaryActions.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -283,15 +301,15 @@
         };
     </script>
 
-    <!-- GFK Explanation Modal -->
-    <div class="gfk-modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)">
-        <div class="gfk-modal" onclick="event.stopPropagation()">
+    <!-- GFK Explanation Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="gfk-modal-overlay" id="gfkExplanationModal" data-action="close-gfk-modal">
+        <div class="gfk-modal" data-stop-propagation>
             <div class="gfk-modal-header">
                 <div class="gfk-modal-title">
                     <span>GFK-Kompetenz</span>
                     <span id="gfkModalLevelBadge" class="gfk-level-indicator"></span>
                 </div>
-                <button class="gfk-modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+                <button class="gfk-modal-close" data-action="close-gfk-modal">&times;</button>
             </div>
             <div class="gfk-modal-content">
                 <div class="gfk-explanation-text" id="gfkModalExplanation">
@@ -307,12 +325,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Vergleich Modal -->
-    <div class="modal-overlay" id="needsCompareModal" onclick="closeNeedsCompareModal(event)" style="z-index: 2200;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+    <!-- Bedürfnis-Vergleich Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needsCompareModal" data-action="close-needs-compare-modal" style="z-index: 2200;">
+        <div class="modal" data-stop-propagation style="max-width: 500px;">
             <div class="modal-header">
                 <span class="modal-title" id="needsCompareModalTitle">Bedürfnis-Vergleich</span>
-                <button class="modal-close" onclick="closeNeedsCompareModal()">&times;</button>
+                <button class="modal-close" data-action="close-needs-compare-modal">&times;</button>
             </div>
             <div class="modal-body" id="needsCompareModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -320,12 +338,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Definition Modal -->
-    <div class="modal-overlay" id="needDefinitionModal" onclick="closeNeedDefinitionModal(event)" style="z-index: 2500;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Bedürfnis-Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needDefinitionModal" data-action="close-need-definition-modal" style="z-index: 2500;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header">
                 <span class="modal-title" id="needDefinitionModalTitle">Definition</span>
-                <button class="modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+                <button class="modal-close" data-action="close-need-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="needDefinitionModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -333,12 +351,12 @@
         </div>
     </div>
 
-    <!-- Bedürfnis-Score Erklärung Modal -->
-    <div class="modal-overlay" id="needsScoreExplanationModal" onclick="closeNeedsScoreExplanation(event)" style="z-index: 2600;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
+    <!-- Bedürfnis-Score Erklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="needsScoreExplanationModal" data-action="close-needs-score-explanation" style="z-index: 2600;">
+        <div class="modal" data-stop-propagation style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(34,197,94,0.3);">
                 <span class="modal-title" style="color: #22c55e;">Bedürfnis-Übereinstimmung - Berechnung</span>
-                <button class="modal-close" onclick="closeNeedsScoreExplanation()">&times;</button>
+                <button class="modal-close" data-action="close-needs-score-explanation">&times;</button>
             </div>
             <div class="modal-body" id="needsScoreExplanationBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -346,12 +364,12 @@
         </div>
     </div>
 
-    <!-- GFK Begriffserklärung Modal -->
-    <div class="modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- GFK Begriffserklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="gfkExplanationModal" data-action="close-gfk-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 400px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                 <span class="modal-title" style="color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</span>
-                <button class="modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+                <button class="modal-close" data-action="close-gfk-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
@@ -364,12 +382,12 @@
         </div>
     </div>
 
-    <!-- Paarung Begriffserklärung Modal -->
-    <div class="modal-overlay" id="paarungExplanationModal" onclick="closePaarungExplanationModal(event)" style="z-index: 2500;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- Paarung Begriffserklärung Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="paarungExplanationModal" data-action="close-paarung-modal" style="z-index: 2500;">
+        <div class="modal" data-stop-propagation style="max-width: 400px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(232,67,147,0.3);">
                 <span class="modal-title" style="color: #E84393;">Paarung</span>
-                <button class="modal-close" onclick="closePaarungExplanationModal()">&times;</button>
+                <button class="modal-close" data-action="close-paarung-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
@@ -382,12 +400,12 @@
         </div>
     </div>
 
-    <!-- Attribut-Definition Modal (für Profile-Review Attribute) -->
-    <div class="modal-overlay" id="attributeDefinitionModal" onclick="closeAttributeDefinitionModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Attribut-Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="attributeDefinitionModal" data-action="close-attribute-definition-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header">
                 <span class="modal-title" id="attributeDefinitionModalTitle">Definition</span>
-                <button class="modal-close" onclick="closeAttributeDefinitionModal()">&times;</button>
+                <button class="modal-close" data-action="close-attribute-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="attributeDefinitionModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -395,12 +413,12 @@
         </div>
     </div>
 
-    <!-- Resonanzfaktor-Hilfe Modal -->
-    <div class="modal-overlay" id="resonanzHelpModal" onclick="closeResonanzHelpModal(event)" style="z-index: 2450;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+    <!-- Resonanzfaktor-Hilfe Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="resonanzHelpModal" data-action="close-resonanz-help-modal" style="z-index: 2450;">
+        <div class="modal" data-stop-propagation style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                 <span class="modal-title" style="color: #8B5CF6;" id="resonanzHelpModalTitle">Resonanzfaktoren - Berechnung</span>
-                <button class="modal-close" onclick="closeResonanzHelpModal()">&times;</button>
+                <button class="modal-close" data-action="close-resonanz-help-modal">&times;</button>
             </div>
             <div class="modal-body" id="resonanzHelpModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -408,12 +426,12 @@
         </div>
     </div>
 
-    <!-- Comment Modal -->
-    <div class="comment-modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
-        <div class="comment-modal" onclick="event.stopPropagation()">
+    <!-- Comment Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="comment-modal-overlay" id="commentModal" data-action="close-comment-modal">
+        <div class="comment-modal" data-stop-propagation>
             <div class="comment-modal-header">
                 <h3>Kommentar senden</h3>
-                <button class="comment-modal-close" onclick="closeCommentModal()">&times;</button>
+                <button class="comment-modal-close" data-action="close-comment-modal">&times;</button>
             </div>
             <div class="comment-modal-body">
                 <div class="comment-form-group">
@@ -425,17 +443,17 @@
                     <textarea id="commentText" placeholder="Schreibe hier deine Gedanken..." maxlength="2000" required></textarea>
                     <small class="input-hint">Max. 2000 Zeichen</small>
                 </div>
-                <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
+                <button class="comment-submit-btn" id="commentSubmitBtn" data-action="submit-comment">Absenden</button>
             </div>
         </div>
     </div>
 
-    <!-- Profile Review Info Modal -->
-    <div class="modal-overlay" id="profileReviewInfoModal" onclick="closeProfileReviewInfoModal(event)" style="z-index: 2400;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+    <!-- Profile Review Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="profileReviewInfoModal" data-action="close-profile-review-info-modal" style="z-index: 2400;">
+        <div class="modal" data-stop-propagation style="max-width: 420px;">
             <div class="modal-header" style="background: var(--primary); color: white;">
                 <span class="modal-title" id="profileReviewInfoTitle">ℹ️ Information</span>
-                <button class="modal-close" onclick="closeProfileReviewInfoModal()" style="color: white;">&times;</button>
+                <button class="modal-close" data-action="close-profile-review-info-modal" style="color: white;">&times;</button>
             </div>
             <div class="modal-body" style="padding: 24px; max-height: 60vh; overflow-y: auto;">
 
@@ -477,22 +495,22 @@
 
             </div>
             <div class="modal-footer" style="padding: 16px 20px; border-top: 1px solid var(--border);">
-                <button class="btn-primary" onclick="closeProfileReviewInfoModal()" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;">
+                <button class="btn-primary" data-action="close-profile-review-info-modal" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;">
                     Verstanden
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Comments List Modal -->
-    <div class="comments-list-overlay" id="commentsListModal" onclick="closeCommentsListModal(event)">
-        <div class="comments-list-modal" onclick="event.stopPropagation()">
+    <!-- Comments List Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="comments-list-overlay" id="commentsListModal" data-action="close-comments-list-modal">
+        <div class="comments-list-modal" data-stop-propagation>
             <div class="comments-list-header">
                 <h2>📋 Alle Kommentare</h2>
-                <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
+                <button class="help-modal-close" data-action="close-comments-list-modal">&times;</button>
             </div>
             <div class="comments-actions-bar">
-                <button class="new-comment-btn" onclick="closeCommentsListModal(); openCommentModal();">
+                <button class="new-comment-btn" data-action="open-comment-modal" data-close-list="true">
                     ✏️ Neuen Kommentar schreiben
                 </button>
             </div>
@@ -504,7 +522,7 @@
                            class="comments-search-input"
                            placeholder="Suche... (* als Platzhalter)"
                            oninput="filterComments(this.value)">
-                    <button class="comments-search-clear" id="commentsSearchClear" onclick="clearCommentsSearch()">&times;</button>
+                    <button class="comments-search-clear" id="commentsSearchClear" data-action="clear-comments-search">&times;</button>
                 </div>
                 <div class="comments-search-hint">Beispiel: *fehler* findet alle Kommentare mit "fehler" im Text</div>
             </div>
@@ -520,10 +538,10 @@
 
     <!-- Age Verification Modal -->
     <div class="age-verification-overlay" id="ageVerificationModal">
-        <div class="age-verification-modal" onclick="event.stopPropagation()">
+        <div class="age-verification-modal" data-stop-propagation>
             <!-- Language Toggle in Age Check -->
             <div class="age-verification-lang" style="position: absolute; top: 15px; right: 15px;">
-                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations(); updateAgeVerificationTexts();" title="Switch Language / Sprache wechseln">
+                <button class="lang-btn" data-action="toggle-language-full" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="ageVerifyLangCode">DE</span>
                 </button>
@@ -546,10 +564,10 @@
 
             <!-- Buttons -->
             <div class="age-verification-buttons">
-                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;" data-i18n="ageVerification.confirm">
+                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" data-action="confirm-age" data-confirm="true" data-i18n="ageVerification.confirm">
                     Ja, ich bin 18+
                 </button>
-                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;" data-i18n="ageVerification.deny">
+                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" data-action="confirm-age" data-confirm="false" data-i18n="ageVerification.deny">
                     Nein, ich bin unter 18
                 </button>
             </div>
@@ -567,12 +585,12 @@
         <div class="bindung-tooltip-text" id="bindungTooltipText"></div>
     </div>
 
-    <!-- Slot Machine Modal - Finde passenden Partner -->
-    <div class="modal-overlay" id="slotMachineModal" onclick="closeSlotMachineModal(event)" style="z-index: 2700;">
-        <div class="modal slot-machine-modal" onclick="event.stopPropagation()" style="max-width: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+    <!-- Slot Machine Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="slotMachineModal" data-action="close-slot-machine-modal" style="z-index: 2700;">
+        <div class="modal slot-machine-modal" data-stop-propagation style="max-width: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
             <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
                 <span class="modal-title">Wie tickst Du?</span>
-                <button class="modal-close" onclick="closeSlotMachineModal()">&times;</button>
+                <button class="modal-close" data-action="close-slot-machine-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <!-- Phase 1: Bindungsmuster Auswahl -->
@@ -586,22 +604,22 @@
                         <div class="bindung-group">
                             <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du meistens (70%)</label>
                             <div class="bindung-options" id="bindungPrimaryOptions">
-                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('primary', 'sicher')" title="Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen">
+                                <button class="bindung-btn" data-value="sicher" data-action="select-bindung" data-slot="primary" data-value="sicher" title="Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen">
                                     <span class="bindung-icon">🛡️</span>
                                     <span class="bindung-name">Sicher</span>
                                     <span class="bindung-desc">Nähe & Autonomie ok</span>
                                 </button>
-                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('primary', 'aengstlich')" title="Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden">
+                                <button class="bindung-btn" data-value="aengstlich" data-action="select-bindung" data-slot="primary" data-value="aengstlich" title="Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden">
                                     <span class="bindung-icon">💔</span>
                                     <span class="bindung-name">Ängstlich</span>
                                     <span class="bindung-desc">Angst vor Verlust</span>
                                 </button>
-                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('primary', 'vermeidend')" title="Du hältst meistens emotionale Distanz und brauchst viel Freiraum">
+                                <button class="bindung-btn" data-value="vermeidend" data-action="select-bindung" data-slot="primary" data-value="vermeidend" title="Du hältst meistens emotionale Distanz und brauchst viel Freiraum">
                                     <span class="bindung-icon">🚪</span>
                                     <span class="bindung-name">Vermeidend</span>
                                     <span class="bindung-desc">Hält Distanz</span>
                                 </button>
-                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('primary', 'desorganisiert')" title="Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen">
+                                <button class="bindung-btn" data-value="desorganisiert" data-action="select-bindung" data-slot="primary" data-value="desorganisiert" title="Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen">
                                     <span class="bindung-icon">🌀</span>
                                     <span class="bindung-name">Desorganisiert</span>
                                     <span class="bindung-desc">Will Nähe & flüchtet</span>
@@ -612,19 +630,19 @@
                         <div class="bindung-group" style="margin-top: 20px;">
                             <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du im Stress (30%)</label>
                             <div class="bindung-options" id="bindungSecondaryOptions">
-                                <button class="bindung-btn" data-value="sicher" onclick="selectBindungsmuster('secondary', 'sicher')" title="Im Stress bleibst du gelassen und kannst dich gut regulieren">
+                                <button class="bindung-btn" data-value="sicher" data-action="select-bindung" data-slot="secondary" data-value="sicher" title="Im Stress bleibst du gelassen und kannst dich gut regulieren">
                                     <span class="bindung-icon">🛡️</span>
                                     <span class="bindung-name">Sicher</span>
                                 </button>
-                                <button class="bindung-btn" data-value="aengstlich" onclick="selectBindungsmuster('secondary', 'aengstlich')" title="Im Stress wirst du klammernder und brauchst mehr Bestätigung">
+                                <button class="bindung-btn" data-value="aengstlich" data-action="select-bindung" data-slot="secondary" data-value="aengstlich" title="Im Stress wirst du klammernder und brauchst mehr Bestätigung">
                                     <span class="bindung-icon">💔</span>
                                     <span class="bindung-name">Ängstlich</span>
                                 </button>
-                                <button class="bindung-btn" data-value="vermeidend" onclick="selectBindungsmuster('secondary', 'vermeidend')" title="Im Stress ziehst du dich zurück und machst dicht">
+                                <button class="bindung-btn" data-value="vermeidend" data-action="select-bindung" data-slot="secondary" data-value="vermeidend" title="Im Stress ziehst du dich zurück und machst dicht">
                                     <span class="bindung-icon">🚪</span>
                                     <span class="bindung-name">Vermeidend</span>
                                 </button>
-                                <button class="bindung-btn" data-value="desorganisiert" onclick="selectBindungsmuster('secondary', 'desorganisiert')" title="Im Stress reagierst du unberechenbar - mal nah, mal distanziert">
+                                <button class="bindung-btn" data-value="desorganisiert" data-action="select-bindung" data-slot="secondary" data-value="desorganisiert" title="Im Stress reagierst du unberechenbar - mal nah, mal distanziert">
                                     <span class="bindung-icon">🌀</span>
                                     <span class="bindung-name">Desorganisiert</span>
                                 </button>
@@ -632,7 +650,7 @@
                         </div>
                     </div>
 
-                    <button class="slot-start-btn" id="slotStartBtn" onclick="startSlotMachine()" disabled style="margin-top: 25px;">
+                    <button class="slot-start-btn" id="slotStartBtn" data-action="start-slot-machine" disabled style="margin-top: 25px;">
                         🎰 Suche starten
                     </button>
                 </div>
@@ -685,25 +703,25 @@
                     </div>
 
                     <div class="slot-expand-toggle" style="text-align: center; margin: 10px 0;">
-                        <button id="slotExpandBtn" class="slot-expand-btn" onclick="toggleSlotExpand()" style="background: rgba(0,210,106,0.2); border: 1px solid #00d26a; color: #00d26a; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+                        <button id="slotExpandBtn" class="slot-expand-btn" data-action="toggle-slot-expand" style="background: rgba(0,210,106,0.2); border: 1px solid #00d26a; color: #00d26a; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
                             ▼ Mehr anzeigen (5-10)
                         </button>
                     </div>
 
                     <div class="slot-result-actions" style="margin-top: 15px;">
-                        <button class="slot-retry-btn" onclick="goToIchAttributes()">⚙️ ICH-Attribute anpassen</button>
+                        <button class="slot-retry-btn" data-action="go-to-ich-attributes">⚙️ ICH-Attribute anpassen</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Factor Detail Modal (Feature 1) -->
-    <div class="modal-overlay" id="factorModal" onclick="closeFactorModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
+    <!-- Factor Detail Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="factorModal" data-action="close-factor-modal">
+        <div class="modal" data-stop-propagation>
             <div class="modal-header">
                 <span class="modal-title" id="factorModalTitle">Faktor-Details</span>
-                <button class="modal-close" onclick="closeFactorModal()">&times;</button>
+                <button class="modal-close" data-action="close-factor-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <p class="modal-subtitle" id="factorModalSubtitle"></p>
@@ -711,15 +729,15 @@
                 <div id="factorModalArchetypeNav" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">DU:</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                         <span id="factorModalIchCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Single</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', 1)" title="Nächster Archetyp">&#8250;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#8250;</button>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">Partner:</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                         <span id="factorModalPartnerCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Duo</span>
-                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', 1)" title="Nächster Archetyp">&#8250;</button>
+                        <button class="archetype-nav-btn" data-action="navigate-factor-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#8250;</button>
                     </div>
                 </div>
                 <div id="factorModalComboCode" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; font-family: monospace;"></div>
@@ -734,24 +752,24 @@
         </div>
     </div>
 
-    <!-- Ti-Age Synthese Modal (unified Score/Pathos/Logos) -->
-    <div class="modal-overlay" id="tiageSyntheseModal" onclick="closeTiageSyntheseModal(event)">
+    <!-- Ti-Age Synthese Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="tiageSyntheseModal" data-action="close-synthese-modal">
         <!-- Sticky side toggle buttons for Score, Pathos and Logos - positioned in overlay, right side of modal -->
-        <div id="tiageSyntheseStickyToggle" onclick="event.stopPropagation()" style="position: fixed; left: min(calc(50% + 360px), calc(100% - 60px)); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 1002;">
-            <button id="tiageSyntheseToggleScore" onclick="showTiageSyntheseContent('score')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Score - Pro & Contra">📊</button>
-            <button id="tiageSyntheseToggleOshoZen" onclick="showTiageSyntheseContent('oshozen')" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
-            <button id="tiageSyntheseToggleNeeds" onclick="showTiageSyntheseContent('needs')" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Bedürfnis-Match mit Differenz">💚</button>
-            <button id="tiageSyntheseToggleResonanz" onclick="openResonanzfaktorenModal()" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Resonanzfaktoren × Perspektiven">🎛️</button>
+        <div id="tiageSyntheseStickyToggle" data-stop-propagation style="position: fixed; left: min(calc(50% + 360px), calc(100% - 60px)); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 1002;">
+            <button id="tiageSyntheseToggleScore" data-action="show-synthese-content" data-tab="score" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Score - Pro & Contra">📊</button>
+            <button id="tiageSyntheseToggleOshoZen" data-action="show-synthese-content" data-tab="oshozen" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
+            <button id="tiageSyntheseToggleNeeds" data-action="show-synthese-content" data-tab="needs" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Bedürfnis-Match mit Differenz">💚</button>
+            <button id="tiageSyntheseToggleResonanz" data-action="open-resonanz-modal" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Resonanzfaktoren × Perspektiven">🎛️</button>
         </div>
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
+        <div class="modal" data-stop-propagation style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
             <div class="modal-header">
                 <span class="modal-title" id="tiageSyntheseModalTitle">Ti-Age Synthese</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <button class="header-score-btn" id="modalScoreBtn" onclick="showTiageSyntheseContent('score')" title="Score - Pro & Contra">📊</button>
-                    <button class="header-oshozen-btn" id="modalOshoZenBtn" onclick="showTiageSyntheseContent('oshozen')" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
-                    <button class="header-needs-btn" id="modalNeedsBtn" onclick="showTiageSyntheseContent('needs')" title="Bedürfnis-Match mit Differenz">💚</button>
-                    <button class="header-resonanz-btn" id="modalResonanzBtn" onclick="openResonanzfaktorenModal()" title="Resonanzfaktoren × Perspektiven">🎛️</button>
-                    <button class="modal-close" onclick="closeTiageSyntheseModal()">&times;</button>
+                    <button class="header-score-btn" id="modalScoreBtn" data-action="show-synthese-content" data-tab="score" title="Score - Pro & Contra">📊</button>
+                    <button class="header-oshozen-btn" id="modalOshoZenBtn" data-action="show-synthese-content" data-tab="oshozen" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
+                    <button class="header-needs-btn" id="modalNeedsBtn" data-action="show-synthese-content" data-tab="needs" title="Bedürfnis-Match mit Differenz">💚</button>
+                    <button class="header-resonanz-btn" id="modalResonanzBtn" data-action="open-resonanz-modal" title="Resonanzfaktoren × Perspektiven">🎛️</button>
+                    <button class="modal-close" data-action="close-synthese-modal">&times;</button>
                 </div>
             </div>
             <div class="modal-body" style="padding: 20px;">
@@ -759,22 +777,22 @@
                 <div id="tiageSyntheseArchetypeContext" style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 15px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <!-- ICH Navigation (links) -->
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <button class="archetype-nav-btn" onclick="navigateTiageSyntheseArchetype('ich', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">‹</button>
+                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">‹</button>
                         <div style="text-align: center; min-width: 90px;">
                             <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ICH</div>
                             <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;" id="tiageSyntheseModalIch">Duo</div>
                         </div>
-                        <button class="archetype-nav-btn" onclick="navigateTiageSyntheseArchetype('ich', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">›</button>
+                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">›</button>
                     </div>
                     <div style="font-size: 18px; color: var(--text-muted);">×</div>
                     <!-- PARTNER Navigation (rechts) -->
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <button class="archetype-nav-btn" onclick="navigateTiageSyntheseArchetype('partner', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">‹</button>
+                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">‹</button>
                         <div style="text-align: center; min-width: 90px;">
                             <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
                             <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;" id="tiageSyntheseModalPartner">Poly Hedo</div>
                         </div>
-                        <button class="archetype-nav-btn" onclick="navigateTiageSyntheseArchetype('partner', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">›</button>
+                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">›</button>
                     </div>
                 </div>
                 <!-- Type indicator (hidden for Score view) -->
@@ -796,16 +814,16 @@
         </div>
     </div>
 
-    <!-- Resonanzfaktoren Modal -->
-    <div class="modal-overlay" id="resonanzfaktorenModal" onclick="closeResonanzfaktorenModal(event)">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
+    <!-- Resonanzfaktoren Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="resonanzfaktorenModal" data-action="close-resonanz-modal">
+        <div class="modal" data-stop-propagation style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header">
                 <span class="modal-title">Resonanzfaktoren</span>
-                <button class="modal-close" onclick="closeResonanzfaktorenModal()">&times;</button>
+                <button class="modal-close" data-action="close-resonanz-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
-                    <button class="profile-review-triple-btn" onclick="openResonanzHelpModal()" style="padding: 6px 12px; font-size: 11px;" title="Wie werden R-Faktoren berechnet?">
+                    <button class="profile-review-triple-btn" data-action="open-resonanz-help-modal" style="padding: 6px 12px; font-size: 11px;" title="Wie werden R-Faktoren berechnet?">
                         ℹ Berechnung anzeigen
                     </button>
                 </div>
@@ -828,19 +846,19 @@
                 <div class="merge-line" id="mergeLine"></div>
             </div>
             <div class="header-buttons">
-                <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
+                <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" data-action="toggle-all-dimensions" title="Fold/Unfold all fields">
                     <span class="fold-unfold-icon">▼</span>
                     <span class="fold-unfold-text">Fold</span>
                 </button>
-                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
+                <button class="lang-btn" data-action="toggle-language" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="currentLangCode">DE</span>
                 </button>
-                <button class="memory-btn" onclick="openMemoryModal()" title="Speichern / Laden">
+                <button class="memory-btn" data-action="open-memory-modal" title="Speichern / Laden">
                     <span class="memory-icon">💾</span>
                     <span class="memory-text">Save</span>
                 </button>
-                <button class="clear-storage-btn" onclick="clearAllStorage()" title="Alle gespeicherten Daten löschen und UI zurücksetzen">
+                <button class="clear-storage-btn" data-action="clear-all-storage" title="Alle gespeicherten Daten löschen und UI zurücksetzen">
                     <span class="clear-icon">🗑️</span>
                     <span class="clear-text">Leeren</span>
                 </button>
@@ -872,7 +890,7 @@
                     <div class="column-title">DU <span id="ich-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="ichSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -883,48 +901,48 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-info-btn" data-action="show-archetype-info" data-person="ich" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -934,7 +952,7 @@
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
                         <div class="collapsed-summary" id="ich-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="ich-geschlecht-p-grid" data-person="ich"></div>
@@ -944,12 +962,12 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('orientierungKO')" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="dominanzStatus">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
                     </div>
@@ -970,38 +988,38 @@
                 </div>
                 <div class="agod-weight-sticks" id="agodWeightSticks">
                     <div class="agod-stick" data-factor="A" title="Archetyp (A) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('A', 5)">+</button>
+                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="A" data-delta="5">+</button>
                         <div class="agod-stick-bar" id="agodStickA"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightA" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('A', this.value)">
-                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('A', -5)">−</button>
+                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="A" data-delta="-5">−</button>
                         <span class="agod-stick-label">A</span>
                     </div>
                     <div class="agod-stick" data-factor="G" title="Geschlecht (G) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('G', 5)">+</button>
+                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="G" data-delta="5">+</button>
                         <div class="agod-stick-bar" id="agodStickG"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightG" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('G', this.value)">
-                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('G', -5)">−</button>
+                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="G" data-delta="-5">−</button>
                         <span class="agod-stick-label">G</span>
                     </div>
                     <div class="agod-stick" data-factor="O" title="Orientierung (O) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('O', 5)">+</button>
+                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="O" data-delta="5">+</button>
                         <div class="agod-stick-bar" id="agodStickO"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightO" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('O', this.value)">
-                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('O', -5)">−</button>
+                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="O" data-delta="-5">−</button>
                         <span class="agod-stick-label">O</span>
                     </div>
                     <div class="agod-stick" data-factor="D" title="Dominanz (D) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('D', 5)">+</button>
+                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="D" data-delta="5">+</button>
                         <div class="agod-stick-bar" id="agodStickD"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightD" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('D', this.value)">
-                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('D', -5)">−</button>
+                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="D" data-delta="-5">−</button>
                         <span class="agod-stick-label">D</span>
                     </div>
                 </div>
                 <!-- Score Label -->
                 <div class="score-label">Ti-Age Synthese Score</div>
                 <!-- Lightbulb Button (moved to top) -->
-                <div class="lightbulb-button" onclick="if(typeof stopLightbulbBlink!=='undefined')stopLightbulbBlink();if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseResonanz.html'" title="Ti-Age Synthese öffnen">
+                <div class="lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
                     <span class="lightbulb-icon">💡</span>
                 </div>
                 <!-- Score Circle (moved to bottom) -->
@@ -1015,7 +1033,7 @@
                 <!-- KO-Text Display (unter dem Score Circle) -->
                 <div id="desktopKoTextDisplay" class="desktop-ko-text-display" style="display: none;"></div>
                 <!-- Slot Machine Button - Finde passenden Partner -->
-                <button class="best-match-btn slot-machine-center-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen">
+                <button class="best-match-btn slot-machine-center-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen">
                     <span class="match-icon">🎰</span>
                     <span class="match-text">FINDE PASSENDEN PARTNER</span>
                 </button>
@@ -1028,7 +1046,7 @@
                     <div class="column-title">PARTNER <span id="partner-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="partnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1039,40 +1057,40 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button class="archetype-info-btn" data-action="show-archetype-info" data-person="partner" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER -->
                 <div class="archetype-symbols-grid" id="partner-archetype-grid">
-                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1082,7 +1100,7 @@
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
                         <div class="collapsed-summary" id="partner-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="partner-geschlecht-p-grid" data-person="partner"></div>
@@ -1092,12 +1110,12 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('orientierungKO')" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="dominanzStatus">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
                     </div>
@@ -1142,7 +1160,7 @@
                     <span>👤</span> DU <span id="mobile-ich-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobileIchSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1153,48 +1171,48 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button data-action="open-archetype-info" data-person="ich" data-select-id="mobileIchSelect" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" onclick="event.stopPropagation();" title="Bedürfnisse anpassen">⚙️</a>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
+                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1206,7 +1224,7 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="mobile-ich-geschlecht-p-grid" data-person="ich"></div>
@@ -1216,45 +1234,45 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(P=Primär, S=Sekundär)</span></span>
+                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                            <span><span class="dominanz-info-link" data-stop-propagation>Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip-stop" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-ich-d-dom-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('dominant')" style="cursor: pointer;">dominant</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="dominant" style="cursor: pointer;">dominant</span>
                                 <div id="m-ich-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'dominant', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="dominant">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="dominant">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-ich-d-sub-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('submissiv')" style="cursor: pointer;">submissiv</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</span>
                                 <div id="m-ich-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="submissiv">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="submissiv">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-ich-d-sw-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('switch')" style="cursor: pointer;">switch</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="switch" style="cursor: pointer;">switch</span>
                                 <div id="m-ich-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'switch', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="switch">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="switch">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-ich-d-aus-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('ausgeglichen')" style="cursor: pointer;">ausgeglichen</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</span>
                                 <div id="m-ich-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="ausgeglichen">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="ausgeglichen">Interessiert</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
+                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                            <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
@@ -1262,36 +1280,36 @@
                             <div class="orientierung-option-row" id="m-ich-o-hetero-row" data-value="heterosexuell">
                                 <span class="orientierung-label">Hetero</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="ich" data-type="heterosexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="ich" data-type="heterosexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-ich-o-gay-row" data-value="gay_lesbisch">
                                 <span class="orientierung-label">Gay/Lesbisch</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('ich', 'gay_lesbisch', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('ich', 'gay_lesbisch', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="ich" data-type="gay_lesbisch">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="ich" data-type="gay_lesbisch">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-ich-o-bi-row" data-value="bisexuell">
                                 <span class="orientierung-label">Bisexuell</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="ich" data-type="bisexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="ich" data-type="bisexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-ich-o-pan-row" data-value="pansexuell">
                                 <span class="orientierung-label">Pansexuell</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('ich', 'pansexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('ich', 'pansexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="ich" data-type="pansexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="ich" data-type="pansexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-ich-o-queer-row" data-value="queer">
                                 <span class="orientierung-label">Queer</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('ich', 'queer', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('ich', 'queer', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="ich" data-type="queer">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="ich" data-type="queer">Sekundär</button>
                                 </div>
                             </div>
                         </div>
@@ -1305,10 +1323,10 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Weiter →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="2">Weiter →</button>
 
             <!-- Reset Button -->
-            <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+            <button data-action="reset-all" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
                 🔄 Auswahl zurücksetzen
             </button>
         </div>
@@ -1316,7 +1334,7 @@
         <!-- PAGE 2: Best Match Karte (NEU) -->
         <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: BEST MATCH">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="1">←</button>
                 <span class="page-title">Partner finden</span>
             </div>
 
@@ -1331,7 +1349,7 @@
                     </div>
                 </div>
 
-                <button class="best-match-btn mobile-best-match-card-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
+                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
                     <span class="match-icon" style="font-size: 32px;">🎰</span>
                     <span class="match-text" style="font-size: 14px;">FINDE PASSENDEN PARTNER</span>
                 </button>
@@ -1341,9 +1359,9 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Weiter zum Partner →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="3">Weiter zum Partner →</button>
 
-            <button class="btn-secondary-mobile" onclick="mobileGoToPage(3)" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+            <button class="btn-secondary-mobile" data-action="mobile-go-to-page" data-page="3" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
                 Partner manuell auswählen →
             </button>
         </div>
@@ -1351,7 +1369,7 @@
         <!-- PAGE 3: Partner-Auswahl (vorher PAGE 2) -->
         <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
                 <span class="page-title">Dein Partner</span>
             </div>
 
@@ -1361,7 +1379,7 @@
                     <span>👥</span> DEIN PARTNER <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobilePartnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -1372,40 +1390,40 @@
                         <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
                         <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#9654;</button>
+                    <button data-action="open-archetype-info" data-person="partner" data-select-id="mobilePartnerSelect" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
-                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1417,7 +1435,7 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
                         <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="mobile-partner-geschlecht-p-grid" data-person="partner"></div>
@@ -1427,45 +1445,45 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(P=Primär, S=Sekundär)</span></span>
+                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                            <span><span class="dominanz-info-link" data-stop-propagation>Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip-stop" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-partner-d-dom-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('dominant')" style="cursor: pointer;">dominant</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="dominant" style="cursor: pointer;">dominant</span>
                                 <div id="m-partner-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'dominant', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-partner-d-sub-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('submissiv')" style="cursor: pointer;">submissiv</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</span>
                                 <div id="m-partner-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-partner-d-sw-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('switch')" style="cursor: pointer;">switch</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="switch" style="cursor: pointer;">switch</span>
                                 <div id="m-partner-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'switch', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Interessiert</button>
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-partner-d-aus-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('ausgeglichen')" style="cursor: pointer;">ausgeglichen</span>
+                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</span>
                                 <div id="m-partner-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
+                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Gelebt</button>
+                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Interessiert</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
+                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                            <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
@@ -1473,36 +1491,36 @@
                             <div class="orientierung-option-row" id="m-partner-o-hetero-row" data-value="heterosexuell">
                                 <span class="orientierung-label">Hetero</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-partner-o-gay-row" data-value="gay_lesbisch">
                                 <span class="orientierung-label">Gay/Lesbisch</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('partner', 'gay_lesbisch', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('partner', 'gay_lesbisch', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-partner-o-bi-row" data-value="bisexuell">
                                 <span class="orientierung-label">Bisexuell</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-partner-o-pan-row" data-value="pansexuell">
                                 <span class="orientierung-label">Pansexuell</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('partner', 'pansexuell', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('partner', 'pansexuell', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Sekundär</button>
                                 </div>
                             </div>
                             <div class="orientierung-option-row" id="m-partner-o-queer-row" data-value="queer">
                                 <span class="orientierung-label">Queer</span>
                                 <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" onclick="handleOrientierungStatusToggle('partner', 'queer', 'primaer', this)">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" onclick="handleOrientierungStatusToggle('partner', 'queer', 'sekundaer', this)">Sekundär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Primär</button>
+                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Sekundär</button>
                                 </div>
                             </div>
                         </div>
@@ -1516,29 +1534,29 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(4)">Analysieren →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Analysieren →</button>
         </div>
 
         <!-- PAGE 4: Ergebnis/Synthese (vorher PAGE 3) -->
         <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: ERGEBNIS">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="3">←</button>
                 <span class="page-title">Synthese</span>
             </div>
 
             <div class="types-display" style="flex-direction: column; gap: 8px;">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
                     <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('ich', -1)" title="Vorheriger">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="ich" data-direction="-1" title="Vorheriger">&#9664;</button>
                     <span class="type-name" id="mobileResultIch" style="min-width: 80px; text-align: center;">Single</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('ich', 1)" title="Nächster">&#9654;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="ich" data-direction="1" title="Nächster">&#9654;</button>
                 </div>
                 <span style="font-size: 14px; color: var(--text-muted);">×</span>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
                     <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('partner', -1)" title="Vorheriger">&#9664;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="-1" title="Vorheriger">&#9664;</button>
                     <span class="type-name" id="mobileResultPartner" style="min-width: 80px; text-align: center;">Duo</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('partner', 1)" title="Nächster">&#9654;</button>
+                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="1" title="Nächster">&#9654;</button>
                 </div>
             </div>
 
@@ -1554,7 +1572,7 @@
                     <div class="score-circle-value" id="mobileScoreCircle">0</div>
                 </div>
                 <!-- Mobile Lightbulb Button -->
-                <div class="lightbulb-button mobile-lightbulb-button" onclick="if(typeof stopLightbulbBlink!=='undefined')stopLightbulbBlink();if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseResonanz.html'" title="Ti-Age Synthese öffnen">
+                <div class="lightbulb-button mobile-lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
                     <span class="lightbulb-icon">💡</span>
                     <span class="lightbulb-text">Ti-Age Synthese</span>
                 </div>
@@ -1614,17 +1632,17 @@
                 </div>
                 <div class="mobile-gewichtung-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
                     <span style="color: var(--text-muted); font-size: 11px;">Summe: <span id="mobile-gewicht-summe" style="color: #10B981; font-weight: 600;">100%</span></span>
-                    <button onclick="resetMobileGewichtung()" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard</button>
+                    <button data-action="reset-mobile-gewichtung" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard</button>
                 </div>
             </div>
         </div>
 
         <!-- Page Indicator (4 Seiten: DU, Best Match, Partner, Synthese) -->
         <div class="page-indicator">
-            <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(2)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(3)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
+            <span class="page-dot active" data-action="mobile-go-to-page" data-page="1"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="2"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="3"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="4"></span>
         </div>
     </div>
 
@@ -1659,7 +1677,7 @@
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
                                     <span class="geschlecht-info-link">Geschlechtsidentität</span>
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich"></div>
                             </div>
@@ -1668,28 +1686,28 @@
                             <div class="dimension-group full-width needs-selection" data-dimension="modal-ich-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="status">(P=Primär, S=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-ich-o-het-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="heterosexuell" style="cursor: pointer;">heterosexuell</span>
                                         <div id="modal-ich-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="orientierung-status-toggle" data-person="ich" data-type="heterosexuell">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="ich" data-type="heterosexuell">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-o-hom-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('gay_lesbisch')" style="cursor: pointer;">Gay/Lesbisch</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="gay_lesbisch" style="cursor: pointer;">Gay/Lesbisch</span>
                                         <div id="modal-ich-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'gay_lesbisch', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'gay_lesbisch', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="orientierung-status-toggle" data-person="ich" data-type="gay_lesbisch">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="ich" data-type="gay_lesbisch">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-o-bi-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="bisexuell" style="cursor: pointer;">Bi-/Pan</span>
                                         <div id="modal-ich-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="orientierung-status-toggle" data-person="ich" data-type="bisexuell">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="ich" data-type="bisexuell">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1699,35 +1717,35 @@
                             <div class="dimension-group needs-selection" data-dimension="modal-ich-dominanz-multi">
                                 <div class="dimension-label">
                                     Dominanz
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-ich-d-dom-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('dominant')" style="cursor: pointer;">dominant</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="dominant" style="cursor: pointer;">dominant</span>
                                         <div id="modal-ich-d-dom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'dominant', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="dominant">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="dominant">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-d-sub-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('submissiv')" style="cursor: pointer;">submissiv</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</span>
                                         <div id="modal-ich-d-sub-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="submissiv">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="submissiv">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-d-sw-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('switch')" style="cursor: pointer;">switch</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="switch" style="cursor: pointer;">switch</span>
                                         <div id="modal-ich-d-sw-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'switch', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="switch">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="switch">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-d-aus-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('ausgeglichen')" style="cursor: pointer;">ausgeglichen</span>
+                                        <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</span>
                                         <div id="modal-ich-d-aus-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="ich" data-type="ausgeglichen">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="ich" data-type="ausgeglichen">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1741,13 +1759,13 @@
                             <div class="my-type-name" id="myTypeName">Single</div>
                             <span class="tooltip-text" id="myTypeTooltip"></span>
                         </div>
-                        <span class="type-info-icon" id="myTypeInfoIcon" onclick="openDefinitionModal(currentArchetype)" title="Was bedeutet dieser Typ?">ℹ</span>
+                        <span class="type-info-icon" id="myTypeInfoIcon" data-action="open-type-info" title="Was bedeutet dieser Typ?">ℹ</span>
                     </div>
                     <p class="my-type-desc" id="myTypeDesc">...</p>
 
                     <!-- Collapsible: Pro/Contra -->
                     <div class="collapsible" id="proContraCollapse">
-                        <div class="collapsible-header" onclick="toggleCollapsible('proContraCollapse')">
+                        <div class="collapsible-header" data-action="toggle-collapsible" data-target="proContraCollapse">
                             <span>Pro & Contra – Qualitätsfaktoren</span>
                             <span class="collapsible-icon">▼</span>
                         </div>
@@ -1767,7 +1785,7 @@
 
                     <!-- Collapsible: Pathos/Logos -->
                     <div class="collapsible" id="pathosLogosCollapse">
-                        <div class="collapsible-header" onclick="toggleCollapsible('pathosLogosCollapse')">
+                        <div class="collapsible-header" data-action="toggle-collapsible" data-target="pathosLogosCollapse">
                             <span>Pathos & Logos – Dynamische Qualität</span>
                             <span class="collapsible-icon">▼</span>
                         </div>
@@ -1781,7 +1799,7 @@
 
                     <!-- Match Section -->
                     <div class="match-section">
-                        <div class="match-card top" id="topMatchCard" onclick="openMatchModal('top')">
+                        <div class="match-card top" id="topMatchCard" data-action="open-match-modal" data-match-type="top">
                             <div class="match-info">
                                 <div class="match-dot" id="topMatchDot"></div>
                                 <div>
@@ -1792,7 +1810,7 @@
                             <div class="match-score excellent" id="topMatchScore">0</div>
                         </div>
 
-                        <div class="match-card challenge" id="challengeCard" onclick="openMatchModal('challenge')">
+                        <div class="match-card challenge" id="challengeCard" data-action="open-match-modal" data-match-type="challenge">
                             <div class="match-info">
                                 <div class="match-dot" id="challengeDot"></div>
                                 <div>
@@ -1825,7 +1843,7 @@
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
                                     <span class="geschlecht-info-link">Geschlechtsidentität</span>
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()"></span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner"></div>
                             </div>
@@ -1834,34 +1852,34 @@
                             <div class="dimension-group full-width needs-selection" data-dimension="modal-partner-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="status">(P=Primär, S=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-partner-o-het-row">
                                         <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
-                                        <label for="modal-partner-o-het" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</label>
-                                        <button type="button" id="modal-partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
+                                        <label for="modal-partner-o-het" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="heterosexuell" style="cursor: pointer;">heterosexuell</label>
+                                        <button type="button" id="modal-partner-o-het-secondary" class="secondary-interessiert-btn" data-action="orientierung-secondary-interessiert" data-person="partner" data-type="heterosexuell">interessiert</button>
                                         <div id="modal-partner-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-o-hom-row">
                                         <input type="checkbox" id="modal-partner-o-hom" value="gay_lesbisch" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'gay_lesbisch', this.checked)">
-                                        <label for="modal-partner-o-hom" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('gay_lesbisch')" style="cursor: pointer;">Gay/Lesbisch</label>
-                                        <button type="button" id="modal-partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'gay_lesbisch', this)">interessiert</button>
+                                        <label for="modal-partner-o-hom" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="gay_lesbisch" style="cursor: pointer;">Gay/Lesbisch</label>
+                                        <button type="button" id="modal-partner-o-hom-secondary" class="secondary-interessiert-btn" data-action="orientierung-secondary-interessiert" data-person="partner" data-type="gay_lesbisch">interessiert</button>
                                         <div id="modal-partner-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'gay_lesbisch', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'gay_lesbisch', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-o-bi-row">
                                         <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
-                                        <label for="modal-partner-o-bi" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</label>
-                                        <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
+                                        <label for="modal-partner-o-bi" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="bisexuell" style="cursor: pointer;">Bi-/Pan</label>
+                                        <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" data-action="orientierung-secondary-interessiert" data-person="partner" data-type="bisexuell">interessiert</button>
                                         <div id="modal-partner-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1871,43 +1889,43 @@
                             <div class="dimension-group needs-selection" data-dimension="modal-partner-dominanz-multi">
                                 <div class="dimension-label">
                                     Dominanz
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-partner-d-dom-row">
                                         <input type="checkbox" id="modal-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'dominant', this.checked)">
-                                        <label for="modal-partner-d-dom" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('dominant')" style="cursor: pointer;">dominant</label>
-                                        <button type="button" id="modal-partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
+                                        <label for="modal-partner-d-dom" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="dominant" style="cursor: pointer;">dominant</label>
+                                        <button type="button" id="modal-partner-d-dom-secondary" class="secondary-interessiert-btn" data-action="secondary-interessiert" data-person="partner" data-type="dominant">interessiert</button>
                                         <div id="modal-partner-d-dom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'dominant', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-d-sub-row">
                                         <input type="checkbox" id="modal-partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'submissiv', this.checked)">
-                                        <label for="modal-partner-d-sub" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('submissiv')" style="cursor: pointer;">submissiv</label>
-                                        <button type="button" id="modal-partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
+                                        <label for="modal-partner-d-sub" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</label>
+                                        <button type="button" id="modal-partner-d-sub-secondary" class="secondary-interessiert-btn" data-action="secondary-interessiert" data-person="partner" data-type="submissiv">interessiert</button>
                                         <div id="modal-partner-d-sub-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-d-sw-row">
                                         <input type="checkbox" id="modal-partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'switch', this.checked)">
-                                        <label for="modal-partner-d-sw" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('switch')" style="cursor: pointer;">switch</label>
-                                        <button type="button" id="modal-partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
+                                        <label for="modal-partner-d-sw" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="switch" style="cursor: pointer;">switch</label>
+                                        <button type="button" id="modal-partner-d-sw-secondary" class="secondary-interessiert-btn" data-action="secondary-interessiert" data-person="partner" data-type="switch">interessiert</button>
                                         <div id="modal-partner-d-sw-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'switch', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Interessiert</button>
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-d-aus-row">
                                         <input type="checkbox" id="modal-partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
-                                        <label for="modal-partner-d-aus" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('ausgeglichen')" style="cursor: pointer;">ausgeglichen</label>
-                                        <button type="button" id="modal-partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
+                                        <label for="modal-partner-d-aus" class="dominanz-label" data-action="show-dimension-tooltip-prevent" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</label>
+                                        <button type="button" id="modal-partner-d-aus-secondary" class="secondary-interessiert-btn" data-action="secondary-interessiert" data-person="partner" data-type="ausgeglichen">interessiert</button>
                                         <div id="modal-partner-d-aus-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1916,7 +1934,7 @@
                     </div>
 
                     <!-- Analysis Overview Box -->
-                    <div class="analysis-overview" id="analysisOverview" onclick="scrollToCard(0)">
+                    <div class="analysis-overview" id="analysisOverview" data-action="scroll-to-card" data-card="0">
                         <div class="analysis-overview-title">
                             <span>🔍</span> Analysiere:
                         </div>
@@ -1955,17 +1973,17 @@
                             <p>Das Tiage-Modell analysiert romantische Beziehungen und ist für diese Konstellation nicht anwendbar.</p>
                         </div>
                         <div class="pathos-blocker-actions">
-                            <button class="pathos-blocker-btn pathos-blocker-btn-primary" onclick="scrollToCard(0)">
+                            <button class="pathos-blocker-btn pathos-blocker-btn-primary" data-action="scroll-to-card" data-card="0">
                                 Angaben korrigieren
                             </button>
-                            <button class="pathos-blocker-btn pathos-blocker-btn-secondary" onclick="showPathosLogosInfo()">
+                            <button class="pathos-blocker-btn pathos-blocker-btn-secondary" data-action="show-pathos-logos-info">
                                 Mehr über Pathos/Logos
                             </button>
                         </div>
                     </div>
 
                     <!-- LOGOS WARNING (Warning, analysis continues) -->
-                    <div class="logos-warning" id="logosWarning" onclick="toggleLogosWarning()">
+                    <div class="logos-warning" id="logosWarning" data-action="toggle-logos-warning">
                         <div class="logos-warning-header">
                             <span class="logos-warning-icon">⚠️</span>
                             <div class="logos-warning-content">
@@ -2064,7 +2082,7 @@
                     <div class="category-section">
                         <div class="section-title-row">
                             <div class="section-title" style="margin-bottom: 0;">Kategorie-Details</div>
-                            <div class="info-icon" onclick="openCategoryModal()">ℹ</div>
+                            <div class="info-icon" data-action="open-category-modal">ℹ</div>
                         </div>
                         <div id="categoryBars"></div>
                     </div>
@@ -2182,17 +2200,17 @@
     </div>
 
     <!-- Category Modal -->
-    <div class="modal-overlay" id="categoryModal" onclick="closeCategoryModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-overlay" id="categoryModal" data-action="close-category-modal">
+        <div class="modal" data-stop-propagation>
             <div class="modal-header">
-                <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(-1)" title="Vorheriger Archetyp">&#8249;</button>
+                <button class="archetype-nav-btn" data-action="navigate-category-archetype" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="modalTitle">Kategorie-Details</span>
-                <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(1)" title="Nächster Archetyp">&#8250;</button>
+                <button class="archetype-nav-btn" data-action="navigate-category-archetype" data-direction="1" title="Nächster Archetyp">&#8250;</button>
                 <div class="match-modal-toggle" style="display: flex; gap: 4px; margin-left: 8px;">
-                    <button class="match-toggle-btn active" id="matchTogglePathos" onclick="toggleMatchModalView('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
-                    <button class="match-toggle-btn" id="matchToggleLogos" onclick="toggleMatchModalView('logos')" title="Logos - Rationale Struktur">🧠</button>
+                    <button class="match-toggle-btn active" id="matchTogglePathos" data-action="toggle-match-modal-view" data-view="pathos" title="Pathos - Emotionale Resonanz">🔥</button>
+                    <button class="match-toggle-btn" id="matchToggleLogos" data-action="toggle-match-modal-view" data-view="logos" title="Logos - Rationale Struktur">🧠</button>
                 </div>
-                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+                <button class="modal-close" data-action="close-category-modal">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
         </div>
@@ -2200,34 +2218,34 @@
 
     <!-- feedbackModal entfernt - commentModal wird verwendet -->
 
-    <!-- Definition Modal -->
-    <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
-        <div class="modal definition-modal" onclick="event.stopPropagation()">
+    <!-- Definition Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="definitionModal" data-action="close-definition-modal">
+        <div class="modal definition-modal" data-stop-propagation>
             <div class="modal-header">
-                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(-1)" title="Vorheriger Archetyp">&#8249;</button>
+                <button class="archetype-nav-btn" data-action="navigate-definition-modal" data-direction="-1" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="definitionModalTitle">Typ-Definition</span>
-                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(1)" title="Nächster Archetyp">&#8250;</button>
-                <button class="modal-close" onclick="closeDefinitionModal()">&times;</button>
+                <button class="archetype-nav-btn" data-action="navigate-definition-modal" data-direction="1" title="Nächster Archetyp">&#8250;</button>
+                <button class="modal-close" data-action="close-definition-modal">&times;</button>
             </div>
             <div class="modal-body" id="definitionModalBody"></div>
         </div>
     </div>
 
-    <!-- Dimension Info Tooltip Modal -->
-    <div class="dimension-tooltip-overlay" id="dimensionTooltipOverlay" onclick="closeDimensionTooltip()">
-        <div class="dimension-tooltip-content" onclick="event.stopPropagation()">
+    <!-- Dimension Info Tooltip Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="dimensionTooltipOverlay" data-action="close-dimension-tooltip">
+        <div class="dimension-tooltip-content" data-stop-propagation>
             <div class="dimension-tooltip-title" id="dimensionTooltipTitle">Info</div>
             <div class="dimension-tooltip-text" id="dimensionTooltipText">...</div>
-            <button class="dimension-tooltip-close" onclick="closeDimensionTooltip()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-dimension-tooltip">Verstanden</button>
         </div>
     </div>
 
-    <!-- Geschlecht Info Modal (scrollable) - NEUES 2-DIMENSIONALES SYSTEM -->
-    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" onclick="closeGeschlechtInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Geschlecht Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" data-action="close-geschlecht-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Geschlecht</div>
-                <button class="geschlecht-info-close-btn" onclick="closeGeschlechtInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-geschlecht-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item" style="background: rgba(69, 123, 157, 0.1); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
@@ -2306,16 +2324,16 @@
                     </div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-geschlecht-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Dominanz Info Modal (scrollable) -->
-    <div class="dimension-tooltip-overlay" id="dominanzInfoModal" onclick="closeDominanzInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Dominanz Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="dominanzInfoModal" data-action="close-dominanz-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Dominanz-Präferenzen</div>
-                <button class="geschlecht-info-close-btn" onclick="closeDominanzInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-dominanz-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item">
@@ -2335,16 +2353,16 @@
                     <div class="geschlecht-info-desc"><strong>Der Zentrierte</strong> – Du bevorzugst eine gleichberechtigte Dynamik ohne feste Rollen. Balanciert, harmonisch, stabil. Ruhige, konstruktive Kommunikation.</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeDominanzInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-dominanz-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Orientierung Info Modal (scrollable) -->
-    <div class="dimension-tooltip-overlay" id="orientierungInfoModal" onclick="closeOrientierungInfoModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+    <!-- Orientierung Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="orientierungInfoModal" data-action="close-orientierung-info-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation>
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Sexuelle Orientierungen</div>
-                <button class="geschlecht-info-close-btn" onclick="closeOrientierungInfoModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-orientierung-info-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item">
@@ -2360,16 +2378,16 @@
                     <div class="geschlecht-info-desc"><strong>Anziehung zu mehreren oder allen Geschlechtern</strong> – Du fühlst dich romantisch und/oder sexuell zu Menschen verschiedener Geschlechter hingezogen, unabhängig von deren Geschlechtsidentität.</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeOrientierungInfoModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-orientierung-info-modal">Verstanden</button>
         </div>
     </div>
 
-    <!-- Body & Soul Info Modal (kurz und bündig) -->
-    <div class="dimension-tooltip-overlay" id="bodySoulModal" onclick="closeBodySoulModal()">
-        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()" style="max-width: 400px;">
+    <!-- Body & Soul Info Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="dimension-tooltip-overlay" id="bodySoulModal" data-action="close-body-soul-modal">
+        <div class="geschlecht-info-modal-content" data-stop-propagation style="max-width: 400px;">
             <div class="geschlecht-info-modal-header">
                 <div class="dimension-tooltip-title">Body & Soul</div>
-                <button class="geschlecht-info-close-btn" onclick="closeBodySoulModal()">&times;</button>
+                <button class="geschlecht-info-close-btn" data-action="close-body-soul-modal">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container" style="padding: 16px;">
                 <div class="geschlecht-info-item" style="margin-bottom: 12px;">
@@ -2381,18 +2399,18 @@
                     <div class="geschlecht-info-desc">Deine seelische/psychologische Dimension</div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeBodySoulModal()">Verstanden</button>
+            <button class="dimension-tooltip-close" data-action="close-body-soul-modal">Verstanden</button>
         </div>
     </div>
 
     <!-- Navigation Dots with Arrows (hidden - old carousel nav) -->
     <div class="nav-dots" style="display: none;">
-        <button class="nav-arrow" onclick="navigatePrev()">‹</button>
-        <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
-        <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
-        <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
-        <div class="nav-dot" data-card="3" onclick="scrollToCard(3)"></div>
-        <button class="nav-arrow" onclick="navigateNext()">›</button>
+        <button class="nav-arrow" data-action="navigate-prev">‹</button>
+        <div class="nav-dot active" data-card="0" data-action="scroll-to-card"></div>
+        <div class="nav-dot" data-card="1" data-action="scroll-to-card"></div>
+        <div class="nav-dot" data-card="2" data-action="scroll-to-card"></div>
+        <div class="nav-dot" data-card="3" data-action="scroll-to-card"></div>
+        <button class="nav-arrow" data-action="navigate-next">›</button>
     </div>
 
     <div class="swipe-hint" style="display: none;">← Swipe →</div>
@@ -2442,15 +2460,15 @@
         <div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
             <div style="margin-bottom: 8px;">&copy; 2025 Ti-Age - Alle Rechte vorbehalten</div>
             <div id="footerVersion" style="margin-bottom: 12px; font-size: 11px; opacity: 0.7;"></div>
-            <a href="#" style="color: #eab308; text-decoration: none; margin: 0 10px;" onclick="document.getElementById('impressumModal').style.display='flex'; return false;">Impressum</a>
+            <a href="#" style="color: #eab308; text-decoration: none; margin: 0 10px;" data-action="open-impressum-modal">Impressum</a>
             <span style="color: #eab308;">|</span>
             <a href="docs.html?doc=docs/help-guide.md" style="color: #eab308; text-decoration: none; margin: 0 10px;">Hilfe</a>
         </div>
     </footer>
 
     <!-- Impressum Modal -->
-    <div id="impressumModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10002; justify-content:center; align-items:center;" onclick="this.style.display='none'">
-        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; padding: 30px; max-width: 400px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,0.1);" onclick="event.stopPropagation()">
+    <div id="impressumModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10002; justify-content:center; align-items:center;" data-action="close-impressum-modal">
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; padding: 30px; max-width: 400px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,0.1);" data-stop-propagation>
             <h3 style="margin: 0 0 20px 0; color: #fff; font-size: 20px;">Impressum</h3>
             <p style="margin: 10px 0; color: rgba(255,255,255,0.8); font-size: 14px;"><strong>Betreiber:</strong> Ti-Age</p>
             <p style="margin: 10px 0; color: rgba(255,255,255,0.8); font-size: 14px;"><strong>Projekt:</strong> Tiage_Beziehungsmodel</p>
@@ -2459,12 +2477,12 @@
     </div>
 
     <!-- Memory Management Modal -->
-    <div class="modal-overlay" id="memoryModal" onclick="closeMemoryModal(event)" style="z-index: 2600;">
-        <div class="modal memory-modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+    <div class="modal-overlay" id="memoryModal" data-action="close-memory-modal" style="z-index: 2600;">
+        <div class="modal memory-modal" data-stop-propagation style="max-width: 500px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(59, 130, 246, 0.3);">
                 <span class="modal-title" style="color: #3B82F6;">Speichermanagement</span>
                 <span class="memory-slot-count-badge">Slots: <span id="memorySlotCount">0/4</span></span>
-                <button class="modal-close" onclick="closeMemoryModal()">&times;</button>
+                <button class="modal-close" data-action="close-memory-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 16px;">
                 <div class="memory-info-box">
@@ -2480,11 +2498,11 @@
     </div>
 
     <!-- Memory Detail Modal -->
-    <div class="modal-overlay" id="memoryDetailModal" onclick="closeMemoryDetailModal(event)" style="z-index: 2700;">
-        <div class="modal memory-detail-modal" onclick="event.stopPropagation()" style="max-width: 95%; width: 650px;">
+    <div class="modal-overlay" id="memoryDetailModal" data-action="close-memory-detail-modal" style="z-index: 2700;">
+        <div class="modal memory-detail-modal" data-stop-propagation style="max-width: 95%; width: 650px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(147, 51, 234, 0.3);">
                 <span class="modal-title memory-detail-title" style="color: #A855F7;">Slot Details</span>
-                <button class="modal-close" onclick="closeMemoryDetailModal()">&times;</button>
+                <button class="modal-close" data-action="close-memory-detail-modal">&times;</button>
             </div>
             <div class="modal-body memory-detail-body" style="padding: 16px; max-height: 70vh; overflow-y: auto;">
                 <div id="memoryDetailContent">
