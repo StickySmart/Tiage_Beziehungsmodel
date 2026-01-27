@@ -45,6 +45,37 @@
             },
 
             /**
+             * Zeigt einen Dimensions-Tooltip an mit preventDefault
+             * Ersetzt: onclick="event.preventDefault(); showDimensionTooltip('key')"
+             * data-tooltip-key: Der Tooltip-Schlüssel
+             */
+            'show-dimension-tooltip-prevent': function(el, event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var key = el.dataset.tooltipKey;
+                if (typeof showDimensionTooltip === 'function') {
+                    showDimensionTooltip(key);
+                } else if (typeof window.showDimensionTooltip === 'function') {
+                    window.showDimensionTooltip(key);
+                }
+            },
+
+            /**
+             * Zeigt einen Dimensions-Tooltip an mit stopPropagation
+             * Ersetzt: onclick="event.stopPropagation(); showDimensionTooltip('key')"
+             * data-tooltip-key: Der Tooltip-Schlüssel
+             */
+            'show-dimension-tooltip-stop': function(el, event) {
+                event.stopPropagation();
+                var key = el.dataset.tooltipKey;
+                if (typeof showDimensionTooltip === 'function') {
+                    showDimensionTooltip(key);
+                } else if (typeof window.showDimensionTooltip === 'function') {
+                    window.showDimensionTooltip(key);
+                }
+            },
+
+            /**
              * Schließt den Dimension Tooltip
              * Ersetzt: onclick="closeDimensionTooltip()"
              */
