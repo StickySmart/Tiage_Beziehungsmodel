@@ -19,6 +19,24 @@
 
         ActionHandler.registerAll({
             /**
+             * Öffnet das Slot Machine Modal
+             * Ersetzt: onclick="openSlotMachineModal()"
+             */
+            'open-slot-machine-modal': function(el, event) {
+                if (typeof openSlotMachineModal === 'function') {
+                    openSlotMachineModal();
+                } else if (typeof window.openSlotMachineModal === 'function') {
+                    window.openSlotMachineModal();
+                } else {
+                    var modal = document.getElementById('slotMachineModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    }
+                }
+            },
+
+            /**
              * Schließt das Slot Machine Modal
              * Ersetzt: onclick="closeSlotMachineModal(event)"
              */

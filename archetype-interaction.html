@@ -137,6 +137,7 @@
     <script defer src="js/core/actions/archetypeGrid.js"></script>
     <script defer src="js/core/actions/slotMachine.js"></script>
     <script defer src="js/core/actions/headerControls.js"></script>
+    <script defer src="js/core/actions/statusToggles.js"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -409,12 +410,12 @@
         </div>
     </div>
 
-    <!-- Resonanzfaktor-Hilfe Modal -->
-    <div class="modal-overlay" id="resonanzHelpModal" onclick="closeResonanzHelpModal(event)" style="z-index: 2450;">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+    <!-- Resonanzfaktor-Hilfe Modal (Phase 2: onclick → data-action migriert) -->
+    <div class="modal-overlay" id="resonanzHelpModal" data-action="close-resonanz-help-modal" style="z-index: 2450;">
+        <div class="modal" data-stop-propagation style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                 <span class="modal-title" style="color: #8B5CF6;" id="resonanzHelpModalTitle">Resonanzfaktoren - Berechnung</span>
-                <button class="modal-close" onclick="closeResonanzHelpModal()">&times;</button>
+                <button class="modal-close" data-action="close-resonanz-help-modal">&times;</button>
             </div>
             <div class="modal-body" id="resonanzHelpModalBody" style="padding: 20px;">
                 <!-- Content wird dynamisch gefüllt -->
@@ -560,10 +561,10 @@
 
             <!-- Buttons -->
             <div class="age-verification-buttons">
-                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;" data-i18n="ageVerification.confirm">
+                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" data-action="confirm-age" data-confirm="true" data-i18n="ageVerification.confirm">
                     Ja, ich bin 18+
                 </button>
-                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;" data-i18n="ageVerification.deny">
+                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" data-action="confirm-age" data-confirm="false" data-i18n="ageVerification.deny">
                     Nein, ich bin unter 18
                 </button>
             </div>
@@ -1005,10 +1006,10 @@
                         <span class="agod-stick-label">O</span>
                     </div>
                     <div class="agod-stick" data-factor="D" title="Dominanz (D) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" onclick="adjustAgodWeight('D', 5)">+</button>
+                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="D" data-delta="5">+</button>
                         <div class="agod-stick-bar" id="agodStickD"></div>
                         <input type="number" class="agod-weight-input" id="agodWeightD" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('D', this.value)">
-                        <button class="agod-btn agod-btn-minus" onclick="adjustAgodWeight('D', -5)">−</button>
+                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="D" data-delta="-5">−</button>
                         <span class="agod-stick-label">D</span>
                     </div>
                 </div>
@@ -1029,7 +1030,7 @@
                 <!-- KO-Text Display (unter dem Score Circle) -->
                 <div id="desktopKoTextDisplay" class="desktop-ko-text-display" style="display: none;"></div>
                 <!-- Slot Machine Button - Finde passenden Partner -->
-                <button class="best-match-btn slot-machine-center-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen">
+                <button class="best-match-btn slot-machine-center-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen">
                     <span class="match-icon">🎰</span>
                     <span class="match-text">FINDE PASSENDEN PARTNER</span>
                 </button>
@@ -1319,7 +1320,7 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Weiter →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="2">Weiter →</button>
 
             <!-- Reset Button -->
             <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
@@ -1330,7 +1331,7 @@
         <!-- PAGE 2: Best Match Karte (NEU) -->
         <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: BEST MATCH">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="1">←</button>
                 <span class="page-title">Partner finden</span>
             </div>
 
@@ -1345,7 +1346,7 @@
                     </div>
                 </div>
 
-                <button class="best-match-btn mobile-best-match-card-btn" onclick="openSlotMachineModal()" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
+                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
                     <span class="match-icon" style="font-size: 32px;">🎰</span>
                     <span class="match-text" style="font-size: 14px;">FINDE PASSENDEN PARTNER</span>
                 </button>
@@ -1355,9 +1356,9 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Weiter zum Partner →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="3">Weiter zum Partner →</button>
 
-            <button class="btn-secondary-mobile" onclick="mobileGoToPage(3)" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+            <button class="btn-secondary-mobile" data-action="mobile-go-to-page" data-page="3" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
                 Partner manuell auswählen →
             </button>
         </div>
@@ -1365,7 +1366,7 @@
         <!-- PAGE 3: Partner-Auswahl (vorher PAGE 2) -->
         <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
                 <span class="page-title">Dein Partner</span>
             </div>
 
@@ -1530,13 +1531,13 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(4)">Analysieren →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Analysieren →</button>
         </div>
 
         <!-- PAGE 4: Ergebnis/Synthese (vorher PAGE 3) -->
         <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: ERGEBNIS">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="3">←</button>
                 <span class="page-title">Synthese</span>
             </div>
 
@@ -1635,10 +1636,10 @@
 
         <!-- Page Indicator (4 Seiten: DU, Best Match, Partner, Synthese) -->
         <div class="page-indicator">
-            <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(2)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(3)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
+            <span class="page-dot active" data-action="mobile-go-to-page" data-page="1"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="2"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="3"></span>
+            <span class="page-dot" data-action="mobile-go-to-page" data-page="4"></span>
         </div>
     </div>
 
