@@ -183,6 +183,10 @@ TiageCompatibility.Physical = (function() {
                 if (isNonBinaryGender(theirGender)) {
                     return false;
                 }
+                // Nonbinär mit Hetero: Anziehung zu beiden binären Geschlechtern erlauben
+                if (isNonBinaryGender(myGender)) {
+                    return isMaleGender(theirGender) || isFemaleGender(theirGender);
+                }
                 // Anderes binäres Geschlecht: heterosexuell ist angezogen
                 return isDifferentBinaryGender(myGender, theirGender);
             }
