@@ -3328,8 +3328,9 @@
                 }
 
                 // Mouse entered - determine which to highlight based on click logic
-                const currentPrimary = personDimensions[person].geschlecht.primary;
-                const currentSecondary = personDimensions[person].geschlecht.secondary;
+                const geschlechtObj = personDimensions[person].geschlecht;
+                const currentPrimary = geschlechtObj ? geschlechtObj.primary : null;
+                const currentSecondary = geschlechtObj ? geschlechtObj.secondary : null;
 
                 legend.classList.remove('highlight-p', 'highlight-s');
 
@@ -12228,11 +12229,53 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichGfk = ichDims.gfk || 'mittel';
 
             // PARTNER-GOD KONSTANT aus TiageState (die beim Partner eingestellten Werte!)
+            // Wenn Partner-GOD nicht gesetzt: kompatible Defaults basierend auf ICH (gleiche Logik wie findBestPartnerMatch)
             const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
-            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
-            const partnerGfk = partnerDims.gfk || 'mittel';
+
+            const partnerHasGeschlecht = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                const ichOriPrimary = validIchOrientierung.primary;
+                const ichGeschPrimary = validIchGeschlecht.primary;
+                if (ichOriPrimary === 'heterosexuell') {
+                    validPartnerGeschlecht = { primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann', secondary: 'cis' };
+                } else {
+                    validPartnerGeschlecht = { primary: ichGeschPrimary, secondary: 'cis' };
+                }
+            }
+
+            const partnerHasOrientierung = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                validPartnerOrientierung = { primary: validIchOrientierung.primary, secondary: validIchOrientierung.secondary, all: validIchOrientierung.all || [validIchOrientierung.primary] };
+            }
+
+            const partnerHasDominanz = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
+            let validPartnerDominanz;
+            if (partnerHasDominanz) {
+                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            } else {
+                const ichDomPrimary = validIchDominanz.primary;
+                if (ichDomPrimary === 'dominant') validPartnerDominanz = { primary: 'submissiv', secondary: null };
+                else if (ichDomPrimary === 'submissiv') validPartnerDominanz = { primary: 'dominant', secondary: null };
+                else if (ichDomPrimary === 'switch') validPartnerDominanz = { primary: 'switch', secondary: null };
+                else validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+            }
+
+            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+            let partnerGfk;
+            if (partnerHasGfk) {
+                partnerGfk = partnerDims.gfk;
+            } else {
+                const ichGfkVal = ichDims.gfk || 'mittel';
+                if (ichGfkVal === 'hoch') partnerGfk = 'hoch';
+                else if (ichGfkVal === 'mittel') partnerGfk = 'hoch';
+                else partnerGfk = 'mittel';
+            }
 
             console.log('[Best Match] ICH-Auswahl (konstant):', {
                 archetyp: ichArchetype,
@@ -12361,11 +12404,53 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichGfk = ichDims.gfk || 'mittel';
 
             // PARTNER-GOD KONSTANT aus TiageState
+            // Wenn Partner-GOD nicht gesetzt: kompatible Defaults basierend auf ICH (gleiche Logik wie findBestPartnerMatch)
             const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
-            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
-            const partnerGfk = partnerDims.gfk || 'mittel';
+
+            const partnerHasGeschlecht2 = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht2) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                const ichOriP = validIchOrientierung.primary;
+                const ichGeschP = validIchGeschlecht.primary;
+                if (ichOriP === 'heterosexuell') {
+                    validPartnerGeschlecht = { primary: ichGeschP === 'mann' ? 'frau' : 'mann', secondary: 'cis' };
+                } else {
+                    validPartnerGeschlecht = { primary: ichGeschP, secondary: 'cis' };
+                }
+            }
+
+            const partnerHasOrientierung2 = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung2) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                validPartnerOrientierung = { primary: validIchOrientierung.primary, secondary: validIchOrientierung.secondary, all: validIchOrientierung.all || [validIchOrientierung.primary] };
+            }
+
+            const partnerHasDominanz2 = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
+            let validPartnerDominanz;
+            if (partnerHasDominanz2) {
+                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            } else {
+                const ichDomP = validIchDominanz.primary;
+                if (ichDomP === 'dominant') validPartnerDominanz = { primary: 'submissiv', secondary: null };
+                else if (ichDomP === 'submissiv') validPartnerDominanz = { primary: 'dominant', secondary: null };
+                else if (ichDomP === 'switch') validPartnerDominanz = { primary: 'switch', secondary: null };
+                else validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+            }
+
+            const partnerHasGfk2 = partnerDims.gfk && partnerDims.gfk !== '';
+            let partnerGfk;
+            if (partnerHasGfk2) {
+                partnerGfk = partnerDims.gfk;
+            } else {
+                const ichGfkV = ichDims.gfk || 'mittel';
+                if (ichGfkV === 'hoch') partnerGfk = 'hoch';
+                else if (ichGfkV === 'mittel') partnerGfk = 'hoch';
+                else partnerGfk = 'mittel';
+            }
 
             // ICH-Needs aus dem entsprechenden State-Slot laden
             let ichNeeds = null;
