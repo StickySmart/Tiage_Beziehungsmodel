@@ -3,8 +3,8 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v3';
-const STATIC_CACHE_NAME = 'tiage-static-v3';
+const CACHE_NAME = 'tiage-v4';
+const STATIC_CACHE_NAME = 'tiage-static-v4';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [
@@ -19,8 +19,14 @@ const PRECACHE_URLS = [
     '/js/locales/de.js',
     '/js/locales/loader.js',
     '/js/utils/performance.js',
+    '/js/utils/fuzzySearch.js',
     '/js/synthesis/constants.js',
     '/js/synthesis/synthesisCalculator.js',
+    '/js/core/tooltips.js',
+    '/js/core/archetypeDescriptions.js',
+    '/js/core/tagTooltips.js',
+    '/js/core/statementHelpers.js',
+    '/js/ui/chartUtils.js',
     '/css/slot-machine.css'
 ];
 

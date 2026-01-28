@@ -2504,8 +2504,9 @@
             }
         }
 
-        // Make confirmAge globally available - automatically accepts cookies
-        window.confirmAge = function(isAdult) {
+        // confirmAge - hoisted function declaration ensures availability even if script
+        // partially fails (prevents infinite recursion from wrapper pattern)
+        function confirmAge(isAdult) {
             console.log('confirmAge called with:', isAdult);
 
             if (isAdult) {
@@ -2534,12 +2535,8 @@
             } else {
                 window.location.href = 'https://www.google.com';
             }
-        };
-
-        // Also keep the regular function reference
-        function confirmAge(isAdult) {
-            window.confirmAge(isAdult);
         }
+        window.confirmAge = confirmAge;
 
         // Initialize age verification - robust version with multiple fallbacks
         function initAgeVerification() {
