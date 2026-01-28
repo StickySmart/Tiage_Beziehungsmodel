@@ -12713,19 +12713,82 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const result = slotMachineTop10Results[index] || slotMachineTop4Results[index] || slotMachineResult;
             if (!result) return;
 
-            // NUR Partner-Archetyp setzen (GOD-Werte bleiben konstant wie eingestellt)
+            // Partner-Archetyp setzen
             selectArchetypeFromGrid('partner', result.archetyp);
             console.log('[applySlotResult] Partner-Archetyp gesetzt:', result.archetyp);
 
-            // Profil neu berechnen mit den konstanten GOD-Werten aus TiageState
+            // Wenn Partner-GOD nicht vom User gesetzt war, die berechneten Defaults übernehmen
+            const partnerDims = personDimensions.partner || {};
+            let godApplied = false;
+
+            // Geschlecht: v4.0 = einfacher String
+            const partnerGeschStr = typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : (partnerDims.geschlecht && partnerDims.geschlecht.primary);
+            if (!partnerGeschStr && result.geschlecht) {
+                const gValue = typeof result.geschlecht === 'string' ? result.geschlecht : result.geschlecht.primary;
+                personDimensions.partner.geschlecht = gValue;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions.partner.geschlecht = gValue;
+                }
+                godApplied = true;
+            }
+
+            // Orientierung: v4.1.1 = Array
+            const partnerOri = partnerDims.orientierung;
+            const hasOri = Array.isArray(partnerOri) ? partnerOri.length > 0 : (partnerOri && (typeof partnerOri === 'string' ? partnerOri : partnerOri.primary));
+            if (!hasOri && result.orientierung) {
+                const oriValue = typeof result.orientierung === 'string' ? result.orientierung : result.orientierung.primary;
+                personDimensions.partner.orientierung = [oriValue];
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions.partner.orientierung = [oriValue];
+                }
+                godApplied = true;
+            }
+
+            // Dominanz: Primary/Secondary Objekt
+            const partnerDom = partnerDims.dominanz;
+            const hasDom = partnerDom && (typeof partnerDom === 'string' ? partnerDom : partnerDom.primary);
+            if (!hasDom && result.dominanz) {
+                const domValue = typeof result.dominanz === 'string' ? result.dominanz : result.dominanz.primary;
+                personDimensions.partner.dominanz = { primary: domValue, secondary: null };
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions.partner.dominanz = { primary: domValue, secondary: null };
+                }
+                godApplied = true;
+            }
+
+            // GFK
+            if (!partnerDims.gfk) {
+                const ichGfk = (personDimensions.ich || {}).gfk || 'mittel';
+                const gfkValue = ichGfk === 'hoch' ? 'hoch' : ichGfk === 'mittel' ? 'hoch' : 'mittel';
+                personDimensions.partner.gfk = gfkValue;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions.partner.gfk = gfkValue;
+                }
+                godApplied = true;
+            }
+
+            // State + UI synchronisieren wenn GOD-Werte gesetzt wurden
+            if (godApplied && typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner', personDimensions.partner);
+                TiageState.saveToStorage();
+            }
+
+            // Profil neu berechnen mit den (jetzt gefüllten) GOD-Werten
             if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
-                const partnerDims = TiageState.get('personDimensions.partner') || {};
                 ProfileCalculator.loadProfile('partner', {
                     archetyp: result.archetyp,
-                    geschlecht: partnerDims.geschlecht,
-                    dominanz: partnerDims.dominanz,
-                    orientierung: partnerDims.orientierung
+                    geschlecht: personDimensions.partner.geschlecht,
+                    dominanz: personDimensions.partner.dominanz,
+                    orientierung: personDimensions.partner.orientierung
                 });
+            }
+
+            // UI synchronisieren
+            if (godApplied) {
+                syncGeschlechtUI('partner');
+                syncDominanzUI('partner');
+                syncOrientierungUI('partner');
+                syncGfkUI('partner');
             }
 
             // Score neu berechnen
