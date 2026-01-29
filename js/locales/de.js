@@ -781,16 +781,14 @@ const TiageLocale_DE = {
 
     genderInfoModal: {
         title: 'Geschlecht',
-        howItWorks: 'Zwei-Dimensionales System:',
-        bodyLabel: 'Körper',
-        bodyHint: 'Biologisches Geschlecht / bei Geburt zugewiesen',
-        identityLabel: 'Identität',
-        identityHint: 'Wie du dich innerlich fühlst',
-        examples: 'Beispiele:',
-        exampleCis: 'Mann + Mann = Cis Mann',
-        exampleTrans: 'Mann + Frau = Trans Frau',
-        exampleNonbinary: 'Frau + Nonbinär = Nonbinär (AFAB)',
-        exampleUnsicher: 'Mann + Unsicher = In Exploration',
+        intro: 'Wähle dein Geschlecht:',
+        optionMann: 'Mann',
+        optionMannDesc: 'Du identifizierst dich als Mann.',
+        optionFrau: 'Frau',
+        optionFrauDesc: 'Du identifizierst dich als Frau.',
+        optionNonbinaer: 'Nonbinär',
+        optionNonbinaerDesc: 'Du identifizierst dich weder ausschließlich als Mann noch als Frau.',
+        note: 'Hinweis: Untergruppen wie Cis/Trans existieren, werden aber in dieser App nicht unterschieden, da sie für die Kompatibilitätsberechnung keine Rolle spielen.',
         understood: 'Verstanden'
     },
 
