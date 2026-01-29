@@ -87,6 +87,15 @@ var ActionHandler = (function() {
         var actionEl = event.target.closest('[data-action]');
         if (!actionEl) return;
 
+        // Prüfe ob das Klick-Ziel (oder ein Parent bis zum actionEl) data-stop-propagation hat
+        // In diesem Fall: Action NICHT ausführen, damit Links normal funktionieren
+        var stopEl = event.target.closest('[data-stop-propagation]');
+        if (stopEl && actionEl.contains(stopEl)) {
+            // Das geklickte Element (oder Parent) hat data-stop-propagation
+            // und ist innerhalb des action-Elements → ignoriere die Action
+            return;
+        }
+
         var action = actionEl.dataset.action;
         if (!action) return;
 
