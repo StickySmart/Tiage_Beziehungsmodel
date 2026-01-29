@@ -5,7 +5,7 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
-## [2.0.0] - 2026-01-29
+## [1.8.840] - 2026-01-29
 
 ### Neu
 
@@ -55,7 +55,7 @@ Hinweise werden bei mittlerer/hoher Reibung angezeigt.
 
 ### Geändert
 
-**TiageTaxonomie v2.0.0**
+**TiageTaxonomie v1.8.840**
 - RTI-Säulen-Definitionen (#S1-#S5) hinzugefügt
 - `berechneSaeulenScores()` - Dimension→Säule Mapping
 - `berechneSaeulenReibung()` - Reibungs-Analyse pro Säule
