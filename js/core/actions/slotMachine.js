@@ -39,15 +39,14 @@
             /**
              * Schließt das Slot Machine Modal
              * Ersetzt: onclick="closeSlotMachineModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-slot-machine-modal': function(el, event) {
-                if (typeof closeSlotMachineModal === 'function') {
-                    closeSlotMachineModal(event);
-                } else if (typeof window.closeSlotMachineModal === 'function') {
-                    window.closeSlotMachineModal(event);
-                } else {
-                    var modal = document.getElementById('slotMachineModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('slotMachineModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
