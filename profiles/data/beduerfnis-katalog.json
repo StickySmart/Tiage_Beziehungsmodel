@@ -1,10 +1,10 @@
 {
-  "version": "3.2.0",
+  "version": "3.3.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
-  "aktualisiert": "2025-12-30",
-  "changelog": "v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
+  "aktualisiert": "2025-01-29",
+  "changelog": "v3.3.0: REIBUNGS-LOGIK statt K.O.-Kriterien. Neue Bedürfnisse: #B227 'Körperliche-Resonanz' (ersetzt Orientierungs-K.O.), #B228 'Beziehungsform-Passung' (ersetzt Archetyp-K.O.). Beide mit perspektivenHinweise (pirsig, osho, gfk, rti) und saeule-Feld für RTI-5-Säulen-Integration. v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
     "#P1": {
       "id": "#P1",
@@ -4850,6 +4850,101 @@
           "polyamor": 60,
           "ra": 45,
           "lat": 55,
+          "aromantisch": 35
+        }
+      }
+    },
+    "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227-#B228) - Ersetzt K.O.-Kriterien ═══",
+    "#B227": {
+      "id": "#B227",
+      "label": "Körperliche-Resonanz",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [0, 100],
+      "frage": "Wie wichtig ist dir, dass echte körperliche Anziehung vorhanden ist?",
+      "frageTyp": "haupt",
+      "kontext": "Körperliche Anziehung und sexuelle Resonanz",
+      "saeule": "S1",
+      "reibungsQuelle": "orientierung_geschlecht",
+      "perspektivenHinweise": {
+        "pirsig": {
+          "niedrig": "Körperliche Resonanz ist vorhanden - biologische Qualitätsmuster harmonieren.",
+          "mittel": "Teilweise Resonanz möglich - dynamische Qualität kann statische Muster erweitern.",
+          "hoch": "Orientierungen zeigen in verschiedene Richtungen. Das bedeutet nicht Unmöglichkeit, sondern: Hier ist Wachstum nötig, wenn körperliche Verbindung gewünscht ist."
+        },
+        "osho": {
+          "niedrig": "Der Körper sagt Ja - folge dieser Weisheit ohne Kopf-Zensur.",
+          "mittel": "Anziehung ist nicht binär. Frage dich: Was ist Konditionierung, was echtes Fühlen?",
+          "hoch": "Die Gesellschaft hat dir gesagt, wen du begehren darfst. Aber der Körper ist freier als das Ego. Vielleicht ist hier eine Einladung, Grenzen zu hinterfragen - oder eine Einladung zu einer anderen Art von Verbindung."
+        },
+        "gfk": {
+          "niedrig": "Das Bedürfnis nach körperlicher Resonanz kann erfüllt werden.",
+          "mittel": "Das Bedürfnis ist teilweise erfüllbar. Welche anderen Strategien könnten dieses Bedürfnis nähren?",
+          "hoch": "Körperliche Resonanz ist ein gültiges Bedürfnis. Die aktuelle Konstellation macht die gewohnte Strategie schwierig. Frage: Gibt es andere Wege? Oder ist dieses Bedürfnis hier nicht erfüllbar, und andere Bedürfnisse stehen im Vordergrund?"
+        },
+        "rti": {
+          "niedrig": "Säule 1 (Leiblichkeit) ist stabil.",
+          "mittel": "Säule 1 (Leiblichkeit) zeigt Reibung. Prüfe ob andere Säulen dies ausgleichen.",
+          "hoch": "Säule 1 (Leiblichkeit) ist herausgefordert. Das destabilisiert nicht automatisch die gesamte Identität - aber es braucht Bewusstheit."
+        }
+      },
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 25
+        }
+      }
+    },
+    "#B228": {
+      "id": "#B228",
+      "label": "Beziehungsform-Passung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frage": "Wie wichtig ist dir, dass ihr die gleiche Beziehungsform lebt?",
+      "frageTyp": "haupt",
+      "kontext": "Übereinstimmung in Mono/Poly und Beziehungsstruktur",
+      "saeule": "S2",
+      "reibungsQuelle": "archetyp_differenz",
+      "perspektivenHinweise": {
+        "pirsig": {
+          "niedrig": "Eure Beziehungsformen sind kompatibel - statische Qualitätsmuster passen zusammen.",
+          "mittel": "Unterschiedliche Muster treffen aufeinander. Dynamische Qualität entsteht, wenn beide bereit sind, ihre Muster zu hinterfragen.",
+          "hoch": "Mono und Poly sind verschiedene Betriebssysteme. Keines ist besser. Aber: Ohne Evolution beider entsteht chronischer Konflikt. Die Frage ist: Wer ist bereit, sich zu bewegen?"
+        },
+        "osho": {
+          "niedrig": "Eure Formen harmonieren - genießt diese Leichtigkeit.",
+          "mittel": "Besitz ist Angst, aber Struktur ist nicht immer Gefängnis. Frage dich ehrlich: Warum willst du, was du willst?",
+          "hoch": "Der Mono-Mensch klammert vielleicht aus Angst. Der Poly-Mensch flieht vielleicht vor Tiefe. Oder: Beide leben authentisch. Es gibt keine falsche Antwort - nur die Frage, ob ihr gemeinsam wachsen könnt."
+        },
+        "gfk": {
+          "niedrig": "Eure Bedürfnisse nach Beziehungsstruktur sind ähnlich.",
+          "mittel": "Unterschiedliche Strategien für ähnliche Bedürfnisse. Mono-Bedürfnis: Sicherheit, Vorhersehbarkeit. Poly-Bedürfnis: Autonomie, Vielfalt. Beide sind gültig. Frage: Welche Strategie nährt BEIDE?",
+          "hoch": "Fundamentale Bedürfnisse scheinen zu kollidieren: Sicherheit vs. Freiheit. Aber: Vielleicht ist es nicht entweder-oder. Was wäre ein dritter Weg, der beide Bedürfniskerne ehrt?"
+        },
+        "rti": {
+          "niedrig": "Säule 2 (Soziales Netzwerk) ist stabil.",
+          "mittel": "Säule 2 zeigt Reibung. Eure sozialen Strukturen unterscheiden sich.",
+          "hoch": "Säule 2 (Soziales Netzwerk) ist stark herausgefordert. Das betrifft, wie ihr Beziehung nach außen lebt. Braucht intensive Kommunikation und klare Vereinbarungen."
+        }
+      },
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 65,
           "aromantisch": 35
         }
       }

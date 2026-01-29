@@ -1,6 +1,6 @@
 # Tiage-Beziehungsmodell
 
-**Version 1.8.220** | [Changelog](CHANGELOG.md)
+**Version 2.0.0** | [Changelog](CHANGELOG.md) | [English Docs](docs/en/README.md)
 
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
@@ -60,6 +60,26 @@ Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht
 
 *Die konkrete Gewichtung der Faktoren ist Teil von Tiage's Synthese.*
 
+## NEU in v2.0: RTI-Säulen & Reibungs-Logik
+
+### 5 Säulen der Identität (Petzold)
+
+| Säule | Beschreibung | Mapping |
+|-------|--------------|---------|
+| **S1** | Leiblichkeit | C (Nähe-Distanz) |
+| **S2** | Soziales Netzwerk | (A × 0.6) + (F × 0.4) |
+| **S3** | Autonomie & Leistung | D (Autonomie) |
+| **S4** | Sicherheit & Stabilität | (A × 0.4) + (F × 0.6) |
+| **S5** | Werte & Sinn | (B × 0.4) + (E × 0.6) |
+
+### Reibungs-Logik (ersetzt K.O.-Kriterien)
+
+**Philosophischer Grundsatz:** Nichts ist "unmöglich" - nur unterschiedlich schwierig.
+
+- Score 0% = 100% Reibung (maximale Herausforderung)
+- Graduelle Bewertung statt binärer Entscheidungen
+- perspektivenHinweise aus Pirsig, Osho und GFK bei Reibung
+
 ## Quick Start
 
 Öffne die Web-App:
@@ -105,7 +125,7 @@ StickySmart (Tiage)
 
 ## Lizenz & Geistiges Eigentum
 
-**© 2025 Ti-Age – Alle Rechte vorbehalten.**
+**© 2025-2026 Ti-Age – Alle Rechte vorbehalten.**
 
 Dieses Werk ist urheberrechtlich geschützt. Keine Lizenz erteilt.
 

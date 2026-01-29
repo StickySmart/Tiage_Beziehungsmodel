@@ -729,16 +729,19 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // ORIENTIERUNGS-KOMPATIBILITÄT
+    // ORIENTIERUNGS-KOMPATIBILITÄT - v4.0 Reibungs-Skala
     // ═══════════════════════════════════════════════════════════════════════
-    // Hard-KO bei geometrisch unmöglichen Kombinationen
+    // Keine K.O.-Kriterien mehr - alles wird als Reibungs-Spektrum dargestellt.
+    // 0% Score = 100% Reibung (maximale Herausforderung, nicht "unmöglich")
 
     ORIENTATION: {
-        COMPATIBLE: 100,     // Volle Kompatibilität
-        EXPLORING: 70,       // Exploration-Phase (interessiert)
-        UNLIKELY: 30,        // Unwahrscheinlich aber nicht unmöglich
-        INCOMPATIBLE: 10,    // Sehr unwahrscheinlich (soft K.O.)
-        HARD_KO: 0,          // Geometrisch unmöglich (echtes K.O.)
+        COMPATIBLE: 100,     // Volle Kompatibilität = keine Reibung
+        EXPLORING: 70,       // Exploration-Phase = leichte Reibung
+        UNLIKELY: 30,        // Herausfordernd = mittlere Reibung
+        INCOMPATIBLE: 10,    // Sehr herausfordernd = hohe Reibung
+        MAXIMUM_REIBUNG: 0,  // Maximale Reibung (ersetzt HARD_KO)
+        // Legacy-Alias für Abwärtskompatibilität
+        HARD_KO: 0,          // @deprecated - verwende MAXIMUM_REIBUNG
 
         // Sekundär-Orientierungs-Bonus
         // Wenn beide sekundäre Orientierungen auch kompatibel sind
@@ -788,46 +791,54 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // HARD-KO KRITERIEN (Geometrische Unmöglichkeiten)
+    // REIBUNGS-LOGIK (ersetzt K.O.-Kriterien) - v4.0
     // ═══════════════════════════════════════════════════════════════════════
-    // Diese Kombinationen sind logisch unmöglich, nicht nur kulturell bedingt.
-    // Resonanz kann hier NICHT überschreiben - es fehlt die neurologische Basis.
+    // Nichts ist "unmöglich" - nur unterschiedlich schwierig.
+    // Score 0% = 100% Reibung (maximale Herausforderung, aber nicht unmöglich)
+    //
+    // Philosophische Grundlage:
+    // - PIRSIG: Qualität ist ein Spektrum, keine binäre Entscheidung
+    // - OSHO: Jede Konditionierung kann überwunden werden
+    // - GFK: Jedes Bedürfnis kann erfüllt werden, Strategien sind verhandelbar
+    // - RTI: Die 5 Säulen der Identität ermöglichen graduelle Bewertung
 
     HARD_KO: {
-        // Aktiviert Hard-KO Logik
-        ENABLED: true,
+        // DEAKTIVIERT: K.O.-Logik durch Reibungs-Logik ersetzt
+        ENABLED: false,
 
-        // Hard-KO Fälle:
-        // 1. Hetero + Hetero + gleiches Geschlecht = beide suchen jemand anderen
-        // 2. Homo + Homo + verschiedenes Geschlecht = beide suchen jemand anderen
-        // 3. Hetero + Homo (bestimmte Konstellationen) = keine gegenseitige Anziehung
+        // Legacy-Fälle werden jetzt als "maximale Reibung" (0%) interpretiert:
+        // 1. Hetero + Hetero + gleiches Geschlecht = 0% Score = 100% Reibung
+        // 2. Homo + Homo + verschiedenes Geschlecht = 0% Score = 100% Reibung
+        // 3. Hetero + Homo Konstellationen = niedriger Score = hohe Reibung
 
-        // Freundlicher Text (kein aggressives "WARNUNG!")
-        MESSAGE_KEY: 'hardKO'  // Referenz auf Locale-Texte
+        // Message wird durch perspektivenHinweise in beduerfnis-katalog.json ersetzt
+        MESSAGE_KEY: 'reibungHoch'  // Neue Referenz auf Reibungs-Texte
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // SOFT-KO KRITERIEN (Bedürfnis-basiert)
+    // REIBUNGS-SCHWELLENWERTE (ersetzt Soft-K.O.) - v4.0
     // ═══════════════════════════════════════════════════════════════════════
-    // Nicht unmöglich, aber sehr unwahrscheinlich aufgrund starker Bedürfnis-Differenzen
+    // Bedürfnis-Differenzen erzeugen Reibung, keine K.O.-Entscheidung.
+    // Die Reibung wird als graduelle Herausforderung kommuniziert.
 
     SOFT_KO: {
-        ENABLED: true,
+        // DEAKTIVIERT: Durch graduelle Reibungs-Berechnung ersetzt
+        ENABLED: false,
 
-        // Schwellenwerte für Bedürfnis-Differenzen
+        // Schwellenwerte für Reibungs-Level (statt K.O.)
         THRESHOLDS: {
-            CRITICAL: 50,      // Differenz > 50 = kritischer Konflikt
-            HIGH: 35,          // Differenz > 35 = hoher Konflikt
-            MODERATE: 20       // Differenz > 20 = moderater Konflikt
+            CRITICAL: 50,      // Differenz > 50 = hohe Reibung (nicht "kritisch")
+            HIGH: 35,          // Differenz > 35 = mittlere Reibung
+            MODERATE: 20       // Differenz > 20 = leichte Reibung
         },
 
-        // Anzahl kritischer Konflikte für Soft-KO
-        MIN_CRITICAL_CONFLICTS: 3,  // Mind. 3 Bedürfnisse mit Diff > 50
+        // Reibungs-Akkumulation (statt K.O.-Auslösung)
+        MIN_CRITICAL_CONFLICTS: 3,  // 3+ hohe Reibungen = sehr hohe Gesamt-Reibung
 
-        // Score-Reduktion bei Soft-KO
-        SCORE_PENALTY: 0.3,   // Reduziert Score auf 30%
+        // KEINE Score-Penalty mehr - Score bleibt, Reibung wird kommuniziert
+        SCORE_PENALTY: 1.0,   // Keine Reduktion - Score = 100% - Reibung%
 
-        MESSAGE_KEY: 'softKO'
+        MESSAGE_KEY: 'reibungStufen'  // Neue Referenz auf Reibungs-Texte
     },
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -1007,26 +1018,29 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // PHYSICAL COMPATIBILITY (Pathos-Check) - SSOT
+    // PHYSICAL COMPATIBILITY (Pathos-Check) - v4.0 Reibungs-Logik
     // ═══════════════════════════════════════════════════════════════════════
     // Definiert wie Orientierungen in der Kompatibilitätsprüfung behandelt werden.
     //
-    // WICHTIG: Sekundäre Orientierung ist KEINE "Exploration", sondern eine
-    // vollwertige Orientierung mit reduziertem Einfluss auf das Scoring.
-    // Die Kompatibilitätsprüfung (möglich/unmöglich) behandelt beide gleich.
+    // v4.0 REIBUNGS-LOGIK:
+    // - "unmöglich" gibt es nicht mehr
+    // - Score 0% = 100% Reibung = maximale Herausforderung
+    // - Einseitige Anziehung = hohe Reibung (nicht "unmöglich")
     //
-    // Regel: BEIDE Personen müssen zueinander angezogen sein können.
-    // Einseitige Anziehung = unmöglich (nicht "unsicher"!)
+    // Philosophie: Nichts ist unmöglich, nur unterschiedlich schwierig.
+    // Die perspektivenHinweise in beduerfnis-katalog.json liefern Kontext.
 
     PHYSICAL_COMPATIBILITY: {
-        // Sekundäre Orientierung: Gewichtung im Scoring (nicht in Kompatibilität!)
+        // Sekundäre Orientierung: Gewichtung im Scoring
         SECONDARY_WEIGHT: 0.3,  // 30% Einfluss auf Score
 
-        // Ergebnis-Typen
+        // Ergebnis-Typen (v4.0: IMPOSSIBLE → HOHE_REIBUNG)
         RESULT: {
-            POSSIBLE: 'möglich',           // Gegenseitige Anziehung möglich
-            IMPOSSIBLE: 'unmöglich',       // Keine gegenseitige Anziehung möglich
-            INCOMPLETE: 'unvollständig'    // Fehlende Daten
+            POSSIBLE: 'möglich',              // Gegenseitige Anziehung = niedrige Reibung
+            HOHE_REIBUNG: 'hohe_reibung',     // Score 0-20% = maximale Herausforderung
+            INCOMPLETE: 'unvollständig',      // Fehlende Daten
+            // Legacy-Alias für Abwärtskompatibilität
+            IMPOSSIBLE: 'hohe_reibung'        // @deprecated - wird als hohe_reibung behandelt
         },
 
         // Konfidenz-Stufen

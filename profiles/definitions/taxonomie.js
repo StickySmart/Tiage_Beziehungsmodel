@@ -2,12 +2,14 @@
  * TIAGE TAXONOMIE - SINGLE SOURCE OF TRUTH
  * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Version: 1.0.0
+ * Version: 2.0.0
  * Erstellt: 2025-12-09
+ * Aktualisiert: 2025-01-29
  *
  * Diese Datei ist die EINZIGE Quelle für:
  * - Perspektiven (#P1-#P4)
  * - Dimensionen (#D1-#D6, Kurzform A-F)
+ * - RTI-Säulen (#S1-#S5) - NEU in v2.0.0
  * - Kategorien (#K1-#K18)
  *
  * ALLE anderen Dateien MÜSSEN diese Definitionen referenzieren!
@@ -15,15 +17,25 @@
  * Hierarchie:
  * ┌─────────────────────────────────────────────────────────────────────────────┐
  * │  PERSPEKTIVEN (4)     → Wie wird bewertet?                                  │
- * │  └── DIMENSIONEN (6)  → Welcher Lebensbereich? (A-F Scores)                 │
- * │      └── KATEGORIEN (18) → Welche Bedürfnisgruppe?                          │
- * │          └── BEDÜRFNISSE (220) → Einzelne Bedürfnisse (in beduerfnis-ids.js)│
+ * │  └── RTI-SÄULEN (5)   → Identitäts-Ebene (Petzold) - aggregiert Dimensionen │
+ * │      └── DIMENSIONEN (6)  → Welcher Lebensbereich? (A-F Scores)             │
+ * │          └── KATEGORIEN (18) → Welche Bedürfnisgruppe?                      │
+ * │              └── BEDÜRFNISSE (228) → Einzelne Bedürfnisse                   │
+ * └─────────────────────────────────────────────────────────────────────────────┘
+ *
+ * RTI-Säulen Mapping (v2.0.0):
+ * ┌─────────────────────────────────────────────────────────────────────────────┐
+ * │  S1 (Leiblichkeit)         = C                                              │
+ * │  S2 (Soziales Netzwerk)    = (A × 0.6) + (F × 0.4)                          │
+ * │  S3 (Autonomie & Leistung) = D                                              │
+ * │  S4 (Sicherheit)           = (A × 0.4) + (F × 0.6)                          │
+ * │  S5 (Werte & Sinn)         = (B × 0.4) + (E × 0.6)                          │
  * └─────────────────────────────────────────────────────────────────────────────┘
  */
 
 const TiageTaxonomie = {
 
-    version: '1.0.0',
+    version: '2.0.0',
 
     // ═══════════════════════════════════════════════════════════════════════════
     // PERSPEKTIVEN (#P1-#P4)
@@ -124,6 +136,86 @@ const TiageTaxonomie = {
             color: '#3B82F6',
             beschreibung: 'Soziales Leben, Praktisches, Alltag',
             beispiele: ['Intro/Extroversion', 'Freundeskreis', 'Ordnung', 'Reisen']
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // RTI-SÄULEN (#S1-#S5) - 5 Säulen der Identität (Petzold)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Aggregiert die 6 Dimensionen zu 5 Identitäts-Säulen
+    // Quelle: Hilarion Petzold - Integrative Therapie
+    //
+    // REIBUNGS-LOGIK: Keine K.O.-Kriterien mehr!
+    // Jede Säule zeigt Reibung (0-100%) mit Perspektiven-Hinweisen
+
+    saeulen: {
+        '#S1': {
+            id: '#S1',
+            key: 'leiblichkeit',
+            label: 'Leiblichkeit',
+            color: '#E84393',
+            beschreibung: 'Körper, Gesundheit, Sexualität, körperliche Nähe',
+            quelle: 'RTI (Petzold)',
+            // Mapping: S1 = C (100%)
+            dimensionen: {
+                '#D3': 1.0  // C = Nähe-Distanz
+            },
+            formel: 'S1 = C'
+        },
+        '#S2': {
+            id: '#S2',
+            key: 'soziales_netzwerk',
+            label: 'Soziales Netzwerk',
+            color: '#3B82F6',
+            beschreibung: 'Beziehungsform, Freunde, Familie, soziales Leben',
+            quelle: 'RTI (Petzold)',
+            // Mapping: S2 = (A × 0.6) + (F × 0.4)
+            dimensionen: {
+                '#D1': 0.6,  // A = Beziehungsphilosophie
+                '#D6': 0.4   // F = Soziale-Kompatibilität
+            },
+            formel: 'S2 = (A × 0.6) + (F × 0.4)'
+        },
+        '#S3': {
+            id: '#S3',
+            key: 'autonomie_leistung',
+            label: 'Autonomie & Leistung',
+            color: '#2A9D8F',
+            beschreibung: 'Selbstverwirklichung, Kreativität, Machtdynamik, Arbeit',
+            quelle: 'RTI (Petzold)',
+            // Mapping: S3 = D (100%)
+            dimensionen: {
+                '#D4': 1.0  // D = Autonomie
+            },
+            formel: 'S3 = D'
+        },
+        '#S4': {
+            id: '#S4',
+            key: 'sicherheit_stabilitaet',
+            label: 'Sicherheit & Stabilität',
+            color: '#F4A261',
+            beschreibung: 'Lebensplanung, Wohnen, Praktisches, Alltag, Materielles',
+            quelle: 'RTI (Petzold)',
+            // Mapping: S4 = (A × 0.4) + (F × 0.6)
+            dimensionen: {
+                '#D1': 0.4,  // A = Beziehungsphilosophie
+                '#D6': 0.6   // F = Soziale-Kompatibilität
+            },
+            formel: 'S4 = (A × 0.4) + (F × 0.6)'
+        },
+        '#S5': {
+            id: '#S5',
+            key: 'werte_sinn',
+            label: 'Werte & Sinn',
+            color: '#8B5CF6',
+            beschreibung: 'Weltanschauung, Spiritualität, Kommunikation, tiefes Verstehen',
+            quelle: 'RTI (Petzold)',
+            // Mapping: S5 = (B × 0.4) + (E × 0.6)
+            dimensionen: {
+                '#D2': 0.4,  // B = Werte-Alignment
+                '#D5': 0.6   // E = Kommunikation
+            },
+            formel: 'S5 = (B × 0.4) + (E × 0.6)'
         }
     },
 
@@ -345,6 +437,7 @@ const TiageTaxonomie = {
             perspektivenByKey: {},
             dimensionenByKey: {},
             dimensionenByKurzform: {},
+            saeulenByKey: {},
             kategorienByKey: {},
             kategorienByDimension: {}
         };
@@ -360,6 +453,12 @@ const TiageTaxonomie = {
             var d = this.dimensionen[id];
             this._lookups.dimensionenByKey[d.key] = d;
             this._lookups.dimensionenByKurzform[d.kurzform] = d;
+        }
+
+        // RTI-Säulen
+        for (var id in this.saeulen) {
+            var s = this.saeulen[id];
+            this._lookups.saeulenByKey[s.key] = s;
         }
 
         // Kategorien
@@ -439,6 +538,101 @@ const TiageTaxonomie = {
     },
 
     // ─────────────────────────────────────────────────────────────────────────
+    // RTI-Säulen-Zugriff
+    // ─────────────────────────────────────────────────────────────────────────
+
+    getSaeule: function(idOrKey) {
+        this.init();
+        if (idOrKey.startsWith('#S')) {
+            return this.saeulen[idOrKey];
+        }
+        return this._lookups.saeulenByKey[idOrKey];
+    },
+
+    getAlleSaeulen: function() {
+        return Object.values(this.saeulen);
+    },
+
+    /**
+     * Berechnet alle 5 RTI-Säulen-Scores aus den 6 Dimensions-Scores
+     * @param {Object} dimensionScores - Object mit {A, B, C, D, E, F} Scores (0-100)
+     * @returns {Object} - Object mit {S1, S2, S3, S4, S5} Scores (0-100)
+     */
+    berechneSaeulenScores: function(dimensionScores) {
+        var A = dimensionScores.A || dimensionScores['#D1'] || 0;
+        var B = dimensionScores.B || dimensionScores['#D2'] || 0;
+        var C = dimensionScores.C || dimensionScores['#D3'] || 0;
+        var D = dimensionScores.D || dimensionScores['#D4'] || 0;
+        var E = dimensionScores.E || dimensionScores['#D5'] || 0;
+        var F = dimensionScores.F || dimensionScores['#D6'] || 0;
+
+        return {
+            S1: C,                              // Leiblichkeit = C
+            S2: (A * 0.6) + (F * 0.4),          // Soziales Netzwerk
+            S3: D,                              // Autonomie & Leistung = D
+            S4: (A * 0.4) + (F * 0.6),          // Sicherheit & Stabilität
+            S5: (B * 0.4) + (E * 0.6),          // Werte & Sinn
+            // Auch mit IDs
+            '#S1': C,
+            '#S2': (A * 0.6) + (F * 0.4),
+            '#S3': D,
+            '#S4': (A * 0.4) + (F * 0.6),
+            '#S5': (B * 0.4) + (E * 0.6)
+        };
+    },
+
+    /**
+     * Berechnet Reibung aus Säulen-Score
+     * Reibung = 100 - Score
+     * @param {number} score - Säulen-Score (0-100)
+     * @returns {number} - Reibung (0-100)
+     */
+    berechneReibung: function(score) {
+        return 100 - score;
+    },
+
+    /**
+     * Gibt das Reibungs-Level für einen Score zurück
+     * @param {number} reibung - Reibungs-Wert (0-100)
+     * @returns {string} - 'niedrig', 'mittel', oder 'hoch'
+     */
+    getReibungsLevel: function(reibung) {
+        if (reibung <= 33) return 'niedrig';
+        if (reibung <= 66) return 'mittel';
+        return 'hoch';
+    },
+
+    /**
+     * Berechnet alle Säulen-Reibungen mit Levels
+     * @param {Object} dimensionScores - Object mit {A, B, C, D, E, F} Scores
+     * @returns {Object} - Detaillierte Reibungs-Analyse pro Säule
+     */
+    berechneSaeulenReibung: function(dimensionScores) {
+        var scores = this.berechneSaeulenScores(dimensionScores);
+        var self = this;
+        var result = {};
+
+        ['S1', 'S2', 'S3', 'S4', 'S5'].forEach(function(sKey) {
+            var saeule = self.saeulen['#' + sKey];
+            var score = scores[sKey];
+            var reibung = self.berechneReibung(score);
+            var level = self.getReibungsLevel(reibung);
+
+            result[sKey] = {
+                id: '#' + sKey,
+                label: saeule.label,
+                score: Math.round(score * 10) / 10,
+                reibung: Math.round(reibung * 10) / 10,
+                level: level,
+                color: saeule.color,
+                formel: saeule.formel
+            };
+        });
+
+        return result;
+    },
+
+    // ─────────────────────────────────────────────────────────────────────────
     // Hierarchie-Navigation
     // ─────────────────────────────────────────────────────────────────────────
 
@@ -481,6 +675,7 @@ const TiageTaxonomie = {
 
         if (id.startsWith('#P')) return !!this.perspektiven[id];
         if (id.startsWith('#D')) return !!this.dimensionen[id];
+        if (id.startsWith('#S')) return !!this.saeulen[id];
         if (id.startsWith('#K')) return !!this.kategorien[id];
 
         return false;
@@ -494,6 +689,7 @@ const TiageTaxonomie = {
         return {
             perspektiven: Object.keys(this.perspektiven).length,
             dimensionen: Object.keys(this.dimensionen).length,
+            saeulen: Object.keys(this.saeulen).length,
             kategorien: Object.keys(this.kategorien).length,
             kategorienProDimension: Object.fromEntries(
                 Object.keys(this._lookups.kategorienByDimension).map(function(d) {

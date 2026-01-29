@@ -623,9 +623,14 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Togglet die Auswahl eines Bedürfnisses
+     * SSOT v2.0: Partner-Bedürfnisse können nicht ausgewählt werden (nicht editierbar)
      * @param {string} needId - Die #B-ID
      */
     function toggleNeedSelection(needId) {
+        // SSOT v2.0: Partner-Bedürfnisse können nicht für Bulk-Edit ausgewählt werden
+        if (currentFlatPerson === 'partner') {
+            return; // Keine Auswahl bei Partner - alles read-only
+        }
         if (selectedNeeds.has(needId)) {
             selectedNeeds.delete(needId);
             // Entferne auch den ursprünglichen Wert
@@ -3441,8 +3446,14 @@ const AttributeSummaryCard = (function() {
     /**
      * Slider-Input-Handler für flache Darstellung
      * BULK-EDIT: Wenn das Bedürfnis markiert ist, werden alle markierten mit geändert
+     * SSOT v2.0: Partner-Bedürfnisse sind NICHT manuell editierbar
      */
     function onFlatSliderInput(needId, value, sliderElement) {
+        // SSOT v2.0: Partner-Bedürfnisse sind nicht editierbar
+        if (currentFlatPerson === 'partner') {
+            console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
+            return;
+        }
         const needObj = findNeedById(needId);
         if (needObj?.locked) return;
 

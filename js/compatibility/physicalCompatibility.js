@@ -94,9 +94,15 @@ TiageCompatibility.Physical = (function() {
             return TiageSynthesisConstants.PHYSICAL_COMPATIBILITY;
         }
         // Fallback defaults (sollte nie verwendet werden wenn constants.js geladen)
+        // v4.0: IMPOSSIBLE → HOHE_REIBUNG (nichts ist unmöglich, nur unterschiedlich herausfordernd)
         return {
             SECONDARY_WEIGHT: 0.3,
-            RESULT: { POSSIBLE: 'möglich', IMPOSSIBLE: 'unmöglich', INCOMPLETE: 'unvollständig' },
+            RESULT: {
+                POSSIBLE: 'möglich',
+                HOHE_REIBUNG: 'hohe_reibung',
+                INCOMPLETE: 'unvollständig',
+                IMPOSSIBLE: 'hohe_reibung'  // Legacy-Alias
+            },
             CONFIDENCE: { HIGH: 'hoch', MEDIUM: 'mittel', LOW: 'niedrig' },
             REQUIRE_MUTUAL_ATTRACTION: true
         };
@@ -118,7 +124,10 @@ TiageCompatibility.Physical = (function() {
      *
      * FIX (SSOT): Sekundäre Orientierung ist KEINE "Exploration", sondern eine
      * vollwertige Orientierung. Die Kompatibilität prüft ob BEIDE Personen
-     * gegenseitig angezogen sein können - einseitige Anziehung ist unmöglich.
+     * gegenseitig angezogen sein können.
+     *
+     * v4.0 REIBUNGS-LOGIK: Einseitige Anziehung = hohe Reibung (nicht "unmöglich")
+     * Nichts ist unmöglich, nur unterschiedlich herausfordernd.
      *
      * @param {string} type1 - Orientation type person 1
      * @param {boolean} isPrimary1 - Ist dies die primäre Orientierung von Person 1?
@@ -126,7 +135,7 @@ TiageCompatibility.Physical = (function() {
      * @param {boolean} isPrimary2 - Ist dies die primäre Orientierung von Person 2?
      * @param {string} g1 - Gender person 1
      * @param {string} g2 - Gender person 2
-     * @returns {object} { result: 'möglich'|'unmöglich', confidence: 'hoch'|'mittel'|'niedrig' }
+     * @returns {object} { result: 'möglich'|'hohe_reibung', confidence: 'hoch'|'mittel'|'niedrig' }
      */
     function checkSingleOrientationPair(type1, isPrimary1, type2, isPrimary2, g1, g2) {
         var constants = getConstants();
@@ -195,7 +204,7 @@ TiageCompatibility.Physical = (function() {
         };
 
         // SSOT: BEIDE Personen müssen zueinander angezogen sein können
-        // Einseitige Anziehung ist unmöglich!
+        // v4.0: Einseitige Anziehung = hohe Reibung (nicht "unmöglich")
         var person1CanBeAttracted = canBeAttractedTo(type1, g1, g2);
         var person2CanBeAttracted = canBeAttractedTo(type2, g2, g1);
 
@@ -208,9 +217,9 @@ TiageCompatibility.Physical = (function() {
             return { result: constants.RESULT.POSSIBLE, confidence: confidence };
         }
 
-        // SSOT: Einseitige Anziehung ist NICHT möglich
-        // (Alte Logik gab hier fälschlicherweise "unsicher" zurück)
-        return { result: constants.RESULT.IMPOSSIBLE, confidence: null };
+        // v4.0 REIBUNGS-LOGIK: Einseitige Anziehung = hohe Reibung
+        // (IMPOSSIBLE ist jetzt ein Alias für HOHE_REIBUNG in constants.js)
+        return { result: constants.RESULT.HOHE_REIBUNG || constants.RESULT.IMPOSSIBLE, confidence: null };
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -267,12 +276,16 @@ TiageCompatibility.Physical = (function() {
     /**
      * Check physical compatibility between two persons
      *
+     * v4.0 REIBUNGS-LOGIK: Keine binären K.O.-Entscheidungen mehr.
+     * "hohe_reibung" bedeutet maximale Herausforderung, nicht "unmöglich".
+     *
      * @param {object} person1 - Person 1 data
      * @param {object} person2 - Person 2 data
      * @returns {object} Result with:
-     *   - result: 'möglich' | 'unsicher' | 'unmöglich' | 'unvollständig'
+     *   - result: 'möglich' | 'hohe_reibung' | 'unvollständig'
      *   - confidence: 'hoch' | 'mittel' | 'niedrig' (optional)
      *   - reason: string (optional)
+     *   - reibung: number (0-100, optional) - Reibungsgrad in Prozent
      *   - explanation: string (optional)
      *   - missingItems: array (optional)
      */
@@ -440,11 +453,13 @@ TiageCompatibility.Physical = (function() {
             return { result: bestResult, confidence: bestConfidence };
         }
 
-        // SSOT: Keine gegenseitige Anziehung möglich = unmöglich
+        // v4.0 REIBUNGS-LOGIK: Keine gegenseitige Anziehung = hohe Reibung
+        // Nichts ist unmöglich, nur unterschiedlich herausfordernd
         return {
-            result: constants.RESULT.IMPOSSIBLE,
-            reason: 'Inkompatible Orientierungen',
-            explanation: 'Die sexuellen Orientierungen schließen gegenseitige Anziehung aus.'
+            result: constants.RESULT.HOHE_REIBUNG || constants.RESULT.IMPOSSIBLE,
+            reason: 'Hohe Orientierungs-Reibung',
+            explanation: 'Die Orientierungen zeigen in unterschiedliche Richtungen - das erfordert besondere Bewusstheit.',
+            reibung: 100  // 100% Reibung = maximale Herausforderung
         };
     }
 

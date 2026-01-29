@@ -1,18 +1,24 @@
 /**
- * STATE MANAGEMENT - Single Source of Truth
+ * STATE MANAGEMENT - Single Source of Truth (SSOT v2.0)
  *
  * Zentraler State-Store mit Pub/Sub Pattern für reaktive Updates.
  * Ersetzt die doppelte personDimensions/mobilePersonDimensions Struktur.
  *
+ * SSOT v2.0 ARCHITEKTUR:
+ * - ICH-Bedürfnisse: Pro Archetyp gespeichert (8 Slots), User-editierbar
+ * - Partner-Bedürfnisse: Ein Slot, dynamisch berechnet aus Archetyp + AGOD, NICHT editierbar
+ * - Reibungs-Logik: Keine harten K.O.-Kriterien, nur graduelle Reibung (0-100%)
+ * - RTI 5 Säulen: Dimensionen werden auf Identitäts-Säulen gemappt (S1-S5)
+ *
  * NAMING CONVENTION (siehe docs/NAMING_CONVENTION.md):
  * - personDimensions: Meta-Eigenschaften die beschreiben "Wer ich bin"
- *   • geschlecht.primary/secondary: Körper/Identität
+ *   • geschlecht: 'mann', 'frau', 'nonbinaer'
  *   • dominanz: dominant/submissiv/switch/ausgeglichen
- *   • orientierung: hetero/homo/bi
+ *   • orientierung: Multi-Select Array ['heterosexuell', 'bisexuell', ...]
  * - Diese modifizieren die baseAttributes (30 Profil-Parameter)
  * - NICHT VERWECHSELN mit: baseAttributes (Matching), needs (GFK)
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const TiageState = (function() {

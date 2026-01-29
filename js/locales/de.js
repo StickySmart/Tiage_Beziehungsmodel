@@ -631,51 +631,68 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // HARD-KO TEXTE (Freundlich, nicht aggressiv)
+    // REIBUNGS-TEXTE v4.0 (ersetzt K.O.-Texte)
     // ═══════════════════════════════════════════════════════════════════════
+    // Philosophie: Nichts ist unmöglich, nur unterschiedlich herausfordernd.
+    // Score 0% = 100% Reibung = maximale Herausforderung (nicht "unmöglich")
 
-    hardKO: {
-        title: 'Passt nicht zusammen',
-        subtitle: 'Diese Kombination hat keine romantische Basis',
+    hardKO: {  // Legacy-Key für Abwärtskompatibilität
+        title: 'Hohe Reibung',
+        subtitle: 'Diese Kombination erfordert besondere Bewusstheit',
 
-        // Freundliche Erklärungen je nach Grund
+        // Reibungs-Hinweise statt "Gründe"
         reasons: {
-            hetero_same_gender: 'Beide suchen jemand vom anderen Geschlecht',
-            homo_different_gender: 'Beide suchen jemand vom gleichen Geschlecht',
-            hetero_male_lesbian_female: 'Er sucht Frauen, sie sucht Frauen',
-            lesbian_female_hetero_male: 'Sie sucht Frauen, er sucht Frauen',
-            hetero_female_homo_male: 'Sie sucht Männer, er sucht Männer',
-            homo_male_hetero_female: 'Er sucht Männer, sie sucht Männer'
+            hetero_same_gender: 'Unterschiedliche Orientierungsrichtungen',
+            homo_different_gender: 'Orientierungen zeigen in verschiedene Richtungen',
+            hetero_male_lesbian_female: 'Unterschiedliche Anziehungsmuster',
+            lesbian_female_hetero_male: 'Verschiedene Anziehungsrichtungen',
+            hetero_female_homo_male: 'Orientierungen sind nicht aufeinander gerichtet',
+            homo_male_hetero_female: 'Verschiedene Anziehungsrichtungen'
         },
 
-        // Positive Alternative
-        friendship: 'Aber eine tiefe Freundschaft ist möglich!',
+        // RTI-Hinweis (Säule S1 - Leiblichkeit)
+        friendship: 'Andere Beziehungsformen sind möglich!',
 
-        // Philosophischer Hinweis
-        philosophy: 'Körperliche Anziehung braucht eine gemeinsame Richtung.'
+        // Multi-Perspektiven-Hinweis
+        philosophy: 'Hohe Reibung bedeutet Wachstumspotenzial, nicht Unmöglichkeit.'
     },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SOFT-KO TEXTE (Bedürfnis-Konflikte)
-    // ═══════════════════════════════════════════════════════════════════════
+    // Reibungs-Stufen (ersetzt softKO)
+    softKO: {  // Legacy-Key für Abwärtskompatibilität
+        title: 'Mittlere Reibung',
+        subtitle: 'Unterschiede in wichtigen Bereichen',
 
-    softKO: {
-        title: 'Herausfordernde Kombination',
-        subtitle: 'Starke Unterschiede in Kernbedürfnissen',
-
-        // Erklärungen
+        // Reibungs-Hinweise
         reasons: {
-            needs_conflict: 'Eure Kernbedürfnisse unterscheiden sich deutlich',
-            dynamic_mismatch: 'Die Dynamik-Präferenzen passen nicht optimal',
-            values_gap: 'Unterschiedliche Prioritäten bei wichtigen Werten'
+            needs_conflict: 'Eure Bedürfnisse haben unterschiedliche Ausprägungen',
+            dynamic_mismatch: 'Die Dynamik-Stile unterscheiden sich',
+            values_gap: 'Verschiedene Prioritäten bei Werten'
         },
 
-        // Konstruktiver Hinweis
-        growth: 'Mit bewusster Kommunikation kann das funktionieren.',
+        // GFK-Hinweis
+        growth: 'Reibung ist Wachstumspotenzial - mit Bewusstheit wird daraus Entwicklung.',
 
-        // Bedürfnis-spezifisch
-        conflictLabel: 'Konfliktpotenzial',
-        needsLabel: 'Unterschiedliche Bedürfnisse'
+        // Reibungs-spezifisch
+        conflictLabel: 'Reibungspotenzial',
+        needsLabel: 'Unterschiedliche Bedürfnisausprägungen'
+    },
+
+    // Neue Reibungs-Stufen
+    reibung: {
+        stufen: {
+            keine: { label: 'Keine Reibung', emoji: '✨', range: '90-100%' },
+            leicht: { label: 'Leichte Reibung', emoji: '🌱', range: '70-89%' },
+            mittel: { label: 'Mittlere Reibung', emoji: '🔧', range: '40-69%' },
+            hoch: { label: 'Hohe Reibung', emoji: '⚡', range: '10-39%' },
+            maximal: { label: 'Maximale Reibung', emoji: '🔥', range: '0-9%' }
+        },
+        // Perspektiven-Hinweise
+        hinweise: {
+            pirsig: 'Qualität entsteht durch Integration von Unterschieden',
+            osho: 'Jede Konditionierung kann bewusst überwunden werden',
+            gfk: 'Hinter jeder Reibung stehen erfüllbare Bedürfnisse',
+            rti: 'Die 5 Säulen der Identität zeigen Entwicklungspotenziale'
+        }
     },
 
     // ═══════════════════════════════════════════════════════════════════════

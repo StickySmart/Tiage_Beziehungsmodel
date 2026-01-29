@@ -1,7 +1,7 @@
 # Bedürfnis-Speicherung Umstrukturierung - Umsetzungsplan
 
-**Stand:** 25. Januar 2026
-**Ziel:** Minimale Änderung an der Bedürfnis-Verwaltung gemäß SSOT-Architektur
+**Stand:** 29. Januar 2026 - **IMPLEMENTIERT** ✅
+**Ziel:** Minimale Änderung an der Bedürfnis-Verwaltung gemäß SSOT v2.0 Architektur
 
 ---
 
@@ -69,59 +69,45 @@ flatNeeds: {
 
 ---
 
-## 3. NOCH ZU IMPLEMENTIEREN ⚠️
+## 3. IMPLEMENTIERT ✅ (Stand: 29. Januar 2026)
 
-### 3.1 state.js - setNeed für Partner blockieren
-**Datei:** `js/state.js` Zeile 1319-1327
+### 3.1 state.js - setNeed für Partner ✅
+**Datei:** `js/state.js`
 
-**Problem:** `TiageState.setNeed('partner', needId, value)` schreibt noch in flatNeeds.partner
+**Entscheidung:** setNeed für Partner NICHT blockieren, da die dynamische Berechnung dies braucht.
+Stattdessen UI read-only machen. Header-Dokumentation auf SSOT v2.0 aktualisiert.
 
-**Lösung:** Warning ausgeben aber Schreiben erlauben (für dynamische Berechnung)
+### 3.2 needs-editor.html - Partner-Zugang deaktivieren ✅
+**Datei:** `needs-editor.html` (Zeilen 847-848, 1212-1216)
+
+**Lösung implementiert:**
 ```javascript
-setNeed(person, needId, value, archetyp = null) {
-    const clampedValue = Math.min(100, Math.max(0, value));
-    if (person === 'ich') {
-        const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-        this.set(`flatNeeds.ich.${arch}.${needId}`, clampedValue);
-    } else {
-        // Partner: Nur dynamische Berechnung erlaubt, keine manuelle Eingabe
-        // Das System (Berechnung) darf schreiben, aber UI sollte read-only sein
-        this.set(`flatNeeds.partner.${needId}`, clampedValue);
-    }
-}
+const requestedPerson = urlParams.get('person') || 'ich';
+// Partner-Zugang blockieren - nur noch ICH editierbar
+currentPerson = (requestedPerson === 'partner') ? 'ich' : requestedPerson;
 ```
-**Entscheidung:** setNeed für Partner NICHT blockieren, da die dynamische Berechnung dies braucht. Stattdessen UI read-only machen.
 
-### 3.2 needs-editor.html - Partner-Zugang deaktivieren
-**Datei:** `needs-editor.html`
-
-**Problem:** Partner kann via URL-Parameter aufgerufen werden (`?person=partner`)
-
-**Lösung:**
-- Im JavaScript prüfen: wenn person='partner', auf 'ich' umleiten
-- Partner-CSS entfernen (Zeilen 410-437)
-- Partner-JS Referenzen bereinigen
-
-### 3.3 AttributeSummaryCard - Partner read-only
+### 3.3 AttributeSummaryCard - Defensive Guards ✅
 **Datei:** `js/components/AttributeSummaryCard.js`
 
-**Problem:** AttributeSummaryCard erlaubt Editing für beide Personen
+**Lösung implementiert (minimal, defensiv):**
+- `onFlatSliderInput()`: Partner-Check blockiert Slider-Eingabe
+- `updateFlatNeedValue()`: Partner-Check blockiert Input-Änderung
+- `toggleFlatNeedLock()`: Partner-Check blockiert Lock-Toggle
+- `toggleNeedSelection()`: Partner-Check blockiert Multi-Select
 
-**Lösung:**
-- Bei person='partner' alle Edit-Buttons deaktivieren
-- Read-only Styling anwenden
-- Tooltip/Info anzeigen: "Partner-Werte werden dynamisch berechnet"
+**Hinweis:** Da der Zugang zu Partner-Editing durch needs-editor.html blockiert wird, sind diese Guards nur als Absicherung für interne Aufrufe gedacht. Kein spezielles CSS nötig.
 
 ---
 
 ## 4. BETROFFENE DATEIEN
 
-| Datei | Änderung | Priorität |
-|-------|----------|-----------|
-| `js/state.js` | Dokumentation aktualisieren | Niedrig |
-| `needs-editor.html` | Partner-Zugang blockieren, CSS/JS aufräumen | Hoch |
-| `js/components/AttributeSummaryCard.js` | Partner read-only machen | Hoch |
-| `archetype-interaction.html` | Bereits OK - keine Änderung | - |
+| Datei | Änderung | Status |
+|-------|----------|--------|
+| `js/state.js` | Dokumentation auf SSOT v2.0 aktualisiert | ✅ |
+| `needs-editor.html` | Partner-Zugang blockiert (URL-Redirect) | ✅ |
+| `js/components/AttributeSummaryCard.js` | Defensive Guards für Partner | ✅ |
+| `archetype-interaction.html` | Bereits OK - keine Änderung | ✅ |
 
 ---
 

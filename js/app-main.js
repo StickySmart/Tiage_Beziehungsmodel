@@ -11947,10 +11947,36 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         updateBindungsmusterUI();
                         checkStartButtonState();
                     }
+
+                    // Lade gespeicherte Reibungs-Werte (#B227, #B228)
+                    loadReibungValues();
                 }
             }
         }
         window.openSlotMachineModal = openSlotMachineModal;
+
+        /**
+         * Lädt gespeicherte Reibungs-Werte aus TiageState in die Slider
+         */
+        function loadReibungValues() {
+            if (typeof TiageState === 'undefined') return;
+
+            const flatNeeds = TiageState.getFlatNeeds('ich') || {};
+
+            // #B227 - Körperliche Resonanz
+            const b227Value = flatNeeds['#B227'] ?? 50;
+            const b227Slider = document.getElementById('reibungB227Slider');
+            const b227Display = document.getElementById('reibungB227Value');
+            if (b227Slider) b227Slider.value = b227Value;
+            if (b227Display) b227Display.textContent = b227Value;
+
+            // #B228 - Beziehungsform-Passung
+            const b228Value = flatNeeds['#B228'] ?? 50;
+            const b228Slider = document.getElementById('reibungB228Slider');
+            const b228Display = document.getElementById('reibungB228Value');
+            if (b228Slider) b228Slider.value = b228Value;
+            if (b228Display) b228Display.textContent = b228Value;
+        }
 
         /**
          * Schließt das Slot Machine Modal
@@ -12101,9 +12127,47 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
+         * Update Reibungs-Slider Wert und Anzeige
+         * @param {string} needId - 'B227' oder 'B228' (ohne #)
+         * @param {number} value - Slider-Wert (0-100)
+         */
+        function updateReibungSlider(needId, value) {
+            const valueEl = document.getElementById(`reibung${needId}Value`);
+            if (valueEl) {
+                valueEl.textContent = value;
+            }
+        }
+        window.updateReibungSlider = updateReibungSlider;
+
+        /**
+         * Speichert die Reibungs-Werte aus dem Modal in TiageState
+         */
+        function saveReibungValues() {
+            if (typeof TiageState === 'undefined') return;
+
+            const b227Slider = document.getElementById('reibungB227Slider');
+            const b228Slider = document.getElementById('reibungB228Slider');
+
+            if (b227Slider) {
+                const value = parseInt(b227Slider.value, 10);
+                TiageState.setNeed('ich', '#B227', value);
+                console.log('[Reibung] #B227 (Körperliche Resonanz) gespeichert:', value);
+            }
+
+            if (b228Slider) {
+                const value = parseInt(b228Slider.value, 10);
+                TiageState.setNeed('ich', '#B228', value);
+                console.log('[Reibung] #B228 (Beziehungsform-Passung) gespeichert:', value);
+            }
+        }
+
+        /**
          * Startet die Slot Machine Animation und Berechnung
          */
         function startSlotMachine() {
+            // Speichere Reibungs-Werte vor dem Start
+            saveReibungValues();
+
             // Wechsel zu Phase 2
             document.getElementById('slotPhase1').style.display = 'none';
             document.getElementById('slotPhase2').style.display = 'block';
@@ -16443,14 +16507,16 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             const scoreBtn = document.getElementById('tiageSyntheseToggleScore');
             const oshoZenBtn = document.getElementById('tiageSyntheseToggleOshoZen');
             const needsBtn = document.getElementById('tiageSyntheseToggleNeeds');
+            const rtiBtn = document.getElementById('tiageSyntheseToggleRTI');
 
             // Modal header buttons
             const modalScoreBtn = document.getElementById('modalScoreBtn');
             const modalOshoZenBtn = document.getElementById('modalOshoZenBtn');
             const modalNeedsBtn = document.getElementById('modalNeedsBtn');
+            const modalRTIBtn = document.getElementById('modalRTIBtn');
 
             // Reset all sticky side button styles
-            [scoreBtn, oshoZenBtn, needsBtn].forEach(btn => {
+            [scoreBtn, oshoZenBtn, needsBtn, rtiBtn].forEach(btn => {
                 if (btn) {
                     btn.style.background = 'rgba(30,30,35,0.95)';
                     btn.style.color = 'var(--text-muted)';
@@ -16459,7 +16525,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             });
 
             // Reset modal header button styles
-            [modalScoreBtn, modalOshoZenBtn, modalNeedsBtn].forEach(btn => {
+            [modalScoreBtn, modalOshoZenBtn, modalNeedsBtn, modalRTIBtn].forEach(btn => {
                 if (btn) btn.classList.remove('active');
             });
 
@@ -16506,6 +16572,19 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     needsBtn.style.border = '1px solid #22c55e';
                 }
                 if (modalNeedsBtn) modalNeedsBtn.classList.add('active');
+            } else if (type === 'rti') {
+                titleEl.textContent = "Ti-Age Synthese";
+                iconEl.textContent = '🏛️';
+                categoryEl.textContent = '5 Säulen der Identität';
+                subtitleEl.textContent = 'RTI nach Petzold – Reibungs-Analyse';
+                typeIndicatorEl.style.display = 'flex';
+                contentEl.innerHTML = getRTIContent();
+                if (rtiBtn) {
+                    rtiBtn.style.background = 'rgba(244, 162, 97, 0.3)';
+                    rtiBtn.style.color = 'var(--text-primary)';
+                    rtiBtn.style.border = '1px solid #F4A261';
+                }
+                if (modalRTIBtn) modalRTIBtn.classList.add('active');
             }
         }
 
@@ -18844,6 +18923,346 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     </div>
                 `;
             }
+
+            return html;
+        }
+
+        /**
+         * RTI-Säulen Content (5 Säulen der Identität nach Petzold)
+         * Zeigt Reibungs-Analyse pro Säule basierend auf Dimensions-Matching
+         */
+        function getRTIContent() {
+            // Archetyp-Namen holen
+            const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // Prüfe ob TiageTaxonomie und TiageBeduerfnisse verfügbar
+            if (typeof TiageTaxonomie === 'undefined' || typeof TiageBeduerfnisse === 'undefined') {
+                return '<p style="color: var(--text-muted);">RTI-Berechnung nicht verfügbar (Module fehlen).</p>';
+            }
+
+            // FlatNeeds holen
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('ich') || {}) : {};
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('partner') || {}) : {};
+
+            if (Object.keys(ichFlatNeeds).length === 0 || Object.keys(partnerFlatNeeds).length === 0) {
+                return '<p style="color: var(--text-muted);">Keine Bedürfnis-Daten verfügbar.</p>';
+            }
+
+            // Kategorie → Dimension Mapping aufbauen (aus TiageTaxonomie)
+            const kategorieToDimension = {};
+            Object.values(TiageTaxonomie.kategorien || {}).forEach(kat => {
+                if (kat.key && kat.dimension) {
+                    kategorieToDimension[kat.key] = kat.dimension;
+                }
+            });
+
+            // Dimension-Scores berechnen (Matching-Qualität pro Dimension A-F)
+            const dimensionMatches = { A: [], B: [], C: [], D: [], E: [], F: [] };
+
+            // Alle gemeinsamen Needs durchgehen
+            const allNeedIds = new Set([...Object.keys(ichFlatNeeds), ...Object.keys(partnerFlatNeeds)]);
+
+            allNeedIds.forEach(needId => {
+                const wert1 = ichFlatNeeds[needId];
+                const wert2 = partnerFlatNeeds[needId];
+                if (wert1 === undefined || wert2 === undefined) return;
+
+                // Kategorie für dieses Need finden
+                const def = TiageBeduerfnisse.getDefinition ? TiageBeduerfnisse.getDefinition(needId) : null;
+                if (!def || !def.kategorie) return;
+
+                // Dimension für diese Kategorie
+                const dimensionId = kategorieToDimension[def.kategorie];
+                if (!dimensionId) return;
+
+                // Kurzform (A-F) aus Dimension
+                const dim = TiageTaxonomie.getDimension ? TiageTaxonomie.getDimension(dimensionId) : null;
+                const kurzform = dim?.kurzform;
+                if (!kurzform || !dimensionMatches[kurzform]) return;
+
+                // Match-Qualität berechnen (100 = perfekt, 0 = maximal unterschiedlich)
+                const diff = Math.abs(wert1 - wert2);
+                const matchQuality = Math.max(0, 100 - diff);
+
+                dimensionMatches[kurzform].push(matchQuality);
+            });
+
+            // Durchschnittliche Dimension-Scores berechnen
+            const dimensionScores = {};
+            ['A', 'B', 'C', 'D', 'E', 'F'].forEach(d => {
+                const matches = dimensionMatches[d];
+                dimensionScores[d] = matches.length > 0
+                    ? Math.round(matches.reduce((a, b) => a + b, 0) / matches.length)
+                    : 50; // Neutral wenn keine Daten
+            });
+
+            // RTI-Säulen berechnen
+            const saeulenReibung = TiageTaxonomie.berechneSaeulenReibung(dimensionScores);
+
+            // Gesamt-Reibung berechnen
+            let gesamtReibung = 0;
+            let saeulenCount = 0;
+            Object.values(saeulenReibung).forEach(s => {
+                gesamtReibung += s.reibung;
+                saeulenCount++;
+            });
+            const avgReibung = saeulenCount > 0 ? Math.round(gesamtReibung / saeulenCount) : 0;
+            const avgHarmonie = 100 - avgReibung;
+
+            // Farbe für Gesamt-Score
+            let scoreColor = '#22c55e';
+            if (avgHarmonie < 50) scoreColor = '#ef4444';
+            else if (avgHarmonie < 70) scoreColor = '#eab308';
+
+            // HTML generieren
+            let html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 48px; font-weight: 700; color: ${scoreColor};">${avgHarmonie}%</div>
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                        Identitäts-Harmonie
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                        ${ichName} ↔ ${partnerName}
+                    </div>
+                </div>
+
+                <div style="
+                    background: rgba(255,255,255,0.03);
+                    border-radius: 8px;
+                    padding: 12px;
+                    margin-bottom: 16px;
+                    border-left: 3px solid var(--primary);
+                ">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>RTI nach Petzold</strong> – 5 Säulen der Identität
+                    </div>
+                    <div style="font-size: 10px; color: var(--text-muted); line-height: 1.5;">
+                        Jede Säule repräsentiert einen fundamentalen Aspekt menschlicher Identität.
+                        Reibung entsteht, wenn Bedürfnisse in einer Säule unterschiedlich ausgeprägt sind.
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+            `;
+
+            // Säulen-Icons und Beschreibungen
+            const saeulenMeta = {
+                S1: { icon: '🫀', kurz: 'Körper, Gesundheit, Sexualität' },
+                S2: { icon: '👥', kurz: 'Beziehungsform, Freunde, Familie' },
+                S3: { icon: '🎯', kurz: 'Selbstverwirklichung, Kreativität' },
+                S4: { icon: '🏠', kurz: 'Lebensplanung, Alltag, Materielles' },
+                S5: { icon: '💫', kurz: 'Weltanschauung, Spiritualität, Sinn' }
+            };
+
+            // PerspektivenHinweise für S1 und S2 (aus beduerfnis-katalog.json)
+            const perspektivenHinweise = {
+                S1: { // #B227 - Körperliche Resonanz
+                    pirsig: {
+                        niedrig: "Körperliche Resonanz ist vorhanden - biologische Qualitätsmuster harmonieren.",
+                        mittel: "Teilweise Resonanz möglich - dynamische Qualität kann statische Muster erweitern.",
+                        hoch: "Orientierungen zeigen in verschiedene Richtungen. Das bedeutet nicht Unmöglichkeit, sondern: Hier ist Wachstum nötig, wenn körperliche Verbindung gewünscht ist."
+                    },
+                    osho: {
+                        niedrig: "Der Körper sagt Ja - folge dieser Weisheit ohne Kopf-Zensur.",
+                        mittel: "Anziehung ist nicht binär. Frage dich: Was ist Konditionierung, was echtes Fühlen?",
+                        hoch: "Die Gesellschaft hat dir gesagt, wen du begehren darfst. Aber der Körper ist freier als das Ego. Vielleicht ist hier eine Einladung, Grenzen zu hinterfragen."
+                    },
+                    gfk: {
+                        niedrig: "Das Bedürfnis nach körperlicher Resonanz kann erfüllt werden.",
+                        mittel: "Das Bedürfnis ist teilweise erfüllbar. Welche anderen Strategien könnten dieses Bedürfnis nähren?",
+                        hoch: "Körperliche Resonanz ist ein gültiges Bedürfnis. Die aktuelle Konstellation macht die gewohnte Strategie schwierig. Gibt es andere Wege?"
+                    }
+                },
+                S2: { // #B228 - Beziehungsform-Passung
+                    pirsig: {
+                        niedrig: "Eure Beziehungsformen sind kompatibel - statische Qualitätsmuster passen zusammen.",
+                        mittel: "Unterschiedliche Muster treffen aufeinander. Dynamische Qualität entsteht, wenn beide bereit sind, ihre Muster zu hinterfragen.",
+                        hoch: "Mono und Poly sind verschiedene Betriebssysteme. Keines ist besser. Die Frage ist: Wer ist bereit, sich zu bewegen?"
+                    },
+                    osho: {
+                        niedrig: "Eure Formen harmonieren - genießt diese Leichtigkeit.",
+                        mittel: "Besitz ist Angst, aber Struktur ist nicht immer Gefängnis. Frage dich ehrlich: Warum willst du, was du willst?",
+                        hoch: "Der Mono-Mensch klammert vielleicht aus Angst. Der Poly-Mensch flieht vielleicht vor Tiefe. Beide leben vielleicht authentisch. Könnt ihr gemeinsam wachsen?"
+                    },
+                    gfk: {
+                        niedrig: "Eure Bedürfnisse nach Beziehungsstruktur sind ähnlich.",
+                        mittel: "Unterschiedliche Strategien für ähnliche Bedürfnisse. Mono: Sicherheit. Poly: Autonomie. Welche Strategie nährt BEIDE?",
+                        hoch: "Fundamentale Bedürfnisse scheinen zu kollidieren: Sicherheit vs. Freiheit. Was wäre ein dritter Weg, der beide Kerne ehrt?"
+                    }
+                },
+                S3: { // Autonomie & Leistung (Dimension D)
+                    pirsig: {
+                        niedrig: "Eure Vorstellungen von Kreativität und Selbstverwirklichung harmonieren - ihr teilt ähnliche Qualitätsmuster.",
+                        mittel: "Unterschiedliche Ansätze zur Selbstentfaltung treffen aufeinander. Dynamische Qualität entsteht, wenn beide ihre Definitionen von 'Erfolg' hinterfragen.",
+                        hoch: "Autonomie-Konzepte prallen aufeinander. Wer definiert Qualität? Wenn einer Handwerk liebt und einer Revolution - beide Wege können Qualität sein."
+                    },
+                    osho: {
+                        niedrig: "Ihr habt ähnliche Vorstellungen von Freiheit und Leistung - genießt diese Resonanz.",
+                        mittel: "Achte darauf: Ist dein Leistungsdrang authentisch oder anerzogen? Die Gesellschaft hat uns alle mit Erfolgsbegriffen konditioniert.",
+                        hoch: "Der Workaholic flieht vielleicht vor sich selbst. Der Verweigerer flieht vielleicht vor der Welt. Wo liegt eure authentische Mitte?"
+                    },
+                    gfk: {
+                        niedrig: "Eure Bedürfnisse nach Autonomie und Beitrag sind ähnlich erfüllt.",
+                        mittel: "Verschiedene Strategien für das gleiche Bedürfnis nach Kompetenz und Sinn. Welche Strategie ehrt beide?",
+                        hoch: "Fundamentale Bedürfnisse kollidieren: Unabhängigkeit vs. Zusammengehörigkeit. Was wäre ein Weg, der beide Kerne nährt?"
+                    }
+                },
+                S4: { // Sicherheit & Stabilität (A×0.4 + F×0.6)
+                    pirsig: {
+                        niedrig: "Eure Vorstellungen von Sicherheit und Alltag harmonieren - statische Qualitätsmuster ergänzen sich.",
+                        mittel: "Unterschiedliche Stabilitätsbedürfnisse. Der eine braucht feste Routinen, der andere Spontaneität. Beide sind Qualitäts-Muster.",
+                        hoch: "Strukturierte Planung trifft auf Improvisations-Talent. Weder ist besser - aber wie findet ihr ein gemeinsames Qualitäts-Gleichgewicht?"
+                    },
+                    osho: {
+                        niedrig: "Eure materiellen Vorstellungen harmonieren - keine Reibung im Alltäglichen.",
+                        mittel: "Sicherheitsbedürfnis kann Angst sein - oder weise Vorsorge. Schau genau hin, was davon bei euch gerade spielt.",
+                        hoch: "Der Planer klammert vielleicht aus Kontroll-Angst. Der Spontane vermeidet vielleicht Verantwortung. Wo ist eure authentische Balance?"
+                    },
+                    gfk: {
+                        niedrig: "Eure Bedürfnisse nach Sicherheit und Ordnung sind ähnlich.",
+                        mittel: "Das Bedürfnis nach Stabilität trifft auf das Bedürfnis nach Spontaneität. Beide sind gültig - welche gemeinsame Strategie?",
+                        hoch: "Fundamentale Bedürfnisse: Vorhersehbarkeit vs. Abenteuer. Hier braucht es kreative Lösungen, die beide Kerne ehren."
+                    }
+                },
+                S5: { // Werte & Sinn (B×0.4 + E×0.6)
+                    pirsig: {
+                        niedrig: "Eure Weltanschauungen harmonieren - ihr teilt ähnliche Qualitäts-Definitionen auf der höchsten Ebene.",
+                        mittel: "Verschiedene Werte-Systeme begegnen sich. Dynamische Qualität entsteht, wenn beide bereit sind, ihre Wahrheiten zu erweitern.",
+                        hoch: "Unterschiedliche Sinn-Quellen. Der eine findet Qualität in Tradition, der andere in Revolution. Beide können recht haben - gleichzeitig."
+                    },
+                    osho: {
+                        niedrig: "Eure spirituellen und ethischen Vorstellungen resonieren - tiefe Verbindung möglich.",
+                        mittel: "Werte sind oft von Eltern und Gesellschaft übernommen, nicht selbst gewählt. Fragt euch: Was davon ist wirklich eures?",
+                        hoch: "Der Gläubige klammert vielleicht an Sicherheit. Der Skeptiker flieht vielleicht vor Tiefe. Wo liegt eure authentische Spiritualität?"
+                    },
+                    gfk: {
+                        niedrig: "Eure Bedürfnisse nach Sinn und Verstanden-werden sind ähnlich.",
+                        mittel: "Unterschiedliche Kommunikations-Stile für das gleiche Bedürfnis nach Verbindung. Welche Sprache versteht ihr beide?",
+                        hoch: "Fundamentale Bedürfnisse kollidieren: Integrität vs. Zugehörigkeit. Können beide Werte-Systeme nebeneinander existieren?"
+                    }
+                }
+            };
+
+            // Perspektiven-Icons
+            const perspektivenIcons = {
+                pirsig: { icon: '🔧', label: 'Pirsig (MOQ)' },
+                osho: { icon: '🧘', label: 'Osho' },
+                gfk: { icon: '💚', label: 'GFK' }
+            };
+
+            // Säulen sortiert nach Reibung (höchste zuerst)
+            const sortedSaeulen = Object.entries(saeulenReibung)
+                .sort((a, b) => b[1].reibung - a[1].reibung);
+
+            sortedSaeulen.forEach(([key, saeule]) => {
+                const meta = saeulenMeta[key] || { icon: '📊', kurz: '' };
+                const harmonie = 100 - saeule.reibung;
+
+                // Farbe basierend auf Harmonie
+                let barColor = '#22c55e';
+                if (harmonie < 50) barColor = '#ef4444';
+                else if (harmonie < 70) barColor = '#eab308';
+
+                // Level-Badge
+                let levelBadge = '';
+                if (saeule.level === 'hoch') {
+                    levelBadge = '<span style="font-size: 9px; background: rgba(239,68,68,0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Hohe Reibung</span>';
+                } else if (saeule.level === 'mittel') {
+                    levelBadge = '<span style="font-size: 9px; background: rgba(234,179,8,0.2); color: #eab308; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Mittlere Reibung</span>';
+                }
+
+                // PerspektivenHinweise für diese Säule holen
+                const hinweise = perspektivenHinweise[key];
+                let hinweiseHtml = '';
+
+                // Nur bei mittlerer oder hoher Reibung anzeigen
+                if (hinweise && (saeule.level === 'mittel' || saeule.level === 'hoch')) {
+                    const level = saeule.level;
+                    hinweiseHtml = `
+                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
+                                Perspektiven-Hinweise:
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                ${Object.entries(hinweise).map(([perspKey, texts]) => {
+                                    const persp = perspektivenIcons[perspKey];
+                                    const text = texts[level] || '';
+                                    if (!text) return '';
+                                    return `
+                                        <div style="
+                                            background: rgba(255,255,255,0.02);
+                                            border-radius: 6px;
+                                            padding: 8px 10px;
+                                            font-size: 10px;
+                                            line-height: 1.5;
+                                        ">
+                                            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; color: var(--text-secondary);">
+                                                <span>${persp?.icon || '📖'}</span>
+                                                <span style="font-weight: 600;">${persp?.label || perspKey}</span>
+                                            </div>
+                                            <div style="color: var(--text-muted);">${text}</div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div style="
+                        background: rgba(255,255,255,0.03);
+                        border-radius: 8px;
+                        padding: 12px;
+                        border-left: 4px solid ${saeule.color};
+                    ">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 18px;">${meta.icon}</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">
+                                    ${saeule.label}
+                                    ${levelBadge}
+                                </div>
+                                <div style="font-size: 10px; color: var(--text-muted);">${meta.kurz}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 16px; font-weight: 700; color: ${barColor};">${Math.round(harmonie)}%</div>
+                                <div style="font-size: 9px; color: var(--text-muted);">Harmonie</div>
+                            </div>
+                        </div>
+                        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                            <div style="width: ${harmonie}%; height: 100%; background: ${barColor}; border-radius: 3px; transition: width 0.3s;"></div>
+                        </div>
+                        <div style="font-size: 9px; color: var(--text-muted); margin-top: 6px; opacity: 0.8;">
+                            Formel: ${saeule.formel}
+                        </div>
+                        ${hinweiseHtml}
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+
+                <div style="
+                    margin-top: 16px;
+                    padding: 12px;
+                    background: rgba(255,255,255,0.02);
+                    border-radius: 8px;
+                    font-size: 10px;
+                    color: var(--text-muted);
+                    text-align: center;
+                ">
+                    <div style="margin-bottom: 4px; opacity: 0.8;">Dimensions-Scores (A-F)</div>
+                    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                        ${['A', 'B', 'C', 'D', 'E', 'F'].map(d => {
+                            const dim = TiageTaxonomie.getDimension ? TiageTaxonomie.getDimension(d) : null;
+                            return `<span style="color: ${dim?.color || 'var(--text-muted)'};">${d}: ${dimensionScores[d]}%</span>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
 
             return html;
         }

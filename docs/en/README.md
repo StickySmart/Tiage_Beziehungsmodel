@@ -94,7 +94,46 @@ Where:
 
 NVC = Nonviolent Communication according to Marshall Rosenberg
 
-## New Features (v1.8.x)
+## New Features (v2.0)
+
+### RTI Pillars (5 Pillars of Identity by Petzold)
+
+Integration of Hilarion Petzold's RTI model as 5th tab in TiageSynthese:
+
+| Pillar | Domain | Formula |
+|--------|--------|---------|
+| S1 Physicality | Body, Health, Sexuality | C |
+| S2 Social Network | Relationship Form, Friends, Family | (A × 0.6) + (F × 0.4) |
+| S3 Autonomy & Achievement | Self-Realization, Creativity | D |
+| S4 Security & Stability | Life Planning, Daily Routines | (A × 0.4) + (F × 0.6) |
+| S5 Values & Meaning | Worldview, Spirituality | (B × 0.4) + (E × 0.6) |
+
+### Friction Logic (replaces K.O. Criteria)
+
+Philosophical paradigm shift:
+- **Nothing is "impossible"** - Only varying degrees of difficulty
+- **Score 0% = 100% Friction** - Maximum challenge, not impossibility
+- **Gradual evaluation** - Instead of binary "works/doesn't work" decisions
+
+### Perspective Hints (perspektivenHinweise)
+
+Three philosophical perspectives for each pillar when friction occurs:
+
+- **Pirsig (MOQ):** Static vs. Dynamic Quality patterns
+- **Osho:** Conditioning vs. Authenticity
+- **NVC (Rosenberg):** Needs and Strategies
+
+Hints are displayed at medium/high friction levels.
+
+### SSOT v2.0 Architecture
+
+- **Partner needs are read-only** - Dynamically calculated from archetype base + AGOD modifiers
+- **8-slot needs storage** - User needs are stored per archetype
+- **Smart getter/setter** - Automatic routing to current archetype
+
+---
+
+## Features (v1.8.x)
 
 ### Perspectives System (P1-P4)
 
@@ -112,12 +151,13 @@ The app offers four philosophical perspectives on each needs entry:
 All entities use unique IDs for consistent referencing:
 
 - **#AID** - Archetype IDs (#A01-#A08)
-- **#BID** - Needs IDs (#B01-#B88)
+- **#BID** - Needs IDs (#B01-#B228)
 - **#PID** - Perspective IDs (#P1-#P4)
+- **#SID** - RTI Pillar IDs (#S1-#S5) - NEW
 
 ### Needs Matching
 
-88 NVC-based needs are compared between partners:
+228 NVC-based needs are compared between partners:
 
 - Wildcard search across name, category, dimension
 - Sorting by fulfillment level
@@ -133,4 +173,4 @@ All entities use unique IDs for consistent referencing:
 
 ---
 
-*© 2025 Ti-Age – All rights reserved*
+*© 2025-2026 Ti-Age – All rights reserved*

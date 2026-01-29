@@ -656,6 +656,50 @@
                         </div>
                     </div>
 
+                    <!-- Reibungs-Fragen (optional) -->
+                    <div class="reibung-questions" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <label style="color: #F4A261; font-weight: bold; margin-bottom: 12px; display: block;">
+                            🏛️ Reibungs-Prioritäten (optional)
+                        </label>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 11px; margin-bottom: 16px;">
+                            Wie wichtig sind dir diese Aspekte? Beeinflusst die RTI-Säulen-Gewichtung.
+                        </p>
+
+                        <!-- #B227: Körperliche Resonanz (S1) -->
+                        <div class="reibung-question" style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <span style="color: var(--text-secondary); font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #E84393;">🫀</span> Körperliche Anziehung
+                                </span>
+                                <span id="reibungB227Value" style="color: #E84393; font-weight: 600; font-size: 12px;">50</span>
+                            </div>
+                            <input type="range" id="reibungB227Slider" min="0" max="100" value="50"
+                                   style="width: 100%; accent-color: #E84393;"
+                                   oninput="updateReibungSlider('B227', this.value)">
+                            <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 2px;">
+                                <span>Unwichtig</span>
+                                <span>Sehr wichtig</span>
+                            </div>
+                        </div>
+
+                        <!-- #B228: Beziehungsform-Passung (S2) -->
+                        <div class="reibung-question">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <span style="color: var(--text-secondary); font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #3B82F6;">👥</span> Gleiche Beziehungsform
+                                </span>
+                                <span id="reibungB228Value" style="color: #3B82F6; font-weight: 600; font-size: 12px;">50</span>
+                            </div>
+                            <input type="range" id="reibungB228Slider" min="0" max="100" value="50"
+                                   style="width: 100%; accent-color: #3B82F6;"
+                                   oninput="updateReibungSlider('B228', this.value)">
+                            <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 2px;">
+                                <span>Unwichtig</span>
+                                <span>Sehr wichtig</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <button class="slot-start-btn" id="slotStartBtn" data-action="start-slot-machine" disabled style="margin-top: 25px;">
                         🎰 Suche starten
                     </button>
@@ -765,6 +809,7 @@
             <button id="tiageSyntheseToggleScore" data-action="show-synthese-content" data-tab="score" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Score - Pro & Contra">📊</button>
             <button id="tiageSyntheseToggleOshoZen" data-action="show-synthese-content" data-tab="oshozen" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
             <button id="tiageSyntheseToggleNeeds" data-action="show-synthese-content" data-tab="needs" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Bedürfnis-Match mit Differenz">💚</button>
+            <button id="tiageSyntheseToggleRTI" data-action="show-synthese-content" data-tab="rti" style="padding: 12px 14px; border-radius: 8px; border: 2px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="5 Säulen der Identität (RTI)">🏛️</button>
             <button id="tiageSyntheseToggleResonanz" data-action="open-resonanz-modal" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Resonanzfaktoren × Perspektiven">🎛️</button>
         </div>
         <div class="modal" data-stop-propagation style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
@@ -774,6 +819,7 @@
                     <button class="header-score-btn" id="modalScoreBtn" data-action="show-synthese-content" data-tab="score" title="Score - Pro & Contra">📊</button>
                     <button class="header-oshozen-btn" id="modalOshoZenBtn" data-action="show-synthese-content" data-tab="oshozen" title="Osho Zen - Gemeinsame Bedürfnisse">🔥</button>
                     <button class="header-needs-btn" id="modalNeedsBtn" data-action="show-synthese-content" data-tab="needs" title="Bedürfnis-Match mit Differenz">💚</button>
+                    <button class="header-rti-btn" id="modalRTIBtn" data-action="show-synthese-content" data-tab="rti" title="5 Säulen der Identität (RTI)">🏛️</button>
                     <button class="header-resonanz-btn" id="modalResonanzBtn" data-action="open-resonanz-modal" title="Resonanzfaktoren × Perspektiven">🎛️</button>
                     <button class="modal-close" data-action="close-synthese-modal">&times;</button>
                 </div>
@@ -2423,10 +2469,13 @@
 
     <!-- Footer with Documentation Links -->
     <footer class="app-footer" style="text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.5);">
-        <!-- JOYclub Siegel -->
-        <div style="margin-bottom: 25px; display: flex; justify-content: center;">
-            <a href="https://www.joyclub.de/" target="_blank" rel="noopener">
+        <!-- Partner Logos -->
+        <div style="margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+            <a href="https://www.joyclub.de/" target="_blank" rel="noopener" title="JOYclub">
                 <img src="//cfnimg.joyclub.de/partner/joyclub_backlink_mitglied_120x120.png" width="100" height="100" alt="Lebe deine Lust!" style="border-radius: 50%;" />
+            </a>
+            <a href="https://www.dasding.de/" target="_blank" rel="noopener" title="DASDING - SWR">
+                <img src="assets/images/DasDingLogos/SWR_DASDING_Logo_V1_2Z_4C_Weiss.png" height="80" alt="DASDING" style="width: auto;" />
             </a>
         </div>
 

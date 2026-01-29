@@ -5,6 +5,76 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [2.0.0] - 2026-01-29
+
+### Neu
+
+**SSOT v2.0 Architektur - Fundamentale Umstrukturierung**
+
+Die Single Source of Truth (SSOT) wurde grundlegend überarbeitet:
+
+- **Partner-Bedürfnisse sind read-only** - Dynamisch berechnet aus Archetyp-Basis + AGOD-Modifikatoren
+- **8-Slot Bedürfnis-Speicherung** - ICH-Bedürfnisse werden pro Archetyp gespeichert
+- **Keine manuelle Partner-Anpassung** - UI blockiert Editing für Partner
+- **Smart-Getter/Setter** - `TiageState.get('flatNeeds.ich')` leitet automatisch auf aktuellen Archetyp
+
+**RTI-Säulen (5 Säulen der Identität nach Petzold)**
+
+Integration von Hilarion Petzolds RTI-Modell als 5. Tab in TiageSynthese:
+
+| Säule | Dimension | Formel |
+|-------|-----------|--------|
+| S1 Leiblichkeit | Körper, Gesundheit, Sexualität | C |
+| S2 Soziales Netzwerk | Beziehungsform, Freunde, Familie | (A × 0.6) + (F × 0.4) |
+| S3 Autonomie & Leistung | Selbstverwirklichung, Kreativität | D |
+| S4 Sicherheit & Stabilität | Lebensplanung, Alltag, Materielles | (A × 0.4) + (F × 0.6) |
+| S5 Werte & Sinn | Weltanschauung, Spiritualität | (B × 0.4) + (E × 0.6) |
+
+**Reibungs-Logik (ersetzt K.O.-Kriterien)**
+
+Philosophischer Paradigmenwechsel:
+- **Nichts ist "unmöglich"** - Nur unterschiedlich schwierig
+- **Score 0% = 100% Reibung** - Maximale Herausforderung, nicht Unmöglichkeit
+- **Graduelle Bewertung** - Statt binärer "Geht/Geht nicht" Entscheidungen
+
+**perspektivenHinweise für RTI-Säulen**
+
+Drei philosophische Perspektiven für jede Säule bei Reibung:
+
+- **Pirsig (MOQ):** Statische vs. Dynamische Qualitätsmuster
+- **Osho:** Konditionierung vs. Authentizität
+- **GFK (Rosenberg):** Bedürfnisse und Strategien
+
+Hinweise werden bei mittlerer/hoher Reibung angezeigt.
+
+**Reibungs-Slider im Slot Machine Modal**
+
+- **#B227 Körperliche Resonanz** → S1 (Leiblichkeit)
+- **#B228 Beziehungsform-Passung** → S2 (Soziales Netzwerk)
+- Optional einstellbar beim Partner-Match
+
+### Geändert
+
+**TiageTaxonomie v2.0.0**
+- RTI-Säulen-Definitionen (#S1-#S5) hinzugefügt
+- `berechneSaeulenScores()` - Dimension→Säule Mapping
+- `berechneSaeulenReibung()` - Reibungs-Analyse pro Säule
+- `getReibungsLevel()` - niedrig/mittel/hoch Klassifikation
+
+**SYNTHESIS_CONSTANTS v4.0**
+- `HARD_KO.ENABLED: false` - K.O.-Logik deaktiviert
+- `SOFT_KO.ENABLED: false` - Soft-K.O. durch Reibungs-Schwellenwerte ersetzt
+- `PHYSICAL_COMPATIBILITY.RESULT.IMPOSSIBLE` → `HOHE_REIBUNG`
+- Philosophische Grundlagen dokumentiert
+
+### Behoben
+
+- Partner-ATTRIBUTE Button entfernt (nur ICH editierbar)
+- Slot Machine lädt/speichert Reibungs-Werte korrekt
+- RTI-Button in TiageSynthese Header integriert
+
+---
+
 ## [1.8.85] - 2025-12-10
 
 ### Neu

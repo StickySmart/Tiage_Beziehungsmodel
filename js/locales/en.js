@@ -631,51 +631,68 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // HARD-KO TEXTS (Friendly, not aggressive)
+    // FRICTION TEXTS v4.0 (replaces K.O. texts)
     // ═══════════════════════════════════════════════════════════════════════
+    // Philosophy: Nothing is impossible, just varying degrees of challenge.
+    // Score 0% = 100% Friction = maximum challenge (not "impossible")
 
-    hardKO: {
-        title: 'Not a match',
-        subtitle: 'This combination has no romantic basis',
+    hardKO: {  // Legacy key for backward compatibility
+        title: 'High Friction',
+        subtitle: 'This combination requires special awareness',
 
-        // Friendly explanations by reason
+        // Friction hints instead of "reasons"
         reasons: {
-            hetero_same_gender: 'Both are looking for someone of the opposite gender',
-            homo_different_gender: 'Both are looking for someone of the same gender',
-            hetero_male_lesbian_female: 'He is looking for women, she is looking for women',
-            lesbian_female_hetero_male: 'She is looking for women, he is looking for women',
-            hetero_female_homo_male: 'She is looking for men, he is looking for men',
-            homo_male_hetero_female: 'He is looking for men, she is looking for men'
+            hetero_same_gender: 'Different orientation directions',
+            homo_different_gender: 'Orientations point in different directions',
+            hetero_male_lesbian_female: 'Different attraction patterns',
+            lesbian_female_hetero_male: 'Different attraction directions',
+            hetero_female_homo_male: 'Orientations not aligned with each other',
+            homo_male_hetero_female: 'Different attraction directions'
         },
 
-        // Positive alternative
-        friendship: 'But a deep friendship is possible!',
+        // RTI hint (Pillar S1 - Embodiment)
+        friendship: 'Other relationship forms are possible!',
 
-        // Philosophical note
-        philosophy: 'Physical attraction needs a shared direction.'
+        // Multi-perspective hint
+        philosophy: 'High friction means growth potential, not impossibility.'
     },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SOFT-KO TEXTS (Needs Conflicts)
-    // ═══════════════════════════════════════════════════════════════════════
+    // Friction levels (replaces softKO)
+    softKO: {  // Legacy key for backward compatibility
+        title: 'Medium Friction',
+        subtitle: 'Differences in important areas',
 
-    softKO: {
-        title: 'Challenging Combination',
-        subtitle: 'Strong differences in core needs',
-
-        // Explanations
+        // Friction hints
         reasons: {
-            needs_conflict: 'Your core needs differ significantly',
-            dynamic_mismatch: 'The dynamic preferences are not optimal',
-            values_gap: 'Different priorities in important values'
+            needs_conflict: 'Your needs have different expressions',
+            dynamic_mismatch: 'The dynamic styles differ',
+            values_gap: 'Different priorities in values'
         },
 
-        // Constructive note
-        growth: 'With conscious communication, this can work.',
+        // NVC hint
+        growth: 'Friction is growth potential - with awareness it becomes development.',
 
-        // Need-specific
-        conflictLabel: 'Conflict Potential',
-        needsLabel: 'Different Needs'
+        // Friction-specific
+        conflictLabel: 'Friction Potential',
+        needsLabel: 'Different Need Expressions'
+    },
+
+    // New friction levels
+    friction: {
+        levels: {
+            none: { label: 'No Friction', emoji: '✨', range: '90-100%' },
+            light: { label: 'Light Friction', emoji: '🌱', range: '70-89%' },
+            medium: { label: 'Medium Friction', emoji: '🔧', range: '40-69%' },
+            high: { label: 'High Friction', emoji: '⚡', range: '10-39%' },
+            maximum: { label: 'Maximum Friction', emoji: '🔥', range: '0-9%' }
+        },
+        // Perspective hints
+        hints: {
+            pirsig: 'Quality emerges through integration of differences',
+            osho: 'Any conditioning can be consciously transcended',
+            nvc: 'Behind every friction are fulfillable needs',
+            rti: 'The 5 pillars of identity show development potentials'
+        }
     },
 
     // ═══════════════════════════════════════════════════════════════════════
