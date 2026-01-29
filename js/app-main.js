@@ -12274,14 +12274,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * SSOT v1.8.806: Best Match Suche mit per-Archetyp ICH-Needs
+         * SSOT v2.0: Best Match Suche mit dynamischer GOD-Iteration
          *
          * ICH: Archetyp + GOD = KONSTANT (aus TiageState)
-         * PARTNER: GOD = KONSTANT (aus TiageState, die beim Partner eingestellten Werte)
-         * Nur PARTNER-Archetyp variiert (8 Archetypen)
+         * PARTNER: GOD wird iteriert wenn nicht explizit gesetzt!
+         *   - Geschlecht gesetzt → 1 Option, sonst 3 (mann/frau/nonbinaer)
+         *   - Orientierung gesetzt → 1 Option, sonst 3 (hetero/homo/bi)
+         *   - Dominanz gesetzt → 1 Option, sonst 3 (dom/sub/switch)
+         *   - Archetyp: immer 8
          *
-         * ICH-Needs werden aus dem entsprechenden State-Slot geladen.
-         * Ergebnis: 8 Scores (1 pro Partner-Archetyp), sortiert nach Score.
+         * Max Kombinationen: 3×3×3×8 = 216 (wenn kein GOD gesetzt)
          */
         async function calculateAllCombinationsChunked() {
             // ICH-Daten KONSTANT aus TiageState (Archetyp + GOD bleiben fix!)
@@ -12292,45 +12294,53 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
 
-            // PARTNER-GOD KONSTANT aus TiageState (die beim Partner eingestellten Werte!)
-            // Wenn Partner-GOD nicht gesetzt: kompatible Defaults basierend auf ICH (gleiche Logik wie findBestPartnerMatch)
+            // Partner-Dimensionen aus State
             const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
 
+            // Prüfe welche Partner-GOD explizit gesetzt sind
             const partnerHasGeschlecht = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
-            let validPartnerGeschlecht;
-            if (partnerHasGeschlecht) {
-                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
-            } else {
-                const ichOriPrimary = validIchOrientierung.primary;
-                const ichGeschPrimary = validIchGeschlecht.primary;
-                if (ichOriPrimary === 'heterosexuell') {
-                    validPartnerGeschlecht = { primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann', secondary: 'cis' };
-                } else {
-                    validPartnerGeschlecht = { primary: ichGeschPrimary, secondary: 'cis' };
-                }
-            }
-
             const partnerHasOrientierung = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
-            let validPartnerOrientierung;
-            if (partnerHasOrientierung) {
-                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
-            } else {
-                validPartnerOrientierung = { primary: validIchOrientierung.primary, secondary: validIchOrientierung.secondary, all: validIchOrientierung.all || [validIchOrientierung.primary] };
-            }
-
             const partnerHasDominanz = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
-            let validPartnerDominanz;
-            if (partnerHasDominanz) {
-                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+
+            // Erstelle Arrays für die Iteration (1 Element wenn gesetzt, mehrere wenn nicht)
+            let geschlechtOptions = [];
+            if (partnerHasGeschlecht) {
+                geschlechtOptions = [ensureValidGeschlecht(partnerDims.geschlecht)];
             } else {
-                const ichDomPrimary = validIchDominanz.primary;
-                if (ichDomPrimary === 'dominant') validPartnerDominanz = { primary: 'submissiv', secondary: null };
-                else if (ichDomPrimary === 'submissiv') validPartnerDominanz = { primary: 'dominant', secondary: null };
-                else if (ichDomPrimary === 'switch') validPartnerDominanz = { primary: 'switch', secondary: null };
-                else validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+                // Iteriere alle 3 primären Geschlechter
+                geschlechtOptions = [
+                    { primary: 'mann', secondary: 'cis' },
+                    { primary: 'frau', secondary: 'cis' },
+                    { primary: 'inter', secondary: 'nonbinaer' }
+                ];
             }
 
-            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+            let orientierungOptions = [];
+            if (partnerHasOrientierung) {
+                orientierungOptions = [ensureValidOrientierung(partnerDims.orientierung)];
+            } else {
+                // Iteriere die 3 häufigsten Orientierungen
+                orientierungOptions = [
+                    { primary: 'heterosexuell', secondary: null, all: ['heterosexuell'] },
+                    { primary: 'homosexuell', secondary: null, all: ['homosexuell'] },
+                    { primary: 'bisexuell', secondary: null, all: ['bisexuell'] }
+                ];
+            }
+
+            let dominanzOptions = [];
+            if (partnerHasDominanz) {
+                dominanzOptions = [ensureValidDominanz(partnerDims.dominanz)];
+            } else {
+                // Iteriere die 3 aktiven Dominanz-Typen
+                dominanzOptions = [
+                    { primary: 'dominant', secondary: null },
+                    { primary: 'submissiv', secondary: null },
+                    { primary: 'switch', secondary: null }
+                ];
+            }
+
+            // GFK für Partner
             let partnerGfk;
             if (partnerHasGfk) {
                 partnerGfk = partnerDims.gfk;
@@ -12341,27 +12351,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 else partnerGfk = 'mittel';
             }
 
+            const totalCombinations = geschlechtOptions.length * orientierungOptions.length * dominanzOptions.length * ALL_ARCHETYPES_SLOT.length;
+
             console.log('[Best Match] ICH-Auswahl (konstant):', {
                 archetyp: ichArchetype,
                 geschlecht: validIchGeschlecht,
                 dominanz: validIchDominanz,
                 orientierung: validIchOrientierung
             });
-            console.log('[Best Match] PARTNER-GOD (konstant):', {
-                geschlecht: validPartnerGeschlecht,
-                dominanz: validPartnerDominanz,
-                orientierung: validPartnerOrientierung
+            console.log('[Best Match] PARTNER-GOD Optionen:', {
+                geschlecht: partnerHasGeschlecht ? 'gesetzt (1)' : `alle (${geschlechtOptions.length})`,
+                orientierung: partnerHasOrientierung ? 'gesetzt (1)' : `alle (${orientierungOptions.length})`,
+                dominanz: partnerHasDominanz ? 'gesetzt (1)' : `alle (${dominanzOptions.length})`,
+                total: totalCombinations + ' Kombinationen'
             });
 
             // ICH-Needs aus dem entsprechenden State-Slot laden (per-Archetyp Struktur)
             let ichNeeds = null;
             if (typeof TiageState !== 'undefined') {
-                // Normalisiere Archetyp-Key für State-Zugriff (duo_flex -> duo-flex)
                 const stateKey = ichArchetype.replace('_', '-');
                 ichNeeds = TiageState.get(`flatNeeds.ich.${stateKey}`);
                 console.log(`[Best Match] ICH-Needs aus State-Slot '${stateKey}' geladen:`, ichNeeds ? Object.keys(ichNeeds).length : 0, 'Bedürfnisse');
             }
-            // Falls nicht vorhanden: berechnen
             if (!ichNeeds || Object.keys(ichNeeds).length === 0) {
                 if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
                     ichNeeds = ProfileCalculator.calculateFlatNeeds(ichArchetype, validIchGeschlecht, validIchDominanz, validIchOrientierung);
@@ -12383,78 +12394,83 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const savedCurrentArchetype = currentArchetype;
             const savedSelectedPartner = selectedPartner;
 
-            // Für jeden der 8 Partner-Archetypen (mit konstanten Partner-GOD-Werten)
-            for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
-                // Partner-Needs berechnen (Archetyp variiert, GOD konstant)
-                let partnerNeeds = null;
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                    partnerNeeds = ProfileCalculator.calculateFlatNeeds(
-                        partnerArchetype,
-                        validPartnerGeschlecht,
-                        validPartnerDominanz,
-                        validPartnerOrientierung
-                    );
-                }
+            // Iteriere alle Kombinationen: Geschlecht × Orientierung × Dominanz × Archetyp
+            for (const geschlecht of geschlechtOptions) {
+                for (const orientierung of orientierungOptions) {
+                    for (const dominanz of dominanzOptions) {
+                        for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
+                            // Partner-Needs berechnen
+                            let partnerNeeds = null;
+                            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                                partnerNeeds = ProfileCalculator.calculateFlatNeeds(
+                                    partnerArchetype,
+                                    geschlecht,
+                                    dominanz,
+                                    orientierung
+                                );
+                            }
 
-                const partnerObj = {
-                    archetyp: partnerArchetype,
-                    geschlecht: validPartnerGeschlecht,
-                    orientierung: validPartnerOrientierung,
-                    dominanz: validPartnerDominanz,
-                    gfk: partnerGfk,
-                    needs: partnerNeeds
-                };
+                            const partnerObj = {
+                                archetyp: partnerArchetype,
+                                geschlecht: geschlecht,
+                                orientierung: orientierung,
+                                dominanz: dominanz,
+                                gfk: partnerGfk,
+                                needs: partnerNeeds
+                            };
 
-                currentArchetype = ichArchetype;
-                selectedPartner = partnerArchetype;
+                            currentArchetype = ichArchetype;
+                            selectedPartner = partnerArchetype;
 
-                let score = 0;
-                try {
-                    const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                    const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
+                            let score = 0;
+                            try {
+                                const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                                const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
 
-                    if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                        const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                        const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                    const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                    const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                            rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
-                        });
-                        let baseScore = result.overall || 0;
-                        const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                        score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                    } else if (pathosCheck.result === 'unvollständig') {
-                        score = logosCheck.score || 50;
+                                    const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                        rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
+                                    });
+                                    let baseScore = result.overall || 0;
+                                    const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                                    score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                                } else if (pathosCheck.result === 'unvollständig') {
+                                    score = logosCheck.score || 50;
+                                }
+                            } catch (e) { /* Fehler ignorieren */ }
+
+                            results.push({
+                                archetyp: partnerArchetype,
+                                geschlecht: geschlecht,
+                                orientierung: orientierung.primary,
+                                dominanz: dominanz.primary,
+                                score: score
+                            });
+
+                            // Yield zum Main Thread alle 10 Iterationen
+                            if (results.length % 10 === 0) {
+                                await new Promise(resolve => setTimeout(resolve, 0));
+                            }
+                        }
                     }
-                } catch (e) { /* Fehler ignorieren */ }
-
-                results.push({
-                    archetyp: partnerArchetype,
-                    geschlecht: validPartnerGeschlecht,
-                    orientierung: validPartnerOrientierung.primary,
-                    dominanz: validPartnerDominanz.primary,
-                    score: score
-                });
-
-                // Yield zum Main Thread
-                await new Promise(resolve => setTimeout(resolve, 0));
+                }
             }
 
             // Globale Variablen wiederherstellen
             currentArchetype = savedCurrentArchetype;
             selectedPartner = savedSelectedPartner;
 
-            console.log(`[Best Match] Berechnung abgeschlossen: ${results.length} Partner-Archetypen`);
+            console.log(`[Best Match] Berechnung abgeschlossen: ${results.length} Kombinationen`);
 
             return results;
         }
 
         /**
-         * SSOT v1.8.806: Berechnet alle möglichen Kombinationen (synchron - Fallback)
-         *
-         * ICH: Archetyp + GOD = KONSTANT
-         * PARTNER: GOD = KONSTANT (aus TiageState)
-         * Nur PARTNER-Archetyp variiert (8 Archetypen)
+         * SSOT v2.0: Berechnet alle möglichen Kombinationen (synchron - Fallback)
+         * Gleiche Logik wie calculateAllCombinationsChunked, aber synchron.
          */
         function calculateAllCombinations() {
             const results = [];
@@ -12467,47 +12483,52 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
             const ichGfk = ichDims.gfk || 'mittel';
 
-            // PARTNER-GOD KONSTANT aus TiageState
-            // Wenn Partner-GOD nicht gesetzt: kompatible Defaults basierend auf ICH (gleiche Logik wie findBestPartnerMatch)
+            // Partner-Dimensionen aus State
             const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
 
-            const partnerHasGeschlecht2 = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
-            let validPartnerGeschlecht;
-            if (partnerHasGeschlecht2) {
-                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            // Prüfe welche Partner-GOD explizit gesetzt sind
+            const partnerHasGeschlecht = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
+            const partnerHasOrientierung = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
+            const partnerHasDominanz = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
+            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+
+            // Erstelle Arrays für die Iteration
+            let geschlechtOptions = [];
+            if (partnerHasGeschlecht) {
+                geschlechtOptions = [ensureValidGeschlecht(partnerDims.geschlecht)];
             } else {
-                const ichOriP = validIchOrientierung.primary;
-                const ichGeschP = validIchGeschlecht.primary;
-                if (ichOriP === 'heterosexuell') {
-                    validPartnerGeschlecht = { primary: ichGeschP === 'mann' ? 'frau' : 'mann', secondary: 'cis' };
-                } else {
-                    validPartnerGeschlecht = { primary: ichGeschP, secondary: 'cis' };
-                }
+                geschlechtOptions = [
+                    { primary: 'mann', secondary: 'cis' },
+                    { primary: 'frau', secondary: 'cis' },
+                    { primary: 'inter', secondary: 'nonbinaer' }
+                ];
             }
 
-            const partnerHasOrientierung2 = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
-            let validPartnerOrientierung;
-            if (partnerHasOrientierung2) {
-                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            let orientierungOptions = [];
+            if (partnerHasOrientierung) {
+                orientierungOptions = [ensureValidOrientierung(partnerDims.orientierung)];
             } else {
-                validPartnerOrientierung = { primary: validIchOrientierung.primary, secondary: validIchOrientierung.secondary, all: validIchOrientierung.all || [validIchOrientierung.primary] };
+                orientierungOptions = [
+                    { primary: 'heterosexuell', secondary: null, all: ['heterosexuell'] },
+                    { primary: 'homosexuell', secondary: null, all: ['homosexuell'] },
+                    { primary: 'bisexuell', secondary: null, all: ['bisexuell'] }
+                ];
             }
 
-            const partnerHasDominanz2 = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
-            let validPartnerDominanz;
-            if (partnerHasDominanz2) {
-                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            let dominanzOptions = [];
+            if (partnerHasDominanz) {
+                dominanzOptions = [ensureValidDominanz(partnerDims.dominanz)];
             } else {
-                const ichDomP = validIchDominanz.primary;
-                if (ichDomP === 'dominant') validPartnerDominanz = { primary: 'submissiv', secondary: null };
-                else if (ichDomP === 'submissiv') validPartnerDominanz = { primary: 'dominant', secondary: null };
-                else if (ichDomP === 'switch') validPartnerDominanz = { primary: 'switch', secondary: null };
-                else validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+                dominanzOptions = [
+                    { primary: 'dominant', secondary: null },
+                    { primary: 'submissiv', secondary: null },
+                    { primary: 'switch', secondary: null }
+                ];
             }
 
-            const partnerHasGfk2 = partnerDims.gfk && partnerDims.gfk !== '';
+            // GFK für Partner
             let partnerGfk;
-            if (partnerHasGfk2) {
+            if (partnerHasGfk) {
                 partnerGfk = partnerDims.gfk;
             } else {
                 const ichGfkV = ichDims.gfk || 'mittel';
@@ -12542,63 +12563,69 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const savedSelectedPartner = selectedPartner;
 
             try {
-                // Für jeden der 8 Partner-Archetypen (mit konstanten Partner-GOD-Werten)
-                for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
-                    let partnerNeeds = null;
-                    if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                        partnerNeeds = ProfileCalculator.calculateFlatNeeds(
-                            partnerArchetype,
-                            validPartnerGeschlecht,
-                            validPartnerDominanz,
-                            validPartnerOrientierung
-                        );
-                    }
-
-                    const partnerObj = {
-                        archetyp: partnerArchetype,
-                        geschlecht: validPartnerGeschlecht,
-                        orientierung: validPartnerOrientierung,
-                        dominanz: validPartnerDominanz,
-                        gfk: partnerGfk,
-                        needs: partnerNeeds
-                    };
-
-                    currentArchetype = ichArchetype;
-                    selectedPartner = partnerArchetype;
-
-                    let score = 0;
-
-                    try {
-                        const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                        const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
-
-                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
-                            const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                            const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-                            const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                rFaktoren: {
-                                    ich: ichRFaktoren,
-                                    partner: partnerRFaktoren
+                // Iteriere alle Kombinationen
+                for (const geschlecht of geschlechtOptions) {
+                    for (const orientierung of orientierungOptions) {
+                        for (const dominanz of dominanzOptions) {
+                            for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
+                                let partnerNeeds = null;
+                                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                                    partnerNeeds = ProfileCalculator.calculateFlatNeeds(
+                                        partnerArchetype,
+                                        geschlecht,
+                                        dominanz,
+                                        orientierung
+                                    );
                                 }
-                            });
-                            let baseScore = result.overall || 0;
-                            const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                            score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                        } else if (pathosCheck.result === 'unvollständig') {
-                            score = logosCheck.score || 50;
-                        }
-                    } catch (e) {
-                        // Fehler ignorieren
-                    }
 
-                    results.push({
-                        archetyp: partnerArchetype,
-                        geschlecht: validPartnerGeschlecht,
-                        orientierung: validPartnerOrientierung.primary,
-                        dominanz: validPartnerDominanz.primary,
-                        score: score
-                    });
+                                const partnerObj = {
+                                    archetyp: partnerArchetype,
+                                    geschlecht: geschlecht,
+                                    orientierung: orientierung,
+                                    dominanz: dominanz,
+                                    gfk: partnerGfk,
+                                    needs: partnerNeeds
+                                };
+
+                                currentArchetype = ichArchetype;
+                                selectedPartner = partnerArchetype;
+
+                                let score = 0;
+
+                                try {
+                                    const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                                    const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
+
+                                    if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                        const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                        const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                            rFaktoren: {
+                                                ich: ichRFaktoren,
+                                                partner: partnerRFaktoren
+                                            }
+                                        });
+                                        let baseScore = result.overall || 0;
+                                        const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
+                                        score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                                    } else if (pathosCheck.result === 'unvollständig') {
+                                        score = logosCheck.score || 50;
+                                    }
+                                } catch (e) {
+                                    // Fehler ignorieren
+                                }
+
+                                results.push({
+                                    archetyp: partnerArchetype,
+                                    geschlecht: geschlecht,
+                                    orientierung: orientierung.primary,
+                                    dominanz: dominanz.primary,
+                                    score: score
+                                });
+                            }
+                        }
+                    }
                 }
             } finally {
                 // Globale Variablen wiederherstellen
