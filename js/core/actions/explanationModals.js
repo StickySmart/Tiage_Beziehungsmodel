@@ -30,15 +30,14 @@
             /**
              * Schließt das GFK Explanation Modal
              * Ersetzt: onclick="closeGfkExplanationModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-gfk-modal': function(el, event) {
-                if (typeof closeGfkExplanationModal === 'function') {
-                    closeGfkExplanationModal(event);
-                } else if (typeof window.closeGfkExplanationModal === 'function') {
-                    window.closeGfkExplanationModal(event);
-                } else {
-                    var modal = document.getElementById('gfkExplanationModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('gfkExplanationModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             },
 
