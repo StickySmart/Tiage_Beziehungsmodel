@@ -656,46 +656,67 @@
                         </div>
                     </div>
 
-                    <!-- Reibungs-Fragen (optional) -->
+                    <!-- RTI-Säulen Prioritäten (5 Säulen nach Petzold) -->
                     <div class="reibung-questions" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <label style="color: #F4A261; font-weight: bold; margin-bottom: 12px; display: block;">
-                            🏛️ Reibungs-Prioritäten (optional)
+                        <label style="color: #F4A261; font-weight: bold; margin-bottom: 8px; display: block;">
+                            🏛️ RTI-Säulen Prioritäten
                         </label>
-                        <p style="color: rgba(255,255,255,0.6); font-size: 11px; margin-bottom: 16px;">
-                            Wie wichtig sind dir diese Aspekte? Beeinflusst die RTI-Säulen-Gewichtung.
+                        <p style="color: rgba(255,255,255,0.5); font-size: 10px; margin-bottom: 12px;">
+                            0 = Egal · 1 = Normal · 2 = Wichtig
                         </p>
 
-                        <!-- #B227: Körperliche Resonanz (S1) -->
-                        <div class="reibung-question" style="margin-bottom: 16px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <span style="color: var(--text-secondary); font-size: 12px; display: flex; align-items: center; gap: 6px;">
-                                    <span style="color: #E84393;">🫀</span> Körperliche Anziehung
-                                </span>
-                                <span id="reibungB227Value" style="color: #E84393; font-weight: 600; font-size: 12px;">50</span>
-                            </div>
-                            <input type="range" id="reibungB227Slider" min="0" max="100" value="50"
-                                   style="width: 100%; accent-color: #E84393;"
-                                   oninput="updateReibungSlider('B227', this.value)">
-                            <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 2px;">
-                                <span>Unwichtig</span>
-                                <span>Sehr wichtig</span>
+                        <!-- S1: Leiblichkeit (Körperliche Anziehung) -->
+                        <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="color: #E84393; font-size: 11px; min-width: 24px; font-weight: 600;">S1</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🫀 Leiblichkeit</span>
+                            <div class="rti-toggle-group" id="rtiToggleS1" style="display: flex; gap: 2px;">
+                                <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S1', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
+                                <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S1', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
+                                <button class="agod-toggle-btn" data-value="2" onclick="setRtiPriority('S1', 2)" style="font-size: 11px; padding: 4px 8px;">2</button>
                             </div>
                         </div>
 
-                        <!-- #B228: Beziehungsform-Passung (S2) -->
-                        <div class="reibung-question">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <span style="color: var(--text-secondary); font-size: 12px; display: flex; align-items: center; gap: 6px;">
-                                    <span style="color: #3B82F6;">👥</span> Gleiche Beziehungsform
-                                </span>
-                                <span id="reibungB228Value" style="color: #3B82F6; font-weight: 600; font-size: 12px;">50</span>
+                        <!-- S2: Soziales Netzwerk (Beziehungsform) -->
+                        <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="color: #3B82F6; font-size: 11px; min-width: 24px; font-weight: 600;">S2</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">👥 Soziales Netzwerk</span>
+                            <div class="rti-toggle-group" id="rtiToggleS2" style="display: flex; gap: 2px;">
+                                <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S2', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
+                                <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S2', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
+                                <button class="agod-toggle-btn" data-value="2" onclick="setRtiPriority('S2', 2)" style="font-size: 11px; padding: 4px 8px;">2</button>
                             </div>
-                            <input type="range" id="reibungB228Slider" min="0" max="100" value="50"
-                                   style="width: 100%; accent-color: #3B82F6;"
-                                   oninput="updateReibungSlider('B228', this.value)">
-                            <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 2px;">
-                                <span>Unwichtig</span>
-                                <span>Sehr wichtig</span>
+                        </div>
+
+                        <!-- S3: Autonomie & Leistung -->
+                        <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="color: #22c55e; font-size: 11px; min-width: 24px; font-weight: 600;">S3</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🎯 Autonomie</span>
+                            <div class="rti-toggle-group" id="rtiToggleS3" style="display: flex; gap: 2px;">
+                                <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S3', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
+                                <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S3', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
+                                <button class="agod-toggle-btn" data-value="2" onclick="setRtiPriority('S3', 2)" style="font-size: 11px; padding: 4px 8px;">2</button>
+                            </div>
+                        </div>
+
+                        <!-- S4: Sicherheit & Stabilität -->
+                        <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="color: #f59e0b; font-size: 11px; min-width: 24px; font-weight: 600;">S4</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🛡️ Sicherheit</span>
+                            <div class="rti-toggle-group" id="rtiToggleS4" style="display: flex; gap: 2px;">
+                                <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S4', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
+                                <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S4', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
+                                <button class="agod-toggle-btn" data-value="2" onclick="setRtiPriority('S4', 2)" style="font-size: 11px; padding: 4px 8px;">2</button>
+                            </div>
+                        </div>
+
+                        <!-- S5: Werte & Sinn -->
+                        <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #8b5cf6; font-size: 11px; min-width: 24px; font-weight: 600;">S5</span>
+                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">💫 Werte & Sinn</span>
+                            <div class="rti-toggle-group" id="rtiToggleS5" style="display: flex; gap: 2px;">
+                                <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S5', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
+                                <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S5', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
+                                <button class="agod-toggle-btn" data-value="2" onclick="setRtiPriority('S5', 2)" style="font-size: 11px; padding: 4px 8px;">2</button>
                             </div>
                         </div>
                     </div>
@@ -1033,39 +1054,43 @@
 
             <!-- Center Column - Lightbulb Button & Score Circle -->
             <div class="center-column">
-                <!-- AGOD Weight Inputs (4 Sticks) - Sortierung: A, G, O, D -->
+                <!-- AGOD Weight Toggles (3-Wege-Schalter) - Sortierung: A, G, O, D -->
                 <div class="agod-heading" style="text-align: center; margin-bottom: 8px;">
-                    <div style="color: #F59E0B; font-size: 14px; font-weight: 600;">Gewichtung <span id="agod-weight-sum-label" style="font-size: 11px; font-weight: 400; opacity: 0.7;">100%</span></div>
-                    <div style="color: var(--text-muted); font-size: 10px;">Archetyp · Geschlecht · Orientierung · Dominanz</div>
+                    <div style="color: #F59E0B; font-size: 14px; font-weight: 600;">Gewichtung</div>
+                    <div style="color: var(--text-muted); font-size: 10px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
                 </div>
-                <div class="agod-weight-sticks" id="agodWeightSticks">
-                    <div class="agod-stick" data-factor="A" title="Archetyp (A) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="A" data-delta="5">+</button>
-                        <div class="agod-stick-bar" id="agodStickA"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightA" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('A', this.value)">
-                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="A" data-delta="-5">−</button>
-                        <span class="agod-stick-label">A</span>
+                <div class="agod-weight-toggles" id="agodWeightToggles">
+                    <div class="agod-toggle-row" data-factor="A" title="Archetyp (A) - Gewichtung">
+                        <span class="agod-toggle-label">A</span>
+                        <div class="agod-toggle-group" id="agodToggleA">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('A', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('A', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('A', 2)">2</button>
+                        </div>
                     </div>
-                    <div class="agod-stick" data-factor="G" title="Geschlecht (G) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="G" data-delta="5">+</button>
-                        <div class="agod-stick-bar" id="agodStickG"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightG" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('G', this.value)">
-                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="G" data-delta="-5">−</button>
-                        <span class="agod-stick-label">G</span>
+                    <div class="agod-toggle-row" data-factor="G" title="Geschlecht (G) - Gewichtung">
+                        <span class="agod-toggle-label">G</span>
+                        <div class="agod-toggle-group" id="agodToggleG">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('G', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('G', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('G', 2)">2</button>
+                        </div>
                     </div>
-                    <div class="agod-stick" data-factor="O" title="Orientierung (O) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="O" data-delta="5">+</button>
-                        <div class="agod-stick-bar" id="agodStickO"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightO" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('O', this.value)">
-                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="O" data-delta="-5">−</button>
-                        <span class="agod-stick-label">O</span>
+                    <div class="agod-toggle-row" data-factor="O" title="Orientierung (O) - Gewichtung">
+                        <span class="agod-toggle-label">O</span>
+                        <div class="agod-toggle-group" id="agodToggleO">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('O', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('O', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('O', 2)">2</button>
+                        </div>
                     </div>
-                    <div class="agod-stick" data-factor="D" title="Dominanz (D) - Gewichtung">
-                        <button class="agod-btn agod-btn-plus" data-action="adjust-agod-weight" data-dimension="D" data-delta="5">+</button>
-                        <div class="agod-stick-bar" id="agodStickD"></div>
-                        <input type="number" class="agod-weight-input" id="agodWeightD" value="25" min="0" max="100" step="1" oninput="updateAgodWeight('D', this.value)">
-                        <button class="agod-btn agod-btn-minus" data-action="adjust-agod-weight" data-dimension="D" data-delta="-5">−</button>
-                        <span class="agod-stick-label">D</span>
+                    <div class="agod-toggle-row" data-factor="D" title="Dominanz (D) - Gewichtung">
+                        <span class="agod-toggle-label">D</span>
+                        <div class="agod-toggle-group" id="agodToggleD">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('D', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('D', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('D', 2)">2</button>
+                        </div>
                     </div>
                 </div>
                 <!-- Score Label -->
@@ -1150,6 +1175,10 @@
                 <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="partner-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
+                <!-- FREE Button - Reset Partner GOD -->
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
+                    <button data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
+                </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
@@ -1485,6 +1514,10 @@
                     <div class="header-geschlecht-info" id="mobile-partner-header-dominanz"></div>
                     <div class="header-geschlecht-info" id="mobile-partner-header-orientierung"></div>
                 </div>
+                <!-- FREE Button - Reset Partner GOD (Mobile) -->
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
+                    <button data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
+                </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
@@ -1644,47 +1677,46 @@
         <div class="mobile-settings-section" id="mobileSettingsSection">
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F59E0B; padding: 15px; margin: 15px 0;">
                 <div class="mobile-gewichtung-heading" style="text-align: center; margin-bottom: 12px;">
-                    <div style="color: #F59E0B; font-size: 16px; font-weight: 600;">Gewichtung <span id="mobile-gewicht-summe-label" style="font-size: 12px; font-weight: 400; opacity: 0.7;">100%</span></div>
-                    <div style="color: var(--text-muted); font-size: 11px;">Archetyp · Geschlecht · Orientierung · Dominanz</div>
+                    <div style="color: #F59E0B; font-size: 16px; font-weight: 600;">Gewichtung</div>
+                    <div style="color: var(--text-muted); font-size: 11px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
                 </div>
-                <!-- AGOD Gewichtung Slider für Mobile -->
+                <!-- AGOD Gewichtung 3-Wege-Schalter für Mobile -->
                 <div class="mobile-gewichtung-container" id="mobileGewichtungContainer">
                     <div class="mobile-gewichtung-row" data-factor="A">
                         <span class="mobile-gewichtung-label">Archetyp (A)</span>
-                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-archetyp" min="0" max="100" value="25" oninput="updateMobileGewichtung('archetyp', this.value)">
-                        <div class="mobile-gewichtung-input-group">
-                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-archetyp" value="25" maxlength="3" oninput="updateMobileGewichtung('archetyp', this.value)">
-                            <span class="mobile-gewichtung-percent">%</span>
+                        <div class="agod-toggle-group mobile" id="mobileToggleA">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('A', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('A', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('A', 2)">2</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="G">
                         <span class="mobile-gewichtung-label">Geschlecht (G)</span>
-                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-geschlecht" min="0" max="100" value="25" oninput="updateMobileGewichtung('geschlecht', this.value)">
-                        <div class="mobile-gewichtung-input-group">
-                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-geschlecht" value="25" maxlength="3" oninput="updateMobileGewichtung('geschlecht', this.value)">
-                            <span class="mobile-gewichtung-percent">%</span>
+                        <div class="agod-toggle-group mobile" id="mobileToggleG">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('G', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('G', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('G', 2)">2</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="O">
                         <span class="mobile-gewichtung-label">Orientierung (O)</span>
-                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-orientierung" min="0" max="100" value="25" oninput="updateMobileGewichtung('orientierung', this.value)">
-                        <div class="mobile-gewichtung-input-group">
-                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-orientierung" value="25" maxlength="3" oninput="updateMobileGewichtung('orientierung', this.value)">
-                            <span class="mobile-gewichtung-percent">%</span>
+                        <div class="agod-toggle-group mobile" id="mobileToggleO">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('O', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('O', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('O', 2)">2</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="D">
                         <span class="mobile-gewichtung-label">Dominanz (D)</span>
-                        <input type="range" class="mobile-gewichtung-slider" id="mobile-gewicht-slider-dominanz" min="0" max="100" value="25" oninput="updateMobileGewichtung('dominanz', this.value)">
-                        <div class="mobile-gewichtung-input-group">
-                            <input type="text" class="mobile-gewichtung-input" id="mobile-gewicht-dominanz" value="25" maxlength="3" oninput="updateMobileGewichtung('dominanz', this.value)">
-                            <span class="mobile-gewichtung-percent">%</span>
+                        <div class="agod-toggle-group mobile" id="mobileToggleD">
+                            <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('D', 0)">0</button>
+                            <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('D', 1)">1</button>
+                            <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('D', 2)">2</button>
                         </div>
                     </div>
                 </div>
-                <div class="mobile-gewichtung-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
-                    <span style="color: var(--text-muted); font-size: 11px;">Summe: <span id="mobile-gewicht-summe" style="color: #10B981; font-weight: 600;">100%</span></span>
-                    <button data-action="reset-mobile-gewichtung" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard</button>
+                <div class="mobile-gewichtung-footer" style="display: flex; justify-content: center; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
+                    <button data-action="reset-agod-weights" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard (alle auf 1)</button>
                 </div>
             </div>
         </div>

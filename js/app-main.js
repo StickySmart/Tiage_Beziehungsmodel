@@ -589,19 +589,20 @@
         var getScoreGradientColor = TiageChartUtils.getScoreGradientColor;
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // AGOD WEIGHT INPUTS - Gewichtung für Synthese Score
+        // AGOD WEIGHT TOGGLES - 3-Wege-Gewichtung für Synthese Score
+        // Werte: 0 = Egal (ignoriert), 1 = Normal, 2 = Wichtig (doppelt)
         // Speichert persistent in TiageState (überlebt Reload)
         // ═══════════════════════════════════════════════════════════════════════════
 
-        // Default weights (25% each = 100% total)
-        const AGOD_DEFAULT_WEIGHTS = { O: 25, A: 25, D: 25, G: 25 };
+        // Default weights (all normal = 1)
+        const AGOD_DEFAULT_WEIGHTS = { O: 1, A: 1, D: 1, G: 1 };
 
-        // Current weights state
+        // Current weights state (0, 1, or 2)
         let agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
 
         /**
-         * Initialize AGOD weight inputs on page load
-         * Loads from TiageState.paarung.gewichtungen (primary) or gewichtungen.ich (fallback)
+         * Initialize AGOD weight toggles on page load
+         * Loads from TiageState.paarung.gewichtungen (primary)
          */
         function initAgodWeightInputs() {
             // Start with defaults
@@ -613,162 +614,210 @@
                 let source = 'paarung.gewichtungen';
 
                 // Fallback: Load from gewichtungen.ich
-                if (!stored || !stored.O) {
+                if (!stored || stored.O === undefined) {
                     stored = TiageState.get('gewichtungen.ich');
                     source = 'gewichtungen.ich (fallback)';
                 }
 
                 console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
 
-                if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
-                    const loadedWeights = {
-                        O: stored.O.value ?? 25,
-                        A: stored.A.value ?? 25,
-                        D: stored.D.value ?? 25,
-                        G: stored.G.value ?? 25
-                    };
-
-                    // Validation: Sum of 0 means invalid data
-                    const sum = loadedWeights.O + loadedWeights.A + loadedWeights.D + loadedWeights.G;
-                    if (sum > 0) {
-                        agodWeights = loadedWeights;
-                        console.log('[AGOD] Loaded valid weights:', agodWeights);
-                    } else {
-                        console.log('[AGOD] Invalid weights (sum=0), using defaults:', agodWeights);
+                if (stored) {
+                    // New format: { O: 1, A: 2, D: 0, G: 1 }
+                    if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
+                        agodWeights = {
+                            O: stored.O ?? 1,
+                            A: stored.A ?? 1,
+                            D: stored.D ?? 1,
+                            G: stored.G ?? 1
+                        };
+                        console.log('[AGOD] Loaded new format weights:', agodWeights);
                     }
-                } else if (stored && typeof stored.O === 'number') {
-                    // Legacy format
-                    agodWeights = {
-                        O: stored.O ?? 25,
-                        A: stored.A ?? 25,
-                        D: stored.D ?? 25,
-                        G: stored.G ?? 25
-                    };
+                    // Legacy format: { O: { value: 25, locked: false }, ... }
+                    else if (stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
+                        // Migrate: 0-33 = 0, 34-66 = 1, 67-100 = 2
+                        agodWeights = {
+                            O: migrateOldWeight(stored.O.value),
+                            A: migrateOldWeight(stored.A.value),
+                            D: migrateOldWeight(stored.D.value),
+                            G: migrateOldWeight(stored.G.value)
+                        };
+                        console.log('[AGOD] Migrated legacy weights:', agodWeights);
+                        // Save migrated values
+                        saveAgodWeights();
+                    }
                 }
             }
 
-            // Update input fields
-            ['O', 'A', 'D', 'G'].forEach(factor => {
-                const input = document.getElementById(`agodWeight${factor}`);
-                if (input) {
-                    input.value = agodWeights[factor];
-                }
-            });
+            // Update toggle UI
+            updateAgodToggleUI();
 
-            // Update visual bars
-            updateAgodStickBars();
-
-            // Update weight sum label
-            updateAgodWeightSumLabel();
-
-            // Also save to sessionStorage for synthesis
-            saveAgodWeightsToSession();
-
-            console.log('[AGOD] Weight inputs initialized:', agodWeights);
+            console.log('[AGOD] Weight toggles initialized:', agodWeights);
         }
 
         /**
-         * Update AGOD weight when user changes input
-         * Saves to paarung.gewichtungen (primary) and gewichtungen.ich/partner (backup)
-         * @param {string} factor - O, A, D, or G
-         * @param {string|number} value - New weight value (0-100)
+         * Migrate old 0-100 weight to new 0/1/2 format
+         * @param {number} oldValue - Old weight value (0-100)
+         * @returns {number} - New weight (0, 1, or 2)
          */
-        function updateAgodWeight(factor, value) {
-            // Parse and clamp value
-            let numValue = parseInt(value) || 0;
-            numValue = Math.max(0, Math.min(100, numValue));
+        function migrateOldWeight(oldValue) {
+            if (oldValue === undefined || oldValue === null) return 1;
+            if (oldValue <= 10) return 0;  // Very low = Egal
+            if (oldValue >= 40) return 2;  // High = Wichtig
+            return 1;  // Normal
+        }
+
+        /**
+         * Set AGOD weight (called by toggle buttons)
+         * @param {string} factor - O, A, D, or G
+         * @param {number} value - New weight value (0, 1, or 2)
+         */
+        function setAgodWeight(factor, value) {
+            // Validate value (0, 1, or 2) - use isNaN check to allow 0
+            const parsed = parseInt(value);
+            const numValue = Math.max(0, Math.min(2, isNaN(parsed) ? 1 : parsed));
 
             // Update state
             agodWeights[factor] = numValue;
 
-            // Update input field (in case of clamping)
-            const input = document.getElementById(`agodWeight${factor}`);
-            if (input && parseInt(input.value) !== numValue) {
-                input.value = numValue;
-            }
+            // Update toggle UI
+            updateAgodToggleUI();
 
-            // Update visual bars
-            updateAgodStickBars();
-
-            // Update weight sum label
-            updateAgodWeightSumLabel();
-
-            // Save to sessionStorage (for synthesis)
-            saveAgodWeightsToSession();
-
-            // SSOT: Save to TiageState for persistence
-            if (typeof TiageState !== 'undefined') {
-                // Create gewichtungen object with all current values
-                const gewData = {
-                    O: { value: agodWeights.O, locked: false },
-                    A: { value: agodWeights.A, locked: false },
-                    D: { value: agodWeights.D, locked: false },
-                    G: { value: agodWeights.G, locked: false },
-                    summeLock: { enabled: false, target: 100 }
-                };
-
-                // Primary: Save to paarung.gewichtungen
-                TiageState.set('paarung.gewichtungen', gewData);
-
-                // Backup: Save to gewichtungen.ich and gewichtungen.partner
-                TiageState.set('gewichtungen.ich', gewData);
-                TiageState.set('gewichtungen.partner', gewData);
-
-                TiageState.saveToStorage();
-                console.log('[AGOD] Saved to TiageState (paarung + ich + partner):', factor, '=', numValue);
-            }
+            // Save to TiageState
+            saveAgodWeights();
 
             // Trigger synthesis recalculation
             if (typeof updateComparisonView === 'function') {
                 updateComparisonView();
             }
 
-            // console.log('[AGOD] Weight updated:', factor, '=', numValue, '| Total:', getAgodWeightSum()); // DISABLED: verursacht Message-Overflow
+            console.log('[AGOD] Weight set:', factor, '=', numValue);
         }
 
         /**
-         * Adjust AGOD weight by delta (for +/- buttons)
-         * @param {string} factor - O, A, D, or G
-         * @param {number} delta - Amount to add (positive) or subtract (negative)
+         * Reset all AGOD weights to default (all = 1)
          */
-        function adjustAgodWeight(factor, delta) {
-            const currentValue = agodWeights[factor] || 0;
-            const newValue = Math.max(0, Math.min(100, currentValue + delta));
-            updateAgodWeight(factor, newValue);
+        function resetAgodWeights() {
+            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+            updateAgodToggleUI();
+            saveAgodWeights();
+
+            // Trigger synthesis recalculation
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
+            console.log('[AGOD] Weights reset to defaults:', agodWeights);
         }
 
         /**
-         * Update visual height of stick bars based on weights
+         * Reset Partner GOD (Geschlecht, Orientierung, Dominanz) selection
+         * Makes all partner options "free" again
          */
-        function updateAgodStickBars() {
-            const maxHeight = 60; // Max bar height in pixels
-            const maxWeight = 100;
+        function resetPartnerGOD() {
+            // Reset personDimensions for partner
+            if (typeof personDimensions !== 'undefined' && personDimensions.partner) {
+                personDimensions.partner.geschlecht = null;
+                personDimensions.partner.orientierung = null;
+                personDimensions.partner.dominanz = null;
+            }
 
+            // Reset mobilePersonDimensions for partner
+            if (typeof mobilePersonDimensions !== 'undefined' && mobilePersonDimensions.partner) {
+                mobilePersonDimensions.partner.geschlecht = null;
+                mobilePersonDimensions.partner.orientierung = null;
+                mobilePersonDimensions.partner.dominanz = null;
+            }
+
+            // Reset TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner.geschlecht', null);
+                TiageState.set('personDimensions.partner.orientierung', null);
+                TiageState.set('personDimensions.partner.dominanz', null);
+                TiageState.saveToStorage();
+            }
+
+            // Reset UI - clear all active states in partner grids
+            // Geschlecht
+            document.querySelectorAll('#partner-geschlecht-p-grid .geschlecht-btn, #mobile-partner-geschlecht-p-grid .geschlecht-btn, #modal-partner-geschlecht-grid .geschlecht-btn').forEach(btn => {
+                btn.classList.remove('active', 'active-primary', 'active-secondary');
+            });
+            document.querySelectorAll('#partner-geschlecht-s-grid .geschlecht-btn, #mobile-partner-geschlecht-s-grid .geschlecht-btn').forEach(btn => {
+                btn.classList.remove('active', 'active-primary', 'active-secondary');
+            });
+
+            // Orientierung
+            document.querySelectorAll('#partner-orientierung-grid .orientierung-btn, #mobile-partner-orientierung-grid .orientierung-btn, #modal-partner-orientierung-grid .orientierung-btn').forEach(btn => {
+                btn.classList.remove('active', 'active-primary', 'active-secondary');
+            });
+
+            // Dominanz
+            document.querySelectorAll('#partner-dominanz-grid .dominanz-btn, #mobile-partner-dominanz-grid .dominanz-btn, #modal-partner-dominanz-grid .dominanz-btn').forEach(btn => {
+                btn.classList.remove('active', 'active-primary', 'active-secondary');
+            });
+
+            // Clear summaries
+            ['partner-geschlecht-summary', 'partner-orientierung-summary', 'partner-dominanz-summary',
+             'mobile-partner-geschlecht-summary', 'mobile-partner-orientierung-summary', 'mobile-partner-dominanz-summary'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
+            });
+
+            // Clear header info
+            ['partner-header-geschlecht', 'partner-header-dominanz', 'partner-header-orientierung',
+             'mobile-partner-header-geschlecht', 'mobile-partner-header-dominanz', 'mobile-partner-header-orientierung'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
+            });
+
+            // Add needs-selection class back
+            document.querySelectorAll('[data-dimension*="partner-geschlecht"], [data-dimension*="partner-orientierung"], [data-dimension*="partner-dominanz"]').forEach(el => {
+                el.classList.add('needs-selection');
+            });
+
+            // Trigger recalculation
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
+            console.log('[Partner GOD] Reset complete - all partner attributes cleared');
+        }
+
+        // Expose globally
+        window.resetPartnerGOD = resetPartnerGOD;
+
+        /**
+         * Update toggle button UI to reflect current weights
+         */
+        function updateAgodToggleUI() {
             ['O', 'A', 'D', 'G'].forEach(factor => {
-                const bar = document.getElementById(`agodStick${factor}`);
-                if (bar) {
-                    const weight = agodWeights[factor] || 0;
-                    const height = (weight / maxWeight) * maxHeight;
-                    bar.style.height = `${Math.max(4, height)}px`; // Min 4px for visibility
-                    bar.style.opacity = weight > 0 ? 1 : 0.3;
+                const currentValue = agodWeights[factor];
+
+                // Update desktop toggles
+                const desktopGroup = document.getElementById(`agodToggle${factor}`);
+                if (desktopGroup) {
+                    desktopGroup.querySelectorAll('.agod-toggle-btn').forEach(btn => {
+                        const btnValue = parseInt(btn.dataset.value);
+                        btn.classList.toggle('active', btnValue === currentValue);
+                    });
+                }
+
+                // Update mobile toggles
+                const mobileGroup = document.getElementById(`mobileToggle${factor}`);
+                if (mobileGroup) {
+                    mobileGroup.querySelectorAll('.agod-toggle-btn').forEach(btn => {
+                        const btnValue = parseInt(btn.dataset.value);
+                        btn.classList.toggle('active', btnValue === currentValue);
+                    });
                 }
             });
         }
 
         /**
-         * Get current AGOD weights as normalized decimals (sum to 1.0)
-         * @returns {object} { orientierung, archetyp, dominanz, geschlecht }
+         * Get current AGOD weights (raw 0/1/2 values)
+         * @returns {object} { O, A, D, G } with values 0, 1, or 2
          */
         function getAgodWeights() {
-            const sum = getAgodWeightSum();
-            const divisor = sum > 0 ? sum : 100; // Avoid division by zero
-
-            return {
-                orientierung: agodWeights.O / divisor,
-                archetyp: agodWeights.A / divisor,
-                dominanz: agodWeights.D / divisor,
-                geschlecht: agodWeights.G / divisor
-            };
+            return { ...agodWeights };
         }
 
         /**
@@ -780,35 +829,27 @@
         }
 
         /**
-         * Update the weight sum label in the UI
-         */
-        function updateAgodWeightSumLabel() {
-            const sumLabel = document.getElementById('agod-weight-sum-label');
-            if (sumLabel) {
-                const sum = getAgodWeightSum();
-                sumLabel.textContent = sum + '%';
-                // Visual feedback: red if not 100%, normal otherwise
-                sumLabel.style.color = sum === 100 ? '' : '#EF4444';
-            }
-        }
-
-        /**
          * Save weights to TiageState (SSOT - persistent)
-         * @param {string} person - 'ich' oder 'partner' (default: 'ich')
          */
-        function saveAgodWeightsToSession(person) {
-            person = person || 'ich';
+        function saveAgodWeights() {
             try {
                 if (typeof TiageState !== 'undefined') {
+                    // New simple format: { O: 1, A: 2, D: 0, G: 1 }
                     const gewData = {
-                        O: { value: agodWeights.O, locked: false },
-                        A: { value: agodWeights.A, locked: false },
-                        D: { value: agodWeights.D, locked: false },
-                        G: { value: agodWeights.G, locked: false },
-                        summeLock: { enabled: false, target: 100 }
+                        O: agodWeights.O,
+                        A: agodWeights.A,
+                        D: agodWeights.D,
+                        G: agodWeights.G
                     };
-                    TiageState.set(`gewichtungen.${person}`, gewData);
-                    console.log(`[AGOD] Weights saved to TiageState (${person}):`, agodWeights);
+
+                    // Primary: Save to paarung.gewichtungen
+                    TiageState.set('paarung.gewichtungen', gewData);
+
+                    // Backup: Save to gewichtungen.ich
+                    TiageState.set('gewichtungen.ich', gewData);
+
+                    TiageState.saveToStorage();
+                    console.log('[AGOD] Saved to TiageState:', gewData);
                 }
             } catch (e) {
                 console.warn('[AGOD] Could not save to TiageState:', e);
@@ -817,20 +858,18 @@
 
         /**
          * Get weights from TiageState (SSOT - persistent)
-         * @param {string} person - 'ich' oder 'partner' (default: 'ich')
          * @returns {object|null} { O, A, D, G }
          */
-        function getAgodWeightsFromSession(person) {
-            person = person || 'ich';
+        function getAgodWeightsFromSession() {
             try {
                 if (typeof TiageState !== 'undefined') {
-                    const stored = TiageState.get(`gewichtungen.${person}`);
-                    if (stored && stored.O && typeof stored.O.value === 'number') {
+                    const stored = TiageState.get('paarung.gewichtungen');
+                    if (stored && typeof stored.O === 'number') {
                         return {
-                            O: stored.O.value,
-                            A: stored.A.value,
-                            D: stored.D.value,
-                            G: stored.G.value
+                            O: stored.O,
+                            A: stored.A,
+                            D: stored.D,
+                            G: stored.G
                         };
                     }
                 }
@@ -839,6 +878,11 @@
                 console.warn('[AGOD] Could not read from TiageState:', e);
                 return null;
             }
+        }
+
+        // Legacy compatibility - keep old function name
+        function saveAgodWeightsToSession() {
+            saveAgodWeights();
         }
 
         // Update Score Cycle im Synthese Modal und auf der Hauptseite
@@ -11181,42 +11225,50 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════
             // SCHRITT 3: Score-Berechnung mit Resonanz
             // ═══════════════════════════════════════
+            // NEU: 3-Wege-Gewichtung (0 = Egal, 1 = Normal, 2 = Wichtig)
             // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
-            // SSOT: TiageState ist Single Source of Truth für Gewichtungen
+            // wobei wX die normalisierte Gewichtung ist
 
-            // Gewichte aus TiageState laden (SSOT)
-            let gew = { O: 25, A: 25, D: 25, G: 25 };
+            // Gewichte aus TiageState laden (SSOT) - neues Format: 0/1/2
+            let gew = { O: 1, A: 1, D: 1, G: 1 };
             try {
                 if (typeof TiageState !== 'undefined') {
-                    const stored = TiageState.get('gewichtungen.ich');
-                    if (stored && stored.O && typeof stored.O.value === 'number') {
+                    const stored = TiageState.get('paarung.gewichtungen');
+                    // Neues Format: { O: 1, A: 2, D: 0, G: 1 }
+                    if (stored && typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
                         gew = {
-                            O: stored.O.value,
-                            A: stored.A.value,
-                            D: stored.D.value,
-                            G: stored.G.value
+                            O: stored.O ?? 1,
+                            A: stored.A ?? 1,
+                            D: stored.D ?? 1,
+                            G: stored.G ?? 1
+                        };
+                    }
+                    // Legacy Format Migration: { O: { value: 25, locked: false }, ... }
+                    else if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
+                        gew = {
+                            O: stored.O.value <= 10 ? 0 : (stored.O.value >= 40 ? 2 : 1),
+                            A: stored.A.value <= 10 ? 0 : (stored.A.value >= 40 ? 2 : 1),
+                            D: stored.D.value <= 10 ? 0 : (stored.D.value >= 40 ? 2 : 1),
+                            G: stored.G.value <= 10 ? 0 : (stored.G.value >= 40 ? 2 : 1)
                         };
                     }
                 }
-                // Fallback: GewichtungCard
-                if (gew.O === 25 && gew.A === 25 && gew.D === 25 && gew.G === 25) {
-                    if (typeof getGewichtungen === 'function') {
-                        gew = getGewichtungen();
-                    }
+                // Fallback: agodWeights global
+                if (typeof agodWeights !== 'undefined') {
+                    gew = { ...agodWeights };
                 }
             } catch (e) {
-                if (typeof getGewichtungen === 'function') {
-                    gew = getGewichtungen();
-                }
+                console.warn('[calculateRelationshipQuality] Fehler beim Laden der Gewichte:', e);
             }
-            // Normalisiere auf 100%
-            // FIX: typeof check statt || operator, damit 0 korrekt als 0 behandelt wird
-            const gewSum = (gew.O || 0) + (gew.A || 0) + (gew.D || 0) + (gew.G || 0);
-            const gewDivisor = gewSum > 0 ? gewSum : 100;
-            const wO = (typeof gew.O === 'number' ? gew.O : 25) / gewDivisor;
-            const wA = (typeof gew.A === 'number' ? gew.A : 25) / gewDivisor;
-            const wD = (typeof gew.D === 'number' ? gew.D : 25) / gewDivisor;
-            const wG = (typeof gew.G === 'number' ? gew.G : 25) / gewDivisor;
+
+            // Normalisiere Gewichte: Summe der aktiven Gewichte = 1.0
+            // 0 = ignoriert, 1 = normal, 2 = doppelt
+            const gewSum = gew.O + gew.A + gew.D + gew.G;
+            const gewDivisor = gewSum > 0 ? gewSum : 4; // Fallback: alle gleich
+            const wO = gew.O / gewDivisor;
+            const wA = gew.A / gewDivisor;
+            const wD = gew.D / gewDivisor;
+            const wG = gew.G / gewDivisor;
 
             const scoreO = orientationScore * wO * R1;
             const scoreA = archetypeScore * wA * R2;
@@ -11956,26 +12008,38 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.openSlotMachineModal = openSlotMachineModal;
 
         /**
-         * Lädt gespeicherte Reibungs-Werte aus TiageState in die Slider
+         * RTI-Säulen Prioritäten (5 Säulen nach Petzold)
+         * S1: Leiblichkeit, S2: Soziales Netzwerk, S3: Autonomie, S4: Sicherheit, S5: Werte
          */
-        function loadReibungValues() {
+        const RTI_DEFAULT_PRIORITIES = { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
+        let rtiPriorities = { ...RTI_DEFAULT_PRIORITIES };
+
+        /**
+         * Lädt gespeicherte RTI-Prioritäten aus TiageState in die Toggles
+         */
+        function loadRtiPriorities() {
             if (typeof TiageState === 'undefined') return;
 
-            const flatNeeds = TiageState.getFlatNeeds('ich') || {};
+            // Load from TiageState
+            const stored = TiageState.get('rtiPriorities');
+            if (stored && typeof stored.S1 === 'number') {
+                rtiPriorities = {
+                    S1: stored.S1 ?? 1,
+                    S2: stored.S2 ?? 1,
+                    S3: stored.S3 ?? 1,
+                    S4: stored.S4 ?? 1,
+                    S5: stored.S5 ?? 1
+                };
+                console.log('[RTI] Loaded priorities from TiageState:', rtiPriorities);
+            }
 
-            // #B227 - Körperliche Resonanz
-            const b227Value = flatNeeds['#B227'] ?? 50;
-            const b227Slider = document.getElementById('reibungB227Slider');
-            const b227Display = document.getElementById('reibungB227Value');
-            if (b227Slider) b227Slider.value = b227Value;
-            if (b227Display) b227Display.textContent = b227Value;
+            // Update UI
+            updateRtiToggleUI();
+        }
 
-            // #B228 - Beziehungsform-Passung
-            const b228Value = flatNeeds['#B228'] ?? 50;
-            const b228Slider = document.getElementById('reibungB228Slider');
-            const b228Display = document.getElementById('reibungB228Value');
-            if (b228Slider) b228Slider.value = b228Value;
-            if (b228Display) b228Display.textContent = b228Value;
+        // Legacy alias
+        function loadReibungValues() {
+            loadRtiPriorities();
         }
 
         /**
@@ -12109,9 +12173,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 showBindungTooltip(type, value);
             }
 
-            // Speichere in TiageState
+            // Speichere in TiageState (mit Persistenz)
             if (typeof TiageState !== 'undefined') {
                 TiageState.set('bindungsmuster.ich', slotMachineBindung);
+                TiageState.saveToStorage();
             }
         }
         window.selectBindungsmuster = selectBindungsmuster;
@@ -12127,38 +12192,80 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
-         * Update Reibungs-Slider Wert und Anzeige
-         * @param {string} needId - 'B227' oder 'B228' (ohne #)
-         * @param {number} value - Slider-Wert (0-100)
+         * Setzt eine RTI-Säulen Priorität (3-Wege-Toggle: 0=Egal, 1=Normal, 2=Wichtig)
+         * @param {string} pillar - 'S1', 'S2', 'S3', 'S4', oder 'S5'
+         * @param {number} value - 0, 1, oder 2
          */
+        function setRtiPriority(pillar, value) {
+            const parsed = parseInt(value);
+            const numValue = Math.max(0, Math.min(2, isNaN(parsed) ? 1 : parsed));
+
+            rtiPriorities[pillar] = numValue;
+            updateRtiToggleUI();
+            saveRtiPriorities();
+
+            console.log('[RTI] Set priority:', pillar, '=', numValue);
+        }
+        window.setRtiPriority = setRtiPriority;
+
+        /**
+         * Update RTI Toggle UI to reflect current priorities
+         */
+        function updateRtiToggleUI() {
+            ['S1', 'S2', 'S3', 'S4', 'S5'].forEach(pillar => {
+                const currentValue = rtiPriorities[pillar];
+                const group = document.getElementById(`rtiToggle${pillar}`);
+                if (group) {
+                    group.querySelectorAll('.agod-toggle-btn').forEach(btn => {
+                        const btnValue = parseInt(btn.dataset.value, 10);
+                        btn.classList.toggle('active', btnValue === currentValue);
+                    });
+                }
+            });
+        }
+        window.updateRtiToggleUI = updateRtiToggleUI;
+
+        /**
+         * Speichert RTI-Prioritäten in TiageState (persistent)
+         */
+        function saveRtiPriorities() {
+            if (typeof TiageState === 'undefined') return;
+
+            TiageState.set('rtiPriorities', {
+                S1: rtiPriorities.S1,
+                S2: rtiPriorities.S2,
+                S3: rtiPriorities.S3,
+                S4: rtiPriorities.S4,
+                S5: rtiPriorities.S5
+            });
+            TiageState.saveToStorage();
+            console.log('[RTI] Priorities saved:', rtiPriorities);
+        }
+
+        /**
+         * Get current RTI priorities
+         * @returns {Object} { S1, S2, S3, S4, S5 } with values 0, 1, or 2
+         */
+        function getRtiPriorities() {
+            return { ...rtiPriorities };
+        }
+        window.getRtiPriorities = getRtiPriorities;
+
+        // Legacy compatibility
         function updateReibungSlider(needId, value) {
-            const valueEl = document.getElementById(`reibung${needId}Value`);
-            if (valueEl) {
-                valueEl.textContent = value;
+            // Map old B227/B228 to new S1/S2
+            const pillarMap = { 'B227': 'S1', 'B228': 'S2' };
+            const pillar = pillarMap[needId];
+            if (pillar) {
+                // Convert 0-100 to 0/1/2
+                const newValue = value <= 33 ? 0 : (value >= 67 ? 2 : 1);
+                setRtiPriority(pillar, newValue);
             }
         }
         window.updateReibungSlider = updateReibungSlider;
 
-        /**
-         * Speichert die Reibungs-Werte aus dem Modal in TiageState
-         */
         function saveReibungValues() {
-            if (typeof TiageState === 'undefined') return;
-
-            const b227Slider = document.getElementById('reibungB227Slider');
-            const b228Slider = document.getElementById('reibungB228Slider');
-
-            if (b227Slider) {
-                const value = parseInt(b227Slider.value, 10);
-                TiageState.setNeed('ich', '#B227', value);
-                console.log('[Reibung] #B227 (Körperliche Resonanz) gespeichert:', value);
-            }
-
-            if (b228Slider) {
-                const value = parseInt(b228Slider.value, 10);
-                TiageState.setNeed('ich', '#B228', value);
-                console.log('[Reibung] #B228 (Beziehungsform-Passung) gespeichert:', value);
-            }
+            saveRtiPriorities();
         }
 
         /**
@@ -21211,11 +21318,12 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
         window.findBestPartnerMatch = findBestPartnerMatch;
 
-        // AGOD Weight functions (for synthesis weight inputs)
-        window.updateAgodWeight = updateAgodWeight;
-        window.adjustAgodWeight = adjustAgodWeight;
+        // AGOD Weight functions (for synthesis weight toggles)
+        window.setAgodWeight = setAgodWeight;
+        window.resetAgodWeights = resetAgodWeights;
         window.getAgodWeights = getAgodWeights;
         window.initAgodWeightInputs = initAgodWeightInputs;
+        window.updateAgodToggleUI = updateAgodToggleUI;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;

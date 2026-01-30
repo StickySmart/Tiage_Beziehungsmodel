@@ -984,8 +984,11 @@ const TiageState = (function() {
         },
 
         /**
-         * Normalize Gewichtungen to new format
-         * Handles both old format { O: 25, A: 25, ... } and new format { O: { value: 25, locked: false }, ... }
+         * Normalize Gewichtungen to expected format
+         * Handles:
+         * - NEW 3-way format: { O: 1, A: 2, D: 0, G: 1 } (values 0-2) → preserve as-is
+         * - Old format: { O: 25, A: 25, ... } (values 0-100) → convert to { value, locked }
+         * - Object format: { O: { value: 25, locked: false }, ... } → preserve
          * @private
          * @param {Object} gewichtungen - { ich: {...}, partner: {...} }
          * @returns {Object} Normalized gewichtungen
@@ -993,12 +996,26 @@ const TiageState = (function() {
         _normalizeGewichtungen(gewichtungen) {
             if (!gewichtungen) return gewichtungen;
 
+            // Check if person data is in NEW 3-way format (values are 0, 1, or 2)
+            const isNew3WayFormat = (person) => {
+                if (!person) return false;
+                // If O is a number between 0-2 AND no 'value' property, it's the new format
+                if (typeof person.O === 'number' && person.O >= 0 && person.O <= 2 &&
+                    typeof person.A === 'number' && person.A >= 0 && person.A <= 2 &&
+                    typeof person.D === 'number' && person.D >= 0 && person.D <= 2 &&
+                    typeof person.G === 'number' && person.G >= 0 && person.G <= 2 &&
+                    !person.summeLock) {  // Old format always has summeLock
+                    return true;
+                }
+                return false;
+            };
+
             const normalizeValue = (entry, defaultValue = 25) => {
                 if (entry === undefined || entry === null) {
                     return { value: defaultValue, locked: false };
                 }
                 if (typeof entry === 'number') {
-                    // Old format: plain number
+                    // Old format: plain number (0-100)
                     return { value: entry, locked: false };
                 }
                 if (typeof entry === 'object' && entry !== null) {
@@ -1012,6 +1029,19 @@ const TiageState = (function() {
 
             const normalizePerson = (person) => {
                 if (!person) return null;
+
+                // NEW: If it's the new 3-way format, preserve it directly
+                if (isNew3WayFormat(person)) {
+                    console.log('[TiageState] _normalizeGewichtungen: Preserving NEW 3-way format:', JSON.stringify(person));
+                    return {
+                        O: person.O,
+                        A: person.A,
+                        D: person.D,
+                        G: person.G
+                    };
+                }
+
+                // Old format: convert to { value, locked } structure
                 return {
                     O: normalizeValue(person.O),
                     A: normalizeValue(person.A),
@@ -1648,6 +1678,11 @@ const TiageState = (function() {
                         this.set('bindungsmuster', parsed.bindungsmuster);
                         console.log('[TiageState] loadFromStorage - bindungsmuster geladen:', JSON.stringify(parsed.bindungsmuster));
                     }
+                    // RTI-Säulen Prioritäten laden (S1-S5)
+                    if (parsed.rtiPriorities) {
+                        this.set('rtiPriorities', parsed.rtiPriorities);
+                        console.log('[TiageState] loadFromStorage - rtiPriorities geladen:', JSON.stringify(parsed.rtiPriorities));
+                    }
                     // flatNeeds Migration: Altes Format (flach) zu neuem Format (pro Archetyp für ICH)
                     if (parsed.flatNeeds) {
                         const migratedFlatNeeds = this._migrateFlatNeeds(parsed.flatNeeds);
@@ -1766,6 +1801,8 @@ _ensureFlatNeedsInitialized: function() {
                     profileReview: this.get('profileReview'),
                     // Bindungsmuster für Slot Machine Tie-Breaker
                     bindungsmuster: this.get('bindungsmuster'),
+                    // RTI-Säulen Prioritäten (S1-S5)
+                    rtiPriorities: this.get('rtiPriorities'),
                     // flatNeeds - die 220 Bedürfniswerte MÜSSEN gespeichert werden!
                     // Früher: "werden aus Inputs berechnet" - aber sie wurden NICHT neu berechnet beim Laden
                     flatNeeds: this.get('flatNeeds'),

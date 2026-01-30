@@ -250,6 +250,18 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * Konvertiert neues 3-Wege-Format (0/1/2) zu altem Prozent-Format (0-100)
+     * 0 = 0%, 1 = 25%, 2 = 50%
+     * @param {number} value - Neuer Wert (0, 1, oder 2)
+     * @returns {number} - Alter Wert (0, 25, oder 50)
+     */
+    function convertNewToOldFormat(value) {
+        if (value === 0) return 0;
+        if (value === 2) return 50;
+        return 25; // default: 1 = normal
+    }
+
+    /**
      * Lädt kombinierte Gewichtungen (Werte + Lock-Status)
      * @param {string} person - 'ich' oder 'partner'
      * @returns {Object} { O: { value, locked }, ... }
@@ -261,6 +273,20 @@ const GewichtungCard = (function() {
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`gewichtungen.${person}`);
             console.log('[GewichtungCard] load() - TiageState.get:', person, JSON.stringify(fromState));
+
+            // Neues 3-Wege-Format: { O: 1, A: 2, D: 0, G: 1 }
+            if (fromState && typeof fromState.O === 'number' && fromState.O >= 0 && fromState.O <= 2) {
+                const result = {
+                    O: { value: convertNewToOldFormat(fromState.O), locked: false },
+                    A: { value: convertNewToOldFormat(fromState.A), locked: false },
+                    D: { value: convertNewToOldFormat(fromState.D), locked: false },
+                    G: { value: convertNewToOldFormat(fromState.G), locked: false }
+                };
+                console.log('[GewichtungCard] load() - Converted from new format:', JSON.stringify(result));
+                return result;
+            }
+
+            // Altes Format: { O: { value: 25, locked: false }, ... }
             if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
                 const result = {
                     O: { value: fromState.O.value ?? DEFAULTS.O.value, locked: fromState.O.locked ?? false },

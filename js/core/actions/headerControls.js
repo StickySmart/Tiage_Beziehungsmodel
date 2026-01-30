@@ -84,18 +84,31 @@
             },
 
             /**
-             * Passt AGOD-Gewichtung an
-             * Ersetzt: onclick="adjustAgodWeight('A', 5)"
+             * Setzt AGOD-Gewichtung (3-Wege-Toggle)
+             * Ersetzt: onclick="setAgodWeight('A', 1)"
              * data-dimension: 'A', 'G', 'O', 'D'
-             * data-delta: numerischer Wert (z.B. 5, -5)
+             * data-value: 0, 1, oder 2
              */
-            'adjust-agod-weight': function(el, event) {
+            'set-agod-weight': function(el, event) {
                 var dimension = el.dataset.dimension;
-                var delta = parseInt(el.dataset.delta, 10) || 0;
-                if (typeof adjustAgodWeight === 'function') {
-                    adjustAgodWeight(dimension, delta);
-                } else if (typeof window.adjustAgodWeight === 'function') {
-                    window.adjustAgodWeight(dimension, delta);
+                var parsed = parseInt(el.dataset.value, 10);
+                var value = isNaN(parsed) ? 1 : parsed; // Allow 0 value
+                if (typeof setAgodWeight === 'function') {
+                    setAgodWeight(dimension, value);
+                } else if (typeof window.setAgodWeight === 'function') {
+                    window.setAgodWeight(dimension, value);
+                }
+            },
+
+            /**
+             * Reset AGOD-Gewichtungen auf Standard (alle = 1)
+             * Ersetzt: onclick="resetAgodWeights()"
+             */
+            'reset-agod-weights': function(el, event) {
+                if (typeof resetAgodWeights === 'function') {
+                    resetAgodWeights();
+                } else if (typeof window.resetAgodWeights === 'function') {
+                    window.resetAgodWeights();
                 }
             },
 
@@ -123,6 +136,18 @@
                 var confirm = el.dataset.confirm === 'true';
                 if (typeof window.confirmAge === 'function') {
                     window.confirmAge(confirm);
+                }
+            },
+
+            /**
+             * Reset Partner GOD (Geschlecht, Orientierung, Dominanz)
+             * Setzt alle Partner-Attribute auf "frei" zurück
+             */
+            'reset-partner-god': function(el, event) {
+                if (typeof resetPartnerGOD === 'function') {
+                    resetPartnerGOD();
+                } else if (typeof window.resetPartnerGOD === 'function') {
+                    window.resetPartnerGOD();
                 }
             }
         });

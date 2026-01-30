@@ -5,6 +5,31 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.8.842] - 2026-01-30
+
+### Geändert
+
+**AGOD-Gewichtung: 3-Wege-Schalter**
+
+Die AGOD-Gewichtung wurde von Prozent-Slidern (0-100%) auf einen intuitiven 3-Wege-Schalter umgestellt:
+
+| Wert | Bedeutung | Effekt |
+|------|-----------|--------|
+| **0** | Egal/Unwichtig | Faktor wird ignoriert |
+| **1** | Normal | Faktor zählt einfach |
+| **2** | Wichtig/Priorität | Faktor zählt doppelt |
+
+**Vorteile:**
+- **Klarere Semantik** - "Wichtig" vs "Unwichtig" statt Prozentwerte
+- **Ranking-Einfluss** - Bei fixem Partner-GOD beeinflusst Gewichtung nun die Reihenfolge
+- **Einfachere Bedienung** - 3 Klicks statt Slider-Feintuning
+
+**Migration:**
+- Alte Werte werden automatisch konvertiert: 0-10%→0, 11-39%→1, 40-100%→2
+- Speicherung im neuen Format: `{ O: 1, A: 2, D: 0, G: 1 }`
+
+---
+
 ## [1.8.840] - 2026-01-29
 
 ### Neu

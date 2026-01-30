@@ -4044,98 +4044,87 @@
             line-height: 1.3;
         }
 
-        /* AGOD Weight Sticks (4 Yellow Bars) - Sortierung: A, G, O, D */
-        .agod-weight-sticks {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .agod-stick {
+        /* AGOD Weight Toggles (3-Wege-Schalter: 0=Egal, 1=Normal, 2=Wichtig) */
+        .agod-weight-toggles {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 3px;
+            gap: 6px;
+            margin-bottom: 15px;
+            padding: 0 10px;
         }
 
-        .agod-btn {
-            width: 22px;
-            height: 18px;
-            background: rgba(234, 179, 8, 0.2);
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            border-radius: 3px;
-            color: #eab308;
-            font-size: 14px;
+        .agod-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .agod-toggle-label {
+            font-size: 11px;
             font-weight: 700;
+            color: #eab308;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 16px;
+            text-align: right;
+        }
+
+        .agod-toggle-group {
+            display: flex;
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .agod-toggle-btn {
+            width: 28px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            color: rgba(234, 179, 8, 0.5);
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
-            line-height: 1;
         }
 
-        .agod-btn:hover {
-            background: rgba(234, 179, 8, 0.35);
-            border-color: #eab308;
-            transform: scale(1.1);
+        .agod-toggle-btn:hover {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
         }
 
-        .agod-btn:active {
-            transform: scale(0.95);
-            background: rgba(234, 179, 8, 0.5);
-        }
-
-        .agod-stick-bar {
-            width: 8px;
-            height: 60px;
+        .agod-toggle-btn.active {
             background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%);
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
-            transition: height 0.3s ease, opacity 0.3s ease;
-        }
-
-        .agod-weight-input {
-            width: 36px;
-            height: 22px;
-            background: rgba(234, 179, 8, 0.15);
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            border-radius: 4px;
-            color: #eab308;
-            font-size: 11px;
-            font-weight: 600;
-            text-align: center;
-            padding: 0;
-            outline: none;
-            transition: all 0.2s;
-            -moz-appearance: textfield;
-        }
-
-        .agod-weight-input::-webkit-outer-spin-button,
-        .agod-weight-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .agod-weight-input:focus {
-            background: rgba(234, 179, 8, 0.25);
-            border-color: #eab308;
-            box-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
-        }
-
-        .agod-weight-input:hover {
-            border-color: rgba(234, 179, 8, 0.6);
-        }
-
-        .agod-stick-label {
-            font-size: 10px;
+            color: #000;
             font-weight: 700;
-            color: #eab308;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(234, 179, 8, 0.4);
+        }
+
+        .agod-toggle-btn[data-value="0"].active {
+            background: linear-gradient(180deg, #6b7280 0%, #4b5563 100%);
+            color: #fff;
+        }
+
+        .agod-toggle-btn[data-value="2"].active {
+            background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+            color: #fff;
+        }
+
+        /* Mobile variant */
+        .agod-toggle-group.mobile {
+            margin-left: auto;
+        }
+
+        .agod-toggle-group.mobile .agod-toggle-btn {
+            width: 36px;
+            height: 28px;
+            font-size: 13px;
         }
 
         /* Score Label */

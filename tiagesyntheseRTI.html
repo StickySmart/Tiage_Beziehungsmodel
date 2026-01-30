@@ -1,0 +1,856 @@
+<!--
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ti-Age Synthese | RTI Säulen</title>
+    <link rel="canonical" href="https://ti-age.de/tiagesyntheseRTI.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
+
+    <!-- LocalForage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+    <!-- TIAGE Core Scripts -->
+    <script src="js/version.js"></script>
+    <script src="js/utils/statistics.js"></script>
+    <script src="js/utils/hauptfrageAggregation.js"></script>
+    <script src="js/state.js"></script>
+
+    <!-- Archetypen Profile (müssen vor index.js geladen werden) -->
+    <script src="profiles/archetypen/single.js"></script>
+    <script src="profiles/archetypen/duo.js"></script>
+    <script src="profiles/archetypen/duo-flex.js"></script>
+    <script src="profiles/archetypen/solopoly.js"></script>
+    <script src="profiles/archetypen/polyamor.js"></script>
+    <script src="profiles/archetypen/ra.js"></script>
+    <script src="profiles/archetypen/lat.js"></script>
+    <script src="profiles/archetypen/aromantisch.js"></script>
+
+    <!-- Archetypen Index (BaseArchetypProfile) -->
+    <script src="profiles/archetypen/index.js"></script>
+
+    <!-- Ti-Age Bedürfnisse (SSOT) -->
+    <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
+    <script src="profiles/definitions/beduerfnis-katalog.js"></script>
+
+    <!-- TiageSynthesis Module -->
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/synthesis/needsIntegration.js"></script>
+
+    <style>
+        .synthese-page {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            padding: 0;
+        }
+
+        .synthese-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(30, 30, 45, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .synthese-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .synthese-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .synthese-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .synthese-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .synthese-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .synthese-tab:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .synthese-tab.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8B5CF6;
+            color: var(--text-primary);
+        }
+
+        /* Fire tab blink animation */
+        @keyframes fireBlink {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(255, 100, 0, 0.6), 0 0 10px rgba(255, 50, 0, 0.4);
+                background: rgba(255, 100, 0, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(255, 100, 0, 1), 0 0 30px rgba(255, 50, 0, 0.8), 0 0 45px rgba(255, 150, 0, 0.5);
+                background: rgba(255, 100, 0, 0.6);
+                transform: scale(1.2);
+            }
+        }
+
+        .synthese-tab.fire-blink {
+            animation: fireBlink 0.6s ease-in-out 4;
+        }
+
+        .synthese-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 24px;
+            transition: color 0.2s;
+        }
+
+        .synthese-close:hover {
+            color: var(--text-primary);
+        }
+
+        .synthese-archetype-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .archetype-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .archetype-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .archetype-nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .archetype-info {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .archetype-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .archetype-label.ich {
+            color: var(--success);
+        }
+
+        .archetype-label.partner {
+            color: var(--danger);
+        }
+
+        .archetype-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .archetype-separator {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .synthese-content {
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .synthese-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .synthese-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .synthese-section-icon {
+            font-size: 24px;
+        }
+
+        .synthese-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-section-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* RTI Pillar Styles */
+        .rti-pillar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .rti-pillar-card {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 16px;
+            border-left: 4px solid;
+        }
+
+        .rti-pillar-card.s1 { border-left-color: #E84393; }
+        .rti-pillar-card.s2 { border-left-color: #3B82F6; }
+        .rti-pillar-card.s3 { border-left-color: #22c55e; }
+        .rti-pillar-card.s4 { border-left-color: #f59e0b; }
+        .rti-pillar-card.s5 { border-left-color: #8b5cf6; }
+
+        .rti-pillar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .rti-pillar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rti-pillar-icon {
+            font-size: 20px;
+        }
+
+        .rti-pillar-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rti-pillar-id {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .rti-pillar-id.s1 { color: #E84393; }
+        .rti-pillar-id.s2 { color: #3B82F6; }
+        .rti-pillar-id.s3 { color: #22c55e; }
+        .rti-pillar-id.s4 { color: #f59e0b; }
+        .rti-pillar-id.s5 { color: #8b5cf6; }
+
+        .rti-pillar-priority {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .rti-priority-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .rti-priority-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .rti-priority-btn.active {
+            background: rgba(139, 92, 246, 0.4);
+            border-color: #8B5CF6;
+            color: var(--text-primary);
+        }
+
+        .rti-pillar-scores {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .rti-score-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .rti-score-box.ich {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .rti-score-box.partner {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .rti-score-box.combined {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .rti-score-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .rti-score-label.ich { color: var(--success); }
+        .rti-score-label.partner { color: var(--danger); }
+        .rti-score-label.combined { color: #8B5CF6; }
+
+        .rti-score-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .rti-pillar-description {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .rti-pillar-mapping {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Loading */
+        .synthese-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .synthese-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Info Box */
+        .rti-info-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .rti-info-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rti-info-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .rti-pillar-scores {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="synthese-page">
+        <!-- Header mit Navigation -->
+        <div class="synthese-header">
+            <div class="synthese-header-left">
+                <a href="javascript:history.back()" class="synthese-back" onclick="event.preventDefault(); window.location.href='archetype-interaction.html'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <span class="synthese-title">Ti-Age Synthese</span>
+            </div>
+            <div class="synthese-tabs">
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Score & Übersicht">📊</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
+                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
+                <a href="tiagesyntheseRTI.html" class="synthese-tab active" title="RTI Säulen (Petzold)">🏛️</a>
+            </div>
+            <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
+        </div>
+
+        <!-- Archetyp Navigation -->
+        <div class="synthese-archetype-nav">
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label ich">ICH</div>
+                    <div class="archetype-name" id="ichArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
+            </div>
+            <span class="archetype-separator">×</span>
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label partner">PARTNER</div>
+                    <div class="archetype-name" id="partnerArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)">›</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="synthese-content" id="syntheseContent">
+            <div class="synthese-loading">
+                <div class="synthese-loading-spinner"></div>
+                <p>Lade RTI Säulen...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TIAGE SYNTHESE RTI - 5 Säulen der Identität (Petzold)
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Archetypen-Liste für Navigation
+        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        const archetypeNames = {
+            'single': 'Single',
+            'duo': 'Duo',
+            'duo_flex': 'Duo-Flex',
+            'duoflex': 'Duo-Flex',
+            'solopoly': 'Solopoly',
+            'polyamor': 'Polyamor',
+            'ra': 'RA',
+            'lat': 'LAT',
+            'aromantisch': 'Aromantisch'
+        };
+
+        let currentIchArchetype = 'duo';
+        let currentPartnerArchetype = 'solopoly';
+
+        // RTI Säulen Definitionen (nach Petzold)
+        const RTI_PILLARS = [
+            {
+                id: 'S1',
+                name: 'Leiblichkeit',
+                icon: '🫀',
+                color: '#E84393',
+                mapping: 'C (Nähe-Distanz)',
+                description: 'Körperliche Gesundheit, Wohlbefinden, Sexualität, Bewegung. Wie wohl fühle ich mich in meinem Körper?'
+            },
+            {
+                id: 'S2',
+                name: 'Soziales Netzwerk',
+                icon: '👥',
+                color: '#3B82F6',
+                mapping: '(A × 0.6) + (F × 0.4)',
+                description: 'Familie, Freunde, Kollegen, Gemeinschaft. Wie gut bin ich sozial eingebunden und unterstützt?'
+            },
+            {
+                id: 'S3',
+                name: 'Autonomie & Leistung',
+                icon: '💪',
+                color: '#22c55e',
+                mapping: 'D (Autonomie)',
+                description: 'Arbeit, Beruf, Erfolg, Selbstwirksamkeit. Wie selbstbestimmt und kompetent fühle ich mich?'
+            },
+            {
+                id: 'S4',
+                name: 'Sicherheit & Stabilität',
+                icon: '🛡️',
+                color: '#f59e0b',
+                mapping: '(A × 0.4) + (F × 0.6)',
+                description: 'Materielle Absicherung, Wohnen, Finanzen, Zukunftsplanung. Wie sicher fühle ich mich?'
+            },
+            {
+                id: 'S5',
+                name: 'Werte & Sinn',
+                icon: '💜',
+                color: '#8b5cf6',
+                mapping: '(B × 0.4) + (E × 0.6)',
+                description: 'Spiritualität, Ethik, Lebenssinn, Weltanschauung. Was gibt meinem Leben Bedeutung?'
+            }
+        ];
+
+        // RTI Prioritäten (0=Egal, 1=Normal, 2=Wichtig)
+        let rtiPriorities = { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
+
+        /**
+         * Initialisierung
+         */
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Validiere ob ein Archetyp-Key gültig ist
+            function isValidArchetype(key) {
+                return archetypeOrder.includes(key) || key === 'duo_flex';
+            }
+
+            // Normalisiere Archetyp-Key
+            function normalizeArchetype(key) {
+                if (!key) return null;
+                const normalized = key.toLowerCase().trim();
+                if (normalized === 'duoflex' || normalized === 'duo-flex') return 'duo_flex';
+                return normalized;
+            }
+
+            // Archetypen und RTI-Prioritäten aus TiageState laden
+            if (typeof TiageState !== 'undefined') {
+                await TiageState.init();
+                let ichFromState = TiageState.get('archetypes.ich.primary');
+                let partnerFromState = TiageState.get('archetypes.partner.primary');
+
+                ichFromState = normalizeArchetype(ichFromState);
+                partnerFromState = normalizeArchetype(partnerFromState);
+
+                if (isValidArchetype(ichFromState)) {
+                    currentIchArchetype = ichFromState;
+                }
+                if (isValidArchetype(partnerFromState)) {
+                    currentPartnerArchetype = partnerFromState;
+                }
+
+                // RTI Prioritäten laden
+                const storedPriorities = TiageState.get('rtiPriorities');
+                if (storedPriorities) {
+                    rtiPriorities = { ...rtiPriorities, ...storedPriorities };
+                }
+
+                // SSOT: Reaktiv auf Änderungen subscriben
+                TiageState.subscribe('flatNeeds.ich', function() {
+                    renderContent();
+                });
+                TiageState.subscribe('flatNeeds.partner', function() {
+                    renderContent();
+                });
+                TiageState.subscribe('rtiPriorities', function(newVal) {
+                    if (newVal) {
+                        rtiPriorities = { ...rtiPriorities, ...newVal };
+                        renderContent();
+                    }
+                });
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        });
+
+        /**
+         * Aktualisiert die Archetyp-Anzeige
+         */
+        function updateArchetypeDisplay() {
+            document.getElementById('ichArchetypeName').textContent =
+                archetypeNames[currentIchArchetype] || currentIchArchetype;
+            document.getElementById('partnerArchetypeName').textContent =
+                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+        }
+
+        /**
+         * Navigation zwischen Archetypen
+         */
+        function navigateArchetype(person, direction) {
+            const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
+            const currentIndex = archetypeOrder.indexOf(current);
+            let newIndex = currentIndex + direction;
+
+            if (newIndex < 0) newIndex = archetypeOrder.length - 1;
+            if (newIndex >= archetypeOrder.length) newIndex = 0;
+
+            if (person === 'ich') {
+                currentIchArchetype = archetypeOrder[newIndex];
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', currentIchArchetype);
+                }
+            } else {
+                currentPartnerArchetype = archetypeOrder[newIndex];
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', currentPartnerArchetype);
+                }
+            }
+
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        }
+
+        /**
+         * Setzt RTI Priorität
+         */
+        function setRtiPriority(pillar, value) {
+            const numValue = Math.max(0, Math.min(2, parseInt(value) || 1));
+            rtiPriorities[pillar] = numValue;
+
+            // In TiageState speichern
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('rtiPriorities', { ...rtiPriorities });
+                TiageState.saveToStorage();
+            }
+
+            renderContent();
+        }
+
+        /**
+         * Berechnet RTI Säulen-Scores basierend auf Bedürfnis-Mappings
+         */
+        function calculateRtiScores() {
+            const scores = {
+                ich: { S1: 50, S2: 50, S3: 50, S4: 50, S5: 50 },
+                partner: { S1: 50, S2: 50, S3: 50, S4: 50, S5: 50 }
+            };
+
+            if (typeof TiageState === 'undefined') return scores;
+
+            const ichNeeds = TiageState.get('flatNeeds.ich') || {};
+            const partnerNeeds = TiageState.get('flatNeeds.partner') || {};
+
+            // Bedürfnis-Mapping zu RTI Säulen
+            // S1: C (Nähe-Distanz) → #C
+            // S2: (A × 0.6) + (F × 0.4) → #A, #F
+            // S3: D (Autonomie) → #D
+            // S4: (A × 0.4) + (F × 0.6) → #A, #F
+            // S5: (B × 0.4) + (E × 0.6) → #B, #E
+
+            function calcScore(needs) {
+                const A = needs['#A'] ?? 50;
+                const B = needs['#B'] ?? 50;
+                const C = needs['#C'] ?? 50;
+                const D = needs['#D'] ?? 50;
+                const E = needs['#E'] ?? 50;
+                const F = needs['#F'] ?? 50;
+
+                return {
+                    S1: C,
+                    S2: Math.round((A * 0.6) + (F * 0.4)),
+                    S3: D,
+                    S4: Math.round((A * 0.4) + (F * 0.6)),
+                    S5: Math.round((B * 0.4) + (E * 0.6))
+                };
+            }
+
+            scores.ich = calcScore(ichNeeds);
+            scores.partner = calcScore(partnerNeeds);
+
+            return scores;
+        }
+
+        /**
+         * Kombiniert zwei Scores mit Similarity-Formel
+         */
+        function combineScores(a, b) {
+            const min = Math.min(a, b);
+            const max = Math.max(a, b);
+            const similarity = max > 0 ? min / max : 1;
+            return Math.round(((a + b) / 2) * similarity);
+        }
+
+        /**
+         * Gibt CSS-Klasse basierend auf Score zurück
+         */
+        function getScoreClass(score) {
+            if (score >= 70) return 'high';
+            if (score <= 30) return 'low';
+            return 'neutral';
+        }
+
+        /**
+         * Rendert den Hauptinhalt
+         */
+        function renderContent() {
+            const container = document.getElementById('syntheseContent');
+            const scores = calculateRtiScores();
+
+            let pillarsHTML = RTI_PILLARS.map(pillar => {
+                const ichScore = scores.ich[pillar.id];
+                const partnerScore = scores.partner[pillar.id];
+                const combinedScore = combineScores(ichScore, partnerScore);
+                const priority = rtiPriorities[pillar.id] || 1;
+
+                return `
+                    <div class="rti-pillar-card ${pillar.id.toLowerCase()}">
+                        <div class="rti-pillar-header">
+                            <div class="rti-pillar-title">
+                                <span class="rti-pillar-icon">${pillar.icon}</span>
+                                <span class="rti-pillar-name">${pillar.name}</span>
+                                <span class="rti-pillar-id ${pillar.id.toLowerCase()}">${pillar.id}</span>
+                            </div>
+                            <div class="rti-pillar-priority">
+                                <button class="rti-priority-btn ${priority === 0 ? 'active' : ''}"
+                                        onclick="setRtiPriority('${pillar.id}', 0)"
+                                        title="Egal / Ignorieren">0</button>
+                                <button class="rti-priority-btn ${priority === 1 ? 'active' : ''}"
+                                        onclick="setRtiPriority('${pillar.id}', 1)"
+                                        title="Normal">1</button>
+                                <button class="rti-priority-btn ${priority === 2 ? 'active' : ''}"
+                                        onclick="setRtiPriority('${pillar.id}', 2)"
+                                        title="Wichtig / Doppelt">2</button>
+                            </div>
+                        </div>
+                        <div class="rti-pillar-scores">
+                            <div class="rti-score-box ich">
+                                <div class="rti-score-label ich">ICH</div>
+                                <div class="rti-score-value">${ichScore}%</div>
+                            </div>
+                            <div class="rti-score-box partner">
+                                <div class="rti-score-label partner">PARTNER</div>
+                                <div class="rti-score-value">${partnerScore}%</div>
+                            </div>
+                            <div class="rti-score-box combined">
+                                <div class="rti-score-label combined">KOMBI</div>
+                                <div class="rti-score-value">${combinedScore}%</div>
+                            </div>
+                        </div>
+                        <div class="rti-pillar-description">${pillar.description}</div>
+                        <div class="rti-pillar-mapping">Mapping: ${pillar.mapping}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const html = `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">🏛️</span>
+                        <div>
+                            <div class="synthese-section-title">RTI Säulen der Identität</div>
+                            <div class="synthese-section-subtitle">Nach Hilarion Petzold</div>
+                        </div>
+                    </div>
+
+                    <div class="rti-info-box">
+                        <div class="rti-info-title">ℹ️ Die 5 Säulen</div>
+                        <div class="rti-info-text">
+                            Die 5 Säulen der Identität nach Petzold beschreiben fundamentale Lebensbereiche,
+                            die für psychische Stabilität und Wohlbefinden wichtig sind.
+                            <br><br>
+                            <strong>Priorität:</strong> 0 = Egal (ignoriert), 1 = Normal, 2 = Wichtig (doppelt gewichtet)
+                        </div>
+                    </div>
+
+                    <div class="rti-pillar-container">
+                        ${pillarsHTML}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
