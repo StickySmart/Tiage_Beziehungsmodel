@@ -2821,7 +2821,10 @@
             }
 
             // Sync with mobilePersonDimensions for mobile view consistency
-            if (typeof mobilePersonDimensions !== 'undefined') {
+            if (typeof mobilePersonDimensions !== 'undefined' && mobilePersonDimensions[person]) {
+                if (!mobilePersonDimensions[person].geschlecht) {
+                    mobilePersonDimensions[person].geschlecht = { primary: null, secondary: null };
+                }
                 mobilePersonDimensions[person].geschlecht.primary = personDimensions[person].geschlecht.primary;
                 mobilePersonDimensions[person].geschlecht.secondary = personDimensions[person].geschlecht.secondary;
             }
@@ -3611,7 +3614,10 @@
             }
 
             // Sync with mobilePersonDimensions for mobile view consistency
-            if (typeof mobilePersonDimensions !== 'undefined') {
+            if (typeof mobilePersonDimensions !== 'undefined' && mobilePersonDimensions[person]) {
+                if (!mobilePersonDimensions[person].dominanz) {
+                    mobilePersonDimensions[person].dominanz = { primary: null, secondary: null };
+                }
                 mobilePersonDimensions[person].dominanz.primary = personDimensions[person].dominanz.primary;
                 mobilePersonDimensions[person].dominanz.secondary = personDimensions[person].dominanz.secondary;
             }
@@ -3808,7 +3814,8 @@
         function updateDominanzSummary(person) {
             const summaryText = getDominanzSummary(person);
             const gridSummaryText = getDominanzGridSummary(person);
-            const isMissing = !personDimensions[person].dominanz.primary;
+            const dominanz = personDimensions[person]?.dominanz;
+            const isMissing = !dominanz || !dominanz.primary;
 
             // Update header element (shows 'fehlt' if nothing selected) - Desktop and Mobile
             ['', 'mobile-'].forEach(prefix => {
@@ -3842,17 +3849,17 @@
 
         // Helper: Check if any dominanz is selected (for backwards compatibility)
         function hasAnyDominanzSelected(person) {
-            return personDimensions[person].dominanz.primary !== null;
+            return personDimensions[person]?.dominanz?.primary !== null;
         }
 
         // Get the primary dominanz type (for backwards compatibility)
         function getPrimaryFaktDominanz(person) {
-            return personDimensions[person].dominanz.primary;
+            return personDimensions[person]?.dominanz?.primary || null;
         }
 
         // Get the primary orientierung type (for backwards compatibility)
         function getPrimaryFaktOrientierung(person) {
-            return personDimensions[person].orientierung.primary;
+            return personDimensions[person]?.orientierung?.primary || null;
         }
 
         // ═══════════════════════════════════════════════════════════════════════
