@@ -83,19 +83,23 @@ const TiageLocale_EN = {
         label: 'Sexual Orientation',
         types: {
             heterosexuell: 'Heterosexual',
-            bihomo: 'Bi-/Homosexual',
+            homosexuell: 'Homosexual',
+            bisexuell: 'Bisexual',
             pansexuell: 'Pansexual',
+            queer: 'Queer',
             // LEGACY
-            homosexuell: 'Bi-/Homosexual',
-            bisexuell: 'Bi-/Homosexual'
+            bihomo: 'Bi-/Homosexual',
+            gay_lesbisch: 'Homosexual'
         },
         short: {
             heterosexuell: 'Hetero',
-            bihomo: 'Bi/Homo',
+            homosexuell: 'Homo',
+            bisexuell: 'Bi',
             pansexuell: 'Pan',
+            queer: 'Queer',
             // LEGACY
-            homosexuell: 'Bi/Homo',
-            bisexuell: 'Bi/Homo'
+            bihomo: 'Bi/Homo',
+            gay_lesbisch: 'Homo'
         }
     },
 

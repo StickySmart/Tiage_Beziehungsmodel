@@ -383,7 +383,7 @@
          * Update orientierung labels in the multi-select rows and grid buttons
          */
         function updateOrientierungLabels() {
-            const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+            const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'];
 
             // Update multi-select row labels
             orientierungTypes.forEach(type => {
@@ -398,7 +398,7 @@
             document.querySelectorAll('.orientierung-btn').forEach(btn => {
                 const value = btn.getAttribute('data-value');
                 if (value && orientierungTypes.includes(value)) {
-                    btn.textContent = TiageI18n.t(`orientierung.types.${value}`, value);
+                    btn.textContent = TiageI18n.t(`orientierung.short.${value}`, value);
                 }
             });
         }
