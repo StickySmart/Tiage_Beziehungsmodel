@@ -469,6 +469,164 @@
                 gap: 8px;
             }
         }
+
+        /* RTI Info Modal */
+        .rti-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .rti-modal-overlay.active {
+            display: flex;
+        }
+
+        .rti-modal {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16162a 100%);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .rti-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            background: linear-gradient(145deg, #1a1a2e 0%, #16162a 100%);
+            z-index: 10;
+        }
+
+        .rti-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rti-modal-title-icon {
+            font-size: 24px;
+        }
+
+        .rti-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .rti-modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+        }
+
+        .rti-modal-body {
+            padding: 24px;
+        }
+
+        .rti-modal-section {
+            margin-bottom: 24px;
+        }
+
+        .rti-modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .rti-modal-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8B5CF6;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rti-modal-section-title::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            background: #8B5CF6;
+            border-radius: 2px;
+        }
+
+        .rti-modal-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .rti-modal-text strong {
+            color: var(--text-primary);
+        }
+
+        .rti-modal-text p {
+            margin: 0 0 12px 0;
+        }
+
+        .rti-modal-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .rti-modal-quote {
+            font-style: italic;
+            padding: 12px 16px;
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 3px solid #8B5CF6;
+            border-radius: 0 8px 8px 0;
+            margin-top: 12px;
+            color: var(--text-secondary);
+        }
+
+        .rti-pillar-info-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+        }
+
+        .rti-pillar-info-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
     </style>
 </head>
 <body>
@@ -519,6 +677,30 @@
             <div class="synthese-loading">
                 <div class="synthese-loading-spinner"></div>
                 <p>Lade RTI Säulen...</p>
+            </div>
+        </div>
+
+        <!-- RTI Info Modal -->
+        <div class="rti-modal-overlay" id="rtiInfoModal" onclick="closeRtiModal(event)">
+            <div class="rti-modal" onclick="event.stopPropagation()">
+                <div class="rti-modal-header">
+                    <div class="rti-modal-title">
+                        <span class="rti-modal-title-icon" id="rtiModalIcon">🏛️</span>
+                        <span id="rtiModalTitle">RTI Säulen</span>
+                    </div>
+                    <button class="rti-modal-close" onclick="closeRtiModal()">&times;</button>
+                </div>
+                <div class="rti-modal-body">
+                    <div class="rti-modal-section">
+                        <div class="rti-modal-section-title">Was sind die RTI-Säulen?</div>
+                        <div class="rti-modal-text" id="rtiModalGeneral"></div>
+                    </div>
+                    <div class="rti-modal-section" id="rtiModalSpecificSection">
+                        <div class="rti-modal-section-title" id="rtiModalSpecificTitle">Über diese Säule</div>
+                        <div class="rti-modal-text" id="rtiModalSpecificText"></div>
+                        <div class="rti-modal-quote" id="rtiModalQuote" style="display: none;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -591,6 +773,99 @@
 
         // RTI Prioritäten (0=Egal, 1=Normal, 2=Wichtig)
         let rtiPriorities = { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
+
+        // RTI Säulen Erklärungen für Modal
+        const RTI_PILLAR_INFO = {
+            general: `<p>Die fünf Säulen bilden die Grundbedürfnisse ab, die in Beziehungen eine Rolle spielen. Sie basieren auf psychologischen Modellen und machen sichtbar, wo deine Prioritäten liegen.</p>
+<p><strong>0 = Egal</strong> – dieses Thema spielt für dich keine große Rolle<br>
+<strong>1 = Normal</strong> – ein Grundbedürfnis, aber nicht im Fokus<br>
+<strong>2 = Wichtig</strong> – hier liegt dein Schwerpunkt</p>
+<p>Es gibt kein "richtig" oder "falsch". Die Säulen zeigen, was dir wichtig ist – nicht was wichtig sein sollte.</p>`,
+
+            S1: {
+                title: 'Leiblichkeit',
+                text: `<p>Körperliche Nähe, Berührung, Sexualität. Wie wichtig ist dir der körperliche Ausdruck von Verbindung?</p>
+<p>Das umfasst: körperliche Präsenz, Zärtlichkeit, sexuelle Intimität, gemeinsames Erleben durch den Körper.</p>`,
+                quote: 'Pirsig würde sagen: Qualität zeigt sich zuerst im Spüren, bevor sie gedacht wird.'
+            },
+
+            S2: {
+                title: 'Soziales Netzwerk',
+                text: `<p>Einbindung in ein größeres Ganzes. Freunde, Familie, Community. Wie wichtig ist es dir, dass deine Beziehung in ein soziales Umfeld eingebettet ist?</p>
+<p>Das umfasst: gemeinsame Freunde, Familienintegration, öffentliche Sichtbarkeit der Beziehung, Teil einer Gemeinschaft sein.</p>`,
+                quote: null
+            },
+
+            S3: {
+                title: 'Autonomie',
+                text: `<p>Eigenständigkeit und persönlicher Freiraum. Wie wichtig ist es dir, in einer Beziehung du selbst zu bleiben?</p>
+<p>Das umfasst: eigene Zeit, eigene Interessen, eigene Entscheidungen, Raum für persönliche Entwicklung.</p>`,
+                quote: 'Osho sagt: Zwei ganze Menschen können sich begegnen. Zwei Hälften suchen nur Ergänzung.'
+            },
+
+            S4: {
+                title: 'Sicherheit',
+                text: `<p>Stabilität, Verlässlichkeit, Vertrauen. Wie wichtig ist dir das Gefühl, dich auf die Beziehung verlassen zu können?</p>
+<p>Das umfasst: emotionale Sicherheit, Verbindlichkeit, Beständigkeit, klare Absprachen.</p>`,
+                quote: null
+            },
+
+            S5: {
+                title: 'Werte & Sinn',
+                text: `<p>Gemeinsame Überzeugungen und Lebensziele. Wie wichtig ist es dir, dass ihr in grundlegenden Fragen übereinstimmt?</p>
+<p>Das umfasst: Weltanschauung, Lebensentwurf, ethische Grundsätze, spirituelle oder philosophische Ausrichtung.</p>`,
+                quote: 'Tiage-Perspektive: Resonanz entsteht nicht nur durch Gefühl, sondern auch durch gemeinsame Richtung.'
+            }
+        };
+
+        /**
+         * Öffnet das RTI Info Modal für eine bestimmte Säule
+         * @param {string} pillarId - 'S1', 'S2', 'S3', 'S4', oder 'S5'
+         */
+        function openRtiModal(pillarId) {
+            const modal = document.getElementById('rtiInfoModal');
+            const pillar = RTI_PILLARS.find(p => p.id === pillarId);
+            const info = RTI_PILLAR_INFO[pillarId];
+
+            if (!pillar || !info) return;
+
+            // Header
+            document.getElementById('rtiModalIcon').textContent = pillar.icon;
+            document.getElementById('rtiModalTitle').textContent = `${pillarId}: ${info.title}`;
+
+            // Allgemeine Info
+            document.getElementById('rtiModalGeneral').innerHTML = RTI_PILLAR_INFO.general;
+
+            // Spezifische Info
+            document.getElementById('rtiModalSpecificTitle').textContent = info.title;
+            document.getElementById('rtiModalSpecificText').innerHTML = info.text;
+
+            // Quote (optional)
+            const quoteEl = document.getElementById('rtiModalQuote');
+            if (info.quote) {
+                quoteEl.textContent = info.quote;
+                quoteEl.style.display = 'block';
+            } else {
+                quoteEl.style.display = 'none';
+            }
+
+            // Modal anzeigen
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Schließt das RTI Info Modal
+         * @param {Event} event - Optionales Click-Event (für Overlay-Klick)
+         */
+        function closeRtiModal(event) {
+            // Wenn event vorhanden, nur schließen wenn auf Overlay geklickt
+            if (event && event.target !== event.currentTarget) return;
+
+            const modal = document.getElementById('rtiInfoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
         /**
          * Initialisierung
@@ -790,6 +1065,7 @@
                                 <span class="rti-pillar-icon">${pillar.icon}</span>
                                 <span class="rti-pillar-name">${pillar.name}</span>
                                 <span class="rti-pillar-id ${pillar.id.toLowerCase()}">${pillar.id}</span>
+                                <button class="rti-pillar-info-btn" onclick="openRtiModal('${pillar.id}')" title="Mehr erfahren">?</button>
                             </div>
                             <div class="rti-pillar-priority">
                                 <button class="rti-priority-btn ${priority === 0 ? 'active' : ''}"
