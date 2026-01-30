@@ -4314,13 +4314,9 @@
             margin-bottom: 0;
         }
 
-        /* Geschlechtsidentität Info im Header-Bereich */
+        /* Geschlechtsidentität Info im Header-Bereich - VERSTECKT */
         .header-geschlecht-info {
-            font-size: 11px;
-            color: var(--success);
-            padding: 4px 8px;
-            margin-bottom: 8px;
-            text-align: right;
+            display: none;
         }
 
         .header-geschlecht-info.missing {

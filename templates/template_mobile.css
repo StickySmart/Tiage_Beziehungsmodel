@@ -961,18 +961,13 @@ body {
         border-radius: 8px;
     }
 
+    /* Header-Info VERSTECKT */
     .mobile-header-info-container .header-geschlecht-info {
-        font-size: 11px;
-        color: var(--success);
-        padding: 4px 8px;
-        margin: 0;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 4px;
-        text-align: center;
+        display: none;
     }
 
     .mobile-header-info-container .header-geschlecht-info.missing {
-        color: var(--warning, #f39c12);
+        display: none;
     }
 
     /* ========================================
@@ -1279,14 +1274,9 @@ body {
         border-radius: 8px;
     }
 
+    /* Header-Info VERSTECKT (small screens) */
     .mobile-header-info-container .header-geschlecht-info {
-        font-size: 10px;
-        padding: 4px 8px;
-        margin: 0;
-        background: rgba(0, 0, 0, 0.25);
-        border-radius: 4px;
-        text-align: center;
-        white-space: nowrap;
+        display: none;
     }
 
     /* ========================================
