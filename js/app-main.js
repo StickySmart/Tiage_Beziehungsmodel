@@ -589,129 +589,17 @@
         var getScoreGradientColor = TiageChartUtils.getScoreGradientColor;
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // AGOD WEIGHT TOGGLES - 3-Wege-Gewichtung für Synthese Score
-        // Werte: 0 = Egal (ignoriert), 1 = Normal, 2 = Wichtig (doppelt)
-        // Speichert persistent in TiageState (überlebt Reload)
+        // AGOD WEIGHT TOGGLES - Ausgelagert nach js/weights/agodWeights.js
+        // Die Funktionen werden vom Modul über window.* exportiert:
+        // - initAgodWeightInputs(), setAgodWeight(), resetAgodWeights()
+        // - getAgodWeights(), getAgodWeightSum(), saveAgodWeights()
+        // - updateAgodToggleUI(), getAgodWeightsFromSession()
         // ═══════════════════════════════════════════════════════════════════════════
-
-        // Default weights (all normal = 1)
-        const AGOD_DEFAULT_WEIGHTS = { O: 1, A: 1, D: 1, G: 1 };
-
-        // Current weights state (0, 1, or 2)
-        let agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
-
-        /**
-         * Initialize AGOD weight toggles on page load
-         * Loads from TiageState.paarung.gewichtungen (primary)
-         */
-        function initAgodWeightInputs() {
-            // Start with defaults
-            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
-
-            if (typeof TiageState !== 'undefined') {
-                // Primary: Load from paarung.gewichtungen
-                let stored = TiageState.get('paarung.gewichtungen');
-                let source = 'paarung.gewichtungen';
-
-                // Fallback: Load from gewichtungen.ich
-                if (!stored || stored.O === undefined) {
-                    stored = TiageState.get('gewichtungen.ich');
-                    source = 'gewichtungen.ich (fallback)';
-                }
-
-                console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
-
-                if (stored) {
-                    // New format: { O: 1, A: 2, D: 0, G: 1 }
-                    if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
-                        agodWeights = {
-                            O: stored.O ?? 1,
-                            A: stored.A ?? 1,
-                            D: stored.D ?? 1,
-                            G: stored.G ?? 1
-                        };
-                        console.log('[AGOD] Loaded new format weights:', agodWeights);
-                    }
-                    // Legacy format: { O: { value: 25, locked: false }, ... }
-                    else if (stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
-                        // Migrate: 0-33 = 0, 34-66 = 1, 67-100 = 2
-                        agodWeights = {
-                            O: migrateOldWeight(stored.O.value),
-                            A: migrateOldWeight(stored.A.value),
-                            D: migrateOldWeight(stored.D.value),
-                            G: migrateOldWeight(stored.G.value)
-                        };
-                        console.log('[AGOD] Migrated legacy weights:', agodWeights);
-                        // Save migrated values
-                        saveAgodWeights();
-                    }
-                }
-            }
-
-            // Update toggle UI
-            updateAgodToggleUI();
-
-            console.log('[AGOD] Weight toggles initialized:', agodWeights);
-        }
-
-        /**
-         * Migrate old 0-100 weight to new 0/1/2 format
-         * @param {number} oldValue - Old weight value (0-100)
-         * @returns {number} - New weight (0, 1, or 2)
-         */
-        function migrateOldWeight(oldValue) {
-            if (oldValue === undefined || oldValue === null) return 1;
-            if (oldValue <= 10) return 0;  // Very low = Egal
-            if (oldValue >= 40) return 2;  // High = Wichtig
-            return 1;  // Normal
-        }
-
-        /**
-         * Set AGOD weight (called by toggle buttons)
-         * @param {string} factor - O, A, D, or G
-         * @param {number} value - New weight value (0, 1, or 2)
-         */
-        function setAgodWeight(factor, value) {
-            // Validate value (0, 1, or 2) - use isNaN check to allow 0
-            const parsed = parseInt(value);
-            const numValue = Math.max(0, Math.min(2, isNaN(parsed) ? 1 : parsed));
-
-            // Update state
-            agodWeights[factor] = numValue;
-
-            // Update toggle UI
-            updateAgodToggleUI();
-
-            // Save to TiageState
-            saveAgodWeights();
-
-            // Trigger synthesis recalculation
-            if (typeof updateComparisonView === 'function') {
-                updateComparisonView();
-            }
-
-            console.log('[AGOD] Weight set:', factor, '=', numValue);
-        }
-
-        /**
-         * Reset all AGOD weights to default (all = 1)
-         */
-        function resetAgodWeights() {
-            agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
-            updateAgodToggleUI();
-            saveAgodWeights();
-
-            // Trigger synthesis recalculation
-            if (typeof updateComparisonView === 'function') {
-                updateComparisonView();
-            }
-
-            console.log('[AGOD] Weights reset to defaults:', agodWeights);
-        }
 
         /**
          * Reset Partner GOD (Geschlecht, Orientierung, Dominanz) selection
          * Makes all partner options "free" again
+         * NOTE: Bleibt in app-main.js weil es personDimensions/mobilePersonDimensions nutzt
          */
         function resetPartnerGOD() {
             // Reset personDimensions for partner
@@ -785,106 +673,6 @@
         // Expose globally
         window.resetPartnerGOD = resetPartnerGOD;
 
-        /**
-         * Update toggle button UI to reflect current weights
-         */
-        function updateAgodToggleUI() {
-            ['O', 'A', 'D', 'G'].forEach(factor => {
-                const currentValue = agodWeights[factor];
-
-                // Update desktop toggles
-                const desktopGroup = document.getElementById(`agodToggle${factor}`);
-                if (desktopGroup) {
-                    desktopGroup.querySelectorAll('.agod-toggle-btn').forEach(btn => {
-                        const btnValue = parseInt(btn.dataset.value);
-                        btn.classList.toggle('active', btnValue === currentValue);
-                    });
-                }
-
-                // Update mobile toggles
-                const mobileGroup = document.getElementById(`mobileToggle${factor}`);
-                if (mobileGroup) {
-                    mobileGroup.querySelectorAll('.agod-toggle-btn').forEach(btn => {
-                        const btnValue = parseInt(btn.dataset.value);
-                        btn.classList.toggle('active', btnValue === currentValue);
-                    });
-                }
-            });
-        }
-
-        /**
-         * Get current AGOD weights (raw 0/1/2 values)
-         * @returns {object} { O, A, D, G } with values 0, 1, or 2
-         */
-        function getAgodWeights() {
-            return { ...agodWeights };
-        }
-
-        /**
-         * Get sum of all AGOD weights
-         * @returns {number}
-         */
-        function getAgodWeightSum() {
-            return agodWeights.O + agodWeights.A + agodWeights.D + agodWeights.G;
-        }
-
-        /**
-         * Save weights to TiageState (SSOT - persistent)
-         */
-        function saveAgodWeights() {
-            try {
-                if (typeof TiageState !== 'undefined') {
-                    // New simple format: { O: 1, A: 2, D: 0, G: 1 }
-                    const gewData = {
-                        O: agodWeights.O,
-                        A: agodWeights.A,
-                        D: agodWeights.D,
-                        G: agodWeights.G
-                    };
-
-                    // Primary: Save to paarung.gewichtungen
-                    TiageState.set('paarung.gewichtungen', gewData);
-
-                    // Backup: Save to gewichtungen.ich
-                    TiageState.set('gewichtungen.ich', gewData);
-
-                    TiageState.saveToStorage();
-                    console.log('[AGOD] Saved to TiageState:', gewData);
-                }
-            } catch (e) {
-                console.warn('[AGOD] Could not save to TiageState:', e);
-            }
-        }
-
-        /**
-         * Get weights from TiageState (SSOT - persistent)
-         * @returns {object|null} { O, A, D, G }
-         */
-        function getAgodWeightsFromSession() {
-            try {
-                if (typeof TiageState !== 'undefined') {
-                    const stored = TiageState.get('paarung.gewichtungen');
-                    if (stored && typeof stored.O === 'number') {
-                        return {
-                            O: stored.O,
-                            A: stored.A,
-                            D: stored.D,
-                            G: stored.G
-                        };
-                    }
-                }
-                return null;
-            } catch (e) {
-                console.warn('[AGOD] Could not read from TiageState:', e);
-                return null;
-            }
-        }
-
-        // Legacy compatibility - keep old function name
-        function saveAgodWeightsToSession() {
-            saveAgodWeights();
-        }
-
         // Update Score Cycle im Synthese Modal und auf der Hauptseite
         function updateSyntheseScoreCycle() {
             const scoreValueEl = document.getElementById('syntheseScoreValue');
@@ -901,9 +689,11 @@
 
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
-            const offset = circumference - (currentScore / 100) * circumference;
+            // Kreisanzeige auf 100% begrenzen, aber Score-Zahl kann höher sein
+            const visualProgress = Math.min(currentScore, 100);
+            const offset = circumference - (visualProgress / 100) * circumference;
 
-            // Update color based on score (rot → gelb → grün)
+            // Update color based on score (rot → gelb → grün → gold bei >100%)
             const color = getScoreGradientColor(currentScore);
 
             // Update Modal Score Circle
@@ -3066,6 +2856,85 @@
         }
 
         /**
+         * Handle click on Geschlecht Extras button (Fit / Fucked up)
+         * Multi-Select: Both can be active simultaneously
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} value - 'fit' or 'fuckedup'
+         * @param {string} stateKey - State key: 'geschlecht_fit' or 'geschlecht_fuckedup'
+         * @param {HTMLElement} btn - The clicked button
+         */
+        // Local cache for geschlecht_extras (avoids TiageState subscriber race conditions)
+        const geschlechtExtrasCache = {
+            ich: { fit: false, fuckedup: false, horny: false },
+            partner: { fit: false, fuckedup: false, horny: false }
+        };
+
+        function handleGeschlechtExtrasClick(person, value, stateKey, btn) {
+            console.log('[TIAGE] handleGeschlechtExtrasClick:', person, value, stateKey);
+
+            // Use local cache (avoids TiageState subscriber issues)
+            const currentExtras = geschlechtExtrasCache[person];
+
+            // Toggle the clicked value (multi-select)
+            currentExtras[value] = !currentExtras[value];
+
+            console.log('[TIAGE] geschlecht_extras updated:', person, currentExtras);
+
+            // Save to TiageState for persistence (but don't rely on reading it back)
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.geschlecht_extras`, { ...currentExtras });
+            }
+
+            // Update UI directly using the cache
+            syncGeschlechtExtrasUI(person);
+
+            // Save to storage
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Sync Geschlecht Extras UI buttons with state
+         * @param {string} person - 'ich' or 'partner'
+         */
+        function syncGeschlechtExtrasUI(person) {
+            // Use local cache (avoids TiageState subscriber race conditions)
+            const extras = geschlechtExtrasCache[person] || { fit: false, fuckedup: false, horny: false };
+
+            console.log('[TIAGE] syncGeschlechtExtrasUI:', person, extras);
+
+            // All grids for this person
+            const selectors = [
+                `#${person}-geschlecht-extras-grid .geschlecht-btn`,
+                `#mobile-${person}-geschlecht-extras-grid .geschlecht-btn`
+            ];
+
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(btn => {
+                    const value = btn.dataset.value;
+                    const isActive = extras[value] === true;
+                    console.log('[TIAGE] Button sync:', value, isActive);
+                    if (isActive) {
+                        btn.classList.add('active');
+                        // Apply inline styles for immediate visual feedback
+                        btn.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
+                        btn.style.borderColor = '#8b5cf6';
+                        btn.style.color = 'white';
+                        btn.style.opacity = '1';
+                    } else {
+                        btn.classList.remove('active');
+                        // Reset inline styles
+                        btn.style.background = '';
+                        btn.style.borderColor = '';
+                        btn.style.color = '';
+                        btn.style.opacity = '';
+                    }
+                });
+            });
+        }
+
+        /**
          * Update S-Grid options based on P selection
          * P = Mann/Frau → S = Cis, Trans, Nonbinär
          * P = Inter → S = Nonbinär, Fluid
@@ -3454,6 +3323,13 @@
                 { value: 'hoch', label: TiageI18n.t('dimensions.gfkLevels.hoch', 'hoch') }
             ];
 
+            // Geschlecht Extras Optionen (Fit / Fucked up / Horny) - Multi-Select
+            const geschlechtExtrasOptions = [
+                { value: 'fit', label: 'Fit 💪', stateKey: 'geschlecht_fit' },
+                { value: 'fuckedup', label: 'Fucked up 🔥', stateKey: 'geschlecht_fuckedup' },
+                { value: 'horny', label: 'Horny 😈', stateKey: 'geschlecht_horny' }
+            ];
+
             // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
             // Use both class selector and explicit IDs as fallback (including mobile)
             const pGridSelectors = ['.geschlecht-p-grid', '#ich-geschlecht-p-grid', '#partner-geschlecht-p-grid', '#mobile-ich-geschlecht-p-grid', '#mobile-partner-geschlecht-p-grid'];
@@ -3486,6 +3362,41 @@
 
             // Geschlecht S-Grids werden dynamisch in handleGeschlechtPClick befüllt
             // (kontextabhängig von P-Auswahl)
+
+            // Geschlecht Extras-Grids befüllen (Fit / Fucked up - Multi-Select)
+            const extrasGridSelectors = ['.geschlecht-extras-grid', '#ich-geschlecht-extras-grid', '#partner-geschlecht-extras-grid', '#mobile-ich-geschlecht-extras-grid', '#mobile-partner-geschlecht-extras-grid'];
+            const processedExtrasGrids = new Set();
+            extrasGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedExtrasGrids.has(grid.id)) return;
+                    processedExtrasGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing extras-grid for person:', person, 'id:', grid.id);
+                    if (!person) {
+                        console.warn('[TIAGE DEBUG] No person attribute for extras-grid:', grid.id);
+                        return;
+                    }
+                    const buttonsHTML = geschlechtExtrasOptions.map(opt =>
+                        `<button type="button" class="geschlecht-btn geschlecht-extras-btn" data-value="${opt.value}" data-state-key="${opt.stateKey}" data-person="${person}">${opt.label}</button>`
+                    ).join('');
+                    grid.innerHTML = buttonsHTML;
+                    console.log('[TIAGE DEBUG] Generated extras buttons HTML for', person, ':', buttonsHTML.substring(0, 100) + '...');
+
+                    // Add click handlers via addEventListener (more reliable than inline onclick)
+                    grid.querySelectorAll('.geschlecht-extras-btn').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const btnPerson = this.dataset.person;
+                            const btnValue = this.dataset.value;
+                            const btnStateKey = this.dataset.stateKey;
+                            console.log('[TIAGE] Button clicked:', btnPerson, btnValue, btnStateKey);
+                            handleGeschlechtExtrasClick(btnPerson, btnValue, btnStateKey, this);
+                        });
+                    });
+                });
+            });
+            console.log('[TIAGE DEBUG] Processed geschlecht-extras-grids:', processedExtrasGrids.size);
 
             // Dominanz-Grids befüllen (nur Desktop mit data-person)
             // Use both class selector and explicit IDs as fallback
@@ -3544,6 +3455,7 @@
             // UI mit gespeichertem State synchronisieren
             ['ich', 'partner'].forEach(person => {
                 syncGeschlechtUI(person);
+                syncGeschlechtExtrasUI(person);
                 syncDominanzUI(person);
                 syncOrientierungUI(person);
                 syncGfkUI(person);
@@ -7362,7 +7274,7 @@
         function getPerspektiveForKategorieModal(katId) {
             // GFK-Kern (#K1-#K10) → #P1 (Statistik/GFK)
             // Dynamik (#K11) → #P4 (SexPositiv)
-            // Lebensthemen (#K12-#K18) → #P1
+            // Lebensthemen (#K14-#K18) → #P1
             const katNum = parseInt(katId.replace('#K', ''));
             if (katNum === 11) return '#P4';
             return '#P1';
@@ -11282,10 +11194,42 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const scoreD = dominanceScore * wD * R3;
             const scoreG = genderScore * wG * R4;
 
-            const totalScore = scoreO + scoreA + scoreD + scoreG;
+            let totalScore = scoreO + scoreA + scoreD + scoreG;
 
             // GFK-Kompetenz = Durchschnitt R1-R4
             const GFK = (R1 + R2 + R3 + R4) / 4;
+
+            // ═══════════════════════════════════════
+            // RESONANZ-VERSTÄRKUNG (v1.8.836)
+            // ═══════════════════════════════════════
+            // Wenn beide Partner hohe Resonanz haben (GFK > 1.0),
+            // wird der Score verstärkt und kann über 100% gehen.
+            // Formel: boost = (GFK - 1.0) × 0.5 (max +25% bei GFK=1.5)
+            let resonanceBoost = 0;
+            if (GFK > 1.0 && rFactorSource !== 'default') {
+                resonanceBoost = (GFK - 1.0) * 0.5;  // 50% der Über-Resonanz als Bonus
+                totalScore = totalScore * (1 + resonanceBoost);
+                console.log('[Resonanz-Verstärkung] GFK:', GFK.toFixed(2), 'Boost:', (resonanceBoost * 100).toFixed(1) + '%', 'Score:', totalScore.toFixed(1));
+            }
+
+            // ═══════════════════════════════════════
+            // EXTRAS-MODIFIKATOR (v1.8.837)
+            // ═══════════════════════════════════════
+            // Fit/Fucked up/Horny Kombinations-Bonus/Malus
+            let extrasModifier = 0;
+            let extrasDetails = null;
+            if (typeof TiageExtrasModifier !== 'undefined') {
+                const extrasResult = TiageExtrasModifier.calculate(
+                    geschlechtExtrasCache.ich,
+                    geschlechtExtrasCache.partner
+                );
+                extrasModifier = extrasResult.modifier;
+                extrasDetails = extrasResult;
+                totalScore = totalScore + extrasModifier;
+                if (extrasModifier !== 0) {
+                    console.log('[Extras-Modifikator]', extrasResult.description, 'Modifier:', extrasModifier, 'Score:', totalScore.toFixed(1));
+                }
+            }
 
             // ═══════════════════════════════════════
             // SCHRITT 4: Meta-Faktoren (für UI)
@@ -11301,8 +11245,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // SSOT-VERGLEICH (async, blockiert nicht)
             // ═══════════════════════════════════════
             const result = {
-                score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle
+                score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle (kann > 100 sein)
                 blocked: false,
+                resonanceBoost: resonanceBoost > 0 ? Math.round(resonanceBoost * 1000) / 10 : 0,  // Als Prozent
                 noRealNeeds: rFactorSource === 'default',  // Flag für UI-Warnung
                 breakdown: {
                     archetyp: archetypeScore,
@@ -11332,7 +11277,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     G: gew.G
                 },
                 logos: logos,
-                pathos: pathos
+                pathos: pathos,
+                extras: extrasDetails ? {
+                    modifier: extrasModifier,
+                    description: extrasDetails.description,
+                    details: extrasDetails.details
+                } : null
             };
 
             // SSOT-Vergleich im Hintergrund (wenn aktiviert)
@@ -12014,40 +11964,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
         window.openSlotMachineModal = openSlotMachineModal;
 
-        /**
-         * RTI-Säulen Prioritäten (5 Säulen nach Petzold)
-         * S1: Leiblichkeit, S2: Soziales Netzwerk, S3: Autonomie, S4: Sicherheit, S5: Werte
-         */
-        const RTI_DEFAULT_PRIORITIES = { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
-        let rtiPriorities = { ...RTI_DEFAULT_PRIORITIES };
-
-        /**
-         * Lädt gespeicherte RTI-Prioritäten aus TiageState in die Toggles
-         */
-        function loadRtiPriorities() {
-            if (typeof TiageState === 'undefined') return;
-
-            // Load from TiageState
-            const stored = TiageState.get('rtiPriorities');
-            if (stored && typeof stored.S1 === 'number') {
-                rtiPriorities = {
-                    S1: stored.S1 ?? 1,
-                    S2: stored.S2 ?? 1,
-                    S3: stored.S3 ?? 1,
-                    S4: stored.S4 ?? 1,
-                    S5: stored.S5 ?? 1
-                };
-                console.log('[RTI] Loaded priorities from TiageState:', rtiPriorities);
-            }
-
-            // Update UI
-            updateRtiToggleUI();
-        }
-
-        // Legacy alias
-        function loadReibungValues() {
-            loadRtiPriorities();
-        }
+        // ═══════════════════════════════════════════════════════════════════════
+        // RTI PRIORITIES - Ausgelagert nach js/weights/rtiPriorities.js
+        // Die Funktionen werden vom Modul über window.* exportiert:
+        // - loadRtiPriorities(), setRtiPriority(), getRtiPriorities()
+        // - saveRtiPriorities(), updateRtiToggleUI(), updateReibungSlider()
+        // ═══════════════════════════════════════════════════════════════════════
 
         /**
          * Schließt das Slot Machine Modal
@@ -12198,81 +12120,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
         }
 
-        /**
-         * Setzt eine RTI-Säulen Priorität (3-Wege-Toggle: 0=Egal, 1=Normal, 2=Wichtig)
-         * @param {string} pillar - 'S1', 'S2', 'S3', 'S4', oder 'S5'
-         * @param {number} value - 0, 1, oder 2
-         */
-        function setRtiPriority(pillar, value) {
-            const parsed = parseInt(value);
-            const numValue = Math.max(0, Math.min(2, isNaN(parsed) ? 1 : parsed));
-
-            rtiPriorities[pillar] = numValue;
-            updateRtiToggleUI();
-            saveRtiPriorities();
-
-            console.log('[RTI] Set priority:', pillar, '=', numValue);
-        }
-        window.setRtiPriority = setRtiPriority;
-
-        /**
-         * Update RTI Toggle UI to reflect current priorities
-         */
-        function updateRtiToggleUI() {
-            ['S1', 'S2', 'S3', 'S4', 'S5'].forEach(pillar => {
-                const currentValue = rtiPriorities[pillar];
-                const group = document.getElementById(`rtiToggle${pillar}`);
-                if (group) {
-                    group.querySelectorAll('.agod-toggle-btn').forEach(btn => {
-                        const btnValue = parseInt(btn.dataset.value, 10);
-                        btn.classList.toggle('active', btnValue === currentValue);
-                    });
-                }
-            });
-        }
-        window.updateRtiToggleUI = updateRtiToggleUI;
-
-        /**
-         * Speichert RTI-Prioritäten in TiageState (persistent)
-         */
-        function saveRtiPriorities() {
-            if (typeof TiageState === 'undefined') return;
-
-            TiageState.set('rtiPriorities', {
-                S1: rtiPriorities.S1,
-                S2: rtiPriorities.S2,
-                S3: rtiPriorities.S3,
-                S4: rtiPriorities.S4,
-                S5: rtiPriorities.S5
-            });
-            TiageState.saveToStorage();
-            console.log('[RTI] Priorities saved:', rtiPriorities);
-        }
-
-        /**
-         * Get current RTI priorities
-         * @returns {Object} { S1, S2, S3, S4, S5 } with values 0, 1, or 2
-         */
-        function getRtiPriorities() {
-            return { ...rtiPriorities };
-        }
-        window.getRtiPriorities = getRtiPriorities;
-
-        // Legacy compatibility
-        function updateReibungSlider(needId, value) {
-            // Map old B227/B228 to new S1/S2
-            const pillarMap = { 'B227': 'S1', 'B228': 'S2' };
-            const pillar = pillarMap[needId];
-            if (pillar) {
-                // Convert 0-100 to 0/1/2
-                const newValue = value <= 33 ? 0 : (value >= 67 ? 2 : 1);
-                setRtiPriority(pillar, newValue);
-            }
-        }
-        window.updateReibungSlider = updateReibungSlider;
-
+        // RTI Priority-Funktionen sind in js/weights/rtiPriorities.js ausgelagert
+        // Legacy-Alias für SlotMachine
         function saveReibungValues() {
-            saveRtiPriorities();
+            if (typeof saveRtiPriorities === 'function') {
+                saveRtiPriorities();
+            }
         }
 
         /**
@@ -12317,9 +12170,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             console.log('[Best Match] 8 Partner-Archetypen sortiert:', allResults.map(r => `${r.archetyp}: ${r.score}`));
 
-            // Alle 8 Ergebnisse (1 pro Partner-Archetyp)
+            // Top 8 Ergebnisse (begrenzt für bessere UX)
             slotMachineTop4Results = allResults.slice(0, 4);
-            slotMachineTop10Results = allResults;
+            slotMachineTop10Results = allResults.slice(0, 8); // Nur Top 8 statt alle 216
 
             // Animation starten
             const reelA = document.getElementById('slotReelA');
@@ -12494,6 +12347,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
 
+            // RTI-Säulen Modifikatoren anwenden (wenn verfügbar)
+            if (ichNeeds && typeof TiageRtiModifier !== 'undefined' && typeof getRtiPriorities === 'function') {
+                const rtiPriorities = getRtiPriorities();
+                ichNeeds = TiageRtiModifier.applyToAllNeeds(ichNeeds, rtiPriorities);
+                console.log(`[Best Match] RTI-Modifikatoren angewendet:`, rtiPriorities);
+            }
+
             // Konstantes ICH-Objekt für alle Berechnungen
             const ichObj = {
                 archetyp: ichArchetype,
@@ -12522,6 +12382,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     dominanz,
                                     orientierung
                                 );
+                            }
+
+                            // RTI-Säulen Modifikatoren auch auf Partner-Needs anwenden
+                            if (partnerNeeds && typeof TiageRtiModifier !== 'undefined' && typeof getRtiPriorities === 'function') {
+                                const rtiPriorities = getRtiPriorities();
+                                partnerNeeds = TiageRtiModifier.applyToAllNeeds(partnerNeeds, rtiPriorities);
                             }
 
                             const partnerObj = {
@@ -15832,17 +15698,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     personDimensions[person].gfk = savedDims.gfk;
                 }
 
+                // Sync Geschlecht Extras if present (Fit/Fucked up)
+                if (savedDims.geschlecht_extras) {
+                    personDimensions[person].geschlecht_extras = savedDims.geschlecht_extras;
+                }
+
                 // Sync mobilePersonDimensions if it exists
                 if (typeof mobilePersonDimensions !== 'undefined') {
                     mobilePersonDimensions[person].geschlecht = personDimensions[person].geschlecht;
                     mobilePersonDimensions[person].dominanz = personDimensions[person].dominanz;
                     mobilePersonDimensions[person].orientierung = personDimensions[person].orientierung;
                     mobilePersonDimensions[person].gfk = personDimensions[person].gfk;
+                    mobilePersonDimensions[person].geschlecht_extras = personDimensions[person].geschlecht_extras;
                 }
 
                 // Sync UI elements after loading (Desktop + Mobile einheitlich)
                 if (typeof syncGeschlechtUI === 'function') {
                     syncGeschlechtUI(person);
+                }
+                if (typeof syncGeschlechtExtrasUI === 'function') {
+                    syncGeschlechtExtrasUI(person);
                 }
                 if (typeof syncDominanzUI === 'function') {
                     syncDominanzUI(person);  // Enthält jetzt auch syncMobileStatusButtons
@@ -16122,293 +15997,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         // ========================================
         // FEATURE 1: Factor Detail Modal
         // ========================================
+        // NOTE: factorExplanations moved to js/modals/factorExplanations.js
+        // Uses window.factorExplanations for backwards compatibility
 
-        const factorExplanations = {
-            archetyp: {
-                title: 'Archetyp-Übereinstimmung',
-                subtitle: '(Beziehungsphilosophie - Verstand&Logos)',
-                getExplanation: (ich, partner, score) => {
-                    const ichName = data?.archetypes?.[ich]?.name || ich;
-                    const partnerName = data?.archetypes?.[partner]?.name || partner;
-
-                    if (ich === partner) {
-                        return `${ichName} und ${partnerName} teilen dieselbe Beziehungsphilosophie. Beide haben identische Grundüberzeugungen über Beziehungsstrukturen.`;
-                    }
-
-                    if (score >= 80) {
-                        return `${ichName} und ${partnerName} haben sehr ähnliche Beziehungsphilosophien. Die Grundüberzeugungen passen gut zusammen und erfordern nur minimale Kompromisse.`;
-                    } else if (score >= 60) {
-                        return `${ichName} und ${partnerName} haben unterschiedliche, aber kompatible Beziehungsphilosophien. Beide Archetypen können sich mit Kommunikation und Verständnis ergänzen.`;
-                    } else {
-                        return `${ichName} und ${partnerName} haben fundamentale philosophische Unterschiede. Die Beziehungsvorstellungen weichen stark voneinander ab und erfordern intensive Kommunikation.`;
-                    }
-                },
-                getMeaning: (score, ich, partner) => {
-                    const ichName = data?.archetypes?.[ich]?.name || ich;
-                    const partnerName = data?.archetypes?.[partner]?.name || partner;
-                    const rhetoricNote = { title: '💡 Warum Logos (Verstand)?', desc: 'Archetypen basieren auf rationalen Beziehungsphilosophien und bewussten Überzeugungen – sie sprechen den Verstand an, nicht das Gefühl.' };
-
-                    if (ich === partner) {
-                        return [
-                            rhetoricNote,
-                            { title: `📌 In dieser Kombination teilen beide denselben Archetyp "${ichName}" – maximale philosophische Übereinstimmung.`, desc: '' },
-                            { title: 'Gleiche Grundüberzeugungen', desc: 'Beide haben identische Vorstellungen davon, wie eine Beziehung funktionieren sollte.' },
-                            { title: 'Intuitive Verständigung', desc: 'Die gemeinsame Basis ermöglicht tiefes gegenseitiges Verstehen ohne lange Erklärungen.' },
-                            { title: 'Natürliche Harmonie', desc: 'Keine grundsätzlichen Konflikte durch unterschiedliche Beziehungsphilosophien.' }
-                        ];
-                    }
-
-                    if (score >= 80) {
-                        return [
-                            rhetoricNote,
-                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" ergänzen sich die Beziehungsphilosophien sehr gut.`, desc: '' },
-                            { title: 'Hohe philosophische Übereinstimmung', desc: 'Beide teilen ähnliche Grundwerte und Beziehungsideale.' },
-                            { title: 'Wenige grundsätzliche Konflikte', desc: 'Weltanschauung und Lebensziele sind weitgehend kompatibel.' },
-                            { title: 'Ähnliche Erwartungen an die Beziehung', desc: 'Was beide von Partnerschaft erwarten, deckt sich gut.' }
-                        ];
-                    } else if (score >= 60) {
-                        return [
-                            rhetoricNote,
-                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" gibt es sowohl Gemeinsamkeiten als auch deutliche Unterschiede.`, desc: '' },
-                            { title: 'Mittlere philosophische Übereinstimmung', desc: 'Grundwerte überlappen, aber es gibt Unterschiede.' },
-                            { title: 'Kompromisse und Kommunikation nötig', desc: 'Unterschiedliche Prioritäten erfordern regelmäßigen Austausch.' },
-                            { title: 'Unterschiedliche, aber vereinbare Bedürfnisse', desc: 'Mit Flexibilität können beide Seiten zufrieden sein.' }
-                        ];
-                    } else {
-                        return [
-                            rhetoricNote,
-                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" prallen grundlegend verschiedene Beziehungsphilosophien aufeinander.`, desc: '' },
-                            { title: 'Niedrige philosophische Übereinstimmung', desc: 'Grundsätzlich verschiedene Sichtweisen auf Beziehung.' },
-                            { title: 'Intensive Kommunikation erforderlich', desc: 'Ohne bewusste Arbeit entstehen leicht Missverständnisse.' },
-                            { title: 'Fundamentale Kompromisse notwendig', desc: 'Beide müssen auf wichtige eigene Bedürfnisse verzichten können.' }
-                        ];
-                    }
-                }
-            },
-            dominanz: {
-                title: 'Dominanz-Harmonie',
-                subtitle: '(Emotionale Dynamik - Gefühl&Pathos)',
-                getExplanation: (ich, partner, score, dimensions) => {
-                    // Use passed dimensions, fallback to mobilePersonDimensions for backward compatibility
-                    const dims = dimensions || mobilePersonDimensions;
-                    const ichDomObj = dims.ich.dominanz;
-                    const partnerDomObj = dims.partner.dominanz;
-
-                    // Translate values to German labels for display
-                    const domLabels = {
-                        'dominant': 'dominant',
-                        'submissiv': 'submissiv',
-                        'switch': 'Switch',
-                        'ausgeglichen': 'ausgeglichen'
-                    };
-
-                    // Harmony matrix - SSOT: Referenziert Constants.DOMINANCE_MATRIX
-                    const harmonyMatrix = (typeof TiageSynthesis !== 'undefined' &&
-                        TiageSynthesis.Constants &&
-                        TiageSynthesis.Constants.DOMINANCE_MATRIX)
-                        ? TiageSynthesis.Constants.DOMINANCE_MATRIX
-                        : getDominanzHarmonyMatrix();
-
-                    // Helper to get all selections with status
-                    const getAllSelections = (domObj) => {
-                        if (!domObj || typeof domObj !== 'object') return [];
-                        const selections = [];
-                        for (const [type, status] of Object.entries(domObj)) {
-                            if (status) selections.push({ type, status });
-                        }
-                        return selections;
-                    };
-
-                    const ichSelections = getAllSelections(ichDomObj);
-                    const partnerSelections = getAllSelections(partnerDomObj);
-
-                    if (ichSelections.length === 0 || partnerSelections.length === 0) {
-                        return 'Bitte wähle für beide Personen mindestens eine Dominanz-Tendenz.';
-                    }
-
-                    // Find best combination across ALL selections (primary + secondary)
-                    let bestCombo = null;
-                    let bestScore = 0;
-                    for (const ichSel of ichSelections) {
-                        for (const partnerSel of partnerSelections) {
-                            const key = `${ichSel.type}-${partnerSel.type}`;
-                            let baseScore = harmonyMatrix[key] || harmonyMatrix[`${partnerSel.type}-${ichSel.type}`] || 75;
-                            // Reduce score if either is "interessiert"
-                            const hasInteressiert = ichSel.status === 'interessiert' || partnerSel.status === 'interessiert';
-                            const adjustedScore = hasInteressiert ? Math.round(baseScore * 0.7) : baseScore;
-                            if (adjustedScore > bestScore) {
-                                bestScore = adjustedScore;
-                                bestCombo = { ich: ichSel, partner: partnerSel, hasInteressiert, baseScore };
-                            }
-                        }
-                    }
-
-                    if (!bestCombo) {
-                        return 'Keine kompatible Dominanz-Kombination gefunden.';
-                    }
-
-                    const ichType = bestCombo.ich.type;
-                    const partnerType = bestCombo.partner.type;
-                    const ichStatusLabel = bestCombo.ich.status === 'gelebt' ? 'Gelebt' : 'Interessiert';
-                    const partnerStatusLabel = bestCombo.partner.status === 'gelebt' ? 'Gelebt' : 'Interessiert';
-
-                    // Build explanation based on best combination
-                    let explanation = `Beste Kombination: ${domLabels[ichType]} (${ichStatusLabel}) ↔ ${domLabels[partnerType]} (${partnerStatusLabel}). `;
-
-                    if (ichType === partnerType) {
-                        if (ichType === 'ausgeglichen' || ichType === 'switch') {
-                            explanation += `Beide bevorzugen ${domLabels[ichType]} - flexible Dynamik möglich.`;
-                        } else if (ichType === 'dominant') {
-                            explanation += `Beide dominant - Machtkampf-Risiko, aber mit Kommunikation machbar.`;
-                        } else if (ichType === 'submissiv') {
-                            explanation += `Beide submissiv - Führungsvakuum-Risiko, klare Absprachen wichtig.`;
-                        }
-                    } else if ((ichType === 'dominant' && partnerType === 'submissiv') ||
-                               (ichType === 'submissiv' && partnerType === 'dominant')) {
-                        explanation += `Perfekte Komplementarität in der emotionalen Dynamik!`;
-                    } else {
-                        explanation += `Interessante Dynamik mit Flexibilitätspotential.`;
-                    }
-
-                    // Add warning if best combo uses "interessiert"
-                    if (bestCombo.hasInteressiert) {
-                        explanation += ` ⚠️ Exploration-Phase: Reduzierte Konfidenz (${bestCombo.baseScore}% → ${bestScore}%).`;
-                    }
-
-                    return explanation;
-                },
-                getMeaning: (score) => {
-                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Dominanz-Dynamik wirkt auf der emotionalen Ebene – wer führt, wer folgt, entsteht aus Gefühl und Instinkt, nicht aus rationaler Überlegung.' };
-                    if (score >= 80) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Harmonische emotionale Dynamik', desc: 'Die Rollen (Führen/Folgen) ergänzen sich natürlich ohne Reibung.' },
-                            { title: 'Natürliche Rollenverteilung', desc: 'Entscheidungen und Verantwortung fließen organisch zwischen beiden.' },
-                            { title: 'Geringe Reibungspunkte', desc: 'Wenig Konflikte um Kontrolle oder Passivität zu erwarten.' }
-                        ];
-                    } else if (score >= 60) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Funktionale emotionale Dynamik', desc: 'Die Rollen funktionieren, sind aber nicht perfekt komplementär.' },
-                            { title: 'Flexible Anpassung möglich', desc: 'Mit gegenseitigem Verständnis kann Balance gefunden werden.' },
-                            { title: 'Gelegentliche Abstimmung nötig', desc: 'Manchmal braucht es Gespräche über Erwartungen und Bedürfnisse.' }
-                        ];
-                    } else {
-                        // Forschungsbasiert: Sadikaj et al. (2017) - Machtkämpfe bei gleicher Polarität
-                        return [
-                            rhetoricNote,
-                            { title: 'Machtkampf- oder Führungsvakuum-Risiko', desc: 'Beide dominant = Konkurrenzkämpfe. Beide submissiv = keiner übernimmt Führung.' },
-                            { title: 'Bewusste Kommunikationsregeln wichtig', desc: 'Klare Absprachen nötig, wer wann welche Rolle übernimmt.' },
-                            { title: 'Klare Aufgabenteilung empfohlen', desc: 'Definierte Verantwortungsbereiche reduzieren Konflikte.' }
-                        ];
-                    }
-                }
-            },
-            orientierung: {
-                title: 'Orientierungs-Kompatibilität',
-                subtitle: '(Körperliche Anziehung - Gefühl&Pathos)',
-                getExplanation: (ich, partner, score, dimensions) => {
-                    // Use passed dimensions, fallback to mobilePersonDimensions for backward compatibility
-                    const dims = dimensions || mobilePersonDimensions;
-                    const ichOri = dims.ich.orientierung;
-                    const partnerOri = dims.partner.orientierung;
-
-                    // Translate values to German labels for display
-                    const oriLabels = {
-                        'heterosexuell': 'heterosexuell',
-                        'homosexuell': 'homosexuell',
-                        'bisexuell': 'bisexuell'
-                    };
-                    const ichLabel = oriLabels[ichOri] || ichOri || 'nicht gewählt';
-                    const partnerLabel = oriLabels[partnerOri] || partnerOri || 'nicht gewählt';
-
-                    if (score === 100) {
-                        return `${ichLabel} und ${partnerLabel} - perfekte Kompatibilität! Körperliche Anziehung ist definitiv möglich.`;
-                    } else if (score >= 50) {
-                        return `${ichLabel} und ${partnerLabel} - Anziehung ist möglich, besonders wenn mindestens eine Person bisexuell orientiert ist.`;
-                    } else {
-                        return `${ichLabel} und ${partnerLabel} - Keine körperliche Anziehung möglich aufgrund der sexuellen Orientierungen.`;
-                    }
-                },
-                getMeaning: (score) => {
-                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Sexuelle Orientierung bestimmt, wen wir körperlich anziehend finden – ein tiefes, unbewusstes Gefühl, keine rationale Wahl.' };
-                    if (score === 100) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Vollständige körperliche Kompatibilität', desc: 'Die sexuellen Orientierungen beider passen ideal zusammen.' },
-                            { title: 'Keine Barrieren für Anziehung', desc: 'Beide können sich potenziell zueinander hingezogen fühlen.' },
-                            { title: 'Basis für romantische Beziehung vorhanden', desc: 'Körperliche Anziehung kann Grundlage für mehr sein.' }
-                        ];
-                    } else if (score >= 50) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Mögliche körperliche Kompatibilität', desc: 'Unter bestimmten Umständen ist Anziehung möglich.' },
-                            { title: 'Anziehung kann entstehen', desc: 'Nicht automatisch, aber nicht ausgeschlossen.' },
-                            { title: 'Hängt von individuellen Präferenzen ab', desc: 'Persönliche Neigungen spielen größere Rolle.' }
-                        ];
-                    } else {
-                        return [
-                            rhetoricNote,
-                            { title: 'Keine körperliche Kompatibilität', desc: 'Die Orientierungen schließen gegenseitige Anziehung aus.' },
-                            { title: 'Romantische Beziehung nicht möglich', desc: 'Keine Basis für eine intime Partnerschaft.' },
-                            { title: 'Freundschaft möglich', desc: 'Eine platonische Verbindung bleibt eine Option.' }
-                        ];
-                    }
-                }
-            },
-            geschlecht: {
-                title: 'Geschlechts-Attraktion',
-                subtitle: '(Gender-Chemie - Gefühl&Pathos)',
-                getExplanation: (ich, partner, score, dimensions) => {
-                    // Use passed dimensions, fallback to mobilePersonDimensions for backward compatibility
-                    const dims = dimensions || mobilePersonDimensions;
-                    const ichG = dims.ich.geschlecht;
-                    const partnerG = dims.partner.geschlecht;
-
-                    // Translate values to German labels for display
-                    const genderLabels = {
-                        'männlich': 'männlich',
-                        'weiblich': 'weiblich',
-                        'non-binär': 'non-binär'
-                    };
-                    const ichLabel = genderLabels[ichG] || ichG || 'nicht gewählt';
-                    const partnerLabel = genderLabels[partnerG] || partnerG || 'nicht gewählt';
-
-                    if (score === 100) {
-                        return `Die Geschlechterkonstellation ${ichLabel} × ${partnerLabel} passt perfekt zu den angegebenen Orientierungen.`;
-                    } else if (score >= 50) {
-                        return `Die Geschlechterkonstellation ${ichLabel} × ${partnerLabel} ist mit den angegebenen Orientierungen grundsätzlich kompatibel.`;
-                    } else {
-                        return `Die Geschlechterkonstellation ${ichLabel} × ${partnerLabel} passt nicht zu den angegebenen Orientierungen.`;
-                    }
-                },
-                getMeaning: (score) => {
-                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Gender-Chemie ist die instinktive Reaktion auf das Geschlecht des anderen – ein unbewusstes Gefühl, das körperliche Anziehung auslöst oder blockiert.' };
-                    if (score === 100) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Ideale Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt perfekt zu beiden Orientierungen.' },
-                            { title: 'Maximale Anziehungskraft möglich', desc: 'Gender-Chemie kann voll entfaltet werden.' },
-                            { title: 'Keine gender-bezogenen Barrieren', desc: 'Die Geschlechter bilden keine Hürde für Anziehung.' }
-                        ];
-                    } else if (score >= 50) {
-                        return [
-                            rhetoricNote,
-                            { title: 'Akzeptable Geschlechterkonstellation', desc: 'Nicht optimal, aber funktional für Anziehung.' },
-                            { title: 'Anziehung möglich', desc: 'Kann entstehen, ist aber nicht garantiert.' },
-                            { title: 'Individuelle Präferenzen entscheidend', desc: 'Persönliche Vorlieben bestimmen den Ausgang.' }
-                        ];
-                    } else {
-                        return [
-                            rhetoricNote,
-                            { title: 'Inkompatible Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt nicht zu den Orientierungen.' },
-                            { title: 'Anziehung unwahrscheinlich', desc: 'Körperliche Chemie wird kaum entstehen.' },
-                            { title: 'Orientierung passt nicht', desc: 'Die Präferenzen zeigen in andere Richtungen.' }
-                        ];
-                    }
-                }
-            }
-        };
+        /* factorExplanations data moved to js/modals/factorExplanations.js */
 
         function openFactorModal(factorType, source = 'mobile') {
             const factor = factorExplanations[factorType];
@@ -19752,852 +19344,16 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         });
 
         // ========================================
-        // COMMENT MODAL FUNCTIONS
-        // ========================================
-
-        function openCommentModal() {
-            document.getElementById('commentModal').classList.add('active');
-            // Pre-fill name field with visitor number
-            const visitorId = localStorage.getItem('tiage_visitor_id');
-            if (visitorId) {
-                document.getElementById('commentName').value = '#' + visitorId;
-            }
-            // Push state for back button to close modal
-            history.pushState({ mobilePage: currentMobilePage, modal: 'comment' }, '', `#seite${currentMobilePage}-comment`);
-        }
-
-        function closeCommentModal(event, skipHistoryBack = false) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('commentModal').classList.remove('active');
-            // Reset form
-            document.getElementById('commentText').value = '';
-            // Go back in history if not triggered by back button
-            if (!skipHistoryBack && history.state && history.state.modal === 'comment') {
-                history.back();
-            }
-        }
-
-        async function submitComment() {
-            const name = document.getElementById('commentName').value.trim();
-            const typ = 'feedback'; // Default type since dropdown removed
-            const text = document.getElementById('commentText').value.trim();
-
-            // Rate limiting check
-            const rateCheck = canSubmitComment();
-            if (!rateCheck.allowed) {
-                alert(`Bitte warte noch ${rateCheck.secondsRemaining} Sekunden bevor du einen weiteren Kommentar sendest.`);
-                return;
-            }
-
-            // Validation
-            if (!name) {
-                alert('Bitte gib deinen Namen/Kürzel ein.');
-                return;
-            }
-            if (name.length > 50) {
-                alert('Name darf maximal 50 Zeichen haben.');
-                return;
-            }
-            if (!text) {
-                alert('Bitte schreibe einen Kommentar.');
-                return;
-            }
-            if (text.length > 2000) {
-                alert('Kommentar darf maximal 2000 Zeichen haben.');
-                return;
-            }
-
-            // Get visitor ID
-            const visitorId = getOrCreateVisitorId();
-
-            const commentEntry = {
-                type: 'comment',  // Wichtig für das Google Script
-                id: 'com_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                visitorId: visitorId,
-                name: name,
-                kommentarTyp: typ,
-                kommentar: text,
-                timestamp: new Date().toISOString(),
-                page: 'hilfe-modal'
-            };
-
-            const submitBtn = document.getElementById('commentSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sende...';
-
-            try {
-                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(commentEntry)
-                    });
-                }
-
-                // Also save locally as backup
-                const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
-                stored.unshift(commentEntry);
-                localStorage.setItem('tiage_comments', JSON.stringify(stored));
-
-                // Record submission time for rate limiting
-                recordCommentSubmission();
-
-                alert('Danke für deinen Kommentar!');
-                closeCommentModal();
-
-            } catch (error) {
-                console.error('Comment error:', error);
-                // Save locally on error
-                const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
-                stored.unshift(commentEntry);
-                localStorage.setItem('tiage_comments', JSON.stringify(stored));
-                recordCommentSubmission();
-                alert('Kommentar lokal gespeichert. (Server nicht erreichbar)');
-                closeCommentModal();
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Absenden';
-        }
-
-        // ========================================
-        // COMMENTS LIST MODAL FUNCTIONS
-        // ========================================
-
-        let allCommentsData = [];
-        let currentSearchQuery = '';
-
-        function openCommentsListModal() {
-            console.log('openCommentsListModal called');
-            document.getElementById('commentsListModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Reset search field
-            const searchInput = document.getElementById('commentsSearchInput');
-            if (searchInput) searchInput.value = '';
-            currentSearchQuery = '';
-            const clearBtn = document.getElementById('commentsSearchClear');
-            if (clearBtn) clearBtn.classList.remove('visible');
-            const resultsDiv = document.getElementById('commentsSearchResults');
-            if (resultsDiv) resultsDiv.style.display = 'none';
-
-            loadAllComments();
-        }
-
-        function closeCommentsListModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('commentsListModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        async function loadAllComments() {
-            const container = document.getElementById('commentsListBody');
-            container.innerHTML = '<div class="no-comments"><div class="no-comments-icon">⏳</div><p>Lade Kommentare...</p></div>';
-
-            try {
-                // Load from localStorage - nur eine Quelle: tiage_comments
-                const localComments = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
-
-                // Deduplizierung basierend auf Name + Titel + Text
-                const seen = new Set();
-                const getUniqueKey = (item) => {
-                    const name = (item.Name || item.name || '').toLowerCase().trim();
-                    const titel = (item.Titel || item.titel || '').toLowerCase().trim();
-                    const text = (item.Kommentar || item.kommentar || item.text || item.comment || '').toLowerCase().trim();
-                    return `${name}|${titel}|${text}`;
-                };
-
-                allCommentsData = [];
-
-                // Add local comments
-                localComments.forEach(item => {
-                    const key = getUniqueKey(item);
-                    if (!seen.has(key)) {
-                        seen.add(key);
-                        allCommentsData.push(item);
-                    }
-                });
-
-                // Try to load from server if available
-                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                    try {
-                        const response = await fetch(GOOGLE_SCRIPT_URL);
-                        const serverData = await response.json();
-                        // Merge server data (avoiding duplicates)
-                        serverData.forEach(item => {
-                            const key = getUniqueKey(item);
-                            if (!seen.has(key)) {
-                                seen.add(key);
-                                allCommentsData.push(item);
-                            }
-                        });
-                    } catch (e) {
-                        console.log('Server not available, using local data only');
-                    }
-                }
-
-                // Sort by date (newest first)
-                allCommentsData.sort((a, b) => {
-                    const dateA = new Date(a.timestamp || a.Timestamp || a.datum || 0);
-                    const dateB = new Date(b.timestamp || b.Timestamp || b.datum || 0);
-                    return dateB - dateA;
-                });
-
-                renderCommentsList();
-            } catch (error) {
-                console.error('Error loading comments:', error);
-                container.innerHTML = '<div class="no-comments"><div class="no-comments-icon">❌</div><p>Fehler beim Laden der Kommentare</p></div>';
-            }
-        }
-
-        function renderCommentsList() {
-            const container = document.getElementById('commentsListBody');
-
-            if (allCommentsData.length === 0) {
-                container.innerHTML = `
-                    <div class="no-comments">
-                        <div class="no-comments-icon">💬</div>
-                        <p>Noch keine Kommentare vorhanden.</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Sei der Erste, der einen Kommentar hinterlässt!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Separate main comments from replies
-            const mainComments = allCommentsData.filter(c => !(c.AntwortAuf || c.antwortAuf || c.replyTo));
-            const replies = allCommentsData.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
-
-            let html = '';
-
-            mainComments.forEach((comment, index) => {
-                const id = comment.id || comment.ID || `comment-${index}`;
-                const name = comment.Name || comment.name || 'Anonym';
-                const visitorId = comment.visitorId || comment.VisitorId || '';
-                const titel = comment.Titel || comment.titel || comment.type || '';
-                const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
-                const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-                const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
-                const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
-                const date = timestamp ? formatCommentDate(timestamp) : '';
-
-                // Find replies to this comment
-                const commentReplies = replies.filter(r =>
-                    (r.AntwortAuf || r.antwortAuf || r.replyTo) === id
-                );
-
-                html += `
-                    <div class="comment-card" data-id="${id}">
-                        <div class="comment-card-header">
-                            <div>
-                                <span class="comment-author">${escapeHtml(name)}</span>
-                                ${visitorId ? `<span class="comment-visitor-id">#${escapeHtml(visitorId)}</span>` : ''}
-                                <span class="comment-date">${date}</span>
-                            </div>
-                            <span class="comment-type-badge type-${typ || 'comment'}">${getTypeBadge(typ)}</span>
-                        </div>
-                        <div class="comment-card-body">
-                            ${titel ? `<div class="comment-title">${escapeHtml(titel)}</div>` : ''}
-                            <div class="comment-text">${escapeHtml(text)}</div>
-                            ${kontext ? `<div class="comment-context">📍 Kontext: ${escapeHtml(kontext)}</div>` : ''}
-                        </div>
-                        ${commentReplies.length > 0 ? renderReplies(commentReplies) : ''}
-                        <div class="comment-card-footer">
-                            <span style="font-size: 11px; color: var(--text-muted);">${commentReplies.length} Antwort${commentReplies.length !== 1 ? 'en' : ''}</span>
-                            <button class="reply-btn" onclick="toggleReplyForm('${id}')">↩ Antworten</button>
-                        </div>
-                        <div class="reply-form" id="reply-form-${id}">
-                            <input type="text" id="reply-name-${id}" placeholder="Dein Name" style="width: 100%; padding: 8px; margin-bottom: 10px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);">
-                            <textarea id="reply-text-${id}" placeholder="Deine Antwort..."></textarea>
-                            <div class="reply-form-buttons">
-                                <button class="reply-cancel-btn" onclick="toggleReplyForm('${id}')">Abbrechen</button>
-                                <button class="reply-submit-btn" onclick="submitReply('${id}')">Antworten</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderReplies(replies) {
-            let html = '<div class="replies-section">';
-            replies.forEach(reply => {
-                const name = reply.Name || reply.name || 'Anonym';
-                const text = reply.Kommentar || reply.kommentar || reply.text || '';
-                const timestamp = reply.timestamp || reply.Timestamp;
-                const date = timestamp ? formatCommentDate(timestamp) : '';
-
-                html += `
-                    <div class="reply-card">
-                        <div class="reply-header">
-                            <span class="reply-author">${escapeHtml(name)}</span>
-                            <span class="reply-date">${date}</span>
-                        </div>
-                        <div class="reply-text">${escapeHtml(text)}</div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            return html;
-        }
-
-        // Convert wildcard pattern to regex
-        function wildcardToRegex(pattern) {
-            // Escape special regex characters except *
-            const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
-            // Convert * to .* for wildcard matching
-            const regex = escaped.replace(/\*/g, '.*');
-            return new RegExp(regex, 'i'); // Case insensitive
-        }
-
-        // Check if a comment matches the search query
-        function commentMatchesSearch(comment, query) {
-            if (!query || query.trim() === '') return true;
-
-            const searchPattern = wildcardToRegex(query.trim());
-
-            // Get all searchable fields
-            const name = comment.Name || comment.name || '';
-            const titel = comment.Titel || comment.titel || comment.type || '';
-            const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
-            const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-            const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
-            const typLabel = getTypeBadge(typ);
-
-            // Check if any field matches
-            return searchPattern.test(name) ||
-                   searchPattern.test(titel) ||
-                   searchPattern.test(text) ||
-                   searchPattern.test(kontext) ||
-                   searchPattern.test(typ) ||
-                   searchPattern.test(typLabel);
-        }
-
-        // Filter and render comments based on search query
-        function filterComments(query) {
-            currentSearchQuery = query;
-
-            // Update clear button visibility
-            const clearBtn = document.getElementById('commentsSearchClear');
-            if (clearBtn) {
-                clearBtn.classList.toggle('visible', query.length > 0);
-            }
-
-            renderFilteredComments();
-        }
-
-        // Clear search and show all comments
-        function clearCommentsSearch() {
-            const input = document.getElementById('commentsSearchInput');
-            if (input) {
-                input.value = '';
-            }
-            currentSearchQuery = '';
-
-            const clearBtn = document.getElementById('commentsSearchClear');
-            if (clearBtn) {
-                clearBtn.classList.remove('visible');
-            }
-
-            const resultsDiv = document.getElementById('commentsSearchResults');
-            if (resultsDiv) {
-                resultsDiv.style.display = 'none';
-            }
-
-            renderCommentsList();
-        }
-
-        // Render comments with current filter applied
-        function renderFilteredComments() {
-            const container = document.getElementById('commentsListBody');
-            const resultsDiv = document.getElementById('commentsSearchResults');
-
-            if (!currentSearchQuery || currentSearchQuery.trim() === '') {
-                if (resultsDiv) resultsDiv.style.display = 'none';
-                renderCommentsList();
-                return;
-            }
-
-            // Filter comments
-            const filteredComments = allCommentsData.filter(c => commentMatchesSearch(c, currentSearchQuery));
-
-            // Show results count
-            if (resultsDiv) {
-                resultsDiv.style.display = 'block';
-                resultsDiv.innerHTML = `${filteredComments.length} von ${allCommentsData.length} Kommentare${filteredComments.length !== 1 ? 'n' : ''} gefunden`;
-            }
-
-            if (filteredComments.length === 0) {
-                container.innerHTML = `
-                    <div class="no-comments">
-                        <div class="no-comments-icon">🔍</div>
-                        <p>Keine Kommentare gefunden.</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Versuche einen anderen Suchbegriff oder verwende * als Platzhalter.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Separate main comments from replies
-            const mainComments = filteredComments.filter(c => !(c.AntwortAuf || c.antwortAuf || c.replyTo));
-            const allReplies = allCommentsData.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
-            const filteredReplies = filteredComments.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
-
-            let html = '';
-
-            // Render matching main comments
-            mainComments.forEach((comment, index) => {
-                const id = comment.id || comment.ID || `comment-${index}`;
-                const name = comment.Name || comment.name || 'Anonym';
-                const titel = comment.Titel || comment.titel || comment.type || '';
-                const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
-                const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-                const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
-                const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
-                const date = timestamp ? formatCommentDate(timestamp) : '';
-
-                // Find all replies to this comment (not filtered)
-                const commentReplies = allReplies.filter(r =>
-                    (r.AntwortAuf || r.antwortAuf || r.replyTo) === id
-                );
-
-                html += `
-                    <div class="comment-card" data-id="${id}">
-                        <div class="comment-card-header">
-                            <div>
-                                <span class="comment-author">${highlightMatch(escapeHtml(name), currentSearchQuery)}</span>
-                                <span class="comment-date">${date}</span>
-                            </div>
-                            <span class="comment-type-badge type-${typ || 'comment'}">${getTypeBadge(typ)}</span>
-                        </div>
-                        <div class="comment-card-body">
-                            ${titel ? `<div class="comment-title">${highlightMatch(escapeHtml(titel), currentSearchQuery)}</div>` : ''}
-                            <div class="comment-text">${highlightMatch(escapeHtml(text), currentSearchQuery)}</div>
-                            ${kontext ? `<div class="comment-context">📍 Kontext: ${highlightMatch(escapeHtml(kontext), currentSearchQuery)}</div>` : ''}
-                        </div>
-                        ${commentReplies.length > 0 ? renderRepliesWithHighlight(commentReplies, currentSearchQuery) : ''}
-                        <div class="comment-card-footer">
-                            <span style="font-size: 11px; color: var(--text-muted);">${commentReplies.length} Antwort${commentReplies.length !== 1 ? 'en' : ''}</span>
-                            <button class="reply-btn" onclick="toggleReplyForm('${id}')">↩ Antworten</button>
-                        </div>
-                        <div class="reply-form" id="reply-form-${id}">
-                            <input type="text" id="reply-name-${id}" placeholder="Dein Name" style="width: 100%; padding: 8px; margin-bottom: 10px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);">
-                            <textarea id="reply-text-${id}" placeholder="Deine Antwort..."></textarea>
-                            <div class="reply-form-buttons">
-                                <button class="reply-cancel-btn" onclick="toggleReplyForm('${id}')">Abbrechen</button>
-                                <button class="reply-submit-btn" onclick="submitReply('${id}')">Antworten</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Also show replies that match but their parent doesn't
-            const orphanReplies = filteredReplies.filter(reply => {
-                const parentId = reply.AntwortAuf || reply.antwortAuf || reply.replyTo;
-                return !mainComments.some(c => (c.id || c.ID) === parentId);
-            });
-
-            if (orphanReplies.length > 0) {
-                html += `<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Passende Antworten:</div>
-                `;
-                orphanReplies.forEach(reply => {
-                    const name = reply.Name || reply.name || 'Anonym';
-                    const text = reply.Kommentar || reply.kommentar || reply.text || '';
-                    const timestamp = reply.timestamp || reply.Timestamp;
-                    const date = timestamp ? formatCommentDate(timestamp) : '';
-
-                    html += `
-                        <div class="reply-card" style="margin-left: 0; background: var(--bg-secondary); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="reply-header">
-                                <span class="reply-author">${highlightMatch(escapeHtml(name), currentSearchQuery)}</span>
-                                <span class="reply-date">${date}</span>
-                            </div>
-                            <div class="reply-text">${highlightMatch(escapeHtml(text), currentSearchQuery)}</div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-
-            container.innerHTML = html;
-        }
-
-        // Highlight matching text in search results
-        function highlightMatch(text, query) {
-            if (!query || query.trim() === '') return text;
-
-            try {
-                const pattern = wildcardToRegex(query.trim());
-                return text.replace(pattern, match => `<span class="search-highlight">${match}</span>`);
-            } catch (e) {
-                return text;
-            }
-        }
-
-        // Render replies with search highlighting
-        function renderRepliesWithHighlight(replies, query) {
-            let html = '<div class="replies-section">';
-            replies.forEach(reply => {
-                const name = reply.Name || reply.name || 'Anonym';
-                const text = reply.Kommentar || reply.kommentar || reply.text || '';
-                const timestamp = reply.timestamp || reply.Timestamp;
-                const date = timestamp ? formatCommentDate(timestamp) : '';
-
-                html += `
-                    <div class="reply-card">
-                        <div class="reply-header">
-                            <span class="reply-author">${highlightMatch(escapeHtml(name), query)}</span>
-                            <span class="reply-date">${date}</span>
-                        </div>
-                        <div class="reply-text">${highlightMatch(escapeHtml(text), query)}</div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            return html;
-        }
-
-        function toggleReplyForm(commentId) {
-            const form = document.getElementById(`reply-form-${commentId}`);
-            if (form) {
-                form.classList.toggle('active');
-            }
-        }
-
-        async function submitReply(parentId) {
-            const nameInput = document.getElementById(`reply-name-${parentId}`);
-            const textInput = document.getElementById(`reply-text-${parentId}`);
-
-            const name = nameInput?.value.trim() || 'Anonym';
-            const text = textInput?.value.trim();
-
-            if (!text) {
-                alert('Bitte gib eine Antwort ein.');
-                return;
-            }
-
-            const reply = {
-                id: 'reply_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                Name: name,
-                Kommentar: text,
-                AntwortAuf: parentId,
-                timestamp: new Date().toISOString(),
-                Typ: 'antwort'
-            };
-
-            // Save locally
-            const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
-            stored.push(reply);
-            localStorage.setItem('tiage_comments', JSON.stringify(stored));
-
-            // Try to save to server
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(reply)
-                    });
-                } catch (e) {
-                    console.log('Server save failed, reply saved locally');
-                }
-            }
-
-            // Clear form and reload
-            if (nameInput) nameInput.value = '';
-            if (textInput) textInput.value = '';
-            toggleReplyForm(parentId);
-
-            // Reload comments
-            loadAllComments();
-        }
-
-        function formatCommentDate(timestamp) {
-            try {
-                const date = new Date(timestamp);
-                return date.toLocaleDateString('de-DE', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            } catch (e) {
-                return '';
-            }
-        }
-
-        function getTypeBadge(typ) {
-            const types = {
-                'frage': 'Frage',
-                'feedback': 'Comment',  // Feedback = Comment (vereinheitlicht)
-                'fehler': 'Fehler',
-                'verbesserung': 'Vorschlag',
-                'doku': 'Doku',
-                'antwort': 'Antwort',
-                'comment': 'Comment'
-            };
-            return types[typ] || 'Comment';  // Default ist jetzt "Comment"
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ========================================
         // VISITOR ID & RATE LIMITING
         // ========================================
-
-        // Browser fingerprinting for additional security
-        function generateBrowserFingerprint() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.textBaseline = 'top';
-            ctx.font = '14px Arial';
-            ctx.fillText('TIAGE', 2, 2);
-            const canvasHash = canvas.toDataURL().slice(-50);
-
-            const fingerprint = {
-                userAgent: navigator.userAgent,
-                language: navigator.language,
-                platform: navigator.platform,
-                screenResolution: `${screen.width}x${screen.height}`,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                canvasHash: canvasHash
-            };
-
-            const fpString = JSON.stringify(fingerprint);
-            let hash = 0;
-            for (let i = 0; i < fpString.length; i++) {
-                const char = fpString.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            return 'FP' + Math.abs(hash).toString(36);
-        }
-
-        // Get or create a unique visitor ID
-        function getOrCreateVisitorId() {
-            return localStorage.getItem('tiage_visitor_id') || null;
-        }
-
-        // Get browser fingerprint
-        function getBrowserFingerprint() {
-            let fingerprint = localStorage.getItem('tiage_fingerprint');
-            if (!fingerprint) {
-                fingerprint = generateBrowserFingerprint();
-                localStorage.setItem('tiage_fingerprint', fingerprint);
-            }
-            return fingerprint;
-        }
-
-        // LocalStorage backup for total visitors count
-        function getCachedTotalVisitors() {
-            const cached = localStorage.getItem('tiage_total_visitors');
-            const timestamp = localStorage.getItem('tiage_total_visitors_timestamp');
-            const maxAge = 5 * 60 * 1000; // 5 minutes
-
-            if (cached && timestamp && (Date.now() - parseInt(timestamp)) < maxAge) {
-                return parseInt(cached);
-            }
-            return null;
-        }
-
-        function setCachedTotalVisitors(total) {
-            if (total !== null && total !== undefined) {
-                localStorage.setItem('tiage_total_visitors', total.toString());
-                localStorage.setItem('tiage_total_visitors_timestamp', Date.now().toString());
-            }
-        }
-
-        // Retry logic with exponential backoff
-        async function fetchWithRetry(url, options = {}, maxRetries = 3) {
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
-
-                    const response = await fetch(url, {
-                        ...options,
-                        signal: controller.signal
-                    });
-
-                    clearTimeout(timeout);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-
-                    return await response.json();
-                } catch (e) {
-                    const isLastAttempt = attempt === maxRetries - 1;
-
-                    if (isLastAttempt) {
-                        console.log(`Fetch failed after ${maxRetries} attempts:`, e.message);
-                        throw e;
-                    }
-
-                    // Exponential backoff: 1s, 2s, 4s
-                    const delay = Math.pow(2, attempt) * 1000;
-                    console.log(`Retry attempt ${attempt + 1} after ${delay}ms`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-
-        // Fetch total visitors count from server with backup
-        async function fetchTotalVisitors() {
-            // Try cached value first
-            const cached = getCachedTotalVisitors();
-
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    const fingerprint = getBrowserFingerprint();
-                    const data = await fetchWithRetry(
-                        GOOGLE_SCRIPT_URL + '?action=getStats&fp=' + encodeURIComponent(fingerprint),
-                        { method: 'GET' }
-                    );
-
-                    if (data.totalVisitors !== null && data.totalVisitors !== undefined) {
-                        setCachedTotalVisitors(data.totalVisitors);
-                        return data.totalVisitors;
-                    }
-                } catch (e) {
-                    console.log('Could not fetch stats, using backup');
-                }
-            }
-
-            // Return cached value as backup
-            return cached;
-        }
-
-        // Fetch visitor ID from server or generate local fallback
-        async function fetchOrCreateVisitorId() {
-            let visitorId = localStorage.getItem('tiage_visitor_id');
-            const fingerprint = getBrowserFingerprint();
-
-            // Existing visitor - just fetch stats
-            if (visitorId) {
-                const total = await fetchTotalVisitors();
-                return { visitorId, totalVisitors: total, fingerprint };
-            }
-
-            // Try to get new ID from server with retry logic
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    const data = await fetchWithRetry(
-                        GOOGLE_SCRIPT_URL + '?action=getVisitorId&fp=' + encodeURIComponent(fingerprint),
-                        { method: 'GET' }
-                    );
-
-                    if (data.visitorId) {
-                        visitorId = data.visitorId;
-                        localStorage.setItem('tiage_visitor_id', visitorId);
-
-                        // Cache total visitors count
-                        if (data.totalVisitors !== null && data.totalVisitors !== undefined) {
-                            setCachedTotalVisitors(data.totalVisitors);
-                        }
-
-                        return { visitorId, totalVisitors: data.totalVisitors || null, fingerprint };
-                    }
-                } catch (e) {
-                    console.log('Server not available, using local ID');
-                }
-            }
-
-            // Fallback: local generation
-            const timestamp = Date.now().toString().slice(-4);
-            const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-            visitorId = 'L' + timestamp + random; // L prefix = local
-            localStorage.setItem('tiage_visitor_id', visitorId);
-
-            // Try to use cached total visitors count
-            const cachedTotal = getCachedTotalVisitors();
-            return { visitorId, totalVisitors: cachedTotal, fingerprint };
-        }
-
-        // Format visitor display text
-        function formatVisitorDisplay(visitorId, totalVisitors, pageViews) {
-            let text = '#' + visitorId;
-            if (totalVisitors && !visitorId.startsWith('L')) {
-                text += ' von ' + totalVisitors;
-            }
-            if (pageViews) {
-                text += ' (' + pageViews + ')';
-            }
-            return text;
-        }
-
-        // Track page view (bei jedem Seitenaufruf, auch für wiederkehrende Besucher)
-        async function trackPageView() {
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    const fingerprint = getBrowserFingerprint();
-                    const response = await fetch(
-                        GOOGLE_SCRIPT_URL + '?action=trackPageView&fp=' + encodeURIComponent(fingerprint),
-                        { method: 'GET' }
-                    );
-                    const data = await response.json();
-                    return data.pageViews || null;
-                } catch (e) {
-                    // Silently ignore - page view tracking is not critical
-                    console.log('PageView tracking failed:', e.message);
-                    return null;
-                }
-            }
-            return null;
-        }
-
-        // Initialize visitor ID display
-        async function initVisitorId() {
-            const { visitorId, totalVisitors } = await fetchOrCreateVisitorId();
-
-            // Track page view and get updated count
-            const pageViews = await trackPageView();
-
-            const displayText = formatVisitorDisplay(visitorId, totalVisitors, pageViews);
-
-            // Update comment form display
-            const display = document.getElementById('visitorIdDisplay');
-            if (display) {
-                display.textContent = displayText;
-            }
-            // Update header display
-            const headerDisplay = document.getElementById('headerVisitorId');
-            if (headerDisplay) {
-                headerDisplay.textContent = displayText;
-            }
-        }
-
-        // Rate limiting for comments (1 per minute)
-        const COMMENT_COOLDOWN_MS = 60000; // 60 seconds
-
-        function canSubmitComment() {
-            const lastSubmit = localStorage.getItem('tiage_last_comment_time');
-            if (!lastSubmit) return { allowed: true };
-
-            const elapsed = Date.now() - parseInt(lastSubmit);
-            if (elapsed >= COMMENT_COOLDOWN_MS) {
-                return { allowed: true };
-            }
-
-            const remaining = Math.ceil((COMMENT_COOLDOWN_MS - elapsed) / 1000);
-            return { allowed: false, secondsRemaining: remaining };
-        }
-
-        function recordCommentSubmission() {
-            localStorage.setItem('tiage_last_comment_time', Date.now().toString());
-        }
+        // NOTE: Moved to js/persistence/visitorTracking.js
+        // Functions available via TiageVisitorTracking.* and window.* exports:
+        // - generateBrowserFingerprint, getBrowserFingerprint
+        // - getOrCreateVisitorId, fetchOrCreateVisitorId, fetchTotalVisitors
+        // - getCachedTotalVisitors, setCachedTotalVisitors
+        // - fetchWithRetry, formatVisitorDisplay
+        // - trackPageView, initVisitorId
+        // - canSubmitComment, recordCommentSubmission
 
         // ========================================
         // FEATURE 4: Archetype Info Modal (merged with definitionModal)
@@ -20636,13 +19392,15 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     archetyp: mobileIchArchetype,
                     geschlecht: personDimensions.ich.geschlecht,
                     dominanz: personDimensions.ich.dominanz, // Multi-select object
-                    orientierung: personDimensions.ich.orientierung // Multi-select object
+                    orientierung: personDimensions.ich.orientierung, // Multi-select object
+                    geschlecht_extras: geschlechtExtrasCache.ich // From local cache (SSOT-sync)
                 },
                 partner: {
                     archetyp: mobilePartnerArchetype,
                     geschlecht: personDimensions.partner.geschlecht,
                     dominanz: personDimensions.partner.dominanz, // Multi-select object
-                    orientierung: personDimensions.partner.orientierung // Multi-select object
+                    orientierung: personDimensions.partner.orientierung, // Multi-select object
+                    geschlecht_extras: geschlechtExtrasCache.partner // From local cache (SSOT-sync)
                 }
             };
 
@@ -20833,6 +19591,25 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             if (dimension) dimension.classList.remove('needs-selection');
                         }
                     }
+
+                    // Restore geschlecht_extras (Fit/Fucked up/Horny)
+                    if (selection.ich.geschlecht_extras) {
+                        const extras = selection.ich.geschlecht_extras;
+                        // Sync to local cache (SSOT → Cache)
+                        geschlechtExtrasCache.ich = {
+                            fit: !!extras.fit,
+                            fuckedup: !!extras.fuckedup,
+                            horny: !!extras.horny
+                        };
+                        // Sync to TiageState
+                        if (typeof TiageState !== 'undefined') {
+                            TiageState.set('personDimensions.ich.geschlecht_extras', geschlechtExtrasCache.ich);
+                        }
+                        // Sync UI
+                        if (typeof syncGeschlechtExtrasUI === 'function') {
+                            syncGeschlechtExtrasUI('ich');
+                        }
+                    }
                 }
 
                 // Restore PARTNER
@@ -20976,6 +19753,25 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             }
                             const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
                             if (dimension) dimension.classList.remove('needs-selection');
+                        }
+                    }
+
+                    // Restore geschlecht_extras (Fit/Fucked up/Horny)
+                    if (selection.partner.geschlecht_extras) {
+                        const extras = selection.partner.geschlecht_extras;
+                        // Sync to local cache (SSOT → Cache)
+                        geschlechtExtrasCache.partner = {
+                            fit: !!extras.fit,
+                            fuckedup: !!extras.fuckedup,
+                            horny: !!extras.horny
+                        };
+                        // Sync to TiageState
+                        if (typeof TiageState !== 'undefined') {
+                            TiageState.set('personDimensions.partner.geschlecht_extras', geschlechtExtrasCache.partner);
+                        }
+                        // Sync UI
+                        if (typeof syncGeschlechtExtrasUI === 'function') {
+                            syncGeschlechtExtrasUI('partner');
                         }
                     }
                 }
@@ -21131,6 +19927,19 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 if (modalOrientDimension) modalOrientDimension.classList.add('needs-selection');
             });
 
+            // Reset Geschlecht-Extras (Fit/Fucked up/Horny)
+            ['ich', 'partner'].forEach(person => {
+                // Reset local cache
+                geschlechtExtrasCache[person] = { fit: false, fuckedup: false, horny: false };
+                // Reset TiageState
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`personDimensions.${person}.geschlecht_extras`, { fit: false, fuckedup: false, horny: false });
+                }
+                // Update UI
+                syncGeschlechtExtrasUI(person);
+            });
+            console.log('[resetAll] Geschlecht-Extras zurückgesetzt');
+
             // Go to page 1
             mobileGoToPage(1);
 
@@ -21264,6 +20073,26 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             });
         }
 
+        // Initialize geschlechtExtrasCache from TiageState (SSOT → Cache sync)
+        function initGeschlechtExtrasCacheFromState() {
+            if (typeof TiageState === 'undefined') return;
+
+            ['ich', 'partner'].forEach(person => {
+                const extras = TiageState.get(`personDimensions.${person}.geschlecht_extras`);
+                if (extras) {
+                    geschlechtExtrasCache[person] = {
+                        fit: !!extras.fit,
+                        fuckedup: !!extras.fuckedup,
+                        horny: !!extras.horny
+                    };
+                    // Sync UI
+                    if (typeof syncGeschlechtExtrasUI === 'function') {
+                        syncGeschlechtExtrasUI(person);
+                    }
+                }
+            });
+        }
+
         // Load saved data on startup - fallback for legacy data
         // TiageState is now loaded in DOMContentLoaded, so we only need
         // to check for legacy 'tiage-selection' data if TiageState is empty
@@ -21279,6 +20108,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // Only load from legacy storage if TiageState is empty
             if (!hasStateData) {
                 loadSelectionFromStorage();
+            } else {
+                // TiageState has data - sync geschlecht_extras cache from it
+                initGeschlechtExtrasCacheFromState();
             }
             initAutoSave();
         }, 100); // Reduced timeout since DOMContentLoaded already loads TiageState
@@ -21382,6 +20214,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         window.handleGeschlechtClick = handleGeschlechtClick;
         window.handleGeschlechtPClick = handleGeschlechtPClick;
         window.handleGeschlechtSClick = handleGeschlechtSClick;
+        window.handleGeschlechtExtrasClick = handleGeschlechtExtrasClick;
         window.handleDominanzClick = handleDominanzClick;
         window.handleOrientierungClick = handleOrientierungClick;
         window.handleGfkClick = handleGfkClick;
@@ -21394,6 +20227,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
         // UI Sync functions (for MemoryManager)
         window.syncGeschlechtUI = syncGeschlechtUI;
+        window.syncGeschlechtExtrasUI = syncGeschlechtExtrasUI;
         window.syncDominanzUI = syncDominanzUI;
         window.syncOrientierungUI = syncOrientierungUI;
         window.updateAll = updateAll;

@@ -131,22 +131,22 @@
     <script src="js/core/statementHelpers.js?v=20260128"></script>
     <script src="js/utils/fuzzySearch.js?v=20260128"></script>
     <script src="js/ui/chartUtils.js?v=20260128"></script>
-    <script src="js/core/eventBus.js"></script>
-    <script src="js/core/actionHandler.js"></script>
-    <script defer src="js/core/actions/commentModal.js"></script>
-    <script defer src="js/core/actions/definitionModal.js"></script>
-    <script defer src="js/core/actions/factorModal.js"></script>
-    <script defer src="js/core/actions/syntheseModal.js"></script>
-    <script defer src="js/core/actions/explanationModals.js"></script>
-    <script defer src="js/core/actions/listModals.js"></script>
-    <script defer src="js/core/actions/dimensionInfoModals.js"></script>
-    <script defer src="js/core/actions/archetypeGrid.js"></script>
-    <script defer src="js/core/actions/slotMachine.js"></script>
-    <script defer src="js/core/actions/headerControls.js"></script>
-    <script defer src="js/core/actions/statusToggles.js"></script>
-    <script defer src="js/core/actions/navigationActions.js"></script>
-    <script defer src="js/core/actions/modalActions.js"></script>
-    <script defer src="js/core/actions/secondaryActions.js"></script>
+    <script src="js/core/eventBus.js?v=20260130"></script>
+    <script src="js/core/actionHandler.js?v=20260130"></script>
+    <script defer src="js/core/actions/commentModal.js?v=20260130"></script>
+    <script defer src="js/core/actions/definitionModal.js?v=20260130"></script>
+    <script defer src="js/core/actions/factorModal.js?v=20260130"></script>
+    <script defer src="js/core/actions/syntheseModal.js?v=20260130"></script>
+    <script defer src="js/core/actions/explanationModals.js?v=20260130"></script>
+    <script defer src="js/core/actions/listModals.js?v=20260130"></script>
+    <script defer src="js/core/actions/dimensionInfoModals.js?v=20260130"></script>
+    <script defer src="js/core/actions/archetypeGrid.js?v=20260130"></script>
+    <script defer src="js/core/actions/slotMachine.js?v=20260130"></script>
+    <script defer src="js/core/actions/headerControls.js?v=20260130"></script>
+    <script defer src="js/core/actions/statusToggles.js?v=20260130"></script>
+    <script defer src="js/core/actions/navigationActions.js?v=20260130"></script>
+    <script defer src="js/core/actions/modalActions.js?v=20260130"></script>
+    <script defer src="js/core/actions/secondaryActions.js?v=20260130"></script>
     <script>
         // Lade nur die benötigte Sprache (lazy-loading)
         (function() {
@@ -173,20 +173,20 @@
     <script defer src="statements/resonanceQuotesTable.js"></script>
 
     <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
-    <script defer src="js/synthesis/constants.js"></script>
-    <script defer src="js/help-texts.js"></script>
-    <script defer src="js/synthesis/needsIntegration.js"></script>
-    <script defer src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
-    <script defer src="js/synthesis/factors/archetypeFactor.js"></script>
-    <script defer src="js/synthesis/factors/dominanceFactor.js"></script>
-    <script defer src="js/synthesis/factors/orientationFactor.js"></script>
-    <script defer src="js/synthesis/factors/genderFactor.js"></script>
-    <script defer src="js/synthesis/lifestyleFilter.js"></script>
-    <script defer src="js/utils/statistics.js"></script>
-    <script defer src="js/utils/hauptfrageAggregation.js"></script>
+    <script defer src="js/synthesis/constants.js?v=20260130"></script>
+    <script defer src="js/help-texts.js?v=20260130"></script>
+    <script defer src="js/synthesis/needsIntegration.js?v=20260130"></script>
+    <script defer src="js/synthesis/factors/archetypeMatrixCalculator.js?v=20260130"></script>
+    <script defer src="js/synthesis/factors/archetypeFactor.js?v=20260130"></script>
+    <script defer src="js/synthesis/factors/dominanceFactor.js?v=20260130"></script>
+    <script defer src="js/synthesis/factors/orientationFactor.js?v=20260130"></script>
+    <script defer src="js/synthesis/factors/genderFactor.js?v=20260130"></script>
+    <script defer src="js/synthesis/lifestyleFilter.js?v=20260130"></script>
+    <script defer src="js/utils/statistics.js?v=20260130"></script>
+    <script defer src="js/utils/hauptfrageAggregation.js?v=20260130"></script>
     <!-- Performance Utilities für UI-Freeze-Prävention -->
-    <script defer src="js/utils/performance.js"></script>
-    <script defer src="js/synthesis/synthesisCalculator.js"></script>
+    <script defer src="js/utils/performance.js?v=20260130"></script>
+    <script defer src="js/synthesis/synthesisCalculator.js?v=20260130"></script>
     <script defer src="js/synthesis/pathosTextGenerator.js"></script>
     <script defer src="js/synthesis/logosTextGenerator.js"></script>
     <script defer src="js/synthesis/oshoZenTextGenerator.js"></script>
@@ -231,6 +231,8 @@
     <script defer src="profiles/modifiers/orientierung/bisexuell.js"></script>
     <script defer src="profiles/modifiers/orientierung/pansexuell.js"></script>
     <script defer src="profiles/modifiers/orientierung/queer.js"></script>
+    <!-- RTI-SÄULEN MODIFIER (Petzold 5 Säulen) -->
+    <script defer src="profiles/modifiers/rti/rti-modifier.js"></script>
     <!-- MODIFIER INDEX (lädt alle) -->
     <script defer src="profiles/modifiers/index.js"></script>
     <!-- SSOT Taxonomie (MUSS vor anderen Definitionen geladen werden) -->
@@ -1031,6 +1033,9 @@
                         <div class="geschlecht-secondary-row" id="ich-geschlecht-s-row" style="display: none;">
                             <div class="geschlecht-grid geschlecht-s-grid" id="ich-geschlecht-s-grid" data-person="ich"></div>
                         </div>
+                        <div class="geschlecht-extras-row">
+                            <div class="geschlecht-grid geschlecht-extras-grid" id="ich-geschlecht-extras-grid" data-person="ich"></div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
                         <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
@@ -1058,32 +1063,32 @@
                     <div style="color: var(--text-muted); font-size: 10px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
                 </div>
                 <div class="agod-weight-toggles" id="agodWeightToggles">
-                    <div class="agod-toggle-row" data-factor="A" title="Archetyp (A) - Gewichtung">
-                        <span class="agod-toggle-label">A</span>
+                    <div class="agod-toggle-row" data-factor="A" title="Archetyp - Gewichtung">
+                        <span class="agod-toggle-label">Archetyp</span>
                         <div class="agod-toggle-group" id="agodToggleA">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('A', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('A', 1)">1</button>
                             <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('A', 2)">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="G" title="Geschlecht (G) - Gewichtung">
-                        <span class="agod-toggle-label">G</span>
+                    <div class="agod-toggle-row" data-factor="G" title="Geschlecht - Gewichtung">
+                        <span class="agod-toggle-label">Geschlecht</span>
                         <div class="agod-toggle-group" id="agodToggleG">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('G', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('G', 1)">1</button>
                             <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('G', 2)">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="O" title="Orientierung (O) - Gewichtung">
-                        <span class="agod-toggle-label">O</span>
+                    <div class="agod-toggle-row" data-factor="O" title="Orientierung - Gewichtung">
+                        <span class="agod-toggle-label">Orientierung</span>
                         <div class="agod-toggle-group" id="agodToggleO">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('O', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('O', 1)">1</button>
                             <button class="agod-toggle-btn" data-value="2" onclick="setAgodWeight('O', 2)">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="D" title="Dominanz (D) - Gewichtung">
-                        <span class="agod-toggle-label">D</span>
+                    <div class="agod-toggle-row" data-factor="D" title="Dominanz - Gewichtung">
+                        <span class="agod-toggle-label">Dominanz</span>
                         <div class="agod-toggle-group" id="agodToggleD">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('D', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('D', 1)">1</button>
@@ -1186,6 +1191,9 @@
                         </div>
                         <div class="geschlecht-secondary-row" id="partner-geschlecht-s-row" style="display: none;">
                             <div class="geschlecht-grid geschlecht-s-grid" id="partner-geschlecht-s-grid" data-person="partner"></div>
+                        </div>
+                        <div class="geschlecht-extras-row">
+                            <div class="geschlecht-grid geschlecht-extras-grid" id="partner-geschlecht-extras-grid" data-person="partner"></div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
@@ -1310,6 +1318,9 @@
                         </div>
                         <div class="geschlecht-secondary-row" id="mobile-ich-geschlecht-s-row" style="display: none;">
                             <div class="geschlecht-grid geschlecht-s-grid" id="mobile-ich-geschlecht-s-grid" data-person="ich"></div>
+                        </div>
+                        <div class="geschlecht-extras-row">
+                            <div class="geschlecht-grid geschlecht-extras-grid" id="mobile-ich-geschlecht-extras-grid" data-person="ich"></div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
@@ -1526,6 +1537,9 @@
                         <div class="geschlecht-secondary-row" id="mobile-partner-geschlecht-s-row" style="display: none;">
                             <div class="geschlecht-grid geschlecht-s-grid" id="mobile-partner-geschlecht-s-grid" data-person="partner"></div>
                         </div>
+                        <div class="geschlecht-extras-row">
+                            <div class="geschlecht-grid geschlecht-extras-grid" id="mobile-partner-geschlecht-extras-grid" data-person="partner"></div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
@@ -1681,7 +1695,7 @@
                 <!-- AGOD Gewichtung 3-Wege-Schalter für Mobile -->
                 <div class="mobile-gewichtung-container" id="mobileGewichtungContainer">
                     <div class="mobile-gewichtung-row" data-factor="A">
-                        <span class="mobile-gewichtung-label">Archetyp (A)</span>
+                        <span class="mobile-gewichtung-label">Archetyp</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleA">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('A', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('A', 1)">1</button>
@@ -1689,7 +1703,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="G">
-                        <span class="mobile-gewichtung-label">Geschlecht (G)</span>
+                        <span class="mobile-gewichtung-label">Geschlecht</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleG">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('G', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('G', 1)">1</button>
@@ -1697,7 +1711,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="O">
-                        <span class="mobile-gewichtung-label">Orientierung (O)</span>
+                        <span class="mobile-gewichtung-label">Orientierung</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleO">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('O', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('O', 1)">1</button>
@@ -1705,7 +1719,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="D">
-                        <span class="mobile-gewichtung-label">Dominanz (D)</span>
+                        <span class="mobile-gewichtung-label">Dominanz</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleD">
                             <button class="agod-toggle-btn" data-value="0" onclick="setAgodWeight('D', 0)">0</button>
                             <button class="agod-toggle-btn active" data-value="1" onclick="setAgodWeight('D', 1)">1</button>
@@ -2605,20 +2619,21 @@
     <script defer src="js/memory-manager.js"></script>
     <script defer src="js/markdown-loader.js"></script>
 
-    <script defer src="js/app-i18n.js"></script>
+    <script defer src="js/app-i18n.js?v=20260130"></script>
 
     <!-- Profile UI Components -->
-    <script defer src="js/components/TripleButtonGroup.js"></script>
-    <script defer src="js/components/ProfileCard.js"></script>
-    <script defer src="js/components/GewichtungCard.js"></script>
-    <script defer src="js/components/ResonanzCard.js"></script>
-    <script defer src="js/components/CategorySection.js"></script>
-    <script defer src="js/components/profile-config.js"></script>
+    <script defer src="js/components/TripleButtonGroup.js?v=20260130"></script>
+    <script defer src="js/components/ProfileCard.js?v=20260130"></script>
+    <script defer src="js/components/GewichtungCard.js?v=20260130"></script>
+    <script defer src="js/components/ResonanzCard.js?v=20260130"></script>
+    <script defer src="js/components/CategorySection.js?v=20260130"></script>
+    <script defer src="js/components/profile-config.js?v=20260130"></script>
     <!-- NEU: Universeller Dimension-Kategorie-Filter -->
     <script defer src="js/components/DimensionKategorieFilter.js"></script>
     <!-- NEU: Resonanz Tree View (für hierarchische Filter-Darstellung) -->
     <script defer src="js/components/ResonanzTreeView.js"></script>
-    <script defer src="js/components/AttributeSummaryCard.js"></script>
+    <script defer src="js/components/AttributeSummaryCard.js?v=20260131b"></script>
+    <script defer src="js/components/BeduerfnisDetailView.js?v=20260131"></script>
     <script defer src="js/components/profile-components.js"></script>
     <script defer src="js/components/PerspektivenModal.js"></script>
 
@@ -2628,7 +2643,21 @@
     <script defer src="js/components/hints/index.js"></script>
     <script defer src="js/components/hints/MomentsToggle.js"></script>
 
-    <script defer src="js/app-main.js?v=20251231"></script>
+    <!-- Weight Modules -->
+    <script defer src="js/weights/agodWeights.js?v=20260202"></script>
+    <script defer src="js/weights/rtiPriorities.js?v=20260202"></script>
+
+    <!-- Modifiers -->
+    <script defer src="profiles/modifiers/extras/extras-modifier.js?v=20260202"></script>
+
+    <!-- Modal Modules -->
+    <script defer src="js/modals/commentModal.js?v=20260202"></script>
+    <script defer src="js/modals/factorExplanations.js?v=20260202"></script>
+
+    <!-- Persistence Modules -->
+    <script defer src="js/persistence/visitorTracking.js?v=20260202"></script>
+
+    <script defer src="js/app-main.js?v=20260202"></script>
 
     <!-- Resonanz Profile Modal Card Update Script -->
     <script>
