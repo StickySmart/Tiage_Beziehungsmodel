@@ -35,6 +35,95 @@
         // ═══════════════════════════════════════════════════════════════════════════
         const personDimensions = window.personDimensions;
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PHASE 1.1: ARCHETYP WRAPPER FUNCTIONS (State Refactoring)
+        // ═══════════════════════════════════════════════════════════════════════════
+        // Zentrale Getter/Setter für Archetypen die TiageState UND legacy-Variablen synchron halten.
+        // Ermöglicht schrittweise Migration ohne Breaking Changes.
+        // Dokumentation: docs/STATE_REFACTORING_PLAN.md
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /**
+         * Holt den aktuellen ICH-Archetyp (SSOT: TiageState)
+         * @returns {string} Archetyp-ID z.B. 'single', 'duo', 'polyamor'
+         */
+        function getIchArchetype() {
+            if (typeof TiageState !== 'undefined') {
+                return TiageState.getArchetype('ich') || currentArchetype || 'single';
+            }
+            return currentArchetype || 'single';
+        }
+        window.getIchArchetype = getIchArchetype;
+
+        /**
+         * Holt den aktuellen Partner-Archetyp (SSOT: TiageState)
+         * @returns {string} Archetyp-ID
+         */
+        function getPartnerArchetype() {
+            if (typeof TiageState !== 'undefined') {
+                return TiageState.getArchetype('partner') || selectedPartner || 'duo';
+            }
+            return selectedPartner || 'duo';
+        }
+        window.getPartnerArchetype = getPartnerArchetype;
+
+        /**
+         * Setzt den ICH-Archetyp in allen Systemen synchron
+         * @param {string} value - Archetyp-ID
+         */
+        function setIchArchetype(value) {
+            currentArchetype = value;
+            if (typeof mobileIchArchetype !== 'undefined') {
+                mobileIchArchetype = value;
+            }
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype('ich', value);
+            }
+        }
+        window.setIchArchetype = setIchArchetype;
+
+        /**
+         * Setzt den Partner-Archetyp in allen Systemen synchron
+         * @param {string} value - Archetyp-ID
+         */
+        function setPartnerArchetype(value) {
+            selectedPartner = value;
+            if (typeof mobilePartnerArchetype !== 'undefined') {
+                mobilePartnerArchetype = value;
+            }
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype('partner', value);
+            }
+        }
+        window.setPartnerArchetype = setPartnerArchetype;
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PHASE 1.2: TIAGESTATE SUBSCRIBER - Hält Legacy-Variablen synchron
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            // Subscriber für ICH-Archetyp Änderungen
+            TiageState.subscribe('archetypes.ich', function(event) {
+                if (event.newValue && event.newValue.primary) {
+                    currentArchetype = event.newValue.primary;
+                    if (typeof mobileIchArchetype !== 'undefined') {
+                        mobileIchArchetype = event.newValue.primary;
+                    }
+                }
+            });
+
+            // Subscriber für Partner-Archetyp Änderungen
+            TiageState.subscribe('archetypes.partner', function(event) {
+                if (event.newValue && event.newValue.primary) {
+                    selectedPartner = event.newValue.primary;
+                    if (typeof mobilePartnerArchetype !== 'undefined') {
+                        mobilePartnerArchetype = event.newValue.primary;
+                    }
+                }
+            });
+
+            console.log('[app-main] Archetyp-Wrapper initialisiert (Phase 1 State Refactoring)');
+        }
+
         // Dimension tooltips, icons, categoryNames: delegated to js/core/tooltips.js (TiageTooltips module)
         const dimensionTooltips = TiageTooltips.dimensionTooltips;
         const icons = TiageTooltips.icons;
