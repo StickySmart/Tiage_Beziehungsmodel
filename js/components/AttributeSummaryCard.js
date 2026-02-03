@@ -3877,9 +3877,9 @@ const AttributeSummaryCard = (function() {
         // Hole die Grenzen basierend auf gelockten Nuancen
         const limits = getAggregatedValueLimits(hauptfrageId);
 
-        // Begrenze den Zielwert auf den erreichbaren Bereich
+        // Begrenze den Zielwert auf den erreichbaren Bereich UND runde auf 25er-Schritte
         let clampedTarget = Math.max(limits.min, Math.min(limits.max, targetValue));
-        clampedTarget = Math.round(clampedTarget);
+        clampedTarget = roundTo25(clampedTarget);
 
         // Sammle nicht-gelockte Nuancen
         const unlockedNuancen = [];
@@ -3932,8 +3932,8 @@ const AttributeSummaryCard = (function() {
 
             const diff = clampedTarget - currentValue;
 
-            // Ziel erreicht? (Toleranz: 0.5)
-            if (Math.abs(diff) < 0.5) break;
+            // Ziel erreicht? (Toleranz: 12.5 = halber 25er-Schritt, da Durchschnitt von 25er-Werten)
+            if (Math.abs(diff) < 12.5) break;
 
             // Finde anpassbare Nuancen (nicht an Grenzen)
             const adjustable = unlockedNuancen.filter(n => {
