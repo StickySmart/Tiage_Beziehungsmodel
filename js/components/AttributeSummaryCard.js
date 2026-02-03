@@ -3605,7 +3605,7 @@ const AttributeSummaryCard = (function() {
         flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
 
         const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrage.id, currentNeeds);
-        const newValue = aggregation.value;
+        const newValue = roundTo25(aggregation.value);
 
         // Aktualisiere die UI
         const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrage.id}"]`);
@@ -3800,7 +3800,7 @@ const AttributeSummaryCard = (function() {
         flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
 
         const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
-        return aggregation.value;
+        return roundTo25(aggregation.value);
     }
 
     /**
@@ -3849,8 +3849,8 @@ const AttributeSummaryCard = (function() {
         const maxAgg = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, maxNeeds);
 
         return {
-            min: minAgg.value ?? 0,
-            max: maxAgg.value ?? 100,
+            min: roundTo25(minAgg.value ?? 0),
+            max: roundTo25(maxAgg.value ?? 100),
             hasLockedNuancen: true
         };
     }
@@ -3950,7 +3950,7 @@ const AttributeSummaryCard = (function() {
             for (const nuance of adjustable) {
                 const oldValue = nuance.value;
                 let newValue = nuance.value + diffPerNuance * 1.2; // Leichte Überkorrektur für schnellere Konvergenz
-                newValue = Math.max(0, Math.min(100, Math.round(newValue)));
+                newValue = roundTo25(Math.max(0, Math.min(100, newValue)));
 
                 if (newValue !== oldValue) {
                     nuance.value = newValue;
@@ -5097,7 +5097,7 @@ const AttributeSummaryCard = (function() {
         if (card) {
             const summaryInput = card.querySelector('.attribute-summary-input');
             if (summaryInput) {
-                summaryInput.value = calculateAggregatedValue(attrId);
+                summaryInput.value = roundTo25(calculateAggregatedValue(attrId));
             }
 
             // Sync Slider falls vorhanden
@@ -5155,7 +5155,7 @@ const AttributeSummaryCard = (function() {
         if (card) {
             const summaryInput = card.querySelector('.attribute-summary-input');
             if (summaryInput) {
-                summaryInput.value = calculateAggregatedValue(attrId);
+                summaryInput.value = roundTo25(calculateAggregatedValue(attrId));
             }
         }
 
@@ -5256,7 +5256,7 @@ const AttributeSummaryCard = (function() {
      * @returns {number} Aggregierter Wert
      */
     function getValue(attrId) {
-        return calculateAggregatedValue(attrId);
+        return roundTo25(calculateAggregatedValue(attrId));
     }
 
     /**
@@ -5291,7 +5291,7 @@ const AttributeSummaryCard = (function() {
 
             const summaryInput = card.querySelector('.attribute-summary-input');
             if (summaryInput) {
-                summaryInput.value = calculateAggregatedValue(attrId);
+                summaryInput.value = roundTo25(calculateAggregatedValue(attrId));
             }
         }
     }
@@ -5345,7 +5345,7 @@ const AttributeSummaryCard = (function() {
         const result = {};
         Object.keys(ATTRIBUTE_NEEDS_MAPPING).forEach(attrId => {
             result[attrId] = {
-                aggregated: calculateAggregatedValue(attrId),
+                aggregated: roundTo25(calculateAggregatedValue(attrId)),
                 needs: getNeedsValues(attrId),
                 locked: lockedAttributes[attrId] || false
             };
