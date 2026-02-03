@@ -93,10 +93,19 @@
                 var dimension = el.dataset.dimension;
                 var parsed = parseInt(el.dataset.value, 10);
                 var value = isNaN(parsed) ? 1 : parsed; // Allow 0 value
-                if (typeof setAgodWeight === 'function') {
-                    setAgodWeight(dimension, value);
-                } else if (typeof window.setAgodWeight === 'function') {
+                console.log('[set-agod-weight] Clicked:', dimension, value);
+                if (typeof window.setAgodWeight === 'function') {
                     window.setAgodWeight(dimension, value);
+                    console.log('[set-agod-weight] Called window.setAgodWeight');
+                } else if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && typeof TiageWeights.AGOD.set === 'function') {
+                    TiageWeights.AGOD.set(dimension, value);
+                    console.log('[set-agod-weight] Called TiageWeights.AGOD.set');
+                } else {
+                    console.error('[set-agod-weight] No setAgodWeight function available!', {
+                        'window.setAgodWeight': typeof window.setAgodWeight,
+                        'TiageWeights': typeof TiageWeights,
+                        'TiageWeights.AGOD': typeof TiageWeights !== 'undefined' ? typeof TiageWeights.AGOD : 'N/A'
+                    });
                 }
             },
 
@@ -115,15 +124,15 @@
             /**
              * Schließt Resonanz Help Modal
              * Ersetzt: onclick="closeResonanzHelpModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-resonanz-help-modal': function(el, event) {
-                if (typeof closeResonanzHelpModal === 'function') {
-                    closeResonanzHelpModal(event);
-                } else if (typeof window.closeResonanzHelpModal === 'function') {
-                    window.closeResonanzHelpModal(event);
-                } else {
-                    var modal = document.getElementById('resonanzHelpModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('resonanzHelpModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
