@@ -3,7 +3,7 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v32';
+const CACHE_NAME = 'tiage-v33';
 const STATIC_CACHE_NAME = 'tiage-static-v30';
 
 // Kritische Ressourcen die sofort gecacht werden
