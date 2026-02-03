@@ -2978,8 +2978,8 @@ const AttributeSummaryCard = (function() {
                     nuancenStatusInfo = statusParts.length > 0 ? ` <span class="nuancen-status-info">${statusParts.join(' ')}</span>` : '';
                 }
 
-                // Slider-Style für Hauptfrage
-                const sliderValue = aggregatedValue !== null ? aggregatedValue : 50;
+                // Slider-Style für Hauptfrage (Wert auf 25er-Schritte runden)
+                const sliderValue = roundTo25(aggregatedValue !== null ? aggregatedValue : 50);
                 const sliderStyle = dimColor
                     ? `style="background: ${getSliderFillGradient(dimColor, sliderValue)};"`
                     : '';
@@ -3429,6 +3429,8 @@ const AttributeSummaryCard = (function() {
      * @param {boolean} shouldHide - Ob durch DimensionKategorieFilter versteckt
      */
     function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
+        // Wert auf 25er-Schritte runden
+        value = roundTo25(value);
         // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -4943,7 +4945,7 @@ const AttributeSummaryCard = (function() {
             });
         }
 
-        const aggregatedValue = calculateAggregatedValue(attrId);
+        const aggregatedValue = roundTo25(calculateAggregatedValue(attrId));
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
             ? ` <span class="attr-info-icon" onclick="event.stopPropagation(); openAttributeDefinitionModal('${attrId}')" title="Info anzeigen">ℹ</span>`
@@ -4955,7 +4957,7 @@ const AttributeSummaryCard = (function() {
         // Generiere Bedürfnis-Liste für Expansion
         const needsListHtml = mapping.needs.map(need => {
             const needLabel = getNeedLabel(need);
-            const needValue = needsValues[attrId][need] || 50;
+            const needValue = roundTo25(needsValues[attrId][need] || 50);
             const isNeedLocked = lockedNeeds[attrId] && lockedNeeds[attrId][need];
 
             if (useSliders) {
