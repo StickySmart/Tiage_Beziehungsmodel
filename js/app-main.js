@@ -73,9 +73,8 @@
          */
         function setIchArchetype(value) {
             currentArchetype = value;
-            if (typeof mobileIchArchetype !== 'undefined') {
-                mobileIchArchetype = value;
-            }
+            // mobileIchArchetype ist ein let - try-catch für temporal dead zone
+            try { mobileIchArchetype = value; } catch(e) { /* not yet defined */ }
             if (typeof TiageState !== 'undefined') {
                 TiageState.setArchetype('ich', value);
             }
@@ -88,9 +87,8 @@
          */
         function setPartnerArchetype(value) {
             selectedPartner = value;
-            if (typeof mobilePartnerArchetype !== 'undefined') {
-                mobilePartnerArchetype = value;
-            }
+            // mobilePartnerArchetype ist ein let - try-catch für temporal dead zone
+            try { mobilePartnerArchetype = value; } catch(e) { /* not yet defined */ }
             if (typeof TiageState !== 'undefined') {
                 TiageState.setArchetype('partner', value);
             }
@@ -105,9 +103,7 @@
             TiageState.subscribe('archetypes.ich', function(event) {
                 if (event.newValue && event.newValue.primary) {
                     currentArchetype = event.newValue.primary;
-                    if (typeof mobileIchArchetype !== 'undefined') {
-                        mobileIchArchetype = event.newValue.primary;
-                    }
+                    try { mobileIchArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
                 }
             });
 
@@ -115,9 +111,7 @@
             TiageState.subscribe('archetypes.partner', function(event) {
                 if (event.newValue && event.newValue.primary) {
                     selectedPartner = event.newValue.primary;
-                    if (typeof mobilePartnerArchetype !== 'undefined') {
-                        mobilePartnerArchetype = event.newValue.primary;
-                    }
+                    try { mobilePartnerArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
                 }
             });
 
@@ -771,8 +765,12 @@
 
             // Get current score from resultPercentage
             const percentage = document.getElementById('resultPercentage');
-            const currentScore = percentage ? parseFloat(percentage.textContent) || 0 : 0;
-            const displayScore = currentScore.toFixed(1);
+            const percentageText = percentage ? percentage.textContent : '–';
+
+            // FIX: Handle incomplete state (when percentage shows "–")
+            const isIncomplete = percentageText === '–' || percentageText.trim() === '';
+            const currentScore = isIncomplete ? 0 : (parseFloat(percentageText) || 0);
+            const displayScore = isIncomplete ? '–' : currentScore.toFixed(1);
 
             // console.log('[TIAGE] updateSyntheseScoreCycle - score:', currentScore, 'mainScoreValueEl:', !!mainScoreValueEl); // DISABLED: verursacht Message-Overflow
 
@@ -780,10 +778,11 @@
             const circumference = 264;
             // Kreisanzeige auf 100% begrenzen, aber Score-Zahl kann höher sein
             const visualProgress = Math.min(currentScore, 100);
-            const offset = circumference - (visualProgress / 100) * circumference;
+            const offset = isIncomplete ? circumference : (circumference - (visualProgress / 100) * circumference);
 
             // Update color based on score (rot → gelb → grün → gold bei >100%)
-            const color = getScoreGradientColor(currentScore);
+            // FIX: Use muted color for incomplete state
+            const color = isIncomplete ? 'var(--text-muted, #888)' : getScoreGradientColor(currentScore);
 
             // Update Modal Score Circle
             if (scoreValueEl && scoreProgressEl) {
@@ -831,11 +830,17 @@
 
             if (needsSummaryValueEl) {
                 // Get Bedürfnis-Übereinstimmung from lastGfkMatchingResult
-                const needsScore = lastGfkMatchingResult ? lastGfkMatchingResult.score : 0;
-                needsSummaryValueEl.textContent = needsScore;
-                // Color based on needs score
-                const needsColor = getScoreGradientColor(needsScore);
-                needsSummaryValueEl.style.color = needsColor;
+                // FIX: Show "–" for incomplete state
+                if (isIncomplete) {
+                    needsSummaryValueEl.textContent = '–';
+                    needsSummaryValueEl.style.color = 'var(--text-muted, #888)';
+                } else {
+                    const needsScore = lastGfkMatchingResult ? lastGfkMatchingResult.score : 0;
+                    needsSummaryValueEl.textContent = needsScore;
+                    // Color based on needs score
+                    const needsColor = getScoreGradientColor(needsScore);
+                    needsSummaryValueEl.style.color = needsColor;
+                }
             }
         }
 
