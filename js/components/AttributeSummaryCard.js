@@ -70,6 +70,16 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Rundet einen Wert auf den nächsten 25er Schritt (0, 25, 50, 75, 100)
+     * @param {number} value - Der Eingabewert (0-100)
+     * @returns {number} Der gerundete Wert
+     */
+    function roundTo25(value) {
+        const num = parseFloat(value) || 0;
+        return Math.round(num / 25) * 25;
+    }
+
+    /**
      * R-FAKTOR EINFLUSS-INDIKATOR
      * Ermittelt zu welchem R-Faktor ein Bedürfnis beiträgt.
      *
@@ -460,9 +470,11 @@ const AttributeSummaryCard = (function() {
             const isLocked = lockedNeeds.hasOwnProperty(needId);
 
             // Wert: Gesperrter Wert hat Vorrang, dann State-Wert, dann Default 50
-            const value = isLocked
+            // FIX: Werte auf 25er Schritte runden (0, 25, 50, 75, 100)
+            const rawValue = isLocked
                 ? lockedNeeds[needId]
                 : (stateValues[needId] !== undefined ? stateValues[needId] : 50);
+            const value = roundTo25(rawValue);
 
             flatNeeds.push({
                 id: needId,
@@ -3009,7 +3021,7 @@ const AttributeSummaryCard = (function() {
                     </div>
                     <div class="hauptfrage-slider-row" onclick="event.stopPropagation();">
                         <input type="range" class="hauptfrage-slider"
-                               min="0" max="100" value="${sliderValue}"
+                               min="0" max="100" step="25" value="${sliderValue}"
                                oninput="AttributeSummaryCard.onHauptfrageSliderInput('${hf.id}', this.value, this)"
                                ${sliderStyle}
                                ${sliderDisabled ? 'disabled' : ''}>
@@ -3455,7 +3467,7 @@ const AttributeSummaryCard = (function() {
             </div>
             <div class="flat-need-slider-row">
                 <input type="range" class="need-slider"
-                       min="0" max="100" value="${value}"
+                       min="0" max="100" step="25" value="${value}"
                        oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
                        onclick="event.stopPropagation()"
                        ${sliderStyle}
@@ -4159,7 +4171,8 @@ const AttributeSummaryCard = (function() {
             return; // Alle Nuancen gelockt = nicht editierbar
         }
 
-        const numValue = parseInt(value, 10);
+        // FIX: Wert auf 25er Schritte runden
+        const numValue = roundTo25(parseInt(value, 10));
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
         const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
@@ -4268,7 +4281,8 @@ const AttributeSummaryCard = (function() {
         const needObj = findNeedById(needId);
         if (needObj?.locked) return;
 
-        const numValue = parseInt(value, 10);
+        // FIX: Wert auf 25er Schritte runden
+        const numValue = roundTo25(parseInt(value, 10));
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
         // Aktualisiere oder erstelle Bedürfnis
@@ -4960,7 +4974,7 @@ const AttributeSummaryCard = (function() {
                     </div>
                     <div class="need-slider-row">
                         <input type="range" class="need-slider"
-                               min="0" max="100" value="${needValue}"
+                               min="0" max="100" step="25" value="${needValue}"
                                oninput="AttributeSummaryCard.onSliderInput('${attrId}', '${need}', this.value, this)"
                                onclick="event.stopPropagation()">
                         <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
@@ -5066,7 +5080,8 @@ const AttributeSummaryCard = (function() {
         // Prüfe ob das individuelle Bedürfnis gesperrt ist
         if (lockedNeeds[attrId] && lockedNeeds[attrId][needId]) return;
 
-        const numValue = parseInt(value, 10);
+        // FIX: Wert auf 25er Schritte runden
+        const numValue = roundTo25(parseInt(value, 10));
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
         if (!needsValues[attrId]) {
