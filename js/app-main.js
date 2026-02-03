@@ -2778,7 +2778,7 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
                     if (resonanzLoaded) {
-                        console.log('[TIAGE] Resonanzfaktoren nach Geschlecht-Wechsel aktualisiert für', person);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Geschlecht-Wechsel aktualisiert für', person);
                     }
                 }
             }
@@ -2795,7 +2795,7 @@
          * v4.0: Geschlecht ist jetzt ein einfacher String (mann, frau, nonbinaer)
          */
         function handleGeschlechtPClick(person, value, btn) {
-            console.log('[TIAGE] handleGeschlechtPClick (v4.0):', person, value);
+            // console.log('[TIAGE] handleGeschlechtPClick (v4.0):', person, value);
 
             // v4.0: Geschlecht als einfacher String
             const currentGeschlecht = personDimensions[person].geschlecht;
@@ -2875,7 +2875,7 @@
          * S = Secondary = Identität (kontextabhängig von P)
          */
         function handleGeschlechtSClick(person, value, btn) {
-            console.log('[TIAGE] handleGeschlechtSClick:', person, value);
+            // console.log('[TIAGE] handleGeschlechtSClick:', person, value);
 
             // Ensure geschlecht has correct structure
             if (!personDimensions[person].geschlecht) {
@@ -2964,7 +2964,7 @@
         };
 
         function handleGeschlechtExtrasClick(person, value, stateKey, btn) {
-            console.log('[TIAGE] handleGeschlechtExtrasClick:', person, value, stateKey);
+            // console.log('[TIAGE] handleGeschlechtExtrasClick:', person, value, stateKey);
 
             // Use local cache (avoids TiageState subscriber issues)
             const currentExtras = geschlechtExtrasCache[person];
@@ -2972,7 +2972,7 @@
             // Toggle the clicked value (multi-select)
             currentExtras[value] = !currentExtras[value];
 
-            console.log('[TIAGE] geschlecht_extras updated:', person, currentExtras);
+            // console.log('[TIAGE] geschlecht_extras updated:', person, currentExtras);
 
             // Save to TiageState for persistence (but don't rely on reading it back)
             if (typeof TiageState !== 'undefined') {
@@ -2996,7 +2996,7 @@
             // Use local cache (avoids TiageState subscriber race conditions)
             const extras = geschlechtExtrasCache[person] || { fit: false, fuckedup: false, horny: false };
 
-            console.log('[TIAGE] syncGeschlechtExtrasUI:', person, extras);
+            // console.log('[TIAGE] syncGeschlechtExtrasUI:', person, extras);
 
             // All grids for this person
             const selectors = [
@@ -3008,7 +3008,7 @@
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
                     const isActive = extras[value] === true;
-                    console.log('[TIAGE] Button sync:', value, isActive);
+                    // console.log('[TIAGE] Button sync:', value, isActive);
                     if (isActive) {
                         btn.classList.add('active');
                         // Apply inline styles for immediate visual feedback
@@ -3370,7 +3370,7 @@
          * Ersetzt statische HTML-Buttons durch dynamisch generierte
          */
         function initDimensionButtons() {
-            console.log('[TIAGE DEBUG] initDimensionButtons called');
+            // console.log('[TIAGE DEBUG] initDimensionButtons called');
 
             // v4.0: Geschlecht als einfacher String (kein Primary/Secondary mehr)
             const geschlechtPOptions = [
@@ -3433,18 +3433,18 @@
                     if (processedPGrids.has(grid.id)) return;
                     processedPGrids.add(grid.id);
                     const person = grid.dataset.person;
-                    console.log('[TIAGE DEBUG] Processing p-grid for person:', person, 'id:', grid.id);
+                    // console.log('[TIAGE DEBUG] Processing p-grid for person:', person, 'id:', grid.id);
                     if (!person) return;
                     grid.innerHTML = geschlechtPOptions.map(opt =>
                         `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
                     ).join('');
                 });
             });
-            console.log('[TIAGE DEBUG] Processed geschlecht-p-grids:', processedPGrids.size);
+            // console.log('[TIAGE DEBUG] Processed geschlecht-p-grids:', processedPGrids.size);
 
             // Mobile und Modal Geschlecht-Grids befüllen (kombiniertes P/S Grid)
             const mobileModalGrids = document.querySelectorAll('#mobile-ich-geschlecht-grid, #mobile-partner-geschlecht-grid, #modal-ich-geschlecht-grid, #modal-partner-geschlecht-grid');
-            console.log('[TIAGE DEBUG] Found mobile/modal geschlecht-grids:', mobileModalGrids.length);
+            // console.log('[TIAGE DEBUG] Found mobile/modal geschlecht-grids:', mobileModalGrids.length);
             mobileModalGrids.forEach(grid => {
                 const person = grid.dataset.person;
                 if (!person) return;
@@ -3465,7 +3465,7 @@
                     if (processedExtrasGrids.has(grid.id)) return;
                     processedExtrasGrids.add(grid.id);
                     const person = grid.dataset.person;
-                    console.log('[TIAGE DEBUG] Processing extras-grid for person:', person, 'id:', grid.id);
+                    // console.log('[TIAGE DEBUG] Processing extras-grid for person:', person, 'id:', grid.id);
                     if (!person) {
                         console.warn('[TIAGE DEBUG] No person attribute for extras-grid:', grid.id);
                         return;
@@ -3474,7 +3474,7 @@
                         `<button type="button" class="geschlecht-btn geschlecht-extras-btn" data-value="${opt.value}" data-state-key="${opt.stateKey}" data-person="${person}">${opt.label}</button>`
                     ).join('');
                     grid.innerHTML = buttonsHTML;
-                    console.log('[TIAGE DEBUG] Generated extras buttons HTML for', person, ':', buttonsHTML.substring(0, 100) + '...');
+                    // console.log('[TIAGE DEBUG] Generated extras buttons HTML for', person, ':', buttonsHTML.substring(0, 100) + '...');
 
                     // Add click handlers via addEventListener (more reliable than inline onclick)
                     grid.querySelectorAll('.geschlecht-extras-btn').forEach(btn => {
@@ -3484,13 +3484,13 @@
                             const btnPerson = this.dataset.person;
                             const btnValue = this.dataset.value;
                             const btnStateKey = this.dataset.stateKey;
-                            console.log('[TIAGE] Button clicked:', btnPerson, btnValue, btnStateKey);
+                            // console.log('[TIAGE] Button clicked:', btnPerson, btnValue, btnStateKey);
                             handleGeschlechtExtrasClick(btnPerson, btnValue, btnStateKey, this);
                         });
                     });
                 });
             });
-            console.log('[TIAGE DEBUG] Processed geschlecht-extras-grids:', processedExtrasGrids.size);
+            // console.log('[TIAGE DEBUG] Processed geschlecht-extras-grids:', processedExtrasGrids.size);
 
             // Dominanz-Grids befüllen (nur Desktop mit data-person)
             // Use both class selector and explicit IDs as fallback
@@ -3501,14 +3501,14 @@
                     if (processedDGrids.has(grid.id)) return;
                     processedDGrids.add(grid.id);
                     const person = grid.dataset.person;
-                    console.log('[TIAGE DEBUG] Processing dominanz-grid for person:', person, 'id:', grid.id);
+                    // console.log('[TIAGE DEBUG] Processing dominanz-grid for person:', person, 'id:', grid.id);
                     if (!person) return;
                     grid.innerHTML = dominanzOptions.map(opt =>
                         `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
                     ).join('');
                 });
             });
-            console.log('[TIAGE DEBUG] Processed dominanz-grids:', processedDGrids.size);
+            // console.log('[TIAGE DEBUG] Processed dominanz-grids:', processedDGrids.size);
 
             // Orientierung-Grids befüllen (nur Desktop mit data-person)
             // Use both class selector and explicit IDs as fallback
@@ -3519,14 +3519,14 @@
                     if (processedOGrids.has(grid.id)) return;
                     processedOGrids.add(grid.id);
                     const person = grid.dataset.person;
-                    console.log('[TIAGE DEBUG] Processing orientierung-grid for person:', person, 'id:', grid.id);
+                    // console.log('[TIAGE DEBUG] Processing orientierung-grid for person:', person, 'id:', grid.id);
                     if (!person) return;
                     grid.innerHTML = orientierungOptions.map(opt =>
                         `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
                     ).join('');
                 });
             });
-            console.log('[TIAGE DEBUG] Processed orientierung-grids:', processedOGrids.size);
+            // console.log('[TIAGE DEBUG] Processed orientierung-grids:', processedOGrids.size);
 
             // GFK-Grids befüllen
             // Use both class selector and explicit IDs as fallback
@@ -3537,14 +3537,14 @@
                     if (processedGfkGrids.has(grid.id)) return;
                     processedGfkGrids.add(grid.id);
                     const person = grid.dataset.person;
-                    console.log('[TIAGE DEBUG] Processing gfk-grid for person:', person, 'id:', grid.id);
+                    // console.log('[TIAGE DEBUG] Processing gfk-grid for person:', person, 'id:', grid.id);
                     if (!person) return;
                     grid.innerHTML = gfkOptions.map(opt =>
                         `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
                     ).join('');
                 });
             });
-            console.log('[TIAGE DEBUG] Processed gfk-grids:', processedGfkGrids.size);
+            // console.log('[TIAGE DEBUG] Processed gfk-grids:', processedGfkGrids.size);
 
             // UI mit gespeichertem State synchronisieren
             ['ich', 'partner'].forEach(person => {
@@ -3555,7 +3555,7 @@
                 syncGfkUI(person);
             });
 
-            console.log('[TIAGE DEBUG] initDimensionButtons completed');
+            // console.log('[TIAGE DEBUG] initDimensionButtons completed');
         }
 
         /**
@@ -3593,7 +3593,7 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleDominanzClick(person, dominanzValue, btn) {
-            console.log('[TIAGE] handleDominanzClick:', person, dominanzValue);
+            // console.log('[TIAGE] handleDominanzClick:', person, dominanzValue);
 
             // Ensure dominanz has correct structure (migration from old format)
             if (!personDimensions[person].dominanz ||
@@ -3693,7 +3693,7 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
                     if (resonanzLoaded) {
-                        console.log('[TIAGE] Resonanzfaktoren nach Dominanz-Wechsel aktualisiert für', person);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Dominanz-Wechsel aktualisiert für', person);
                     }
                 }
             }
@@ -4005,7 +4005,7 @@
          * v4.0: Multi-Select Array - Klick togglet Wert im Array
          */
         function handleOrientierungClick(person, orientierungValue, btn) {
-            console.log('[TIAGE] handleOrientierungClick (v4.1 Multi-Select + KO):', person, orientierungValue);
+            // console.log('[TIAGE] handleOrientierungClick (v4.1 Multi-Select + KO):', person, orientierungValue);
 
             // v4.0: Orientierung als Array (Multi-Select)
             if (!Array.isArray(personDimensions[person].orientierung)) {
@@ -4042,7 +4042,7 @@
                 if (orientierungen.length === 0) {
                     // Array leer: Neue Auswahl wird PRIMÄR
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Primäre Orientierung gesetzt:', orientierungValue);
+                    // console.log('[TIAGE] Primäre Orientierung gesetzt:', orientierungValue);
                 } else {
                     // Array nicht leer: Neue Auswahl wird SEKUNDÄR
                     // Prüfe ob primäre Orientierung (erstes Element) mit neuer kompatibel ist
@@ -4063,7 +4063,7 @@
                                 'Gay (primär) + Queer (sekundär)'
                             ]
                         });
-                        console.log('[TIAGE] KO-Kriterium verletzt:', primaryOrientation, '(primär) schließt', orientierungValue, 'aus');
+                        // console.log('[TIAGE] KO-Kriterium verletzt:', primaryOrientation, '(primär) schließt', orientierungValue, 'aus');
                         return;  // Abbrechen
                     }
 
@@ -4079,13 +4079,13 @@
                             message: `"${newLabel}" ist mit "${primaryLabel}" (primär) inkompatibel.`,
                             detail: `Wenn Sie "${newLabel}" als primäre Orientierung setzen möchten, entfernen Sie zuerst "${primaryLabel}".`
                         });
-                        console.log('[TIAGE] KO-Kriterium verletzt:', orientierungValue, 'schließt', primaryOrientation, '(primär) aus');
+                        // console.log('[TIAGE] KO-Kriterium verletzt:', orientierungValue, 'schließt', primaryOrientation, '(primär) aus');
                         return;  // Abbrechen
                     }
 
                     // Hinzufügen erlaubt als SEKUNDÄR
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Sekundäre Orientierung hinzugefügt:', orientierungValue);
+                    // console.log('[TIAGE] Sekundäre Orientierung hinzugefügt:', orientierungValue);
                 }
             }
 
@@ -4159,7 +4159,7 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
                     if (resonanzLoaded) {
-                        console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
                     }
                 }
             }
@@ -4176,7 +4176,7 @@
          * Styled wie Dominanz für konsistente Mobile UX
          */
         function handleOrientierungStatusToggle(person, orientierungValue, status, btn) {
-            console.log('[TIAGE] handleOrientierungStatusToggle CALLED:', person, orientierungValue, status);
+            // console.log('[TIAGE] handleOrientierungStatusToggle CALLED:', person, orientierungValue, status);
 
             try {
                 // Validate inputs
@@ -4227,7 +4227,7 @@
                 if (currentIndex === 0) {
                     // Already primary - toggle off (remove)
                     orientierungen.splice(0, 1);
-                    console.log('[TIAGE] Primäre Orientierung entfernt:', orientierungValue);
+                    // console.log('[TIAGE] Primäre Orientierung entfernt:', orientierungValue);
                 } else if (currentIndex > 0) {
                     // Currently secondary - promote to primary
                     // Check if current primary is compatible
@@ -4248,7 +4248,7 @@
                     orientierungen.splice(currentIndex, 1);
                     // Insert at front as new primary
                     orientierungen.unshift(orientierungValue);
-                    console.log('[TIAGE] Orientierung zu Primär befördert:', orientierungValue);
+                    // console.log('[TIAGE] Orientierung zu Primär befördert:', orientierungValue);
                 } else {
                     // Not selected - add as primary
                     if (orientierungen.length > 0) {
@@ -4267,14 +4267,14 @@
                     }
                     // Insert at front as new primary
                     orientierungen.unshift(orientierungValue);
-                    console.log('[TIAGE] Neue Primäre Orientierung:', orientierungValue);
+                    // console.log('[TIAGE] Neue Primäre Orientierung:', orientierungValue);
                 }
             } else if (status === 'sekundaer') {
                 // Handle Sekundär button click
                 if (currentIndex > 0) {
                     // Already secondary - toggle off (remove)
                     orientierungen.splice(currentIndex, 1);
-                    console.log('[TIAGE] Sekundäre Orientierung entfernt:', orientierungValue);
+                    // console.log('[TIAGE] Sekundäre Orientierung entfernt:', orientierungValue);
                 } else if (currentIndex === 0) {
                     // Currently primary - demote to secondary (needs another primary)
                     if (orientierungen.length === 1) {
@@ -4290,7 +4290,7 @@
                     orientierungen.shift();
                     // Add at end as secondary
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Orientierung zu Sekundär degradiert:', orientierungValue);
+                    // console.log('[TIAGE] Orientierung zu Sekundär degradiert:', orientierungValue);
                 } else {
                     // Not selected - add as secondary
                     if (orientierungen.length === 0) {
@@ -4319,7 +4319,7 @@
 
                     // Add as secondary
                     orientierungen.push(orientierungValue);
-                    console.log('[TIAGE] Neue Sekundäre Orientierung:', orientierungValue);
+                    // console.log('[TIAGE] Neue Sekundäre Orientierung:', orientierungValue);
                 }
             }
 
@@ -4388,7 +4388,7 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
                     if (resonanzLoaded) {
-                        console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
                     }
                 }
             }
@@ -4399,7 +4399,7 @@
                 saveSelectionToStorage();
             }
 
-            console.log('[TIAGE] handleOrientierungStatusToggle SUCCESS');
+            // console.log('[TIAGE] handleOrientierungStatusToggle SUCCESS');
             } catch (error) {
                 console.error('[TIAGE] handleOrientierungStatusToggle ERROR:', error);
             }
@@ -4597,7 +4597,7 @@
          * @param {string} status - 'gelebt' (primary) oder 'interessiert' (secondary)
          */
         function handleStatusToggle(person, dimension, type, status) {
-            console.log('[TIAGE] handleStatusToggle:', person, dimension, type, status);
+            // console.log('[TIAGE] handleStatusToggle:', person, dimension, type, status);
 
             // Sicherstellen, dass die Datenstruktur existiert
             if (!personDimensions[person][dimension] ||
@@ -11181,7 +11181,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             // Speichere individuelle R-Faktoren (respektiert gesperrte Werte)
                             ResonanzCard.setCalculatedValues(ichR, false, 'ich');
                             ResonanzCard.setCalculatedValues(partnerR, false, 'partner');
-                            console.log('[calculateRelationshipQuality] R-Faktoren zu TiageState gespeichert:', { ich: ichR, partner: partnerR });
+                            // console.log('[calculateRelationshipQuality] R-Faktoren zu TiageState gespeichert:', { ich: ichR, partner: partnerR }); // DISABLED: verursacht Message-Overflow
                         }
                     }
                 } catch (e) {
@@ -13572,7 +13572,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                     overallScore = result.overall;
                     qualityBreakdown = result.breakdown || qualityBreakdown;
-                    console.log('[TIAGE] Score calculated:', overallScore, 'breakdown:', qualityBreakdown);
+                    // console.log('[TIAGE] Score calculated:', overallScore, 'breakdown:', qualityBreakdown); // DISABLED: verursacht Message-Overflow
 
                     // Update expandable category bars
                     updateExpandableCategoryBars(result.categories);
@@ -15851,26 +15851,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('[TIAGE DEBUG] DOMContentLoaded fired');
+            // console.log('[TIAGE DEBUG] DOMContentLoaded fired');
             try {
                 // Load archetype data first - this is critical for all other functions
-                console.log('[TIAGE DEBUG] Before loadData');
+                // console.log('[TIAGE DEBUG] Before loadData');
                 await loadData();
-                console.log('[TIAGE DEBUG] After loadData, data loaded:', data !== null);
+                // console.log('[TIAGE DEBUG] After loadData, data loaded:', data !== null);
 
                 checkAgeVerification();
                 initAgeVerification();
                 initFeedbackSystem();
                 initVisitorId();
-                console.log('[TIAGE DEBUG] Before initDimensionListeners');
+                // console.log('[TIAGE DEBUG] Before initDimensionListeners');
                 initDimensionListeners();
-                console.log('[TIAGE DEBUG] Before initComparisonLayout');
+                // console.log('[TIAGE DEBUG] Before initComparisonLayout');
                 initComparisonLayout();
-                console.log('[TIAGE DEBUG] Before initMobileLayout');
+                // console.log('[TIAGE DEBUG] Before initMobileLayout');
                 initMobileLayout();
-                console.log('[TIAGE DEBUG] Before initDimensionButtons');
+                // console.log('[TIAGE DEBUG] Before initDimensionButtons');
                 initDimensionButtons();
-                console.log('[TIAGE DEBUG] After initDimensionButtons');
+                // console.log('[TIAGE DEBUG] After initDimensionButtons');
                 initGeschlechtHoverEvents();
 
                 // FIX: Stelle sicher, dass Subscriber registriert sind BEVOR loadFromStorage()
@@ -15879,7 +15879,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     ProfileCalculator.registerSubscribers();
                 }
 
-                console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
+                // console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
                 // Load saved dimensions from TiageState AFTER initializing buttons
                 // so that UI sync functions can update the buttons
                 loadDimensionsFromState();
@@ -15923,10 +15923,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                 // IMPORTANT: Update comparison view AFTER loading dimensions
                 // This ensures the score is calculated with the correct data
-                // console.log('[TIAGE DEBUG] Before updateComparisonView'); // DISABLED: verursacht Message-Overflow
+                // // console.log('[TIAGE DEBUG] Before updateComparisonView'); // DISABLED: verursacht Message-Overflow
                 updateComparisonView();
                 updateSyntheseScoreCycle();
-                // console.log('[TIAGE DEBUG] After updateComparisonView'); // DISABLED: verursacht Message-Overflow
+                // // console.log('[TIAGE DEBUG] After updateComparisonView'); // DISABLED: verursacht Message-Overflow
 
                 // Note: openComments=1 parameter is now handled in handleAgeConfirm()
                 // to ensure age verification is completed before opening comments modal
@@ -16073,16 +16073,16 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 // Initialize MomentsToggle in header
                 if (typeof MomentsToggle !== 'undefined' && typeof MomentsToggle.init === 'function') {
                     MomentsToggle.init();
-                    console.log('[TIAGE DEBUG] MomentsToggle initialized');
+                    // console.log('[TIAGE DEBUG] MomentsToggle initialized');
                 }
 
                 // Initialize AGOD weight inputs (always reset to 4x 25% on page load)
                 if (typeof initAgodWeightInputs === 'function') {
                     initAgodWeightInputs();
-                    console.log('[TIAGE DEBUG] AGOD weight inputs initialized');
+                    // console.log('[TIAGE DEBUG] AGOD weight inputs initialized');
                 }
 
-                console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
+                // console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
             } catch (e) {
                 console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);
             }
@@ -17253,7 +17253,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         // NOTE: LoadedArchetypProfile ist ein View auf TiageState.
                         // Nicht separat setzen - save() in setCalculatedValues hat TiageState bereits aktualisiert.
                         // Das würde sonst die Lock-Struktur {value, locked} mit nur Werten überschreiben.
-                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel (Modal) aktualisiert für', personKey + ':', newArchetype);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel (Modal) aktualisiert für', personKey + ':', newArchetype);
                     }
                 }
             }
@@ -19220,7 +19220,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         // NOTE: LoadedArchetypProfile ist ein View auf TiageState.
                         // Nicht separat setzen - save() in setCalculatedValues hat TiageState bereits aktualisiert.
                         // Das würde sonst die Lock-Struktur {value, locked} mit nur Werten überschreiben.
-                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert für', personKey + ':', newArchetype);
+                        // console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert für', personKey + ':', newArchetype);
                     }
                 }
             }

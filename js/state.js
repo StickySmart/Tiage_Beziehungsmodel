@@ -1790,7 +1790,7 @@ _ensureFlatNeedsInitialized: function() {
         saveToStorage() {
             try {
                 const gewichtungen = this.get('gewichtungen');
-                console.log('[TiageState] saveToStorage - gewichtungen:', JSON.stringify(gewichtungen));
+                // console.log('[TiageState] saveToStorage - gewichtungen:', JSON.stringify(gewichtungen)); // DISABLED: verursacht Message-Overflow
 
                 const toSave = {
                     personDimensions: this.get('personDimensions'),
@@ -1815,7 +1815,7 @@ _ensureFlatNeedsInitialized: function() {
                     }
                 };
                 localStorage.setItem('tiage_state', JSON.stringify(toSave));
-                console.log('[TiageState] State gespeichert - tiage_state key');
+                // console.log('[TiageState] State gespeichert - tiage_state key'); // DISABLED: verursacht Message-Overflow
             } catch (e) {
                 console.warn('[TiageState] Failed to save to storage:', e);
             }

@@ -294,14 +294,14 @@ TiageCompatibility.Physical = (function() {
         var g1 = extractEffectiveGender(person1.geschlecht);
         var g2 = extractEffectiveGender(person2.geschlecht);
 
-        console.log('[TiageCompatibility.Physical.check] Input:', {
-            person1_geschlecht: person1.geschlecht,
-            person2_geschlecht: person2.geschlecht,
-            person1_orientierung: person1.orientierung,
-            person2_orientierung: person2.orientierung,
-            g1_extracted: g1,
-            g2_extracted: g2
-        });
+        // console.log('[TiageCompatibility.Physical.check] Input:', { // DISABLED: verursacht Message-Overflow
+        //     person1_geschlecht: person1.geschlecht,
+        //     person2_geschlecht: person2.geschlecht,
+        //     person1_orientierung: person1.orientierung,
+        //     person2_orientierung: person2.orientierung,
+        //     g1_extracted: g1,
+        //     g2_extracted: g2
+        // });
 
         // Get orientierung as multi-select object
         var ori1 = person1.orientierung;
@@ -441,15 +441,15 @@ TiageCompatibility.Physical = (function() {
         }
 
         // Return best result
-        console.log('[TiageCompatibility.Physical.check] Decision:', {
-            bestResult: bestResult,
-            bestConfidence: bestConfidence,
-            oriList1: oriList1,
-            oriList2: oriList2
-        });
+        // console.log('[TiageCompatibility.Physical.check] Decision:', { // DISABLED: verursacht Message-Overflow
+        //     bestResult: bestResult,
+        //     bestConfidence: bestConfidence,
+        //     oriList1: oriList1,
+        //     oriList2: oriList2
+        // });
 
         if (bestResult === constants.RESULT.POSSIBLE) {
-            console.log('[TiageCompatibility.Physical.check] Result:', bestResult, 'Confidence:', bestConfidence);
+            // console.log('[TiageCompatibility.Physical.check] Result:', bestResult, 'Confidence:', bestConfidence); // DISABLED
             return { result: bestResult, confidence: bestConfidence };
         }
 
