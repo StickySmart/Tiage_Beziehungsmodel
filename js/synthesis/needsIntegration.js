@@ -1292,8 +1292,6 @@ TiageSynthesis.NeedsIntegration = {
         freiheit: 'R2',
         teilnahme: 'R2',
         identitaet: 'R2',
-        lebensplanung: 'R2',            // #K12
-        finanzen_karriere: 'R2',        // #K13
         werte_haltungen: 'R2',          // #K17
         soziales_leben: 'R2',           // #K15
         praktisches_leben: 'R2',        // #K18

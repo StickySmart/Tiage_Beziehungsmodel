@@ -48,15 +48,15 @@
             /**
              * Schließt das Needs Compare Modal
              * Ersetzt: onclick="closeNeedsCompareModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-needs-compare-modal': function(el, event) {
-                if (typeof closeNeedsCompareModal === 'function') {
-                    closeNeedsCompareModal(event);
-                } else if (typeof window.closeNeedsCompareModal === 'function') {
-                    window.closeNeedsCompareModal(event);
-                } else {
-                    var modal = document.getElementById('needsCompareModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('needsCompareModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -67,15 +67,15 @@
             /**
              * Schließt das Needs Score Explanation Modal
              * Ersetzt: onclick="closeNeedsScoreExplanation(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-needs-score-explanation': function(el, event) {
-                if (typeof closeNeedsScoreExplanation === 'function') {
-                    closeNeedsScoreExplanation(event);
-                } else if (typeof window.closeNeedsScoreExplanation === 'function') {
-                    window.closeNeedsScoreExplanation(event);
-                } else {
-                    var modal = document.getElementById('needsScoreExplanationModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('needsScoreExplanationModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -86,15 +86,15 @@
             /**
              * Schließt das Paarung Explanation Modal
              * Ersetzt: onclick="closePaarungExplanationModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-paarung-modal': function(el, event) {
-                if (typeof closePaarungExplanationModal === 'function') {
-                    closePaarungExplanationModal(event);
-                } else if (typeof window.closePaarungExplanationModal === 'function') {
-                    window.closePaarungExplanationModal(event);
-                } else {
-                    var modal = document.getElementById('paarungExplanationModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('paarungExplanationModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             }
         });

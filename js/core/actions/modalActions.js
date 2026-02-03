@@ -37,15 +37,15 @@
             /**
              * Close Category Modal
              * Ersetzt: onclick="closeCategoryModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-category-modal': function(el, event) {
-                if (typeof closeCategoryModal === 'function') {
-                    closeCategoryModal(event);
-                } else if (typeof window.closeCategoryModal === 'function') {
-                    window.closeCategoryModal(event);
-                } else {
-                    var modal = document.getElementById('categoryModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('categoryModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -102,30 +102,30 @@
             /**
              * Close Memory Modal
              * Ersetzt: onclick="closeMemoryModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-memory-modal': function(el, event) {
-                if (typeof closeMemoryModal === 'function') {
-                    closeMemoryModal(event);
-                } else if (typeof window.closeMemoryModal === 'function') {
-                    window.closeMemoryModal(event);
-                } else {
-                    var modal = document.getElementById('memoryModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('memoryModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
             /**
              * Close Memory Detail Modal
              * Ersetzt: onclick="closeMemoryDetailModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-memory-detail-modal': function(el, event) {
-                if (typeof closeMemoryDetailModal === 'function') {
-                    closeMemoryDetailModal(event);
-                } else if (typeof window.closeMemoryDetailModal === 'function') {
-                    window.closeMemoryDetailModal(event);
-                } else {
-                    var modal = document.getElementById('memoryDetailModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('memoryDetailModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 

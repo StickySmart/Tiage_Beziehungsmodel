@@ -1538,6 +1538,34 @@ body {
     border-style: dashed;
 }
 
+/* Geschlecht Extras Row für Mobile (Fit/Fucked up) */
+.geschlecht-extras-row {
+    margin-top: 8px;
+    display: block;
+}
+
+.geschlecht-extras-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+}
+
+.geschlecht-extras-grid .geschlecht-btn {
+    opacity: 0.8;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.geschlecht-extras-grid .geschlecht-btn.active {
+    opacity: 1 !important;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    border-color: #8b5cf6 !important;
+    color: white !important;
+}
+
 /* ========================================
    MOBILE ORIENTIERUNG GRID (v4.1 Multi-Select)
    ======================================== */

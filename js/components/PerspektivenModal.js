@@ -825,9 +825,7 @@ const PerspektivenModal = {
             // Dynamik-Kategorie (#K11)
             'dynamik': '#K11',
             'dynamik_austausch': '#K11',    // Alternative Schreibweise
-            // Lebensbereiche (#K12-#K18)
-            'lebensplanung': '#K12',
-            'finanzen_karriere': '#K13',
+            // Lebensbereiche (#K14-#K18)
             'kommunikation_stil': '#K14',
             'kommunikationsstil': '#K14',   // Alternative Schreibweise
             'soziales_leben': '#K15',

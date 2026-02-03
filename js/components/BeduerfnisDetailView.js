@@ -18,6 +18,28 @@ const BeduerfnisDetailView = (function() {
     'use strict';
 
     /**
+     * Ermittelt den aktuellen Archetyp für eine Person
+     * @param {string} person - 'ich' oder 'partner'
+     * @returns {string} Archetyp-ID (z.B. 'single', 'duo', etc.)
+     */
+    function getPersonArchetype(person) {
+        // 1. TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const archetype = TiageState.get(`archetypes.${person}.primary`);
+            if (archetype) return archetype;
+        }
+        // 2. Globale Variable (Fallback)
+        if (person === 'ich' && typeof window.currentArchetype !== 'undefined') {
+            return window.currentArchetype;
+        }
+        if (person === 'partner' && typeof window.selectedPartner !== 'undefined') {
+            return window.selectedPartner;
+        }
+        // 3. Default
+        return 'single';
+    }
+
+    /**
      * Rendert die komplette Detail-View für ein Bedürfnis
      * @param {string} needId - Bedürfnis-ID (z.B. '#B90' oder 'kinderwunsch')
      * @param {string} person - 'ich' oder 'partner'
@@ -389,11 +411,20 @@ const BeduerfnisDetailView = (function() {
      * WICHTIG: Basis-Wert sollte standardmäßig dem typischen Umfrage-Wert entsprechen!
      */
     function getBaseValue(needId, person) {
-        // 1. Prüfe ob Benutzer einen eigenen Basis-Wert gesetzt hat
+        // Archetyp ermitteln für Archetyp-spezifische Speicherung
+        const archetype = getPersonArchetype(person);
+
+        // 1. Prüfe ob Benutzer einen eigenen Basis-Wert gesetzt hat (NEU: pro Archetyp)
         if (typeof TiageState !== 'undefined') {
-            const customValue = TiageState.get(`${person}.needs.${needId}.customBase`);
+            // Neuer Pfad: pro Archetyp
+            const customValue = TiageState.get(`${person}.${archetype}.needs.${needId}.customBase`);
             if (customValue !== undefined && customValue !== null) {
                 return customValue;
+            }
+            // Fallback: alter Pfad ohne Archetyp (für Migration)
+            const legacyValue = TiageState.get(`${person}.needs.${needId}.customBase`);
+            if (legacyValue !== undefined && legacyValue !== null) {
+                return legacyValue;
             }
         }
 
@@ -763,6 +794,8 @@ const BeduerfnisDetailView = (function() {
      * Speichert als customBase um zu kennzeichnen, dass der Benutzer den Wert manuell geändert hat
      */
     function editBase(needId, person) {
+        // Archetyp ermitteln für Archetyp-spezifische Speicherung
+        const archetype = getPersonArchetype(person);
         const currentBase = getBaseValue(needId, person);
         const typicalData = getTypicalValue(needId, person);
         const typicalValue = typicalData ? typicalData.value : null;
@@ -777,10 +810,10 @@ const BeduerfnisDetailView = (function() {
         if (newBase !== null && !isNaN(newBase)) {
             const value = parseInt(newBase, 10);
 
-            // Speichern als customBase in TiageState
+            // Speichern als customBase in TiageState (NEU: pro Archetyp)
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`${person}.needs.${needId}.customBase`, value);
-                console.log(`[BeduerfnisDetailView] Basis-Wert geändert: ${needId} = ${value} (typisch: ${typicalValue})`);
+                TiageState.set(`${person}.${archetype}.needs.${needId}.customBase`, value);
+                console.log(`[BeduerfnisDetailView] Basis-Wert geändert: ${person}.${archetype}.${needId} = ${value} (typisch: ${typicalValue})`);
 
                 // Neu rendern
                 const container = document.querySelector(`[data-need-id="${needId}"]`);

@@ -741,7 +741,7 @@
         function getPerspektiveForKategorie(katId) {
             // GFK-Kern (#K1-#K10) → #P1 (Statistik/GFK)
             // Dynamik (#K11) → #P4 (SexPositiv)
-            // Lebensthemen (#K12-#K18) → #P1
+            // Lebensthemen (#K14-#K18) → #P1
             const katNum = parseInt(katId.replace('#K', ''));
             if (katNum === 11) return '#P4';
             return '#P1';
@@ -1098,7 +1098,12 @@
         function loadNeedsData() {
             // Try to load from TiageState first
             if (typeof TiageState !== 'undefined') {
-                const flatNeeds = TiageState.get('flatNeeds.' + currentPerson);
+                // FIX v1.8.835: Verwende getFlatNeeds() statt get('flatNeeds.person')
+                // getFlatNeeds() extrahiert korrekt den aktuellen Archetyp-Slot für 'ich'
+                // get('flatNeeds.ich') würde ALLE 8 Archetyp-Slots zurückgeben!
+                const flatNeeds = TiageState.getFlatNeeds
+                    ? TiageState.getFlatNeeds(currentPerson)
+                    : TiageState.get('flatNeeds.' + currentPerson);
                 // FIX: Unterstütze beide Formate (Array und Object)
                 // TiageState kann Array oder Object zurückgeben
                 const hasData = Array.isArray(flatNeeds)

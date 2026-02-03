@@ -45,15 +45,14 @@
             /**
              * Schließt das Definition Modal
              * Ersetzt: onclick="closeDefinitionModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-definition-modal': function(el, event) {
-                if (typeof closeDefinitionModal === 'function') {
-                    closeDefinitionModal(event);
-                } else if (typeof window.closeDefinitionModal === 'function') {
-                    window.closeDefinitionModal(event);
-                } else {
-                    var modal = document.getElementById('definitionModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('definitionModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -80,15 +79,14 @@
             /**
              * Schließt das Need Definition Modal
              * Ersetzt: onclick="closeNeedDefinitionModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-need-definition-modal': function(el, event) {
-                if (typeof closeNeedDefinitionModal === 'function') {
-                    closeNeedDefinitionModal(event);
-                } else if (typeof window.closeNeedDefinitionModal === 'function') {
-                    window.closeNeedDefinitionModal(event);
-                } else {
-                    var modal = document.getElementById('needDefinitionModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('needDefinitionModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -99,15 +97,14 @@
             /**
              * Schließt das Attribute Definition Modal
              * Ersetzt: onclick="closeAttributeDefinitionModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-attribute-definition-modal': function(el, event) {
-                if (typeof closeAttributeDefinitionModal === 'function') {
-                    closeAttributeDefinitionModal(event);
-                } else if (typeof window.closeAttributeDefinitionModal === 'function') {
-                    window.closeAttributeDefinitionModal(event);
-                } else {
-                    var modal = document.getElementById('attributeDefinitionModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('attributeDefinitionModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             }
         });

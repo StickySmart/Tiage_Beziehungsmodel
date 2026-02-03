@@ -28,15 +28,15 @@
             /**
              * Schließt das Profile Review Info Modal
              * Ersetzt: onclick="closeProfileReviewInfoModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-profile-review-info-modal': function(el, event) {
-                if (typeof closeProfileReviewInfoModal === 'function') {
-                    closeProfileReviewInfoModal(event);
-                } else if (typeof window.closeProfileReviewInfoModal === 'function') {
-                    window.closeProfileReviewInfoModal(event);
-                } else {
-                    var modal = document.getElementById('profileReviewInfoModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('profileReviewInfoModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -47,15 +47,15 @@
             /**
              * Schließt das Comments List Modal
              * Ersetzt: onclick="closeCommentsListModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-comments-list-modal': function(el, event) {
-                if (typeof closeCommentsListModal === 'function') {
-                    closeCommentsListModal(event);
-                } else if (typeof window.closeCommentsListModal === 'function') {
-                    window.closeCommentsListModal(event);
-                } else {
-                    var modal = document.getElementById('commentsListModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('commentsListModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 

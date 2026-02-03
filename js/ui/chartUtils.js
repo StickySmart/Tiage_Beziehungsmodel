@@ -71,9 +71,14 @@ const TiageChartUtils = (function() {
     }
 
     /**
-     * Gradient color for score: rot (0%) -> gelb (50%) -> gruen (100%)
+     * Gradient color for score: rot (0%) -> gelb (50%) -> gruen (100%) -> gold (>100%)
      */
     function getScoreGradientColor(score) {
+        // Scores über 100% bekommen Gold-Farbe (Resonanz-Boost)
+        if (score > 100) {
+            return '#FFD700';  // Gold für Resonanz-verstärkte Scores
+        }
+
         score = Math.max(0, Math.min(100, score));
 
         var r, g, b;

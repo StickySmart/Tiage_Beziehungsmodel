@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(powershell -Command \"\\(Get-Content ''c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\js\\\\app-main.js''\\).Count\")",
+      "Bash(powershell -Command:*)",
+      "Bash(git commit:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "WebFetch(domain:app.ti-age.de)",
+      "Bash(grep:*)",
+      "Bash(ls -la \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\assets\\\\images\\\\DasDingLogos\"\" 2>/dev/null || dir \"c:UsersinfoOneDriveDocumentsGitHubTiage_BeziehungsmodelassetsimagesDasDingLogos \")",
+      "Bash(python:*)",
+      "Bash(if not exist \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\js\\\\persistence\" mkdir \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\js\\\\persistence\")",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

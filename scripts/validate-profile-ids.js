@@ -258,14 +258,14 @@ function fixProfile(profile, ssot, validationResults) {
 // Default-Werte basierend auf Archetyp und Kategorie
 function getDefaultValue(archetype, kategorie) {
     const defaults = {
-        'single': { '#K11': 40, '#K12': 25, '#K13': 50, default: 50 },
-        'duo': { '#K11': 35, '#K12': 85, '#K13': 70, default: 70 },
-        'duo-flex': { '#K11': 50, '#K12': 60, '#K13': 60, default: 60 },
-        'solopoly': { '#K11': 55, '#K12': 30, '#K13': 55, default: 55 },
-        'polyamor': { '#K11': 60, '#K12': 55, '#K13': 55, default: 55 },
-        'ra': { '#K11': 65, '#K12': 35, '#K13': 50, default: 50 },
-        'lat': { '#K11': 45, '#K12': 50, '#K13': 55, default: 55 },
-        'aromantisch': { '#K11': 35, '#K12': 30, '#K13': 55, default: 45 }
+        'single': { '#K11': 40, default: 50 },
+        'duo': { '#K11': 35, default: 70 },
+        'duo-flex': { '#K11': 50, default: 60 },
+        'solopoly': { '#K11': 55, default: 55 },
+        'polyamor': { '#K11': 60, default: 55 },
+        'ra': { '#K11': 65, default: 50 },
+        'lat': { '#K11': 45, default: 55 },
+        'aromantisch': { '#K11': 35, default: 45 }
     };
 
     const archetypeDefaults = defaults[archetype] || defaults['duo'];

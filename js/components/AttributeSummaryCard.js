@@ -723,8 +723,18 @@ const AttributeSummaryCard = (function() {
             return true;
         }
 
+        // FIX v1.8.835: Nur Hauptfragen markieren (berechnungsrelevant), nicht Nuancen
+        // Hauptfragen sind die 31 aggregierten Bedürfnisse die in die Synthese eingehen
+        const hauptfragenIds = typeof HauptfrageAggregation !== 'undefined'
+            ? new Set(Object.keys(HauptfrageAggregation.getHauptfragen()))
+            : new Set();
+
         // Ermittle alle Bedürfnisse die durch aktive Filter erlaubt sind
-        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
+        // UND die Hauptfragen sind (nicht Nuancen)
+        const visibleNeeds = flatNeeds.filter(need =>
+            isNeedVisibleByFilters(need) &&
+            (hauptfragenIds.size === 0 || hauptfragenIds.has(need.id))
+        );
 
         // Ermittle Bedürfnisse die durch Filter ausgeschlossen sind
         const hiddenNeeds = flatNeeds.filter(need => !isNeedVisibleByFilters(need));
@@ -831,14 +841,22 @@ const AttributeSummaryCard = (function() {
             return true;
         }
 
-        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind
-        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
+        // FIX v1.8.835: Nur Hauptfragen invertieren (berechnungsrelevant), nicht Nuancen
+        const hauptfragenIds = typeof HauptfrageAggregation !== 'undefined'
+            ? new Set(Object.keys(HauptfrageAggregation.getHauptfragen()))
+            : new Set();
+
+        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind UND Hauptfragen sind
+        const visibleNeeds = flatNeeds.filter(need =>
+            isNeedVisibleByFilters(need) &&
+            (hauptfragenIds.size === 0 || hauptfragenIds.has(need.id))
+        );
 
         if (visibleNeeds.length === 0) {
             return;
         }
 
-        // Invertiere die Auswahl für alle sichtbaren
+        // Invertiere die Auswahl für alle sichtbaren Hauptfragen
         visibleNeeds.forEach(need => {
             if (selectedNeeds.has(need.id)) {
                 // War ausgewählt -> abwählen
@@ -2705,6 +2723,7 @@ const AttributeSummaryCard = (function() {
         // Hauptfragen-Daten für aggregierte Ansicht
         let hauptfragenCount = 0;
         let hauptfragenData = [];
+        let totalHauptfragen = 0; // Für Subtitle: Anzahl berechnungsrelevanter Hauptfragen
         if (typeof HauptfrageAggregation !== 'undefined') {
             // Mapping der UI-Sortieroptionen auf HauptfrageAggregation-Parameter
             // UI: 'value', 'name', 'id', 'status', 'changed'
@@ -2768,7 +2787,8 @@ const AttributeSummaryCard = (function() {
 
             // Filtere Hauptfragen nach aktivem DimensionKategorieFilter
             // Eine Hauptfrage ist sichtbar wenn mindestens eine ihrer Nuancen sichtbar ist
-            const totalHauptfragen = hauptfragenData.length;
+            // totalHauptfragen = Anzahl VOR Filterung (für Berechnungen relevant)
+            totalHauptfragen = hauptfragenData.length;
             if (typeof DimensionKategorieFilter !== 'undefined' && filteredCount < sortedNeeds.length) {
                 hauptfragenData = hauptfragenData.filter(hf => {
                     // Prüfe ob die Hauptfrage selbst sichtbar ist
@@ -2796,9 +2816,14 @@ const AttributeSummaryCard = (function() {
                 subtitleText = `Dein ${archetypLabel}-Profil (${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
             }
         } else {
+            // Zeige Hauptfragen-Anzahl (berechnungsrelevant) statt Gesamt-Bedürfnisse
+            // Fallback auf totalNeedsCount wenn HauptfrageAggregation nicht verfügbar
+            const displayCount = totalHauptfragen > 0 ? totalHauptfragen : totalNeedsCount;
+            const displayLabel = totalHauptfragen > 0 ? 'Hauptfragen' : 'Bedürfnisse';
+            console.log('[AttributeSummaryCard] Subtitle Debug: totalHauptfragen=' + totalHauptfragen + ', totalNeedsCount=' + totalNeedsCount + ', displayCount=' + displayCount);
             subtitleText = filterActive
                 ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
-                : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
+                : `Dein ${archetypLabel}-Profil (${displayCount} ${displayLabel}), davon gesperrt: ${lockedCount}`;
         }
         // Füge geänderte Zählung hinzu wenn > 0
         if (changedCount > 0) {
@@ -2839,9 +2864,9 @@ const AttributeSummaryCard = (function() {
 
             <div class="flat-needs-selection-bar">
                 <span class="flat-needs-selection-label">Markieren:</span>
-                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds()" title="Alle sichtbaren Bedürfnisse auswählen">✓ Alle</button>
+                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds()" title="Alle 31 Hauptfragen auswählen (berechnungsrelevant)">✓ Alle</button>
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
-                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Auswahl umkehren">⇄ Umkehren</button>
+                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Hauptfragen-Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
                 <div class="bulk-increment-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
                     <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>

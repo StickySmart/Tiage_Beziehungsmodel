@@ -32,15 +32,15 @@
             /**
              * Schließt das Ti-Age Synthese Modal
              * Ersetzt: onclick="closeTiageSyntheseModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-synthese-modal': function(el, event) {
-                if (typeof closeTiageSyntheseModal === 'function') {
-                    closeTiageSyntheseModal(event);
-                } else if (typeof window.closeTiageSyntheseModal === 'function') {
-                    window.closeTiageSyntheseModal(event);
-                } else {
-                    var modal = document.getElementById('tiageSyntheseModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('tiageSyntheseModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
@@ -103,15 +103,15 @@
             /**
              * Schließt das Resonanzfaktoren Modal
              * Ersetzt: onclick="closeResonanzfaktorenModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-resonanz-modal': function(el, event) {
-                if (typeof closeResonanzfaktorenModal === 'function') {
-                    closeResonanzfaktorenModal(event);
-                } else if (typeof window.closeResonanzfaktorenModal === 'function') {
-                    window.closeResonanzfaktorenModal(event);
-                } else {
-                    var modal = document.getElementById('resonanzfaktorenModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('resonanzfaktorenModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 

@@ -151,8 +151,6 @@ const DimensionKategorieFilter = (function() {
             { id: '#K16', key: 'intimitaet_romantik', label: 'Intimität & Romantik', beschreibung: 'Körperliche Nähe, Sex, Romantik', color: '#EC4899' }
         ],
         'R2': [
-            { id: '#K12', key: 'lebensplanung', label: 'Lebensplanung', beschreibung: 'Kinder, Ehe, Wohnen, Familie', color: '#10B981' },
-            { id: '#K13', key: 'finanzen_karriere', label: 'Finanzen & Karriere', beschreibung: 'Geld, Beruf, Work-Life-Balance', color: '#F59E0B' },
             { id: '#K17', key: 'werte_haltungen', label: 'Werte & Haltungen', beschreibung: 'Religion, Tradition, Umwelt', color: '#6366F1' },
             { id: '#K15', key: 'soziales_leben', label: 'Soziales Leben', beschreibung: 'Intro/Extroversion, Freunde', color: '#8B5CF6' },
             { id: '#K18', key: 'praktisches_leben', label: 'Praktisches Leben', beschreibung: 'Ordnung, Reisen, Alltag', color: '#14B8A6' }

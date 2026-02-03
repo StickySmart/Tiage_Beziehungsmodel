@@ -25,15 +25,14 @@
             /**
              * Schließt das Factor Detail Modal
              * Ersetzt: onclick="closeFactorModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-factor-modal': function(el, event) {
-                if (typeof closeFactorModal === 'function') {
-                    closeFactorModal(event);
-                } else if (typeof window.closeFactorModal === 'function') {
-                    window.closeFactorModal(event);
-                } else {
-                    var modal = document.getElementById('factorModal');
-                    if (modal) modal.style.display = 'none';
+                var modal = document.getElementById('factorModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             },
 

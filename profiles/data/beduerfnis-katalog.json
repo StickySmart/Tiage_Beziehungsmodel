@@ -1,10 +1,10 @@
 {
-  "version": "3.3.0",
+  "version": "3.4.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
-  "aktualisiert": "2025-01-29",
-  "changelog": "v3.3.0: REIBUNGS-LOGIK statt K.O.-Kriterien. Neue Bedürfnisse: #B227 'Körperliche-Resonanz' (ersetzt Orientierungs-K.O.), #B228 'Beziehungsform-Passung' (ersetzt Archetyp-K.O.). Beide mit perspektivenHinweise (pirsig, osho, gfk, rti) und saeule-Feld für RTI-5-Säulen-Integration. v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
+  "aktualisiert": "2025-01-31",
+  "changelog": "v3.4.0: Kategorien #K12 (Lebensplanung) und #K13 (Finanzen & Karriere) entfernt samt aller zugehörigen Bedürfnisse (#B89-#B125, #B228). v3.3.0: REIBUNGS-LOGIK statt K.O.-Kriterien. Neues Bedürfnis: #B227 'Körperliche-Resonanz' (ersetzt Orientierungs-K.O.). v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
     "#P1": {
       "id": "#P1",
@@ -314,26 +314,6 @@
       "beschreibung": "Machtdynamik und bewusster Austausch (BDSM/Kink)",
       "quelle": "Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)"
     },
-    "#K12": {
-      "id": "#K12",
-      "key": "lebensplanung",
-      "label": "Lebensplanung",
-      "dimension": "#D1",
-      "sigma": 14,
-      "color": "#10B981",
-      "beschreibung": "Kinder, Ehe, Wohnen, Familie",
-      "quelle": "Tiage Erweiterung"
-    },
-    "#K13": {
-      "id": "#K13",
-      "key": "finanzen_karriere",
-      "label": "Finanzen & Karriere",
-      "dimension": "#D1",
-      "sigma": 14,
-      "color": "#F59E0B",
-      "beschreibung": "Geld, Beruf, Work-Life-Balance",
-      "quelle": "Tiage Erweiterung"
-    },
     "#K14": {
       "id": "#K14",
       "key": "kommunikation_stil",
@@ -397,7 +377,7 @@
         100
       ],
       "frage": "Wie wichtig sind Ihnen körperliche Grundbedürfnisse?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B2",
         "#B3",
@@ -481,7 +461,7 @@
         "#K7"
       ],
       "frage": "Wie wichtig ist Ihnen Erholung und Entspannung?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B47"
       ]
@@ -518,7 +498,7 @@
         "#K2"
       ],
       "frage": "Wie wichtig ist Ihnen physische Sicherheit?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B9"
       ]
@@ -627,7 +607,7 @@
         "#K5"
       ],
       "frage": "Wie wichtig ist Ihnen Leichtigkeit im Leben?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B15": {
       "id": "#B15",
@@ -676,7 +656,7 @@
         "#K8"
       ],
       "frage": "Wie wichtig ist Ihnen Wertschätzung?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B18": {
       "id": "#B18",
@@ -712,7 +692,7 @@
         "#K6"
       ],
       "frage": "Wie wichtig ist Ihnen Gesellschaft?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B20": {
       "id": "#B20",
@@ -999,7 +979,7 @@
         "#K6"
       ],
       "frage": "Wie wichtig ist Ihnen Harmonie?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B34": {
       "id": "#B34",
@@ -1115,7 +1095,7 @@
         "#K9"
       ],
       "frage": "Wie wichtig ist Ihnen Spontaneität?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B39": {
       "id": "#B39",
@@ -1316,7 +1296,7 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen Freude und Lebensgenuss?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B46",
         "#B49"
@@ -1455,7 +1435,7 @@
         "#K4"
       ],
       "frage": "Wie wichtig ist Ihnen Bewusstheit und Klarheit?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B53",
         "#B54",
@@ -1510,7 +1490,7 @@
         "#K6"
       ],
       "frage": "Wie wichtig ist Ihnen Kompetenz und Wirksamkeit?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B56",
         "#B59",
@@ -1564,7 +1544,7 @@
         "#K10"
       ],
       "frage": "Wie wichtig ist Ihnen persönliches Wachstum?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B62",
         "#B63"
@@ -1617,7 +1597,7 @@
         "#K8"
       ],
       "frage": "Wie wichtig ist Ihnen Kreativität und Selbstausdruck?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B67"
       ]
@@ -1636,7 +1616,7 @@
         "#K10"
       ],
       "frage": "Wie wichtig ist Ihnen Entdecken und Lernen?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B66",
         "#B68"
@@ -1720,7 +1700,7 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen Lebensfreude?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B70"
       ]
@@ -2184,700 +2164,6 @@
         }
       }
     },
-    "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
-    "#B89": {
-      "id": "#B89",
-      "label": "Kinder-&-Elternschaft",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frage": "Wie wichtig ist Ihnen Elternschaft und Kinder?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B90",
-        "#B91",
-        "#B92",
-        "#B93"
-      ],
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 25,
-          "duo": 85,
-          "duo_flex": 60,
-          "solopoly": 30,
-          "polyamor": 55,
-          "ra": 35,
-          "lat": 50,
-          "aromantisch": 30
-        }
-      }
-    },
-    "#B90": {
-      "id": "#B90",
-      "label": "Elternschaft",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B89",
-      "kontext": "Eltern werden"
-    },
-    "#B91": {
-      "id": "#B91",
-      "label": "Fortpflanzung",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B89",
-      "kontext": "biologische Kinder"
-    },
-    "#B92": {
-      "id": "#B92",
-      "label": "Familie-gründen",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B89",
-      "kontext": "eigene Familie gründen"
-    },
-    "#B93": {
-      "id": "#B93",
-      "label": "Generativität",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B89",
-      "kontext": "nächste Generation prägen"
-    },
-    "#B94": {
-      "id": "#B94",
-      "label": "Verbindlichkeit",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B95",
-      "kontext": "verbindliche Partnerschaft",
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 40,
-          "duo": 75,
-          "duo_flex": 65,
-          "solopoly": 45,
-          "polyamor": 60,
-          "ra": 45,
-          "lat": 55,
-          "aromantisch": 50
-        }
-      }
-    },
-    "#B95": {
-      "id": "#B95",
-      "label": "Langfristige-Bindung",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2",
-        "#K3"
-      ],
-      "frage": "Wie wichtig ist Ihnen eine langfristige Bindung?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B94",
-        "#B96",
-        "#B97"
-      ],
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 25,
-          "duo": 95,
-          "duo_flex": 75,
-          "solopoly": 35,
-          "polyamor": 70,
-          "ra": 25,
-          "lat": 75,
-          "aromantisch": 30
-        }
-      }
-    },
-    "#B96": {
-      "id": "#B96",
-      "label": "Rechtliche-Sicherheit",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B95",
-      "kontext": "Ehe/eingetragene Partnerschaft"
-    },
-    "#B97": {
-      "id": "#B97",
-      "label": "Treueversprechen",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K4"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B95",
-      "kontext": "Treue versprechen"
-    },
-    "#B98": {
-      "id": "#B98",
-      "label": "Zusammenleben",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frage": "Wie wichtig ist Ihnen gemeinsames Wohnen?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B99",
-        "#B100",
-        "#B101",
-        "#B102",
-        "#B103"
-      ]
-    },
-    "#B99": {
-      "id": "#B99",
-      "label": "Häuslichkeit",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B98",
-      "kontext": "häusliches Leben",
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 15,
-          "duo": 95,
-          "duo_flex": 70,
-          "solopoly": 10,
-          "polyamor": 55,
-          "ra": 25,
-          "lat": 10,
-          "aromantisch": 25
-        }
-      }
-    },
-    "#B100": {
-      "id": "#B100",
-      "label": "Nest-bauen",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K3"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B98",
-      "kontext": "gemeinsames Zuhause schaffen"
-    },
-    "#B101": {
-      "id": "#B101",
-      "label": "Alltag-teilen",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K3",
-        "#K6"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B98",
-      "kontext": "Alltag gemeinsam leben",
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 30,
-          "duo": 90,
-          "duo_flex": 65,
-          "solopoly": 40,
-          "polyamor": 55,
-          "ra": 25,
-          "lat": 50,
-          "aromantisch": 40
-        }
-      }
-    },
-    "#B102": {
-      "id": "#B102",
-      "label": "Eigener-Raum",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B98",
-      "kontext": "eigenes Zimmer/Raum",
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 10,
-          "duo": 95,
-          "duo_flex": 70,
-          "solopoly": 10,
-          "polyamor": 60,
-          "ra": 20,
-          "lat": 25,
-          "aromantisch": 30
-        }
-      }
-    },
-    "#B103": {
-      "id": "#B103",
-      "label": "Rückzugsort",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5",
-        "#K2"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B98",
-      "kontext": "Rückzugsmöglichkeit"
-    },
-    "#B104": {
-      "id": "#B104",
-      "label": "Haustiere",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frage": "Wie wichtig sind Ihnen Haustiere?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B105"
-      ]
-    },
-    "#B105": {
-      "id": "#B105",
-      "label": "Fürsorge-Tiere",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K3"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B104",
-      "kontext": "für Tiere sorgen"
-    },
-    "#B106": {
-      "id": "#B106",
-      "label": "Sesshaftigkeit",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2"
-      ],
-      "frage": "Wie wichtig ist Ihnen Sesshaftigkeit vs. Mobilität?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B107",
-        "#B108",
-        "#B109",
-        "#B110"
-      ]
-    },
-    "#B107": {
-      "id": "#B107",
-      "label": "Verwurzelung",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2",
-        "#K6"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B106",
-      "kontext": "an einem Ort verwurzelt sein"
-    },
-    "#B108": {
-      "id": "#B108",
-      "label": "Mobilität",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B106",
-      "kontext": "mobil & flexibel leben"
-    },
-    "#B109": {
-      "id": "#B109",
-      "label": "Heimat",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2",
-        "#K6"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B106",
-      "kontext": "Heimatgefühl"
-    },
-    "#B110": {
-      "id": "#B110",
-      "label": "Neue-Orte",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5",
-        "#K9"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B106",
-      "kontext": "oft umziehen"
-    },
-    "#B111": {
-      "id": "#B111",
-      "label": "Herkunftsfamilie",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K6"
-      ],
-      "frage": "Wie wichtig ist Ihnen Nähe zur Herkunftsfamilie?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B112",
-        "#B113"
-      ]
-    },
-    "#B112": {
-      "id": "#B112",
-      "label": "Herkunftsfamilie",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K6"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B111",
-      "kontext": "Kontakt zu Eltern/Geschwistern"
-    },
-    "#B113": {
-      "id": "#B113",
-      "label": "Generationenverbund",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K6",
-        "#K10"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B111",
-      "kontext": "Mehrgenerationen-Nähe"
-    },
-    "_comment_finanzen": "═══ FINANZEN & KARRIERE (#K13) ═══",
-    "#B114": {
-      "id": "#B114",
-      "label": "Finanzielle-Unabhängigkeit",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B117",
-      "kontext": "finanziell unabhängig"
-    },
-    "#B115": {
-      "id": "#B115",
-      "label": "Gemeinsame-Finanzen",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K6"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B117",
-      "kontext": "Finanzen gemeinsam verwalten"
-    },
-    "#B116": {
-      "id": "#B116",
-      "label": "Finanzielle-Transparenz",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K4"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B117",
-      "kontext": "Offenheit über Geld"
-    },
-    "#B117": {
-      "id": "#B117",
-      "label": "Finanzen-&-Geld",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K2"
-      ],
-      "frage": "Wie wichtig ist Ihnen finanzielles Management?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B114",
-        "#B115",
-        "#B116",
-        "#B118",
-        "#B119"
-      ]
-    },
-    "#B118": {
-      "id": "#B118",
-      "label": "Sparsamkeit",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B117",
-      "kontext": "sparsam leben"
-    },
-    "#B119": {
-      "id": "#B119",
-      "label": "Großzügigkeit",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K3"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B117",
-      "kontext": "großzügig sein"
-    },
-    "#B120": {
-      "id": "#B120",
-      "label": "Berufliche-Erfüllung",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K8"
-      ],
-      "frage": "Wie wichtig ist Ihnen berufliche Erfüllung?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B121",
-        "#B123",
-        "#B125"
-      ]
-    },
-    "#B121": {
-      "id": "#B121",
-      "label": "Karriereambition",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K8"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B120",
-      "kontext": "Karriere vorantreiben"
-    },
-    "#B122": {
-      "id": "#B122",
-      "label": "Work-Life-Balance",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K7",
-        "#K3"
-      ],
-      "frage": "Wie wichtig ist Ihnen Work-Life-Balance?",
-      "frageTyp": "haupt",
-      "nuancen": [
-        "#B124"
-      ]
-    },
-    "#B123": {
-      "id": "#B123",
-      "label": "Berufliche-Anerkennung",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K8",
-        "#K4"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B120",
-      "kontext": "berufliche Anerkennung"
-    },
-    "#B124": {
-      "id": "#B124",
-      "label": "Zeit-für-Beziehung",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K3"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B122",
-      "kontext": "Zeit für Partnerschaft"
-    },
-    "#B125": {
-      "id": "#B125",
-      "label": "Berufliche-Flexibilität",
-      "kategorie": "#K13",
-      "dimension": "#D1",
-      "skala": [
-        0,
-        100
-      ],
-      "sekundaer": [
-        "#K5"
-      ],
-      "frageTyp": "nuance",
-      "hauptbeduerfnis": "#B120",
-      "kontext": "flexible Arbeitsgestaltung"
-    },
     "_comment_kommunikationsstil": "═══ KOMMUNIKATIONSSTIL (#K14) ═══",
     "#B126": {
       "id": "#B126",
@@ -3193,7 +2479,7 @@
         100
       ],
       "frage": "Wie wichtig ist soziale Energie für Sie?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B144": {
       "id": "#B144",
@@ -3332,7 +2618,7 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen Zeit mit Freunden und Gruppen?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B144",
         "#B147",
@@ -3387,7 +2673,7 @@
         "#K6"
       ],
       "frage": "Wie wichtig ist Ihnen Ihr Freundeskreis?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B156",
         "#B157",
@@ -3864,7 +3150,7 @@
         "#K10"
       ],
       "frage": "Wie wichtig ist Ihnen Spiritualität und Sinnsuche?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B179",
         "#B180",
@@ -3922,7 +3208,7 @@
         "#K5"
       ],
       "frage": "Wie wichtig ist Ihnen eine säkulare Lebensweise?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B182": {
       "id": "#B182",
@@ -3974,7 +3260,7 @@
         "#K2"
       ],
       "frage": "Wie wichtig sind Ihnen traditionelle vs. moderne Werte?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B185",
         "#B186",
@@ -4083,7 +3369,7 @@
         "#K8"
       ],
       "frage": "Wie wichtig ist Ihnen Umwelt- und Klimaschutz?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B191",
         "#B192",
@@ -4135,7 +3421,7 @@
         100
       ],
       "frage": "Wie wichtig ist Ihnen pragmatisches Handeln?",
-      "frageTyp": "haupt"
+      "frageTyp": "sub"
     },
     "#B194": {
       "id": "#B194",
@@ -4186,7 +3472,7 @@
         "#K8"
       ],
       "frage": "Wie wichtig ist Ihnen Ordnung im Alltag?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B197",
         "#B198",
@@ -4292,7 +3578,7 @@
         "#K7"
       ],
       "frage": "Wie wichtig ist Ihnen Reisen und neue Erfahrungen?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B203",
         "#B204",
@@ -4347,7 +3633,7 @@
         "#K2"
       ],
       "frage": "Wie wichtig ist Ihnen Heimat und Zuhause?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B208"
       ]
@@ -4416,7 +3702,7 @@
         "#K15"
       ],
       "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol, Cannabis oder Zucker?",
-      "frageTyp": "haupt",
+      "frageTyp": "sub",
       "nuancen": [
         "#B210",
         "#B211",
@@ -4854,13 +4140,16 @@
         }
       }
     },
-    "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227-#B228) - Ersetzt K.O.-Kriterien ═══",
+    "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227) - Ersetzt K.O.-Kriterien ═══",
     "#B227": {
       "id": "#B227",
       "label": "Körperliche-Resonanz",
       "kategorie": "#K16",
       "dimension": "#D3",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist dir, dass echte körperliche Anziehung vorhanden ist?",
       "frageTyp": "haupt",
       "kontext": "Körperliche Anziehung und sexuelle Resonanz",
@@ -4899,53 +4188,6 @@
           "ra": 65,
           "lat": 75,
           "aromantisch": 25
-        }
-      }
-    },
-    "#B228": {
-      "id": "#B228",
-      "label": "Beziehungsform-Passung",
-      "kategorie": "#K12",
-      "dimension": "#D1",
-      "skala": [0, 100],
-      "frage": "Wie wichtig ist dir, dass ihr die gleiche Beziehungsform lebt?",
-      "frageTyp": "haupt",
-      "kontext": "Übereinstimmung in Mono/Poly und Beziehungsstruktur",
-      "saeule": "S2",
-      "reibungsQuelle": "archetyp_differenz",
-      "perspektivenHinweise": {
-        "pirsig": {
-          "niedrig": "Eure Beziehungsformen sind kompatibel - statische Qualitätsmuster passen zusammen.",
-          "mittel": "Unterschiedliche Muster treffen aufeinander. Dynamische Qualität entsteht, wenn beide bereit sind, ihre Muster zu hinterfragen.",
-          "hoch": "Mono und Poly sind verschiedene Betriebssysteme. Keines ist besser. Aber: Ohne Evolution beider entsteht chronischer Konflikt. Die Frage ist: Wer ist bereit, sich zu bewegen?"
-        },
-        "osho": {
-          "niedrig": "Eure Formen harmonieren - genießt diese Leichtigkeit.",
-          "mittel": "Besitz ist Angst, aber Struktur ist nicht immer Gefängnis. Frage dich ehrlich: Warum willst du, was du willst?",
-          "hoch": "Der Mono-Mensch klammert vielleicht aus Angst. Der Poly-Mensch flieht vielleicht vor Tiefe. Oder: Beide leben authentisch. Es gibt keine falsche Antwort - nur die Frage, ob ihr gemeinsam wachsen könnt."
-        },
-        "gfk": {
-          "niedrig": "Eure Bedürfnisse nach Beziehungsstruktur sind ähnlich.",
-          "mittel": "Unterschiedliche Strategien für ähnliche Bedürfnisse. Mono-Bedürfnis: Sicherheit, Vorhersehbarkeit. Poly-Bedürfnis: Autonomie, Vielfalt. Beide sind gültig. Frage: Welche Strategie nährt BEIDE?",
-          "hoch": "Fundamentale Bedürfnisse scheinen zu kollidieren: Sicherheit vs. Freiheit. Aber: Vielleicht ist es nicht entweder-oder. Was wäre ein dritter Weg, der beide Bedürfniskerne ehrt?"
-        },
-        "rti": {
-          "niedrig": "Säule 2 (Soziales Netzwerk) ist stabil.",
-          "mittel": "Säule 2 zeigt Reibung. Eure sozialen Strukturen unterscheiden sich.",
-          "hoch": "Säule 2 (Soziales Netzwerk) ist stark herausgefordert. Das betrifft, wie ihr Beziehung nach außen lebt. Braucht intensive Kommunikation und klare Vereinbarungen."
-        }
-      },
-      "kohaerenz": {
-        "rFaktor": "R2",
-        "typischeWerte": {
-          "single": 40,
-          "duo": 95,
-          "duo_flex": 70,
-          "solopoly": 50,
-          "polyamor": 55,
-          "ra": 30,
-          "lat": 65,
-          "aromantisch": 35
         }
       }
     }

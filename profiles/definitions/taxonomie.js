@@ -4,13 +4,13 @@
  *
  * Version: 2.0.0
  * Erstellt: 2025-12-09
- * Aktualisiert: 2025-01-29
+ * Aktualisiert: 2025-01-31
  *
  * Diese Datei ist die EINZIGE Quelle für:
  * - Perspektiven (#P1-#P4)
  * - Dimensionen (#D1-#D6, Kurzform A-F)
  * - RTI-Säulen (#S1-#S5) - NEU in v2.0.0
- * - Kategorien (#K1-#K18)
+ * - Kategorien (#K1-#K11, #K14-#K18)
  *
  * ALLE anderen Dateien MÜSSEN diese Definitionen referenzieren!
  *
@@ -49,7 +49,7 @@ const TiageTaxonomie = {
             label: 'Statistik',
             beschreibung: 'Empirische Forschung - Gaußsche Übereinstimmung der Werte',
             quelle: 'McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)',
-            kategorien: ['#K1', '#K2', '#K3', '#K4', '#K5', '#K6', '#K7', '#K8', '#K9', '#K10', '#K12', '#K13', '#K14', '#K15', '#K16', '#K17', '#K18']
+            kategorien: ['#K1', '#K2', '#K3', '#K4', '#K5', '#K6', '#K7', '#K8', '#K9', '#K10', '#K14', '#K15', '#K16', '#K17', '#K18']
         },
         '#P2': {
             id: '#P2',
@@ -57,7 +57,7 @@ const TiageTaxonomie = {
             label: 'Konditionierung',
             beschreibung: 'Natürlichkeit vs. Konditionierung - was ist anerzogen, was authentisch?',
             quelle: 'Osho Rajneesh - Vorträge über Liebe und Beziehungen',
-            kategorien: ['#K1', '#K3', '#K5', '#K6', '#K7', '#K8', '#K10', '#K12', '#K13', '#K15', '#K17']
+            kategorien: ['#K1', '#K3', '#K5', '#K6', '#K7', '#K8', '#K10', '#K15', '#K17']
         },
         '#P3': {
             id: '#P3',
@@ -220,9 +220,9 @@ const TiageTaxonomie = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // KATEGORIEN (#K1-#K18) - Bedürfnisgruppen
+    // KATEGORIEN (#K1-#K11, #K14-#K18) - Bedürfnisgruppen
     // ═══════════════════════════════════════════════════════════════════════════
-    // 10 GFK-Kategorien (Rosenberg) + 1 Dynamik + 7 Lebensbereiche
+    // 10 GFK-Kategorien (Rosenberg) + 1 Dynamik + 5 Lebensbereiche
 
     kategorien: {
         // ─────────────────────────────────────────────────────────────────────────
@@ -346,29 +346,9 @@ const TiageTaxonomie = {
         },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSBEREICHE (#K12-#K18) - Tiage Erweiterung
+        // LEBENSBEREICHE (#K14-#K18) - Tiage Erweiterung
         // ─────────────────────────────────────────────────────────────────────────
 
-        '#K12': {
-            id: '#K12',
-            key: 'lebensplanung',
-            dimension: '#D1',  // Beziehungsphilosophie
-            label: 'Lebensplanung',
-            sigma: 14,
-            color: '#10B981',
-            beschreibung: 'Kinder, Ehe, Wohnen, Familie',
-            quelle: 'Tiage Erweiterung'
-        },
-        '#K13': {
-            id: '#K13',
-            key: 'finanzen_karriere',
-            dimension: '#D1',  // Beziehungsphilosophie
-            label: 'Finanzen & Karriere',
-            sigma: 14,
-            color: '#F59E0B',
-            beschreibung: 'Geld, Beruf, Work-Life-Balance',
-            quelle: 'Tiage Erweiterung'
-        },
         '#K14': {
             id: '#K14',
             key: 'kommunikation_stil',

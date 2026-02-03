@@ -57,20 +57,14 @@
             /**
              * Schließt das Comment Modal
              * Ersetzt: onclick="closeCommentModal(event)"
+             * HINWEIS: Direktes Schließen ohne Event-Check, da ActionHandler
+             * event.target/currentTarget anders behandelt als direktes onclick
              */
             'close-comment-modal': function(el, event) {
-                // Rufe bestehende Funktion auf (in app-main.js definiert)
-                if (typeof closeCommentModal === 'function') {
-                    closeCommentModal(event);
-                } else if (typeof window.closeCommentModal === 'function') {
-                    window.closeCommentModal(event);
-                } else {
-                    // Fallback: Modal direkt schließen
-                    var modal = document.getElementById('commentModal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = '';
-                    }
+                var modal = document.getElementById('commentModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             },
 
