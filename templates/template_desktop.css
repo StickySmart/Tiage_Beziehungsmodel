@@ -3516,6 +3516,40 @@
             gap: 6px;
         }
 
+        /* Geschlecht Extras Row (Fit/Fucked up) */
+        .geschlecht-extras-row {
+            margin-top: 6px;
+            display: block;
+        }
+
+        .geschlecht-extras-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: none !important;
+            overflow: visible !important;
+            opacity: 1 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .compact-dimension.collapsible-dimension.collapsed .geschlecht-extras-row {
+            display: none;
+        }
+
+        .geschlecht-extras-grid .geschlecht-btn {
+            opacity: 0.8;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .geschlecht-extras-grid .geschlecht-btn.active {
+            opacity: 1 !important;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+            border-color: #8b5cf6 !important;
+            color: white !important;
+        }
+
         /* Status Popup Styles */
         .status-popup-content {
             max-width: 380px;
@@ -4061,13 +4095,14 @@
         }
 
         .agod-toggle-label {
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 600;
             color: #eab308;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            width: 16px;
+            letter-spacing: 0.3px;
+            min-width: 85px;
             text-align: right;
+            white-space: nowrap;
         }
 
         .agod-toggle-group {
