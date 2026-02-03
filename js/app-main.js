@@ -711,11 +711,33 @@
             // FIX: Entferne ALLE möglichen Klassen (active, primary-selected, secondary-selected)
             const allClasses = ['active', 'active-primary', 'active-secondary', 'primary-selected', 'secondary-selected'];
 
-            // Geschlecht (inkl. extras)
-            document.querySelectorAll('#partner-geschlecht-p-grid .geschlecht-btn, #mobile-partner-geschlecht-p-grid .geschlecht-btn, #modal-partner-geschlecht-grid .geschlecht-btn, #partner-geschlecht-extras-grid .geschlecht-btn, #mobile-partner-geschlecht-extras-grid .geschlecht-btn').forEach(btn => {
+            // Geschlecht P-Grid
+            document.querySelectorAll('#partner-geschlecht-p-grid .geschlecht-btn, #mobile-partner-geschlecht-p-grid .geschlecht-btn, #modal-partner-geschlecht-grid .geschlecht-btn').forEach(btn => {
                 btn.classList.remove(...allClasses);
                 btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
+
+            // Geschlecht Extras (Fit/Fucked up/Horny) - AUCH Inline-Styles entfernen!
+            document.querySelectorAll('#partner-geschlecht-extras-grid .geschlecht-btn, #mobile-partner-geschlecht-extras-grid .geschlecht-btn').forEach(btn => {
+                btn.classList.remove(...allClasses);
+                // Inline-Styles entfernen (syncGeschlechtExtrasUI setzt diese)
+                btn.style.background = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+                btn.style.opacity = '';
+            });
+
+            // Reset geschlechtExtrasCache für Partner
+            if (typeof geschlechtExtrasCache !== 'undefined' && geschlechtExtrasCache.partner) {
+                geschlechtExtrasCache.partner = { fit: false, fuckedup: false, horny: false };
+            }
+
+            // Reset TiageState geschlecht extras für Partner
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('personDimensions.partner.geschlecht_fit', false);
+                TiageState.set('personDimensions.partner.geschlecht_fuckedup', false);
+                TiageState.set('personDimensions.partner.geschlecht_horny', false);
+            }
             document.querySelectorAll('#partner-geschlecht-s-grid .geschlecht-btn, #mobile-partner-geschlecht-s-grid .geschlecht-btn').forEach(btn => {
                 btn.classList.remove(...allClasses);
                 btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
