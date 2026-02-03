@@ -102,6 +102,26 @@ TiageSynthesis.Constants = {
         try {
             if (typeof TiageState !== 'undefined') {
                 var stored = TiageState.get('gewichtungen.' + person);
+
+                // NEUES 3-Wege-Format: { O: 1, A: 2, D: 0, G: 1 } (0=Egal, 1=Normal, 2=Wichtig)
+                if (stored && typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
+                    // Konvertiere 0/1/2 zu Gewichten: 0=0, 1=25, 2=50
+                    var oVal = stored.O === 0 ? 0 : (stored.O === 2 ? 50 : 25);
+                    var aVal = stored.A === 0 ? 0 : (stored.A === 2 ? 50 : 25);
+                    var dVal = stored.D === 0 ? 0 : (stored.D === 2 ? 50 : 25);
+                    var gVal = stored.G === 0 ? 0 : (stored.G === 2 ? 50 : 25);
+                    var sum = oVal + aVal + dVal + gVal;
+                    var divisor = sum > 0 ? sum : 100;
+                    console.log('[TiageSynthesis.getWeights] New format detected:', stored, '→', { oVal, aVal, dVal, gVal, sum });
+                    return {
+                        orientierung: oVal / divisor,
+                        archetyp: aVal / divisor,
+                        dominanz: dVal / divisor,
+                        geschlecht: gVal / divisor
+                    };
+                }
+
+                // ALTES Format: { O: { value: 25, locked: false }, ... }
                 if (stored && stored.O && typeof stored.O.value === 'number') {
                     var oVal = stored.O.value;
                     var aVal = stored.A.value;
@@ -661,70 +681,37 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // SSOT: GESCHLECHTS-OPTIONEN (v5.0)
+    // SSOT: GESCHLECHTS-OPTIONEN (v6.0)
     // ═══════════════════════════════════════════════════════════════════════
-    // SINGLE SOURCE OF TRUTH für alle Geschlechts-Varianten.
-    // Format: { primary: 'körper', secondary: 'identität' }
+    // SINGLE SOURCE OF TRUTH für Geschlechtsidentität.
+    // v6.0: Vereinfachte Struktur - Primary + optionale Extras (Multi-Select)
 
     GESCHLECHT_OPTIONS: {
-        // Primary-Optionen (Körper)
-        PRIMARY: ['mann', 'frau', 'inter'],
+        // Geschlechtsidentität (Single-Select)
+        PRIMARY: ['mann', 'frau', 'nonbinaer'],
 
-        // Secondary-Optionen je nach Primary
-        SECONDARY: {
-            'mann': ['cis', 'trans', 'nonbinaer'],
-            'frau': ['cis', 'trans', 'nonbinaer'],
-            'inter': ['nonbinaer', 'fluid', 'suchend']
-        },
-
-        // Alle gültigen Kombinationen (für Iteration in Best Match)
-        ALL_COMBINATIONS: [
-            { primary: 'mann', secondary: 'cis' },
-            { primary: 'mann', secondary: 'trans' },
-            { primary: 'mann', secondary: 'nonbinaer' },
-            { primary: 'frau', secondary: 'cis' },
-            { primary: 'frau', secondary: 'trans' },
-            { primary: 'frau', secondary: 'nonbinaer' },
-            { primary: 'inter', secondary: 'nonbinaer' },
-            { primary: 'inter', secondary: 'fluid' },
-            { primary: 'inter', secondary: 'suchend' }
-        ],
+        // Extras (Multi-Select, optional)
+        EXTRAS: ['fit', 'fuckedup', 'horny'],
 
         // Labels für UI-Anzeige
         LABELS: {
             PRIMARY: {
                 'mann': 'Mann',
                 'frau': 'Frau',
-                'inter': 'Inter'
+                'nonbinaer': 'Nonbinär'
             },
-            SECONDARY: {
-                'cis': 'Cis',
-                'trans': 'Trans',
-                'nonbinaer': 'NB',
-                'fluid': 'Fluid',
-                'suchend': 'Suchend'
+            EXTRAS: {
+                'fit': 'Fit 💪',
+                'fuckedup': 'Fucked up 🔥',
+                'horny': 'Horny 😈'
             }
-        },
-
-        // Effektive Identität berechnen (für Orientierungs-Kompatibilität)
-        // P + S → effektive Identität für Anziehungs-Logik
-        EFFECTIVE_IDENTITY: {
-            'mann-cis': 'mann',
-            'mann-trans': 'frau',        // Trans-Mann → identifiziert als Frau (körperlich Mann)
-            'mann-nonbinaer': 'nonbinaer',
-            'frau-cis': 'frau',
-            'frau-trans': 'mann',        // Trans-Frau → identifiziert als Mann (körperlich Frau)
-            'frau-nonbinaer': 'nonbinaer',
-            'inter-nonbinaer': 'nonbinaer',
-            'inter-fluid': 'nonbinaer',
-            'inter-suchend': 'nonbinaer'
         },
 
         // Kategorien für Kompatibilitäts-Logik
         CATEGORIES: {
             BINARY_MALE: ['mann'],
             BINARY_FEMALE: ['frau'],
-            NONBINARY: ['nonbinaer', 'fluid', 'suchend', 'inter']
+            NONBINARY: ['nonbinaer']
         }
     },
 

@@ -760,13 +760,8 @@
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
 
-        // DEBUG: Log GOD settings pro Person
-        console.log(`[ProfileCalculator] recalculateFlatNeeds für ${person.toUpperCase()}:`, {
-            archetyp: archetyp,
-            geschlecht: geschlecht,
-            dominanz: dominanz,
-            orientierung: orientierung
-        });
+        // DEBUG: Log GOD settings pro Person (DISABLED: Message overflow)
+        // console.log(`[ProfileCalculator] recalculateFlatNeeds für ${person.toUpperCase()}:`, { archetyp, geschlecht, dominanz, orientierung });
 
         // Berechne neue flatNeeds
         const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
@@ -790,7 +785,7 @@
 
             if (needsChanged) {
                 TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-                console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse,', Object.keys(lockedNeeds).length, 'locked needs beibehalten');
+                // console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse'); // DISABLED: Message overflow
             }
         }
     }
@@ -815,10 +810,7 @@
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
 
-        console.log(`[ProfileCalculator] recalculateResonanz für ${person.toUpperCase()}:`, {
-            archetyp: archetyp,
-            needsCount: Object.keys(flatNeeds).length
-        });
+        // console.log(`[ProfileCalculator] recalculateResonanz für ${person.toUpperCase()}:`, { archetyp, needsCount: Object.keys(flatNeeds).length }); // DISABLED: Message overflow
 
         // Berechne Resonanzfaktoren
         const profileContext = {
@@ -854,7 +846,7 @@
 
             if (resonanzChanged) {
                 TiageState.setResonanzFaktoren(person, newResonanz);
-                console.log(`[ProfileCalculator] Resonanzfaktoren reaktiv aktualisiert für ${person}:`, JSON.stringify(newResonanz));
+                // console.log(`[ProfileCalculator] Resonanzfaktoren reaktiv aktualisiert für ${person}:`, JSON.stringify(newResonanz)); // DISABLED: Message overflow
             }
         }
     }
@@ -881,7 +873,12 @@
 
         // Subscriber für Archetyp-Änderungen
         // SSOT: Bei Archetyp-Wechsel werden flatNeeds UND Resonanzfaktoren neu berechnet
+        // FIX v1.8.835: Überspringe während loadFromStorage() um gespeicherte User-Werte zu erhalten
         TiageState.subscribe('archetypes.ich', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ProfileCalculator] Subscriber übersprungen während loadFromStorage (archetypes.ich)');
+                return;
+            }
             if (event.path === 'archetypes.ich.primary' || event.path === 'archetypes.ich') {
                 recalculateFlatNeedsForPerson('ich');
                 // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
@@ -890,6 +887,10 @@
         });
 
         TiageState.subscribe('archetypes.partner', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ProfileCalculator] Subscriber übersprungen während loadFromStorage (archetypes.partner)');
+                return;
+            }
             if (event.path === 'archetypes.partner.primary' || event.path === 'archetypes.partner') {
                 recalculateFlatNeedsForPerson('partner');
                 // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
@@ -899,12 +900,21 @@
 
         // Subscriber für Dimensions-Änderungen (geschlecht, dominanz, orientierung)
         // SSOT: Bei Dimensions-Änderung werden flatNeeds UND Resonanzfaktoren neu berechnet
+        // FIX v1.8.835: Überspringe während loadFromStorage() um gespeicherte User-Werte zu erhalten
         TiageState.subscribe('personDimensions.ich', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ProfileCalculator] Subscriber übersprungen während loadFromStorage (personDimensions.ich)');
+                return;
+            }
             recalculateFlatNeedsForPerson('ich');
             recalculateResonanzForPerson('ich');
         });
 
         TiageState.subscribe('personDimensions.partner', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) {
+                console.log('[ProfileCalculator] Subscriber übersprungen während loadFromStorage (personDimensions.partner)');
+                return;
+            }
             recalculateFlatNeedsForPerson('partner');
             recalculateResonanzForPerson('partner');
         });

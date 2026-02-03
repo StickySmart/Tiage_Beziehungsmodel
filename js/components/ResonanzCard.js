@@ -189,7 +189,7 @@ const ResonanzCard = (function() {
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`resonanzFaktoren.${person}`);
-            console.log('[ResonanzCard] load() - TiageState.get:', person, JSON.stringify(fromState));
+            // console.log('[ResonanzCard] load() - TiageState.get:', person, JSON.stringify(fromState)); // DISABLED: Message overflow
             if (fromState && fromState.R1) {
                 const result = {
                     R1: {
@@ -209,7 +209,7 @@ const ResonanzCard = (function() {
                         locked: fromState.R4?.locked ?? false
                     }
                 };
-                console.log('[ResonanzCard] load() - Returning from TiageState:', JSON.stringify(result));
+                // console.log('[ResonanzCard] load() - Returning from TiageState:', JSON.stringify(result)); // DISABLED: Message overflow
                 return result;
             }
         }
