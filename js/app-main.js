@@ -708,22 +708,29 @@
             }
 
             // Reset UI - clear all active states in partner grids
-            // Geschlecht
-            document.querySelectorAll('#partner-geschlecht-p-grid .geschlecht-btn, #mobile-partner-geschlecht-p-grid .geschlecht-btn, #modal-partner-geschlecht-grid .geschlecht-btn').forEach(btn => {
-                btn.classList.remove('active', 'active-primary', 'active-secondary');
+            // FIX: Entferne ALLE möglichen Klassen (active, primary-selected, secondary-selected)
+            const allClasses = ['active', 'active-primary', 'active-secondary', 'primary-selected', 'secondary-selected'];
+
+            // Geschlecht (inkl. extras)
+            document.querySelectorAll('#partner-geschlecht-p-grid .geschlecht-btn, #mobile-partner-geschlecht-p-grid .geschlecht-btn, #modal-partner-geschlecht-grid .geschlecht-btn, #partner-geschlecht-extras-grid .geschlecht-btn, #mobile-partner-geschlecht-extras-grid .geschlecht-btn').forEach(btn => {
+                btn.classList.remove(...allClasses);
+                btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
             document.querySelectorAll('#partner-geschlecht-s-grid .geschlecht-btn, #mobile-partner-geschlecht-s-grid .geschlecht-btn').forEach(btn => {
-                btn.classList.remove('active', 'active-primary', 'active-secondary');
+                btn.classList.remove(...allClasses);
+                btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
 
             // Orientierung
             document.querySelectorAll('#partner-orientierung-grid .orientierung-btn, #mobile-partner-orientierung-grid .orientierung-btn, #modal-partner-orientierung-grid .orientierung-btn').forEach(btn => {
-                btn.classList.remove('active', 'active-primary', 'active-secondary');
+                btn.classList.remove(...allClasses);
+                btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
 
             // Dominanz
             document.querySelectorAll('#partner-dominanz-grid .dominanz-btn, #mobile-partner-dominanz-grid .dominanz-btn, #modal-partner-dominanz-grid .dominanz-btn').forEach(btn => {
-                btn.classList.remove('active', 'active-primary', 'active-secondary');
+                btn.classList.remove(...allClasses);
+                btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
 
             // Clear summaries
