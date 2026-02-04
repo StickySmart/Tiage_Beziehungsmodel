@@ -421,6 +421,19 @@
         </div>
     </div>
 
+    <!-- RTI-Säulen Definition Modal -->
+    <div class="modal-overlay" id="rtiPillarModal" onclick="closeRtiPillarModal(event)" style="z-index: 2450;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 450px;">
+            <div class="modal-header" style="border-bottom: 2px solid var(--rti-color, #F4A261);">
+                <span class="modal-title" id="rtiPillarModalTitle" style="color: var(--rti-color, #F4A261);">RTI-Säule</span>
+                <button class="modal-close" onclick="closeRtiPillarModal(event)">&times;</button>
+            </div>
+            <div class="modal-body" id="rtiPillarModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- Resonanzfaktor-Hilfe Modal (Phase 2: onclick → data-action migriert) -->
     <div class="modal-overlay" id="resonanzHelpModal" data-action="close-resonanz-help-modal" style="z-index: 2450;">
         <div class="modal" data-stop-propagation style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
@@ -670,7 +683,7 @@
                         <!-- S1: Leiblichkeit (Körperliche Anziehung) -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #E84393; font-size: 11px; min-width: 24px; font-weight: 600;">S1</span>
-                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🫀 Leiblichkeit</span>
+                            <span onclick="openRtiPillarModal('S1')" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🫀 Leiblichkeit</span>
                             <div class="rti-toggle-group" id="rtiToggleS1" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S1', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S1', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -681,7 +694,7 @@
                         <!-- S2: Soziales Netzwerk (Beziehungsform) -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #3B82F6; font-size: 11px; min-width: 24px; font-weight: 600;">S2</span>
-                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">👥 Soziales Netzwerk</span>
+                            <span onclick="openRtiPillarModal('S2')" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">👥 Soziales Netzwerk</span>
                             <div class="rti-toggle-group" id="rtiToggleS2" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S2', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S2', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -692,7 +705,7 @@
                         <!-- S3: Autonomie & Leistung -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #22c55e; font-size: 11px; min-width: 24px; font-weight: 600;">S3</span>
-                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🎯 Autonomie</span>
+                            <span onclick="openRtiPillarModal('S3')" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🎯 Autonomie</span>
                             <div class="rti-toggle-group" id="rtiToggleS3" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S3', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S3', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -703,7 +716,7 @@
                         <!-- S4: Sicherheit & Stabilität -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #f59e0b; font-size: 11px; min-width: 24px; font-weight: 600;">S4</span>
-                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">🛡️ Sicherheit</span>
+                            <span onclick="openRtiPillarModal('S4')" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🛡️ Sicherheit</span>
                             <div class="rti-toggle-group" id="rtiToggleS4" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S4', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S4', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -714,7 +727,7 @@
                         <!-- S5: Werte & Sinn -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px;">
                             <span style="color: #8b5cf6; font-size: 11px; min-width: 24px; font-weight: 600;">S5</span>
-                            <span style="color: var(--text-secondary); font-size: 11px; flex: 1;">💫 Werte & Sinn</span>
+                            <span onclick="openRtiPillarModal('S5')" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">💫 Werte & Sinn</span>
                             <div class="rti-toggle-group" id="rtiToggleS5" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-value="0" onclick="setRtiPriority('S5', 0)" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-value="1" onclick="setRtiPriority('S5', 1)" style="font-size: 11px; padding: 4px 8px;">1</button>

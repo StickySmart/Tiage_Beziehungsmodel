@@ -188,6 +188,165 @@ var TiageWeights = TiageWeights || {};
     };
 
     // ═══════════════════════════════════════════════════════════════════════
+    // RTI PILLAR DEFINITION MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * RTI-Säulen Definitionen (nach Petzold - 5 Säulen der Identität)
+     */
+    const RTI_PILLAR_DEFINITIONS = {
+        S1: {
+            id: 'S1',
+            label: 'Leiblichkeit',
+            emoji: '🫀',
+            color: '#E84393',
+            beschreibung: 'Körper, Gesundheit, Sexualität, körperliche Nähe',
+            details: 'Die Säule der Leiblichkeit umfasst alle körperlichen Aspekte einer Beziehung: körperliche Anziehung, Sexualität, Gesundheit, Sport und Fitness, sowie das Bedürfnis nach körperlicher Nähe und Berührung.',
+            beispiele: [
+                'Körperliche Anziehung und sexuelle Kompatibilität',
+                'Gemeinsame Aktivitäten wie Sport oder Tanzen',
+                'Bedürfnis nach Umarmungen und körperlicher Nähe',
+                'Gesundheitsbewusstsein und Lifestyle'
+            ],
+            quelle: 'RTI nach Hilarion Petzold'
+        },
+        S2: {
+            id: 'S2',
+            label: 'Soziales Netzwerk',
+            emoji: '👥',
+            color: '#3B82F6',
+            beschreibung: 'Beziehungsform, Freunde, Familie, soziales Leben',
+            details: 'Diese Säule betrifft die sozialen Strukturen und Netzwerke: Wie möchten beide Partner ihre Beziehung gestalten (mono/poly)? Wie wichtig sind Freunde und Familie? Wie integriert sich die Beziehung in das soziale Umfeld?',
+            beispiele: [
+                'Beziehungsform: Monogamie vs. Polyamorie',
+                'Integration von Freunden und Familie',
+                'Gemeinsame vs. getrennte Freundeskreise',
+                'Soziale Aktivitäten und Events'
+            ],
+            quelle: 'RTI nach Hilarion Petzold'
+        },
+        S3: {
+            id: 'S3',
+            label: 'Autonomie & Leistung',
+            emoji: '🎯',
+            color: '#22c55e',
+            beschreibung: 'Selbstverwirklichung, Kreativität, Machtdynamik, Arbeit',
+            details: 'Diese Säule umfasst Karriere, persönliche Ziele, Selbstverwirklichung und die Machtdynamik in der Beziehung. Wie viel Raum hat jeder Partner für eigene Projekte? Wie werden Entscheidungen getroffen?',
+            beispiele: [
+                'Karriereziele und berufliche Entwicklung',
+                'Persönliche Hobbys und Projekte',
+                'Entscheidungsmacht in der Beziehung',
+                'Work-Life-Balance Vorstellungen'
+            ],
+            quelle: 'RTI nach Hilarion Petzold'
+        },
+        S4: {
+            id: 'S4',
+            label: 'Sicherheit & Stabilität',
+            emoji: '🛡️',
+            color: '#f59e0b',
+            beschreibung: 'Lebensplanung, Wohnen, Praktisches, Alltag, Materielles',
+            details: 'Die Säule der materiellen Sicherheit: Finanzielle Planung, Wohnsituation, gemeinsamer Alltag, Zukunftsplanung. Wie wichtig ist beiden Partnern Stabilität und Sicherheit im Leben?',
+            beispiele: [
+                'Finanzielle Ziele und Umgang mit Geld',
+                'Wohnsituation: Stadt/Land, Miete/Eigentum',
+                'Kinderwunsch und Familienplanung',
+                'Alltagsorganisation und Haushaltsführung'
+            ],
+            quelle: 'RTI nach Hilarion Petzold'
+        },
+        S5: {
+            id: 'S5',
+            label: 'Werte & Sinn',
+            emoji: '💫',
+            color: '#8b5cf6',
+            beschreibung: 'Weltanschauung, Spiritualität, Kommunikation, tiefes Verstehen',
+            details: 'Die tiefste Säule der Identität: Grundwerte, Lebensphilosophie, Spiritualität, und die Fähigkeit zur tiefen Kommunikation. Teilen beide Partner ähnliche Grundüberzeugungen und können sie sich auf einer tiefen Ebene verstehen?',
+            beispiele: [
+                'Grundlegende Lebenswerte und Ethik',
+                'Spiritualität oder religiöse Überzeugungen',
+                'Kommunikationsstil und emotionale Tiefe',
+                'Sinn und Bedeutung im Leben'
+            ],
+            quelle: 'RTI nach Hilarion Petzold'
+        }
+    };
+
+    /**
+     * Öffnet das RTI-Säulen Definition Modal
+     * @param {string} pillarKey - 'S1', 'S2', 'S3', 'S4', oder 'S5'
+     */
+    function openPillarModal(pillarKey) {
+        const pillar = RTI_PILLAR_DEFINITIONS[pillarKey];
+        if (!pillar) {
+            console.error('[RTI] Unknown pillar:', pillarKey);
+            return;
+        }
+
+        const modal = document.getElementById('rtiPillarModal');
+        const title = document.getElementById('rtiPillarModalTitle');
+        const body = document.getElementById('rtiPillarModalBody');
+
+        if (!modal || !title || !body) {
+            console.error('[RTI] Modal elements not found');
+            return;
+        }
+
+        // Set color CSS variable
+        modal.style.setProperty('--rti-color', pillar.color);
+
+        // Set title
+        title.innerHTML = `${pillar.emoji} ${pillar.id}: ${pillar.label}`;
+        title.style.color = pillar.color;
+
+        // Build content
+        const beispieleHtml = pillar.beispiele.map(b => `<li>${b}</li>`).join('');
+
+        body.innerHTML = `
+            <div style="margin-bottom: 16px;">
+                <p style="font-size: 14px; color: var(--text-primary); margin: 0 0 8px 0; font-weight: 500;">
+                    ${pillar.beschreibung}
+                </p>
+            </div>
+            <div style="margin-bottom: 16px;">
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                    ${pillar.details}
+                </p>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                <p style="font-size: 11px; color: ${pillar.color}; margin: 0 0 8px 0; font-weight: 600;">Beispiele:</p>
+                <ul style="margin: 0; padding-left: 20px; font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+                    ${beispieleHtml}
+                </ul>
+            </div>
+            <p style="font-size: 10px; color: rgba(255,255,255,0.4); margin: 0; text-align: right;">
+                Quelle: ${pillar.quelle}
+            </p>
+        `;
+
+        // Show modal
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Schließt das RTI-Säulen Definition Modal
+     * @param {Event} event - Das Click-Event
+     */
+    function closePillarModal(event) {
+        if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) {
+            return;
+        }
+        const modal = document.getElementById('rtiPillarModal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // BACKWARDS COMPATIBILITY - Global function aliases
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -203,6 +362,10 @@ var TiageWeights = TiageWeights || {};
         window.saveRtiPriorities = save;
         window.updateRtiToggleUI = updateUI;
         window.updateReibungSlider = updateReibungSlider;
+
+        // RTI Pillar Modal functions
+        window.openRtiPillarModal = openPillarModal;
+        window.closeRtiPillarModal = closePillarModal;
     }
 
     // Node.js export
