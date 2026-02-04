@@ -33,7 +33,7 @@ const PhilosophyHints = (function() {
 
 Du wirst Entscheidungen treffen: Archetyp, Orientierung, Dominanz, Geschlecht. Das klingt nach Schubladen – ist es aber nicht. Jede Auswahl lädt statistische Erwartungen. Dann zeigst du, wo du anders bist.
 
-Kein Algorithmus kann dir sagen, wen du lieben sollst. Aber er kann dir zeigen, wo Resonanz möglich ist. Der Rest ist deine Entscheidung.
+Definiere deine eigene Überzeugung der Archetypen über die jeweilige Einstellung (⚙️ Zahnrad-Icon). Der Algorithmus kann dich nur inspirieren – sich an aktuellen Methoden zu orientieren, dein Selbstbild abzugleichen, und in Bezug zu unserer Prägung dich hinauszuentwickeln in die Freiheit.
 
 Nimm dir Zeit. Es gibt keine falschen Antworten.`,
             variant: 'default'
