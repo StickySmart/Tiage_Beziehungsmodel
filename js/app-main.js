@@ -102,8 +102,30 @@
             // Subscriber für ICH-Archetyp Änderungen
             TiageState.subscribe('archetypes.ich', function(event) {
                 if (event.newValue && event.newValue.primary) {
+                    const oldArchetype = currentArchetype;
                     currentArchetype = event.newValue.primary;
                     try { mobileIchArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
+
+                    // Bei Archetyp-Wechsel: Bedürfnisse für neuen Archetyp laden
+                    if (oldArchetype !== event.newValue.primary) {
+                        console.log('[app-main] Archetyp gewechselt von', oldArchetype, 'zu', event.newValue.primary, '- lade Bedürfnisse neu');
+
+                        // Synchronisiere Lock-Status aus TiageState für neuen Archetyp
+                        if (typeof AttributeSummaryCard !== 'undefined') {
+                            // Cache invalidieren damit frische Werte geladen werden
+                            if (AttributeSummaryCard.invalidateFlatNeedsCache) {
+                                AttributeSummaryCard.invalidateFlatNeedsCache();
+                            }
+                            // UI neu rendern mit Werten für neuen Archetyp
+                            if (AttributeSummaryCard.reRenderFlatNeeds) {
+                                const newArchetyp = event.newValue.primary;
+                                setTimeout(function() {
+                                    AttributeSummaryCard.reRenderFlatNeeds(newArchetyp);
+                                    console.log('[app-main] Bedürfnis-UI für Archetyp', newArchetyp, 'aktualisiert');
+                                }, 100); // Kurze Verzögerung damit State vollständig aktualisiert ist
+                            }
+                        }
+                    }
                 }
             });
 

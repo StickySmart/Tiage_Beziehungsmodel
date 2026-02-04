@@ -3243,15 +3243,27 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Rendert die flache Bedürfnisliste neu (z.B. nach Sortierung oder Reset)
+     * @param {string} [newArchetyp] - Optional: Neuer Archetyp (bei Archetyp-Wechsel)
      */
-    function reRenderFlatNeeds() {
-        if (!currentFlatArchetyp || !currentFlatArchetypLabel) return;
+    function reRenderFlatNeeds(newArchetyp) {
+        // Bei Archetyp-Wechsel: Neuen Archetyp und Label verwenden
+        let archetyp = currentFlatArchetyp;
+        let archetypLabel = currentFlatArchetypLabel;
+
+        if (newArchetyp && typeof TiageArchetypes !== 'undefined') {
+            archetyp = newArchetyp;
+            // Label aus TiageArchetypes holen
+            archetypLabel = TiageArchetypes.getName(newArchetyp) || newArchetyp;
+            console.log('[AttributeSummaryCard] Rerender mit neuem Archetyp:', archetyp, 'Label:', archetypLabel);
+        }
+
+        if (!archetyp || !archetypLabel) return;
 
         const container = document.querySelector('.flat-needs-container');
         if (!container) return;
 
         // Generiere neuen HTML
-        const newHtml = renderAllNeedsFlat(currentFlatArchetyp, currentFlatArchetypLabel);
+        const newHtml = renderAllNeedsFlat(archetyp, archetypLabel);
 
         // Ersetze Container
         const temp = document.createElement('div');
