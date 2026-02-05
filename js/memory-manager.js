@@ -185,15 +185,20 @@ const MemoryManager = (function() {
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
             const fromState = TiageState.get(`gewichtungen.${person}`);
-            console.log('[MemoryManager] collectGewichtungen - TiageState.get:', person, JSON.stringify(fromState));
-            console.log('[MemoryManager] collectGewichtungen - Check:',
-                'fromState:', !!fromState,
-                'fromState.O:', fromState?.O,
-                'typeof:', typeof fromState?.O,
-                'has value:', fromState?.O ? ('value' in fromState.O) : false);
-            if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
-                console.log('[MemoryManager] collectGewichtungen - RETURNING:', JSON.stringify(fromState));
-                return fromState;
+            if (fromState && fromState.O !== undefined) {
+                // Check if new format (object with value) or old format (direct number)
+                if (typeof fromState.O === 'object' && 'value' in fromState.O) {
+                    // New format - return as is
+                    return fromState;
+                } else if (typeof fromState.O === 'number') {
+                    // Old format (direct numbers) - convert to new format
+                    return {
+                        O: { value: fromState.O * 25, locked: false },
+                        A: { value: (fromState.A || 1) * 25, locked: false },
+                        D: { value: (fromState.D || 1) * 25, locked: false },
+                        G: { value: (fromState.G || 1) * 25, locked: false }
+                    };
+                }
             }
         }
 
