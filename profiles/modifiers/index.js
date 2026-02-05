@@ -1,8 +1,10 @@
 /**
  * PROFILE MODIFIERS INDEX
  *
- * Lädt alle Modifier (Gender, Dominanz, Orientierung) und stellt sie als einheitliches Objekt bereit.
+ * Lädt alle Modifier (Gender, Orientierung, Dominanz, FFH) und stellt sie als einheitliches Objekt bereit.
  * Ermöglicht die Berechnung von Bedürfnis-Deltas basierend auf Profil-Faktoren.
+ *
+ * v4.2: FFH-Modifier (Fit, Fucked up, Horny) hinzugefügt
  */
 
 (function() {
@@ -13,6 +15,7 @@
     window.TiageModifiers.Gender = window.TiageModifiers.Gender || {};
     window.TiageModifiers.Dominanz = window.TiageModifiers.Dominanz || {};
     window.TiageModifiers.Orientierung = window.TiageModifiers.Orientierung || {};
+    window.TiageModifiers.FFH = window.TiageModifiers.FFH || {};
 
     /**
      * Mapper von Profil-Werten zu Modifier-Keys
@@ -66,6 +69,14 @@
         'bisexuell': 'Bisexuell',
         'bihomo': 'Bisexuell',            // Legacy: Bi-/Homosexuell → Bisexuell
         'pansexuell': 'Bisexuell'         // Legacy: Pansexuell → Bisexuell
+    };
+
+    // v4.2: FFH-Map (Fit, Fucked up, Horny)
+    const FFH_MAP = {
+        'fit': 'Fit',
+        'fuckedup': 'Fuckedup',
+        'fucked_up': 'Fuckedup',
+        'horny': 'Horny'
     };
 
     /**
@@ -138,6 +149,24 @@
         return null;
     }
 
+    /**
+     * Holt einen FFH-Modifier (v4.2)
+     * @param {string} ffhKey - 'fit', 'fuckedup', oder 'horny'
+     * @returns {Object|null} Modifier-Objekt mit deltas
+     */
+    function getFFHModifier(ffhKey) {
+        if (!ffhKey || typeof ffhKey !== 'string') return null;
+
+        const key = ffhKey.toLowerCase();
+        const modifierKey = FFH_MAP[key];
+
+        if (modifierKey && TiageModifiers.FFH[modifierKey]) {
+            return TiageModifiers.FFH[modifierKey];
+        }
+
+        return null;
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // RTI-SÄULEN BASIERTE SKALIERUNG (v4.1)
     // ═══════════════════════════════════════════════════════════════════════
@@ -146,11 +175,17 @@
      * RTI-Säulen Mapping für Modifier-Kategorien
      * Jeder Modifier-Typ wird einer oder mehreren RTI-Säulen zugeordnet
      * Die RTI-Priorität (0, 1, 2) wird als Multiplikator für die Deltas verwendet
+     *
+     * v4.2: FFH-Modifier hinzugefügt
      */
     const RTI_MODIFIER_MAPPING = {
         gender: ['S1'],            // Geschlecht → S1 Leiblichkeit
         dominanz: ['S3'],          // Dominanz → S3 Autonomie & Leistung
-        orientierung: ['S1', 'S2'] // Orientierung → S1 Leiblichkeit + S2 Soziales Netzwerk
+        orientierung: ['S1', 'S2'], // Orientierung → S1 Leiblichkeit + S2 Soziales Netzwerk
+        // v4.2: FFH (Fit, Fucked up, Horny)
+        fit: ['S1', 'S4'],         // Fit → S1 Leiblichkeit + S4 Sicherheit (Gesundheit)
+        fuckedup: ['S5'],          // Fucked up → S5 Werte & Sinn (emotionale Tiefe)
+        horny: ['S1']              // Horny → S1 Leiblichkeit (Sexualität)
     };
 
     /**
@@ -196,9 +231,10 @@
      *
      * v4.0: geschlecht ist String, orientierung ist Array
      * v4.1: RTI-Prioritäten als Multiplikator für Modifier-Deltas
+     * v4.2: FFH-Modifier (Fit, Fucked up, Horny) hinzugefügt
      * LEGACY: Unterstützt auch alte Formate
      *
-     * @param {Object} profile - Profil mit geschlecht, dominanz, orientierung
+     * @param {Object} profile - Profil mit geschlecht, dominanz, orientierung, geschlecht_extras
      * @returns {Object} Kombinierte Deltas aus allen Modifiern (skaliert nach RTI-Prioritäten)
      */
     function calculateProfileDeltas(profile) {
@@ -282,6 +318,40 @@
             });
         }
 
+        // v4.2: FFH-Modifier (Fit, Fucked up, Horny)
+        // geschlecht_extras ist { fit: bool, fuckedup: bool, horny: bool }
+        const extras = profile.geschlecht_extras || profile.extras || {};
+
+        if (extras.fit) {
+            const fitMultiplier = getRtiMultiplier('fit');
+            const fitMod = getFFHModifier('fit');
+            if (fitMod && fitMod.deltas) {
+                Object.keys(fitMod.deltas).forEach(key => {
+                    deltas[key] = (deltas[key] || 0) + (fitMod.deltas[key] * fitMultiplier);
+                });
+            }
+        }
+
+        if (extras.fuckedup) {
+            const fuckedupMultiplier = getRtiMultiplier('fuckedup');
+            const fuckedupMod = getFFHModifier('fuckedup');
+            if (fuckedupMod && fuckedupMod.deltas) {
+                Object.keys(fuckedupMod.deltas).forEach(key => {
+                    deltas[key] = (deltas[key] || 0) + (fuckedupMod.deltas[key] * fuckedupMultiplier);
+                });
+            }
+        }
+
+        if (extras.horny) {
+            const hornyMultiplier = getRtiMultiplier('horny');
+            const hornyMod = getFFHModifier('horny');
+            if (hornyMod && hornyMod.deltas) {
+                Object.keys(hornyMod.deltas).forEach(key => {
+                    deltas[key] = (deltas[key] || 0) + (hornyMod.deltas[key] * hornyMultiplier);
+                });
+            }
+        }
+
         return deltas;
     }
 
@@ -313,9 +383,11 @@
             gender: Object.keys(TiageModifiers.Gender).length,
             dominanz: Object.keys(TiageModifiers.Dominanz).length,
             orientierung: Object.keys(TiageModifiers.Orientierung).length,
+            ffh: Object.keys(TiageModifiers.FFH).length,
             total: Object.keys(TiageModifiers.Gender).length +
                    Object.keys(TiageModifiers.Dominanz).length +
-                   Object.keys(TiageModifiers.Orientierung).length
+                   Object.keys(TiageModifiers.Orientierung).length +
+                   Object.keys(TiageModifiers.FFH).length
         };
     }
 
@@ -324,6 +396,7 @@
         getGenderModifier: getGenderModifier,
         getDominanzModifier: getDominanzModifier,
         getOrientierungModifier: getOrientierungModifier,
+        getFFHModifier: getFFHModifier,           // v4.2
         calculateProfileDeltas: calculateProfileDeltas,
         applyDeltas: applyDeltas,
         getLoadStatus: getLoadStatus,
@@ -334,6 +407,8 @@
         // v4.0 Maps
         GENDER_MAP_V4: GENDER_MAP_V4,
         ORIENTIERUNG_MAP_V4: ORIENTIERUNG_MAP_V4,
+        // v4.2: FFH Map
+        FFH_MAP: FFH_MAP,
         // LEGACY Maps für externe Nutzung
         GENDER_IDENTITY_MAP: GENDER_IDENTITY_MAP,
         DOMINANZ_MAP: DOMINANZ_MAP,
