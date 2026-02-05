@@ -8528,7 +8528,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Score in der Tiagesynthese-Ansicht (EINE QUELLE DER WAHRHEIT)
             // ════════════════════════════════════════════════════════════════════
             if (typeof TiageState !== 'undefined' && typeof calculateNeedsMatchFromFlatNeeds === 'function') {
-                console.log('[GFK] Verwende calculateNeedsMatchFromFlatNeeds für konsistente Berechnung (individualisierte Daten)');
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[GFK] Verwende calculateNeedsMatchFromFlatNeeds für konsistente Berechnung (individualisierte Daten)');
                 const result = calculateNeedsMatchFromFlatNeeds();
 
                 if (result && result.score !== undefined) {
@@ -9869,7 +9870,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 TiageSynthesis.ArchetypeMatrixCalculator &&
                 typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
                 const score = TiageSynthesis.ArchetypeMatrixCalculator.getScore(type1, type2);
-                console.log('[getArchetypeScore] SSOT:', type1, type2, '→', score);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[getArchetypeScore] SSOT:', type1, type2, '→', score);
                 return score;
             }
 
@@ -9879,7 +9881,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 TiageSynthesis.Factors.Archetyp &&
                 typeof TiageSynthesis.Factors.Archetyp.calculate === 'function') {
                 const result = TiageSynthesis.Factors.Archetyp.calculate(type1, type2, data);
-                console.log('[getArchetypeScore] Via Factors.Archetyp:', type1, type2, '→', result.score);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[getArchetypeScore] Via Factors.Archetyp:', type1, type2, '→', result.score);
                 return result.score;
             }
 
@@ -9996,21 +9999,22 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         function calculateOrientationScore(person1, person2) {
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
 
-            console.log('[calculateOrientationScore] pathosCheck.result:', pathosCheck.result,
-                        'reason:', pathosCheck.reason || '-',
-                        'missingItems:', pathosCheck.missingItems || '-');
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[calculateOrientationScore] pathosCheck.result:', pathosCheck.result,
+            //             'reason:', pathosCheck.reason || '-',
+            //             'missingItems:', pathosCheck.missingItems || '-');
 
             if (pathosCheck.result === "unmöglich") {
-                console.log('[calculateOrientationScore] K.O. - returning 0');
+                // console.log('[calculateOrientationScore] K.O. - returning 0');
                 return 0;  // K.O.-Kriterium!
             }
 
             if (pathosCheck.result === "unsicher") {
-                console.log('[calculateOrientationScore] Unsicher - returning 70');
+                // console.log('[calculateOrientationScore] Unsicher - returning 70');
                 return 70;  // Exploration-Phase
             }
 
-            console.log('[calculateOrientationScore] Möglich - returning 100');
+            // console.log('[calculateOrientationScore] Möglich - returning 100');
             return 100;  // Kompatibel
         }
 
@@ -10348,14 +10352,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // v3.7: Keine Obergrenze - R4 kann > 1.0 sein wenn combinedScore > 100
             const R4Final = Math.max(0, R4);
 
-            console.log('[calculateR4Hybrid] Ergebnis:', {
-                identityScore,
-                attractionScore,
-                combinedScore: Math.round(combinedScore),
-                R4: Math.round(R4Final * 1000) / 1000,
-                attraction1to2: attractionResult.direction1to2,
-                attraction2to1: attractionResult.direction2to1
-            });
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[calculateR4Hybrid] Ergebnis:', {
+            //     identityScore,
+            //     attractionScore,
+            //     combinedScore: Math.round(combinedScore),
+            //     R4: Math.round(R4Final * 1000) / 1000,
+            //     attraction1to2: attractionResult.direction1to2,
+            //     attraction2to1: attractionResult.direction2to1
+            // });
 
             return {
                 R4: Math.round(R4Final * 1000) / 1000,
@@ -10449,15 +10454,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichKeys = Object.keys(ichFlatNeeds);
             const partnerKeys = Object.keys(partnerFlatNeeds);
 
-            // DEBUG: Log flatNeeds für beide Personen
-            console.log('[calculateNeedsMatchFromFlatNeeds] Vergleich:', {
-                ichCount: ichKeys.length,
-                partnerCount: partnerKeys.length,
-                ichSample: ichKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: ichFlatNeeds[k] }), {}),
-                partnerSample: partnerKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: partnerFlatNeeds[k] }), {}),
-                ichDimensions: TiageState.get('personDimensions.ich'),
-                partnerDimensions: TiageState.get('personDimensions.partner')
-            });
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[calculateNeedsMatchFromFlatNeeds] Vergleich:', {
+            //     ichCount: ichKeys.length,
+            //     partnerCount: partnerKeys.length,
+            //     ichSample: ichKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: ichFlatNeeds[k] }), {}),
+            //     partnerSample: partnerKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: partnerFlatNeeds[k] }), {}),
+            //     ichDimensions: TiageState.get('personDimensions.ich'),
+            //     partnerDimensions: TiageState.get('personDimensions.partner')
+            // });
 
             if (ichKeys.length === 0 || partnerKeys.length === 0) {
                 return null; // Keine Daten verfügbar
@@ -10467,15 +10472,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichLockedNeeds = TiageState.getLockedNeeds('ich') || {};
             const partnerLockedNeeds = TiageState.getLockedNeeds('partner') || {};
 
-            // DEBUG: Log lockedNeeds
-            const ichLockedCount = Object.keys(ichLockedNeeds).length;
-            const partnerLockedCount = Object.keys(partnerLockedNeeds).length;
-            if (ichLockedCount > 0 || partnerLockedCount > 0) {
-                console.log('[calculateNeedsMatchFromFlatNeeds] LockedNeeds:', {
-                    ichLocked: ichLockedCount,
-                    partnerLocked: partnerLockedCount
-                });
-            }
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // const ichLockedCount = Object.keys(ichLockedNeeds).length;
+            // const partnerLockedCount = Object.keys(partnerLockedNeeds).length;
+            // if (ichLockedCount > 0 || partnerLockedCount > 0) {
+            //     console.log('[calculateNeedsMatchFromFlatNeeds] LockedNeeds:', {
+            //         ichLocked: ichLockedCount,
+            //         partnerLocked: partnerLockedCount
+            //     });
+            // }
 
             // Finale Werte: lockedNeeds überschreiben flatNeeds
             const getFinalValue = (person, needId) => {
@@ -11079,11 +11084,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         // R4 wird weiterhin via calculateR4Hybrid berechnet
 
                         rFactorSource = 'realNeeds';
-                        console.log('[calculateRelationshipQuality] R1-R3 aus ECHTEN NEEDS berechnet:', {
-                            R1, R2, R3,
-                            resonanzIch: { R1: resonanzIch.leben || resonanzIch.R1, R2: resonanzIch.philosophie || resonanzIch.R2, R3: resonanzIch.dynamik || resonanzIch.R3 },
-                            resonanzPartner: { R1: resonanzPartner.leben || resonanzPartner.R1, R2: resonanzPartner.philosophie || resonanzPartner.R2, R3: resonanzPartner.dynamik || resonanzPartner.R3 }
-                        });
+                        // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                        // console.log('[calculateRelationshipQuality] R1-R3 aus ECHTEN NEEDS berechnet:', {
+                        //     R1, R2, R3,
+                        //     resonanzIch: { R1: resonanzIch.leben || resonanzIch.R1, R2: resonanzIch.philosophie || resonanzIch.R2, R3: resonanzIch.dynamik || resonanzIch.R3 },
+                        //     resonanzPartner: { R1: resonanzPartner.leben || resonanzPartner.R1, R2: resonanzPartner.philosophie || resonanzPartner.R2, R3: resonanzPartner.dynamik || resonanzPartner.R3 }
+                        // });
 
                         // ═══════════════════════════════════════════════════════════════════
                         // FIX v1.8.785: R-Faktoren zu TiageState speichern für Modal-Konsistenz
@@ -11123,13 +11129,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // - Attraktion: Bidirektional mit P/S Gewichtung (70%)
             const r4Result = calculateR4Hybrid(person1, person2);
             R4 = r4Result.R4;
-            console.log('[calculateRelationshipQuality] R4 HYBRID berechnet:', {
-                R4,
-                identityScore: r4Result.identityScore,
-                attractionScore: r4Result.attractionScore,
-                attraction1to2: r4Result.attractionDetails?.direction1to2,
-                attraction2to1: r4Result.attractionDetails?.direction2to1
-            });
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[calculateRelationshipQuality] R4 HYBRID berechnet:', {
+            //     R4,
+            //     identityScore: r4Result.identityScore,
+            //     attractionScore: r4Result.attractionScore,
+            //     attraction1to2: r4Result.attractionDetails?.direction1to2,
+            //     attraction2to1: r4Result.attractionDetails?.direction2to1
+            // });
 
             // ═══════════════════════════════════════════════════════════════════
             // SSOT v3.10: R-FAKTOREN NUR AUS NEEDS
