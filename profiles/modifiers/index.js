@@ -138,14 +138,68 @@
         return null;
     }
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // RTI-SÄULEN BASIERTE SKALIERUNG (v4.1)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * RTI-Säulen Mapping für Modifier-Kategorien
+     * Jeder Modifier-Typ wird einer oder mehreren RTI-Säulen zugeordnet
+     * Die RTI-Priorität (0, 1, 2) wird als Multiplikator für die Deltas verwendet
+     */
+    const RTI_MODIFIER_MAPPING = {
+        gender: ['S1'],            // Geschlecht → S1 Leiblichkeit
+        dominanz: ['S3'],          // Dominanz → S3 Autonomie & Leistung
+        orientierung: ['S1', 'S2'] // Orientierung → S1 Leiblichkeit + S2 Soziales Netzwerk
+    };
+
+    /**
+     * Holt die RTI-Prioritäten aus TiageState oder TiageWeights
+     * @returns {Object} { S1, S2, S3, S4, S5 } mit Werten 0, 1, oder 2
+     */
+    function getRtiPriorities() {
+        // Zuerst aus TiageWeights.RTI versuchen (aktuellster Wert)
+        if (typeof TiageWeights !== 'undefined' && TiageWeights.RTI && typeof TiageWeights.RTI.get === 'function') {
+            return TiageWeights.RTI.get();
+        }
+        // Fallback: Aus TiageState laden
+        if (typeof TiageState !== 'undefined' && typeof TiageState.get === 'function') {
+            const stored = TiageState.get('rtiPriorities');
+            if (stored && typeof stored.S1 === 'number') {
+                return stored;
+            }
+        }
+        // Default: Alle auf 1 (Normal)
+        return { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
+    }
+
+    /**
+     * Berechnet den RTI-Multiplikator für eine Modifier-Kategorie
+     * Wenn mehrere Säulen zugeordnet sind, wird der Durchschnitt verwendet
+     *
+     * @param {string} category - 'gender', 'dominanz', oder 'orientierung'
+     * @returns {number} Multiplikator (0, 1, oder 2)
+     */
+    function getRtiMultiplier(category) {
+        const priorities = getRtiPriorities();
+        const pillars = RTI_MODIFIER_MAPPING[category];
+
+        if (!pillars || pillars.length === 0) return 1;
+
+        // Berechne Durchschnitt der zugeordneten Säulen-Prioritäten
+        const sum = pillars.reduce((acc, pillar) => acc + (priorities[pillar] || 1), 0);
+        return sum / pillars.length;
+    }
+
     /**
      * Berechnet alle Deltas für ein Profil (v4.0)
      *
      * v4.0: geschlecht ist String, orientierung ist Array
+     * v4.1: RTI-Prioritäten als Multiplikator für Modifier-Deltas
      * LEGACY: Unterstützt auch alte Formate
      *
      * @param {Object} profile - Profil mit geschlecht, dominanz, orientierung
-     * @returns {Object} Kombinierte Deltas aus allen Modifiern
+     * @returns {Object} Kombinierte Deltas aus allen Modifiern (skaliert nach RTI-Prioritäten)
      */
     function calculateProfileDeltas(profile) {
         const deltas = {};
@@ -153,6 +207,7 @@
         // Gender-Modifier (v4.0: String, LEGACY: { primary, secondary })
         if (profile.geschlecht) {
             let genderMod;
+            const genderMultiplier = getRtiMultiplier('gender');
 
             if (typeof profile.geschlecht === 'string') {
                 // v4.0: Einfacher String
@@ -166,20 +221,23 @@
 
             if (genderMod && genderMod.deltas) {
                 Object.keys(genderMod.deltas).forEach(key => {
-                    deltas[key] = (deltas[key] || 0) + genderMod.deltas[key];
+                    // v4.1: Delta × RTI-Multiplikator
+                    deltas[key] = (deltas[key] || 0) + (genderMod.deltas[key] * genderMultiplier);
                 });
             }
         }
 
         // Dominanz-Modifier
         if (profile.dominanz) {
+            const dominanzMultiplier = getRtiMultiplier('dominanz');
             const dominanzVal = typeof profile.dominanz === 'object'
                 ? profile.dominanz.primary
                 : profile.dominanz;
             const dominanzMod = getDominanzModifier(dominanzVal);
             if (dominanzMod && dominanzMod.deltas) {
                 Object.keys(dominanzMod.deltas).forEach(key => {
-                    deltas[key] = (deltas[key] || 0) + dominanzMod.deltas[key];
+                    // v4.1: Delta × RTI-Multiplikator
+                    deltas[key] = (deltas[key] || 0) + (dominanzMod.deltas[key] * dominanzMultiplier);
                 });
             }
         }
@@ -187,6 +245,7 @@
         // Orientierungs-Modifier (v4.0: Array, LEGACY: String oder Object)
         if (profile.orientierung) {
             let orientierungen = [];
+            const orientierungMultiplier = getRtiMultiplier('orientierung');
 
             if (Array.isArray(profile.orientierung)) {
                 // v4.0: Array
@@ -216,7 +275,8 @@
                 const oriMod = getOrientierungModifier(ori);
                 if (oriMod && oriMod.deltas) {
                     Object.keys(oriMod.deltas).forEach(key => {
-                        deltas[key] = (deltas[key] || 0) + oriMod.deltas[key];
+                        // v4.1: Delta × RTI-Multiplikator
+                        deltas[key] = (deltas[key] || 0) + (oriMod.deltas[key] * orientierungMultiplier);
                     });
                 }
             });
@@ -267,6 +327,10 @@
         calculateProfileDeltas: calculateProfileDeltas,
         applyDeltas: applyDeltas,
         getLoadStatus: getLoadStatus,
+        // v4.1: RTI-Skalierung
+        getRtiPriorities: getRtiPriorities,
+        getRtiMultiplier: getRtiMultiplier,
+        RTI_MODIFIER_MAPPING: RTI_MODIFIER_MAPPING,
         // v4.0 Maps
         GENDER_MAP_V4: GENDER_MAP_V4,
         ORIENTIERUNG_MAP_V4: ORIENTIERUNG_MAP_V4,
