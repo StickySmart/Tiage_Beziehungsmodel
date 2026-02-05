@@ -255,6 +255,23 @@
     border-color: #3B82F6;
 }
 
+/* NEU v3.3: Single Save Button für ICH/PARTNER */
+.memory-save-single-btn {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10B981;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-save-single-btn:hover {
+    background: rgba(16, 185, 129, 0.4);
+    border-color: #10B981;
+}
+
 /* Slot Actions */
 .memory-slot-actions {
     display: flex;

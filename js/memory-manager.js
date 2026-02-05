@@ -314,17 +314,19 @@ const MemoryManager = (function() {
      * - gewichtungen: { O, A, D, G } mit value + locked
      * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
      * - attributeModifiers: { gender: {...}, dominance: {...}, orientation: {...} } NEU v3.1
+     * - geschlecht_extras: { fit: bool, fuckedup: bool, horny: bool } NEU v3.3
      */
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.2',
+            dataVersion: '3.3',
             appVersion: getAppVersion(),
             profileOwner: 'ich',  // NEU v3.2: Explizite Unterscheidung ME/Partner
             archetyp: null,
             geschlecht: null,
             dominanz: null,
             orientierung: null,
+            geschlecht_extras: null,  // NEU v3.3: Fit/Fucked up/Horny
             profileReview: null,
             gewichtungen: null,
             resonanzfaktoren: null,
@@ -345,6 +347,9 @@ const MemoryManager = (function() {
 
             // Orientierung: { primary, secondary }
             data.orientierung = TiageState.get('personDimensions.ich.orientierung');
+
+            // NEU v3.3: Geschlecht-Extras (Fit, Fucked up, Horny)
+            data.geschlecht_extras = TiageState.get('personDimensions.ich.geschlecht_extras');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
             data.geschlecht = window.personDimensions.ich?.geschlecht;
@@ -377,12 +382,13 @@ const MemoryManager = (function() {
     /**
      * Collect current PARTNER data from state (COMPLETE PROFILE)
      *
-     * Data Structure v3.2 (same as ME):
+     * Data Structure v3.3 (same as ME):
      * - profileOwner: 'ich' | 'partner' - NEU v3.2: Explizite Profilzuordnung
      * - archetyp: string (nur primary, kein Object)
      * - geschlecht: { primary, secondary }
      * - dominanz: { primary, secondary }
      * - orientierung: { primary, secondary }
+     * - geschlecht_extras: { fit: bool, fuckedup: bool, horny: bool } NEU v3.3
      * - profileReview: { flatNeeds: [...], lockedNeeds: {...} } (220 Bedürfnisse)
      * - gewichtungen: { O, A, D, G } mit value + locked
      * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
@@ -391,13 +397,14 @@ const MemoryManager = (function() {
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.2',
+            dataVersion: '3.3',
             appVersion: getAppVersion(),
             profileOwner: 'partner',  // NEU v3.2: Explizite Unterscheidung ME/Partner
             archetyp: null,
             geschlecht: null,
             dominanz: null,
             orientierung: null,
+            geschlecht_extras: null,  // NEU v3.3: Fit/Fucked up/Horny
             profileReview: null,
             gewichtungen: null,
             resonanzfaktoren: null,
@@ -418,11 +425,15 @@ const MemoryManager = (function() {
 
             // Orientierung: { primary, secondary }
             data.orientierung = TiageState.get('personDimensions.partner.orientierung');
+
+            // NEU v3.3: Geschlecht-Extras (Fit, Fucked up, Horny)
+            data.geschlecht_extras = TiageState.get('personDimensions.partner.geschlecht_extras');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
             data.geschlecht = window.personDimensions.partner?.geschlecht;
             data.dominanz = window.personDimensions.partner?.dominanz;
             data.orientierung = window.personDimensions.partner?.orientierung;
+            data.geschlecht_extras = window.personDimensions.partner?.geschlecht_extras;
             if (typeof window.mobilePartnerArchetype !== 'undefined') {
                 data.archetyp = window.mobilePartnerArchetype;
             }
@@ -1161,6 +1172,52 @@ const MemoryManager = (function() {
         },
 
         /**
+         * NEU v3.3: Save only ME data to a slot
+         * @param {number} slotNumber - Slot number (1-4)
+         * @returns {boolean} Success
+         */
+        saveMeToSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_SLOTS) {
+                console.error('[MemoryManager] Invalid slot number:', slotNumber);
+                return false;
+            }
+
+            try {
+                const meData = collectMeData();
+                const meKey = getSlotKey('ME', slotNumber);
+                localStorage.setItem(meKey, JSON.stringify(meData));
+                console.log(`[MemoryManager] Saved ME to slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManager] Save ME error:', e);
+                return false;
+            }
+        },
+
+        /**
+         * NEU v3.3: Save only PARTNER data to a slot
+         * @param {number} slotNumber - Slot number (1-4)
+         * @returns {boolean} Success
+         */
+        savePartnerToSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_SLOTS) {
+                console.error('[MemoryManager] Invalid slot number:', slotNumber);
+                return false;
+            }
+
+            try {
+                const partData = collectPartnerData();
+                const partKey = getSlotKey('PART', slotNumber);
+                localStorage.setItem(partKey, JSON.stringify(partData));
+                console.log(`[MemoryManager] Saved PARTNER to slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManager] Save PARTNER error:', e);
+                return false;
+            }
+        },
+
+        /**
          * Load ME data from a slot
          * @param {number} slotNumber - Slot number (1-4)
          * @returns {boolean} Success
@@ -1385,7 +1442,7 @@ function updateMemoryModalContent() {
             <div class="memory-slot-content">
                 <!-- ME Info -->
                 <div class="memory-slot-person">
-                    <div class="memory-person-label">ME</div>
+                    <div class="memory-person-label">ME (ICH)</div>
                     ${slot.me ? `
                         <div class="memory-person-info">
                             <span class="memory-timestamp">${slot.me.dateTime}</span>
@@ -1399,8 +1456,16 @@ function updateMemoryModalContent() {
                             <button class="memory-load-btn" onclick="handleLoadMe(${slotNum})" title="ME laden">
                                 <span>Laden</span>
                             </button>
+                            <button class="memory-save-single-btn" onclick="handleSaveMeToSlot(${slotNum})" title="Nur ICH speichern">
+                                <span>💾</span>
+                            </button>
                         </div>
-                    ` : '<div class="memory-person-info empty">-</div>'}
+                    ` : `<div class="memory-person-info empty">-</div>
+                        <div class="memory-person-buttons">
+                            <button class="memory-save-single-btn" onclick="handleSaveMeToSlot(${slotNum})" title="Nur ICH speichern">
+                                <span>💾 ICH</span>
+                            </button>
+                        </div>`}
                 </div>
 
                 <!-- PARTNER Info -->
@@ -1419,14 +1484,22 @@ function updateMemoryModalContent() {
                             <button class="memory-load-btn" onclick="handleLoadPartner(${slotNum})" title="PARTNER laden">
                                 <span>Laden</span>
                             </button>
+                            <button class="memory-save-single-btn" onclick="handleSavePartnerToSlot(${slotNum})" title="Nur PARTNER speichern">
+                                <span>💾</span>
+                            </button>
                         </div>
-                    ` : '<div class="memory-person-info empty">-</div>'}
+                    ` : `<div class="memory-person-info empty">-</div>
+                        <div class="memory-person-buttons">
+                            <button class="memory-save-single-btn" onclick="handleSavePartnerToSlot(${slotNum})" title="Nur PARTNER speichern">
+                                <span>💾 Partner</span>
+                            </button>
+                        </div>`}
                 </div>
             </div>
 
             <div class="memory-slot-actions">
-                <button class="memory-save-btn" onclick="handleSaveToSlot(${slotNum})" title="In diesen Slot speichern">
-                    Speichern
+                <button class="memory-save-btn" onclick="handleSaveToSlot(${slotNum})" title="Beide in diesen Slot speichern">
+                    Beide speichern
                 </button>
                 ${!isEmpty ? `
                     <button class="memory-load-both-btn" onclick="handleLoadBoth(${slotNum})" title="Beide laden">
@@ -1459,6 +1532,32 @@ function handleSaveToSlot(slotNumber) {
     if (success) {
         updateMemoryModalContent();
         showMemoryToast('Gespeichert in Slot ' + slotNumber);
+    } else {
+        showMemoryToast('Fehler beim Speichern', 'error');
+    }
+}
+
+/**
+ * NEU v3.3: Handle save only ME to slot
+ */
+function handleSaveMeToSlot(slotNumber) {
+    const success = MemoryManager.saveMeToSlot(slotNumber);
+    if (success) {
+        updateMemoryModalContent();
+        showMemoryToast('ICH gespeichert in Slot ' + slotNumber);
+    } else {
+        showMemoryToast('Fehler beim Speichern', 'error');
+    }
+}
+
+/**
+ * NEU v3.3: Handle save only PARTNER to slot
+ */
+function handleSavePartnerToSlot(slotNumber) {
+    const success = MemoryManager.savePartnerToSlot(slotNumber);
+    if (success) {
+        updateMemoryModalContent();
+        showMemoryToast('PARTNER gespeichert in Slot ' + slotNumber);
     } else {
         showMemoryToast('Fehler beim Speichern', 'error');
     }
@@ -1620,6 +1719,14 @@ function generateNeedsBreakdown(data) {
     // Build breakdown table
     let html = '<div class="memory-breakdown-table">';
 
+    // NEU v3.3: Extras formatieren (Fit, Fucked up, Horny)
+    const extras = data.geschlecht_extras || {};
+    const extrasParts = [];
+    if (extras.fit) extrasParts.push('Fit 💪');
+    if (extras.fuckedup) extrasParts.push('Fucked up 🔥');
+    if (extras.horny) extrasParts.push('Horny 😈');
+    const extrasDisplay = extrasParts.length > 0 ? extrasParts.join(', ') : '-';
+
     // Header with profile context
     html += `<div class="memory-breakdown-header">
         <span><strong>Archetyp:</strong> ${archetyp}</span>
@@ -1627,6 +1734,13 @@ function generateNeedsBreakdown(data) {
         <span><strong>Dominanz:</strong> ${dominanzDisplay}</span>
         <span><strong>Orientierung:</strong> ${orientierungDisplay}</span>
     </div>`;
+
+    // NEU v3.3: Extras als separate Zeile (wenn gesetzt)
+    if (extrasParts.length > 0) {
+        html += `<div class="memory-breakdown-header" style="margin-top: 4px;">
+            <span><strong>Extras:</strong> ${extrasDisplay}</span>
+        </div>`;
+    }
 
     // Convert flatNeeds to array if it's an object
     // FIX: Konvertiere #ID zu stringKey für Modifier-Lookup

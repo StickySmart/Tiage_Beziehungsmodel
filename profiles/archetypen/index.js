@@ -303,6 +303,10 @@
     // Flag um doppelte Neuberechnungs-Trigger zu vermeiden (BeduerfnisIds race condition)
     let beduerfnisIdsLoadCallbackScheduled = false;
 
+    // FIX v1.8.868: Flag um Endlosschleife bei Subscriber-Kaskade zu verhindern
+    // Wenn recalculateFlatNeedsForPerson läuft, darf es nicht erneut aufgerufen werden
+    let isRecalculating = false;
+
     /**
      * Wendet Deltas auf flatNeeds an (interne Hilfsfunktion)
      * Erwartet dass BeduerfnisIds bereits geladen ist!
@@ -381,12 +385,12 @@
 
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
 
-            // DEBUG: Log berechnete Deltas
-            console.log('[ProfileCalculator] GOD-Deltas berechnet:', {
-                profileContext: profileContext,
-                deltasCount: deltas ? Object.keys(deltas).length : 0,
-                deltas: deltas
-            });
+            // DEBUG: Log berechnete Deltas (DISABLED v1.8.868: Message overflow)
+            // console.log('[ProfileCalculator] GOD-Deltas berechnet:', {
+            //     profileContext: profileContext,
+            //     deltasCount: deltas ? Object.keys(deltas).length : 0,
+            //     deltas: deltas
+            // });
 
             if (deltas && Object.keys(deltas).length > 0) {
                 // Prüfe ob BeduerfnisIds geladen ist (async loading race condition fix)
@@ -455,12 +459,12 @@
             return defaults;
         }
 
-        // Berechne dimensionale Resonanzen
-        console.log('[ProfileCalculator] calculateDimensionalResonance aufgerufen mit:', {
-            archetyp: profileContext.archetyp,
-            needsCount: profileContext.needs ? Object.keys(profileContext.needs).length : 0,
-            sampleNeeds: profileContext.needs ? Object.keys(profileContext.needs).slice(0, 5) : []
-        });
+        // Berechne dimensionale Resonanzen (DEBUG DISABLED v1.8.868: Message overflow)
+        // console.log('[ProfileCalculator] calculateDimensionalResonance aufgerufen mit:', {
+        //     archetyp: profileContext.archetyp,
+        //     needsCount: profileContext.needs ? Object.keys(profileContext.needs).length : 0,
+        //     sampleNeeds: profileContext.needs ? Object.keys(profileContext.needs).slice(0, 5) : []
+        // });
         const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
 
         if (!resonanz || !resonanz.enabled) {
@@ -593,16 +597,15 @@
                 TiageState.set(`personDimensions.${person}.orientierung`, calculatedProfile.orientierung);
             }
 
-            // flatNeeds setzen (respektiere NUR gelockte Werte!)
-            // FIX v1.8.782: Bei Archetyp-Wechsel ALLE nicht-gelockten Needs überschreiben
-            // Nur Needs in profileReview.{person}.lockedNeeds bleiben erhalten
-            // Das ist konsistent mit gewichtungen und resonanzFaktoren (die auch .locked respektieren)
+            // flatNeeds setzen (NUR gelockte Werte behalten, Rest neu berechnen)
+            // FIX v1.8.837: Bei Archetyp-Wechsel werden gelockte Werte aus profileReview geholt
+            // Auto-Lock bei manueller Änderung sorgt dafür, dass User-Werte erhalten bleiben
             if (calculatedProfile.profileReview?.flatNeeds) {
                 const calculatedNeeds = calculatedProfile.profileReview.flatNeeds;
                 const lockedNeeds = TiageState.get(`profileReview.${person}.lockedNeeds`) || {};
                 const lockedCount = Object.keys(lockedNeeds).length;
 
-                // Neue flatNeeds zusammenbauen: berechnete Werte + gelockte Werte
+                // Neue flatNeeds: Berechnete Werte + gelockte Werte überschreiben
                 const newFlatNeeds = { ...calculatedNeeds };
 
                 // Gelockte Needs überschreiben die berechneten
@@ -610,10 +613,8 @@
                     newFlatNeeds[needId] = lockedNeeds[needId];
                 });
 
-                // Komplett ersetzen (nicht nur ergänzen!)
                 TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-
-                console.log(`[ProfileCalculator] flatNeeds für ${person} aktualisiert: ${Object.keys(calculatedNeeds).length} berechnet, ${lockedCount} locked beibehalten`);
+                console.log(`[ProfileCalculator] flatNeeds für ${person}: ${Object.keys(calculatedNeeds).length} berechnet, ${lockedCount} locked beibehalten`);
             }
 
             // gewichtungen setzen (respektiere Locks!)
@@ -749,6 +750,9 @@
      * @param {string} person - 'ich' oder 'partner'
      */
     function recalculateFlatNeedsForPerson(person) {
+        // FIX v1.8.868: Verhindere Endlosschleife durch Subscriber-Kaskade
+        if (isRecalculating) return;
+
         if (typeof TiageState === 'undefined') return;
 
         // Hole aktuellen Archetyp
@@ -760,33 +764,35 @@
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
 
-        // DEBUG: Log GOD settings pro Person (DISABLED: Message overflow)
-        // console.log(`[ProfileCalculator] recalculateFlatNeeds für ${person.toUpperCase()}:`, { archetyp, geschlecht, dominanz, orientierung });
+        // FIX v1.8.868: Flag setzen um Rekursion zu verhindern
+        isRecalculating = true;
 
-        // Berechne neue flatNeeds
-        const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+        try {
+            // Berechne neue flatNeeds
+            const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
 
-        if (calculatedFlatNeeds && Object.keys(calculatedFlatNeeds).length > 0) {
-            // FIX v1.8.690: LockedNeeds dürfen NICHT durch berechnete Werte überschrieben werden
-            const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
-            const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
-            const newFlatNeeds = { ...calculatedFlatNeeds };
+            if (calculatedFlatNeeds && Object.keys(calculatedFlatNeeds).length > 0) {
+                // FIX v1.8.837: NUR gelockte Werte behalten, Rest neu berechnen
+                // Auto-Lock bei manueller Änderung sorgt für Persistenz
+                const lockedNeeds = TiageState.getLockedNeeds?.(person) || {};
 
-            // Gesperrte Werte aus currentFlatNeeds beibehalten
-            Object.keys(lockedNeeds).forEach(needId => {
-                if (currentFlatNeeds[needId] !== undefined) {
-                    newFlatNeeds[needId] = currentFlatNeeds[needId];
+                // Berechnete Werte + gelockte Werte überschreiben
+                const newFlatNeeds = { ...calculatedFlatNeeds };
+
+                Object.keys(lockedNeeds).forEach(needId => {
+                    newFlatNeeds[needId] = lockedNeeds[needId];
+                });
+
+                const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+                const needsChanged = JSON.stringify(newFlatNeeds) !== JSON.stringify(currentFlatNeeds);
+
+                if (needsChanged) {
+                    TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
                 }
-            });
-
-            // Prüfe ob sich die Werte tatsächlich geändert haben (verhindert unnötige Updates)
-            const needsChanged = !currentFlatNeeds ||
-                JSON.stringify(newFlatNeeds) !== JSON.stringify(currentFlatNeeds);
-
-            if (needsChanged) {
-                TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
-                // console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse'); // DISABLED: Message overflow
             }
+        } finally {
+            // FIX v1.8.868: Flag zurücksetzen
+            isRecalculating = false;
         }
     }
 
