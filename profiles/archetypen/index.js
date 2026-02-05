@@ -361,9 +361,10 @@
      * @param {Object} geschlecht - { primary, secondary }
      * @param {Object} dominanz - { primary, secondary }
      * @param {Object} orientierung - { primary, secondary }
+     * @param {Object} geschlecht_extras - { fit: bool, fuckedup: bool, horny: bool } (v4.2 FFH)
      * @returns {Object} Berechnete flatNeeds { '#B1': value, ... }
      */
-    function calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung) {
+    function calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung, geschlecht_extras) {
         // 1. Basis-Bedürfnisse holen
         const baseProfil = window.BaseArchetypProfile[archetyp];
         if (!baseProfil || !baseProfil.umfrageWerte) {
@@ -378,10 +379,12 @@
         if (window.ProfileModifiers) {
             // SSOT v3.10: Vollständige Orientierung übergeben (P+S)
             // ProfileModifiers.calculateProfileDeltas() verarbeitet P/S mit Gewichtung
+            // v4.2: FFH (Fit, Fucked up, Horny) hinzugefügt
             const profileContext = {
                 geschlecht: geschlecht,
                 dominanz: dominanz?.primary || dominanz,
-                orientierung: orientierung  // Vollständiges Objekt: { primary, secondary }
+                orientierung: orientierung,  // Vollständiges Objekt: { primary, secondary }
+                geschlecht_extras: geschlecht_extras || {}  // v4.2: FFH Modifier
             };
 
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
@@ -504,9 +507,11 @@
         const geschlecht = storageData.geschlecht || null;
         const dominanz = storageData.dominanz || null;
         const orientierung = storageData.orientierung || null;
+        // v4.2: FFH (Fit, Fucked up, Horny)
+        const geschlecht_extras = storageData.geschlecht_extras || {};
 
-        // 3.1 flatNeeds berechnen (Basis + Modifikatoren)
-        const flatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+        // 3.1 flatNeeds berechnen (Basis + Modifikatoren, v4.2: mit FFH)
+        const flatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung, geschlecht_extras);
 
         // 3.1.1 Survey-Antworten integrieren - NUR wenn locked (vom User manuell geändert)
         if (storageData.profileReview && storageData.profileReview.flatNeeds) {
@@ -767,13 +772,15 @@
         const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+        // v4.2: FFH (Fit, Fucked up, Horny)
+        const geschlecht_extras = TiageState.get(`personDimensions.${person}.geschlecht_extras`) || {};
 
         // FIX v1.8.868: Flag setzen um Rekursion zu verhindern
         isRecalculating = true;
 
         try {
-            // Berechne neue flatNeeds
-            const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+            // Berechne neue flatNeeds (v4.2: mit FFH)
+            const calculatedFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung, geschlecht_extras);
 
             if (calculatedFlatNeeds && Object.keys(calculatedFlatNeeds).length > 0) {
                 // FIX v1.8.837: NUR gelockte Werte behalten, Rest neu berechnen
