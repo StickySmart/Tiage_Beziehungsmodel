@@ -215,14 +215,27 @@
      * @param {string} category - 'gender', 'dominanz', oder 'orientierung'
      * @returns {number} Multiplikator (0, 1, oder 2)
      */
+    /**
+     * RTI-Priorität zu Multiplikator Mapping (v4.3)
+     * Verstärkte Skalierung für spürbaren Effekt:
+     *   Priority 0 (Egal)    → ×0 (ignoriert)
+     *   Priority 1 (Normal)  → ×2 (doppelt)
+     *   Priority 2 (Wichtig) → ×4 (vierfach)
+     */
+    const RTI_PRIORITY_SCALE = { 0: 0, 1: 2, 2: 4 };
+
     function getRtiMultiplier(category) {
         const priorities = getRtiPriorities();
         const pillars = RTI_MODIFIER_MAPPING[category];
 
-        if (!pillars || pillars.length === 0) return 1;
+        if (!pillars || pillars.length === 0) return 2; // Default: Normal (×2)
 
         // Berechne Durchschnitt der zugeordneten Säulen-Prioritäten
-        const sum = pillars.reduce((acc, pillar) => acc + (priorities[pillar] || 1), 0);
+        const sum = pillars.reduce((acc, pillar) => {
+            const priority = priorities[pillar] ?? 1; // Default: Normal
+            return acc + (RTI_PRIORITY_SCALE[priority] ?? 2);
+        }, 0);
+
         return sum / pillars.length;
     }
 
