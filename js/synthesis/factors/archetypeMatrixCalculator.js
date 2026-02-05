@@ -92,10 +92,11 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         // Runde auf ganze Zahl
         score = Math.round(score);
 
-        console.log('[ArchetypeMatrixCalculator] Berechnung abgeschlossen:', {
-            beduerfnisCount: beduerfnisCount,
-            score: score
-        });
+        // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+        // console.log('[ArchetypeMatrixCalculator] Berechnung abgeschlossen:', {
+        //     beduerfnisCount: beduerfnisCount,
+        //     score: score
+        // });
 
         return score;
     }
@@ -115,7 +116,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         var archetypes = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
         var matrix = {};
 
-        console.log('[ArchetypeMatrixCalculator] Starte Matrix-Generierung für 8 Archetypen...');
+        // DEBUG DISABLED v1.8.871: Matrix-Generierung einmalig, aber verbose
+        // console.log('[ArchetypeMatrixCalculator] Starte Matrix-Generierung für 8 Archetypen...');
 
         // Iteriere durch alle Archetyp-Paare
         for (var i = 0; i < archetypes.length; i++) {
@@ -142,12 +144,14 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
                 var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
                 matrix[archetype1][archetype2] = score;
 
-                console.log('[ArchetypeMatrixCalculator] ' + archetype1 + ' + ' + archetype2 + ' = ' + score);
+                // DEBUG DISABLED v1.8.871: 64 Kombinationen bei Matrix-Generierung
+                // console.log('[ArchetypeMatrixCalculator] ' + archetype1 + ' + ' + archetype2 + ' = ' + score);
             }
         }
 
-        console.log('[ArchetypeMatrixCalculator] Matrix-Generierung abgeschlossen!');
-        console.log('[ArchetypeMatrixCalculator] Generierte Matrix:', JSON.stringify(matrix, null, 2));
+        // DEBUG DISABLED v1.8.871: Matrix-Generierung einmalig, aber verbose
+        // console.log('[ArchetypeMatrixCalculator] Matrix-Generierung abgeschlossen!');
+        // console.log('[ArchetypeMatrixCalculator] Generierte Matrix:', JSON.stringify(matrix, null, 2));
 
         return matrix;
     }
@@ -213,7 +217,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
 
         if (profile1 && profile1.umfrageWerte && profile2 && profile2.umfrageWerte) {
             var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
-            console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '→', normalizedType1, '+', type2, '→', normalizedType2, '=', score);
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '→', normalizedType1, '+', type2, '→', normalizedType2, '=', score);
 
             // Cache das Ergebnis für spätere Aufrufe
             if (!cachedMatrix) {
@@ -246,7 +251,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         if (typeof GfkBeduerfnisse !== 'undefined' && typeof GfkBeduerfnisse.berechneMatching === 'function') {
             var matching = GfkBeduerfnisse.berechneMatching(normalizedType1, normalizedType2);
             if (matching && !matching.fehler && typeof matching.score === 'number') {
-                console.log('[ArchetypeMatrixCalculator] Fallback via GfkBeduerfnisse:', matching.score);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[ArchetypeMatrixCalculator] Fallback via GfkBeduerfnisse:', matching.score);
                 return matching.score;
             }
         }

@@ -8369,8 +8369,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 const matching = calculateDynamicBeduerfnisMatch(ichNormalized, partnerNormalized);
                 if (matching) {
                     lastGfkMatchingResult = matching;
-                    console.log(`GFK Bedürfnis-Matching (dynamisch): ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
-                    console.log(`  Faktoren: Dominanz, Geschlecht, Orientierung berücksichtigt`);
+                    // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                    // console.log(`GFK Bedürfnis-Matching (dynamisch): ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
+                    // console.log(`  Faktoren: Dominanz, Geschlecht, Orientierung berücksichtigt`);
 
                     // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
                     personDimensions.ich.gfk = matching.level;
@@ -11506,9 +11507,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         function findBestPartnerMatch() {
-            console.log('[findBestPartnerMatch] Funktion aufgerufen');
-            console.log('[findBestPartnerMatch] data geladen:', data !== null);
-            console.log('[findBestPartnerMatch] personDimensions:', JSON.stringify(personDimensions));
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[findBestPartnerMatch] Funktion aufgerufen');
+            // console.log('[findBestPartnerMatch] data geladen:', data !== null);
+            // console.log('[findBestPartnerMatch] personDimensions:', JSON.stringify(personDimensions));
 
             // Prüfe, ob data geladen ist
             if (!data) {
@@ -11523,17 +11525,19 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (typeof TiageState !== 'undefined') {
                 ichNeeds = TiageState.get('flatNeeds.ich');
                 partnerNeeds = TiageState.get('flatNeeds.partner');
-                console.log('[findBestPartnerMatch] Echte Needs geladen:', {
-                    ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
-                    partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
-                });
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[findBestPartnerMatch] Echte Needs geladen:', {
+                //     ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
+                //     partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
+                // });
             }
 
             // Sammle ICH-Daten (feste Basis)
             const ichArchetype = currentArchetype || 'single';
             const ichDims = personDimensions.ich || {};
 
-            console.log('[findBestPartnerMatch] currentArchetype:', currentArchetype, '-> verwendet:', ichArchetype);
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[findBestPartnerMatch] currentArchetype:', currentArchetype, '-> verwendet:', ichArchetype);
 
             // Sammle Partner-Dimensionen (für die Berechnung)
             const partnerDims = personDimensions.partner || {};
@@ -11568,7 +11572,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         secondary: 'cis'
                     };
                 }
-                console.log('[findBestPartnerMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[findBestPartnerMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
             }
 
             let validPartnerOrientierung;
@@ -11580,7 +11585,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     primary: validIchOrientierung.primary,
                     secondary: validIchOrientierung.secondary
                 };
-                console.log('[findBestPartnerMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[findBestPartnerMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
             }
 
             // FEATURE: Dominanz-Auto-Korrelation - komplementäre Dominanz für beste Kompatibilität
@@ -11604,7 +11610,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // ausgeglichen + ausgeglichen = +5 Modifier
                     validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
                 }
-                console.log('[findBestPartnerMatch] Partner-Dominanz nicht gesetzt, verwende komplementären Default:', validPartnerDominanz);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[findBestPartnerMatch] Partner-Dominanz nicht gesetzt, verwende komplementären Default:', validPartnerDominanz);
             }
 
             // FEATURE: GFK-Auto-Korrelation - gleiche oder höhere GFK-Kompetenz
@@ -11624,21 +11631,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 } else {
                     validPartnerGfk = 'mittel'; // niedrig-mittel = 45 (besser als niedrig-niedrig = 25)
                 }
-                console.log('[findBestPartnerMatch] Partner-GFK nicht gesetzt, verwende optimalen Default:', validPartnerGfk);
+                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+                // console.log('[findBestPartnerMatch] Partner-GFK nicht gesetzt, verwende optimalen Default:', validPartnerGfk);
             }
 
-            console.log('[findBestPartnerMatch] Validierte ICH-Dimensionen:', {
-                geschlecht: validIchGeschlecht,
-                dominanz: validIchDominanz,
-                orientierung: validIchOrientierung,
-                gfk: ichDims.gfk || 'mittel'
-            });
-            console.log('[findBestPartnerMatch] Validierte Partner-Dimensionen:', {
-                geschlecht: validPartnerGeschlecht,
-                dominanz: validPartnerDominanz,
-                orientierung: validPartnerOrientierung,
-                gfk: validPartnerGfk
-            });
+            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
+            // console.log('[findBestPartnerMatch] Validierte ICH-Dimensionen:', {
+            //     geschlecht: validIchGeschlecht,
+            //     dominanz: validIchDominanz,
+            //     orientierung: validIchOrientierung,
+            //     gfk: ichDims.gfk || 'mittel'
+            // });
+            // console.log('[findBestPartnerMatch] Validierte Partner-Dimensionen:', {
+            //     geschlecht: validPartnerGeschlecht,
+            //     dominanz: validPartnerDominanz,
+            //     orientierung: validPartnerOrientierung,
+            //     gfk: validPartnerGfk
+            // });
 
             let bestMatch = null;
             let bestScore = -1;
