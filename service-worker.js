@@ -3,8 +3,8 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v47';
-const STATIC_CACHE_NAME = 'tiage-static-v41';
+const CACHE_NAME = 'tiage-v48';
+const STATIC_CACHE_NAME = 'tiage-static-v42';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [
@@ -69,7 +69,7 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch - Stale-While-Revalidate Strategie
+// Fetch - Network-First mit Cache-Fallback (v1.2.0 - Fix für Response-Fehler)
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
@@ -83,27 +83,21 @@ self.addEventListener('fetch', event => {
     if (url.origin !== location.origin) return;
 
     event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            // Stale-While-Revalidate: Sofort aus Cache antworten
-            const fetchPromise = fetch(event.request)
-                .then(networkResponse => {
-                    // Nur erfolgreiche Antworten cachen
-                    if (networkResponse && networkResponse.status === 200) {
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    }
-                    return networkResponse;
-                })
-                .catch(() => {
-                    // Offline - nur aus Cache
-                    return cachedResponse;
-                });
-
-            // Sofort aus Cache antworten, im Hintergrund aktualisieren
-            return cachedResponse || fetchPromise;
-        })
+        fetch(event.request)
+            .then(networkResponse => {
+                // Nur erfolgreiche Antworten cachen
+                if (networkResponse && networkResponse.status === 200) {
+                    const responseToCache = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                }
+                return networkResponse;
+            })
+            .catch(() => {
+                // Netzwerk fehlgeschlagen - versuche Cache
+                return caches.match(event.request);
+            })
     );
 });
 
