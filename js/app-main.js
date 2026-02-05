@@ -108,6 +108,12 @@
 
                     // Bei Archetyp-Wechsel: Bedürfnisse für neuen Archetyp laden
                     if (oldArchetype !== event.newValue.primary) {
+                        // WICHTIG: Sofort speichern damit Werte des alten Archetyps persistiert werden
+                        // bevor wir zur neuen Ansicht wechseln
+                        if (TiageState.saveToStorage) {
+                            TiageState.saveToStorage();
+                            console.log('[app-main] Auto-Save vor Archetyp-Wechsel von', oldArchetype, 'zu', event.newValue.primary);
+                        }
                         console.log('[app-main] Archetyp gewechselt von', oldArchetype, 'zu', event.newValue.primary, '- lade Bedürfnisse neu');
 
                         // Synchronisiere Lock-Status aus TiageState für neuen Archetyp
@@ -15949,8 +15955,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
                 // ═══════════════════════════════════════════════════════════════════════════
                 // Event-Listener für Bedürfnis-Wert-Änderungen
-                // FIX v1.8.455: Speichere ALLE Wert-Änderungen in TiageState.flatNeeds
-                // Zusätzlich: Gesperrte Werte werden in profileReview.lockedNeeds gespeichert
+                // FIX v1.8.837: AUTO-LOCK bei manueller Änderung
+                // Manuelle Änderung = User will abweichen → automatisch locken
+                // Bei Archetyp-Wechsel bleiben nur gelockte Werte erhalten
                 // ═══════════════════════════════════════════════════════════════════════════
                 document.addEventListener('flatNeedChange', function(e) {
                     var needId = e.detail && e.detail.needId;
@@ -15964,26 +15971,24 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         currentPerson = window.currentProfileReviewContext.person;
                     }
 
-                    // FIX: IMMER in TiageState.flatNeeds speichern (damit Werte beim Tab-Wechsel erhalten bleiben)
+                    // Wert in flatNeeds speichern
                     TiageState.setNeed(currentPerson, needId, value);
-                    console.log('[flatNeedChange] Wert in TiageState.flatNeeds gespeichert:', needId, '=', value, 'für', currentPerson);
 
-                    // Zusätzlich: Wenn gesperrt, auch in lockedNeeds speichern (für Persistenz über Page-Reload)
-                    if (TiageState.isNeedLocked(currentPerson, needId)) {
+                    // FIX v1.8.837: AUTO-LOCK - Jede manuelle Änderung wird automatisch gelockt
+                    // Damit bleibt der Wert bei Archetyp-Wechsel erhalten
+                    if (currentPerson === 'ich' && TiageState.lockNeed) {
                         TiageState.lockNeed(currentPerson, needId, value);
-                        TiageState.saveToStorage();
-                        console.log('[flatNeedChange] Gesperrter Wert auch in lockedNeeds gespeichert:', needId);
+                        console.log('[flatNeedChange] AUTO-LOCK:', needId, '=', value, 'für Archetyp', TiageState.get('archetypes.ich.primary'));
                     }
 
-   // FIX: Debounced Save für ALLE Änderungen
-    if (flatNeedSaveDebounceTimer) {
-        clearTimeout(flatNeedSaveDebounceTimer);
-    }
-    flatNeedSaveDebounceTimer = setTimeout(function() {
-        TiageState.saveToStorage();
-        console.log('[flatNeedChange] Debounced saveToStorage ausgeführt');
-    }, FLAT_NEED_SAVE_DEBOUNCE_MS);
-    
+                    // Debounced Save
+                    if (flatNeedSaveDebounceTimer) {
+                        clearTimeout(flatNeedSaveDebounceTimer);
+                    }
+                    flatNeedSaveDebounceTimer = setTimeout(function() {
+                        TiageState.saveToStorage();
+                        console.log('[flatNeedChange] Auto-Save ausgeführt');
+                    }, FLAT_NEED_SAVE_DEBOUNCE_MS);
 
                 });
 

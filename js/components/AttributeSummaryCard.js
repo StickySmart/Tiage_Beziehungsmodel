@@ -1318,7 +1318,7 @@ const AttributeSummaryCard = (function() {
      * Werte die 100 erreichen bleiben dort bis alle anderen auch 100 sind
      * @param {number} step - Schrittgröße (Standard: 5)
      */
-    function incrementSelectedNeeds(step = 5) {
+    function incrementSelectedNeeds(step = 25) {
         if (selectedNeeds.size === 0) return;
 
         selectedNeeds.forEach(needId => {
@@ -1370,7 +1370,7 @@ const AttributeSummaryCard = (function() {
      * Werte die 0 erreichen bleiben dort bis alle anderen auch 0 sind
      * @param {number} step - Schrittgröße (Standard: 5)
      */
-    function decrementSelectedNeeds(step = 5) {
+    function decrementSelectedNeeds(step = 25) {
         if (selectedNeeds.size === 0) return;
 
         selectedNeeds.forEach(needId => {
@@ -2881,13 +2881,13 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Hauptfragen-Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
                 <div class="bulk-increment-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
-                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(5)" title="Alle markierten Werte um 5 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(25)" title="Alle markierten Werte um 25 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">+</span>
-                        <span class="bulk-btn-label">5</span>
+                        <span class="bulk-btn-label">25</span>
                     </button>
-                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(5)" title="Alle markierten Werte um 5 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(25)" title="Alle markierten Werte um 25 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">−</span>
-                        <span class="bulk-btn-label">5</span>
+                        <span class="bulk-btn-label">25</span>
                     </button>
                     <button class="bulk-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues()" title="Alle ungesperrten Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">↺</span>

@@ -270,7 +270,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* RTI Pillar Styles */
+        /* RTI Pillar Styles - Redesigned */
         .rti-pillar-container {
             display: flex;
             flex-direction: column;
@@ -279,45 +279,62 @@
 
         .rti-pillar-card {
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 16px;
-            border-left: 4px solid;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.2s;
+            position: relative;
         }
 
-        .rti-pillar-card.s1 { border-left-color: #E84393; }
-        .rti-pillar-card.s2 { border-left-color: #3B82F6; }
-        .rti-pillar-card.s3 { border-left-color: #22c55e; }
-        .rti-pillar-card.s4 { border-left-color: #f59e0b; }
-        .rti-pillar-card.s5 { border-left-color: #8b5cf6; }
+        .rti-pillar-card:hover {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.12);
+        }
 
+        .rti-pillar-card.s1 .rti-pillar-question { color: #E84393; }
+        .rti-pillar-card.s2 .rti-pillar-question { color: #3B82F6; }
+        .rti-pillar-card.s3 .rti-pillar-question { color: #22c55e; }
+        .rti-pillar-card.s4 .rti-pillar-question { color: #f59e0b; }
+        .rti-pillar-card.s5 .rti-pillar-question { color: #8b5cf6; }
+
+        /* Question Header */
         .rti-pillar-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            gap: 12px;
         }
 
-        .rti-pillar-title {
+        .rti-pillar-title-area {
+            flex: 1;
+        }
+
+        .rti-pillar-question {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .rti-pillar-subtitle {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         .rti-pillar-icon {
-            font-size: 20px;
-        }
-
-        .rti-pillar-name {
-            font-weight: 600;
-            color: var(--text-primary);
+            font-size: 16px;
         }
 
         .rti-pillar-id {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             padding: 2px 6px;
             border-radius: 4px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.08);
         }
 
         .rti-pillar-id.s1 { color: #E84393; }
@@ -326,6 +343,157 @@
         .rti-pillar-id.s4 { color: #f59e0b; }
         .rti-pillar-id.s5 { color: #8b5cf6; }
 
+        .rti-pillar-info-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rti-pillar-info-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+
+        /* Related Needs Tags */
+        .rti-related-needs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .rti-need-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .rti-need-tag:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        /* Comparison Bars - like Bedürfnis-Detail modal */
+        .rti-comparison {
+            margin-bottom: 16px;
+        }
+
+        .rti-comparison-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .rti-comparison-label {
+            width: 65px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        .rti-comparison-label.ich { color: var(--success); }
+        .rti-comparison-label.partner { color: var(--danger); }
+
+        .rti-bar-container {
+            flex: 1;
+            height: 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rti-bar {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+        }
+
+        .rti-bar.ich {
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.7));
+        }
+
+        .rti-bar.partner {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.4), rgba(239, 68, 68, 0.7));
+        }
+
+        .rti-bar-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Difference / Resonance Display */
+        .rti-resonance {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .rti-resonance-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .rti-resonance-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rti-resonance-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .rti-resonance-value.high { color: #22c55e; }
+        .rti-resonance-value.medium { color: #f59e0b; }
+        .rti-resonance-value.low { color: #ef4444; }
+
+        .rti-resonance-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .rti-resonance-text em {
+            color: var(--text-primary);
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* Priority Toggle */
         .rti-pillar-priority {
             display: flex;
             align-items: center;
@@ -333,14 +501,14 @@
         }
 
         .rti-priority-btn {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 6px;
             border: 1px solid var(--border);
             background: rgba(255,255,255,0.05);
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             transition: all 0.2s;
         }
@@ -355,63 +523,18 @@
             color: var(--text-primary);
         }
 
-        .rti-pillar-scores {
+        /* Footer with Priority */
+        .rti-pillar-footer {
             display: flex;
-            gap: 12px;
-            margin-bottom: 10px;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
         }
 
-        .rti-score-box {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .rti-score-box.ich {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-
-        .rti-score-box.partner {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .rti-score-box.combined {
-            background: rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .rti-score-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .rti-score-label.ich { color: var(--success); }
-        .rti-score-label.partner { color: var(--danger); }
-        .rti-score-label.combined { color: #8B5CF6; }
-
-        .rti-score-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .rti-pillar-description {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .rti-pillar-mapping {
+        .rti-priority-label {
             font-size: 11px;
             color: var(--text-muted);
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         /* Loading */
@@ -464,8 +587,43 @@
         }
 
         @media (max-width: 600px) {
-            .rti-pillar-scores {
+            .rti-pillar-card {
+                padding: 16px;
+            }
+
+            .rti-pillar-question {
+                font-size: 14px;
+            }
+
+            .rti-pillar-header {
                 flex-direction: column;
+                gap: 10px;
+            }
+
+            .rti-pillar-info-btn {
+                position: absolute;
+                right: 16px;
+                top: 16px;
+            }
+
+            .rti-comparison-label {
+                width: 55px;
+                font-size: 10px;
+            }
+
+            .rti-bar-container {
+                height: 22px;
+            }
+
+            .rti-resonance-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .rti-pillar-footer {
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 8px;
             }
         }
@@ -727,7 +885,7 @@
         let currentIchArchetype = 'duo';
         let currentPartnerArchetype = 'solopoly';
 
-        // RTI Säulen Definitionen (nach Petzold)
+        // RTI Säulen Definitionen (nach Petzold) - Redesigned
         const RTI_PILLARS = [
             {
                 id: 'S1',
@@ -735,7 +893,14 @@
                 icon: '🫀',
                 color: '#E84393',
                 mapping: 'C (Nähe-Distanz)',
-                description: 'Körperliche Gesundheit, Wohlbefinden, Sexualität, Bewegung. Wie wohl fühle ich mich in meinem Körper?'
+                question: 'Wie wichtig ist körperliche Nähe in eurer Beziehung?',
+                relatedNeeds: ['Nähe-Distanz', 'Körperlichkeit', 'Intimität'],
+                description: 'Körperliche Gesundheit, Wohlbefinden, Sexualität, Bewegung. Wie wohl fühle ich mich in meinem Körper?',
+                interpretations: {
+                    high: 'Ihr teilt ein starkes Bedürfnis nach körperlicher Verbindung.',
+                    medium: 'Eure Vorstellungen von körperlicher Nähe unterscheiden sich teilweise.',
+                    low: 'Hier besteht Gesprächsbedarf – eure Bedürfnisse sind unterschiedlich.'
+                }
             },
             {
                 id: 'S2',
@@ -743,7 +908,14 @@
                 icon: '👥',
                 color: '#3B82F6',
                 mapping: '(A × 0.6) + (F × 0.4)',
-                description: 'Familie, Freunde, Kollegen, Gemeinschaft. Wie gut bin ich sozial eingebunden und unterstützt?'
+                question: 'Wie wichtig ist euch die Einbindung in ein soziales Umfeld?',
+                relatedNeeds: ['Freundeskreis', 'Familie', 'Gemeinschaft'],
+                description: 'Familie, Freunde, Kollegen, Gemeinschaft. Wie gut bin ich sozial eingebunden und unterstützt?',
+                interpretations: {
+                    high: 'Ihr schätzt beide ein starkes soziales Netzwerk.',
+                    medium: 'Eure Vorstellungen von sozialer Einbindung variieren.',
+                    low: 'Unterschiedliche Erwartungen an soziale Integration.'
+                }
             },
             {
                 id: 'S3',
@@ -751,7 +923,14 @@
                 icon: '💪',
                 color: '#22c55e',
                 mapping: 'D (Autonomie)',
-                description: 'Arbeit, Beruf, Erfolg, Selbstwirksamkeit. Wie selbstbestimmt und kompetent fühle ich mich?'
+                question: 'Wie viel persönlicher Freiraum ist euch wichtig?',
+                relatedNeeds: ['Autonomie', 'Selbstverwirklichung', 'Freiheit'],
+                description: 'Arbeit, Beruf, Erfolg, Selbstwirksamkeit. Wie selbstbestimmt und kompetent fühle ich mich?',
+                interpretations: {
+                    high: 'Ihr respektiert beide den persönlichen Freiraum des anderen.',
+                    medium: 'Die Balance zwischen Nähe und Autonomie ist ein Thema.',
+                    low: 'Unterschiedliche Bedürfnisse nach Eigenständigkeit.'
+                }
             },
             {
                 id: 'S4',
@@ -759,7 +938,14 @@
                 icon: '🛡️',
                 color: '#f59e0b',
                 mapping: '(A × 0.4) + (F × 0.6)',
-                description: 'Materielle Absicherung, Wohnen, Finanzen, Zukunftsplanung. Wie sicher fühle ich mich?'
+                question: 'Wie wichtig sind Verlässlichkeit und Stabilität?',
+                relatedNeeds: ['Sicherheit', 'Verbindlichkeit', 'Planung'],
+                description: 'Materielle Absicherung, Wohnen, Finanzen, Zukunftsplanung. Wie sicher fühle ich mich?',
+                interpretations: {
+                    high: 'Stabilität und Verlässlichkeit sind für euch beide wichtig.',
+                    medium: 'Eure Sicherheitsbedürfnisse sind unterschiedlich gewichtet.',
+                    low: 'Hier solltet ihr über eure Erwartungen sprechen.'
+                }
             },
             {
                 id: 'S5',
@@ -767,7 +953,14 @@
                 icon: '💜',
                 color: '#8b5cf6',
                 mapping: '(B × 0.4) + (E × 0.6)',
-                description: 'Spiritualität, Ethik, Lebenssinn, Weltanschauung. Was gibt meinem Leben Bedeutung?'
+                question: 'Teilt ihr gemeinsame Werte und Lebensziele?',
+                relatedNeeds: ['Werte', 'Sinn', 'Weltanschauung'],
+                description: 'Spiritualität, Ethik, Lebenssinn, Weltanschauung. Was gibt meinem Leben Bedeutung?',
+                interpretations: {
+                    high: 'Eure Grundwerte und Lebensziele sind kompatibel.',
+                    medium: 'In einigen Bereichen unterscheiden sich eure Überzeugungen.',
+                    low: 'Unterschiedliche Wertvorstellungen erfordern Verständnis.'
+                }
             }
         ];
 
@@ -1046,7 +1239,17 @@
         }
 
         /**
-         * Rendert den Hauptinhalt
+         * Ermittelt Resonanz-Level basierend auf Differenz
+         */
+        function getResonanceLevel(ichScore, partnerScore) {
+            const diff = Math.abs(ichScore - partnerScore);
+            if (diff <= 15) return 'high';
+            if (diff <= 35) return 'medium';
+            return 'low';
+        }
+
+        /**
+         * Rendert den Hauptinhalt - Redesigned
          */
         function renderContent() {
             const container = document.getElementById('syntheseContent');
@@ -1057,16 +1260,66 @@
                 const partnerScore = scores.partner[pillar.id];
                 const combinedScore = combineScores(ichScore, partnerScore);
                 const priority = rtiPriorities[pillar.id] || 1;
+                const resonanceLevel = getResonanceLevel(ichScore, partnerScore);
+                const diff = Math.abs(ichScore - partnerScore);
+                const interpretation = pillar.interpretations[resonanceLevel];
+
+                // Related needs as tags
+                const needTagsHTML = pillar.relatedNeeds.map(need =>
+                    `<span class="rti-need-tag">${need}</span>`
+                ).join('');
+
+                // Resonance display text
+                const resonanceText = resonanceLevel === 'high' ? 'Hohe Resonanz' :
+                                     resonanceLevel === 'medium' ? 'Mittlere Resonanz' : 'Niedrige Resonanz';
 
                 return `
                     <div class="rti-pillar-card ${pillar.id.toLowerCase()}">
                         <div class="rti-pillar-header">
-                            <div class="rti-pillar-title">
-                                <span class="rti-pillar-icon">${pillar.icon}</span>
-                                <span class="rti-pillar-name">${pillar.name}</span>
-                                <span class="rti-pillar-id ${pillar.id.toLowerCase()}">${pillar.id}</span>
-                                <button class="rti-pillar-info-btn" onclick="openRtiModal('${pillar.id}')" title="Mehr erfahren">?</button>
+                            <div class="rti-pillar-title-area">
+                                <div class="rti-pillar-question">${pillar.question}</div>
+                                <div class="rti-pillar-subtitle">
+                                    <span class="rti-pillar-icon">${pillar.icon}</span>
+                                    <span>${pillar.name}</span>
+                                    <span class="rti-pillar-id ${pillar.id.toLowerCase()}">${pillar.id}</span>
+                                </div>
                             </div>
+                            <button class="rti-pillar-info-btn" onclick="openRtiModal('${pillar.id}')" title="Mehr erfahren">?</button>
+                        </div>
+
+                        <div class="rti-related-needs">
+                            ${needTagsHTML}
+                        </div>
+
+                        <div class="rti-comparison">
+                            <div class="rti-comparison-row">
+                                <span class="rti-comparison-label ich">ICH</span>
+                                <div class="rti-bar-container">
+                                    <div class="rti-bar ich" style="width: ${ichScore}%"></div>
+                                    <span class="rti-bar-value">${ichScore}%</span>
+                                </div>
+                            </div>
+                            <div class="rti-comparison-row">
+                                <span class="rti-comparison-label partner">PARTNER</span>
+                                <div class="rti-bar-container">
+                                    <div class="rti-bar partner" style="width: ${partnerScore}%"></div>
+                                    <span class="rti-bar-value">${partnerScore}%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rti-resonance">
+                            <div class="rti-resonance-header">
+                                <span class="rti-resonance-label">Resonanz</span>
+                                <span class="rti-resonance-value ${resonanceLevel}">${resonanceText} (${diff}% Differenz)</span>
+                            </div>
+                            <div class="rti-resonance-text">
+                                <em>${interpretation}</em>
+                            </div>
+                        </div>
+
+                        <div class="rti-pillar-footer">
+                            <span class="rti-priority-label">Priorität für dich:</span>
                             <div class="rti-pillar-priority">
                                 <button class="rti-priority-btn ${priority === 0 ? 'active' : ''}"
                                         onclick="setRtiPriority('${pillar.id}', 0)"
@@ -1079,22 +1332,6 @@
                                         title="Wichtig / Doppelt">2</button>
                             </div>
                         </div>
-                        <div class="rti-pillar-scores">
-                            <div class="rti-score-box ich">
-                                <div class="rti-score-label ich">ICH</div>
-                                <div class="rti-score-value">${ichScore}%</div>
-                            </div>
-                            <div class="rti-score-box partner">
-                                <div class="rti-score-label partner">PARTNER</div>
-                                <div class="rti-score-value">${partnerScore}%</div>
-                            </div>
-                            <div class="rti-score-box combined">
-                                <div class="rti-score-label combined">KOMBI</div>
-                                <div class="rti-score-value">${combinedScore}%</div>
-                            </div>
-                        </div>
-                        <div class="rti-pillar-description">${pillar.description}</div>
-                        <div class="rti-pillar-mapping">Mapping: ${pillar.mapping}</div>
                     </div>
                 `;
             }).join('');
@@ -1110,12 +1347,13 @@
                     </div>
 
                     <div class="rti-info-box">
-                        <div class="rti-info-title">ℹ️ Die 5 Säulen</div>
+                        <div class="rti-info-title">ℹ️ Was zeigt diese Auswertung?</div>
                         <div class="rti-info-text">
-                            Die 5 Säulen der Identität nach Petzold beschreiben fundamentale Lebensbereiche,
-                            die für psychische Stabilität und Wohlbefinden wichtig sind.
+                            Die 5 Säulen zeigen, wie eure Bedürfnisse in den wichtigsten Lebensbereichen übereinstimmen.
+                            Die Balken vergleichen deine Werte (ICH) mit denen deines Partners.
                             <br><br>
-                            <strong>Priorität:</strong> 0 = Egal (ignoriert), 1 = Normal, 2 = Wichtig (doppelt gewichtet)
+                            <strong>Hohe Resonanz</strong> = Eure Werte sind ähnlich&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <strong>Niedrige Resonanz</strong> = Hier könnt ihr voneinander lernen
                         </div>
                     </div>
 
