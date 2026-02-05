@@ -924,113 +924,9 @@
         // Bar class utility: delegated to js/ui/chartUtils.js
         var getBarClass = TiageChartUtils.getBarClass;
 
-        function toggleCollapsible(id) {
-            document.getElementById(id).classList.toggle('open');
-        }
-
-        // Toggle dimension collapse for Dominanz/Orientierung sections
-        function toggleDimensionCollapse(element) {
-            element.classList.toggle('collapsed');
-        }
-
-        // Track global fold/unfold state
-        let allDimensionsCollapsed = false;
-
-        // Toggle all dimensions AND desktop factors collapse/expand at once
-        function toggleAllDimensionsCollapse() {
-            const allDimensions = document.querySelectorAll('.collapsible-dimension');
-            const allFactors = document.querySelectorAll('.desktop-factor-item');
-            
-            // Get both desktop and mobile buttons
-            const desktopBtn = document.getElementById('foldUnfoldAllBtn');
-            const mobileBtn = document.getElementById('mobileFoldUnfoldBtn');
-
-            allDimensionsCollapsed = !allDimensionsCollapsed;
-
-            // Toggle collapsible dimensions
-            allDimensions.forEach(dim => {
-                if (allDimensionsCollapsed) {
-                    dim.classList.add('collapsed');
-                } else {
-                    dim.classList.remove('collapsed');
-                }
-            });
-
-            // Toggle desktop factor items
-            allFactors.forEach(factor => {
-                if (allDimensionsCollapsed) {
-                    factor.classList.add('collapsed');
-                } else {
-                    factor.classList.remove('collapsed');
-                }
-            });
-
-            // Update both buttons' appearance
-            const buttons = [desktopBtn, mobileBtn].filter(btn => btn !== null);
-            buttons.forEach(btn => {
-                const icon = btn.querySelector('.fold-unfold-icon');
-                const text = btn.querySelector('.fold-unfold-text');
-
-                if (allDimensionsCollapsed) {
-                    icon.textContent = '▶';
-                    text.textContent = 'Unfold';
-                    btn.classList.add('collapsed-state');
-                } else {
-                    icon.textContent = '▼';
-                    text.textContent = 'Fold';
-                    btn.classList.remove('collapsed-state');
-                }
-            });
-
-            // Update desktop factor content when expanding
-            if (!allDimensionsCollapsed) {
-                updateDesktopFactorContent();
-            }
-        }
-
-        // Toggle single desktop factor expand/collapse
-        function toggleDesktopFactor(element) {
-            const wasCollapsed = element.classList.contains('collapsed');
-            element.classList.toggle('collapsed');
-            // Update the fold/unfold button state based on current state
-            updateDesktopFactorFoldButton();
-            // Update content when expanding
-            if (wasCollapsed) {
-                updateDesktopFactorContent();
-            }
-        }
-
-        // Update fold button based on current state of all collapsible elements
-        function updateDesktopFactorFoldButton() {
-            const allDimensions = document.querySelectorAll('.collapsible-dimension');
-            const allFactors = document.querySelectorAll('.desktop-factor-item');
-            const desktopBtn = document.getElementById('foldUnfoldAllBtn');
-            const mobileBtn = document.getElementById('mobileFoldUnfoldBtn');
-
-            // Check if all are collapsed (both dimensions and factors)
-            const allDimensionsCollapsedCheck = Array.from(allDimensions).every(d => d.classList.contains('collapsed'));
-            const allFactorsCollapsed = Array.from(allFactors).every(f => f.classList.contains('collapsed'));
-            const allCollapsed = allDimensionsCollapsedCheck && allFactorsCollapsed;
-
-            allDimensionsCollapsed = allCollapsed;
-
-            // Update both buttons
-            const buttons = [desktopBtn, mobileBtn].filter(btn => btn !== null);
-            buttons.forEach(btn => {
-                const icon = btn.querySelector('.fold-unfold-icon');
-                const text = btn.querySelector('.fold-unfold-text');
-
-                if (allCollapsed) {
-                    icon.textContent = '▶';
-                    text.textContent = 'Unfold';
-                    btn.classList.add('collapsed-state');
-                } else {
-                    icon.textContent = '▼';
-                    text.textContent = 'Fold';
-                    btn.classList.remove('collapsed-state');
-                }
-            });
-        }
+        // Collapsible functions: delegated to js/ui/collapsible.js (TiageCollapsible module)
+        // - toggleCollapsible, toggleDimensionCollapse, toggleAllDimensionsCollapse
+        // - toggleDesktopFactor, updateDesktopFactorFoldButton
 
         // Update all desktop factor expandable content
         function updateDesktopFactorContent() {
@@ -20219,8 +20115,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         window.openPaarungExplanationModal = openPaarungExplanationModal;
 
         // Dimension toggle and collapse functions
-        window.toggleAllDimensionsCollapse = toggleAllDimensionsCollapse;
-        window.toggleDimensionCollapse = toggleDimensionCollapse;
+        // NOTE: toggleAllDimensionsCollapse, toggleDimensionCollapse -> delegated to js/ui/collapsible.js
         window.showDimensionTooltip = showDimensionTooltip;
         window.closeDimensionTooltip = closeDimensionTooltip;
         window.showGeschlechtInfoModal = showGeschlechtInfoModal;
@@ -20313,7 +20208,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         window.toggleMobileCategory = toggleMobileCategory;
 
         // Utility functions
-        window.toggleCollapsible = toggleCollapsible;
+        // NOTE: toggleCollapsible -> delegated to js/ui/collapsible.js
         window.resetAll = resetAll;
 
         // Wrapper functions for secondary interessiert buttons (used in modal)
