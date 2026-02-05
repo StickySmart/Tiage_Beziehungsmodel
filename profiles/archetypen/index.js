@@ -347,10 +347,11 @@
             }
         });
 
-        console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
-        if (appliedDeltas.length > 0) {
-            console.log('[ProfileCalculator] Angewendete Deltas:', appliedDeltas);
-        }
+        // DEBUG DISABLED v1.8.871: Zu viel Spam bei Best-Match (Hunderte Kombinationen)
+        // console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
+        // if (appliedDeltas.length > 0) {
+        //     console.log('[ProfileCalculator] Angewendete Deltas:', appliedDeltas);
+        // }
     }
 
     /**
@@ -450,12 +451,14 @@
         if (typeof TiageSynthesis === 'undefined' ||
             typeof TiageSynthesis.NeedsIntegration === 'undefined' ||
             typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance !== 'function') {
-            console.log('[ProfileCalculator] TiageSynthesis nicht verfügbar, verwende Defaults');
+            // DEBUG DISABLED v1.8.871: Spam bei Best-Match
+            // console.log('[ProfileCalculator] TiageSynthesis nicht verfügbar, verwende Defaults');
             return defaults;
         }
 
         if (!profileContext || !profileContext.archetyp || !profileContext.needs) {
-            console.log('[ProfileCalculator] Unvollständiger Profil-Kontext, verwende Defaults');
+            // DEBUG DISABLED v1.8.871: Spam bei Best-Match
+            // console.log('[ProfileCalculator] Unvollständiger Profil-Kontext, verwende Defaults');
             return defaults;
         }
 
@@ -468,10 +471,11 @@
         const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
 
         if (!resonanz || !resonanz.enabled) {
-            console.log('[ProfileCalculator] Resonanz-Berechnung nicht aktiviert, verwende Defaults', {
-                resonanz: resonanz,
-                enabled: resonanz?.enabled
-            });
+            // DEBUG DISABLED v1.8.871: Spam bei Best-Match
+            // console.log('[ProfileCalculator] Resonanz-Berechnung nicht aktiviert, verwende Defaults', {
+            //     resonanz: resonanz,
+            //     enabled: resonanz?.enabled
+            // });
             return defaults;
         }
 
