@@ -2367,16 +2367,26 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Holt den frageTyp für ein Bedürfnis aus dem Katalog
+     * Prüft ob ein Bedürfnis angezeigt werden soll (nur Hauptfragen, keine Nuancen)
+     * Bedürfnisse die nicht im Katalog existieren werden ausgeblendet (z.B. B95-B125 wurden entfernt)
      * @param {string} needId - #B-ID (z.B. '#B34')
-     * @returns {string} 'haupt', 'nuance', oder null
+     * @returns {boolean} true wenn das Bedürfnis angezeigt werden soll
      */
-    function getFrageTyp(needId) {
+    function shouldShowNeed(needId) {
         if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
-            return null;
+            return true; // Fallback wenn Katalog nicht geladen
         }
         const need = BeduerfnisIds.beduerfnisse[needId];
-        return need?.frageTyp || null;
+        // Bedürfnis existiert nicht im Katalog → nicht anzeigen (z.B. entfernte B95-B125)
+        if (!need) {
+            return false;
+        }
+        // Nuancen nicht anzeigen (nur für Feuer-Synthese)
+        if (need.frageTyp === 'nuance') {
+            return false;
+        }
+        // Hauptfragen oder alte Daten ohne frageTyp → anzeigen
+        return true;
     }
 
     /**
@@ -2698,13 +2708,9 @@ const AttributeSummaryCard = (function() {
         syncLocksFromTiageState();
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
-        // v4.3: Filtere Nuancen aus - nur Hauptfragen anzeigen (Nuancen nur für Feuer-Synthese)
+        // v4.4: Filtere Nuancen und entfernte Bedürfnisse aus (B95-B125 wurden aus Katalog entfernt)
         let allNeeds = flatNeeds
-            .filter(need => {
-                // Nur Hauptfragen anzeigen, Nuancen ausfiltern
-                const frageTyp = getFrageTyp(need.id);
-                return !frageTyp || frageTyp === 'haupt';
-            })
+            .filter(need => shouldShowNeed(need.id))
             .map(need => ({
                 id: need.id,
                 value: need.value,

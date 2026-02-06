@@ -18380,18 +18380,23 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             const uebereinstimmend = matching.details?.uebereinstimmend || [];
             const komplementaer = matching.details?.komplementaer || [];
 
-            // v4.3: Filter: Nur Hauptfragen anzeigen, Nuancen nur für Feuer-Synthese
-            const isHauptfrage = (item) => {
+            // v4.4: Filter: Nur Hauptfragen anzeigen, entfernte Bedürfnisse ausblenden
+            // Bedürfnisse B95-B125 wurden aus dem Katalog entfernt (v3.4.0)
+            const shouldShowNeed = (item) => {
                 if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) return true;
                 const need = BeduerfnisIds.beduerfnisse[item.id];
-                // Zeige nur wenn frageTyp === 'haupt' oder nicht definiert (alte Daten)
-                return !need?.frageTyp || need.frageTyp === 'haupt';
+                // Bedürfnis existiert nicht im Katalog → nicht anzeigen
+                if (!need) return false;
+                // Nuancen nicht anzeigen (nur für Feuer-Synthese)
+                if (need.frageTyp === 'nuance') return false;
+                // Hauptfragen oder alte Daten ohne frageTyp → anzeigen
+                return true;
             };
 
-            let gemeinsam = [...uebereinstimmend, ...komplementaer].filter(isHauptfrage);
+            let gemeinsam = [...uebereinstimmend, ...komplementaer].filter(shouldShowNeed);
 
             // Unterschiedliche Prioritäten
-            let konflikt = [...(matching.details?.konflikt || [])].filter(isHauptfrage);
+            let konflikt = [...(matching.details?.konflikt || [])].filter(shouldShowNeed);
 
             // Sortierung anwenden
             const sortItems = (items) => {
