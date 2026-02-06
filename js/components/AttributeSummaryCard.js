@@ -2698,11 +2698,20 @@ const AttributeSummaryCard = (function() {
         syncLocksFromTiageState();
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
-        let allNeeds = flatNeeds.map(need => ({
-            id: need.id,
-            value: need.value,
-            label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
-        }));
+        // v4.3: Filtere Bedürfnisse ohne Namen (nur IDs wie "#B95", "B95" etc.)
+        let allNeeds = flatNeeds
+            .filter(need => {
+                // Filter out needs where label is just the ID (e.g., "#B95", "B95")
+                // These should only appear in Feuer-Synthese
+                const label = need.label?.trim() || '';
+                const labelIsJustId = /^#?B\d+$/i.test(label);
+                return !labelIsJustId;
+            })
+            .map(need => ({
+                id: need.id,
+                value: need.value,
+                label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
+            }));
 
         // Zähle Gesamt vor dem Filtern
         const totalNeedsCount = allNeeds.length;
