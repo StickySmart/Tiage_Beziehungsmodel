@@ -1739,7 +1739,8 @@ function generateNeedsBreakdown(data) {
             hornyMods = TiageModifiers.FFH.Horny.deltas;
         }
     }
-    const hasFFH = extras.fit || extras.fuckedup || extras.horny;
+    // v4.3: Always show FFH columns (even if empty)
+    const hasFFH = true;
 
     // Build breakdown table
     let html = '<div class="memory-breakdown-table">';
