@@ -1721,11 +1721,30 @@ function generateNeedsBreakdown(data) {
         }
     }
 
+    // v4.3: Get FFH modifiers (Fit, Fucked up, Horny)
+    const extras = data.geschlecht_extras || {};
+    let fitMods = {};
+    let fuckedupMods = {};
+    let hornyMods = {};
+
+    // Get FFH deltas from TiageModifiers if available
+    if (typeof TiageModifiers !== 'undefined' && TiageModifiers.FFH) {
+        if (extras.fit && TiageModifiers.FFH.Fit?.deltas) {
+            fitMods = TiageModifiers.FFH.Fit.deltas;
+        }
+        if (extras.fuckedup && TiageModifiers.FFH.Fuckedup?.deltas) {
+            fuckedupMods = TiageModifiers.FFH.Fuckedup.deltas;
+        }
+        if (extras.horny && TiageModifiers.FFH.Horny?.deltas) {
+            hornyMods = TiageModifiers.FFH.Horny.deltas;
+        }
+    }
+    const hasFFH = extras.fit || extras.fuckedup || extras.horny;
+
     // Build breakdown table
     let html = '<div class="memory-breakdown-table">';
 
-    // NEU v3.3: Extras formatieren (Fit, Fucked up, Horny)
-    const extras = data.geschlecht_extras || {};
+    // NEU v3.3: Extras formatieren (Fit, Fucked up, Horny) - extras already defined above
     const extrasParts = [];
     if (extras.fit) extrasParts.push('Fit 💪');
     if (extras.fuckedup) extrasParts.push('Fucked up 🔥');
@@ -1773,10 +1792,11 @@ function generateNeedsBreakdown(data) {
     const needsWithBreakdown = needsArray
         .filter(need => {
             const stringKey = need.stringKey;
-            const hasModifier = genderMods[stringKey] || dominanceMods[stringKey] || orientationMods[stringKey];
-            return hasModifier; // Only show needs that have modifiers applied
+            const hasGODMod = genderMods[stringKey] || dominanceMods[stringKey] || orientationMods[stringKey];
+            const hasFFHMod = fitMods[stringKey] || fuckedupMods[stringKey] || hornyMods[stringKey];
+            return hasGODMod || hasFFHMod; // Show needs that have any modifiers applied
         })
-        .slice(0, 30); // Limit to 30 entries for readability
+        .slice(0, 50); // Limit to 50 entries for readability (increased for FFH)
 
     if (needsWithBreakdown.length === 0) {
         html += '<div class="memory-breakdown-info">Keine Modifikatoren für dieses Profil aktiv</div>';
@@ -1790,18 +1810,19 @@ function generateNeedsBreakdown(data) {
             font-size: 12px;
             color: var(--text-muted, #888);
             border-radius: 0 4px 4px 0;">
-            <strong style="color: #2A9D8F;">ℹ️ GOD-Modifikatoren</strong><br>
+            <strong style="color: #2A9D8F;">ℹ️ GOD+FFH Modifikatoren</strong><br>
             Diese ${needsWithBreakdown.length} Bedürfnisse werden durch deine Auswahl von
-            <strong>G</strong>eschlecht, <strong>O</strong>rientierung und <strong>D</strong>ominanz
-            automatisch angepasst. Das ist korrekt und erwartet!
+            <strong>G</strong>eschlecht, <strong>O</strong>rientierung, <strong>D</strong>ominanz
+            ${hasFFH ? 'und <strong>F</strong>it/<strong>F</strong>ucked<strong>U</strong>p/<strong>H</strong>orny ' : ''}automatisch angepasst.
         </div>`;
         html += '<table class="memory-breakdown-entries">';
         html += `<thead><tr>
             <th>Bedürfnis</th>
             <th>Basis</th>
-            <th>Gender</th>
-            <th>Dominanz</th>
-            <th>Orient.</th>
+            <th>G</th>
+            <th>D</th>
+            <th>O</th>
+            ${hasFFH ? '<th>F</th><th>FU</th><th>H</th>' : ''}
             <th>=</th>
             <th>Final</th>
         </tr></thead><tbody>`;
@@ -1817,10 +1838,22 @@ function generateNeedsBreakdown(data) {
             const genderMod = genderMods[stringKey] || 0;
             const dominanceMod = dominanceMods[stringKey] || 0;
             const orientationMod = orientationMods[stringKey] || 0;
-            const calculatedValue = Math.max(0, Math.min(100, baseValue + genderMod + dominanceMod + orientationMod));
+            // v4.3: FFH modifiers
+            const fitMod = fitMods[stringKey] || 0;
+            const fuckedupMod = fuckedupMods[stringKey] || 0;
+            const hornyMod = hornyMods[stringKey] || 0;
+            // v4.3: Removed 100 cap - values can exceed 100
+            const calculatedValue = Math.max(0, baseValue + genderMod + dominanceMod + orientationMod + fitMod + fuckedupMod + hornyMod);
 
             // Format modifiers with + or - sign
             const formatMod = (val) => val === 0 ? '-' : (val > 0 ? `+${val}` : `${val}`);
+
+            // v4.3: FFH columns
+            const ffhColumns = hasFFH ? `
+                <td class="breakdown-mod ${fitMod !== 0 ? (fitMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(fitMod)}</td>
+                <td class="breakdown-mod ${fuckedupMod !== 0 ? (fuckedupMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(fuckedupMod)}</td>
+                <td class="breakdown-mod ${hornyMod !== 0 ? (hornyMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(hornyMod)}</td>
+            ` : '';
 
             html += `<tr>
                 <td class="breakdown-need-name">${stringKey}</td>
@@ -1828,6 +1861,7 @@ function generateNeedsBreakdown(data) {
                 <td class="breakdown-mod ${genderMod !== 0 ? (genderMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(genderMod)}</td>
                 <td class="breakdown-mod ${dominanceMod !== 0 ? (dominanceMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(dominanceMod)}</td>
                 <td class="breakdown-mod ${orientationMod !== 0 ? (orientationMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(orientationMod)}</td>
+                ${ffhColumns}
                 <td class="breakdown-equals">=</td>
                 <td class="breakdown-final">${calculatedValue}</td>
             </tr>`;
