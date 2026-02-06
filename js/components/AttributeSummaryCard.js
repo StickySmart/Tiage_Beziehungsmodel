@@ -2698,14 +2698,12 @@ const AttributeSummaryCard = (function() {
         syncLocksFromTiageState();
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
-        // v4.3: Filtere Bedürfnisse ohne Namen (nur IDs wie "#B95", "B95" etc.)
+        // v4.3: Filtere Nuancen aus - nur Hauptfragen anzeigen (Nuancen nur für Feuer-Synthese)
         let allNeeds = flatNeeds
             .filter(need => {
-                // Filter out needs where label is just the ID (e.g., "#B95", "B95")
-                // These should only appear in Feuer-Synthese
-                const label = need.label?.trim() || '';
-                const labelIsJustId = /^#?B\d+$/i.test(label);
-                return !labelIsJustId;
+                // Nur Hauptfragen anzeigen, Nuancen ausfiltern
+                const frageTyp = getFrageTyp(need.id);
+                return !frageTyp || frageTyp === 'haupt';
             })
             .map(need => ({
                 id: need.id,

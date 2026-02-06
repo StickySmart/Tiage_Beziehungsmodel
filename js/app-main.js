@@ -18379,10 +18379,19 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // Gemeinsame & Kompatible Bedürfnisse
             const uebereinstimmend = matching.details?.uebereinstimmend || [];
             const komplementaer = matching.details?.komplementaer || [];
-            let gemeinsam = [...uebereinstimmend, ...komplementaer];
+
+            // v4.3: Filter: Nur Hauptfragen anzeigen, Nuancen nur für Feuer-Synthese
+            const isHauptfrage = (item) => {
+                if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) return true;
+                const need = BeduerfnisIds.beduerfnisse[item.id];
+                // Zeige nur wenn frageTyp === 'haupt' oder nicht definiert (alte Daten)
+                return !need?.frageTyp || need.frageTyp === 'haupt';
+            };
+
+            let gemeinsam = [...uebereinstimmend, ...komplementaer].filter(isHauptfrage);
 
             // Unterschiedliche Prioritäten
-            let konflikt = [...(matching.details?.konflikt || [])];
+            let konflikt = [...(matching.details?.konflikt || [])].filter(isHauptfrage);
 
             // Sortierung anwenden
             const sortItems = (items) => {
