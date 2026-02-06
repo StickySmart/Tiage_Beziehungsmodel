@@ -1324,6 +1324,48 @@ const MemoryManager = (function() {
         },
 
         /**
+         * v4.3: Delete only ME from a slot
+         * @param {number} slotNumber - Slot number (1-4)
+         * @returns {boolean} Success
+         */
+        deleteMeFromSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_SLOTS) {
+                console.error('[MemoryManager] Invalid slot number:', slotNumber);
+                return false;
+            }
+            try {
+                const meKey = getSlotKey('ME', slotNumber);
+                localStorage.removeItem(meKey);
+                console.log(`[MemoryManager] Deleted ME from slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManager] Delete ME error:', e);
+                return false;
+            }
+        },
+
+        /**
+         * v4.3: Delete only PARTNER from a slot
+         * @param {number} slotNumber - Slot number (1-4)
+         * @returns {boolean} Success
+         */
+        deletePartnerFromSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_SLOTS) {
+                console.error('[MemoryManager] Invalid slot number:', slotNumber);
+                return false;
+            }
+            try {
+                const partKey = getSlotKey('PART', slotNumber);
+                localStorage.removeItem(partKey);
+                console.log(`[MemoryManager] Deleted PARTNER from slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManager] Delete PARTNER error:', e);
+                return false;
+            }
+        },
+
+        /**
          * Find first empty slot
          * @returns {number|null} Slot number (1-4) or null if all full
          */
@@ -1464,6 +1506,9 @@ function updateMemoryModalContent() {
                             <button class="memory-save-single-btn" onclick="handleSaveMeToSlot(${slotNum})" title="Nur ICH speichern">
                                 <span>💾</span>
                             </button>
+                            <button class="memory-delete-single-btn" onclick="handleDeleteMe(${slotNum})" title="ICH löschen">
+                                <span>🗑️</span>
+                            </button>
                         </div>
                     ` : `<div class="memory-person-info empty">-</div>
                         <div class="memory-person-buttons">
@@ -1492,6 +1537,9 @@ function updateMemoryModalContent() {
                             <button class="memory-save-single-btn" onclick="handleSavePartnerToSlot(${slotNum})" title="Nur PARTNER speichern">
                                 <span>💾</span>
                             </button>
+                            <button class="memory-delete-single-btn" onclick="handleDeletePartner(${slotNum})" title="PARTNER löschen">
+                                <span>🗑️</span>
+                            </button>
                         </div>
                     ` : `<div class="memory-person-info empty">-</div>
                         <div class="memory-person-buttons">
@@ -1502,19 +1550,13 @@ function updateMemoryModalContent() {
                 </div>
             </div>
 
+            ${!isEmpty ? `
             <div class="memory-slot-actions">
-                <button class="memory-save-btn" onclick="handleSaveToSlot(${slotNum})" title="Beide in diesen Slot speichern">
-                    Beide speichern
+                <button class="memory-load-both-btn" onclick="handleLoadBoth(${slotNum})" title="Beide laden">
+                    Beide laden
                 </button>
-                ${!isEmpty ? `
-                    <button class="memory-load-both-btn" onclick="handleLoadBoth(${slotNum})" title="Beide laden">
-                        Beide laden
-                    </button>
-                    <button class="memory-delete-btn" onclick="handleDeleteSlot(${slotNum})" title="Slot löschen">
-                        Löschen
-                    </button>
-                ` : ''}
             </div>
+            ` : ''}
         </div>
         `;
     }
@@ -1608,7 +1650,7 @@ function handleLoadBoth(slotNumber) {
 }
 
 /**
- * Handle delete slot
+ * Handle delete slot (both)
  */
 function handleDeleteSlot(slotNumber) {
     if (!confirm(`Slot ${slotNumber} wirklich löschen?`)) {
@@ -1619,6 +1661,40 @@ function handleDeleteSlot(slotNumber) {
     if (success) {
         updateMemoryModalContent();
         showMemoryToast('Slot ' + slotNumber + ' gelöscht');
+    } else {
+        showMemoryToast('Fehler beim Löschen', 'error');
+    }
+}
+
+/**
+ * v4.3: Handle delete only ME from slot
+ */
+function handleDeleteMe(slotNumber) {
+    if (!confirm(`ICH aus Slot ${slotNumber} löschen?`)) {
+        return;
+    }
+
+    const success = MemoryManager.deleteMeFromSlot(slotNumber);
+    if (success) {
+        updateMemoryModalContent();
+        showMemoryToast('ICH aus Slot ' + slotNumber + ' gelöscht');
+    } else {
+        showMemoryToast('Fehler beim Löschen', 'error');
+    }
+}
+
+/**
+ * v4.3: Handle delete only PARTNER from slot
+ */
+function handleDeletePartner(slotNumber) {
+    if (!confirm(`PARTNER aus Slot ${slotNumber} löschen?`)) {
+        return;
+    }
+
+    const success = MemoryManager.deletePartnerFromSlot(slotNumber);
+    if (success) {
+        updateMemoryModalContent();
+        showMemoryToast('PARTNER aus Slot ' + slotNumber + ' gelöscht');
     } else {
         showMemoryToast('Fehler beim Löschen', 'error');
     }

@@ -272,6 +272,23 @@
     border-color: #10B981;
 }
 
+/* v4.3: Single Delete Button für ICH/PARTNER */
+.memory-delete-single-btn {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #EF4444;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-delete-single-btn:hover {
+    background: rgba(239, 68, 68, 0.4);
+    border-color: #EF4444;
+}
+
 /* Slot Actions */
 .memory-slot-actions {
     display: flex;
