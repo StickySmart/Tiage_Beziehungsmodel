@@ -3,8 +3,8 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v61';
-const STATIC_CACHE_NAME = 'tiage-static-v55';
+const CACHE_NAME = 'tiage-v62';
+const STATIC_CACHE_NAME = 'tiage-static-v56';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [

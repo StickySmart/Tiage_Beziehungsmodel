@@ -38,21 +38,21 @@ var TiageWeights = TiageWeights || {};
 
     /**
      * Initialize AGOD weight toggles on page load
-     * Loads from TiageState.paarung.gewichtungen (primary)
+     * v4.4: Loads from gewichtungen.ich (persisted) as primary, paarung.gewichtungen as fallback
      */
     function init() {
         // Start with defaults
         agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
 
         if (typeof TiageState !== 'undefined') {
-            // Primary: Load from paarung.gewichtungen
-            let stored = TiageState.get('paarung.gewichtungen');
-            let source = 'paarung.gewichtungen';
+            // Primary: Load from gewichtungen.ich (this IS persisted in saveToStorage)
+            let stored = TiageState.get('gewichtungen.ich');
+            let source = 'gewichtungen.ich';
 
-            // Fallback: Load from gewichtungen.ich
+            // Fallback: Load from paarung.gewichtungen (session only, not persisted)
             if (!stored || stored.O === undefined) {
-                stored = TiageState.get('gewichtungen.ich');
-                source = 'gewichtungen.ich (fallback)';
+                stored = TiageState.get('paarung.gewichtungen');
+                source = 'paarung.gewichtungen (fallback)';
             }
 
             console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
@@ -199,6 +199,7 @@ var TiageWeights = TiageWeights || {};
 
     /**
      * Save weights to TiageState (SSOT - persistent)
+     * v4.4: gewichtungen.ich is the primary persisted path
      */
     function save() {
         try {
@@ -211,14 +212,14 @@ var TiageWeights = TiageWeights || {};
                     G: agodWeights.G
                 };
 
-                // Primary: Save to paarung.gewichtungen
-                TiageState.set('paarung.gewichtungen', gewData);
-
-                // Backup: Save to gewichtungen.ich
+                // Primary: Save to gewichtungen.ich (this IS persisted in saveToStorage)
                 TiageState.set('gewichtungen.ich', gewData);
 
+                // Session backup: Save to paarung.gewichtungen (for backwards compat)
+                TiageState.set('paarung.gewichtungen', gewData);
+
                 TiageState.saveToStorage();
-                console.log('[AGOD] Saved to TiageState:', gewData);
+                console.log('[AGOD] Saved to TiageState (gewichtungen.ich):', gewData);
             }
         } catch (e) {
             console.warn('[AGOD] Could not save to TiageState:', e);
