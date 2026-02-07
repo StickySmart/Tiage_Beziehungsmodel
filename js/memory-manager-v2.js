@@ -772,7 +772,7 @@ function handleDisplayIchV2(archetyp) {
             </div>
         </div>
         ` : ''}
-        ${formatBeduerfnisseSection(data.beduerfnisse, uniqueId + '_needs')}
+        ${generateNeedsBreakdownV2(data, uniqueId + '_needs')}
         <div class="memory-detail-section">
             <div class="memory-detail-section-title">Metadaten</div>
             <div class="memory-detail-grid">
@@ -924,44 +924,176 @@ function formatDominanzDetail(dom) {
 }
 
 /**
- * Formatiert Bedürfnisse-Sektion für Detail-Anzeige
- * Zeigt collapsible Liste der Top-Bedürfnisse
+ * Generiert Bedürfnis-Aufschlüsselung mit GOD+FFH Modifikatoren
+ * Zeigt nur Bedürfnisse die durch Modifikatoren verändert wurden
  */
-function formatBeduerfnisseSection(beduerfnisse, uniqueId) {
-    if (!beduerfnisse || Object.keys(beduerfnisse).length === 0) {
+function generateNeedsBreakdownV2(data, uniqueId) {
+    const archetyp = data.archetyp;
+    const flatNeeds = data.beduerfnisse;
+
+    // Keine Bedürfnisse gespeichert
+    if (!flatNeeds || Object.keys(flatNeeds).length === 0) {
         return `
         <div class="memory-detail-section">
-            <div class="memory-detail-section-title">Bedürfnisse</div>
+            <div class="memory-detail-section-title">Bedürfnis-Aufschlüsselung</div>
             <div class="memory-detail-value" style="padding: 8px;">Keine Bedürfnisse gespeichert</div>
         </div>
         `;
     }
 
-    // Sortiere nach Wert (höchste zuerst)
-    const sorted = Object.entries(beduerfnisse)
-        .filter(([key, val]) => key.startsWith('#B') && typeof val === 'number')
-        .sort((a, b) => b[1] - a[1]);
+    // Basis-Werte aus Archetyp-Profil holen
+    let baseNeeds = {};
+    if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+        const profil = GfkBeduerfnisse.archetypProfile[archetyp];
+        if (profil && profil.umfrageWerte) {
+            baseNeeds = profil.umfrageWerte;
+        }
+    }
 
-    const count = sorted.length;
-    const top10 = sorted.slice(0, 10);
-    const hasMore = sorted.length > 10;
+    // Modifikatoren holen
+    let genderDeltas = {}, dominanzDeltas = {}, orientierungDeltas = {};
+    let fitDeltas = {}, fuckedupDeltas = {}, hornyDeltas = {};
 
-    let itemsHtml = top10.map(([needId, value]) => {
-        const colorClass = value >= 70 ? 'high' : value >= 40 ? 'medium' : 'low';
-        return `<div class="memory-need-item">
-            <span class="memory-need-id">${needId}</span>
-            <span class="memory-need-value ${colorClass}">${value}</span>
-        </div>`;
-    }).join('');
+    if (typeof ProfileModifiers !== 'undefined') {
+        // Gender
+        if (data.geschlecht) {
+            const genderMod = ProfileModifiers.getGenderModifier(data.geschlecht);
+            if (genderMod && genderMod.deltas) genderDeltas = genderMod.deltas;
+        }
+        // Dominanz
+        if (data.dominanz) {
+            const domVal = typeof data.dominanz === 'object' ? data.dominanz.primary : data.dominanz;
+            const domMod = ProfileModifiers.getDominanzModifier(domVal);
+            if (domMod && domMod.deltas) dominanzDeltas = domMod.deltas;
+        }
+        // Orientierung
+        if (data.orientierung) {
+            const oriVal = typeof data.orientierung === 'object' ? data.orientierung.primary : data.orientierung;
+            const oriMod = ProfileModifiers.getOrientierungModifier(oriVal);
+            if (oriMod && oriMod.deltas) orientierungDeltas = oriMod.deltas;
+        }
+        // FFH
+        const extras = data.geschlecht_extras || {};
+        if (extras.fit) {
+            const fitMod = ProfileModifiers.getFFHModifier('fit');
+            if (fitMod && fitMod.deltas) fitDeltas = fitMod.deltas;
+        }
+        if (extras.fuckedup) {
+            const fuMod = ProfileModifiers.getFFHModifier('fuckedup');
+            if (fuMod && fuMod.deltas) fuckedupDeltas = fuMod.deltas;
+        }
+        if (extras.horny) {
+            const hMod = ProfileModifiers.getFFHModifier('horny');
+            if (hMod && hMod.deltas) hornyDeltas = hMod.deltas;
+        }
+    }
+
+    // ID zu stringKey Mapping
+    const getStringKey = (needId) => {
+        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey) {
+            return BeduerfnisIds.getKey(needId) || needId;
+        }
+        return needId;
+    };
+
+    // Nur Bedürfnisse mit Modifikatoren sammeln
+    const formatMod = (val) => {
+        if (val === 0 || val === undefined) return '';
+        return val > 0 ? `+${val}` : `${val}`;
+    };
+
+    const needsWithMods = Object.entries(flatNeeds)
+        .filter(([needId]) => needId.startsWith('#B'))
+        .map(([needId, finalValue]) => {
+            const stringKey = getStringKey(needId);
+            const baseValue = baseNeeds[stringKey] ?? 50;
+            const gMod = genderDeltas[stringKey] || 0;
+            const dMod = dominanzDeltas[stringKey] || 0;
+            const oMod = orientierungDeltas[stringKey] || 0;
+            const fMod = fitDeltas[stringKey] || 0;
+            const fuMod = fuckedupDeltas[stringKey] || 0;
+            const hMod = hornyDeltas[stringKey] || 0;
+            const totalMod = gMod + dMod + oMod + fMod + fuMod + hMod;
+
+            return { needId, stringKey, baseValue, finalValue, gMod, dMod, oMod, fMod, fuMod, hMod, totalMod };
+        })
+        .filter(n => n.totalMod !== 0) // Nur modifizierte
+        .sort((a, b) => Math.abs(b.totalMod) - Math.abs(a.totalMod))
+        .slice(0, 30);
+
+    if (needsWithMods.length === 0) {
+        return `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+                Bedürfnis-Aufschlüsselung <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+            </div>
+            <div id="rawJson_${uniqueId}" style="display: none; padding: 8px;">
+                Keine GOD/FFH Modifikatoren aktiv
+            </div>
+        </div>
+        `;
+    }
+
+    // FFH Status
+    const extras = data.geschlecht_extras || {};
+    const hasFFH = extras.fit || extras.fuckedup || extras.horny;
+
+    // Tabelle bauen
+    let tableHtml = `
+    <div class="memory-breakdown-hint" style="
+        background: rgba(42, 157, 143, 0.15);
+        border-left: 3px solid #2A9D8F;
+        padding: 8px 12px;
+        margin-bottom: 12px;
+        font-size: 11px;
+        color: #888;
+        border-radius: 0 4px 4px 0;">
+        <strong style="color: #2A9D8F;">ℹ️ GOD+FFH Modifikatoren</strong><br>
+        ${needsWithMods.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''} angepasst
+    </div>
+    <table class="memory-breakdown-entries" style="width: 100%; font-size: 11px; border-collapse: collapse;">
+        <thead><tr style="background: rgba(0,0,0,0.2);">
+            <th style="text-align: left; padding: 4px;">Bedürfnis</th>
+            <th>Basis</th>
+            <th>G</th>
+            <th>D</th>
+            <th>O</th>
+            ${hasFFH ? '<th>F</th><th>FU</th><th>H</th>' : ''}
+            <th>=</th>
+            <th>Final</th>
+        </tr></thead>
+        <tbody>`;
+
+    needsWithMods.forEach(n => {
+        const modClass = (val) => val > 0 ? 'style="color: #10B981;"' : val < 0 ? 'style="color: #EF4444;"' : '';
+        const ffhCols = hasFFH ? `
+            <td ${modClass(n.fMod)}>${formatMod(n.fMod)}</td>
+            <td ${modClass(n.fuMod)}>${formatMod(n.fuMod)}</td>
+            <td ${modClass(n.hMod)}>${formatMod(n.hMod)}</td>
+        ` : '';
+
+        tableHtml += `
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 4px; max-width: 100px; overflow: hidden; text-overflow: ellipsis;">${n.stringKey}</td>
+            <td style="text-align: center;">${n.baseValue}</td>
+            <td style="text-align: center;" ${modClass(n.gMod)}>${formatMod(n.gMod)}</td>
+            <td style="text-align: center;" ${modClass(n.dMod)}>${formatMod(n.dMod)}</td>
+            <td style="text-align: center;" ${modClass(n.oMod)}>${formatMod(n.oMod)}</td>
+            ${ffhCols}
+            <td style="text-align: center;">=</td>
+            <td style="text-align: center; font-weight: bold;">${n.finalValue}</td>
+        </tr>`;
+    });
+
+    tableHtml += '</tbody></table>';
 
     return `
     <div class="memory-detail-section">
         <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
-            Bedürfnisse (${count} gespeichert) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+            Bedürfnis-Aufschlüsselung (${needsWithMods.length} modifiziert) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
         </div>
-        <div id="rawJson_${uniqueId}" class="memory-needs-list" style="display: none;">
-            ${itemsHtml}
-            ${hasMore ? `<div class="memory-need-more">... und ${sorted.length - 10} weitere</div>` : ''}
+        <div id="rawJson_${uniqueId}" style="display: none; padding: 8px; overflow-x: auto;">
+            ${tableHtml}
         </div>
     </div>
     `;
