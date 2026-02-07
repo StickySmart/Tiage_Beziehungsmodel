@@ -707,6 +707,9 @@ function handleDisplayIchV2(archetyp) {
     }
 
     const data = slot.data;
+    const rawJson = JSON.stringify(data, null, 2);
+    const uniqueId = 'ich_' + archetyp + '_' + Date.now();
+
     const detailHtml = `
         <div class="memory-detail-section">
             <div class="memory-detail-section-title">ICH: ${slot.label} ${slot.icon}</div>
@@ -775,6 +778,14 @@ function handleDisplayIchV2(archetyp) {
                 </div>
             </div>
         </div>
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+                ROHDATEN (JSON) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+            </div>
+            <div id="rawJson_${uniqueId}" class="memory-detail-raw-json" style="display: none;">
+                <pre>${escapeHtml(rawJson)}</pre>
+            </div>
+        </div>
     `;
 
     showDetailModal(`ICH: ${slot.label}`, detailHtml);
@@ -792,6 +803,9 @@ function handleDisplayPartnerV2(slotNumber) {
     }
 
     const data = slot.data;
+    const rawJson = JSON.stringify(data, null, 2);
+    const uniqueId = 'partner_' + slotNumber + '_' + Date.now();
+
     const detailHtml = `
         <div class="memory-detail-section">
             <div class="memory-detail-section-title">Partner Slot ${slotNumber}: ${slot.archetypLabel}</div>
@@ -840,6 +854,14 @@ function handleDisplayPartnerV2(slotNumber) {
                 </div>
             </div>
         </div>
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+                ROHDATEN (JSON) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+            </div>
+            <div id="rawJson_${uniqueId}" class="memory-detail-raw-json" style="display: none;">
+                <pre>${escapeHtml(rawJson)}</pre>
+            </div>
+        </div>
     `;
 
     showDetailModal(`Partner Slot ${slotNumber}`, detailHtml);
@@ -857,6 +879,30 @@ function formatOrientierungDetail(ori) {
     if (Array.isArray(ori)) return ori.join(', ');
     return '-';
 }
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+}
+
+function toggleRawJson(uniqueId) {
+    const jsonDiv = document.getElementById('rawJson_' + uniqueId);
+    const iconSpan = document.getElementById('rawIcon_' + uniqueId);
+    if (jsonDiv && iconSpan) {
+        if (jsonDiv.style.display === 'none') {
+            jsonDiv.style.display = 'block';
+            iconSpan.textContent = '−';
+        } else {
+            jsonDiv.style.display = 'none';
+            iconSpan.textContent = '+';
+        }
+    }
+}
+window.toggleRawJson = toggleRawJson;
 
 function formatDominanzDetail(dom) {
     if (!dom) return '-';
