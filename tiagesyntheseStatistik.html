@@ -748,6 +748,29 @@
         }
 
         /**
+         * Prüft ob ein Bedürfnis angezeigt werden soll
+         * v4.4: Bedürfnisse die nicht im Katalog existieren (B89-B125 entfernt) ausblenden
+         * Nuancen nur für Feuer-Synthese, nicht hier
+         */
+        function shouldShowNeed(needId) {
+            // BeduerfnisIds ist die primäre Quelle (beduerfnis-katalog.json)
+            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse) {
+                const need = BeduerfnisIds.beduerfnisse[needId];
+                // Nicht im Katalog → ausblenden
+                if (!need) return false;
+                // Nuance → ausblenden (nur für Feuer-Synthese)
+                if (need.frageTyp === 'nuance') return false;
+            }
+            // Fallback: BeduerfnisKatalog prüfen
+            else if (typeof BeduerfnisKatalog !== 'undefined' && BeduerfnisKatalog.beduerfnisse) {
+                const need = BeduerfnisKatalog.beduerfnisse[needId];
+                if (!need) return false;
+                if (need.frageTyp === 'nuance') return false;
+            }
+            return true;
+        }
+
+        /**
          * Rendert den Hauptinhalt - Hauptfragen mit Nuancen-Tags
          */
         function renderContent() {
@@ -793,9 +816,13 @@
             ]);
 
             // Vergleichsdaten für jedes Bedürfnis erstellen (gewichtete Berechnung)
+            // v4.4: Filter - nur Hauptfragen anzeigen, entfernte Bedürfnisse ausblenden
             let summeUebereinstimmung = 0;
             let summeGewicht = 0;
             allNeedIds.forEach(needId => {
+                // v4.4: Überspringe entfernte Bedürfnisse (B89-B125) und Nuancen
+                if (!shouldShowNeed(needId)) return;
+
                 const ichValue = ichFlatNeeds[needId] || 0;
                 const partnerValue = partnerFlatNeeds[needId] || 0;
                 const diff = Math.abs(ichValue - partnerValue);
