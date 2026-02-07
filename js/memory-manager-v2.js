@@ -151,7 +151,7 @@ const MemoryManagerV2 = (function() {
         };
 
         if (typeof TiageState !== 'undefined') {
-            // GOD-Einstellungen
+            // GOD-Einstellungen aus TiageState
             data.geschlecht = TiageState.get('personDimensions.ich.geschlecht');
             data.dominanz = TiageState.get('personDimensions.ich.dominanz');
             data.orientierung = TiageState.get('personDimensions.ich.orientierung');
@@ -159,8 +159,35 @@ const MemoryManagerV2 = (function() {
             // FFH (Fit/Fuckedup/Horny)
             data.geschlecht_extras = TiageState.get('personDimensions.ich.geschlecht_extras');
 
+            // Fallback: Try to get from global personDimensions if TiageState is empty
+            if (typeof personDimensions !== 'undefined' && personDimensions.ich) {
+                if (!data.geschlecht && personDimensions.ich.geschlecht) {
+                    data.geschlecht = personDimensions.ich.geschlecht;
+                }
+                if (!data.dominanz && personDimensions.ich.dominanz) {
+                    data.dominanz = personDimensions.ich.dominanz;
+                }
+                if (!data.orientierung && personDimensions.ich.orientierung) {
+                    data.orientierung = personDimensions.ich.orientierung;
+                }
+                if (!data.geschlecht_extras && personDimensions.ich.geschlecht_extras) {
+                    data.geschlecht_extras = personDimensions.ich.geschlecht_extras;
+                }
+            }
+
+            // Fallback for FFH: Try geschlechtExtrasCache
+            if (!data.geschlecht_extras && typeof geschlechtExtrasCache !== 'undefined' && geschlechtExtrasCache.ich) {
+                data.geschlecht_extras = geschlechtExtrasCache.ich;
+            }
+
             // AGOD-Gewichtung (neues Format: 0/1/2)
             data.agodGewichtung = TiageState.get('gewichtungen.ich');
+
+            // Fallback: Get from TiageWeights.AGOD module
+            if ((!data.agodGewichtung || data.agodGewichtung.O === undefined) &&
+                typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
+                data.agodGewichtung = TiageWeights.AGOD.get();
+            }
 
             // RTI-Prioritäten
             data.rtiPrioritaeten = TiageState.get('rtiPriorities.ich');
@@ -178,6 +205,7 @@ const MemoryManagerV2 = (function() {
                 dominanz: data.dominanz,
                 orientierung: data.orientierung,
                 geschlecht_extras: data.geschlecht_extras,
+                agodGewichtung: data.agodGewichtung,
                 hasBeduerfnisse: !!data.beduerfnisse
             });
         }
@@ -309,6 +337,15 @@ const MemoryManagerV2 = (function() {
          * Manueller Trigger für Auto-Save (z.B. nach UI-Änderungen)
          */
         triggerAutoSave: triggerAutoSave,
+
+        /**
+         * Sofortiges Speichern des aktuellen ICH-Zustands (ohne Throttle)
+         * Wird beim Öffnen des Memory Modals aufgerufen
+         */
+        saveCurrentIchNow: function() {
+            console.log('[MemoryManagerV2] Force-Save aktueller ICH-Zustand');
+            saveIchForCurrentArchetyp();
+        },
 
         /**
          * Holt alle ICH-Slots (8 Archetypen)
@@ -576,6 +613,10 @@ function openMemoryModalV2() {
         console.error('[MemoryManagerV2] Modal nicht gefunden');
         return;
     }
+
+    // Force save current state before showing modal
+    // This ensures the displayed data is always current
+    MemoryManagerV2.saveCurrentIchNow();
 
     updateMemoryModalV2Content();
     modal.classList.add('active');
