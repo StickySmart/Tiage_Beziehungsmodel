@@ -146,7 +146,8 @@ const MemoryManagerV2 = (function() {
             orientierung: null,
             geschlecht_extras: null,  // FFH
             agodGewichtung: null,     // 3-Wege AGOD (0/1/2)
-            rtiPrioritaeten: null     // RTI-Säulen (0/1/2)
+            rtiPrioritaeten: null,    // RTI-Säulen (0/1/2)
+            beduerfnisse: null        // FlatNeeds für diesen Archetyp
         };
 
         if (typeof TiageState !== 'undefined') {
@@ -163,6 +164,12 @@ const MemoryManagerV2 = (function() {
 
             // RTI-Prioritäten
             data.rtiPrioritaeten = TiageState.get('rtiPriorities.ich');
+
+            // Bedürfnisse (flatNeeds) für diesen spezifischen Archetyp
+            const flatNeeds = TiageState.get(`flatNeeds.ich.${archetyp}`);
+            if (flatNeeds && Object.keys(flatNeeds).length > 0) {
+                data.beduerfnisse = flatNeeds;
+            }
         }
 
         return data;
@@ -765,6 +772,7 @@ function handleDisplayIchV2(archetyp) {
             </div>
         </div>
         ` : ''}
+        ${formatBeduerfnisseSection(data.beduerfnisse, uniqueId + '_needs')}
         <div class="memory-detail-section">
             <div class="memory-detail-section-title">Metadaten</div>
             <div class="memory-detail-grid">
@@ -915,10 +923,62 @@ function formatDominanzDetail(dom) {
     return '-';
 }
 
+/**
+ * Formatiert Bedürfnisse-Sektion für Detail-Anzeige
+ * Zeigt collapsible Liste der Top-Bedürfnisse
+ */
+function formatBeduerfnisseSection(beduerfnisse, uniqueId) {
+    if (!beduerfnisse || Object.keys(beduerfnisse).length === 0) {
+        return `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Bedürfnisse</div>
+            <div class="memory-detail-value" style="padding: 8px;">Keine Bedürfnisse gespeichert</div>
+        </div>
+        `;
+    }
+
+    // Sortiere nach Wert (höchste zuerst)
+    const sorted = Object.entries(beduerfnisse)
+        .filter(([key, val]) => key.startsWith('#B') && typeof val === 'number')
+        .sort((a, b) => b[1] - a[1]);
+
+    const count = sorted.length;
+    const top10 = sorted.slice(0, 10);
+    const hasMore = sorted.length > 10;
+
+    let itemsHtml = top10.map(([needId, value]) => {
+        const colorClass = value >= 70 ? 'high' : value >= 40 ? 'medium' : 'low';
+        return `<div class="memory-need-item">
+            <span class="memory-need-id">${needId}</span>
+            <span class="memory-need-value ${colorClass}">${value}</span>
+        </div>`;
+    }).join('');
+
+    return `
+    <div class="memory-detail-section">
+        <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+            Bedürfnisse (${count} gespeichert) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+        </div>
+        <div id="rawJson_${uniqueId}" class="memory-needs-list" style="display: none;">
+            ${itemsHtml}
+            ${hasMore ? `<div class="memory-need-more">... und ${sorted.length - 10} weitere</div>` : ''}
+        </div>
+    </div>
+    `;
+}
+
 function formatWeight(val) {
     if (val === undefined || val === null) return '-';
+    // Handle old format { value: 25, locked: false }
+    if (typeof val === 'object' && 'value' in val) {
+        const v = val.value;
+        if (v <= 10) return 'Egal';
+        if (v >= 40) return 'Wichtig';
+        return 'Normal';
+    }
+    // New format: 0, 1, 2
     const labels = { 0: 'Egal', 1: 'Normal', 2: 'Wichtig' };
-    return labels[val] || val;
+    return labels[val] !== undefined ? labels[val] : String(val);
 }
 
 function showDetailModal(title, contentHtml) {

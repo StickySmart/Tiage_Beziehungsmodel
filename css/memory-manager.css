@@ -1060,3 +1060,62 @@
         transform: translateX(-50%) translateY(0);
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BEDÜRFNISSE LIST STYLES (Memory Manager V2)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.memory-needs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.memory-need-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.memory-need-id {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: monospace;
+}
+
+.memory-need-value {
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.memory-need-value.high {
+    background: rgba(16, 185, 129, 0.3);
+    color: #10B981;
+}
+
+.memory-need-value.medium {
+    background: rgba(245, 158, 11, 0.3);
+    color: #F59E0B;
+}
+
+.memory-need-value.low {
+    background: rgba(239, 68, 68, 0.3);
+    color: #EF4444;
+}
+
+.memory-need-more {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 4px;
+}
