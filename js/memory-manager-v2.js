@@ -170,6 +170,16 @@ const MemoryManagerV2 = (function() {
             if (flatNeeds && Object.keys(flatNeeds).length > 0) {
                 data.beduerfnisse = flatNeeds;
             }
+
+            // Debug: Log collected data
+            console.log('[MemoryManagerV2] collectIchData:', {
+                archetyp,
+                geschlecht: data.geschlecht,
+                dominanz: data.dominanz,
+                orientierung: data.orientierung,
+                geschlecht_extras: data.geschlecht_extras,
+                hasBeduerfnisse: !!data.beduerfnisse
+            });
         }
 
         return data;
@@ -285,10 +295,11 @@ const MemoryManagerV2 = (function() {
             if (typeof TiageState !== 'undefined' && TiageState.subscribe) {
                 // Subscribe to relevant state changes
                 TiageState.subscribe('personDimensions.ich', triggerAutoSave);
+                TiageState.subscribe('personDimensions.ich.geschlecht_extras', triggerAutoSave); // FFH explicit
                 TiageState.subscribe('gewichtungen.ich', triggerAutoSave);
                 TiageState.subscribe('rtiPriorities.ich', triggerAutoSave);
                 TiageState.subscribe('archetypes.ich', triggerAutoSave);
-                console.log('[MemoryManagerV2] Auto-Save initialisiert');
+                console.log('[MemoryManagerV2] Auto-Save initialisiert (inkl. FFH)');
             } else {
                 console.warn('[MemoryManagerV2] TiageState.subscribe nicht verfügbar');
             }
@@ -950,27 +961,53 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         }
     }
 
+    // Helper: Extract string value from different formats
+    const extractValue = (val) => {
+        if (!val) return null;
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object' && val.primary) return val.primary;
+        return null;
+    };
+
     // Modifikatoren holen
     let genderDeltas = {}, dominanzDeltas = {}, orientierungDeltas = {};
     let fitDeltas = {}, fuckedupDeltas = {}, hornyDeltas = {};
 
     if (typeof ProfileModifiers !== 'undefined') {
-        // Gender
+        // Gender - handle both string and { primary, secondary } formats
         if (data.geschlecht) {
-            const genderMod = ProfileModifiers.getGenderModifier(data.geschlecht);
+            let genderMod = null;
+            if (typeof data.geschlecht === 'string') {
+                genderMod = ProfileModifiers.getGenderModifier(data.geschlecht);
+            } else if (typeof data.geschlecht === 'object' && data.geschlecht.primary) {
+                // Legacy format with primary/secondary
+                genderMod = ProfileModifiers.getGenderModifier(
+                    data.geschlecht.primary,
+                    data.geschlecht.secondary
+                );
+            }
             if (genderMod && genderMod.deltas) genderDeltas = genderMod.deltas;
         }
         // Dominanz
         if (data.dominanz) {
-            const domVal = typeof data.dominanz === 'object' ? data.dominanz.primary : data.dominanz;
+            const domVal = extractValue(data.dominanz);
             const domMod = ProfileModifiers.getDominanzModifier(domVal);
             if (domMod && domMod.deltas) dominanzDeltas = domMod.deltas;
         }
-        // Orientierung
+        // Orientierung - handle both string, { primary, secondary }, and array formats
         if (data.orientierung) {
-            const oriVal = typeof data.orientierung === 'object' ? data.orientierung.primary : data.orientierung;
-            const oriMod = ProfileModifiers.getOrientierungModifier(oriVal);
-            if (oriMod && oriMod.deltas) orientierungDeltas = oriMod.deltas;
+            let oriVal = null;
+            if (typeof data.orientierung === 'string') {
+                oriVal = data.orientierung;
+            } else if (Array.isArray(data.orientierung) && data.orientierung.length > 0) {
+                oriVal = data.orientierung[0];
+            } else if (typeof data.orientierung === 'object' && data.orientierung.primary) {
+                oriVal = data.orientierung.primary;
+            }
+            if (oriVal) {
+                const oriMod = ProfileModifiers.getOrientierungModifier(oriVal);
+                if (oriMod && oriMod.deltas) orientierungDeltas = oriMod.deltas;
+            }
         }
         // FFH
         const extras = data.geschlecht_extras || {};
@@ -986,6 +1023,20 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             const hMod = ProfileModifiers.getFFHModifier('horny');
             if (hMod && hMod.deltas) hornyDeltas = hMod.deltas;
         }
+
+        // Debug: Log found modifiers
+        console.log('[MemoryManagerV2] Breakdown Modifiers:', {
+            geschlecht: data.geschlecht,
+            genderDeltaCount: Object.keys(genderDeltas).length,
+            dominanz: extractValue(data.dominanz),
+            dominanzDeltaCount: Object.keys(dominanzDeltas).length,
+            orientierung: data.orientierung,
+            orientierungDeltaCount: Object.keys(orientierungDeltas).length,
+            extras: extras,
+            fitDeltaCount: Object.keys(fitDeltas).length,
+            fuckedupDeltaCount: Object.keys(fuckedupDeltas).length,
+            hornyDeltaCount: Object.keys(hornyDeltas).length
+        });
     }
 
     // ID zu stringKey Mapping
