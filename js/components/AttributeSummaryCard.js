@@ -5484,6 +5484,11 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = AttributeSummaryCard;
 }
 
+// Export für Browser (onclick-Handler benötigen window.AttributeSummaryCard)
+if (typeof window !== 'undefined') {
+    window.AttributeSummaryCard = AttributeSummaryCard;
+}
+
 // FIX: Event-Listener für Katalog-Laden - UI aktualisieren wenn Katalog fertig lädt
 if (typeof document !== 'undefined') {
     document.addEventListener('beduerfnisIdsLoaded', function() {
