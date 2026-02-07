@@ -153,10 +153,12 @@
              * Setzt alle Partner-Attribute auf "frei" zurück
              */
             'reset-partner-god': function(el, event) {
-                if (typeof resetPartnerGOD === 'function') {
-                    resetPartnerGOD();
-                } else if (typeof window.resetPartnerGOD === 'function') {
+                console.log('[FREE Button] Clicked - resetting Partner GOD');
+                if (typeof window.resetPartnerGOD === 'function') {
                     window.resetPartnerGOD();
+                    console.log('[FREE Button] ✓ resetPartnerGOD called successfully');
+                } else {
+                    console.error('[FREE Button] ✗ window.resetPartnerGOD not found!');
                 }
             }
         });

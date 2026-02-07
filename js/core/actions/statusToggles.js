@@ -29,10 +29,11 @@
                 var person = el.dataset.person;
                 var type = el.dataset.type;
                 var status = el.dataset.status;
-                if (typeof handleDominanzStatusToggle === 'function') {
-                    handleDominanzStatusToggle(person, type, status, el);
-                } else if (typeof window.handleDominanzStatusToggle === 'function') {
+                console.log('[Dominanz Toggle]', person, type, status);
+                if (typeof window.handleDominanzStatusToggle === 'function') {
                     window.handleDominanzStatusToggle(person, type, status, el);
+                } else {
+                    console.error('[Dominanz Toggle] window.handleDominanzStatusToggle not found!');
                 }
             },
 
@@ -47,10 +48,11 @@
                 var person = el.dataset.person;
                 var type = el.dataset.type;
                 var status = el.dataset.status;
-                if (typeof handleOrientierungStatusToggle === 'function') {
-                    handleOrientierungStatusToggle(person, type, status, el);
-                } else if (typeof window.handleOrientierungStatusToggle === 'function') {
+                console.log('[Orientierung Toggle]', person, type, status);
+                if (typeof window.handleOrientierungStatusToggle === 'function') {
                     window.handleOrientierungStatusToggle(person, type, status, el);
+                } else {
+                    console.error('[Orientierung Toggle] window.handleOrientierungStatusToggle not found!');
                 }
             },
 
