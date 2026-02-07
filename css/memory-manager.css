@@ -777,3 +777,255 @@
         max-width: 80px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MEMORY MANAGER V2 - 8 Slots (ICH per Archetyp + 8 Partner)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.memory-modal-v2 {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* Zwei-Spalten-Layout */
+.memory-v2-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.memory-v2-column {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.memory-column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.memory-column-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.memory-ich-column .memory-column-title {
+    color: #60A5FA;
+}
+
+.memory-partner-column .memory-column-title {
+    color: #F472B6;
+}
+
+/* ICH Slots (Archetyp-basiert) */
+.memory-ich-slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.memory-ich-slot {
+    display: grid;
+    grid-template-columns: 28px 70px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.memory-ich-slot:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.memory-ich-slot.active {
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.memory-ich-slot.empty {
+    opacity: 0.5;
+}
+
+.memory-ich-slot.filled {
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.memory-slot-icon {
+    font-size: 16px;
+    text-align: center;
+}
+
+.memory-slot-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.memory-slot-god {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.memory-slot-agod {
+    font-size: 10px;
+    color: #60A5FA;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.memory-slot-empty {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+/* Partner Slots (unabhängig) */
+.memory-partner-slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.memory-partner-slot {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.memory-partner-slot:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(244, 114, 182, 0.3);
+}
+
+.memory-partner-slot.empty {
+    opacity: 0.6;
+}
+
+.memory-partner-slot.filled {
+    border-color: rgba(244, 114, 182, 0.2);
+}
+
+.memory-partner-slot .memory-slot-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: #F472B6;
+    text-align: center;
+}
+
+.memory-slot-archetyp {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.memory-slot-score {
+    font-size: 13px;
+    font-weight: 600;
+    color: #10B981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* V2 Buttons */
+.memory-ich-slot .memory-load-btn,
+.memory-partner-slot .memory-load-btn {
+    width: auto;
+    min-width: 32px;
+    padding: 4px 8px;
+    margin-top: 0;
+    font-size: 14px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.memory-partner-slot .memory-save-btn {
+    min-width: 32px;
+    padding: 4px 8px;
+    font-size: 14px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #10B981;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-partner-slot .memory-save-btn:hover {
+    background: rgba(16, 185, 129, 0.25);
+}
+
+.memory-partner-slot .memory-delete-btn {
+    min-width: 32px;
+    padding: 4px 8px;
+    font-size: 14px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #EF4444;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-partner-slot .memory-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+.memory-partner-slot .memory-slot-actions {
+    display: flex;
+    gap: 4px;
+}
+
+/* V2 Mobile */
+@media (max-width: 768px) {
+    .memory-modal-v2 {
+        max-width: 95% !important;
+    }
+
+    .memory-v2-columns {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .memory-ich-slot {
+        grid-template-columns: 24px 60px 1fr auto;
+    }
+
+    .memory-slot-label {
+        font-size: 11px;
+    }
+
+    .memory-slot-agod {
+        display: none;
+    }
+}
+
+/* Animation für Toast */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}

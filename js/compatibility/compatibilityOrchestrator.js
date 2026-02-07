@@ -37,9 +37,10 @@ TiageCompatibility.Orchestrator = (function() {
         );
 
         // Determine warning flags
+        // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
         var hasLogosWarning = logosCheck.score < 50;
         var hasPathosUncertain = pathosCheck.result === 'unsicher';
-        var hasPathosBlocked = pathosCheck.result === 'unmöglich';
+        var hasPathosBlocked = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
         var hasPathosIncomplete = pathosCheck.result === 'unvollständig';
 
         // 3. Get modifier summaries if module available
@@ -83,7 +84,8 @@ TiageCompatibility.Orchestrator = (function() {
      * @returns {string} 'none' | 'pathos' | 'logos' | 'double' | 'incomplete'
      */
     function determineWarningType(pathosCheck, logosCheck) {
-        var hasPathosIssue = pathosCheck.result === 'unsicher' || pathosCheck.result === 'unmöglich';
+        // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+        var hasPathosIssue = pathosCheck.result === 'unsicher' || pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
         var hasLogosIssue = logosCheck.score < 50;
         var isIncomplete = pathosCheck.result === 'unvollständig';
 

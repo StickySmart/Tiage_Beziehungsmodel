@@ -60,11 +60,19 @@
             },
 
             /**
-             * Öffnet Memory Modal
+             * Öffnet Memory Modal V2 (8 Slots - ICH per Archetyp + 8 Partner)
              * Ersetzt: onclick="openMemoryModal()"
+             * v2.0: Neues Konzept mit Auto-Save für ICH pro Archetyp
              */
             'open-memory-modal': function(el, event) {
-                if (typeof openMemoryModal === 'function') {
+                // V2 hat Priorität (neues Design mit 8 Slots)
+                if (typeof openMemoryModalV2 === 'function') {
+                    openMemoryModalV2();
+                } else if (typeof window.openMemoryModalV2 === 'function') {
+                    window.openMemoryModalV2();
+                }
+                // Fallback zu V1 falls V2 nicht verfügbar
+                else if (typeof openMemoryModal === 'function') {
                     openMemoryModal();
                 } else if (typeof window.openMemoryModal === 'function') {
                     window.openMemoryModal();

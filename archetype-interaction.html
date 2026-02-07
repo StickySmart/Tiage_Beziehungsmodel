@@ -2600,12 +2600,50 @@
         </div>
     </div>
 
+    <!-- Memory Management Modal V2 (8 Slots - ICH per Archetyp + 8 Partner) -->
+    <div class="modal-overlay" id="memoryModalV2" onclick="closeMemoryModalV2(event)" style="z-index: 2600;">
+        <div class="modal memory-modal-v2" onclick="event.stopPropagation()" style="max-width: 95%; width: 850px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(59, 130, 246, 0.3);">
+                <span class="modal-title" style="color: #3B82F6;">💾 Speichermanagement V2</span>
+                <button class="modal-close" onclick="closeMemoryModalV2()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 16px;">
+                <div class="memory-info-box">
+                    <p><strong>ICH:</strong> Auto-Save pro Archetyp (8 Slots) | <strong>PARTNER:</strong> Manuell speichern/löschen (8 Slots)</p>
+                </div>
+                <div class="memory-v2-columns">
+                    <!-- ICH-Spalte (8 Archetypen, Auto-Save) -->
+                    <div class="memory-v2-column memory-ich-column">
+                        <div class="memory-column-header">
+                            <span class="memory-column-title">👤 ICH (Auto-Save)</span>
+                            <span class="memory-slot-count-badge" id="memoryIchSlotCount">0/8</span>
+                        </div>
+                        <div class="memory-ich-slots-list" id="memoryIchSlotsList">
+                            <!-- Slots werden dynamisch generiert -->
+                        </div>
+                    </div>
+                    <!-- PARTNER-Spalte (8 unabhängige Slots) -->
+                    <div class="memory-v2-column memory-partner-column">
+                        <div class="memory-column-header">
+                            <span class="memory-column-title">💕 PARTNER (Manuell)</span>
+                            <span class="memory-slot-count-badge" id="memoryPartnerSlotCount">0/8</span>
+                        </div>
+                        <div class="memory-partner-slots-list" id="memoryPartnerSlotsList">
+                            <!-- Slots werden dynamisch generiert -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- State Management - Single Source of Truth -->
     <script defer src="js/state.js"></script>
     <!-- Configuration - Dimension Types & Rules -->
     <script defer src="js/config.js"></script>
     <!-- Memory Manager -->
     <script defer src="js/memory-manager.js"></script>
+    <script defer src="js/memory-manager-v2.js?v=20260207"></script>
     <script defer src="js/markdown-loader.js"></script>
 
     <script defer src="js/app-i18n.js?v=20260130"></script>

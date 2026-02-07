@@ -9414,7 +9414,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Continue showing compatibility content since it's just incomplete
             }
 
-            if (pathosCheck.result === 'unmöglich') {
+            // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+            if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
                 // SANFTER HINWEIS statt K.O.-Blocker
                 // Zeige Warnung, aber blockiere nicht mehr
                 document.getElementById('pathosBlocker').classList.add('active');
@@ -9422,7 +9423,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // document.getElementById('compatibilityContent').style.display = 'none';
 
                 document.getElementById('pathosBlockerReason').textContent =
-                    `Hinweis: ${pathosCheck.reason} – Resonanz ist sehr niedrig, aber nicht unmöglich.`;
+                    `Hinweis: ${pathosCheck.reason || 'Inkompatible Orientierungen'} – Resonanz ist sehr niedrig, aber nicht unmöglich.`;
                 document.getElementById('pathosBlockerPerson1').textContent =
                     formatPersonSummary(person1);
                 document.getElementById('pathosBlockerPerson2').textContent =
@@ -11692,7 +11693,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         const pathosCheck = checkPhysicalCompatibility(person1, person2);
                         const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArch);
 
-                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                        // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+                        const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+                        if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
                             // SSOT v3.10: R-Faktoren aus person.needs
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                             let baseScore = result.overall || 0;
@@ -11705,7 +11709,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             const logosScore = logosCheck.score || 50;
                             score = logosScore;
                         }
-                        // Bei 'unmöglich': score bleibt 0
+                        // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
                     } finally {
                         // Globale Variablen wiederherstellen
                         currentArchetype = savedCurrentArchetype;
@@ -12336,7 +12340,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
                                 const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
 
-                                if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+                                const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+                                if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
                                     const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
                                     const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
@@ -12349,6 +12356,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 } else if (pathosCheck.result === 'unvollständig') {
                                     score = logosCheck.score || 50;
                                 }
+                                // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
                             } catch (e) { /* Fehler ignorieren */ }
 
                             results.push({
@@ -12505,7 +12513,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
                                     const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
 
-                                    if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                                    // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+                                    const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+                                    if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
                                         const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
                                         const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
@@ -12521,6 +12532,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                     } else if (pathosCheck.result === 'unvollständig') {
                                         score = logosCheck.score || 50;
                                     }
+                                    // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
                                 } catch (e) {
                                     // Fehler ignorieren
                                 }
@@ -13027,7 +13039,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         const pathosCheck = checkPhysicalCompatibility(person1, person2);
                         const logosCheck = calculatePhilosophyCompatibility(ichArch, partnerArchetype);
 
-                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                        // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+                        const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+                        if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
                             // SSOT v3.10: R-Faktoren aus person.needs
                             const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                             let baseScore = result.overall || 0;
@@ -13040,7 +13055,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             const logosScore = logosCheck.score || 50;
                             score = logosScore;
                         }
-                        // Bei 'unmöglich': score bleibt 0
+                        // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
                     } finally {
                         // Globale Variablen wiederherstellen
                         currentArchetype = savedCurrentArchetype;
@@ -13337,8 +13352,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
                 warningHTML += '</div>';
                 warningsContainer.innerHTML = warningHTML;
-            } else if (pathosCheck.result === 'unmöglich') {
-                warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 Keine emotionale/körperliche Anziehung: ${pathosCheck.reason}</div>`;
+            } else if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
+                // v4.0: 'hohe_reibung' ersetzt 'unmöglich' - gleiche Behandlung in der UI
+                warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 Keine emotionale/körperliche Anziehung: ${pathosCheck.reason || 'Inkompatible Orientierungen'}</div>`;
             } else if (pathosCheck.result === 'unsicher') {
                 warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ Unsichere körperliche Anziehung (Exploration-Phase)</div>`;
             }
@@ -13401,7 +13417,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             let overallScore = 0;
             let qualityBreakdown = { archetyp: 0, dominanz: 0, orientierung: 0, geschlecht: 0 };
 
-            if (pathosCheck.result !== 'unmöglich') {
+            // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
+            const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+            if (!isIncompatible) {
                 try {
                     // SSOT v3.10: R-Faktoren aus person.needs (TiageState)
                     const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
@@ -13460,10 +13479,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // ═══════════════════════════════════════════════════════════════
             // DESKTOP KO-TEXT DISPLAY (unter dem Score Circle)
+            // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
             // ═══════════════════════════════════════════════════════════════
             const desktopKoTextDisplay = document.getElementById('desktopKoTextDisplay');
             if (desktopKoTextDisplay) {
-                if (pathosCheck.result === 'unmöglich') {
+                if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
                     // KO-Text anzeigen
                     const koReason = pathosCheck.reason || 'Inkompatible Orientierungen';
                     desktopKoTextDisplay.innerHTML = '<span class="ko-title">⚠️ K.O.-Kriterium</span><span class="ko-reason">' + koReason + '</span>';
@@ -13477,10 +13497,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // ═══════════════════════════════════════════════════════════════
             // MOBILE KO-TEXT DISPLAY (unter dem Score Circle auf Page 3)
+            // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
             // ═══════════════════════════════════════════════════════════════
             const mobileKoTextDisplay = document.getElementById('mobileKoTextDisplay');
             if (mobileKoTextDisplay) {
-                if (pathosCheck.result === 'unmöglich') {
+                if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
                     // KO-Text anzeigen
                     const koReason = pathosCheck.reason || 'Inkompatible Orientierungen';
                     mobileKoTextDisplay.innerHTML = '<span class="ko-title">⚠️ K.O.-Kriterium</span><br><span class="ko-reason">' + koReason + '</span>';
@@ -13504,8 +13525,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (overallScore >= 80) resonanceLevel = 'hoch';
                 else if (overallScore >= 50) resonanceLevel = 'mittel';
 
+                // v4.0 FIX: 'hohe_reibung' muss auch als inkompatibel behandelt werden
+                const isCompatibleForQuotes = pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'hohe_reibung';
+
                 // Versuche Zitat aus ResonanceQuotesTable zu holen
-                if (typeof ResonanceQuotesTable !== 'undefined' && pathosCheck.result !== 'unmöglich') {
+                if (typeof ResonanceQuotesTable !== 'undefined' && isCompatibleForQuotes) {
                     const category = overallScore >= 65 ? 'RESONANCE' : overallScore >= 50 ? 'GROWTH' : 'AWARENESS';
                     const result = ResonanceQuotesTable.generateResonanceText(resonanceLevel, category, 'de');
 
@@ -13518,7 +13542,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                 // Fallback zu hardcoded Texten
                 if (!quoteText) {
-                    if (pathosCheck.result === 'unmöglich') {
+                    if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
                         noteText = 'Keine Basis für Resonanz vorhanden.';
                         quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
                     } else if (overallScore >= 70) {
