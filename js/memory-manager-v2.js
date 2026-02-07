@@ -606,9 +606,10 @@ function updateMemoryModalV2Content() {
             <div class="memory-slot-god">${slot.formattedGOD} ${slot.formattedFFH}</div>
             ${!slot.isEmpty ? `
                 <div class="memory-slot-agod">${slot.formattedAGOD}</div>
-                <button class="memory-load-btn" onclick="handleLoadIchV2('${slot.archetyp}')" title="Laden">
-                    📥
-                </button>
+                <div class="memory-slot-actions">
+                    <button class="memory-display-btn" onclick="handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
+                    <button class="memory-load-btn" onclick="handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
+                </div>
             ` : '<div class="memory-slot-empty">-</div>'}
         </div>
         `;
@@ -633,6 +634,7 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-score">${slot.score ? slot.score.toFixed(1) + '%' : '-'}</div>
                 <div class="memory-slot-god">${slot.formattedGOD}</div>
                 <div class="memory-slot-actions">
+                    <button class="memory-display-btn" onclick="handleDisplayPartnerV2(${slot.slot})" title="Anzeigen">👁️</button>
                     <button class="memory-load-btn" onclick="handleLoadPartnerV2(${slot.slot})" title="Laden">📥</button>
                     <button class="memory-delete-btn" onclick="handleDeletePartnerV2(${slot.slot})" title="Löschen">🗑️</button>
                 </div>
@@ -693,6 +695,203 @@ function handleDeletePartnerV2(slotNumber) {
     }
 }
 
+/**
+ * Zeigt Details eines ICH-Slots an
+ */
+function handleDisplayIchV2(archetyp) {
+    const slots = MemoryManagerV2.getIchSlots();
+    const slot = slots.find(s => s.archetyp === archetyp);
+    if (!slot || slot.isEmpty) {
+        showMemoryToast('Keine Daten vorhanden', 'error');
+        return;
+    }
+
+    const data = slot.data;
+    const detailHtml = `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">ICH: ${slot.label} ${slot.icon}</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Geschlecht</span>
+                    <span class="memory-detail-value">${data.geschlecht || '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Orientierung</span>
+                    <span class="memory-detail-value">${formatOrientierungDetail(data.orientierung)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Dominanz</span>
+                    <span class="memory-detail-value">${formatDominanzDetail(data.dominanz)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">FFH</span>
+                    <span class="memory-detail-value">${slot.formattedFFH || '-'}</span>
+                </div>
+            </div>
+        </div>
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">AGOD-Gewichtung</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Archetyp (A)</span>
+                    <span class="memory-detail-value">${formatWeight(data.agodGewichtung?.A)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Geschlecht (G)</span>
+                    <span class="memory-detail-value">${formatWeight(data.agodGewichtung?.G)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Orientierung (O)</span>
+                    <span class="memory-detail-value">${formatWeight(data.agodGewichtung?.O)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Dominanz (D)</span>
+                    <span class="memory-detail-value">${formatWeight(data.agodGewichtung?.D)}</span>
+                </div>
+            </div>
+        </div>
+        ${data.rtiPrioritaeten ? `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">RTI-Prioritäten</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item"><span class="memory-detail-label">S1 Leiblichkeit</span><span class="memory-detail-value">${formatWeight(data.rtiPrioritaeten?.S1)}</span></div>
+                <div class="memory-detail-item"><span class="memory-detail-label">S2 Soziales</span><span class="memory-detail-value">${formatWeight(data.rtiPrioritaeten?.S2)}</span></div>
+                <div class="memory-detail-item"><span class="memory-detail-label">S3 Autonomie</span><span class="memory-detail-value">${formatWeight(data.rtiPrioritaeten?.S3)}</span></div>
+                <div class="memory-detail-item"><span class="memory-detail-label">S4 Sicherheit</span><span class="memory-detail-value">${formatWeight(data.rtiPrioritaeten?.S4)}</span></div>
+                <div class="memory-detail-item"><span class="memory-detail-label">S5 Werte & Sinn</span><span class="memory-detail-value">${formatWeight(data.rtiPrioritaeten?.S5)}</span></div>
+            </div>
+        </div>
+        ` : ''}
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Metadaten</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Gespeichert</span>
+                    <span class="memory-detail-value">${slot.dateTime}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Version</span>
+                    <span class="memory-detail-value">${data.dataVersion || '-'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    showDetailModal(`ICH: ${slot.label}`, detailHtml);
+}
+
+/**
+ * Zeigt Details eines Partner-Slots an
+ */
+function handleDisplayPartnerV2(slotNumber) {
+    const slots = MemoryManagerV2.getPartnerSlots();
+    const slot = slots.find(s => s.slot === slotNumber);
+    if (!slot || slot.isEmpty) {
+        showMemoryToast('Keine Daten vorhanden', 'error');
+        return;
+    }
+
+    const data = slot.data;
+    const detailHtml = `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Partner Slot ${slotNumber}: ${slot.archetypLabel}</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Archetyp</span>
+                    <span class="memory-detail-value">${slot.archetypLabel}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Score</span>
+                    <span class="memory-detail-value" style="color: #10B981; font-weight: bold;">${slot.score ? slot.score.toFixed(1) + '%' : '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Mit ICH-Archetyp</span>
+                    <span class="memory-detail-value">${data.ichArchetyp || '-'}</span>
+                </div>
+            </div>
+        </div>
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">GOD-Einstellungen</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Geschlecht</span>
+                    <span class="memory-detail-value">${data.geschlecht || '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Orientierung</span>
+                    <span class="memory-detail-value">${formatOrientierungDetail(data.orientierung)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Dominanz</span>
+                    <span class="memory-detail-value">${formatDominanzDetail(data.dominanz)}</span>
+                </div>
+            </div>
+        </div>
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Metadaten</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Gespeichert</span>
+                    <span class="memory-detail-value">${slot.dateTime}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Version</span>
+                    <span class="memory-detail-value">${data.dataVersion || '-'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    showDetailModal(`Partner Slot ${slotNumber}`, detailHtml);
+}
+
+// Hilfsfunktionen für Detail-Anzeige
+function formatOrientierungDetail(ori) {
+    if (!ori) return '-';
+    if (typeof ori === 'string') return ori;
+    if (ori.primary) {
+        let str = ori.primary;
+        if (ori.secondary) str += ` + ${ori.secondary}`;
+        return str;
+    }
+    if (Array.isArray(ori)) return ori.join(', ');
+    return '-';
+}
+
+function formatDominanzDetail(dom) {
+    if (!dom) return '-';
+    if (typeof dom === 'string') return dom;
+    if (dom.primary) {
+        let str = dom.primary;
+        if (dom.secondary) str += ` + ${dom.secondary}`;
+        return str;
+    }
+    return '-';
+}
+
+function formatWeight(val) {
+    if (val === undefined || val === null) return '-';
+    const labels = { 0: 'Egal', 1: 'Normal', 2: 'Wichtig' };
+    return labels[val] || val;
+}
+
+function showDetailModal(title, contentHtml) {
+    // Nutze bestehendes Detail-Modal falls vorhanden
+    const modal = document.getElementById('memoryDetailModal');
+    const titleEl = modal?.querySelector('.memory-detail-title');
+    const contentEl = document.getElementById('memoryDetailContent');
+
+    if (modal && contentEl) {
+        if (titleEl) titleEl.textContent = title;
+        contentEl.innerHTML = contentHtml;
+        modal.classList.add('active');
+    } else {
+        // Fallback: Alert
+        alert(title + '\n\nDetails siehe Konsole');
+        console.log(title, contentHtml);
+    }
+}
+
 // Toast-Funktion (falls nicht vorhanden)
 function showMemoryToast(message, type = 'success') {
     // Versuche existierende Toast-Funktion
@@ -730,6 +929,8 @@ window.handleLoadIchV2 = handleLoadIchV2;
 window.handleSavePartnerV2 = handleSavePartnerV2;
 window.handleLoadPartnerV2 = handleLoadPartnerV2;
 window.handleDeletePartnerV2 = handleDeletePartnerV2;
+window.handleDisplayIchV2 = handleDisplayIchV2;
+window.handleDisplayPartnerV2 = handleDisplayPartnerV2;
 
 // Auto-Save initialisieren wenn DOM bereit
 if (document.readyState === 'loading') {

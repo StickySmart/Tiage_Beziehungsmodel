@@ -946,6 +946,12 @@
 }
 
 /* V2 Buttons */
+.memory-ich-slot .memory-slot-actions,
+.memory-partner-slot .memory-slot-actions {
+    display: flex;
+    gap: 4px;
+}
+
 .memory-ich-slot .memory-load-btn,
 .memory-partner-slot .memory-load-btn {
     width: auto;
@@ -955,6 +961,31 @@
     font-size: 14px;
     background: rgba(59, 130, 246, 0.15);
     border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 6px;
+    cursor: pointer;
+    color: #60A5FA;
+    transition: all 0.2s ease;
+}
+
+.memory-ich-slot .memory-load-btn:hover,
+.memory-partner-slot .memory-load-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+}
+
+.memory-display-btn {
+    min-width: 32px;
+    padding: 4px 8px;
+    font-size: 14px;
+    background: rgba(147, 51, 234, 0.15);
+    border: 1px solid rgba(147, 51, 234, 0.25);
+    color: #A855F7;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-display-btn:hover {
+    background: rgba(147, 51, 234, 0.25);
 }
 
 .memory-partner-slot .memory-save-btn {
