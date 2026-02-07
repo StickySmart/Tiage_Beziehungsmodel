@@ -1034,11 +1034,11 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         `;
     }
 
-    // FFH Status
+    // FFH Status (für Info-Text)
     const extras = data.geschlecht_extras || {};
     const hasFFH = extras.fit || extras.fuckedup || extras.horny;
 
-    // Tabelle bauen
+    // Tabelle bauen - F, FU, H immer anzeigen
     let tableHtml = `
     <div class="memory-breakdown-hint" style="
         background: rgba(42, 157, 143, 0.15);
@@ -1058,7 +1058,9 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             <th>G</th>
             <th>D</th>
             <th>O</th>
-            ${hasFFH ? '<th>F</th><th>FU</th><th>H</th>' : ''}
+            <th>F</th>
+            <th>FU</th>
+            <th>H</th>
             <th>=</th>
             <th>Final</th>
         </tr></thead>
@@ -1066,11 +1068,6 @@ function generateNeedsBreakdownV2(data, uniqueId) {
 
     needsWithMods.forEach(n => {
         const modClass = (val) => val > 0 ? 'style="color: #10B981;"' : val < 0 ? 'style="color: #EF4444;"' : '';
-        const ffhCols = hasFFH ? `
-            <td ${modClass(n.fMod)}>${formatMod(n.fMod)}</td>
-            <td ${modClass(n.fuMod)}>${formatMod(n.fuMod)}</td>
-            <td ${modClass(n.hMod)}>${formatMod(n.hMod)}</td>
-        ` : '';
 
         tableHtml += `
         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
@@ -1079,7 +1076,9 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             <td style="text-align: center;" ${modClass(n.gMod)}>${formatMod(n.gMod)}</td>
             <td style="text-align: center;" ${modClass(n.dMod)}>${formatMod(n.dMod)}</td>
             <td style="text-align: center;" ${modClass(n.oMod)}>${formatMod(n.oMod)}</td>
-            ${ffhCols}
+            <td style="text-align: center;" ${modClass(n.fMod)}>${formatMod(n.fMod)}</td>
+            <td style="text-align: center;" ${modClass(n.fuMod)}>${formatMod(n.fuMod)}</td>
+            <td style="text-align: center;" ${modClass(n.hMod)}>${formatMod(n.hMod)}</td>
             <td style="text-align: center;">=</td>
             <td style="text-align: center; font-weight: bold;">${n.finalValue}</td>
         </tr>`;
