@@ -76,6 +76,9 @@
 
 var TiageSynthesis = TiageSynthesis || {};
 
+// Letzte berechnete R-Faktoren (für UI-Display)
+var _lastCombinedRFactors = { R1: null, R2: null, R3: null, R4: null };
+
 // ═══════════════════════════════════════════════════════════════════════════
 // R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1073,6 +1076,14 @@ TiageSynthesis.Calculator = {
                     partner: r1_partner
                 }
             };
+
+            // Speichere für UI-Display
+            _lastCombinedRFactors = {
+                R1: R1_combined,
+                R2: R2_combined,
+                R3: R3_combined,
+                R4: R4_combined
+            };
         }
 
         // Fallback: Berechnung via NeedsIntegration wenn keine gespeicherten Werte
@@ -1754,6 +1765,20 @@ TiageSynthesis.Calculator = {
             // Keine Bedürfnisse berechnet
             beduerfnisse: null
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // R-FAKTOR GETTER (für UI-Display)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Gibt die zuletzt berechneten kombinierten R-Faktoren zurück
+     * Aufruf: TiageSynthesis.Calculator.getLastRFactors()
+     *
+     * @returns {object} { R1, R2, R3, R4 } oder null wenn keine Berechnung erfolgt ist
+     */
+    getLastRFactors: function() {
+        return _lastCombinedRFactors;
     },
 
     // ═══════════════════════════════════════════════════════════════════════════

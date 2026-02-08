@@ -976,6 +976,73 @@
             });
         }
 
+        // Update R-Factor Display (Resonanz der Paarung R1-R4)
+        function updateRFactorDisplay() {
+            const rDisplay = document.getElementById('rFactorDisplay');
+            if (!rDisplay) return;
+
+            // Hole kombinierte R-Faktoren aus TiageSynthesis Calculator wenn verfügbar
+            let rFactors = { R1: null, R2: null, R3: null, R4: null };
+
+            try {
+                // Versuche R-Faktoren aus der letzten Berechnung zu holen
+                if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && TiageSynthesis.Calculator.getLastRFactors) {
+                    rFactors = TiageSynthesis.Calculator.getLastRFactors() || rFactors;
+                }
+
+                // Fallback: Berechne aus TiageState resonanzFaktoren
+                if (rFactors.R1 === null && typeof TiageState !== 'undefined') {
+                    const rfIch = TiageState.get('resonanzFaktoren.ich');
+                    const rfPartner = TiageState.get('resonanzFaktoren.partner');
+
+                    if (rfIch && rfPartner) {
+                        // Extrahiere Werte (Format kann { R1: value } oder { R1: { value, locked } } sein)
+                        const extractR = (rf, key) => {
+                            if (!rf || rf[key] === undefined) return 1.0;
+                            if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
+                            return rf[key];
+                        };
+
+                        // Kombiniere: R = R_ich × R_partner
+                        rFactors = {
+                            R1: extractR(rfIch, 'R1') * extractR(rfPartner, 'R1'),
+                            R2: extractR(rfIch, 'R2') * extractR(rfPartner, 'R2'),
+                            R3: extractR(rfIch, 'R3') * extractR(rfPartner, 'R3'),
+                            R4: extractR(rfIch, 'R4') * extractR(rfPartner, 'R4')
+                        };
+                    }
+                }
+            } catch (e) {
+                console.warn('[TIAGE] updateRFactorDisplay error:', e);
+            }
+
+            // Update UI
+            ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                const valueEl = document.getElementById('rValue' + key);
+                const boxEl = document.getElementById('rFactor' + key);
+                if (!valueEl || !boxEl) return;
+
+                const val = rFactors[key];
+                if (val === null || val === undefined) {
+                    valueEl.textContent = '-';
+                    boxEl.classList.remove('high', 'medium', 'low');
+                } else {
+                    // Wert anzeigen (0.00 - 1.00)
+                    valueEl.textContent = val.toFixed(2);
+
+                    // Farb-Klasse basierend auf Wert
+                    boxEl.classList.remove('high', 'medium', 'low');
+                    if (val >= 0.7) {
+                        boxEl.classList.add('high');
+                    } else if (val >= 0.4) {
+                        boxEl.classList.add('medium');
+                    } else {
+                        boxEl.classList.add('low');
+                    }
+                }
+            });
+        }
+
         function scrollToCard(index) {
             const carousel = document.getElementById('carousel');
             const cardWidth = window.innerWidth;
@@ -13430,6 +13497,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                     // Update expandable category bars
                     updateExpandableCategoryBars(result.categories);
+
+                    // Update R-Factor Display (Resonanz der Paarung)
+                    updateRFactorDisplay();
                 } catch (e) {
                     console.error('[TIAGE] calculateOverallWithModifiers error:', e);
                 }
