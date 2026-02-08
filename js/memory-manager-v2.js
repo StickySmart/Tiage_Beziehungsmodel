@@ -181,12 +181,34 @@ const MemoryManagerV2 = (function() {
             }
 
             // AGOD-Gewichtung (neues Format: 0/1/2)
-            data.agodGewichtung = TiageState.get('gewichtungen.ich');
+            // Check if it's the correct NEW 3-way format
+            const isNew3WayFormat = (obj) => {
+                if (!obj) return false;
+                // New format: { O: 2, A: 0, D: 2, G: 2 } - plain numbers 0-2, NO summeLock
+                return typeof obj.O === 'number' && obj.O >= 0 && obj.O <= 2 &&
+                       typeof obj.A === 'number' && obj.A >= 0 && obj.A <= 2 &&
+                       typeof obj.D === 'number' && obj.D >= 0 && obj.D <= 2 &&
+                       typeof obj.G === 'number' && obj.G >= 0 && obj.G <= 2 &&
+                       !obj.summeLock;  // Old format always has summeLock
+            };
 
-            // Fallback: Get from TiageWeights.AGOD module
-            if ((!data.agodGewichtung || data.agodGewichtung.O === undefined) &&
-                typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
+            const storedGewichtung = TiageState.get('gewichtungen.ich');
+
+            // Primary: Use TiageWeights.AGOD.get() which has the current UI state
+            // This is the Single Source of Truth for AGOD weights
+            if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
                 data.agodGewichtung = TiageWeights.AGOD.get();
+                console.log('[MemoryManagerV2] AGOD from TiageWeights.AGOD.get():', data.agodGewichtung);
+            }
+            // Fallback: Check if stored value is in new 3-way format
+            else if (isNew3WayFormat(storedGewichtung)) {
+                data.agodGewichtung = storedGewichtung;
+                console.log('[MemoryManagerV2] AGOD from TiageState (new format):', data.agodGewichtung);
+            }
+            // Last resort: defaults
+            else {
+                data.agodGewichtung = { O: 1, A: 1, D: 1, G: 1 };
+                console.log('[MemoryManagerV2] AGOD using defaults');
             }
 
             // RTI-Prioritäten
