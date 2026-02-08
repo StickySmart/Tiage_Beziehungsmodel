@@ -2889,29 +2889,29 @@ const AttributeSummaryCard = (function() {
 
             <div class="flat-needs-selection-bar">
                 <span class="flat-needs-selection-label">Markieren:</span>
-                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds()" title="Alle 31 Hauptfragen auswählen (berechnungsrelevant)">✓ Alle</button>
-                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.clearNeedSelection()" title="Alle Auswahlen aufheben">✗ Keine</button>
-                <button class="flat-needs-selection-btn" onclick="AttributeSummaryCard.invertNeedSelection()" title="Hauptfragen-Auswahl umkehren">⇄ Umkehren</button>
+                <button class="flat-needs-selection-btn" data-action="select-all-needs" title="Alle 31 Hauptfragen auswählen (berechnungsrelevant)">✓ Alle</button>
+                <button class="flat-needs-selection-btn" data-action="clear-needs-selection" title="Alle Auswahlen aufheben">✗ Keine</button>
+                <button class="flat-needs-selection-btn" data-action="invert-needs-selection" title="Hauptfragen-Auswahl umkehren">⇄ Umkehren</button>
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
                 <div class="bulk-increment-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
-                    <button class="bulk-increment-btn bulk-increment" onclick="AttributeSummaryCard.incrementSelectedNeeds(25)" title="Alle markierten Werte um 25 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-increment-btn bulk-increment" data-action="bulk-increment-needs" title="Alle markierten Werte um 25 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">+</span>
                         <span class="bulk-btn-label">25</span>
                     </button>
-                    <button class="bulk-increment-btn bulk-decrement" onclick="AttributeSummaryCard.decrementSelectedNeeds(25)" title="Alle markierten Werte um 25 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-increment-btn bulk-decrement" data-action="bulk-decrement-needs" title="Alle markierten Werte um 25 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">−</span>
                         <span class="bulk-btn-label">25</span>
                     </button>
-                    <button class="bulk-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues()" title="Alle ungesperrten Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-reset-btn" data-action="bulk-reset-needs" title="Alle ungesperrten Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">↺</span>
                         <span class="bulk-btn-label">Reset</span>
                     </button>
-                    <button class="bulk-lock-btn" onclick="AttributeSummaryCard.toggleLockSelectedNeeds()" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                    <button class="bulk-lock-btn" data-action="bulk-lock-needs" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">🔒</span>
                         <span class="bulk-btn-label">Ent-/Sperren</span>
                     </button>
                 </div>
-                <button class="bulk-save-btn" onclick="AttributeSummaryCard.saveAllChanges()" title="Alle Änderungen jetzt speichern">
+                <button class="bulk-save-btn" data-action="bulk-save-needs" title="Alle Änderungen jetzt speichern">
                     <span class="bulk-btn-icon">💾</span>
                     <span class="bulk-btn-label">Speichern</span>
                 </button>
