@@ -713,7 +713,12 @@
          * NOTE: Bleibt in app-main.js weil es personDimensions/mobilePersonDimensions nutzt
          */
         function resetPartnerGOD() {
-            // Reset personDimensions for partner
+            // ═══════════════════════════════════════════════════════════════
+            // v1.8.908: FREE-Button setzt jetzt auch Archetyp + R-Faktoren zurück
+            // Reset: G, O, D, A (Archetyp), R1-R4 (Resonanzfaktoren)
+            // ═══════════════════════════════════════════════════════════════
+
+            // Reset personDimensions for partner (G, O, D)
             if (typeof personDimensions !== 'undefined' && personDimensions.partner) {
                 personDimensions.partner.geschlecht = null;
                 personDimensions.partner.orientierung = null;
@@ -727,11 +732,32 @@
                 mobilePersonDimensions.partner.dominanz = null;
             }
 
-            // Reset TiageState
+            // Reset partner archetype global variables
+            selectedPartner = null;
+            mobilePartnerArchetype = null;
+
+            // Reset TiageState (G, O, D, A, R-Faktoren, flatNeeds)
             if (typeof TiageState !== 'undefined') {
+                // GOD
                 TiageState.set('personDimensions.partner.geschlecht', null);
                 TiageState.set('personDimensions.partner.orientierung', null);
                 TiageState.set('personDimensions.partner.dominanz', null);
+
+                // Archetyp (A)
+                TiageState.set('archetypes.partner', { primary: null, secondary: null });
+
+                // R-Faktoren auf Default (1.0, unlocked)
+                const defaultRFaktoren = {
+                    R1: { value: 1.0, locked: false },
+                    R2: { value: 1.0, locked: false },
+                    R3: { value: 1.0, locked: false },
+                    R4: { value: 1.0, locked: false }
+                };
+                TiageState.setResonanzFaktoren('partner', defaultRFaktoren);
+
+                // flatNeeds für Partner leeren
+                TiageState.set('flatNeeds.partner', {});
+
                 TiageState.saveToStorage();
             }
 
@@ -783,6 +809,17 @@
                 btn.querySelectorAll('.geschlecht-indicator').forEach(ind => ind.remove());
             });
 
+            // v1.8.908: Archetyp-Grid reset (A)
+            document.querySelectorAll('#partner-archetype-grid .archetype-symbol-item, #mobile-partner-archetype-grid .archetype-symbol-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Reset partner archetype select dropdowns
+            const partnerSelect = document.getElementById('partnerSelect');
+            const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+            if (partnerSelect) partnerSelect.selectedIndex = 0;
+            if (mobilePartnerSelect) mobilePartnerSelect.selectedIndex = 0;
+
             // Clear summaries
             ['partner-geschlecht-summary', 'partner-orientierung-summary', 'partner-dominanz-summary',
              'mobile-partner-geschlecht-summary', 'mobile-partner-orientierung-summary', 'mobile-partner-dominanz-summary'].forEach(id => {
@@ -807,7 +844,12 @@
                 updateComparisonView();
             }
 
-            console.log('[Partner GOD] Reset complete - all partner attributes cleared');
+            // v1.8.908: ResonanzCard UI aktualisieren
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.updateDisplay === 'function') {
+                ResonanzCard.updateDisplay('partner');
+            }
+
+            console.log('[Partner FREE] Reset complete - G, O, D, A (Archetyp) und R-Faktoren zurückgesetzt');
         }
 
         // Expose globally
@@ -2850,7 +2892,7 @@
         };
 
         function handleGeschlechtExtrasClick(person, value, stateKey, btn) {
-            // console.log('[TIAGE] handleGeschlechtExtrasClick:', person, value, stateKey);
+            console.log('[TIAGE] handleGeschlechtExtrasClick:', person, value, stateKey);
 
             // Use local cache (avoids TiageState subscriber issues)
             const currentExtras = geschlechtExtrasCache[person];
@@ -2858,17 +2900,21 @@
             // Toggle the clicked value (multi-select)
             currentExtras[value] = !currentExtras[value];
 
-            // console.log('[TIAGE] geschlecht_extras updated:', person, currentExtras);
+            console.log('[TIAGE] geschlecht_extras updated:', person, JSON.stringify(currentExtras));
 
-            // Save to TiageState for persistence (but don't rely on reading it back)
+            // Save to TiageState for persistence
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.geschlecht_extras`, { ...currentExtras });
+                const extrasToSave = { ...currentExtras };
+                TiageState.set(`personDimensions.${person}.geschlecht_extras`, extrasToSave);
+                // FIX v1.8.902: Explicit saveToStorage to ensure FFH settings persist
+                TiageState.saveToStorage();
+                console.log('[TIAGE] FFH saved to TiageState:', person, JSON.stringify(extrasToSave));
             }
 
             // Update UI directly using the cache
             syncGeschlechtExtrasUI(person);
 
-            // Save to storage
+            // Also save selection (includes geschlecht_extras in selection.ich/partner)
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
@@ -11376,43 +11422,64 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         function selectArchetypeFromGrid(person, archetype) {
             console.log('[selectArchetypeFromGrid] Aufgerufen für:', person, 'archetype:', archetype);
 
+            // ═══════════════════════════════════════════════════════════════
+            // v1.8.908: Partner-Archetyp ist abwählbar (wie GOD)
+            // Klick auf bereits ausgewählten Archetyp = Deselect (null)
+            // ICH-Archetyp ist NICHT abwählbar (muss immer gesetzt sein)
+            // ═══════════════════════════════════════════════════════════════
+            let effectiveArchetype = archetype;
+            if (person === 'partner') {
+                const currentPartnerArchetype = selectedPartner;
+                if (archetype === currentPartnerArchetype) {
+                    // Klick auf gleichen Archetyp: Deselect
+                    effectiveArchetype = null;
+                    console.log('[selectArchetypeFromGrid] Partner-Archetyp deselektiert');
+                }
+            }
+
             const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
             const mobileSelectId = person === 'ich' ? 'mobileIchSelect' : 'mobilePartnerSelect';
             const select = document.getElementById(selectId);
             const mobileSelect = document.getElementById(mobileSelectId);
 
             // Update select elements
-            if (select) {
-                for (let i = 0; i < select.options.length; i++) {
-                    if (select.options[i].value === archetype) {
-                        select.selectedIndex = i;
-                        break;
+            if (effectiveArchetype) {
+                if (select) {
+                    for (let i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value === effectiveArchetype) {
+                            select.selectedIndex = i;
+                            break;
+                        }
                     }
                 }
-            }
-            if (mobileSelect) {
-                for (let i = 0; i < mobileSelect.options.length; i++) {
-                    if (mobileSelect.options[i].value === archetype) {
-                        mobileSelect.selectedIndex = i;
-                        break;
+                if (mobileSelect) {
+                    for (let i = 0; i < mobileSelect.options.length; i++) {
+                        if (mobileSelect.options[i].value === effectiveArchetype) {
+                            mobileSelect.selectedIndex = i;
+                            break;
+                        }
                     }
                 }
+            } else {
+                // Deselected: Reset select to first option or empty
+                if (select) select.selectedIndex = 0;
+                if (mobileSelect) mobileSelect.selectedIndex = 0;
             }
 
             // Update global state variables
             if (person === 'ich') {
-                currentArchetype = archetype;
-                mobileIchArchetype = archetype;
+                currentArchetype = effectiveArchetype || 'duo'; // ICH muss immer gesetzt sein
+                mobileIchArchetype = currentArchetype;
             } else {
-                selectedPartner = archetype;
-                mobilePartnerArchetype = archetype;
+                selectedPartner = effectiveArchetype; // Partner kann null sein
+                mobilePartnerArchetype = effectiveArchetype;
             }
 
             // Sync with TiageState for persistence
             // SSOT: setArchetype() löst synchron die Subscriber aus, die
             // flatNeeds UND Resonanzfaktoren automatisch neu berechnen
             if (typeof TiageState !== 'undefined') {
-                TiageState.setArchetype(person, archetype);
+                TiageState.setArchetype(person, effectiveArchetype);
             }
 
             // ═══════════════════════════════════════════════════════════════
@@ -11420,19 +11487,32 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ProfileCalculator.loadProfile() schreibt direkt in TiageState
             // WICHTIG: Muss VOR updateComparisonView() aufgerufen werden!
             // ═══════════════════════════════════════════════════════════════
-            if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+            if (effectiveArchetype && typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
                 const profileData = {
-                    archetyp: archetype,
+                    archetyp: effectiveArchetype,
                     geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
                     dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
                     orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
                 };
                 ProfileCalculator.loadProfile(person, profileData);
-                console.log(`[selectArchetypeFromGrid] Profil für ${person.toUpperCase()} neu berechnet:`, archetype);
+                console.log(`[selectArchetypeFromGrid] Profil für ${person.toUpperCase()} neu berechnet:`, effectiveArchetype);
+            } else if (!effectiveArchetype && person === 'partner') {
+                // Partner deselektiert: R-Faktoren auf Default zurücksetzen
+                if (typeof TiageState !== 'undefined') {
+                    const defaultRFaktoren = {
+                        R1: { value: 1.0, locked: false },
+                        R2: { value: 1.0, locked: false },
+                        R3: { value: 1.0, locked: false },
+                        R4: { value: 1.0, locked: false }
+                    };
+                    TiageState.setResonanzFaktoren('partner', defaultRFaktoren);
+                    TiageState.set('flatNeeds.partner', {});
+                    console.log('[selectArchetypeFromGrid] Partner R-Faktoren + flatNeeds zurückgesetzt');
+                }
             }
 
             // Update archetype grid highlighting
-            updateArchetypeGrid(person, archetype);
+            updateArchetypeGrid(person, effectiveArchetype);
 
             // Trigger change event - use bubbles: true to ensure it propagates
             const activeSelect = select || mobileSelect;
@@ -11450,7 +11530,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 updateGfkFromArchetypes();
             }
 
-            console.log('[selectArchetypeFromGrid] Abgeschlossen für:', person, 'archetype:', archetype);
+            console.log('[selectArchetypeFromGrid] Abgeschlossen für:', person, 'archetype:', effectiveArchetype);
         }
 
         // Function to update archetype grid highlighting
@@ -11825,1070 +11905,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         // ═══════════════════════════════════════════════════════════════════════
-        // SLOT MACHINE - FINDE PASSENDEN PARTNER (ALLE KOMBINATIONEN)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Iteriert durch ALLE möglichen Kombinationen (A, G, O, D) und findet
-        // die beste Kombination basierend auf dem aktuellen ICH-Profil.
-        // Bei Score-Gleichstand wird Bindungsmuster als Tie-Breaker verwendet.
+        // SLOT MACHINE - Ausgelagert in js/modals/slotMachineModal.js
         // ═══════════════════════════════════════════════════════════════════════
 
-        // Globale Variablen für Slot Machine
-        let slotMachineResult = null;
-        let slotMachineTop4Results = []; // Top 4 Ergebnisse
-        let slotMachineTop10Results = []; // NEU: Top 10 Ergebnisse für erweiterte Ansicht
-        let slotMachineExpanded = false; // NEU: Zustand der erweiterten Ansicht
-        let slotMachineBindung = { primary: null, secondary: null };
 
-        // Bindungsmuster Präferenzen für Tie-Breaker
-        const BINDUNGSMUSTER_PRAEFERENZEN = {
-            sicher: {
-                archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'ra', 'single', 'aromantisch'],
-                dominanz: ['ausgeglichen', 'switch', 'dominant', 'submissiv']
-            },
-            aengstlich: {
-                archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'single', 'ra', 'aromantisch'],
-                dominanz: ['submissiv', 'ausgeglichen', 'switch', 'dominant']
-            },
-            vermeidend: {
-                archetypen: ['lat', 'single', 'solopoly', 'ra', 'aromantisch', 'duo_flex', 'duo', 'polyamor'],
-                dominanz: ['ausgeglichen', 'dominant', 'switch', 'submissiv']
-            },
-            desorganisiert: {
-                archetypen: ['duo_flex', 'ra', 'polyamor', 'lat', 'duo', 'solopoly', 'single', 'aromantisch'],
-                dominanz: ['switch', 'ausgeglichen', 'dominant', 'submissiv']
-            }
-        };
-
-        // Alle möglichen Werte
-        const ALL_ARCHETYPES_SLOT = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-
-        // v5.0 SSOT: Geschlechts-Kombinationen aus TiageSynthesis.Constants
-        const ALL_GESCHLECHT_COMBINATIONS = (function() {
-            if (typeof TiageSynthesis !== 'undefined' &&
-                TiageSynthesis.Constants &&
-                TiageSynthesis.Constants.GESCHLECHT_OPTIONS) {
-                return TiageSynthesis.Constants.GESCHLECHT_OPTIONS.ALL_COMBINATIONS;
-            }
-            // Fallback (sollte nie verwendet werden wenn constants.js geladen)
-            console.warn('[SlotMachine] SSOT nicht verfügbar, verwende Fallback für GESCHLECHT_COMBINATIONS');
-            return [
-                { primary: 'mann', secondary: 'cis' },
-                { primary: 'mann', secondary: 'trans' },
-                { primary: 'mann', secondary: 'nonbinaer' },
-                { primary: 'frau', secondary: 'cis' },
-                { primary: 'frau', secondary: 'trans' },
-                { primary: 'frau', secondary: 'nonbinaer' },
-                { primary: 'inter', secondary: 'nonbinaer' },
-                { primary: 'inter', secondary: 'fluid' },
-                { primary: 'inter', secondary: 'suchend' }
-            ];
-        })();
-
-        // v5.0 SSOT: Orientierungs-Optionen aus TiageSynthesis.Constants
-        // WICHTIG: Enthält jetzt alle 5 Optionen: heterosexuell, homosexuell, bisexuell, pansexuell, queer
-        const ALL_ORIENTIERUNGEN = (function() {
-            if (typeof TiageSynthesis !== 'undefined' &&
-                TiageSynthesis.Constants &&
-                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS) {
-                return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.ALL;
-            }
-            // Fallback (sollte nie verwendet werden wenn constants.js geladen)
-            console.warn('[SlotMachine] SSOT nicht verfügbar, verwende Fallback für ORIENTIERUNGEN');
-            return ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'queer'];
-        })();
-
-        const ALL_DOMINANZEN = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-
-        // Labels für die Anzeige
-        const ARCHETYP_LABELS = {
-            'single': 'Single', 'duo': 'Duo', 'duo_flex': 'Duo-Flex', 'ra': 'RA',
-            'lat': 'LAT', 'aromantisch': 'Aromantisch', 'solopoly': 'Solopoly', 'polyamor': 'Polyamor'
-        };
-
-        // v5.0 SSOT: Geschlechts-Labels aus TiageSynthesis.Constants
-        const GESCHLECHT_LABELS = (function() {
-            if (typeof TiageSynthesis !== 'undefined' &&
-                TiageSynthesis.Constants &&
-                TiageSynthesis.Constants.GESCHLECHT_OPTIONS) {
-                const labels = TiageSynthesis.Constants.GESCHLECHT_OPTIONS.LABELS;
-                return { ...labels.PRIMARY, ...labels.SECONDARY };
-            }
-            return {
-                'mann': 'Mann', 'frau': 'Frau', 'inter': 'Inter',
-                'cis': 'Cis', 'trans': 'Trans', 'nonbinaer': 'NB', 'fluid': 'Fluid', 'suchend': 'Suchend'
-            };
-        })();
-
-        // v5.0 SSOT: Orientierungs-Labels aus TiageSynthesis.Constants
-        const ORIENTIERUNG_LABELS = (function() {
-            if (typeof TiageSynthesis !== 'undefined' &&
-                TiageSynthesis.Constants &&
-                TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS) {
-                return TiageSynthesis.Constants.ORIENTIERUNG_OPTIONS.LABELS;
-            }
-            return {
-                'heterosexuell': 'Hetero',
-                'homosexuell': 'Homo',
-                'bisexuell': 'Bi',
-                'pansexuell': 'Pan',
-                'queer': 'Queer'
-            };
-        })();
-
-        const DOMINANZ_LABELS = {
-            'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
-        };
-
-        /**
-         * Öffnet das Slot Machine Modal
-         */
-        function openSlotMachineModal() {
-            const modal = document.getElementById('slotMachineModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                resetSlotMachine();
-                // Lade gespeicherte Bindungsmuster aus TiageState
-                if (typeof TiageState !== 'undefined') {
-                    const saved = TiageState.get('bindungsmuster.ich');
-                    if (saved && saved.primary) {
-                        slotMachineBindung.primary = saved.primary;
-                        slotMachineBindung.secondary = saved.secondary;
-                        updateBindungsmusterUI();
-                        checkStartButtonState();
-                    }
-
-                    // Lade gespeicherte Reibungs-Werte (#B227, #B228)
-                    loadReibungValues();
-                }
-            }
-        }
-        window.openSlotMachineModal = openSlotMachineModal;
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // RTI PRIORITIES - Ausgelagert nach js/weights/rtiPriorities.js
-        // Die Funktionen werden vom Modul über window.* exportiert:
-        // - loadRtiPriorities(), setRtiPriority(), getRtiPriorities()
-        // - saveRtiPriorities(), updateRtiToggleUI(), updateReibungSlider()
-        // ═══════════════════════════════════════════════════════════════════════
-
-        /**
-         * Schließt das Slot Machine Modal
-         */
-        function closeSlotMachineModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            const modal = document.getElementById('slotMachineModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        }
-        window.closeSlotMachineModal = closeSlotMachineModal;
-
-        /**
-         * Schließt Modal und öffnet die ICH-Attribute Seite
-         */
-        function goToIchAttributes() {
-            // Modal schließen
-            closeSlotMachineModal();
-            resetSlotMachine();
-
-            // Direkt die Attribute-Seite für ICH öffnen (wie der lila ATTRIBUTE Button)
-            const ichArchetyp = getSelectedArchetype ? getSelectedArchetype('ich') : (currentArchetype || 'single');
-            if (typeof openNeedsEditorPage === 'function') {
-                openNeedsEditorPage(ichArchetyp, 'ich');
-            }
-        }
-        window.goToIchAttributes = goToIchAttributes;
-
-        /**
-         * Setzt das Modal zurück auf Phase 1
-         */
-        function resetSlotMachine() {
-            document.getElementById('slotPhase1').style.display = 'block';
-            document.getElementById('slotPhase2').style.display = 'none';
-            document.getElementById('slotPhase3').style.display = 'none';
-            slotMachineResult = null;
-            slotMachineTop4Results = [];
-            slotMachineTop10Results = []; // NEU: Top 10 zurücksetzen
-            slotMachineExpanded = false; // NEU: Expanded-Zustand zurücksetzen
-            // Bindungsmuster nicht zurücksetzen - die bleiben erhalten
-            updateBindungsmusterUI();
-            checkStartButtonState();
-        }
-        window.resetSlotMachine = resetSlotMachine;
-
-        /**
-         * Aktualisiert die Bindungsmuster-Buttons UI
-         */
-        function updateBindungsmusterUI() {
-            // Primary Buttons
-            document.querySelectorAll('#bindungPrimaryOptions .bindung-btn').forEach(btn => {
-                btn.classList.toggle('selected', btn.dataset.value === slotMachineBindung.primary);
-            });
-            // Secondary Buttons
-            document.querySelectorAll('#bindungSecondaryOptions .bindung-btn').forEach(btn => {
-                btn.classList.toggle('selected', btn.dataset.value === slotMachineBindung.secondary);
-            });
-        }
-
-        /**
-         * Zeigt den Bindungsmuster-Tooltip für 2 Sekunden
-         */
-        let bindungTooltipTimeout = null;
-        function showBindungTooltip(type, value) {
-            const tooltip = document.getElementById('bindungTooltip');
-            const iconEl = document.getElementById('bindungTooltipIcon');
-            const titleEl = document.getElementById('bindungTooltipTitle');
-            const textEl = document.getElementById('bindungTooltipText');
-
-            if (!tooltip) return;
-
-            // Tooltip-Inhalte basierend auf Typ und Wert
-            const tooltipData = {
-                primary: {
-                    sicher: { icon: '🛡️', title: 'Sicher', text: 'Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen' },
-                    aengstlich: { icon: '💔', title: 'Ängstlich', text: 'Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden' },
-                    vermeidend: { icon: '🚪', title: 'Vermeidend', text: 'Du hältst meistens emotionale Distanz und brauchst viel Freiraum' },
-                    desorganisiert: { icon: '🌀', title: 'Desorganisiert', text: 'Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen' }
-                },
-                secondary: {
-                    sicher: { icon: '🛡️', title: 'Sicher (Stress)', text: 'Im Stress bleibst du gelassen und kannst dich gut regulieren' },
-                    aengstlich: { icon: '💔', title: 'Ängstlich (Stress)', text: 'Im Stress wirst du klammernder und brauchst mehr Bestätigung' },
-                    vermeidend: { icon: '🚪', title: 'Vermeidend (Stress)', text: 'Im Stress ziehst du dich zurück und machst dicht' },
-                    desorganisiert: { icon: '🌀', title: 'Desorganisiert (Stress)', text: 'Im Stress reagierst du unberechenbar - mal nah, mal distanziert' }
-                }
-            };
-
-            const data = tooltipData[type]?.[value];
-            if (!data) return;
-
-            // Vorherigen Timeout löschen
-            if (bindungTooltipTimeout) {
-                clearTimeout(bindungTooltipTimeout);
-            }
-
-            // Tooltip-Inhalte setzen
-            iconEl.textContent = data.icon;
-            titleEl.textContent = data.title;
-            textEl.textContent = data.text;
-
-            // Tooltip anzeigen
-            tooltip.classList.add('show');
-
-            // Nach 4 Sekunden ausblenden
-            bindungTooltipTimeout = setTimeout(() => {
-                tooltip.classList.remove('show');
-            }, 4000);
-        }
-        window.showBindungTooltip = showBindungTooltip;
-
-        /**
-         * Wählt ein Bindungsmuster aus
-         */
-        function selectBindungsmuster(type, value) {
-            // Tooltip nur anzeigen wenn neu ausgewählt (nicht wenn abgewählt)
-            const isNewSelection = (type === 'primary' && slotMachineBindung.primary !== value) ||
-                                   (type === 'secondary' && slotMachineBindung.secondary !== value);
-
-            if (type === 'primary') {
-                slotMachineBindung.primary = slotMachineBindung.primary === value ? null : value;
-            } else {
-                slotMachineBindung.secondary = slotMachineBindung.secondary === value ? null : value;
-            }
-            updateBindungsmusterUI();
-            checkStartButtonState();
-
-            // Tooltip nur bei neuer Auswahl anzeigen
-            if (isNewSelection) {
-                showBindungTooltip(type, value);
-            }
-
-            // Speichere in TiageState (mit Persistenz)
-            if (typeof TiageState !== 'undefined') {
-                TiageState.set('bindungsmuster.ich', slotMachineBindung);
-                TiageState.saveToStorage();
-            }
-        }
-        window.selectBindungsmuster = selectBindungsmuster;
-
-        /**
-         * Prüft ob der Start-Button aktiviert werden kann
-         */
-        function checkStartButtonState() {
-            const startBtn = document.getElementById('slotStartBtn');
-            if (startBtn) {
-                startBtn.disabled = !(slotMachineBindung.primary && slotMachineBindung.secondary);
-            }
-        }
-
-        // RTI Priority-Funktionen sind in js/weights/rtiPriorities.js ausgelagert
-        // Legacy-Alias für SlotMachine
-        function saveReibungValues() {
-            if (typeof saveRtiPriorities === 'function') {
-                saveRtiPriorities();
-            }
-        }
-
-        /**
-         * Startet die Slot Machine Animation und Berechnung
-         */
-        function startSlotMachine() {
-            // Speichere Reibungs-Werte vor dem Start
-            saveReibungValues();
-
-            // Wechsel zu Phase 2
-            document.getElementById('slotPhase1').style.display = 'none';
-            document.getElementById('slotPhase2').style.display = 'block';
-
-            // Starte Berechnung und Animation
-            runSlotMachineAnimation();
-        }
-        window.startSlotMachine = startSlotMachine;
-
-        /**
-         * SSOT v1.8.806: Führt die Slot Machine Animation und Berechnung durch
-         *
-         * ICH-Auswahl (Archetyp + GOD) und Partner-GOD bleiben konstant.
-         * Zeigt die 8 Partner-Archetypen sortiert nach Score an.
-         */
-        async function runSlotMachineAnimation() {
-            const ANIMATION_DURATION = 2000; // 2 Sekunden
-            const UPDATE_INTERVAL = 50; // Update alle 50ms
-
-            // Berechne alle 8 Partner-Archetypen (ICH + Partner-GOD sind konstant)
-            const allResults = await calculateAllCombinationsChunked();
-            const totalCombinations = allResults.length;
-
-            // Sortiere nach Score (beste zuerst)
-            allResults.sort((a, b) => {
-                if (b.score !== a.score) return b.score - a.score;
-                // Bei Gleichstand: Tie-Breaker
-                return calculateTieBreaker(a) - calculateTieBreaker(b);
-            });
-
-            const bestResult = allResults[0];
-            slotMachineResult = bestResult;
-
-            console.log('[Best Match] 8 Partner-Archetypen sortiert:', allResults.map(r => `${r.archetyp}: ${r.score}`));
-
-            // Top 8 Ergebnisse (begrenzt für bessere UX)
-            slotMachineTop4Results = allResults.slice(0, 4);
-            slotMachineTop10Results = allResults.slice(0, 8); // Nur Top 8 statt alle 216
-
-            // Animation starten
-            const reelA = document.getElementById('slotReelA');
-            const reelG = document.getElementById('slotReelG');
-            const reelO = document.getElementById('slotReelO');
-            const reelD = document.getElementById('slotReelD');
-            const valueA = document.getElementById('slotValueA');
-            const valueG = document.getElementById('slotValueG');
-            const valueO = document.getElementById('slotValueO');
-            const valueD = document.getElementById('slotValueD');
-            const scoreDisplay = document.getElementById('slotScoreValue');
-            const progressBar = document.getElementById('slotProgressBar');
-            const progressText = document.getElementById('slotProgressText');
-
-            // Spinning starten
-            [reelA, reelG, reelO, reelD].forEach(r => r.classList.add('spinning'));
-
-            const startTime = Date.now();
-            let currentIndex = 0;
-
-            const animationLoop = setInterval(() => {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / ANIMATION_DURATION, 1);
-
-                // Zeige zufällige/durchlaufende Werte
-                const displayIndex = Math.floor(progress * totalCombinations);
-                const currentCombo = allResults[Math.min(displayIndex, allResults.length - 1)];
-
-                // Update Anzeige
-                valueA.textContent = ARCHETYP_LABELS[currentCombo.archetyp] || currentCombo.archetyp;
-                const gLabel = `${GESCHLECHT_LABELS[currentCombo.geschlecht.primary]}-${GESCHLECHT_LABELS[currentCombo.geschlecht.secondary]}`;
-                valueG.textContent = gLabel;
-                valueO.textContent = ORIENTIERUNG_LABELS[currentCombo.orientierung] || currentCombo.orientierung;
-                valueD.textContent = DOMINANZ_LABELS[currentCombo.dominanz] || currentCombo.dominanz;
-
-                // Score mit Animation
-                scoreDisplay.textContent = currentCombo.score;
-                scoreDisplay.classList.add('updating');
-                setTimeout(() => scoreDisplay.classList.remove('updating'), 100);
-
-                // Progress Bar
-                progressBar.style.width = (progress * 100) + '%';
-                progressText.textContent = `${Math.floor(progress * totalCombinations)} / ${totalCombinations} Kombinationen`;
-
-                // Animation beenden
-                if (progress >= 1) {
-                    clearInterval(animationLoop);
-
-                    // Finales Ergebnis anzeigen
-                    [reelA, reelG, reelO, reelD].forEach(r => {
-                        r.classList.remove('spinning');
-                        r.classList.add('locked');
-                    });
-
-                    valueA.textContent = ARCHETYP_LABELS[bestResult.archetyp] || bestResult.archetyp;
-                    const finalGLabel = `${GESCHLECHT_LABELS[bestResult.geschlecht.primary]}-${GESCHLECHT_LABELS[bestResult.geschlecht.secondary]}`;
-                    valueG.textContent = finalGLabel;
-                    valueO.textContent = ORIENTIERUNG_LABELS[bestResult.orientierung] || bestResult.orientierung;
-                    valueD.textContent = DOMINANZ_LABELS[bestResult.dominanz] || bestResult.dominanz;
-                    scoreDisplay.textContent = bestResult.score;
-
-                    // Nach kurzer Pause zu Phase 3 wechseln
-                    setTimeout(() => showSlotResult(bestResult), 500);
-                }
-            }, UPDATE_INTERVAL);
-        }
-
-        /**
-         * SSOT v2.0: Best Match Suche mit dynamischer GOD-Iteration
-         *
-         * ICH: Archetyp + GOD = KONSTANT (aus TiageState)
-         * PARTNER: GOD wird iteriert wenn nicht explizit gesetzt!
-         *   - Geschlecht gesetzt → 1 Option, sonst 3 (mann/frau/nonbinaer)
-         *   - Orientierung gesetzt → 1 Option, sonst 3 (hetero/homo/bi)
-         *   - Dominanz gesetzt → 1 Option, sonst 3 (dom/sub/switch)
-         *   - Archetyp: immer 8
-         *
-         * Max Kombinationen: 3×3×3×8 = 216 (wenn kein GOD gesetzt)
-         */
-        async function calculateAllCombinationsChunked() {
-            // ICH-Daten KONSTANT aus TiageState (Archetyp + GOD bleiben fix!)
-            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
-            const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
-            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
-            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
-            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const ichGfk = ichDims.gfk || 'mittel';
-
-            // Partner-Dimensionen aus State
-            const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
-
-            // Prüfe welche Partner-GOD explizit gesetzt sind
-            const partnerHasGeschlecht = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
-            const partnerHasOrientierung = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
-            const partnerHasDominanz = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
-            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
-
-            // Erstelle Arrays für die Iteration (1 Element wenn gesetzt, mehrere wenn nicht)
-            let geschlechtOptions = [];
-            if (partnerHasGeschlecht) {
-                geschlechtOptions = [ensureValidGeschlecht(partnerDims.geschlecht)];
-            } else {
-                // Iteriere alle 3 primären Geschlechter
-                geschlechtOptions = [
-                    { primary: 'mann', secondary: 'cis' },
-                    { primary: 'frau', secondary: 'cis' },
-                    { primary: 'inter', secondary: 'nonbinaer' }
-                ];
-            }
-
-            let orientierungOptions = [];
-            if (partnerHasOrientierung) {
-                orientierungOptions = [ensureValidOrientierung(partnerDims.orientierung)];
-            } else {
-                // Iteriere die 3 häufigsten Orientierungen
-                orientierungOptions = [
-                    { primary: 'heterosexuell', secondary: null, all: ['heterosexuell'] },
-                    { primary: 'homosexuell', secondary: null, all: ['homosexuell'] },
-                    { primary: 'bisexuell', secondary: null, all: ['bisexuell'] }
-                ];
-            }
-
-            let dominanzOptions = [];
-            if (partnerHasDominanz) {
-                dominanzOptions = [ensureValidDominanz(partnerDims.dominanz)];
-            } else {
-                // Iteriere die 3 aktiven Dominanz-Typen
-                dominanzOptions = [
-                    { primary: 'dominant', secondary: null },
-                    { primary: 'submissiv', secondary: null },
-                    { primary: 'switch', secondary: null }
-                ];
-            }
-
-            // GFK für Partner
-            let partnerGfk;
-            if (partnerHasGfk) {
-                partnerGfk = partnerDims.gfk;
-            } else {
-                const ichGfkVal = ichDims.gfk || 'mittel';
-                if (ichGfkVal === 'hoch') partnerGfk = 'hoch';
-                else if (ichGfkVal === 'mittel') partnerGfk = 'hoch';
-                else partnerGfk = 'mittel';
-            }
-
-            const totalCombinations = geschlechtOptions.length * orientierungOptions.length * dominanzOptions.length * ALL_ARCHETYPES_SLOT.length;
-
-            console.log('[Best Match] ICH-Auswahl (konstant):', {
-                archetyp: ichArchetype,
-                geschlecht: validIchGeschlecht,
-                dominanz: validIchDominanz,
-                orientierung: validIchOrientierung
-            });
-            console.log('[Best Match] PARTNER-GOD Optionen:', {
-                geschlecht: partnerHasGeschlecht ? 'gesetzt (1)' : `alle (${geschlechtOptions.length})`,
-                orientierung: partnerHasOrientierung ? 'gesetzt (1)' : `alle (${orientierungOptions.length})`,
-                dominanz: partnerHasDominanz ? 'gesetzt (1)' : `alle (${dominanzOptions.length})`,
-                total: totalCombinations + ' Kombinationen'
-            });
-
-            // ICH-Needs aus dem entsprechenden State-Slot laden (per-Archetyp Struktur)
-            let ichNeeds = null;
-            if (typeof TiageState !== 'undefined') {
-                const stateKey = ichArchetype.replace('_', '-');
-                ichNeeds = TiageState.get(`flatNeeds.ich.${stateKey}`);
-                console.log(`[Best Match] ICH-Needs aus State-Slot '${stateKey}' geladen:`, ichNeeds ? Object.keys(ichNeeds).length : 0, 'Bedürfnisse');
-            }
-            if (!ichNeeds || Object.keys(ichNeeds).length === 0) {
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                    ichNeeds = ProfileCalculator.calculateFlatNeeds(ichArchetype, validIchGeschlecht, validIchDominanz, validIchOrientierung);
-                    console.log(`[Best Match] ICH-Needs berechnet:`, Object.keys(ichNeeds || {}).length, 'Bedürfnisse');
-                }
-            }
-
-            // RTI-Säulen Modifikatoren anwenden (wenn verfügbar)
-            if (ichNeeds && typeof TiageRtiModifier !== 'undefined' && typeof getRtiPriorities === 'function') {
-                const rtiPriorities = getRtiPriorities();
-                ichNeeds = TiageRtiModifier.applyToAllNeeds(ichNeeds, rtiPriorities);
-                console.log(`[Best Match] RTI-Modifikatoren angewendet:`, rtiPriorities);
-            }
-
-            // Konstantes ICH-Objekt für alle Berechnungen
-            const ichObj = {
-                archetyp: ichArchetype,
-                geschlecht: validIchGeschlecht,
-                orientierung: validIchOrientierung,
-                dominanz: validIchDominanz,
-                gfk: ichGfk,
-                needs: ichNeeds
-            };
-
-            const results = [];
-            const savedCurrentArchetype = currentArchetype;
-            const savedSelectedPartner = selectedPartner;
-
-            // Iteriere alle Kombinationen: Geschlecht × Orientierung × Dominanz × Archetyp
-            for (const geschlecht of geschlechtOptions) {
-                for (const orientierung of orientierungOptions) {
-                    for (const dominanz of dominanzOptions) {
-                        for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
-                            // Partner-Needs berechnen
-                            let partnerNeeds = null;
-                            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                                partnerNeeds = ProfileCalculator.calculateFlatNeeds(
-                                    partnerArchetype,
-                                    geschlecht,
-                                    dominanz,
-                                    orientierung
-                                );
-                            }
-
-                            // RTI-Säulen Modifikatoren auch auf Partner-Needs anwenden
-                            if (partnerNeeds && typeof TiageRtiModifier !== 'undefined' && typeof getRtiPriorities === 'function') {
-                                const rtiPriorities = getRtiPriorities();
-                                partnerNeeds = TiageRtiModifier.applyToAllNeeds(partnerNeeds, rtiPriorities);
-                            }
-
-                            const partnerObj = {
-                                archetyp: partnerArchetype,
-                                geschlecht: geschlecht,
-                                orientierung: orientierung,
-                                dominanz: dominanz,
-                                gfk: partnerGfk,
-                                needs: partnerNeeds
-                            };
-
-                            currentArchetype = ichArchetype;
-                            selectedPartner = partnerArchetype;
-
-                            let score = 0;
-                            try {
-                                const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                                const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
-
-                                // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
-                                const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
-
-                                if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
-                                    const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                                    const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-                                    const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                        rFaktoren: { ich: ichRFaktoren, partner: partnerRFaktoren }
-                                    });
-                                    let baseScore = result.overall || 0;
-                                    const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                                    score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                                } else if (pathosCheck.result === 'unvollständig') {
-                                    score = logosCheck.score || 50;
-                                }
-                                // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
-                            } catch (e) { /* Fehler ignorieren */ }
-
-                            results.push({
-                                archetyp: partnerArchetype,
-                                geschlecht: geschlecht,
-                                orientierung: orientierung.primary,
-                                dominanz: dominanz.primary,
-                                score: score
-                            });
-
-                            // Yield zum Main Thread alle 10 Iterationen
-                            if (results.length % 10 === 0) {
-                                await new Promise(resolve => setTimeout(resolve, 0));
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Globale Variablen wiederherstellen
-            currentArchetype = savedCurrentArchetype;
-            selectedPartner = savedSelectedPartner;
-
-            console.log(`[Best Match] Berechnung abgeschlossen: ${results.length} Kombinationen`);
-
-            return results;
-        }
-
-        /**
-         * SSOT v2.0: Berechnet alle möglichen Kombinationen (synchron - Fallback)
-         * Gleiche Logik wie calculateAllCombinationsChunked, aber synchron.
-         */
-        function calculateAllCombinations() {
-            const results = [];
-
-            // ICH-Daten KONSTANT aus TiageState
-            const ichArchetype = (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null) || currentArchetype || 'single';
-            const ichDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.ich') : null) || personDimensions.ich || {};
-            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
-            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
-            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const ichGfk = ichDims.gfk || 'mittel';
-
-            // Partner-Dimensionen aus State
-            const partnerDims = (typeof TiageState !== 'undefined' ? TiageState.get('personDimensions.partner') : null) || personDimensions.partner || {};
-
-            // Prüfe welche Partner-GOD explizit gesetzt sind
-            const partnerHasGeschlecht = partnerDims.geschlecht && (typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : partnerDims.geschlecht.primary);
-            const partnerHasOrientierung = partnerDims.orientierung && (typeof partnerDims.orientierung === 'string' ? partnerDims.orientierung : (Array.isArray(partnerDims.orientierung) ? partnerDims.orientierung.length > 0 : partnerDims.orientierung.primary));
-            const partnerHasDominanz = partnerDims.dominanz && (typeof partnerDims.dominanz === 'string' ? partnerDims.dominanz : partnerDims.dominanz.primary);
-            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
-
-            // Erstelle Arrays für die Iteration
-            let geschlechtOptions = [];
-            if (partnerHasGeschlecht) {
-                geschlechtOptions = [ensureValidGeschlecht(partnerDims.geschlecht)];
-            } else {
-                geschlechtOptions = [
-                    { primary: 'mann', secondary: 'cis' },
-                    { primary: 'frau', secondary: 'cis' },
-                    { primary: 'inter', secondary: 'nonbinaer' }
-                ];
-            }
-
-            let orientierungOptions = [];
-            if (partnerHasOrientierung) {
-                orientierungOptions = [ensureValidOrientierung(partnerDims.orientierung)];
-            } else {
-                orientierungOptions = [
-                    { primary: 'heterosexuell', secondary: null, all: ['heterosexuell'] },
-                    { primary: 'homosexuell', secondary: null, all: ['homosexuell'] },
-                    { primary: 'bisexuell', secondary: null, all: ['bisexuell'] }
-                ];
-            }
-
-            let dominanzOptions = [];
-            if (partnerHasDominanz) {
-                dominanzOptions = [ensureValidDominanz(partnerDims.dominanz)];
-            } else {
-                dominanzOptions = [
-                    { primary: 'dominant', secondary: null },
-                    { primary: 'submissiv', secondary: null },
-                    { primary: 'switch', secondary: null }
-                ];
-            }
-
-            // GFK für Partner
-            let partnerGfk;
-            if (partnerHasGfk) {
-                partnerGfk = partnerDims.gfk;
-            } else {
-                const ichGfkV = ichDims.gfk || 'mittel';
-                if (ichGfkV === 'hoch') partnerGfk = 'hoch';
-                else if (ichGfkV === 'mittel') partnerGfk = 'hoch';
-                else partnerGfk = 'mittel';
-            }
-
-            // ICH-Needs aus dem entsprechenden State-Slot laden
-            let ichNeeds = null;
-            if (typeof TiageState !== 'undefined') {
-                const stateKey = ichArchetype.replace('_', '-');
-                ichNeeds = TiageState.get(`flatNeeds.ich.${stateKey}`);
-            }
-            if (!ichNeeds || Object.keys(ichNeeds).length === 0) {
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                    ichNeeds = ProfileCalculator.calculateFlatNeeds(ichArchetype, validIchGeschlecht, validIchDominanz, validIchOrientierung);
-                }
-            }
-
-            const ichObj = {
-                archetyp: ichArchetype,
-                geschlecht: validIchGeschlecht,
-                orientierung: validIchOrientierung,
-                dominanz: validIchDominanz,
-                gfk: ichGfk,
-                needs: ichNeeds
-            };
-
-            // Speichere globale Variablen
-            const savedCurrentArchetype = currentArchetype;
-            const savedSelectedPartner = selectedPartner;
-
-            try {
-                // Iteriere alle Kombinationen
-                for (const geschlecht of geschlechtOptions) {
-                    for (const orientierung of orientierungOptions) {
-                        for (const dominanz of dominanzOptions) {
-                            for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
-                                let partnerNeeds = null;
-                                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                                    partnerNeeds = ProfileCalculator.calculateFlatNeeds(
-                                        partnerArchetype,
-                                        geschlecht,
-                                        dominanz,
-                                        orientierung
-                                    );
-                                }
-
-                                const partnerObj = {
-                                    archetyp: partnerArchetype,
-                                    geschlecht: geschlecht,
-                                    orientierung: orientierung,
-                                    dominanz: dominanz,
-                                    gfk: partnerGfk,
-                                    needs: partnerNeeds
-                                };
-
-                                currentArchetype = ichArchetype;
-                                selectedPartner = partnerArchetype;
-
-                                let score = 0;
-
-                                try {
-                                    const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                                    const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
-
-                                    // v4.0 FIX: 'hohe_reibung' aus physicalCompatibility.js muss auch als inkompatibel behandelt werden
-                                    const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
-
-                                    if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
-                                        const ichRFaktoren = calculateRFactorsFromNeeds(ichObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                                        const partnerRFaktoren = calculateRFactorsFromNeeds(partnerObj) || { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-                                        const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                            rFaktoren: {
-                                                ich: ichRFaktoren,
-                                                partner: partnerRFaktoren
-                                            }
-                                        });
-                                        let baseScore = result.overall || 0;
-                                        const confidenceMultiplier = getConfidenceMultiplier(pathosCheck.confidence);
-                                        score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                                    } else if (pathosCheck.result === 'unvollständig') {
-                                        score = logosCheck.score || 50;
-                                    }
-                                    // Bei 'unmöglich' oder 'hohe_reibung': score bleibt 0
-                                } catch (e) {
-                                    // Fehler ignorieren
-                                }
-
-                                results.push({
-                                    archetyp: partnerArchetype,
-                                    geschlecht: geschlecht,
-                                    orientierung: orientierung.primary,
-                                    dominanz: dominanz.primary,
-                                    score: score
-                                });
-                            }
-                        }
-                    }
-                }
-            } finally {
-                // Globale Variablen wiederherstellen
-                currentArchetype = savedCurrentArchetype;
-                selectedPartner = savedSelectedPartner;
-            }
-
-            return results;
-        }
-
-        /**
-         * Berechnet den Tie-Breaker Score basierend auf Bindungsmuster
-         * Niedrigerer Wert = besser
-         */
-        function calculateTieBreaker(combo) {
-            const primary = slotMachineBindung.primary;
-            const secondary = slotMachineBindung.secondary;
-
-            let score = 0;
-
-            if (primary && BINDUNGSMUSTER_PRAEFERENZEN[primary]) {
-                const prefs = BINDUNGSMUSTER_PRAEFERENZEN[primary];
-                // Archetyp Rang (0-7, niedriger = besser) * 0.7
-                const archRank = prefs.archetypen.indexOf(combo.archetyp);
-                score += (archRank >= 0 ? archRank : 8) * 0.7;
-                // Dominanz Rang (0-3, niedriger = besser) * 0.7
-                const domRank = prefs.dominanz.indexOf(combo.dominanz);
-                score += (domRank >= 0 ? domRank : 4) * 0.7;
-            }
-
-            if (secondary && BINDUNGSMUSTER_PRAEFERENZEN[secondary]) {
-                const prefs = BINDUNGSMUSTER_PRAEFERENZEN[secondary];
-                // Sekundär mit 30% Gewichtung
-                const archRank = prefs.archetypen.indexOf(combo.archetyp);
-                score += (archRank >= 0 ? archRank : 8) * 0.3;
-                const domRank = prefs.dominanz.indexOf(combo.dominanz);
-                score += (domRank >= 0 ? domRank : 4) * 0.3;
-            }
-
-            return score;
-        }
-
-        /**
-         * SSOT v1.8.806: Zeigt die 8 Partner-Archetypen sortiert nach Score
-         *
-         * Jede Karte zeigt:
-         * - Haupt-Label: Partner-Archetyp
-         * - Details: Die konstanten Partner-GOD Werte
-         */
-        function showSlotResult(result) {
-            document.getElementById('slotPhase2').style.display = 'none';
-            document.getElementById('slotPhase3').style.display = 'block';
-
-            const listContainer = document.getElementById('slotTop4List');
-            const expandedContainer = document.getElementById('slotExpandedList');
-            const expandBtn = document.getElementById('slotExpandBtn');
-            if (!listContainer) return;
-
-            // Reset expanded state
-            slotMachineExpanded = false;
-            if (expandedContainer) expandedContainer.style.display = 'none';
-            if (expandBtn) {
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
-                // Nur anzeigen wenn es mehr als 4 Ergebnisse gibt
-                expandBtn.style.display = slotMachineTop10Results.length > 4 ? 'inline-block' : 'none';
-            }
-
-            // Helper: Geschlecht-Label aus Objekt oder String extrahieren
-            function getGeschlechtLabel(geschlecht) {
-                if (!geschlecht) return '-';
-                if (typeof geschlecht === 'object' && geschlecht.primary) {
-                    return `${GESCHLECHT_LABELS[geschlecht.primary] || geschlecht.primary}-${GESCHLECHT_LABELS[geschlecht.secondary] || geschlecht.secondary || 'Cis'}`;
-                }
-                return GESCHLECHT_LABELS[geschlecht] || geschlecht;
-            }
-
-            // Top 4 HTML generieren
-            const rankIcons = ['🥇', '🥈', '🥉', '4.'];
-            const rankClasses = ['gold', 'silver', 'bronze', 'fourth'];
-
-            let html = '';
-            slotMachineTop4Results.forEach((res, index) => {
-                const geschlechtLabel = getGeschlechtLabel(res.geschlecht);
-                const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung || '-';
-                const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz || '-';
-                // Partner-Archetyp als Haupt-Label
-                const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
-
-                html += `
-                    <div class="slot-top4-item rank-${index + 1}">
-                        <div class="slot-top4-rank ${rankClasses[index]}">${rankIcons[index]}</div>
-                        <div class="slot-top4-info">
-                            <div class="slot-top4-main">
-                                <span class="slot-top4-archetyp">${archetypLabel}</span>
-                                <span class="slot-top4-score">${res.score}</span>
-                            </div>
-                            <div class="slot-top4-details">
-                                <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
-                                <span class="slot-top4-detail">O: ${orientierungLabel}</span>
-                                <span class="slot-top4-detail">D: ${dominanzLabel}</span>
-                            </div>
-                        </div>
-                        <button class="slot-top4-apply-btn" onclick="applySlotResult(${index})">✓ Übernehmen</button>
-                    </div>
-                `;
-            });
-            listContainer.innerHTML = html;
-
-            // Erweiterte Liste (Position 5-10) generieren
-            if (expandedContainer && slotMachineTop10Results.length > 4) {
-                let expandedHtml = '';
-                for (let i = 4; i < slotMachineTop10Results.length; i++) {
-                    const res = slotMachineTop10Results[i];
-                    const geschlechtLabel = getGeschlechtLabel(res.geschlecht);
-                    const orientierungLabel = ORIENTIERUNG_LABELS[res.orientierung] || res.orientierung || '-';
-                    const dominanzLabel = DOMINANZ_LABELS[res.dominanz] || res.dominanz || '-';
-                    // Partner-Archetyp als Haupt-Label
-                    const archetypLabel = ARCHETYP_LABELS[res.archetyp] || res.archetyp;
-
-                    expandedHtml += `
-                        <div class="slot-top4-item rank-${i + 1}" style="opacity: 0.85;">
-                            <div class="slot-top4-rank" style="background: rgba(255,255,255,0.1); color: #888;">${i + 1}.</div>
-                            <div class="slot-top4-info">
-                                <div class="slot-top4-main">
-                                    <span class="slot-top4-archetyp">${archetypLabel}</span>
-                                    <span class="slot-top4-score">${res.score}</span>
-                                </div>
-                                <div class="slot-top4-details">
-                                    <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
-                                    <span class="slot-top4-detail">O: ${orientierungLabel}</span>
-                                    <span class="slot-top4-detail">D: ${dominanzLabel}</span>
-                                </div>
-                            </div>
-                            <button class="slot-top4-apply-btn" onclick="applySlotResult(${i})">✓ Übernehmen</button>
-                        </div>
-                    `;
-                }
-                expandedContainer.innerHTML = expandedHtml;
-            }
-        }
-
-        /**
-         * Toggle-Funktion für erweiterte Liste (Position 5-8)
-         * NEU: Zeigt besten Match PRO ARCHETYP
-         */
-        function toggleSlotExpand() {
-            const expandedContainer = document.getElementById('slotExpandedList');
-            const expandBtn = document.getElementById('slotExpandBtn');
-            const titleEl = document.getElementById('slotResultTitle');
-
-            if (!expandedContainer || !expandBtn) return;
-
-            slotMachineExpanded = !slotMachineExpanded;
-
-            if (slotMachineExpanded) {
-                expandedContainer.style.display = 'block';
-                expandBtn.innerHTML = '▲ Weniger anzeigen';
-                if (titleEl) titleEl.innerHTML = `🏆 Top ${slotMachineTop10Results.length} Partner gefunden!`;
-            } else {
-                expandedContainer.style.display = 'none';
-                expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
-                if (titleEl) titleEl.innerHTML = '🏆 Top 4 Partner gefunden!';
-            }
-        }
-        window.toggleSlotExpand = toggleSlotExpand;
-
-        /**
-         * SSOT v1.8.806: Wendet das Slot Machine Ergebnis auf das Partner-Profil an
-         *
-         * Setzt NUR den Partner-Archetyp (GOD-Werte sind konstant, bereits eingestellt)
-         *
-         * @param {number} index - Index des Ergebnisses in slotMachineTop10Results (0-7), default 0
-         */
-        function applySlotResult(index = 0) {
-            // Wähle Ergebnis aus Top 10 basierend auf Index
-            const result = slotMachineTop10Results[index] || slotMachineTop4Results[index] || slotMachineResult;
-            if (!result) return;
-
-            // Partner-Archetyp setzen
-            selectArchetypeFromGrid('partner', result.archetyp);
-            console.log('[applySlotResult] Partner-Archetyp gesetzt:', result.archetyp);
-
-            // Wenn Partner-GOD nicht vom User gesetzt war, die berechneten Defaults übernehmen
-            const partnerDims = personDimensions.partner || {};
-            let godApplied = false;
-
-            // Geschlecht: v4.0 = einfacher String
-            const partnerGeschStr = typeof partnerDims.geschlecht === 'string' ? partnerDims.geschlecht : (partnerDims.geschlecht && partnerDims.geschlecht.primary);
-            if (!partnerGeschStr && result.geschlecht) {
-                const gValue = typeof result.geschlecht === 'string' ? result.geschlecht : result.geschlecht.primary;
-                personDimensions.partner.geschlecht = gValue;
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions.partner.geschlecht = gValue;
-                }
-                godApplied = true;
-            }
-
-            // Orientierung: v4.1.1 = Array
-            const partnerOri = partnerDims.orientierung;
-            const hasOri = Array.isArray(partnerOri) ? partnerOri.length > 0 : (partnerOri && (typeof partnerOri === 'string' ? partnerOri : partnerOri.primary));
-            if (!hasOri && result.orientierung) {
-                const oriValue = typeof result.orientierung === 'string' ? result.orientierung : result.orientierung.primary;
-                personDimensions.partner.orientierung = [oriValue];
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions.partner.orientierung = [oriValue];
-                }
-                godApplied = true;
-            }
-
-            // Dominanz: Primary/Secondary Objekt
-            const partnerDom = partnerDims.dominanz;
-            const hasDom = partnerDom && (typeof partnerDom === 'string' ? partnerDom : partnerDom.primary);
-            if (!hasDom && result.dominanz) {
-                const domValue = typeof result.dominanz === 'string' ? result.dominanz : result.dominanz.primary;
-                personDimensions.partner.dominanz = { primary: domValue, secondary: null };
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions.partner.dominanz = { primary: domValue, secondary: null };
-                }
-                godApplied = true;
-            }
-
-            // GFK
-            if (!partnerDims.gfk) {
-                const ichGfk = (personDimensions.ich || {}).gfk || 'mittel';
-                const gfkValue = ichGfk === 'hoch' ? 'hoch' : ichGfk === 'mittel' ? 'hoch' : 'mittel';
-                personDimensions.partner.gfk = gfkValue;
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions.partner.gfk = gfkValue;
-                }
-                godApplied = true;
-            }
-
-            // State + UI synchronisieren wenn GOD-Werte gesetzt wurden
-            if (godApplied && typeof TiageState !== 'undefined') {
-                TiageState.set('personDimensions.partner', personDimensions.partner);
-                TiageState.saveToStorage();
-            }
-
-            // Profil neu berechnen mit den (jetzt gefüllten) GOD-Werten
-            if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
-                ProfileCalculator.loadProfile('partner', {
-                    archetyp: result.archetyp,
-                    geschlecht: personDimensions.partner.geschlecht,
-                    dominanz: personDimensions.partner.dominanz,
-                    orientierung: personDimensions.partner.orientierung
-                });
-            }
-
-            // UI synchronisieren
-            if (godApplied) {
-                syncGeschlechtUI('partner');
-                syncDominanzUI('partner');
-                syncOrientierungUI('partner');
-                syncGfkUI('partner');
-            }
-
-            // Score neu berechnen
-            updateComparisonView();
-
-            // Modal schließen und zurücksetzen
-            const modal = document.getElementById('slotMachineModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-            // Reset für nächste Verwendung (Phase 1)
-            resetSlotMachine();
-
-            // Feedback-Animation auf dem Button
-            const matchBtns = document.querySelectorAll('.best-match-btn:not(.ich-match-btn)');
-            matchBtns.forEach(btn => {
-                btn.classList.add('match-found');
-                setTimeout(() => btn.classList.remove('match-found'), 1000);
-            });
-        }
-        window.applySlotResult = applySlotResult;
 
         // ═══════════════════════════════════════════════════════════════════════
         // HILFSFUNKTIONEN FÜR DIMENSIONEN
@@ -16004,7 +15024,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     // console.log('[TIAGE DEBUG] MomentsToggle initialized');
                 }
 
-                // Initialize AGOD weight inputs (always reset to 4x 25% on page load)
+                // Initialize AGOD weight inputs (loads from TiageState, defaults to all=1 if no data)
                 if (typeof initAgodWeightInputs === 'function') {
                     initAgodWeightInputs();
                     // console.log('[TIAGE DEBUG] AGOD weight inputs initialized');
@@ -17756,40 +16776,98 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 }
             }
 
-            // Fallback: Falls keine Needs vorhanden, lade aus ResonanzCard (Legacy)
+            // Fallback: Falls keine Needs vorhanden, lade aus TiageState (SSOT), dann ResonanzCard (Legacy)
             if (resonanzIch.R1 === 1.0 && resonanzIch.R2 === 1.0 && resonanzIch.R3 === 1.0 && resonanzIch.R4 === 1.0) {
-                if (typeof ResonanzCard !== 'undefined') {
-                    const fullDataIch = ResonanzCard.load('ich');
-                    resonanzIch = {
-                        R1: fullDataIch.R1?.value || 1.0,
-                        R2: fullDataIch.R2?.value || 1.0,
-                        R3: fullDataIch.R3?.value || 1.0,
-                        R4: fullDataIch.R4?.value || 1.0
-                    };
-                    lockStatusIch = {
-                        R1: fullDataIch.R1?.locked || false,
-                        R2: fullDataIch.R2?.locked || false,
-                        R3: fullDataIch.R3?.locked || false,
-                        R4: fullDataIch.R4?.locked || false
-                    };
+                // v1.8.908: Erst TiageState prüfen (SSOT)
+                if (typeof TiageState !== 'undefined') {
+                    const stateIch = TiageState.get('resonanzFaktoren.ich');
+                    if (stateIch) {
+                        const extractR = (rf, key) => {
+                            if (!rf || rf[key] === undefined) return 1.0;
+                            if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
+                            return rf[key];
+                        };
+                        const r1 = extractR(stateIch, 'R1');
+                        const r2 = extractR(stateIch, 'R2');
+                        const r3 = extractR(stateIch, 'R3');
+                        const r4 = extractR(stateIch, 'R4');
+                        // Nur übernehmen wenn mindestens ein Wert != 1.0
+                        if (r1 !== 1.0 || r2 !== 1.0 || r3 !== 1.0 || r4 !== 1.0) {
+                            resonanzIch = { R1: r1, R2: r2, R3: r3, R4: r4 };
+                            lockStatusIch = {
+                                R1: stateIch.R1?.locked || false,
+                                R2: stateIch.R2?.locked || false,
+                                R3: stateIch.R3?.locked || false,
+                                R4: stateIch.R4?.locked || false
+                            };
+                            console.log('[ResonanzModal] ICH R-Faktoren aus TiageState geladen:', resonanzIch);
+                        }
+                    }
+                }
+                // Fallback: ResonanzCard (Legacy)
+                if (resonanzIch.R1 === 1.0 && resonanzIch.R2 === 1.0 && resonanzIch.R3 === 1.0 && resonanzIch.R4 === 1.0) {
+                    if (typeof ResonanzCard !== 'undefined') {
+                        const fullDataIch = ResonanzCard.load('ich');
+                        resonanzIch = {
+                            R1: fullDataIch.R1?.value || 1.0,
+                            R2: fullDataIch.R2?.value || 1.0,
+                            R3: fullDataIch.R3?.value || 1.0,
+                            R4: fullDataIch.R4?.value || 1.0
+                        };
+                        lockStatusIch = {
+                            R1: fullDataIch.R1?.locked || false,
+                            R2: fullDataIch.R2?.locked || false,
+                            R3: fullDataIch.R3?.locked || false,
+                            R4: fullDataIch.R4?.locked || false
+                        };
+                    }
                 }
             }
 
             if (resonanzPartner.R1 === 1.0 && resonanzPartner.R2 === 1.0 && resonanzPartner.R3 === 1.0 && resonanzPartner.R4 === 1.0) {
-                if (typeof ResonanzCard !== 'undefined') {
-                    const fullDataPartner = ResonanzCard.load('partner');
-                    resonanzPartner = {
-                        R1: fullDataPartner.R1?.value || 1.0,
-                        R2: fullDataPartner.R2?.value || 1.0,
-                        R3: fullDataPartner.R3?.value || 1.0,
-                        R4: fullDataPartner.R4?.value || 1.0
-                    };
-                    lockStatusPartner = {
-                        R1: fullDataPartner.R1?.locked || false,
-                        R2: fullDataPartner.R2?.locked || false,
-                        R3: fullDataPartner.R3?.locked || false,
-                        R4: fullDataPartner.R4?.locked || false
-                    };
+                // v1.8.908: Erst TiageState prüfen (SSOT), dann ResonanzCard als Fallback
+                if (typeof TiageState !== 'undefined') {
+                    const statePartner = TiageState.get('resonanzFaktoren.partner');
+                    if (statePartner) {
+                        const extractR = (rf, key) => {
+                            if (!rf || rf[key] === undefined) return 1.0;
+                            if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
+                            return rf[key];
+                        };
+                        const r1 = extractR(statePartner, 'R1');
+                        const r2 = extractR(statePartner, 'R2');
+                        const r3 = extractR(statePartner, 'R3');
+                        const r4 = extractR(statePartner, 'R4');
+                        // Nur übernehmen wenn mindestens ein Wert != 1.0
+                        if (r1 !== 1.0 || r2 !== 1.0 || r3 !== 1.0 || r4 !== 1.0) {
+                            resonanzPartner = { R1: r1, R2: r2, R3: r3, R4: r4 };
+                            lockStatusPartner = {
+                                R1: statePartner.R1?.locked || false,
+                                R2: statePartner.R2?.locked || false,
+                                R3: statePartner.R3?.locked || false,
+                                R4: statePartner.R4?.locked || false
+                            };
+                            console.log('[ResonanzModal] PARTNER R-Faktoren aus TiageState geladen:', resonanzPartner);
+                        }
+                    }
+                }
+                // Fallback: ResonanzCard (Legacy)
+                if (resonanzPartner.R1 === 1.0 && resonanzPartner.R2 === 1.0 && resonanzPartner.R3 === 1.0 && resonanzPartner.R4 === 1.0) {
+                    if (typeof ResonanzCard !== 'undefined') {
+                        const fullDataPartner = ResonanzCard.load('partner');
+                        resonanzPartner = {
+                            R1: fullDataPartner.R1?.value || 1.0,
+                            R2: fullDataPartner.R2?.value || 1.0,
+                            R3: fullDataPartner.R3?.value || 1.0,
+                            R4: fullDataPartner.R4?.value || 1.0
+                        };
+                        lockStatusPartner = {
+                            R1: fullDataPartner.R1?.locked || false,
+                            R2: fullDataPartner.R2?.locked || false,
+                            R3: fullDataPartner.R3?.locked || false,
+                            R4: fullDataPartner.R4?.locked || false
+                        };
+                    }
                 }
             }
 
@@ -20110,21 +19188,33 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         }
 
         // Initialize geschlechtExtrasCache from TiageState (SSOT → Cache sync)
+        // v1.8.902: Enhanced logging for FFH persistence debugging
         function initGeschlechtExtrasCacheFromState() {
-            if (typeof TiageState === 'undefined') return;
+            if (typeof TiageState === 'undefined') {
+                console.warn('[FFH] TiageState not available');
+                return;
+            }
+
+            console.log('[FFH] initGeschlechtExtrasCacheFromState called');
 
             ['ich', 'partner'].forEach(person => {
                 const extras = TiageState.get(`personDimensions.${person}.geschlecht_extras`);
+                console.log(`[FFH] ${person} geschlecht_extras from TiageState:`, JSON.stringify(extras));
+
                 if (extras) {
                     geschlechtExtrasCache[person] = {
                         fit: !!extras.fit,
                         fuckedup: !!extras.fuckedup,
                         horny: !!extras.horny
                     };
+                    console.log(`[FFH] ${person} cache updated:`, JSON.stringify(geschlechtExtrasCache[person]));
+
                     // Sync UI
                     if (typeof syncGeschlechtExtrasUI === 'function') {
                         syncGeschlechtExtrasUI(person);
                     }
+                } else {
+                    console.log(`[FFH] ${person} no extras found, keeping defaults`);
                 }
             });
         }

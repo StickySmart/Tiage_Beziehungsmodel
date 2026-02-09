@@ -1786,11 +1786,20 @@ _ensureFlatNeedsInitialized: function() {
         /**
          * Save state to localStorage
          * Speichert alle persistenten Daten zentral
+         * v1.8.910: Guard flag gegen Schleife
          */
+        _isSaving: false,
         saveToStorage() {
+            // Guard gegen Schleife
+            if (this._isSaving) {
+                return;
+            }
+            this._isSaving = true;
+
             try {
                 const gewichtungen = this.get('gewichtungen');
-                console.log('[TiageState] saveToStorage - gewichtungen.ich:', JSON.stringify(gewichtungen?.ich)); // DEBUG: AGOD persistence
+                // DEBUG DISABLED v1.8.910: verursacht 871+ Konsolen-Nachrichten
+                // console.log('[TiageState] saveToStorage - gewichtungen.ich:', JSON.stringify(gewichtungen?.ich));
 
                 const toSave = {
                     personDimensions: this.get('personDimensions'),
@@ -1818,6 +1827,8 @@ _ensureFlatNeedsInitialized: function() {
                 // console.log('[TiageState] State gespeichert - tiage_state key'); // DISABLED: verursacht Message-Overflow
             } catch (e) {
                 console.warn('[TiageState] Failed to save to storage:', e);
+            } finally {
+                this._isSaving = false;
             }
         },
 
