@@ -299,7 +299,9 @@ const GewichtungCard = (function() {
             }
         }
 
-        // Fallback: Legacy localStorage
+        // Fallback: Legacy localStorage - NICHT mehr zu TiageState migrieren!
+        // AGOD-Modul verwaltet gewichtungen im NEW format (0/1/2)
+        // GewichtungCard verwendet nur noch interne Darstellung
         const storageKey = getStorageKey(person);
         try {
             const stored = localStorage.getItem(storageKey);
@@ -312,10 +314,8 @@ const GewichtungCard = (function() {
                         D: { value: parsed.D.value ?? DEFAULTS.D.value, locked: parsed.D.locked ?? false },
                         G: { value: parsed.G.value ?? DEFAULTS.G.value, locked: parsed.G.locked ?? false }
                     };
-                    if (typeof TiageState !== 'undefined') {
-                        TiageState.set(`gewichtungen.${person}`, result);
-                        console.log(`[GewichtungCard] Migriert zu TiageState: ${person}`);
-                    }
+                    // NICHT mehr zu TiageState schreiben - verhindert Überschreiben des NEW formats
+                    console.log(`[GewichtungCard] Legacy localStorage gefunden für ${person} - NICHT migriert`);
                     return result;
                 }
             }

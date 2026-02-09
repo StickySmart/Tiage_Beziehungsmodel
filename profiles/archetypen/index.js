@@ -74,15 +74,15 @@
     }
 
     /**
-     * Default-Gewichtungen (je 25%)
+     * Default-Gewichtungen - NEW 3-way format (0=Egal, 1=Normal, 2=Wichtig)
      * @returns {Object} Default-Werte für O, A, D, G
      */
     function getDefaultGewichtungen() {
         return {
-            O: { value: 25, locked: false },  // Orientierung
-            A: { value: 25, locked: false },  // Archetyp
-            D: { value: 25, locked: false },  // Dominanz
-            G: { value: 25, locked: false }   // Geschlecht
+            O: 1,  // Orientierung: 1 = Normal
+            A: 1,  // Archetyp: 1 = Normal
+            D: 1,  // Dominanz: 1 = Normal
+            G: 1   // Geschlecht: 1 = Normal
         };
     }
 
@@ -626,22 +626,20 @@
                 console.log(`[ProfileCalculator] flatNeeds für ${person}: ${Object.keys(calculatedNeeds).length} berechnet, ${lockedCount} locked beibehalten`);
             }
 
-            // gewichtungen setzen (respektiere Locks!)
-            if (calculatedProfile.gewichtungen) {
-                const currentGewichtungen = TiageState.get(`gewichtungen.${person}`);
-                const newGewichtungen = {};
-                ['O', 'A', 'D', 'G'].forEach(key => {
-                    const current = currentGewichtungen?.[key];
-                    const calculated = calculatedProfile.gewichtungen[key];
-                    // Nur überschreiben wenn nicht locked
-                    if (!current?.locked) {
-                        newGewichtungen[key] = calculated;
-                    } else {
-                        newGewichtungen[key] = current;
-                    }
-                });
-                TiageState.set(`gewichtungen.${person}`, newGewichtungen);
+            // gewichtungen: NUR setzen wenn noch keine vorhanden (NEW 3-way format)
+            // AGOD-Modul verwaltet gewichtungen.ich - ProfileCalculator setzt nur Defaults
+            const currentGewichtungen = TiageState.get(`gewichtungen.${person}`);
+            const isNewFormat = currentGewichtungen &&
+                typeof currentGewichtungen.O === 'number' &&
+                currentGewichtungen.O >= 0 && currentGewichtungen.O <= 2;
+
+            if (!isNewFormat) {
+                // Keine gültigen gewichtungen vorhanden - setze Defaults
+                const defaults = getDefaultGewichtungen();
+                TiageState.set(`gewichtungen.${person}`, defaults);
+                console.log(`[ProfileCalculator] gewichtungen.${person} auf Defaults gesetzt:`, defaults);
             }
+            // Wenn bereits im NEW format: NICHT überschreiben!
 
             // resonanzFaktoren setzen (respektiere Locks!)
             if (calculatedProfile.resonanzFaktoren) {
