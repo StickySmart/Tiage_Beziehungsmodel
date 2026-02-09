@@ -104,22 +104,20 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGEN - Faktor-Gewichte (O, A, D, G)
         // ═══════════════════════════════════════════════════════════════════════
+        // v4.5: NEW 3-way format: 0 = Egal, 1 = Normal, 2 = Wichtig
         // Diese beeinflussen wie stark die 4 Dimensionen ins Matching einfließen.
-        // Summe sollte 100 ergeben. User kann diese manuell anpassen.
         gewichtungen: {
             ich: {
-                O: { value: 25, locked: false },  // Orientierung
-                A: { value: 25, locked: false },  // Archetyp
-                D: { value: 25, locked: false },  // Dominanz
-                G: { value: 25, locked: false },  // Geschlecht
-                summeLock: { enabled: true, target: 100 }  // Summen-Lock
+                O: 1,  // Orientierung: 0=Egal, 1=Normal, 2=Wichtig
+                A: 1,  // Archetyp: 0=Egal, 1=Normal, 2=Wichtig
+                D: 1,  // Dominanz: 0=Egal, 1=Normal, 2=Wichtig
+                G: 1   // Geschlecht: 0=Egal, 1=Normal, 2=Wichtig
             },
             partner: {
-                O: { value: 25, locked: false },
-                A: { value: 25, locked: false },
-                D: { value: 25, locked: false },
-                G: { value: 25, locked: false },
-                summeLock: { enabled: true, target: 100 }
+                O: 1,
+                A: 1,
+                D: 1,
+                G: 1
             }
         },
 
@@ -984,14 +982,15 @@ const TiageState = (function() {
         },
 
         /**
-         * Normalize Gewichtungen to expected format
+         * Normalize Gewichtungen to NEW 3-way format
+         * v1.8.903: ALWAYS migrates to new format { O: 1, A: 1, D: 1, G: 1 }
          * Handles:
          * - NEW 3-way format: { O: 1, A: 2, D: 0, G: 1 } (values 0-2) → preserve as-is
-         * - Old format: { O: 25, A: 25, ... } (values 0-100) → convert to { value, locked }
-         * - Object format: { O: { value: 25, locked: false }, ... } → preserve
+         * - Old object format: { O: { value: 25, locked: false }, ... } → MIGRATE to new
+         * - Old plain format: { O: 25, A: 25, ... } (values 0-100) → MIGRATE to new
          * @private
          * @param {Object} gewichtungen - { ich: {...}, partner: {...} }
-         * @returns {Object} Normalized gewichtungen
+         * @returns {Object} Normalized gewichtungen in NEW 3-way format
          */
         _normalizeGewichtungen(gewichtungen) {
             if (!gewichtungen) return gewichtungen;
@@ -1010,25 +1009,26 @@ const TiageState = (function() {
                 return false;
             };
 
-            const normalizeValue = (entry, defaultValue = 25) => {
-                if (entry === undefined || entry === null) {
-                    return { value: defaultValue, locked: false };
+            // Migrate old 0-100 value to new 0/1/2 format
+            const migrateOldWeight = (oldValue) => {
+                if (oldValue === undefined || oldValue === null) return 1;
+                if (oldValue <= 10) return 0;  // Very low = Egal
+                if (oldValue >= 40) return 2;  // High = Wichtig
+                return 1;  // Normal
+            };
+
+            // Extract numeric value from various old formats
+            const extractOldValue = (entry) => {
+                if (entry === undefined || entry === null) return 25;
+                if (typeof entry === 'number') return entry;
+                if (typeof entry === 'object' && entry !== null && 'value' in entry) {
+                    return entry.value ?? 25;
                 }
-                if (typeof entry === 'number') {
-                    // Old format: plain number (0-100)
-                    return { value: entry, locked: false };
-                }
-                if (typeof entry === 'object' && entry !== null) {
-                    return {
-                        value: entry.value ?? defaultValue,
-                        locked: entry.locked ?? false
-                    };
-                }
-                return { value: defaultValue, locked: false };
+                return 25;
             };
 
             const normalizePerson = (person) => {
-                if (!person) return null;
+                if (!person) return { O: 1, A: 1, D: 1, G: 1 };  // Default to new format
 
                 // NEW: If it's the new 3-way format, preserve it directly
                 if (isNew3WayFormat(person)) {
@@ -1041,14 +1041,15 @@ const TiageState = (function() {
                     };
                 }
 
-                // Old format: convert to { value, locked } structure
-                return {
-                    O: normalizeValue(person.O),
-                    A: normalizeValue(person.A),
-                    D: normalizeValue(person.D),
-                    G: normalizeValue(person.G),
-                    summeLock: person.summeLock ?? { enabled: true, target: 100 }
+                // Old format: MIGRATE to new 3-way format
+                const migrated = {
+                    O: migrateOldWeight(extractOldValue(person.O)),
+                    A: migrateOldWeight(extractOldValue(person.A)),
+                    D: migrateOldWeight(extractOldValue(person.D)),
+                    G: migrateOldWeight(extractOldValue(person.G))
                 };
+                console.log('[TiageState] _normalizeGewichtungen: MIGRATED old format to NEW:', JSON.stringify(migrated));
+                return migrated;
             };
 
             const result = {};
@@ -1471,21 +1472,19 @@ const TiageState = (function() {
                 ich: { loadedSlot: null, isDirty: false },
                 partner: { loadedSlot: null, isDirty: false }
             });
-            // Reset neue Felder
+            // Reset neue Felder - v4.5: NEW 3-way format
             this.set('gewichtungen', {
                 ich: {
-                    O: { value: 25, locked: false },
-                    A: { value: 25, locked: false },
-                    D: { value: 25, locked: false },
-                    G: { value: 25, locked: false },
-                    summeLock: { enabled: true, target: 100 }
+                    O: 1,  // 0=Egal, 1=Normal, 2=Wichtig
+                    A: 1,
+                    D: 1,
+                    G: 1
                 },
                 partner: {
-                    O: { value: 25, locked: false },
-                    A: { value: 25, locked: false },
-                    D: { value: 25, locked: false },
-                    G: { value: 25, locked: false },
-                    summeLock: { enabled: true, target: 100 }
+                    O: 1,
+                    A: 1,
+                    D: 1,
+                    G: 1
                 }
             });
             this.set('resonanzFaktoren', {
@@ -1653,9 +1652,10 @@ const TiageState = (function() {
                     }
                     // Neue Felder laden
                     if (parsed.gewichtungen) {
-                        // Normalisiere Gewichtungen (konvertiert altes Format { O: 25, ... } zu neuem { O: { value: 25, locked: false }, ... })
+                        // v4.5: Normalisiere Gewichtungen - erkennt NEW 3-way format (0/1/2) und OLD format
+                        console.log('[TiageState] loadFromStorage - gewichtungen RAW from localStorage:', JSON.stringify(parsed.gewichtungen?.ich)); // DEBUG
                         const normalized = this._normalizeGewichtungen(parsed.gewichtungen);
-                        console.log('[TiageState] loadFromStorage - gewichtungen gefunden, normalisiert:', JSON.stringify(normalized));
+                        console.log('[TiageState] loadFromStorage - gewichtungen NACH Normalisierung:', JSON.stringify(normalized?.ich)); // DEBUG
                         this.set('gewichtungen', normalized);
                     } else {
                         console.log('[TiageState] loadFromStorage - KEINE gewichtungen in localStorage!');
@@ -1790,7 +1790,7 @@ _ensureFlatNeedsInitialized: function() {
         saveToStorage() {
             try {
                 const gewichtungen = this.get('gewichtungen');
-                // console.log('[TiageState] saveToStorage - gewichtungen:', JSON.stringify(gewichtungen)); // DISABLED: verursacht Message-Overflow
+                console.log('[TiageState] saveToStorage - gewichtungen.ich:', JSON.stringify(gewichtungen?.ich)); // DEBUG: AGOD persistence
 
                 const toSave = {
                     personDimensions: this.get('personDimensions'),

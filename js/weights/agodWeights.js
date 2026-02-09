@@ -38,56 +38,76 @@ var TiageWeights = TiageWeights || {};
 
     /**
      * Initialize AGOD weight toggles on page load
-     * v4.4: Loads from gewichtungen.ich (persisted) as primary, paarung.gewichtungen as fallback
+     * v4.5: Enhanced logging and error handling for persistence debugging
+     * Loads from gewichtungen.ich (persisted) as primary, paarung.gewichtungen as fallback
      */
     function init() {
         // Start with defaults
         agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+        console.log('[AGOD] init() called, starting with defaults:', JSON.stringify(agodWeights));
 
-        if (typeof TiageState !== 'undefined') {
-            // Primary: Load from gewichtungen.ich (this IS persisted in saveToStorage)
-            let stored = TiageState.get('gewichtungen.ich');
-            let source = 'gewichtungen.ich';
+        if (typeof TiageState === 'undefined') {
+            console.warn('[AGOD] TiageState not available, using defaults');
+            updateUI();
+            return;
+        }
 
-            // Fallback: Load from paarung.gewichtungen (session only, not persisted)
-            if (!stored || stored.O === undefined) {
-                stored = TiageState.get('paarung.gewichtungen');
-                source = 'paarung.gewichtungen (fallback)';
+        // Check if TiageState has been initialized
+        if (typeof TiageState.isInitialized === 'function' && !TiageState.isInitialized()) {
+            console.warn('[AGOD] TiageState not yet initialized, using defaults');
+            updateUI();
+            return;
+        }
+
+        // Primary: Load from gewichtungen.ich (this IS persisted in saveToStorage)
+        let stored = TiageState.get('gewichtungen.ich');
+        let source = 'gewichtungen.ich';
+
+        console.log('[AGOD] gewichtungen.ich raw:', JSON.stringify(stored));
+
+        // Fallback: Load from paarung.gewichtungen (session only, not persisted)
+        if (!stored || stored.O === undefined) {
+            stored = TiageState.get('paarung.gewichtungen');
+            source = 'paarung.gewichtungen (fallback)';
+            console.log('[AGOD] Fallback to paarung.gewichtungen:', JSON.stringify(stored));
+        }
+
+        console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
+
+        if (stored) {
+            // New format: { O: 1, A: 2, D: 0, G: 1 }
+            if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
+                agodWeights = {
+                    O: stored.O ?? 1,
+                    A: stored.A ?? 1,
+                    D: stored.D ?? 1,
+                    G: stored.G ?? 1
+                };
+                console.log('[AGOD] Loaded new format weights:', JSON.stringify(agodWeights));
             }
-
-            console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
-
-            if (stored) {
-                // New format: { O: 1, A: 2, D: 0, G: 1 }
-                if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
-                    agodWeights = {
-                        O: stored.O ?? 1,
-                        A: stored.A ?? 1,
-                        D: stored.D ?? 1,
-                        G: stored.G ?? 1
-                    };
-                    console.log('[AGOD] Loaded new format weights:', agodWeights);
-                }
-                // Legacy format: { O: { value: 25, locked: false }, ... }
-                else if (stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
-                    // Migrate: 0-33 = 0, 34-66 = 1, 67-100 = 2
-                    agodWeights = {
-                        O: migrateOldWeight(stored.O.value),
-                        A: migrateOldWeight(stored.A.value),
-                        D: migrateOldWeight(stored.D.value),
-                        G: migrateOldWeight(stored.G.value)
-                    };
-                    console.log('[AGOD] Migrated legacy weights:', agodWeights);
-                    // Save migrated values
-                    save();
-                }
+            // Legacy format: { O: { value: 25, locked: false }, ... }
+            else if (stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
+                // Migrate: 0-33 = 0, 34-66 = 1, 67-100 = 2
+                agodWeights = {
+                    O: migrateOldWeight(stored.O.value),
+                    A: migrateOldWeight(stored.A.value),
+                    D: migrateOldWeight(stored.D.value),
+                    G: migrateOldWeight(stored.G.value)
+                };
+                console.log('[AGOD] Migrated legacy weights:', JSON.stringify(agodWeights));
+                // Save migrated values
+                save();
+            } else {
+                console.warn('[AGOD] Unrecognized format, using defaults. stored.O type:', typeof stored.O);
             }
+        } else {
+            console.log('[AGOD] No stored weights found, using defaults');
         }
 
         // Update toggle UI
         updateUI();
 
-        console.log('[AGOD] Weight toggles initialized:', agodWeights);
+        console.log('[AGOD] Weight toggles initialized:', JSON.stringify(agodWeights));
     }
 
     /**
