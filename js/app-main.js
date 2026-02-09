@@ -1023,6 +1023,18 @@
             const rDisplay = document.getElementById('rFactorDisplay');
             if (!rDisplay) return;
 
+            // v1.8.912: Wenn kein Partner-Archetyp gewählt, zeige "-"
+            const partnerArchetype = selectedPartner || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.partner.primary') : null);
+            if (!partnerArchetype) {
+                ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                    const valueEl = document.getElementById('rValue' + key);
+                    const boxEl = document.getElementById('rFactor' + key);
+                    if (valueEl) valueEl.textContent = '-';
+                    if (boxEl) boxEl.classList.remove('high', 'medium', 'low');
+                });
+                return;
+            }
+
             // Hole kombinierte R-Faktoren aus TiageSynthesis Calculator wenn verfügbar
             let rFactors = { R1: null, R2: null, R3: null, R4: null };
 
