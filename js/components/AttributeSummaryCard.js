@@ -1319,16 +1319,34 @@ const AttributeSummaryCard = (function() {
      * @param {number} step - Schrittgröße (Standard: 5)
      */
     function incrementSelectedNeeds(step = 25) {
+        console.log('[incrementSelectedNeeds] START - selectedNeeds.size:', selectedNeeds.size, 'flatNeeds.length:', flatNeeds.length);
         if (selectedNeeds.size === 0) return;
+
+        let processedCount = 0;
+        let skippedLocked = 0;
+        let skippedMax = 0;
+        let notFound = 0;
 
         selectedNeeds.forEach(needId => {
             const needObj = findNeedById(needId);
-            if (needObj?.locked) return; // Skip locked needs
+            if (!needObj) {
+                notFound++;
+                console.warn('[incrementSelectedNeeds] Need nicht gefunden:', needId);
+                return;
+            }
+            if (needObj?.locked) {
+                skippedLocked++;
+                return; // Skip locked needs
+            }
 
             const currentValue = needObj?.value ?? 50;
             // Wert bleibt bei 100 wenn bereits erreicht
-            if (currentValue >= 100) return;
+            if (currentValue >= 100) {
+                skippedMax++;
+                return;
+            }
 
+            processedCount++;
             const newValue = Math.min(100, currentValue + step);
 
             // Update value
@@ -1362,7 +1380,7 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
-        console.log(`[AttributeSummaryCard] ${selectedNeeds.size} markierte Bedürfnisse um +${step} erhöht`);
+        console.log(`[incrementSelectedNeeds] ENDE - processed: ${processedCount}, skippedLocked: ${skippedLocked}, skippedMax: ${skippedMax}, notFound: ${notFound}`);
     }
 
     /**
@@ -1371,16 +1389,34 @@ const AttributeSummaryCard = (function() {
      * @param {number} step - Schrittgröße (Standard: 5)
      */
     function decrementSelectedNeeds(step = 25) {
+        console.log('[decrementSelectedNeeds] START - selectedNeeds.size:', selectedNeeds.size, 'flatNeeds.length:', flatNeeds.length);
         if (selectedNeeds.size === 0) return;
+
+        let processedCount = 0;
+        let skippedLocked = 0;
+        let skippedMin = 0;
+        let notFound = 0;
 
         selectedNeeds.forEach(needId => {
             const needObj = findNeedById(needId);
-            if (needObj?.locked) return; // Skip locked needs
+            if (!needObj) {
+                notFound++;
+                console.warn('[decrementSelectedNeeds] Need nicht gefunden:', needId);
+                return;
+            }
+            if (needObj?.locked) {
+                skippedLocked++;
+                return; // Skip locked needs
+            }
 
             const currentValue = needObj?.value ?? 50;
             // Wert bleibt bei 0 wenn bereits erreicht
-            if (currentValue <= 0) return;
+            if (currentValue <= 0) {
+                skippedMin++;
+                return;
+            }
 
+            processedCount++;
             const newValue = Math.max(0, currentValue - step);
 
             // Update value
@@ -1414,7 +1450,7 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
-        console.log(`[AttributeSummaryCard] ${selectedNeeds.size} markierte Bedürfnisse um -${step} verringert`);
+        console.log(`[decrementSelectedNeeds] ENDE - processed: ${processedCount}, skippedLocked: ${skippedLocked}, skippedMin: ${skippedMin}, notFound: ${notFound}`);
     }
 
     /**
