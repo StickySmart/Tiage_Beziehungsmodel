@@ -2839,16 +2839,37 @@
         // Fallback: Loader nach 5 Sekunden ausblenden
         setTimeout(hideLoadingOverlay, 5000);
 
-        // Service Worker registrieren für Offline-Caching
+        // Service Worker registrieren für Offline-Caching mit Auto-Update
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/service-worker.js')
                     .then(function(registration) {
                         console.log('[SW] Registriert:', registration.scope);
+
+                        // Prüfe regelmäßig auf Updates (alle 60 Sekunden)
+                        setInterval(() => registration.update(), 60000);
+
+                        // Wenn neuer SW wartet, sofort aktivieren
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            console.log('[SW] Update gefunden, installiere...');
+
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('[SW] Neuer SW installiert, lade automatisch neu...');
+                                    window.location.reload();
+                                }
+                            });
+                        });
                     })
                     .catch(function(error) {
                         console.log('[SW] Registrierung fehlgeschlagen:', error);
                     });
+            });
+
+            // Bei Controller-Wechsel auch neu laden
+            navigator.serviceWorker.addEventListener('controllerchange', function() {
+                console.log('[SW] Controller gewechselt');
             });
         }
     </script>
