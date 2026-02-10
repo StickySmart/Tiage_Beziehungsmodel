@@ -9,13 +9,13 @@
     'use strict';
 
     function registerActions() {
-        if (typeof ActionHandler === 'undefined' || !ActionHandler.register) {
+        if (typeof ActionHandler === 'undefined' || !ActionHandler.registerAll) {
             console.warn('[NeedsEditorActions] ActionHandler nicht verfügbar - wird später registriert');
             setTimeout(registerActions, 100);
             return;
         }
 
-        ActionHandler.register({
+        ActionHandler.registerAll({
             /**
              * Bulk-Increment: Erhöht markierte Werte um 25
              */
