@@ -935,6 +935,14 @@
         });
 
         console.log('[ProfileCalculator] SSOT Subscriber für reaktive flatNeeds- und Resonanz-Updates registriert');
+
+        // v1.8.926: Listener für Unlock-Event - triggert Neuberechnung
+        // Wenn ein Bedürfnis entsperrt wird, soll der berechnete Archetyp-Wert verwendet werden
+        document.addEventListener('tiage:needUnlocked', function(event) {
+            const { person, needId } = event.detail || {};
+            console.log(`[ProfileCalculator] needUnlocked Event: ${needId} für ${person} - triggere Neuberechnung`);
+            recalculateFlatNeedsForPerson(person || 'ich');
+        });
     }
 
     // Subscriber nach kurzer Verzögerung registrieren (TiageState muss bereit sein)

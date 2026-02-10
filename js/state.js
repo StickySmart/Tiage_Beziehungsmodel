@@ -1413,6 +1413,7 @@ const TiageState = (function() {
         /**
          * Unlock a need (remove survey override)
          * v1.8.925: GLOBAL UNLOCK - Entfernt aus ALLEN 8 Archetypen gleichzeitig!
+         * v1.8.926: Triggert Neuberechnung damit berechneter Archetyp-Wert genutzt wird
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
@@ -1430,6 +1431,14 @@ const TiageState = (function() {
                 this.set(`profileReview.ich.${arch}`, current);
             });
             console.log(`[TiageState] unlockNeed GLOBAL: ${needId} aus allen 8 Archetypen entfernt`);
+
+            // v1.8.926: Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
+            // Dispatch Event das ProfileCalculator zum Neuberechnen auffordert
+            if (typeof document !== 'undefined') {
+                document.dispatchEvent(new CustomEvent('tiage:needUnlocked', {
+                    detail: { person, needId }
+                }));
+            }
         },
 
         /**
