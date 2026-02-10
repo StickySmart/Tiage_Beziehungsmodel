@@ -1319,7 +1319,7 @@ const AttributeSummaryCard = (function() {
      * @param {number} step - Schrittgröße (Standard: 5)
      */
     function incrementSelectedNeeds(step = 25) {
-        console.log('[incrementSelectedNeeds] START - selectedNeeds.size:', selectedNeeds.size, 'flatNeeds.length:', flatNeeds.length);
+        console.log("[incrementSelectedNeeds] START", { selectedSize: selectedNeeds.size, flatNeedsLen: flatNeeds.length });
         if (selectedNeeds.size === 0) return;
 
         let processedCount = 0;
@@ -1380,7 +1380,7 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
-        console.log(`[incrementSelectedNeeds] ENDE - processed: ${processedCount}, skippedLocked: ${skippedLocked}, skippedMax: ${skippedMax}, notFound: ${notFound}`);
+        console.log("[incrementSelectedNeeds] ENDE", { processed: processedCount, skippedLocked: skippedLocked, skippedMax: skippedMax, notFound: notFound });
     }
 
     /**
@@ -1389,7 +1389,7 @@ const AttributeSummaryCard = (function() {
      * @param {number} step - Schrittgröße (Standard: 5)
      */
     function decrementSelectedNeeds(step = 25) {
-        console.log('[decrementSelectedNeeds] START - selectedNeeds.size:', selectedNeeds.size, 'flatNeeds.length:', flatNeeds.length);
+        console.log("[decrementSelectedNeeds] START", { selectedSize: selectedNeeds.size, flatNeedsLen: flatNeeds.length });
         if (selectedNeeds.size === 0) return;
 
         let processedCount = 0;
@@ -1450,7 +1450,7 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere Subtitle (geänderte Anzahl)
         updateLockedCountDisplay();
-        console.log(`[decrementSelectedNeeds] ENDE - processed: ${processedCount}, skippedLocked: ${skippedLocked}, skippedMin: ${skippedMin}, notFound: ${notFound}`);
+        console.log("[decrementSelectedNeeds] ENDE", { processed: processedCount, skippedLocked: skippedLocked, skippedMin: skippedMin, notFound: notFound });
     }
 
     /**
