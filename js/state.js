@@ -1388,39 +1388,48 @@ const TiageState = (function() {
 
         /**
          * Lock a need value (from survey)
-         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * v1.8.925: GLOBAL LOCK - Speichert für ALLE 8 Archetypen gleichzeitig!
+         * Der User will dass ein gesperrtes Bedürfnis in JEDEM Archetyp denselben Wert hat.
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
          * @param {number} value - 0-100
-         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @param {string} [_archetyp] - Ignoriert (nur für Rückwärtskompatibilität)
          */
-        lockNeed(person, needId, value, archetyp = null) {
+        lockNeed(person, needId, value, _archetyp = null) {
             if (person === 'partner') {
                 console.warn('[TiageState] lockNeed für Partner wird ignoriert - keine manuellen Overrides');
                 return;
             }
             const clampedValue = Math.min(100, Math.max(0, value));
-            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            this.set(`profileReview.ich.${arch}.${needId}`, clampedValue);
+            // v1.8.925: GLOBAL - Speichere für ALLE Archetypen
+            const allArchetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            allArchetypes.forEach(arch => {
+                this.set(`profileReview.ich.${arch}.${needId}`, clampedValue);
+            });
+            console.log(`[TiageState] lockNeed GLOBAL: ${needId} = ${clampedValue} für alle 8 Archetypen`);
         },
 
         /**
          * Unlock a need (remove survey override)
-         * ICH: Entfernt aus dem aktuellen Archetyp-Slot
+         * v1.8.925: GLOBAL UNLOCK - Entfernt aus ALLEN 8 Archetypen gleichzeitig!
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
-         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @param {string} [_archetyp] - Ignoriert (nur für Rückwärtskompatibilität)
          */
-        unlockNeed(person, needId, archetyp = null) {
+        unlockNeed(person, needId, _archetyp = null) {
             if (person === 'partner') {
                 return;
             }
-            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            const current = this.get(`profileReview.ich.${arch}`) || {};
-            delete current[needId];
-            this.set(`profileReview.ich.${arch}`, current);
+            // v1.8.925: GLOBAL - Entferne aus ALLEN Archetypen
+            const allArchetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            allArchetypes.forEach(arch => {
+                const current = this.get(`profileReview.ich.${arch}`) || {};
+                delete current[needId];
+                this.set(`profileReview.ich.${arch}`, current);
+            });
+            console.log(`[TiageState] unlockNeed GLOBAL: ${needId} aus allen 8 Archetypen entfernt`);
         },
 
         /**
