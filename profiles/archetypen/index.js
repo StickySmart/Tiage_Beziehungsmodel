@@ -792,11 +792,21 @@
                     newFlatNeeds[needId] = lockedNeeds[needId];
                 });
 
-                const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+                // FIX v1.8.939: ICH verwendet pro-Archetyp Struktur, Partner ist flach
+                // setNeed schreibt zu: flatNeeds.ich.{archetyp}.{needId}
+                // Daher muss recalculate auch zu flatNeeds.ich.{archetyp} schreiben
+                let statePath;
+                if (person === 'ich') {
+                    statePath = `flatNeeds.ich.${archetyp}`;
+                } else {
+                    statePath = `flatNeeds.partner`;
+                }
+
+                const currentFlatNeeds = TiageState.get(statePath) || {};
                 const needsChanged = JSON.stringify(newFlatNeeds) !== JSON.stringify(currentFlatNeeds);
 
                 if (needsChanged) {
-                    TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
+                    TiageState.set(statePath, newFlatNeeds);
                 }
             }
         } finally {
