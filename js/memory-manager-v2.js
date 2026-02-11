@@ -269,6 +269,26 @@ const MemoryManagerV2 = (function() {
     }
 
     /**
+     * Speichert ICH-Daten für ALLE Archetypen
+     * Wird bei Lock-Änderungen verwendet, da Locks global für alle Archetypen gelten
+     */
+    function saveIchForAllArchetypes() {
+        let savedCount = 0;
+        for (const archetyp of ARCHETYPES) {
+            const data = collectIchDataForArchetyp(archetyp);
+            const key = getIchStorageKey(archetyp);
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                savedCount++;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Speichern für:', archetyp, e);
+            }
+        }
+        console.log(`[MemoryManagerV2] Auto-Save für ALLE ${savedCount} Archetypen`);
+        return savedCount;
+    }
+
+    /**
      * Throttled Auto-Save - wird bei jeder Änderung aufgerufen
      */
     function triggerAutoSave() {
@@ -278,6 +298,20 @@ const MemoryManagerV2 = (function() {
         autoSaveTimeout = setTimeout(() => {
             saveIchForCurrentArchetyp();
             autoSaveTimeout = null;
+        }, AUTO_SAVE_DELAY);
+    }
+
+    /**
+     * Throttled Auto-Save für ALLE Archetypen - bei Lock-Änderungen
+     */
+    let autoSaveAllTimeout = null;
+    function triggerAutoSaveAll() {
+        if (autoSaveAllTimeout) {
+            clearTimeout(autoSaveAllTimeout);
+        }
+        autoSaveAllTimeout = setTimeout(() => {
+            saveIchForAllArchetypes();
+            autoSaveAllTimeout = null;
         }, AUTO_SAVE_DELAY);
     }
 
@@ -343,13 +377,18 @@ const MemoryManagerV2 = (function() {
          */
         initAutoSave() {
             if (typeof TiageState !== 'undefined' && TiageState.subscribe) {
-                // Subscribe to relevant state changes
+                // Subscribe to relevant state changes - speichert für AKTUELLEN Archetyp
                 TiageState.subscribe('personDimensions.ich', triggerAutoSave);
                 TiageState.subscribe('personDimensions.ich.geschlecht_extras', triggerAutoSave); // FFH explicit
                 TiageState.subscribe('gewichtungen.ich', triggerAutoSave);
                 TiageState.subscribe('rtiPriorities.ich', triggerAutoSave);
                 TiageState.subscribe('archetypes.ich', triggerAutoSave);
-                console.log('[MemoryManagerV2] Auto-Save initialisiert (inkl. FFH)');
+                TiageState.subscribe('flatNeeds.ich', triggerAutoSave); // FlatNeeds-Änderungen
+
+                // profileReview enthält locked needs - diese gelten für ALLE Archetypen
+                TiageState.subscribe('profileReview.ich', triggerAutoSaveAll);
+
+                console.log('[MemoryManagerV2] Auto-Save initialisiert (inkl. FFH, FlatNeeds, Locks)');
             } else {
                 console.warn('[MemoryManagerV2] TiageState.subscribe nicht verfügbar');
             }
@@ -361,12 +400,25 @@ const MemoryManagerV2 = (function() {
         triggerAutoSave: triggerAutoSave,
 
         /**
+         * Trigger für Save ALLE Archetypen (bei Lock-Änderungen)
+         */
+        triggerAutoSaveAll: triggerAutoSaveAll,
+
+        /**
          * Sofortiges Speichern des aktuellen ICH-Zustands (ohne Throttle)
          * Wird beim Öffnen des Memory Modals aufgerufen
          */
         saveCurrentIchNow: function() {
             console.log('[MemoryManagerV2] Force-Save aktueller ICH-Zustand');
             saveIchForCurrentArchetyp();
+        },
+
+        /**
+         * Sofortiges Speichern für ALLE Archetypen (z.B. nach Lock)
+         */
+        saveAllArchetypesNow: function() {
+            console.log('[MemoryManagerV2] Force-Save für ALLE Archetypen');
+            return saveIchForAllArchetypes();
         },
 
         /**
@@ -687,6 +739,7 @@ function updateMemoryModalV2Content() {
             <div class="memory-slot-god">${slot.formattedGOD} ${slot.formattedFFH}</div>
             ${!slot.isEmpty ? `
                 <div class="memory-slot-agod">${slot.formattedAGOD}</div>
+                <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" onclick="handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
                     <button class="memory-load-btn" onclick="handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
@@ -714,6 +767,7 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-archetyp">${slot.archetypLabel}</div>
                 <div class="memory-slot-score">${slot.score ? slot.score.toFixed(1) + '%' : '-'}</div>
                 <div class="memory-slot-god">${slot.formattedGOD}</div>
+                <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" onclick="handleDisplayPartnerV2(${slot.slot})" title="Anzeigen">👁️</button>
                     <button class="memory-load-btn" onclick="handleLoadPartnerV2(${slot.slot})" title="Laden">📥</button>
