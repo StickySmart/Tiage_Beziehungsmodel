@@ -1388,7 +1388,7 @@ const AttributeSummaryCard = (function() {
                 // Update value für Nuancen oder Hauptfragen ohne Nuancen
                 upsertNeed(needId, { value: newValue });
 
-                // Update UI
+                // Update UI - versuche zuerst flat-need-item (Nuancen), dann hauptfrage-item (Hauptfragen ohne Nuancen)
                 const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
                 if (needItem) {
                     const slider = needItem.querySelector('.need-slider');
@@ -1402,6 +1402,21 @@ const AttributeSummaryCard = (function() {
                     }
                     if (input) input.value = newValue;
                     updateChangedIndicator(needItem, needId, newValue);
+                } else {
+                    // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
+                    const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                    if (hauptfrageItem) {
+                        const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
+                        const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                        if (slider) {
+                            slider.value = newValue;
+                            const dimColor = getDimensionColor(needId);
+                            if (dimColor) {
+                                slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                            }
+                        }
+                        if (input) input.value = newValue;
+                    }
                 }
 
                 // Update Hauptfrage-Aggregation (für Nuancen)
@@ -1487,7 +1502,7 @@ const AttributeSummaryCard = (function() {
                 // Update value für Nuancen oder Hauptfragen ohne Nuancen
                 upsertNeed(needId, { value: newValue });
 
-                // Update UI
+                // Update UI - versuche zuerst flat-need-item (Nuancen), dann hauptfrage-item (Hauptfragen ohne Nuancen)
                 const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
                 if (needItem) {
                     const slider = needItem.querySelector('.need-slider');
@@ -1501,6 +1516,21 @@ const AttributeSummaryCard = (function() {
                     }
                     if (input) input.value = newValue;
                     updateChangedIndicator(needItem, needId, newValue);
+                } else {
+                    // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
+                    const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                    if (hauptfrageItem) {
+                        const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
+                        const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                        if (slider) {
+                            slider.value = newValue;
+                            const dimColor = getDimensionColor(needId);
+                            if (dimColor) {
+                                slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                            }
+                        }
+                        if (input) input.value = newValue;
+                    }
                 }
 
                 // Update Hauptfrage-Aggregation (für Nuancen)
