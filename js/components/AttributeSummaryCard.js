@@ -1635,18 +1635,11 @@ const AttributeSummaryCard = (function() {
             }));
         }
 
+        // PRINZIP: Filter + Markierung = Recordset
+        // NUR die explizit markierten Bedürfnisse werden verarbeitet
+        // Keine automatische Erweiterung auf Nuancen - der User entscheidet was markiert ist
         selectedNeeds.forEach(needId => {
-            // Sperre/Entsperre das Hauptbedürfnis
             lockSingleNeed(needId);
-
-            // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
-            const hauptfrage = hauptfragen[needId];
-            const nuancen = hauptfrage?.nuancen || [];
-
-            // Sperre/Entsperre auch alle Nuancen
-            nuancen.forEach(nuanceId => {
-                lockSingleNeed(nuanceId);
-            });
         });
 
         // Einmal speichern nach allen Änderungen
