@@ -680,10 +680,12 @@ const ResonanzCard = (function() {
 
                     // UI aktualisieren (nur wenn aktuelle Person angezeigt wird)
                     if (person === getCurrentPerson()) {
-                        const input = document.getElementById(`resonanz-${faktor}`);
+                        // FIX v1.8.945: resonanz-{faktor} ist ein DIV, kein Input!
+                        // Verwende textContent statt value
+                        const displayEl = document.getElementById(`resonanz-${faktor}`);
                         const slider = document.getElementById(`resonanz-slider-${faktor}`);
 
-                        if (input) input.value = parsedValue.toFixed(2);
+                        if (displayEl) displayEl.textContent = parsedValue.toFixed(2);
                         if (slider) slider.value = valueToSlider(parsedValue);
                     }
                 }
