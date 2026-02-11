@@ -765,8 +765,9 @@ TiageSynthesis.NeedsIntegration = {
                 var actualValue = this._getNeedValue(needs, needId, label);
 
                 if (actualValue !== undefined && expectedValue !== undefined) {
-                    // v3.4: Richtungs-basierte Resonanz
-                    var abweichung = (actualValue - expectedValue) / 100;
+                    // v4.0: Erhöhte Sensitivität für stärkere R-Faktor-Variation
+                    // War /100, jetzt /50 für doppelte Sensitivität
+                    var abweichung = (actualValue - expectedValue) / 50;
                     var match = 1 + abweichung;
                     totalMatch += match;
                     count++;
@@ -793,9 +794,10 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0;
         }
 
-        // v3.5: R = avgMatch² (quadratisch, mit Richtung)
+        // v4.0: R = avgMatch^2.5 (erhöhte Potenz für stärkere Variation)
+        // War avgMatch², jetzt avgMatch^2.5 für mehr Einfluss
         var avgMatch = totalMatch / count;
-        var rValue = avgMatch * avgMatch;
+        var rValue = Math.pow(avgMatch, 2.5);
 
         // DEBUG disabled - was causing infinite console messages
         // console.log('[NeedsIntegration._calculateSingleResonanceV35] Katalog-Berechnung:', {
