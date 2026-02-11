@@ -1319,7 +1319,11 @@ const AttributeSummaryCard = (function() {
      * @param {number} step - Schrittgröße (Standard: 5)
      */
     function incrementSelectedNeeds(step = 25) {
-        console.log("[incrementSelectedNeeds] START", { selectedSize: selectedNeeds.size, flatNeedsLen: flatNeeds.length });
+        console.log("[incrementSelectedNeeds] START", {
+            selectedSize: selectedNeeds.size,
+            flatNeedsLen: flatNeeds.length,
+            selectedIds: Array.from(selectedNeeds)
+        });
         if (selectedNeeds.size === 0) return;
 
         let processedCount = 0;
@@ -1336,6 +1340,7 @@ const AttributeSummaryCard = (function() {
             }
             if (needObj?.locked) {
                 skippedLocked++;
+                console.log('[incrementSelectedNeeds] LOCKED:', needId);
                 return; // Skip locked needs
             }
 
@@ -1350,9 +1355,12 @@ const AttributeSummaryCard = (function() {
                 currentValue = needObj?.value ?? 50;
             }
 
+            console.log('[incrementSelectedNeeds] Processing:', { needId, hasNuancen, currentValue, storedValue: needObj?.value });
+
             // Wert bleibt bei 100 wenn bereits erreicht
             if (currentValue >= 100) {
                 skippedMax++;
+                console.log('[incrementSelectedNeeds] SKIP (max):', needId);
                 return;
             }
 
