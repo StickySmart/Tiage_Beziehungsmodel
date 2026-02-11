@@ -346,6 +346,23 @@ const MemoryManagerV2 = (function() {
             data.orientierung = TiageState.get('personDimensions.partner.orientierung');
             data.geschlecht_extras = TiageState.get('personDimensions.partner.geschlecht_extras');
 
+            // FIX v1.8.947: Fallback für geschlecht_extras (wie bei ICH)
+            // Fallback 1: personDimensions global object
+            if (!data.geschlecht_extras && typeof personDimensions !== 'undefined' && personDimensions.partner) {
+                if (personDimensions.partner.geschlecht_extras) {
+                    data.geschlecht_extras = personDimensions.partner.geschlecht_extras;
+                    console.log('[MemoryManagerV2] Partner geschlecht_extras from personDimensions fallback');
+                }
+            }
+            // Fallback 2: geschlechtExtrasCache (local cache in app-main.js)
+            if (!data.geschlecht_extras && typeof geschlechtExtrasCache !== 'undefined' && geschlechtExtrasCache.partner) {
+                const cache = geschlechtExtrasCache.partner;
+                if (cache.fit || cache.fuckedup || cache.horny) {
+                    data.geschlecht_extras = { ...cache };
+                    console.log('[MemoryManagerV2] Partner geschlecht_extras from cache fallback:', JSON.stringify(cache));
+                }
+            }
+
             // Aktueller Score aus der UI
             const scoreEl = document.getElementById('resultPercentage');
             if (scoreEl && scoreEl.textContent !== '–') {
