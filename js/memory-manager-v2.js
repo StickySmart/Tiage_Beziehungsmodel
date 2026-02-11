@@ -477,8 +477,10 @@ const MemoryManagerV2 = (function() {
                     archetyp: data?.archetyp || null,
                     archetypLabel: data?.archetyp ? ARCHETYPE_LABELS[data.archetyp] : '-',
                     formattedGOD: data ? formatGOD(data) : '-',
+                    formattedFFH: data ? formatFFH(data.geschlecht_extras) : '',  // v1.8.943: FFH für Partner
                     score: data?.score || null,
                     ichArchetyp: data?.ichArchetyp || null,
+                    ichArchetypLabel: data?.ichArchetyp ? ARCHETYPE_LABELS[data.ichArchetyp] : null,  // v1.8.943
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 });
             }
@@ -765,8 +767,7 @@ function updateMemoryModalV2Content() {
                 </button>
             ` : `
                 <div class="memory-slot-archetyp">${slot.archetypLabel}</div>
-                <div class="memory-slot-score">${slot.score ? slot.score.toFixed(1) + '%' : '-'}</div>
-                <div class="memory-slot-god">${slot.formattedGOD}</div>
+                <div class="memory-slot-god">${slot.formattedGOD}${slot.formattedFFH ? ' ' + slot.formattedFFH : ''}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" onclick="handleDisplayPartnerV2(${slot.slot})" title="Anzeigen">👁️</button>
