@@ -1339,7 +1339,17 @@ const AttributeSummaryCard = (function() {
                 return; // Skip locked needs
             }
 
-            const currentValue = needObj?.value ?? 50;
+            // FIX: Für Hauptfragen mit Nuancen den aggregierten Wert verwenden
+            const hasNuancen = checkHauptfrageHasNuancen(needId);
+            let currentValue;
+            if (hasNuancen) {
+                // Aggregierten Wert der Nuancen holen
+                currentValue = getAggregatedValueForHauptfrage(needId);
+                if (currentValue === null) currentValue = needObj?.value ?? 50;
+            } else {
+                currentValue = needObj?.value ?? 50;
+            }
+
             // Wert bleibt bei 100 wenn bereits erreicht
             if (currentValue >= 100) {
                 skippedMax++;
@@ -1349,27 +1359,46 @@ const AttributeSummaryCard = (function() {
             processedCount++;
             const newValue = Math.min(100, currentValue + step);
 
-            // Update value
-            upsertNeed(needId, { value: newValue });
-
-            // Update UI
-            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-            if (needItem) {
-                const slider = needItem.querySelector('.need-slider');
-                const input = needItem.querySelector('.flat-need-input');
-                if (slider) {
+            // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
+            if (hasNuancen) {
+                // Hauptfrage-Element finden
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
+                if (slider && hauptfrageItem) {
+                    // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
+                    adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
+                    // Slider UI aktualisieren
                     slider.value = newValue;
                     const dimColor = getDimensionColor(needId);
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
+                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    if (input) input.value = newValue;
                 }
-                if (input) input.value = newValue;
-                updateChangedIndicator(needItem, needId, newValue);
-            }
+            } else {
+                // Update value für Nuancen oder Hauptfragen ohne Nuancen
+                upsertNeed(needId, { value: newValue });
 
-            // Update Hauptfrage-Aggregation
-            updateParentHauptfrageValue(needId);
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    if (slider) {
+                        slider.value = newValue;
+                        const dimColor = getDimensionColor(needId);
+                        if (dimColor) {
+                            slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                        }
+                    }
+                    if (input) input.value = newValue;
+                    updateChangedIndicator(needItem, needId, newValue);
+                }
+
+                // Update Hauptfrage-Aggregation (für Nuancen)
+                updateParentHauptfrageValue(needId);
+            }
 
             // Event für Änderungstracking
             document.dispatchEvent(new CustomEvent('flatNeedChange', {
@@ -1409,7 +1438,17 @@ const AttributeSummaryCard = (function() {
                 return; // Skip locked needs
             }
 
-            const currentValue = needObj?.value ?? 50;
+            // FIX: Für Hauptfragen mit Nuancen den aggregierten Wert verwenden
+            const hasNuancen = checkHauptfrageHasNuancen(needId);
+            let currentValue;
+            if (hasNuancen) {
+                // Aggregierten Wert der Nuancen holen
+                currentValue = getAggregatedValueForHauptfrage(needId);
+                if (currentValue === null) currentValue = needObj?.value ?? 50;
+            } else {
+                currentValue = needObj?.value ?? 50;
+            }
+
             // Wert bleibt bei 0 wenn bereits erreicht
             if (currentValue <= 0) {
                 skippedMin++;
@@ -1419,27 +1458,46 @@ const AttributeSummaryCard = (function() {
             processedCount++;
             const newValue = Math.max(0, currentValue - step);
 
-            // Update value
-            upsertNeed(needId, { value: newValue });
-
-            // Update UI
-            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-            if (needItem) {
-                const slider = needItem.querySelector('.need-slider');
-                const input = needItem.querySelector('.flat-need-input');
-                if (slider) {
+            // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
+            if (hasNuancen) {
+                // Hauptfrage-Element finden
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
+                if (slider && hauptfrageItem) {
+                    // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
+                    adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
+                    // Slider UI aktualisieren
                     slider.value = newValue;
                     const dimColor = getDimensionColor(needId);
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
+                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    if (input) input.value = newValue;
                 }
-                if (input) input.value = newValue;
-                updateChangedIndicator(needItem, needId, newValue);
-            }
+            } else {
+                // Update value für Nuancen oder Hauptfragen ohne Nuancen
+                upsertNeed(needId, { value: newValue });
 
-            // Update Hauptfrage-Aggregation
-            updateParentHauptfrageValue(needId);
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    if (slider) {
+                        slider.value = newValue;
+                        const dimColor = getDimensionColor(needId);
+                        if (dimColor) {
+                            slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
+                        }
+                    }
+                    if (input) input.value = newValue;
+                    updateChangedIndicator(needItem, needId, newValue);
+                }
+
+                // Update Hauptfrage-Aggregation (für Nuancen)
+                updateParentHauptfrageValue(needId);
+            }
 
             // Event für Änderungstracking
             document.dispatchEvent(new CustomEvent('flatNeedChange', {
