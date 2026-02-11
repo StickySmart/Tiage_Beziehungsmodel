@@ -333,13 +333,29 @@ var TiageSlotMachine = (function() {
             return calculateTieBreaker(a) - calculateTieBreaker(b);
         });
 
-        const bestResult = allResults[0];
+        // v1.8.941: Gruppiere nach Archetyp - zeige nur den besten Score pro Archetyp
+        // Jeder Archetyp erscheint genau einmal mit seinem Maximum-Score
+        const bestPerArchetyp = {};
+        allResults.forEach(result => {
+            if (!bestPerArchetyp[result.archetyp]) {
+                bestPerArchetyp[result.archetyp] = result;
+            }
+        });
+
+        // Konvertiere zu Array und sortiere nach Score
+        const archetypResults = Object.values(bestPerArchetyp);
+        archetypResults.sort((a, b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            return calculateTieBreaker(a) - calculateTieBreaker(b);
+        });
+
+        const bestResult = archetypResults[0];
         slotMachineResult = bestResult;
 
-        console.log('[Best Match] 8 Partner-Archetypen sortiert:', allResults.map(r => `${r.archetyp}: ${r.score}`));
+        console.log('[Best Match] Best per Archetyp (8 unique):', archetypResults.map(r => `${r.archetyp}: ${r.score.toFixed(1)}`));
 
-        slotMachineTop4Results = allResults.slice(0, 4);
-        slotMachineTop10Results = allResults.slice(0, 8);
+        slotMachineTop4Results = archetypResults.slice(0, 4);
+        slotMachineTop10Results = archetypResults.slice(0, 8);
 
         // Animation UI elements
         const reelA = document.getElementById('slotReelA');
@@ -596,13 +612,21 @@ var TiageSlotMachine = (function() {
         const listContainer = document.getElementById('slotTop4List');
         const expandedContainer = document.getElementById('slotExpandedList');
         const expandBtn = document.getElementById('slotExpandBtn');
+        const titleEl = document.getElementById('slotResultTitle');
         if (!listContainer) return;
+
+        // v1.8.941: Titel zeigt Anzahl der unique Archetypen
+        const totalArchetypes = slotMachineTop10Results.length;
+        if (titleEl) {
+            titleEl.innerHTML = `🏆 Top ${Math.min(4, totalArchetypes)} Partner gefunden!`;
+        }
 
         slotMachineExpanded = false;
         if (expandedContainer) expandedContainer.style.display = 'none';
         if (expandBtn) {
-            expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
-            expandBtn.style.display = slotMachineTop10Results.length > 4 ? 'inline-block' : 'none';
+            const remaining = totalArchetypes - 4;
+            expandBtn.innerHTML = remaining > 0 ? `▼ Mehr anzeigen (${remaining} weitere)` : '';
+            expandBtn.style.display = remaining > 0 ? 'inline-block' : 'none';
         }
 
         const GESCHLECHT_LABELS = getGeschlechtLabels();
@@ -690,14 +714,18 @@ var TiageSlotMachine = (function() {
 
         slotMachineExpanded = !slotMachineExpanded;
 
+        // v1.8.941: Dynamische Anzeige basierend auf Anzahl der Archetypen
+        const totalArchetypes = slotMachineTop10Results.length;
+        const remaining = totalArchetypes - 4;
+
         if (slotMachineExpanded) {
             expandedContainer.style.display = 'block';
             expandBtn.innerHTML = '▲ Weniger anzeigen';
-            if (titleEl) titleEl.innerHTML = `🏆 Top ${slotMachineTop10Results.length} Partner gefunden!`;
+            if (titleEl) titleEl.innerHTML = `🏆 Alle ${totalArchetypes} Archetypen!`;
         } else {
             expandedContainer.style.display = 'none';
-            expandBtn.innerHTML = '▼ Mehr anzeigen (5-8)';
-            if (titleEl) titleEl.innerHTML = '🏆 Top 4 Partner gefunden!';
+            expandBtn.innerHTML = remaining > 0 ? `▼ Mehr anzeigen (${remaining} weitere)` : '';
+            if (titleEl) titleEl.innerHTML = `🏆 Top ${Math.min(4, totalArchetypes)} Partner gefunden!`;
         }
     }
 
