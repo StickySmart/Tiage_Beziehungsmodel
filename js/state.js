@@ -65,11 +65,11 @@ const TiageState = (function() {
         // Archetype Selection - Primary/Secondary System
         archetypes: {
             ich: {
-                primary: 'single',
+                primary: null,
                 secondary: null  // Optional secondary archetype
             },
             partner: {
-                primary: 'duo',
+                primary: null,
                 secondary: null  // Optional secondary archetype
             }
         },
@@ -1473,8 +1473,8 @@ const TiageState = (function() {
             // this.set('personDimensions', { ... }); // ENTFERNT
 
             this.set('archetypes', {
-                ich: { primary: 'single', secondary: null },
-                partner: { primary: 'duo', secondary: null }
+                ich: { primary: null, secondary: null },
+                partner: { primary: null, secondary: null }
             });
             this.set('ui', {
                 currentView: 'desktop',

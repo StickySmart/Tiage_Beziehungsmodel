@@ -15,8 +15,8 @@
         // ========================================
 
         let data = null;
-        let currentArchetype = 'single';
-        let selectedPartner = 'duo';
+        let currentArchetype = null;
+        let selectedPartner = null;
 
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
@@ -140,6 +140,20 @@
                 if (event.newValue && event.newValue.primary) {
                     selectedPartner = event.newValue.primary;
                     try { mobilePartnerArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
+                }
+            });
+
+            // v4.3: Reactive UI-Update wenn Resonanzfaktoren sich ändern
+            // Egal ob durch FFH, Orientierung, Dominanz, Archetyp oder manuell —
+            // die R-Faktor-Anzeige aktualisiert sich automatisch.
+            TiageState.subscribe('resonanzFaktoren.ich', function() {
+                if (typeof updateRFactorDisplay === 'function') {
+                    updateRFactorDisplay();
+                }
+            });
+            TiageState.subscribe('resonanzFaktoren.partner', function() {
+                if (typeof updateRFactorDisplay === 'function') {
+                    updateRFactorDisplay();
                 }
             });
 
@@ -849,6 +863,11 @@
                 ResonanzCard.updateDisplay('partner');
             }
 
+            // v4.3: R-Faktor-Anzeige auf Hauptseite aktualisieren (zeigt jetzt ICH statt "-")
+            if (typeof updateRFactorDisplay === 'function') {
+                updateRFactorDisplay();
+            }
+
             console.log('[Partner FREE] Reset complete - G, O, D, A (Archetyp) und R-Faktoren zurückgesetzt');
         }
 
@@ -1023,47 +1042,57 @@
             const rDisplay = document.getElementById('rFactorDisplay');
             if (!rDisplay) return;
 
-            // v1.8.912: Wenn kein Partner-Archetyp gewählt, zeige "-"
-            const partnerArchetype = selectedPartner || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.partner.primary') : null);
-            if (!partnerArchetype) {
-                ['R1', 'R2', 'R3', 'R4'].forEach(key => {
-                    const valueEl = document.getElementById('rValue' + key);
-                    const boxEl = document.getElementById('rFactor' + key);
-                    if (valueEl) valueEl.textContent = '-';
-                    if (boxEl) boxEl.classList.remove('high', 'medium', 'low');
-                });
-                return;
-            }
+            // Extrahiere R-Wert (Format kann { R1: value } oder { R1: { value, locked } } sein)
+            const extractR = (rf, key) => {
+                if (!rf || rf[key] === undefined) return 1.0;
+                if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
+                return rf[key];
+            };
 
-            // Hole kombinierte R-Faktoren aus TiageSynthesis Calculator wenn verfügbar
+            const partnerArchetype = selectedPartner || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.partner.primary') : null);
+            const ichArchetype = currentArchetype || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null);
+            const subtitle = document.getElementById('rFactorSubtitle');
+
             let rFactors = { R1: null, R2: null, R3: null, R4: null };
 
             try {
-                // Versuche R-Faktoren aus der letzten Berechnung zu holen
-                if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && TiageSynthesis.Calculator.getLastRFactors) {
-                    rFactors = TiageSynthesis.Calculator.getLastRFactors() || rFactors;
-                }
+                if (!ichArchetype) {
+                    // Kein ICH-Archetyp → zeige "-"
+                    if (subtitle) subtitle.textContent = 'ICH × PARTNER';
+                } else if (!partnerArchetype) {
+                    // v4.3: Kein Partner gewählt → zeige ICH-R-Faktoren (statt "-")
+                    if (subtitle) subtitle.textContent = 'ICH';
+                    if (typeof TiageState !== 'undefined') {
+                        const rfIch = TiageState.get('resonanzFaktoren.ich');
+                        if (rfIch) {
+                            rFactors = {
+                                R1: extractR(rfIch, 'R1'),
+                                R2: extractR(rfIch, 'R2'),
+                                R3: extractR(rfIch, 'R3'),
+                                R4: extractR(rfIch, 'R4')
+                            };
+                        }
+                    }
+                } else {
+                    // Partner gewählt → kombinierte R-Faktoren (ICH × PARTNER)
+                    if (subtitle) subtitle.textContent = 'ICH × PARTNER';
 
-                // Fallback: Berechne aus TiageState resonanzFaktoren
-                if (rFactors.R1 === null && typeof TiageState !== 'undefined') {
-                    const rfIch = TiageState.get('resonanzFaktoren.ich');
-                    const rfPartner = TiageState.get('resonanzFaktoren.partner');
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && TiageSynthesis.Calculator.getLastRFactors) {
+                        rFactors = TiageSynthesis.Calculator.getLastRFactors() || rFactors;
+                    }
 
-                    if (rfIch && rfPartner) {
-                        // Extrahiere Werte (Format kann { R1: value } oder { R1: { value, locked } } sein)
-                        const extractR = (rf, key) => {
-                            if (!rf || rf[key] === undefined) return 1.0;
-                            if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
-                            return rf[key];
-                        };
+                    if (rFactors.R1 === null && typeof TiageState !== 'undefined') {
+                        const rfIch = TiageState.get('resonanzFaktoren.ich');
+                        const rfPartner = TiageState.get('resonanzFaktoren.partner');
 
-                        // Kombiniere: R = R_ich × R_partner
-                        rFactors = {
-                            R1: extractR(rfIch, 'R1') * extractR(rfPartner, 'R1'),
-                            R2: extractR(rfIch, 'R2') * extractR(rfPartner, 'R2'),
-                            R3: extractR(rfIch, 'R3') * extractR(rfPartner, 'R3'),
-                            R4: extractR(rfIch, 'R4') * extractR(rfPartner, 'R4')
-                        };
+                        if (rfIch && rfPartner) {
+                            rFactors = {
+                                R1: extractR(rfIch, 'R1') * extractR(rfPartner, 'R1'),
+                                R2: extractR(rfIch, 'R2') * extractR(rfPartner, 'R2'),
+                                R3: extractR(rfIch, 'R3') * extractR(rfPartner, 'R3'),
+                                R4: extractR(rfIch, 'R4') * extractR(rfPartner, 'R4')
+                            };
+                        }
                     }
                 }
             } catch (e) {
@@ -2925,6 +2954,9 @@
 
             // Update UI directly using the cache
             syncGeschlechtExtrasUI(person);
+
+            // v4.3: Score und R-Faktoren neu berechnen (wie Orientierung/Dominanz)
+            updateComparisonView();
 
             // Also save selection (includes geschlecht_extras in selection.ich/partner)
             if (typeof saveSelectionToStorage === 'function') {
@@ -13821,8 +13853,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // Mobile und Desktop teilen sich TiageState als Single Source of Truth.
         // ═══════════════════════════════════════════════════════════════════════════
         let mobilePersonDimensions = window.mobilePersonDimensions;
-        let mobileIchArchetype = 'single';
-        let mobilePartnerArchetype = 'duo';
+        let mobileIchArchetype = null;
+        let mobilePartnerArchetype = null;
         let mobileTouchStartX = 0;
         let mobileTouchEndX = 0;
 
@@ -18955,8 +18987,8 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             }
 
             // Reset mobile selections
-            mobileIchArchetype = 'single';
-            mobilePartnerArchetype = 'duo';
+            mobileIchArchetype = null;
+            mobilePartnerArchetype = null;
 
             // ═══════════════════════════════════════════════════════════════════════════
             // PHASE 1: PROXY-LAYER MIGRATION
@@ -18968,35 +19000,31 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 TiageState.reset();
                 console.log('[resetAll] TiageState reset durchgeführt');
 
-                // ═══════════════════════════════════════════════════════════════════════════
-                // FIX: Nach Reset flatNeeds und resonanzFaktoren neu berechnen
-                // mit aktuellen GOD-Modifikatoren (falls vorhanden)
-                // ═══════════════════════════════════════════════════════════════════════════
-                if (typeof ProfileCalculator !== 'undefined') {
-                    ['ich', 'partner'].forEach(person => {
-                        const archetyp = person === 'ich' ? 'single' : 'duo';
-                        const profileData = {
-                            archetyp: archetyp,
-                            geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
-                            dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
-                            orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
-                        };
-                        console.log(`[resetAll] Berechne Profil für ${person} mit GOD:`, JSON.stringify(profileData));
-                        ProfileCalculator.loadProfile(person, profileData);
-
-                        // FIX: Baseline mit berechneten flatNeeds synchronisieren
-                        // Damit nach Reset nichts als "geändert" markiert ist
-                        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.syncBaselineWithFlatNeeds) {
-                            AttributeSummaryCard.syncBaselineWithFlatNeeds(person, archetyp);
-                        }
-                    });
-                    console.log('[resetAll] flatNeeds, resonanzFaktoren und Baseline neu berechnet mit GOD-Modifikatoren');
-                }
+                // Legacy-Variablen synchronisieren (TiageState.reset() setzt auf null)
+                currentArchetype = null;
+                selectedPartner = null;
             }
 
             // Reset dropdowns
-            document.getElementById('mobileIchSelect').value = 'single';
-            document.getElementById('mobilePartnerSelect').value = 'duo';
+            const mobileIchSel = document.getElementById('mobileIchSelect');
+            const mobilePartnerSel = document.getElementById('mobilePartnerSelect');
+            const ichSel = document.getElementById('ichSelect');
+            const partnerSel = document.getElementById('partnerSelect');
+            if (mobileIchSel) mobileIchSel.value = '';
+            if (mobilePartnerSel) mobilePartnerSel.value = '';
+            if (ichSel) ichSel.value = '';
+            if (partnerSel) partnerSel.value = '';
+
+            // Reset archetype grids (remove active from all)
+            if (typeof updateArchetypeGrid === 'function') {
+                updateArchetypeGrid('ich', null);
+                updateArchetypeGrid('partner', null);
+            }
+
+            // Reset R-Faktor-Anzeige
+            if (typeof updateRFactorDisplay === 'function') {
+                updateRFactorDisplay();
+            }
 
             // Reset all radio buttons
             document.querySelectorAll('.mobile-page input[type="radio"]').forEach(radio => {

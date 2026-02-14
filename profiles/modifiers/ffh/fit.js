@@ -27,20 +27,25 @@ TiageModifiers.FFH.Fit = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        koerperlichkeit: 5,              // #B189 Körperbewusstsein
-        energie: 5,                       // #B56 Vitalität
-        selbstdisziplin: 4,              // #B67 Struktur und Routine
-        gesundheit: 5,                    // #B45 Körperliche Gesundheit
-        aktivitaet: 4,                    // #B78 Bewegung und Sport
+        // Körperliche Bedürfnisse (R1 ORIENTIERUNG - wirken auf R-Faktoren!)
+        koerperliche_naehe: 3,            // #B160 (R1) Körperbewusstsein → mehr Körperkontakt
+        koerperliche_resonanz: 3,         // #B227 (R1) Bessere Körperwahrnehmung
 
-        // Verstärkte Bedürfnisse
+        // R2 ARCHETYP - Selbstbestimmung
+        selbstbestimmung_und_unabhaengigkeit: 3, // #B34 (R2) Eigenverantwortung
+
+        // Weitere verstärkte Bedürfnisse
+        bewegung: 5,                      // #B4   Bewegung und Sport
+        koerperliche_grundbeduerfnisse: 4, // #B1  Körperliche Gesundheit
+        herausforderung: 4,               // #B56  Vitalität & Herausforderung
         struktur: 3,                      // #B198 Geregelte Abläufe
-        leistung: 3,                      // #B60 Wirksamkeit
+        ordnung_und_struktur: 3,          // #B196 Disziplin
+        kompetenz_und_wirksamkeit: 3,     // #B58  Wirksamkeit
+        erholung: 3,                      // #B6   Regeneration
 
         // Leicht reduzierte Bedürfnisse
-        genuss: -2,                       // #B14 Genuss kann nachrangig sein
-        spontaneitaet: -2                 // #B189 Weniger spontan durch Routinen
+        leichtigkeit: -2,                 // #B14  Genuss kann nachrangig sein
+        spontaneitaet: -2                 // #B38  Weniger spontan durch Routinen
     },
 
     // ═══════════════════════════════════════════════════════════════════════

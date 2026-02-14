@@ -27,21 +27,23 @@ TiageModifiers.FFH.Horny = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Stark verstärkte Bedürfnisse
-        sexualitaet: 8,                   // #B189 Sexuelle Erfüllung (Kern!)
-        koerperliche_naehe: 6,            // #B47 Körperkontakt
-        leidenschaft: 6,                  // #B75 Intensität
-        anziehung: 5,                     // #B76 Körperliche Anziehung
+        // Stark verstärkte Bedürfnisse (R1 ORIENTIERUNG - wirken auf R-Faktoren!)
+        sexuelle_experimentierfreude: 6,  // #B175 (R1) Experimentierfreude
+        sexuelle_verbindung: 5,           // #B176 (R1) Sexuelle Verbindung
+        koerperliche_naehe: 6,            // #B160 (R1) Körperkontakt
+        intimitaet: 5,                    // #B20  (R1) Nähe & Intimität
+        koerperliche_lust: 5,             // #B174 (R1) Körperliche Lust
+        koerperliche_resonanz: 4,         // #B227 (R1) Körperliche Resonanz
 
-        // Verstärkte Bedürfnisse
-        intimität: 5,                     // #B47 Nähe
-        begehren: 5,                      // #B76 Gewollt werden
-        spielfreude: 4,                   // #B14 Spielerischer Umgang
+        // Weitere verstärkte Bedürfnisse
+        sexualitaet: 8,                   // #B172 Sexuelle Erfüllung (Kern!)
+        sexuelle_intimitaet: 4,           // #B173 Sexuelle Intimität
         offenheit_fuer_neues: 4,          // #B189 Experimentierfreude
+        intensitaet: 3,                   // #B82  Tiefe Gefühle
 
         // Leicht reduzierte Bedürfnisse
-        distanz: -3,                      // Weniger Bedürfnis nach Abstand
-        zurueckhaltung: -2                // Weniger reserviert
+        physische_distanz: -3,            // #B162 Weniger Bedürfnis nach Abstand
+        emotionale_zurueckhaltung: -2     // #B135 Weniger reserviert
     },
 
     // ═══════════════════════════════════════════════════════════════════════

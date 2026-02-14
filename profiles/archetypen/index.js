@@ -682,7 +682,14 @@
      */
     function initFromState() {
         if (typeof TiageState === 'undefined') {
-            console.log('[ProfileCalculator] TiageState nicht verfügbar, überspringe Initialisierung');
+            // Retry: state.js wird nach index.js geladen
+            if (!initFromState._retries) initFromState._retries = 0;
+            initFromState._retries++;
+            if (initFromState._retries <= 20) {
+                setTimeout(initFromState, 100);
+                return false;
+            }
+            console.log('[ProfileCalculator] TiageState nicht verfügbar nach 20 Versuchen, überspringe Initialisierung');
             return false;
         }
 
@@ -695,7 +702,8 @@
                 archetyp: ichArchetyp.primary,
                 geschlecht: TiageState.get?.('personDimensions.ich.geschlecht') || null,
                 dominanz: TiageState.get?.('personDimensions.ich.dominanz') || null,
-                orientierung: TiageState.get?.('personDimensions.ich.orientierung') || null
+                orientierung: TiageState.get?.('personDimensions.ich.orientierung') || null,
+                geschlecht_extras: TiageState.get?.('personDimensions.ich.geschlecht_extras') || {}
             };
             loadProfile('ich', ichData);
             loaded++;
@@ -708,7 +716,8 @@
                 archetyp: partnerArchetyp.primary,
                 geschlecht: TiageState.get?.('personDimensions.partner.geschlecht') || null,
                 dominanz: TiageState.get?.('personDimensions.partner.dominanz') || null,
-                orientierung: TiageState.get?.('personDimensions.partner.orientierung') || null
+                orientierung: TiageState.get?.('personDimensions.partner.orientierung') || null,
+                geschlecht_extras: TiageState.get?.('personDimensions.partner.geschlecht_extras') || {}
             };
             loadProfile('partner', partnerData);
             loaded++;
@@ -890,14 +899,22 @@
         }
 
         if (typeof TiageState === 'undefined' || typeof TiageState.subscribe !== 'function') {
-            console.warn('[ProfileCalculator] TiageState.subscribe nicht verfügbar - reaktive Updates deaktiviert');
+            // Retry mit Backoff (state.js wird nach index.js geladen)
+            if (!registerFlatNeedsSubscribers._retries) registerFlatNeedsSubscribers._retries = 0;
+            registerFlatNeedsSubscribers._retries++;
+            if (registerFlatNeedsSubscribers._retries <= 20) {
+                setTimeout(registerFlatNeedsSubscribers, 100);
+                return;
+            }
+            console.warn('[ProfileCalculator] TiageState.subscribe nicht verfügbar nach 20 Versuchen - reaktive Updates deaktiviert');
             return;
         }
 
         subscribersRegistered = true;
 
         // Subscriber für Archetyp-Änderungen
-        // SSOT: Bei Archetyp-Wechsel werden flatNeeds UND Resonanzfaktoren neu berechnet
+        // SSOT v4.3: Bei Archetyp-Wechsel werden flatNeeds neu berechnet
+        // Resonanz wird reaktiv über flatNeeds-Subscriber aktualisiert
         // FIX v1.8.835: Überspringe während loadFromStorage() um gespeicherte User-Werte zu erhalten
         TiageState.subscribe('archetypes.ich', (event) => {
             if (TiageState.isLoading && TiageState.isLoading()) {
@@ -906,8 +923,6 @@
             }
             if (event.path === 'archetypes.ich.primary' || event.path === 'archetypes.ich') {
                 recalculateFlatNeedsForPerson('ich');
-                // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
-                recalculateResonanzForPerson('ich');
             }
         });
 
@@ -918,13 +933,12 @@
             }
             if (event.path === 'archetypes.partner.primary' || event.path === 'archetypes.partner') {
                 recalculateFlatNeedsForPerson('partner');
-                // Resonanz nach flatNeeds berechnen (braucht flatNeeds als Input)
-                recalculateResonanzForPerson('partner');
             }
         });
 
-        // Subscriber für Dimensions-Änderungen (geschlecht, dominanz, orientierung)
-        // SSOT: Bei Dimensions-Änderung werden flatNeeds UND Resonanzfaktoren neu berechnet
+        // Subscriber für Dimensions-Änderungen (geschlecht, dominanz, orientierung, FFH)
+        // SSOT v4.3: Bei Dimensions-Änderung werden flatNeeds neu berechnet
+        // Resonanz wird reaktiv über flatNeeds-Subscriber aktualisiert
         // FIX v1.8.835: Überspringe während loadFromStorage() um gespeicherte User-Werte zu erhalten
         TiageState.subscribe('personDimensions.ich', (event) => {
             if (TiageState.isLoading && TiageState.isLoading()) {
@@ -932,7 +946,6 @@
                 return;
             }
             recalculateFlatNeedsForPerson('ich');
-            recalculateResonanzForPerson('ich');
         });
 
         TiageState.subscribe('personDimensions.partner', (event) => {
@@ -941,10 +954,26 @@
                 return;
             }
             recalculateFlatNeedsForPerson('partner');
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // SSOT v4.3: flatNeeds → Resonanz reactive chain
+        // Jede Änderung an flatNeeds (egal ob durch Archetyp, Dimension,
+        // FFH, BeduerfnisIds-Laden, Unlock oder manuell) triggert
+        // automatisch Resonanz-Neuberechnung.
+        // Parent-Propagation: notify('flatNeeds.ich.{archetyp}') → 'flatNeeds.ich'
+        // ═══════════════════════════════════════════════════════════════
+        TiageState.subscribe('flatNeeds.ich', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) return;
+            recalculateResonanzForPerson('ich');
+        });
+
+        TiageState.subscribe('flatNeeds.partner', (event) => {
+            if (TiageState.isLoading && TiageState.isLoading()) return;
             recalculateResonanzForPerson('partner');
         });
 
-        console.log('[ProfileCalculator] SSOT Subscriber für reaktive flatNeeds- und Resonanz-Updates registriert');
+        console.log('[ProfileCalculator] SSOT Subscriber registriert: personDimensions→flatNeeds, flatNeeds→Resonanz');
 
         // v1.8.926: Listener für Unlock-Event - triggert Neuberechnung
         // Wenn ein Bedürfnis entsperrt wird, soll der berechnete Archetyp-Wert verwendet werden

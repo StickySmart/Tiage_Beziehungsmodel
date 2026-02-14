@@ -67,9 +67,15 @@ TiageModifiers.Orientierung.Homosexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        integritaet: 4,                      // #B52 Identitätsstärke nach Coming-Out
-        gemeinschaft: 4,                     // #B41 Community-Verbundenheit
+        // R2 ARCHETYP - Community
+        gemeinschaft: 4,                     // #B41 (R2) Community-Verbundenheit
+
+        // R4 GESCHLECHT/IDENTITÄT
+        authentizitaet: 3,                   // #B50 (R4) Identitätsstärke nach Coming-Out
+        selbst_ausdruck: 3,                  // #B67 (R4) Freier Selbstausdruck
+
+        // Weitere Modifikatoren
+        integritaet: 4,                      // #B52 Identitätsstärke
         wachstum_und_sinn: 4,                // #B61 Resilienz
         rollenausdruck: 4,                   // #B87 Weniger starre Geschlechterrollen
 

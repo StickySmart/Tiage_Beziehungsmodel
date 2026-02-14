@@ -983,6 +983,7 @@
                 <div class="select-with-info">
                     <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="ichSelect">
+                        <option value="" title="Kein Archetyp gewählt">– Bitte wählen –</option>
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -997,7 +998,7 @@
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
@@ -1080,7 +1081,7 @@
                 <!-- R-Faktor Display (Resonanz der Paarung) -->
                 <div class="r-factor-heading" style="text-align: center; margin-bottom: 6px;">
                     <div style="color: #10B981; font-size: 14px; font-weight: 600;">Resonanzfaktoren</div>
-                    <div style="color: var(--text-muted); font-size: 10px;">ICH × PARTNER</div>
+                    <div style="color: var(--text-muted); font-size: 10px;" id="rFactorSubtitle">ICH × PARTNER</div>
                 </div>
                 <div class="r-factor-display" id="rFactorDisplay">
                     <div class="r-factor-box" id="rFactorR1" title="R1 - Leben (Orientierung)">
@@ -1190,7 +1191,7 @@
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
@@ -1293,6 +1294,7 @@
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobileIchSelect">
+                        <option value="" title="Kein Archetyp gewählt">– Bitte wählen –</option>
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -1307,7 +1309,7 @@
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
-                    <div class="archetype-symbol-item active" data-archetype="single" data-action="select-archetype" data-person="ich">
+                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="ich">
                         <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
@@ -1534,7 +1536,7 @@
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
-                    <div class="archetype-symbol-item active" data-archetype="duo" data-action="select-archetype" data-person="partner">
+                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="partner">
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>

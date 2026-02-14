@@ -27,21 +27,27 @@ TiageModifiers.FFH.Fuckedup = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren - Verstärkte Bedürfnisse
-        tiefe: 5,                         // #B61 Tiefgang in Gesprächen
-        authentizitaet: 5,                // #B52 Echtsein, keine Fassade
-        akzeptanz: 5,                     // #B28 Annahme trotz Fehlern
-        verstaendnis: 4,                  // #B29 Verstanden werden
-        selbst_ausdruck: 4,               // #B67 Sich zeigen können
+        // R4 GESCHLECHT/IDENTITÄT - wirken auf R-Faktoren!
+        authentizitaet: 5,                // #B50  (R4) Echtsein, keine Fassade
+        selbst_ausdruck: 4,              // #B67  (R4) Sich zeigen können
+        akzeptanz_und_empathie: 5,        // #B25  (R4) Annahme trotz Fehlern
+        gesehen_und_verstanden_werden: 4, // #B31  (R4) Verstanden werden
+
+        // R3 DOMINANZ - Machtdynamik
+        kontrolle_ausueben: -3,           // #B74  (R3) Kontrolle ist schwieriger
+        hingabe: 3,                       // #B75  (R3) Sich fallen lassen können
 
         // Emotionale Intensität
-        intensitaet: 4,                   // #B75 Tiefe Gefühle
-        wachstum_und_sinn: 4,             // #B61 Persönliche Entwicklung
+        emotionale_tiefe: 5,              // #B71  Tiefgang in Gesprächen
+        verletzlichkeit: 4,              // #B134 Offenheit für Verletzlichkeit
+        intensitaet: 4,                   // #B82  Tiefe Gefühle
+        wachstum_und_sinn: 4,             // #B61  Persönliche Entwicklung
+        gespraechstiefe: 3,              // #B126 Tiefgehende Gespräche
 
         // Reduzierte Bedürfnisse
-        stabilitaet: -3,                  // #B198 Weniger Bedürfnis nach Routine
-        oberflaeche: -4,                  // Smalltalk ist anstrengend
-        kontrolle_ausueben: -3            // #B74 Kontrolle ist schwieriger
+        stabilitaet: -3,                  // #B13  Weniger Bedürfnis nach Routine
+        small_talk: -4,                   // #B128 Smalltalk ist anstrengend
+        ordnung_und_struktur: -2          // #B196 Weniger Struktur
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -68,7 +68,14 @@ TiageModifiers.Orientierung.Bisexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        // R1 ORIENTIERUNG - sexuelle Offenheit
+        sexuelle_experimentierfreude: 4,     // #B175 (R1) Breiteres sexuelles Spektrum
+        koerperliche_naehe: 2,               // #B160 (R1) Offenheit für Körperkontakt
+
+        // R4 GESCHLECHT/IDENTITÄT
+        akzeptanz_und_empathie: 3,           // #B25 (R4) Verständnis für Vielfalt
+
+        // Weitere Modifikatoren
         offenheit_fuer_neues: 5,             // #B189 Anziehungsflexibilität & Vielfalt
         sexualitaet: 5,                      // #B172 Breiteres Spektrum
         empathie: 4,                         // #B28 Verständnis für verschiedene Orientierungen
