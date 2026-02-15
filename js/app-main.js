@@ -61,9 +61,9 @@
          */
         function getPartnerArchetype() {
             if (typeof TiageState !== 'undefined') {
-                return TiageState.getArchetype('partner') || selectedPartner || 'duo';
+                return TiageState.getArchetype('partner') || selectedPartner || null;
             }
-            return selectedPartner || 'duo';
+            return selectedPartner || null;
         }
         window.getPartnerArchetype = getPartnerArchetype;
 
@@ -565,8 +565,10 @@
                 .map(id => data.archetypes[id])
                 .filter(arch => arch); // Remove any undefined
 
-            if (!allPartners.find(o => o.id === selectedPartner)) {
-                selectedPartner = allPartners[0]?.id || 'duo';
+            // Nur Default setzen wenn selectedPartner einen Wert hat aber ungültig ist
+            // Bei null (kein Partner gewählt) → null lassen
+            if (selectedPartner && !allPartners.find(o => o.id === selectedPartner)) {
+                selectedPartner = allPartners[0]?.id || null;
             }
 
             container.innerHTML = allPartners.map(arch => `
@@ -14785,9 +14787,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     personDimensions[person].gfk = savedDims.gfk;
                 }
 
-                // Sync Geschlecht Extras if present (Fit/Fucked up)
+                // Sync Geschlecht Extras if present (Fit/Fucked up/Horny)
                 if (savedDims.geschlecht_extras) {
                     personDimensions[person].geschlecht_extras = savedDims.geschlecht_extras;
+                    // FIX: geschlechtExtrasCache synchronisieren — syncGeschlechtExtrasUI liest aus Cache, nicht personDimensions
+                    geschlechtExtrasCache[person] = {
+                        fit: !!savedDims.geschlecht_extras.fit,
+                        fuckedup: !!savedDims.geschlecht_extras.fuckedup,
+                        horny: !!savedDims.geschlecht_extras.horny
+                    };
                 }
 
                 // Sync mobilePersonDimensions if it exists
@@ -14892,7 +14900,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 archetyp: archetyp,
                                 geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
                                 dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
-                                orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
+                                orientierung: TiageState.get(`personDimensions.${person}.orientierung`),
+                                geschlecht_extras: TiageState.get(`personDimensions.${person}.geschlecht_extras`) || {}
                             };
                             if (profileData.archetyp) {
                                 ProfileCalculator.loadProfile(person, profileData);

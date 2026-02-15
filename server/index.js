@@ -35,6 +35,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Static Files — serve project root for local testing (HTML, JS, CSS, JSON)
+app.use(express.static(join(__dirname, '..')));
+
 // Request-Logging (Debug)
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
