@@ -154,7 +154,7 @@ const TiageState = (function() {
                 // 8 Archetyp-Slots für ICH - User-Anpassungen werden pro Archetyp gespeichert
                 single: {},
                 duo: {},
-                'duo-flex': {},
+                'duo_flex': {},
                 solopoly: {},
                 polyamor: {},
                 ra: {},
@@ -176,7 +176,7 @@ const TiageState = (function() {
                 // 8 Archetyp-Slots für lockedNeeds
                 single: {},
                 duo: {},
-                'duo-flex': {},
+                'duo_flex': {},
                 solopoly: {},
                 polyamor: {},
                 ra: {},
@@ -240,7 +240,7 @@ const TiageState = (function() {
         'flatNeeds.ich': [],
         'flatNeeds.ich.single': [],
         'flatNeeds.ich.duo': [],
-        'flatNeeds.ich.duo-flex': [],
+        'flatNeeds.ich.duo_flex': [],
         'flatNeeds.ich.solopoly': [],
         'flatNeeds.ich.polyamor': [],
         'flatNeeds.ich.ra': [],
@@ -1073,7 +1073,7 @@ const TiageState = (function() {
         _migrateFlatNeeds(flatNeeds) {
             if (!flatNeeds) return flatNeeds;
 
-            const archetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
             // Prüfen ob bereits neues Format (ich hat Archetyp-Keys)
             if (flatNeeds.ich && typeof flatNeeds.ich === 'object') {
@@ -1117,7 +1117,7 @@ const TiageState = (function() {
                 ich: {
                     single: {},
                     duo: {},
-                    'duo-flex': {},
+                    'duo_flex': {},
                     solopoly: {},
                     polyamor: {},
                     ra: {},
@@ -1139,7 +1139,7 @@ const TiageState = (function() {
         _migrateProfileReview(profileReview) {
             if (!profileReview) return profileReview;
 
-            const archetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
             // Prüfen ob bereits neues Format (ich hat Archetyp-Keys statt lockedNeeds)
             if (profileReview.ich && typeof profileReview.ich === 'object') {
@@ -1182,7 +1182,7 @@ const TiageState = (function() {
                 ich: {
                     single: {},
                     duo: {},
-                    'duo-flex': {},
+                    'duo_flex': {},
                     solopoly: {},
                     polyamor: {},
                     ra: {},
@@ -1403,7 +1403,7 @@ const TiageState = (function() {
             }
             const clampedValue = Math.min(100, Math.max(0, value));
             // v1.8.925: GLOBAL - Speichere für ALLE Archetypen
-            const allArchetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            const allArchetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
             allArchetypes.forEach(arch => {
                 this.set(`profileReview.ich.${arch}.${needId}`, clampedValue);
             });
@@ -1424,7 +1424,7 @@ const TiageState = (function() {
                 return;
             }
             // v1.8.925: GLOBAL - Entferne aus ALLEN Archetypen
-            const allArchetypes = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            const allArchetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
             allArchetypes.forEach(arch => {
                 const current = this.get(`profileReview.ich.${arch}`) || {};
                 delete current[needId];
