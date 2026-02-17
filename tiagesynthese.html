@@ -479,6 +479,14 @@
     </style>
 </head>
 <body>
+    <!-- Mobile Blocker: App nur auf Desktop -->
+    <div class="mobile-wip-blocker" style="display:none">
+        <div class="emoji">🖥️</div>
+        <h1>Desktop Only</h1>
+        <p>Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
+        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Bitte &ouml;ffne die Seite an einem<br>PC oder Laptop.</p>
+        <div style="margin-top: 40px; padding: 12px 24px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.9rem;">ti-age.de</div>
+    </div>
     <!-- Modal-Style Container wie needs-editor.html -->
     <div class="need-modal-overlay active" id="syntheseModal">
         <div class="need-modal" onclick="event.stopPropagation()">
@@ -832,9 +840,10 @@
             // ═══════════════════════════════════════════════════════════════════
             // PRIORITÄT 2: TiageState (Fallback)
             // ═══════════════════════════════════════════════════════════════════
-            if (typeof TiageState !== 'undefined') {
-                const ichNeeds = TiageState.get('flatNeeds.ich');
-                const partnerNeeds = TiageState.get('flatNeeds.partner');
+            // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+            if (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds) {
+                const ichNeeds = TiageState.getFlatNeeds('ich');
+                const partnerNeeds = TiageState.getFlatNeeds('partner');
 
                 // Prüfe ob beide vorhanden (Array oder Object)
                 const ichHasData = ichNeeds && (Array.isArray(ichNeeds) ? ichNeeds.length > 0 : Object.keys(ichNeeds).length > 0);

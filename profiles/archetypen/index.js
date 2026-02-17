@@ -622,7 +622,13 @@
                     newFlatNeeds[needId] = lockedNeeds[needId];
                 });
 
-                TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
+                // FIX v4.3: ICH verwendet pro-Archetyp Struktur (wie recalculateFlatNeedsForPerson)
+                // getFlatNeeds('ich') liest flatNeeds.ich.${archetyp}, nicht flatNeeds.ich
+                if (person === 'ich' && calculatedProfile.archetyp) {
+                    TiageState.set(`flatNeeds.ich.${calculatedProfile.archetyp}`, newFlatNeeds);
+                } else {
+                    TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
+                }
                 console.log(`[ProfileCalculator] flatNeeds für ${person}: ${Object.keys(calculatedNeeds).length} berechnet, ${lockedCount} locked beibehalten`);
             }
 
@@ -642,22 +648,34 @@
             // Wenn bereits im NEW format: NICHT überschreiben!
 
             // resonanzFaktoren setzen (respektiere Locks!)
+            // FIX v4.3: Nicht überschreiben wenn BeduerfnisIds noch nicht geladen
+            // (Berechnung liefert 1.0 wenn Katalog-Daten fehlen → persistierte Werte gehen verloren)
             if (calculatedProfile.resonanzFaktoren) {
+                const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loaded === true;
                 const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`);
-                const newResonanz = {};
-                ['R1', 'R2', 'R3', 'R4'].forEach(key => {
-                    const current = currentResonanz?.[key];
-                    const calculated = calculatedProfile.resonanzFaktoren[key];
-                    // Nur überschreiben wenn nicht locked
-                    if (!current?.locked) {
-                        newResonanz[key] = calculated;
-                    } else {
-                        newResonanz[key] = current;
-                    }
-                });
-                // v3.2: Mit Clamping (0.5-1.5 → 0-1)
-                TiageState.setResonanzFaktoren(person, newResonanz);
-                console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person} (clamped):`, JSON.stringify(newResonanz));
+                const hasPersistedValues = currentResonanz && currentResonanz.R1 &&
+                    (currentResonanz.R1.value !== undefined && currentResonanz.R1.value !== 1.0);
+
+                if (!beduerfnisIdsReady && hasPersistedValues) {
+                    // BeduerfnisIds nicht geladen → Berechnung würde 1.0 liefern
+                    // Persistierte Werte behalten statt zu überschreiben
+                    console.log(`[ProfileCalculator] Behalte persistierte resonanzFaktoren für ${person} (BeduerfnisIds nicht geladen)`);
+                } else {
+                    const newResonanz = {};
+                    ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                        const current = currentResonanz?.[key];
+                        const calculated = calculatedProfile.resonanzFaktoren[key];
+                        // Nur überschreiben wenn nicht locked
+                        if (!current?.locked) {
+                            newResonanz[key] = calculated;
+                        } else {
+                            newResonanz[key] = current;
+                        }
+                    });
+                    // v3.2: Mit Clamping (0.5-1.5 → 0-1)
+                    TiageState.setResonanzFaktoren(person, newResonanz);
+                    console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person} (clamped):`, JSON.stringify(newResonanz));
+                }
             }
         }
 
@@ -816,6 +834,8 @@
 
                 if (needsChanged) {
                     TiageState.set(statePath, newFlatNeeds);
+                    // FIX v4.3: Persistiere damit Synthese-Seite aktuelle Werte hat
+                    TiageState.saveToStorage();
                 }
             }
         } finally {
@@ -837,7 +857,9 @@
         if (!archetyp) return;
 
         // Hole aktuelle flatNeeds (werden für Resonanz-Berechnung benötigt)
-        const flatNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+        // FIX v4.3: getFlatNeeds() statt get('flatNeeds.ich') — letzteres gibt bei ICH
+        // verschachteltes Eltern-Objekt { ra: {...}, single: {...} } zurück
+        const flatNeeds = (TiageState.getFlatNeeds ? TiageState.getFlatNeeds(person) : TiageState.get(`flatNeeds.${person}`)) || {};
 
         // Hole aktuelle Dimensionen
         const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
@@ -880,6 +902,8 @@
 
             if (resonanzChanged) {
                 TiageState.setResonanzFaktoren(person, newResonanz);
+                // FIX v4.3: Persistiere damit Synthese-Seite aktuelle Werte hat
+                TiageState.saveToStorage();
                 // console.log(`[ProfileCalculator] Resonanzfaktoren reaktiv aktualisiert für ${person}:`, JSON.stringify(newResonanz)); // DISABLED: Message overflow
             }
         }

@@ -81,13 +81,14 @@ var _lastCombinedRFactors = { R1: null, R2: null, R3: null, R4: null };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
+// FIX v4.3: / 2 hinzugefügt — konsistent mit app-main.js combineRFactors
 // ═══════════════════════════════════════════════════════════════════════════
 function combineRFactors(R_ich, R_partner) {
     var a = R_ich || 1.0;
     var b = R_partner || 1.0;
     var summe = a + b;
     var similarity = Math.min(a, b) / Math.max(a, b);
-    return Math.round(summe * similarity * 1000) / 1000;
+    return Math.round((summe * similarity) / 2 * 1000) / 1000;
 }
 
 TiageSynthesis.Calculator = {
@@ -1022,10 +1023,11 @@ TiageSynthesis.Calculator = {
         }
 
         // Option 3: TiageState direkt (SSOT)
+        // FIX v4.3: Korrekter Pfad — resonanzFaktoren.ich statt archetypes.ich.resonanzFaktoren
         if (!r1_ich && typeof TiageState !== 'undefined') {
             try {
-                var storedIch = TiageState.get('archetypes.ich.resonanzFaktoren');
-                var storedPartner = TiageState.get('archetypes.partner.resonanzFaktoren');
+                var storedIch = TiageState.get('resonanzFaktoren.ich');
+                var storedPartner = TiageState.get('resonanzFaktoren.partner');
                 if (storedIch) {
                     // Konvertiere { R1: { value, locked } } → { R1: value }
                     r1_ich = {

@@ -166,16 +166,35 @@ body {
         gap: 8px;
         padding: 6px 10px;
     }
-    /* Verstecke Desktop-Layout auf Mobile */
-    .comparison-container.desktop-mode {
-        display: none !important;
+    /* ═══════════════════════════════════════════════════════════════
+       MOBILE BLOCKER: App ist nur für Desktop
+       Zeigt Vollbild-Hinweis auf Smartphones
+       ═══════════════════════════════════════════════════════════════ */
+    .mobile-wip-blocker {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        z-index: 999999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
-    /* Zeige Mobile Multi-Page Container */
-    .mobile-multipage {
-        display: block !important;
-        padding-top: 60px;
-        position: relative;
+    /* Verstecke ALLES hinter dem Blocker */
+    .comparison-container.desktop-mode,
+    .mobile-multipage,
+    .main-container,
+    .app-loading-overlay,
+    .top-bar-container,
+    .visitor-info-bar {
+        display: none !important;
     }
 
     /* Alle Seiten untereinander anzeigen (kein Swipe) */

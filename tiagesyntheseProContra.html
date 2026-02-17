@@ -511,6 +511,14 @@
     </style>
 </head>
 <body>
+    <!-- Mobile Blocker: App nur auf Desktop -->
+    <div class="mobile-wip-blocker" style="display:none">
+        <div class="emoji">&#x1F5A5;&#xFE0F;</div>
+        <h1>Desktop Only</h1>
+        <p>Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
+        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Bitte &ouml;ffne die Seite an einem<br>PC oder Laptop.</p>
+        <div style="margin-top: 40px; padding: 12px 24px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.9rem;">ti-age.de</div>
+    </div>
     <div class="synthese-page">
         <!-- Header mit Navigation -->
         <div class="synthese-header">
@@ -710,9 +718,10 @@
             let needs1 = {};
             let needs2 = {};
 
-            if (typeof TiageState !== 'undefined') {
-                needs1 = TiageState.get('flatNeeds.ich') || {};
-                needs2 = TiageState.get('flatNeeds.partner') || {};
+            // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+            if (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds) {
+                needs1 = TiageState.getFlatNeeds('ich') || {};
+                needs2 = TiageState.getFlatNeeds('partner') || {};
             }
 
             // Fallback auf ProfileCalculator wenn flatNeeds leer

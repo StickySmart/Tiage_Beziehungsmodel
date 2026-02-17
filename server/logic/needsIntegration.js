@@ -13,12 +13,13 @@ import * as Constants from './constants.js';
 // ═══════════════════════════════════════════════════════════════════════════
 // R-FAKTOR KOMBINATION (v3.6: Summe × Similarity)
 // ═══════════════════════════════════════════════════════════════════════════
+// FIX v4.3: / 2 hinzugefügt — konsistent mit app-main.js
 function combineRFactors(R_ich, R_partner) {
     const a = R_ich || 1.0;
     const b = R_partner || 1.0;
     const summe = a + b;
     const similarity = Math.min(a, b) / Math.max(a, b);
-    return Math.round(summe * similarity * 1000) / 1000;
+    return Math.round((summe * similarity) / 2 * 1000) / 1000;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

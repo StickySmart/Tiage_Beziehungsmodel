@@ -251,11 +251,13 @@
     <script defer src="profiles/profile-store.js"></script>
 </head>
 <body>
-    <!-- Mobile Work-in-Progress Blocker -->
-    <div class="mobile-wip-blocker">
-        <div class="emoji">🚧</div>
-        <h1>In Arbeit</h1>
-        <p>BITTE NUTZEN SIE<br>EINEN COMPUTER</p>
+    <!-- Mobile Blocker: App nur auf Desktop -->
+    <div class="mobile-wip-blocker" style="display:none">
+        <div class="emoji">🖥️</div>
+        <h1>Desktop Only</h1>
+        <p>Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
+        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Bitte &ouml;ffne die Seite an einem<br>PC oder Laptop.</p>
+        <div style="margin-top: 40px; padding: 12px 24px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.9rem;">ti-age.de</div>
     </div>
 
     <!-- Loading Overlay - sofort sichtbar während JS lädt -->
@@ -768,6 +770,10 @@
                         <div class="slot-reel" id="slotReelD">
                             <div class="slot-label">D</div>
                             <div class="slot-value" id="slotValueD">-</div>
+                        </div>
+                        <div class="slot-reel" id="slotReelFFH">
+                            <div class="slot-label">FFH</div>
+                            <div class="slot-value" id="slotValueFFH">-</div>
                         </div>
                     </div>
 
@@ -2537,6 +2543,9 @@
             </a>
             <a href="https://www.dasding.de/" target="_blank" rel="noopener" title="DASDING - SWR">
                 <img src="assets/images/DasDingLogos/SWR_DASDING_Logo_V1_2Z_4C_Weiss.png" height="80" alt="DASDING" style="width: auto;" />
+            </a>
+            <a href="https://soundcloud.com/homo_digitalis" target="_blank" rel="noopener" title="Homo digitalis auf SoundCloud">
+                <img src="assets/images/partners/homo_digitalis.jpg" width="100" height="100" alt="Homo digitalis" style="border-radius: 50%; object-fit: cover;" />
             </a>
         </div>
 

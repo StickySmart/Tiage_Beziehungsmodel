@@ -87,6 +87,16 @@ var TiageSlotMachine = (function() {
         'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
     };
 
+    // v4.3: FFH (Fit/Fucked up/Horny) Label Helper
+    function getFFHLabel(ffh) {
+        if (!ffh) return '-';
+        const parts = [];
+        if (ffh.fit) parts.push('\u{1F4AA}');
+        if (ffh.fuckedup) parts.push('\u{1F525}');
+        if (ffh.horny) parts.push('\u{1F608}');
+        return parts.length > 0 ? parts.join('') : '-';
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // HELPER: Access app-main.js functions via window
     // ═══════════════════════════════════════════════════════════════════════
@@ -366,6 +376,9 @@ var TiageSlotMachine = (function() {
         const valueG = document.getElementById('slotValueG');
         const valueO = document.getElementById('slotValueO');
         const valueD = document.getElementById('slotValueD');
+        // v4.3: FFH-Reel
+        const reelFFH = document.getElementById('slotReelFFH');
+        const valueFFH = document.getElementById('slotValueFFH');
 
         const GESCHLECHT_LABELS = getGeschlechtLabels();
         const ORIENTIERUNG_LABELS = getOrientierungLabels();
@@ -374,9 +387,17 @@ var TiageSlotMachine = (function() {
         if (reelG) reelG.classList.add('spinning');
         if (reelO) reelO.classList.add('spinning');
         if (reelD) reelD.classList.add('spinning');
+        if (reelFFH) reelFFH.classList.add('spinning');
 
         const startTime = Date.now();
         let comboIndex = 0;
+
+        // FIX v4.3: Score- und Progress-Anzeige referenzieren
+        const scoreDisplay = document.getElementById('slotScoreValue');
+        const progressText = document.getElementById('slotProgressText');
+        const progressBar = document.getElementById('slotProgressBar');
+        const totalCombos = allResults.length;
+        if (progressText) progressText.textContent = `0 / ${totalCombos} Kombinationen`;
 
         const animationInterval = setInterval(() => {
             const elapsed = Date.now() - startTime;
@@ -386,12 +407,20 @@ var TiageSlotMachine = (function() {
                 if (valueA) valueA.textContent = ARCHETYP_LABELS[currentCombo.archetyp] || currentCombo.archetyp;
                 if (valueG) {
                     const gLabel = typeof currentCombo.geschlecht === 'object'
-                        ? `${GESCHLECHT_LABELS[currentCombo.geschlecht.primary]}-${GESCHLECHT_LABELS[currentCombo.geschlecht.secondary]}`
+                        ? `${GESCHLECHT_LABELS[currentCombo.geschlecht.primary] || currentCombo.geschlecht.primary}-${GESCHLECHT_LABELS[currentCombo.geschlecht.secondary] || currentCombo.geschlecht.secondary || 'Cis'}`
                         : GESCHLECHT_LABELS[currentCombo.geschlecht] || currentCombo.geschlecht;
                     valueG.textContent = gLabel;
                 }
                 if (valueO) valueO.textContent = ORIENTIERUNG_LABELS[currentCombo.orientierung] || currentCombo.orientierung;
                 if (valueD) valueD.textContent = DOMINANZ_LABELS[currentCombo.dominanz] || currentCombo.dominanz;
+                if (valueFFH) valueFFH.textContent = getFFHLabel(currentCombo.ffh);
+
+                // FIX v4.3: Score und Progress live anzeigen
+                if (scoreDisplay) scoreDisplay.textContent = currentCombo.score || 0;
+                const progress = Math.min(comboIndex + 1, totalCombos);
+                if (progressText) progressText.textContent = `${progress} / ${totalCombos} Kombinationen`;
+                if (progressBar) progressBar.style.width = `${(progress / totalCombos) * 100}%`;
+
                 comboIndex++;
             } else {
                 clearInterval(animationInterval);
@@ -400,17 +429,24 @@ var TiageSlotMachine = (function() {
                 if (reelG) reelG.classList.remove('spinning');
                 if (reelO) reelO.classList.remove('spinning');
                 if (reelD) reelD.classList.remove('spinning');
+                if (reelFFH) reelFFH.classList.remove('spinning');
+
+                // FIX v4.3: Finale Werte und Score anzeigen
+                if (progressText) progressText.textContent = `${totalCombos} / ${totalCombos} Kombinationen`;
+                if (progressBar) progressBar.style.width = '100%';
 
                 if (bestResult) {
                     if (valueA) valueA.textContent = ARCHETYP_LABELS[bestResult.archetyp] || bestResult.archetyp;
                     if (valueG) {
                         const finalGLabel = typeof bestResult.geschlecht === 'object'
-                            ? `${GESCHLECHT_LABELS[bestResult.geschlecht.primary]}-${GESCHLECHT_LABELS[bestResult.geschlecht.secondary]}`
+                            ? `${GESCHLECHT_LABELS[bestResult.geschlecht.primary] || bestResult.geschlecht.primary}-${GESCHLECHT_LABELS[bestResult.geschlecht.secondary] || bestResult.geschlecht.secondary || 'Cis'}`
                             : GESCHLECHT_LABELS[bestResult.geschlecht] || bestResult.geschlecht;
                         valueG.textContent = finalGLabel;
                     }
                     if (valueO) valueO.textContent = ORIENTIERUNG_LABELS[bestResult.orientierung] || bestResult.orientierung;
                     if (valueD) valueD.textContent = DOMINANZ_LABELS[bestResult.dominanz] || bestResult.dominanz;
+                    if (valueFFH) valueFFH.textContent = getFFHLabel(bestResult.ffh);
+                    if (scoreDisplay) scoreDisplay.textContent = bestResult.score || 0;
                 }
 
                 setTimeout(() => showSlotResult(bestResult), 500);
@@ -504,6 +540,22 @@ var TiageSlotMachine = (function() {
             ];
         }
 
+        // v4.3: FFH-Optionen (Fit/Fucked up/Horny)
+        let ffhOptions = [];
+        const partnerHasFFH = partnerDims.geschlecht_extras &&
+            (partnerDims.geschlecht_extras.fit || partnerDims.geschlecht_extras.fuckedup || partnerDims.geschlecht_extras.horny);
+        if (partnerHasFFH) {
+            ffhOptions = [partnerDims.geschlecht_extras];
+        } else {
+            ffhOptions = [
+                { fit: false, fuckedup: false, horny: false },
+                { fit: true, fuckedup: false, horny: false },
+                { fit: false, fuckedup: true, horny: false },
+                { fit: false, fuckedup: false, horny: true },
+                { fit: true, fuckedup: true, horny: true }
+            ];
+        }
+
         // GFK für Partner
         let partnerGfk;
         if (partnerHasGfk) {
@@ -534,65 +586,77 @@ var TiageSlotMachine = (function() {
             needs: ichNeeds
         };
 
-        // Iteriere alle Kombinationen
+        // Iteriere alle Kombinationen (v4.3: mit FFH)
         for (const geschlecht of geschlechtOptions) {
             for (const orientierung of orientierungOptions) {
                 for (const dominanz of dominanzOptions) {
-                    for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
-                        let partnerNeeds = null;
-                        if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                            partnerNeeds = ProfileCalculator.calculateFlatNeeds(
-                                partnerArchetype,
-                                geschlecht,
-                                dominanz,
-                                orientierung
-                            );
-                        }
-
-                        const partnerObj = {
-                            archetyp: partnerArchetype,
-                            geschlecht: geschlecht,
-                            orientierung: orientierung,
-                            dominanz: dominanz,
-                            gfk: partnerGfk,
-                            needs: partnerNeeds
-                        };
-
-                        let score = 0;
-
-                        try {
-                            const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
-                            const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
-
-                            const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
-
-                            if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
-                                const ichRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(ichObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-                                const partnerRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(partnerObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-                                const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
-                                    rFaktoren: {
-                                        ich: ichRFaktoren,
-                                        partner: partnerRFaktoren
-                                    }
-                                });
-                                let baseScore = result.overall || 0;
-                                const confidenceMultiplier = getConfidenceMultiplier ? getConfidenceMultiplier(pathosCheck.confidence) : 1.0;
-                                score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
-                            } else if (pathosCheck.result === 'unvollständig') {
-                                score = logosCheck.score || 50;
+                    for (const ffh of ffhOptions) {
+                        for (const partnerArchetype of ALL_ARCHETYPES_SLOT) {
+                            let partnerNeeds = null;
+                            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+                                partnerNeeds = ProfileCalculator.calculateFlatNeeds(
+                                    partnerArchetype,
+                                    geschlecht,
+                                    dominanz,
+                                    orientierung,
+                                    ffh
+                                );
                             }
-                        } catch (e) {
-                            // Fehler ignorieren
-                        }
 
-                        results.push({
-                            archetyp: partnerArchetype,
-                            geschlecht: geschlecht,
-                            orientierung: orientierung.primary || orientierung,
-                            dominanz: dominanz.primary || dominanz,
-                            score: score
-                        });
+                            const partnerObj = {
+                                archetyp: partnerArchetype,
+                                geschlecht: geschlecht,
+                                orientierung: orientierung,
+                                dominanz: dominanz,
+                                geschlecht_extras: ffh,
+                                gfk: partnerGfk,
+                                needs: partnerNeeds
+                            };
+
+                            let score = 0;
+
+                            try {
+                                const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
+                                const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArchetype);
+
+                                const isIncompatible = pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung';
+
+                                if (!isIncompatible && pathosCheck.result !== 'unvollständig') {
+                                    const ichRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(ichObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+                                    const partnerRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(partnerObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+                                    // FIX v4.3: Übergebe FFH der aktuellen Iteration als extras
+                                    // damit der Extras-Modifier korrekt berechnet wird (nicht aus globalem Cache)
+                                    const ichExtrasForCalc = window.geschlechtExtrasCache ? window.geschlechtExtrasCache.ich : { fit: false, fuckedup: false, horny: false };
+                                    const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
+                                        rFaktoren: {
+                                            ich: ichRFaktoren,
+                                            partner: partnerRFaktoren
+                                        },
+                                        extras: {
+                                            ich: ichExtrasForCalc,
+                                            partner: ffh
+                                        }
+                                    });
+                                    let baseScore = result.overall || 0;
+                                    const confidenceMultiplier = getConfidenceMultiplier ? getConfidenceMultiplier(pathosCheck.confidence) : 1.0;
+                                    score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                                } else if (pathosCheck.result === 'unvollständig') {
+                                    score = logosCheck.score || 50;
+                                }
+                            } catch (e) {
+                                console.error('[SlotMachine] Fehler bei Berechnung:', partnerArchetype, e.message);
+                            }
+
+                            results.push({
+                                archetyp: partnerArchetype,
+                                geschlecht: geschlecht,
+                                orientierung: orientierung.primary || orientierung,
+                                dominanz: dominanz.primary || dominanz,
+                                ffh: ffh,
+                                score: score
+                            });
+                        }
                     }
                 }
             }
@@ -662,6 +726,7 @@ var TiageSlotMachine = (function() {
                             <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
                             <span class="slot-top4-detail">O: ${orientierungLabel}</span>
                             <span class="slot-top4-detail">D: ${dominanzLabel}</span>
+                            <span class="slot-top4-detail">FFH: ${getFFHLabel(res.ffh)}</span>
                         </div>
                     </div>
                     <button class="slot-top4-apply-btn" onclick="TiageSlotMachine.applySlotResult(${index})">✓ Übernehmen</button>
@@ -692,6 +757,7 @@ var TiageSlotMachine = (function() {
                                 <span class="slot-top4-detail">G: ${geschlechtLabel}</span>
                                 <span class="slot-top4-detail">O: ${orientierungLabel}</span>
                                 <span class="slot-top4-detail">D: ${dominanzLabel}</span>
+                                <span class="slot-top4-detail">FFH: ${getFFHLabel(res.ffh)}</span>
                             </div>
                         </div>
                         <button class="slot-top4-apply-btn" onclick="TiageSlotMachine.applySlotResult(${i})">✓ Übernehmen</button>
@@ -791,6 +857,21 @@ var TiageSlotMachine = (function() {
             godApplied = true;
         }
 
+        // FFH (geschlecht_extras)
+        const partnerFFH = partnerDims.geschlecht_extras;
+        const hasFFH = partnerFFH && (partnerFFH.fit || partnerFFH.fuckedup || partnerFFH.horny);
+        if (!hasFFH && result.ffh && personDimensions) {
+            personDimensions.partner.geschlecht_extras = result.ffh;
+            if (mobilePersonDimensions) {
+                mobilePersonDimensions.partner.geschlecht_extras = result.ffh;
+            }
+            // geschlechtExtrasCache aktualisieren
+            if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                window.geschlechtExtrasCache.partner = { ...result.ffh };
+            }
+            godApplied = true;
+        }
+
         // GFK
         if (!partnerDims.gfk && personDimensions) {
             const ichGfk = (personDimensions.ich || {}).gfk || 'mittel';
@@ -814,7 +895,8 @@ var TiageSlotMachine = (function() {
                 archetyp: result.archetyp,
                 geschlecht: personDimensions.partner.geschlecht,
                 dominanz: personDimensions.partner.dominanz,
-                orientierung: personDimensions.partner.orientierung
+                orientierung: personDimensions.partner.orientierung,
+                geschlecht_extras: personDimensions.partner.geschlecht_extras
             });
         }
 
@@ -824,6 +906,8 @@ var TiageSlotMachine = (function() {
             if (syncDominanzUI) syncDominanzUI('partner');
             if (syncOrientierungUI) syncOrientierungUI('partner');
             if (syncGfkUI) syncGfkUI('partner');
+            const syncGeschlechtExtrasUI = getAppFunction('syncGeschlechtExtrasUI');
+            if (syncGeschlechtExtrasUI) syncGeschlechtExtrasUI('partner');
         }
 
         // Score neu berechnen

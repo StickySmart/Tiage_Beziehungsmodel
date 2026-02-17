@@ -101,20 +101,24 @@
         if (typeof TiageState !== 'undefined') {
             // Subscriber für ICH-Archetyp Änderungen
             TiageState.subscribe('archetypes.ich', function(event) {
-                if (event.newValue && event.newValue.primary) {
+                // FIX v4.3: event.newValue kann String ('aromantisch') oder Objekt ({ primary: 'aromantisch' }) sein
+                // set('archetypes.ich.primary', 'aro') → newValue = 'aro' (String)
+                // set('archetypes.ich', { primary: 'aro' }) → newValue = { primary: 'aro' } (Objekt)
+                const newArch = typeof event.newValue === 'string' ? event.newValue : (event.newValue && event.newValue.primary);
+                if (newArch) {
                     const oldArchetype = currentArchetype;
-                    currentArchetype = event.newValue.primary;
-                    try { mobileIchArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
+                    currentArchetype = newArch;
+                    try { mobileIchArchetype = newArch; } catch(e) { /* not yet defined */ }
 
                     // Bei Archetyp-Wechsel: Bedürfnisse für neuen Archetyp laden
-                    if (oldArchetype !== event.newValue.primary) {
+                    if (oldArchetype !== newArch) {
                         // WICHTIG: Sofort speichern damit Werte des alten Archetyps persistiert werden
                         // bevor wir zur neuen Ansicht wechseln
                         if (TiageState.saveToStorage) {
                             TiageState.saveToStorage();
-                            console.log('[app-main] Auto-Save vor Archetyp-Wechsel von', oldArchetype, 'zu', event.newValue.primary);
+                            console.log('[app-main] Auto-Save vor Archetyp-Wechsel von', oldArchetype, 'zu', newArch);
                         }
-                        console.log('[app-main] Archetyp gewechselt von', oldArchetype, 'zu', event.newValue.primary, '- lade Bedürfnisse neu');
+                        console.log('[app-main] Archetyp gewechselt von', oldArchetype, 'zu', newArch, '- lade Bedürfnisse neu');
 
                         // Synchronisiere Lock-Status aus TiageState für neuen Archetyp
                         if (typeof AttributeSummaryCard !== 'undefined') {
@@ -124,10 +128,9 @@
                             }
                             // UI neu rendern mit Werten für neuen Archetyp
                             if (AttributeSummaryCard.reRenderFlatNeeds) {
-                                const newArchetyp = event.newValue.primary;
                                 setTimeout(function() {
-                                    AttributeSummaryCard.reRenderFlatNeeds(newArchetyp);
-                                    console.log('[app-main] Bedürfnis-UI für Archetyp', newArchetyp, 'aktualisiert');
+                                    AttributeSummaryCard.reRenderFlatNeeds(newArch);
+                                    console.log('[app-main] Bedürfnis-UI für Archetyp', newArch, 'aktualisiert');
                                 }, 100); // Kurze Verzögerung damit State vollständig aktualisiert ist
                             }
                         }
@@ -137,9 +140,11 @@
 
             // Subscriber für Partner-Archetyp Änderungen
             TiageState.subscribe('archetypes.partner', function(event) {
-                if (event.newValue && event.newValue.primary) {
-                    selectedPartner = event.newValue.primary;
-                    try { mobilePartnerArchetype = event.newValue.primary; } catch(e) { /* not yet defined */ }
+                // FIX v4.3: event.newValue kann String oder Objekt sein (wie ICH)
+                const newPartnerArch = typeof event.newValue === 'string' ? event.newValue : (event.newValue && event.newValue.primary);
+                if (newPartnerArch) {
+                    selectedPartner = newPartnerArch;
+                    try { mobilePartnerArchetype = newPartnerArch; } catch(e) { /* not yet defined */ }
                 }
             });
 
@@ -803,10 +808,17 @@
             }
 
             // Reset TiageState geschlecht extras für Partner
+            // FIX v4.3: geschlecht_extras als Objekt setzen (nicht einzelne Felder)
             if (typeof TiageState !== 'undefined') {
-                TiageState.set('personDimensions.partner.geschlecht_fit', false);
-                TiageState.set('personDimensions.partner.geschlecht_fuckedup', false);
-                TiageState.set('personDimensions.partner.geschlecht_horny', false);
+                TiageState.set('personDimensions.partner.geschlecht_extras', { fit: false, fuckedup: false, horny: false });
+            }
+
+            // Reset in-memory personDimensions
+            if (typeof personDimensions !== 'undefined' && personDimensions.partner) {
+                personDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false };
+            }
+            if (typeof mobilePersonDimensions !== 'undefined' && mobilePersonDimensions.partner) {
+                mobilePersonDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false };
             }
             document.querySelectorAll('#partner-geschlecht-s-grid .geschlecht-btn, #mobile-partner-geschlecht-s-grid .geschlecht-btn').forEach(btn => {
                 btn.classList.remove(...allClasses);
@@ -1051,7 +1063,9 @@
                 return rf[key];
             };
 
-            const partnerArchetype = selectedPartner || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.partner.primary') : null);
+            // FIX v4.3: Nur selectedPartner verwenden, nicht auf TiageState zurückfallen
+            // (TiageState kann alte Werte aus localStorage haben obwohl kein Partner aktiv ist)
+            const partnerArchetype = selectedPartner || null;
             const ichArchetype = currentArchetype || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null);
             const subtitle = document.getElementById('rFactorSubtitle');
 
@@ -1088,11 +1102,20 @@
                         const rfPartner = TiageState.get('resonanzFaktoren.partner');
 
                         if (rfIch && rfPartner) {
+                            // FIX v4.3: combineRFactors statt einfacher Multiplikation
+                            // Vorher: R_ich * R_partner → 3.02 * 3.02 = 9.12 (falsch!)
+                            // Jetzt:  (summe * similarity) / 2 → (6.04 * 1.0) / 2 = 3.02
+                            const combine = (a, b) => {
+                                const va = a || 1.0, vb = b || 1.0;
+                                const summe = va + vb;
+                                const similarity = Math.min(va, vb) / Math.max(va, vb);
+                                return Math.round((summe * similarity) / 2 * 1000) / 1000;
+                            };
                             rFactors = {
-                                R1: extractR(rfIch, 'R1') * extractR(rfPartner, 'R1'),
-                                R2: extractR(rfIch, 'R2') * extractR(rfPartner, 'R2'),
-                                R3: extractR(rfIch, 'R3') * extractR(rfPartner, 'R3'),
-                                R4: extractR(rfIch, 'R4') * extractR(rfPartner, 'R4')
+                                R1: combine(extractR(rfIch, 'R1'), extractR(rfPartner, 'R1')),
+                                R2: combine(extractR(rfIch, 'R2'), extractR(rfPartner, 'R2')),
+                                R3: combine(extractR(rfIch, 'R3'), extractR(rfPartner, 'R3')),
+                                R4: combine(extractR(rfIch, 'R4'), extractR(rfPartner, 'R4'))
                             };
                         }
                     }
@@ -1112,16 +1135,16 @@
                     valueEl.textContent = '-';
                     boxEl.classList.remove('high', 'medium', 'low');
                 } else {
-                    // Wert anzeigen (0.00 - 1.00)
+                    // FIX v4.3: R-Faktoren können mit v4.0 Sensitivität > 1.0 sein
                     valueEl.textContent = val.toFixed(2);
 
-                    // Farb-Klasse basierend auf Wert
+                    // Farb-Klasse: v4.0 Skala (R=1.0 = Neutral, >1.2 = Gut, >1.8 = Stark)
                     boxEl.classList.remove('high', 'medium', 'low');
-                    if (val >= 0.7) {
+                    if (val >= 1.8) {
                         boxEl.classList.add('high');
-                    } else if (val >= 0.4) {
+                    } else if (val >= 1.2) {
                         boxEl.classList.add('medium');
-                    } else {
+                    } else if (val < 0.6) {
                         boxEl.classList.add('low');
                     }
                 }
@@ -7529,7 +7552,8 @@
                 displayValue = resonanceData.wert1;
             } else if (typeof TiageState !== 'undefined') {
                 // Versuche aus TiageState.flatNeeds zu holen
-                const flatNeeds = TiageState.get('flatNeeds.ich');
+                // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+                const flatNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : TiageState.get('flatNeeds.ich');
                 if (flatNeeds) {
                     const needKey = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds.toKey(bId) : null;
                     if (flatNeeds[bId] !== undefined) {
@@ -11150,8 +11174,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                         // ═══════════════════════════════════════════════════════════════════
                         // FIX v1.8.785: R-Faktoren zu TiageState speichern für Modal-Konsistenz
+                        // FIX v4.3: NICHT im Batch-Modus (Slot Machine) — explicitRFaktoren überschreiben sowieso
+                        // Side-Effect verursachte Nicht-Determinismus: ~800 TiageState-Writes + Events pro Lauf
                         // ═══════════════════════════════════════════════════════════════════
-                        if (typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
+                        if (!explicitRFaktoren && typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
                             const ichR = {
                                 R1: resonanzIch.leben || resonanzIch.R1 || 1.0,
                                 R2: resonanzIch.philosophie || resonanzIch.R2 || 1.0,
@@ -11297,12 +11323,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // EXTRAS-MODIFIKATOR (v1.8.837)
             // ═══════════════════════════════════════
             // Fit/Fucked up/Horny Kombinations-Bonus/Malus
+            // FIX v4.3: Im Batch-Modus (Slot Machine) FFH aus options.extras verwenden
+            // statt globalem geschlechtExtrasCache, damit jede Iteration korrekt berechnet wird
             let extrasModifier = 0;
             let extrasDetails = null;
             if (typeof TiageExtrasModifier !== 'undefined') {
+                const ichExtras = (options.extras && options.extras.ich) || geschlechtExtrasCache.ich;
+                const partnerExtras = (options.extras && options.extras.partner) || geschlechtExtrasCache.partner;
                 const extrasResult = TiageExtrasModifier.calculate(
-                    geschlechtExtrasCache.ich,
-                    geschlechtExtrasCache.partner
+                    ichExtras,
+                    partnerExtras
                 );
                 extrasModifier = extrasResult.modifier;
                 extrasDetails = extrasResult;
@@ -11717,13 +11747,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             let ichNeeds = null;
             let partnerNeeds = null;
             if (typeof TiageState !== 'undefined') {
-                ichNeeds = TiageState.get('flatNeeds.ich');
-                partnerNeeds = TiageState.get('flatNeeds.partner');
-                // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
-                // console.log('[findBestPartnerMatch] Echte Needs geladen:', {
-                //     ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
-                //     partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
-                // });
+                // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+                ichNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : null;
+                partnerNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : null;
             }
 
             // Sammle ICH-Daten (feste Basis)
@@ -12016,8 +12042,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             let ichNeeds = null;
             let partnerNeeds = null;
             if (typeof TiageState !== 'undefined') {
-                ichNeeds = TiageState.get('flatNeeds.ich');
-                partnerNeeds = TiageState.get('flatNeeds.partner');
+                // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+                ichNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : null;
+                partnerNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : null;
                 console.log('[findBestIchMatch] Echte Needs geladen:', {
                     ichNeeds: ichNeeds ? Object.keys(ichNeeds).length : 0,
                     partnerNeeds: partnerNeeds ? Object.keys(partnerNeeds).length : 0
@@ -12444,8 +12471,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // Calculate compatibility
             // SSOT v3.10: Needs aus TiageState laden für R-Faktor-Berechnung
-            const ichNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
-            const partnerNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            // FIX v4.3: getFlatNeeds() statt get('flatNeeds.ich') — letzteres gibt verschachteltes
+            // Eltern-Objekt { ra: {...}, single: {...} } zurück statt die flachen Bedürfnisse.
+            // calculateDimensionalResonance findet dann keine Needs → R=1.0 → überschreibt korrekte Werte!
+            const ichNeeds = typeof TiageState !== 'undefined' && TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : null;
+            const partnerNeeds = typeof TiageState !== 'undefined' && TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : null;
 
             // FIX: Konvertiere Orientierung von Array (UI-Format) zu Object (Berechnungs-Format)
             // UI speichert Orientierung als Array ['hetero', 'bi'], Berechnung erwartet {primary, secondary}
@@ -14331,8 +14361,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (!container) return;
 
             // SSOT v3.10: Needs aus TiageState laden für R-Faktor-Berechnung
-            const ichNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
-            const partnerNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            // FIX v4.3: getFlatNeeds() statt get() — gibt flache Needs für aktuellen Archetyp zurück
+            const ichNeeds = typeof TiageState !== 'undefined' && TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : null;
+            const partnerNeeds = typeof TiageState !== 'undefined' && TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : null;
 
             const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich, needs: ichNeeds };
             const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner, needs: partnerNeeds };
@@ -16230,33 +16261,18 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel
-            // Verwendet zentrale getPersonNeeds() für konsistente Datenquellen
+            // FIX v4.3: ProfileCalculator.loadProfile() aufrufen wie selectArchetypeFromGrid()
+            // MUSS VOR R-Faktor-Berechnung stehen, damit flatNeeds aktuell sind!
             // ═══════════════════════════════════════════════════════════════════════════
-            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
-                // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
-                const needs = ResonanzCard.getPersonNeeds
-                    ? ResonanzCard.getPersonNeeds(personKey, newArchetype)
-                    : null;
-
-                const resonanzProfileContext = {
+            if (newArchetype && typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                const profileData = {
                     archetyp: newArchetype,
-                    needs: needs,
-                    dominanz: personDimensions[personKey]?.dominanz || null,
-                    orientierung: personDimensions[personKey]?.orientierung || null,
-                    geschlecht: personDimensions[personKey]?.geschlecht || null
+                    geschlecht: TiageState.get(`personDimensions.${personKey}.geschlecht`),
+                    dominanz: TiageState.get(`personDimensions.${personKey}.dominanz`),
+                    orientierung: TiageState.get(`personDimensions.${personKey}.orientierung`)
                 };
-
-                // Berechne und aktualisiere Resonanzfaktoren
-                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
-                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, personKey);
-                    if (resonanzLoaded) {
-                        // NOTE: LoadedArchetypProfile ist ein View auf TiageState.
-                        // Nicht separat setzen - save() in setCalculatedValues hat TiageState bereits aktualisiert.
-                        // Das würde sonst die Lock-Struktur {value, locked} mit nur Werten überschreiben.
-                        // console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel (Modal) aktualisiert für', personKey + ':', newArchetype);
-                    }
-                }
+                ProfileCalculator.loadProfile(personKey, profileData);
+                console.log(`[navigateResonanzArchetype] Profil für ${personKey.toUpperCase()} neu berechnet:`, newArchetype);
             }
 
             // Update main displays
@@ -16266,6 +16282,17 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
             // Update Resonanzfaktoren Modal
             updateResonanzfaktorenModalContent();
+
+            // FIX v4.3: ResonanzProfileHeaderCard über Änderung informieren
+            // Ohne dieses Event bleiben die R-Faktor-Werte in der Header-Karte unverändert
+            if (typeof ResonanzCard !== 'undefined' && ResonanzCard.notifyChange) {
+                ResonanzCard.notifyChange(personKey, 'archetype-switch');
+            } else {
+                // Fallback: Event direkt feuern
+                window.dispatchEvent(new CustomEvent('resonanzfaktoren-changed', {
+                    detail: { person: personKey, source: 'archetype-switch' }
+                }));
+            }
         }
         window.navigateResonanzArchetype = navigateResonanzArchetype;
 
@@ -16928,10 +16955,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // PAARUNGS-Resonanz berechnen: R_PAARUNG = Summe × Similarity (v3.6)
             // Formel: (R_ich + R_partner) × (min/max) - belohnt Ähnlichkeit
             // ═══════════════════════════════════════════════════════════════════════════
+            // FIX v4.3: Gleiche Formel wie combineRFactors — (summe × similarity) / 2
             const combineR = (a, b) => {
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                return Math.round(summe * similarity * 1000) / 1000;
+                return Math.round((summe * similarity) / 2 * 1000) / 1000;
             };
 
             const resonanzWerte = {
@@ -19402,6 +19430,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
         // UI Sync functions (for MemoryManager)
         window.syncGeschlechtUI = syncGeschlechtUI;
         window.syncGeschlechtExtrasUI = syncGeschlechtExtrasUI;
+        window.geschlechtExtrasCache = geschlechtExtrasCache;
         window.syncDominanzUI = syncDominanzUI;
         window.syncOrientierungUI = syncOrientierungUI;
         window.updateAll = updateAll;
