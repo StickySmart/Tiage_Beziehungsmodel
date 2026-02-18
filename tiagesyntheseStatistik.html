@@ -34,8 +34,7 @@
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
 
-    <!-- Archetypen Index (BaseArchetypProfile) -->
-    <script src="profiles/archetypen/index.js"></script>
+    <!-- NOTE: index.js (ProfileCalculator) bewusst NICHT geladen — Synthese liest aus TiageState -->
 
     <!-- Ti-Age Nuancen (Bedürfnisse) -->
     <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
@@ -621,7 +620,8 @@
         };
 
         let currentIchArchetype = 'duo';
-        let currentPartnerArchetype = 'solopoly';
+        let currentPartnerArchetype = null;
+        let hasPartner = false;
         let currentSortBy = 'diff'; // 'ich', 'partner', 'diff'
         let currentSortDir = 'desc';
 
@@ -633,12 +633,12 @@
             if (typeof TiageState !== 'undefined') {
                 await TiageState.init();
                 currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
-                currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+                const rawPartner = TiageState.get('archetypes.partner.primary');
+                hasPartner = rawPartner != null;
+                if (hasPartner) currentPartnerArchetype = rawPartner;
 
-                // WICHTIG: ProfileCalculator synchron initialisieren, damit flatNeeds verfügbar sind
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.initFromState) {
-                    ProfileCalculator.initFromState();
-                }
+                // SSOT v4.3: flatNeeds und resonanzFaktoren werden von der Hauptseite berechnet
+                // und über TiageState/localStorage persistiert. Synthese-Seiten LESEN nur.
 
                 // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
                 TiageState.subscribe('flatNeeds.ich', function() {
@@ -649,26 +649,38 @@
                     updateArchetypeDisplay();
                     renderContent();
                 });
+                // Reagiere auf Partner-Auswahl von anderer Seite
+                TiageState.subscribe('archetypes.partner', function() {
+                    const raw = TiageState.get('archetypes.partner.primary');
+                    hasPartner = raw != null;
+                    if (hasPartner) currentPartnerArchetype = raw;
+                    updatePartnerNavVisibility();
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
             }
 
             // Aus sessionStorage laden (nur als Fallback, wenn TiageState keine Daten hat)
             // TiageState ist SSOT - sessionStorage darf TiageState-Werte NICHT überschreiben
-            const tiageStateHasData = typeof TiageState !== 'undefined' &&
-                TiageState.get('archetypes.ich.primary') &&
-                TiageState.get('archetypes.partner.primary');
+            const tiageStateHasIch = typeof TiageState !== 'undefined' &&
+                TiageState.get('archetypes.ich.primary');
 
-            if (!tiageStateHasData) {
+            if (!tiageStateHasIch) {
                 const stored = sessionStorage.getItem('tiageSyntheseData');
                 if (stored) {
                     try {
                         const data = JSON.parse(stored);
                         if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
-                        if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                        if (data.partnerName) {
+                            currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                            hasPartner = true;
+                        }
                     } catch (e) {}
                 }
             }
 
             updateArchetypeDisplay();
+            updatePartnerNavVisibility();
             renderContent();
         });
 
@@ -689,13 +701,21 @@
             document.getElementById('ichArchetypeName').textContent =
                 archetypeNames[currentIchArchetype] || currentIchArchetype;
             document.getElementById('partnerArchetypeName').textContent =
-                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+                hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
+        }
+
+        function updatePartnerNavVisibility() {
+            const selectors = document.querySelectorAll('.synthese-archetype-nav .archetype-selector');
+            const separator = document.querySelector('.synthese-archetype-nav .archetype-separator');
+            if (selectors[1]) selectors[1].style.display = hasPartner ? '' : 'none';
+            if (separator) separator.style.display = hasPartner ? '' : 'none';
         }
 
         /**
          * Navigation zwischen Archetypen
          */
         function navigateArchetype(person, direction) {
+            if (person === 'partner' && !hasPartner) return;
             const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
             const currentIndex = archetypeOrder.indexOf(current);
             let newIndex = currentIndex + direction;
@@ -791,26 +811,66 @@
             const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
             const hasPartnerProfile = partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
 
-            // Prüfen ob beide PROFILE geladen sind
-            if (!hasIchProfile || !hasPartnerProfile) {
-                const missing = [];
-                if (!hasIchProfile) missing.push('ICH');
-                if (!hasPartnerProfile) missing.push('PARTNER');
-
+            // Prüfen ob ICH-Profil geladen ist
+            if (!hasIchProfile) {
                 container.innerHTML = `
                     <div class="synthese-section">
                         <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
                             <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-                            <p style="font-size: 16px; margin-bottom: 8px;">PROFILE nicht geladen</p>
-                            <p style="font-size: 14px; color: var(--text-secondary);">
-                                Folgende Profile fehlen: <strong>${missing.join(', ')}</strong>
-                            </p>
+                            <p style="font-size: 16px; margin-bottom: 8px;">ICH-Profil nicht geladen</p>
                             <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">
-                                Bitte stellen Sie sicher, dass beide Profile vollständig ausgefüllt sind.
+                                Bitte stellen Sie sicher, dass das ICH-Profil vollständig ausgefüllt ist.
                             </p>
                         </div>
                     </div>
                 `;
+                return;
+            }
+
+            // Kein Partner → ICH-only Needs-Liste
+            if (!hasPartner || !hasPartnerProfile) {
+                let ichNeeds = [];
+                Object.keys(ichFlatNeeds).forEach(needId => {
+                    if (!shouldShowNeed(needId)) return;
+                    ichNeeds.push({
+                        id: needId,
+                        label: formatLabel(needId),
+                        value1: ichFlatNeeds[needId] || 0
+                    });
+                });
+                ichNeeds.sort((a, b) => b.value1 - a.value1);
+
+                let ichHtml = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">💚</span>
+                            <div>
+                                <div class="synthese-section-title">Ti-Age Hauptfragen</div>
+                                <div class="synthese-section-subtitle">Deine Bedürfnisse (ICH)</div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; padding: 16px; color: var(--text-muted);">
+                            <p style="font-size:14px; margin-bottom:4px;">Kein Partner ausgewählt</p>
+                            <p style="font-size:12px;">Wähle einen Partner-Archetypen auf der Hauptseite für den Vergleich.</p>
+                        </div>
+                `;
+                ichNeeds.forEach(need => {
+                    ichHtml += `
+                        <div class="hauptfrage-item">
+                            <div class="hauptfrage-row">
+                                <div class="hauptfrage-left">
+                                    <span class="hauptfrage-label">${need.label}</span>
+                                    <span class="hauptfrage-id">${need.id}</span>
+                                </div>
+                                <div class="hauptfrage-values">
+                                    <span class="need-value ich">${Math.round(need.value1)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                ichHtml += `</div>`;
+                container.innerHTML = ichHtml;
                 return;
             }
 

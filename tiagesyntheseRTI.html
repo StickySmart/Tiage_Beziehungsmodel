@@ -34,8 +34,10 @@
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
 
-    <!-- Archetypen Index (BaseArchetypProfile) -->
-    <script src="profiles/archetypen/index.js"></script>
+    <!-- NOTE: index.js (ProfileCalculator) bewusst NICHT geladen.
+         Synthese-Seiten LESEN R-Faktoren und flatNeeds aus TiageState (SSOT),
+         statt sie neu zu berechnen. initFromState() würde sonst die von der
+         Hauptseite korrekt berechneten Werte überschreiben. -->
 
     <!-- Ti-Age Bedürfnisse (SSOT) -->
     <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
@@ -891,7 +893,8 @@
         };
 
         let currentIchArchetype = 'duo';
-        let currentPartnerArchetype = 'solopoly';
+        let currentPartnerArchetype = null;
+        let hasPartner = false;
 
         // RTI Säulen Definitionen (nach Petzold) - Redesigned
         const RTI_PILLARS = [
@@ -1102,7 +1105,8 @@
                 if (isValidArchetype(ichFromState)) {
                     currentIchArchetype = ichFromState;
                 }
-                if (isValidArchetype(partnerFromState)) {
+                hasPartner = partnerFromState != null && isValidArchetype(partnerFromState);
+                if (hasPartner) {
                     currentPartnerArchetype = partnerFromState;
                 }
 
@@ -1125,9 +1129,19 @@
                         renderContent();
                     }
                 });
+                // Reagiere auf Partner-Auswahl von anderer Seite
+                TiageState.subscribe('archetypes.partner', function() {
+                    const raw = normalizeArchetype(TiageState.get('archetypes.partner.primary'));
+                    hasPartner = raw != null && isValidArchetype(raw);
+                    if (hasPartner) currentPartnerArchetype = raw;
+                    updatePartnerNavVisibility();
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
             }
 
             updateArchetypeDisplay();
+            updatePartnerNavVisibility();
             renderContent();
         });
 
@@ -1138,13 +1152,21 @@
             document.getElementById('ichArchetypeName').textContent =
                 archetypeNames[currentIchArchetype] || currentIchArchetype;
             document.getElementById('partnerArchetypeName').textContent =
-                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+                hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
+        }
+
+        function updatePartnerNavVisibility() {
+            const selectors = document.querySelectorAll('.synthese-archetype-nav .archetype-selector');
+            const separator = document.querySelector('.synthese-archetype-nav .archetype-separator');
+            if (selectors[1]) selectors[1].style.display = hasPartner ? '' : 'none';
+            if (separator) separator.style.display = hasPartner ? '' : 'none';
         }
 
         /**
          * Navigation zwischen Archetypen
          */
         function navigateArchetype(person, direction) {
+            if (person === 'partner' && !hasPartner) return;
             const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
             const currentIndex = archetypeOrder.indexOf(current);
             let newIndex = currentIndex + direction;
@@ -1297,6 +1319,78 @@
         function renderContent() {
             const container = document.getElementById('syntheseContent');
             const scores = calculateRtiScores();
+
+            // Kein Partner → ICH-only Pillar-Cards
+            if (!hasPartner) {
+                let ichPillarsHTML = RTI_PILLARS.map(pillar => {
+                    const ichScore = scores.ich[pillar.id];
+                    const priority = rtiPriorities[pillar.id] || 1;
+                    const needTagsHTML = pillar.relatedNeeds.map(need =>
+                        `<span class="rti-need-tag">${need}</span>`
+                    ).join('');
+
+                    return `
+                        <div class="rti-pillar-card ${pillar.id.toLowerCase()}">
+                            <div class="rti-pillar-header">
+                                <div class="rti-pillar-title-area">
+                                    <div class="rti-pillar-question">${pillar.question}</div>
+                                    <div class="rti-pillar-subtitle">
+                                        <span class="rti-pillar-icon">${pillar.icon}</span>
+                                        <span>${pillar.name}</span>
+                                        <span class="rti-pillar-id ${pillar.id.toLowerCase()}">${pillar.id}</span>
+                                    </div>
+                                </div>
+                                <button class="rti-pillar-info-btn" onclick="openRtiModal('${pillar.id}')" title="Mehr erfahren">?</button>
+                            </div>
+                            <div class="rti-related-needs">${needTagsHTML}</div>
+                            <div class="rti-comparison">
+                                <div class="rti-comparison-row">
+                                    <span class="rti-comparison-label ich">ICH</span>
+                                    <div class="rti-bar-container">
+                                        <div class="rti-bar ich" style="width: ${ichScore}%"></div>
+                                        <span class="rti-bar-value">${ichScore}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rti-pillar-footer">
+                                <span class="rti-priority-label">Priorität für dich:</span>
+                                <div class="rti-pillar-priority">
+                                    <button class="rti-priority-btn ${priority === 0 ? 'active' : ''}"
+                                            onclick="setRtiPriority('${pillar.id}', 0)"
+                                            title="Egal / Ignorieren">0</button>
+                                    <button class="rti-priority-btn ${priority === 1 ? 'active' : ''}"
+                                            onclick="setRtiPriority('${pillar.id}', 1)"
+                                            title="Normal">1</button>
+                                    <button class="rti-priority-btn ${priority === 2 ? 'active' : ''}"
+                                            onclick="setRtiPriority('${pillar.id}', 2)"
+                                            title="Wichtig / Doppelt">2</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">🏛️</span>
+                            <div>
+                                <div class="synthese-section-title">RTI Säulen der Identität</div>
+                                <div class="synthese-section-subtitle">Nach Hilarion Petzold</div>
+                            </div>
+                        </div>
+                        <div class="rti-info-box">
+                            <div class="rti-info-title">👤 Kein Partner ausgewählt</div>
+                            <div class="rti-info-text">
+                                Es werden nur deine ICH-Werte angezeigt.
+                                Wähle einen Partner-Archetypen auf der Hauptseite um den Vergleich zu sehen.
+                            </div>
+                        </div>
+                        <div class="rti-pillar-container">${ichPillarsHTML}</div>
+                    </div>
+                `;
+                return;
+            }
 
             let pillarsHTML = RTI_PILLARS.map(pillar => {
                 const ichScore = scores.ich[pillar.id];

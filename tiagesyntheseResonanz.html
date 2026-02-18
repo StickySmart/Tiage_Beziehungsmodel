@@ -34,8 +34,10 @@
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
 
-    <!-- Archetypen Index (BaseArchetypProfile) -->
-    <script src="profiles/archetypen/index.js"></script>
+    <!-- NOTE: index.js (ProfileCalculator) bewusst NICHT geladen.
+         Synthese-Seiten LESEN R-Faktoren und flatNeeds aus TiageState (SSOT),
+         statt sie neu zu berechnen. initFromState() würde sonst die von der
+         Hauptseite korrekt berechneten Werte überschreiben. -->
 
     <!-- Ti-Age Bedürfnisse (SSOT) -->
     <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
@@ -428,7 +430,8 @@
         };
 
         let currentIchArchetype = 'duo';
-        let currentPartnerArchetype = 'solopoly';
+        let currentPartnerArchetype = null;
+        let hasPartner = false;
 
         /**
          * Initialisierung
@@ -438,12 +441,12 @@
             if (typeof TiageState !== 'undefined') {
                 await TiageState.init();
                 currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
-                currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+                const rawPartner = TiageState.get('archetypes.partner.primary');
+                hasPartner = rawPartner != null;
+                if (hasPartner) currentPartnerArchetype = rawPartner;
 
-                // WICHTIG: ProfileCalculator synchron initialisieren, damit flatNeeds verfügbar sind
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.initFromState) {
-                    ProfileCalculator.initFromState();
-                }
+                // SSOT v4.3: flatNeeds und resonanzFaktoren werden von der Hauptseite berechnet
+                // und über TiageState/localStorage persistiert. Synthese-Seiten LESEN nur.
 
                 // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
                 TiageState.subscribe('flatNeeds.ich', function() {
@@ -454,26 +457,38 @@
                     updateArchetypeDisplay();
                     renderContent();
                 });
+                // Reagiere auf Partner-Auswahl von anderer Seite
+                TiageState.subscribe('archetypes.partner', function() {
+                    const raw = TiageState.get('archetypes.partner.primary');
+                    hasPartner = raw != null;
+                    if (hasPartner) currentPartnerArchetype = raw;
+                    updatePartnerNavVisibility();
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
             }
 
             // Aus sessionStorage laden (nur als Fallback, wenn TiageState keine Daten hat)
             // TiageState ist SSOT - sessionStorage darf TiageState-Werte NICHT überschreiben
-            const tiageStateHasData = typeof TiageState !== 'undefined' &&
-                TiageState.get('archetypes.ich.primary') &&
-                TiageState.get('archetypes.partner.primary');
+            const tiageStateHasIch = typeof TiageState !== 'undefined' &&
+                TiageState.get('archetypes.ich.primary');
 
-            if (!tiageStateHasData) {
+            if (!tiageStateHasIch) {
                 const stored = sessionStorage.getItem('tiageSyntheseData');
                 if (stored) {
                     try {
                         const data = JSON.parse(stored);
                         if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
-                        if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                        if (data.partnerName) {
+                            currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                            hasPartner = true;
+                        }
                     } catch (e) {}
                 }
             }
 
             updateArchetypeDisplay();
+            updatePartnerNavVisibility();
             renderContent();
         });
 
@@ -494,13 +509,21 @@
             document.getElementById('ichArchetypeName').textContent =
                 archetypeNames[currentIchArchetype] || currentIchArchetype;
             document.getElementById('partnerArchetypeName').textContent =
-                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+                hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
+        }
+
+        function updatePartnerNavVisibility() {
+            const selectors = document.querySelectorAll('.synthese-archetype-nav .archetype-selector');
+            const separator = document.querySelector('.synthese-archetype-nav .archetype-separator');
+            if (selectors[1]) selectors[1].style.display = hasPartner ? '' : 'none';
+            if (separator) separator.style.display = hasPartner ? '' : 'none';
         }
 
         /**
          * Navigation zwischen Archetypen
          */
         function navigateArchetype(person, direction) {
+            if (person === 'partner' && !hasPartner) return;
             const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
             const currentIndex = archetypeOrder.indexOf(current);
             let newIndex = currentIndex + direction;
@@ -534,6 +557,27 @@
          */
         async function renderContent() {
             const container = document.getElementById('syntheseContent');
+
+            // Kein Partner ausgewählt → Platzhalter
+            if (!hasPartner) {
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">🔥</span>
+                            <div>
+                                <div class="synthese-section-title">Ti-Age Gemeinsame Bedürfnisse</div>
+                                <div class="synthese-section-subtitle">Resonanz & Übereinstimmung</div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; padding: 40px 20px; color: var(--text-muted);">
+                            <div style="font-size:36px; margin-bottom:12px;">🔥</div>
+                            <p style="font-size:14px; margin-bottom:8px;">Kein Partner ausgewählt</p>
+                            <p style="font-size:12px;">Wähle einen Partner-Archetypen auf der Hauptseite um die gemeinsamen Bedürfnisse zu sehen.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
 
             // Prüfe ob OshoZenTextGenerator verfügbar ist
             if (typeof OshoZenTextGenerator === 'undefined') {

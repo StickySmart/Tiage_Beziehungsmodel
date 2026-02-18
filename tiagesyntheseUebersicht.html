@@ -34,8 +34,10 @@
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
 
-    <!-- Archetypen Index (BaseArchetypProfile) -->
-    <script src="profiles/archetypen/index.js"></script>
+    <!-- NOTE: index.js (ProfileCalculator) bewusst NICHT geladen.
+         Synthese-Seiten LESEN R-Faktoren und flatNeeds aus TiageState (SSOT),
+         statt sie neu zu berechnen. initFromState() würde sonst die von der
+         Hauptseite korrekt berechneten Werte überschreiben. -->
 
     <!-- Ti-Age Bedürfnisse (SSOT) -->
     <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
@@ -623,7 +625,8 @@
         };
 
         let currentIchArchetype = 'duo';
-        let currentPartnerArchetype = 'solopoly';
+        let currentPartnerArchetype = null;
+        let hasPartner = false;
 
         // R-Faktoren Definitionen mit AGOD-Zuordnung
         const rFaktorenDefs = [
@@ -771,6 +774,44 @@
             window.location.href = url;
         }
 
+        function generateIchOnlyMatrixHTML(rFaktoren) {
+            return `
+                <div class="matrix-table-container">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th>R-Faktor</th>
+                                <th class="col-ich">ICH</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rFaktoren.map(r => `
+                                <tr>
+                                    <td>
+                                        <div class="matrix-r-label">
+                                            <span class="matrix-r-id" style="color: ${r.color};">${r.icon} ${r.id}</span>
+                                            <span class="matrix-r-name">${r.label}</span>
+                                        </div>
+                                        <div class="matrix-r-agod">${r.agod} (${r.agodName})</div>
+                                    </td>
+                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
+                                        <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
+                                        ${r.modifiedIch ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="matrix-info">
+                        <span class="high">&bull; >1.0</span>
+                        <span class="neutral">&bull; 1.0</span>
+                        <span class="low">&bull; <1.0</span>
+                        <span class="modified-info" title="* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst">*</span>
+                    </div>
+                </div>
+            `;
+        }
+
         function generateMatrixHTML(rFaktoren) {
             return `
                 <div class="matrix-table-container">
@@ -848,14 +889,15 @@
                 if (isValidArchetype(ichFromState)) {
                     currentIchArchetype = ichFromState;
                 }
-                if (isValidArchetype(partnerFromState)) {
+                hasPartner = partnerFromState != null && isValidArchetype(partnerFromState);
+                if (hasPartner) {
                     currentPartnerArchetype = partnerFromState;
                 }
 
-                // WICHTIG: ProfileCalculator synchron initialisieren, damit flatNeeds und resonanzFaktoren verfügbar sind
-                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.initFromState) {
-                    ProfileCalculator.initFromState();
-                }
+                // SSOT v4.3: flatNeeds und resonanzFaktoren werden von der Hauptseite berechnet
+                // und über TiageState/localStorage persistiert. Synthese-Seiten LESEN nur.
+                // ProfileCalculator.initFromState() wurde entfernt, da es die korrekten Werte
+                // mit Neuberechnung (ohne vollständige Script-Deps) überschreiben würde.
 
                 // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
                 TiageState.subscribe('flatNeeds.ich', function() {
@@ -873,6 +915,15 @@
                 TiageState.subscribe('resonanzFaktoren.partner', function() {
                     renderContent();
                 });
+                // Reagiere auf Partner-Auswahl von anderer Seite
+                TiageState.subscribe('archetypes.partner', function() {
+                    const raw = normalizeArchetype(TiageState.get('archetypes.partner.primary'));
+                    hasPartner = raw != null && isValidArchetype(raw);
+                    if (hasPartner) currentPartnerArchetype = raw;
+                    updatePartnerNavVisibility();
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
 
                 console.log('[tiagesyntheseUebersicht] Archetypen geladen:', {
                     ichFromState, partnerFromState,
@@ -882,11 +933,10 @@
 
             // Aus sessionStorage laden (nur als Fallback, wenn TiageState keine Daten hat)
             // TiageState ist SSOT - sessionStorage darf TiageState-Werte NICHT überschreiben
-            const tiageStateHasData = typeof TiageState !== 'undefined' &&
-                TiageState.get('archetypes.ich.primary') &&
-                TiageState.get('archetypes.partner.primary');
+            const tiageStateHasIch = typeof TiageState !== 'undefined' &&
+                TiageState.get('archetypes.ich.primary');
 
-            if (!tiageStateHasData) {
+            if (!tiageStateHasIch) {
                 const stored = sessionStorage.getItem('tiageSyntheseData');
                 if (stored) {
                     try {
@@ -897,13 +947,17 @@
                         }
                         if (data.partnerName) {
                             const key = findArchetypeKey(data.partnerName);
-                            if (isValidArchetype(key)) currentPartnerArchetype = key;
+                            if (isValidArchetype(key)) {
+                                currentPartnerArchetype = key;
+                                hasPartner = true;
+                            }
                         }
                     } catch (e) {}
                 }
             }
 
             updateArchetypeDisplay();
+            updatePartnerNavVisibility();
             renderContent();
         });
 
@@ -924,13 +978,24 @@
             document.getElementById('ichArchetypeName').textContent =
                 archetypeNames[currentIchArchetype] || currentIchArchetype;
             document.getElementById('partnerArchetypeName').textContent =
-                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+                hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
+        }
+
+        /**
+         * Blendet Partner-Nav ein/aus je nach hasPartner
+         */
+        function updatePartnerNavVisibility() {
+            const selectors = document.querySelectorAll('.synthese-archetype-nav .archetype-selector');
+            const separator = document.querySelector('.synthese-archetype-nav .archetype-separator');
+            if (selectors[1]) selectors[1].style.display = hasPartner ? '' : 'none';
+            if (separator) separator.style.display = hasPartner ? '' : 'none';
         }
 
         /**
          * Navigation zwischen Archetypen
          */
         function navigateArchetype(person, direction) {
+            if (person === 'partner' && !hasPartner) return;
             const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
             const currentIndex = archetypeOrder.indexOf(current);
             let newIndex = currentIndex + direction;
@@ -965,14 +1030,36 @@
         function renderContent() {
             const container = document.getElementById('syntheseContent');
 
+            // R-Faktoren berechnen für Matrix
+            const rFaktoren = calculateRFaktoren();
+
+            // Kein Partner ausgewählt → ICH-only Ansicht
+            if (!hasPartner) {
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">📊</span>
+                            <div>
+                                <div class="synthese-section-title">Kompatibilitäts-Score</div>
+                                <div class="synthese-section-subtitle">Statistische Archetypen-Übereinstimmung</div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; padding: 24px; color: var(--text-muted);">
+                            <div style="font-size:36px; margin-bottom:12px;">👤</div>
+                            <p style="font-size:14px; margin-bottom:8px;">Kein Partner ausgewählt</p>
+                            <p style="font-size:12px;">Wähle einen Partner-Archetypen auf der Hauptseite.</p>
+                        </div>
+                        ${generateIchOnlyMatrixHTML(rFaktoren)}
+                    </div>
+                `;
+                return;
+            }
+
             // Score berechnen (vereinfacht - sollte aus SSOT kommen)
             const score = calculateScore();
             const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
 
             let html = '';
-
-            // R-Faktoren berechnen für Matrix
-            const rFaktoren = calculateRFaktoren();
 
             // Score Section mit Matrix-Tabelle
             html += `
