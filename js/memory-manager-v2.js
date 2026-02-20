@@ -520,6 +520,13 @@ const MemoryManagerV2 = (function() {
 
                 // Daten in TiageState laden
                 if (typeof TiageState !== 'undefined') {
+                    // WICHTIG: Archetyp ZUERST setzen!
+                    // Der archetypes.ich Subscriber sichert automatisch GODFUFH des alten
+                    // Archetyps und restored aus localStorage für den neuen.
+                    // Danach setzen wir die Werte nochmal explizit (gleiche Daten, kein Konflikt).
+                    TiageState.setArchetype('ich', archetyp);
+
+                    // GOD+FFH+AGOD explizit setzen (verstärkt den Subscriber-Restore)
                     if (data.geschlecht) {
                         TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
                     }
@@ -539,8 +546,6 @@ const MemoryManagerV2 = (function() {
                         TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
                     }
 
-                    // Archetyp setzen
-                    TiageState.setArchetype('ich', archetyp);
                     TiageState.saveToStorage();
                 }
 
@@ -548,6 +553,7 @@ const MemoryManagerV2 = (function() {
                 if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
                 if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
                 if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
+                if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('ich');
                 if (typeof window.updateAll === 'function') window.updateAll();
 
                 // AGOD UI aktualisieren
@@ -683,6 +689,131 @@ const MemoryManagerV2 = (function() {
                 }
             }
             return count;
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRO-ARCHETYP GODFUFH PERSISTENZ
+        // Speichert/Lädt GOD+FFH+AGOD beim Archetyp-Wechsel
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Speichert ICH-Daten für einen bestimmten Archetyp (nicht den aktuellen).
+         * Wird beim Archetyp-Wechsel aufgerufen, um den ALTEN Archetyp zu sichern,
+         * bevor TiageState die neuen Werte bekommt.
+         *
+         * @param {string} archetyp - Der Archetyp für den gespeichert werden soll
+         * @returns {boolean} Erfolg
+         */
+        saveIchForSpecificArchetyp: function(archetyp) {
+            if (!ARCHETYPES.includes(archetyp)) {
+                console.warn('[MemoryManagerV2] saveIchForSpecific: Unbekannter Archetyp:', archetyp);
+                return false;
+            }
+
+            const data = collectIchDataForArchetyp(archetyp);
+            const key = getIchStorageKey(archetyp);
+
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                console.log(`[MemoryManagerV2] GODFUFH explizit gespeichert für ${archetyp}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Speichern für', archetyp, ':', e);
+                return false;
+            }
+        },
+
+        /**
+         * Stellt GOD+FFH+AGOD Einstellungen für einen Archetyp wieder her,
+         * OHNE den Archetyp selbst zu setzen (verhindert Rekursion).
+         *
+         * Wird automatisch beim Archetyp-Wechsel aufgerufen.
+         * Setzt personDimensions, geschlecht_extras, gewichtungen, rtiPriorities
+         * und synchronisiert die UI.
+         *
+         * @param {string} archetyp - Der Archetyp dessen Einstellungen geladen werden
+         * @returns {boolean} true wenn Daten gefunden und restored, false wenn leer
+         */
+        restoreSettingsForArchetyp: function(archetyp) {
+            if (!ARCHETYPES.includes(archetyp)) {
+                console.warn('[MemoryManagerV2] restoreSettings: Unbekannter Archetyp:', archetyp);
+                return false;
+            }
+
+            const key = getIchStorageKey(archetyp);
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) {
+                    console.log(`[MemoryManagerV2] Keine gespeicherten GODFUFH-Daten für: ${archetyp} - behalte aktuelle Werte`);
+                    return false;
+                }
+
+                const data = JSON.parse(raw);
+
+                // Daten in TiageState laden (OHNE Archetyp zu setzen!)
+                if (typeof TiageState !== 'undefined') {
+                    // G - Geschlecht
+                    if (data.geschlecht) {
+                        TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
+                    }
+
+                    // O - Orientierung
+                    if (data.orientierung) {
+                        TiageState.set('personDimensions.ich.orientierung', data.orientierung);
+                    }
+
+                    // D - Dominanz
+                    if (data.dominanz) {
+                        TiageState.set('personDimensions.ich.dominanz', data.dominanz);
+                    }
+
+                    // F - Fit, U - Fucked-up, H - Horny (FFH/geschlecht_extras)
+                    if (data.geschlecht_extras) {
+                        TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
+                    }
+
+                    // AGOD-Gewichtung (3-Wege: 0/1/2)
+                    if (data.agodGewichtung) {
+                        TiageState.set('gewichtungen.ich', data.agodGewichtung);
+                    }
+
+                    // RTI-Prioritäten
+                    if (data.rtiPrioritaeten) {
+                        TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
+                    }
+                }
+
+                // UI synchronisieren
+                if (typeof window.syncGeschlechtUI === 'function') {
+                    window.syncGeschlechtUI('ich');
+                }
+                if (typeof window.syncDominanzUI === 'function') {
+                    window.syncDominanzUI('ich');
+                }
+                if (typeof window.syncOrientierungUI === 'function') {
+                    window.syncOrientierungUI('ich');
+                }
+                if (typeof window.syncGeschlechtExtrasUI === 'function') {
+                    window.syncGeschlechtExtrasUI('ich');
+                }
+
+                // AGOD UI aktualisieren
+                if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.init) {
+                    TiageWeights.AGOD.init();
+                }
+
+                console.log(`[MemoryManagerV2] GODFUFH wiederhergestellt für ${archetyp}:`,
+                    'G=' + (data.geschlecht || '-'),
+                    'O=' + (Array.isArray(data.orientierung) ? data.orientierung.join(',') : data.orientierung || '-'),
+                    'D=' + (data.dominanz?.primary || data.dominanz || '-'),
+                    'FFH=' + formatFFH(data.geschlecht_extras),
+                    'AGOD=' + formatAGOD(data.agodGewichtung)
+                );
+                return true;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Restore für', archetyp, ':', e);
+                return false;
+            }
         },
 
         // Helper exports

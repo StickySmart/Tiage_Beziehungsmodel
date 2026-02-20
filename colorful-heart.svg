@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Definiere Gradient mit Regenbogenfarben -->
+  <defs>
+    <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff0000;stop-opacity:1" />
+      <stop offset="16%" style="stop-color:#ff7f00;stop-opacity:1" />
+      <stop offset="33%" style="stop-color:#ffff00;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#00ff00;stop-opacity:1" />
+      <stop offset="66%" style="stop-color:#0000ff;stop-opacity:1" />
+      <stop offset="83%" style="stop-color:#4b0082;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9400d3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Herz Shape mit Regenbogen-Gradient -->
+  <path d="M100,170 C25,130 10,90 10,70 C10,45 25,30 40,30 C55,30 70,45 100,70 C130,45 145,30 160,30 C175,30 190,45 190,70 C190,90 175,130 100,170 Z" 
+        fill="url(#rainbowGradient)" 
+        stroke="none" 
+        filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"/>
+</svg>

@@ -101,24 +101,45 @@
         if (typeof TiageState !== 'undefined') {
             // Subscriber für ICH-Archetyp Änderungen
             TiageState.subscribe('archetypes.ich', function(event) {
-                // FIX v4.3: event.newValue kann String ('aromantisch') oder Objekt ({ primary: 'aromantisch' }) sein
+                // FIX v4.3: event.newValue/oldValue kann String oder Objekt sein
                 // set('archetypes.ich.primary', 'aro') → newValue = 'aro' (String)
                 // set('archetypes.ich', { primary: 'aro' }) → newValue = { primary: 'aro' } (Objekt)
                 const newArch = typeof event.newValue === 'string' ? event.newValue : (event.newValue && event.newValue.primary);
+                // NACHHALTIG: oldValue aus dem Event nutzen (nicht aus currentArchetype)
+                // currentArchetype wird oft VOR setArchetype() gesetzt (Dropdown, Grid),
+                // daher ist event.oldValue die einzig zuverlässige Quelle für den alten Wert.
+                const oldArch = typeof event.oldValue === 'string' ? event.oldValue : (event.oldValue && event.oldValue.primary);
+
                 if (newArch) {
-                    const oldArchetype = currentArchetype;
                     currentArchetype = newArch;
                     try { mobileIchArchetype = newArch; } catch(e) { /* not yet defined */ }
 
-                    // Bei Archetyp-Wechsel: Bedürfnisse für neuen Archetyp laden
-                    if (oldArchetype !== newArch) {
-                        // WICHTIG: Sofort speichern damit Werte des alten Archetyps persistiert werden
-                        // bevor wir zur neuen Ansicht wechseln
+                    // Bei Archetyp-Wechsel: GODFUFH + Bedürfnisse für neuen Archetyp laden
+                    if (oldArch && oldArch !== newArch) {
+                        // ═══════════════════════════════════════════════════════════════
+                        // PRO-ARCHETYP GODFUFH PERSISTENZ
+                        // Beim Wechsel werden GOD+FFH+AGOD des alten Archetyps gesichert
+                        // und die gespeicherten Werte des neuen Archetyps wiederhergestellt.
+                        // event.oldValue ist die SSOT für den vorherigen Archetyp.
+                        // ═══════════════════════════════════════════════════════════════
+                        if (typeof MemoryManagerV2 !== 'undefined') {
+                            // 1. SAVE: GOD+FFH+AGOD des ALTEN Archetyps sofort sichern
+                            //    (Werte sind noch in TiageState, nur archetypes.ich hat sich geändert)
+                            MemoryManagerV2.saveIchForSpecificArchetyp(oldArch);
+                            console.log('[app-main] GODFUFH gesichert für alten Archetyp:', oldArch);
+
+                            // 2. RESTORE: GOD+FFH+AGOD des NEUEN Archetyps laden
+                            //    (Falls vorhanden - sonst bleiben aktuelle Werte erhalten)
+                            const restored = MemoryManagerV2.restoreSettingsForArchetyp(newArch);
+                            console.log('[app-main] GODFUFH Restore für', newArch, ':', restored ? 'geladen' : 'keine Daten');
+                        }
+
+                        // TiageState persistieren (mit allen aktualisierten Werten)
                         if (TiageState.saveToStorage) {
                             TiageState.saveToStorage();
-                            console.log('[app-main] Auto-Save vor Archetyp-Wechsel von', oldArchetype, 'zu', newArch);
+                            console.log('[app-main] Auto-Save nach Archetyp-Wechsel von', oldArch, 'zu', newArch);
                         }
-                        console.log('[app-main] Archetyp gewechselt von', oldArchetype, 'zu', newArch, '- lade Bedürfnisse neu');
+                        console.log('[app-main] Archetyp gewechselt von', oldArch, 'zu', newArch, '- lade Bedürfnisse neu');
 
                         // Synchronisiere Lock-Status aus TiageState für neuen Archetyp
                         if (typeof AttributeSummaryCard !== 'undefined') {
