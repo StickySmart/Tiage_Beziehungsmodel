@@ -1,8 +1,11 @@
 /**
  * VERSION INFORMATION
  *
- * Bei jedem Merge wird die PATCH-Version (dritte Stelle) hochgezählt.
+ * Bei jedem Commit wird die PATCH-Version (dritte Stelle) hochgezählt.
  * Format: MAJOR.MINOR.PATCH
+ *
+ * Automatisch generiert von scripts/bump-version.js via pre-commit Hook.
+ * NICHT manuell bearbeiten!
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
@@ -11,11 +14,14 @@ const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
     minor: 8,
-    patch: 952,
+    patch: 953,
 
-    // Letztes Merge-Datum und -Uhrzeit
-    mergeDate: '2026-02-15',
-    mergeTime: '09:44',
+    // Letztes Commit-Datum und -Uhrzeit
+    mergeDate: '2026-02-20',
+    mergeTime: '06:02',
+
+    // Git Commit-Anzahl
+    commitCount: 2962,
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
@@ -42,25 +48,25 @@ const TiageVersion = {
 // Initialisierung: Version in UI anzeigen (Header, Footer, Age Verification)
 function initVersionDisplay() {
     const versionText = `Version ${TiageVersion.version}`;
-    const mergeText = `Merge: ${TiageVersion.formattedDate} um ${TiageVersion.mergeTime} Uhr`;
+    const commitText = `Commit #${TiageVersion.commitCount} — ${TiageVersion.formattedDate} ${TiageVersion.mergeTime}`;
 
     // Header-Version (zwei Zeilen oben rechts)
     const versionLine = document.getElementById('versionLine');
     const mergeLine = document.getElementById('mergeLine');
     if (versionLine) versionLine.textContent = versionText;
-    if (mergeLine) mergeLine.textContent = mergeText;
+    if (mergeLine) mergeLine.textContent = commitText;
 
     // Footer-Version
     const footerVersion = document.getElementById('footerVersion');
     if (footerVersion) {
-        footerVersion.textContent = versionText;
+        footerVersion.textContent = `${versionText} | ${commitText}`;
     }
 
     // Age Verification Version (zwei Zeilen)
     const ageVersionLine = document.getElementById('ageVersionLine');
     const ageMergeLine = document.getElementById('ageMergeLine');
     if (ageVersionLine) ageVersionLine.textContent = versionText;
-    if (ageMergeLine) ageMergeLine.textContent = mergeText;
+    if (ageMergeLine) ageMergeLine.textContent = commitText;
 }
 
 // Bei DOM ready ausführen
