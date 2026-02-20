@@ -619,6 +619,13 @@ const AttributeSummaryCard = (function() {
                 TiageState.unlockNeed(currentPerson, id);
             }
         }
+        // v4.3: AUTO-LOCK — Slider-Änderungen automatisch sperren
+        // Wenn value geändert wird OHNE explizites locked → auto-lock (nur ICH)
+        // Damit User-Werte bei Archetyp-Wechsel erhalten bleiben (SSOT).
+        // Reset/programmatische Änderungen setzen locked: false explizit.
+        else if (updates.value !== undefined && currentPerson === 'ich' && TiageState.lockNeed) {
+            TiageState.lockNeed(currentPerson, id, updates.value);
+        }
 
         // Cache invalidieren - nächster Zugriff lädt frisch von TiageState
         invalidateFlatNeedsCache();
@@ -1144,7 +1151,8 @@ const AttributeSummaryCard = (function() {
             // FIX v1.8.700: upsertNeed schreibt direkt zu TiageState
             // und braucht kein needObj - Reset funktioniert auch wenn
             // das Need nicht in flatNeeds enthalten ist
-            upsertNeed(needId, { value: originalValue });
+            // v4.3: locked: false verhindert Auto-Lock bei Reset
+            upsertNeed(needId, { value: originalValue, locked: false });
 
             // Update UI - nur wenn das Need in flatNeeds existiert
             const needObj = findNeedById(needId);
@@ -1209,9 +1217,7 @@ const AttributeSummaryCard = (function() {
                 updateParentHauptfrageValue(needId);
             });
 
-            // FIX v1.8.700: Baseline aktualisieren damit "geändert"-Zähler korrekt ist
-            // Nach Reset auf Archetyp-Werte sollten diese Needs als "nicht geändert" gelten
-            // WICHTIG: Nur für tatsächlich zurückgesetzte Needs, NICHT für gesperrte!
+            // v4.3: No-Op (Baseline entfernt — Reset überspringt gesperrte, Rest ist unlocked → geändert=false)
             updateBaselineAfterReset(currentPerson, currentArchetyp, actuallyResetNeeds);
         }
 
@@ -2107,18 +2113,9 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Baseline FlatNeeds: Speichert die Anfangswerte beim ersten Laden
-     * Pro Person ('ich', 'partner') - wird verwendet für isValueChanged-Vergleich
-     * Wird nur einmal pro Person/Archetyp gesetzt und nicht mehr geändert
+     * v4.3: ENTFERNT — isValueChanged nutzt jetzt TiageState.isNeedLocked() (SSOT)
+     * Kein fragiles In-Memory-Baseline mehr nötig.
      */
-    const baselineFlatNeeds = {
-        ich: null,
-        partner: null
-    };
-    // Speichert den Archetyp für den das Baseline gesetzt wurde
-    const baselineArchetyp = {
-        ich: null,
-        partner: null
-    };
 
     /**
      * GFK-Kategorien mit Labels und Icons
@@ -2226,176 +2223,47 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Prüft ob ein Bedürfniswert vom Archetyp-Standard abweicht
+     * Prüft ob ein Bedürfnis vom User manuell geändert (= gesperrt) wurde.
+     * v4.3 SSOT: "geändert" = "gesperrt" — kein fragiles Baseline mehr.
+     * Ein gesperrtes Bedürfnis ist eine bewusste User-Entscheidung, egal ob
+     * der Wert zufällig dem Archetyp-Standard entspricht oder nicht.
      * @param {string} needId - #B-ID (z.B. '#B34')
-     * @param {number} currentValue - Aktueller Wert
-     * @returns {boolean} true wenn Wert geändert wurde, false wenn Standard
+     * @param {number} currentValue - Wird nicht mehr für Vergleich genutzt (Rückwärtskompatibilität)
+     * @returns {boolean} true wenn vom User gesperrt, false wenn system-berechnet
      */
     function isValueChanged(needId, currentValue) {
-        // Ermittle aktuelle Person aus Kontext
-        let currentPerson = 'ich';
-        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
-            currentPerson = window.currentProfileReviewContext.person;
-        }
-
-        let initialValue;
-
-        // PRIORITÄT 1: Vergleiche gegen gespeichertes Baseline (beste Quelle)
-        // Das Baseline wird beim ersten Laden des Profils gespeichert
-        if (baselineFlatNeeds[currentPerson]) {
-            const baseline = baselineFlatNeeds[currentPerson];
-            if (Array.isArray(baseline)) {
-                const needEntry = baseline.find(n => n.id === needId);
-                initialValue = needEntry?.value;
-            } else if (typeof baseline === 'object') {
-                const entry = baseline[needId];
-                initialValue = (typeof entry === 'object' && entry?.value !== undefined) ? entry.value : entry;
+        if (typeof TiageState !== 'undefined' && TiageState.isNeedLocked) {
+            let currentPerson = 'ich';
+            if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+                currentPerson = window.currentProfileReviewContext.person;
             }
+            return TiageState.isNeedLocked(currentPerson, needId);
         }
-
-        // PRIORITÄT 2: Vergleiche gegen BaseArchetypProfile (dieselbe Quelle wie Reset)
-        // FIX v1.8.710: Verwende BaseArchetypProfile als primäre Fallback-Quelle
-        // (Falls kein Baseline gesetzt ist)
-        if (initialValue === undefined) {
-            // FIX v1.8.710: Hole Archetyp aus TiageState für die richtige Person (SSOT)
-            // statt globaler currentFlatArchetyp Variable
-            const archetyp = (typeof TiageState !== 'undefined' && TiageState.getArchetype)
-                ? TiageState.getArchetype(currentPerson)
-                : (currentFlatArchetyp || 'polyamor');
-            // Primär: BaseArchetypProfile (SSOT)
-            if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
-                initialValue = BaseArchetypProfile[archetyp].umfrageWerte[needId];
-            }
-            // Fallback: GfkBeduerfnisse
-            else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
-                initialValue = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte[needId];
-            }
-        }
-
-        // PRIORITÄT 3: Vergleiche gegen LoadedArchetypProfile (Fallback)
-        if (initialValue === undefined) {
-            const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
-                ? window.LoadedArchetypProfile[currentPerson]
-                : null;
-
-            if (loadedProfile?.profileReview?.flatNeeds) {
-                const flatNeedsData = loadedProfile.profileReview.flatNeeds;
-                if (Array.isArray(flatNeedsData)) {
-                    const needEntry = flatNeedsData.find(n => n.id === needId);
-                    initialValue = needEntry?.value;
-                } else {
-                    initialValue = flatNeedsData[needId];
-                }
-            }
-        }
-
-        if (initialValue === undefined) {
-            return false;
-        }
-
-        return currentValue !== initialValue;
+        return false;
     }
 
     /**
-     * Setzt das Baseline für eine Person (nur einmal pro Archetyp)
-     * Wird beim ersten Laden des Profils aufgerufen
-     * FIX v1.8.710: Verwendet BaseArchetypProfile als primäre Quelle (SSOT)
-     * @param {string} person - 'ich' oder 'partner'
-     * @param {string} archetyp - Archetyp-ID
+     * v4.3: No-Op — Baseline entfernt. isValueChanged nutzt TiageState.isNeedLocked() (SSOT).
+     * Signatur beibehalten für Rückwärtskompatibilität.
      */
     function setBaselineForPerson(person, archetyp) {
-        // Nur setzen wenn noch nicht für diesen Archetyp gesetzt
-        if (baselineArchetyp[person] === archetyp && baselineFlatNeeds[person]) {
-            return; // Bereits gesetzt für diesen Archetyp
-        }
-
-        // FIX v1.8.710: Verwende BaseArchetypProfile als primäre Quelle (SSOT)
-        // PRIORITÄT 1: BaseArchetypProfile (dieselbe Quelle wie Reset)
-        let umfrageWerte = null;
-        if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
-            umfrageWerte = BaseArchetypProfile[archetyp].umfrageWerte;
-        }
-        // FALLBACK: GfkBeduerfnisse
-        else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
-            umfrageWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
-        }
-
-        if (umfrageWerte) {
-            // Tiefe Kopie der Basis-Werte
-            baselineFlatNeeds[person] = { ...umfrageWerte };
-            baselineArchetyp[person] = archetyp;
-            console.log('[AttributeSummaryCard] Baseline gesetzt für', person, '/', archetyp, '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
-        }
+        // v4.3: No-Op — kein Baseline mehr nötig
     }
 
     /**
-     * FIX v1.8.700: Aktualisiert das Baseline nach einem Reset
-     * Damit der "geändert"-Zähler korrekt ist (0 nach Reset)
-     * FIX v1.8.710: Verwendet BaseArchetypProfile (dieselbe Quelle wie Reset)
-     * statt GfkBeduerfnisse um Inkonsistenzen zu vermeiden
-     * @param {string} person - 'ich' oder 'partner'
-     * @param {string} archetyp - Archetyp-ID
-     * @param {Array<string>} resetNeedIds - Array von Need-IDs die zurückgesetzt wurden
+     * v4.3: No-Op — Baseline entfernt. Reset ruft unlockNeed() auf → isNeedLocked = false → geändert = false.
+     * Signatur beibehalten für Rückwärtskompatibilität.
      */
     function updateBaselineAfterReset(person, archetyp, resetNeedIds) {
-        // FIX v1.8.710: Verwende BaseArchetypProfile (dieselbe Quelle wie Reset)
-        // PRIORITÄT 1: BaseArchetypProfile (SSOT für Reset)
-        let archetypWerte = null;
-        if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[archetyp]?.umfrageWerte) {
-            archetypWerte = BaseArchetypProfile[archetyp].umfrageWerte;
-        }
-        // FALLBACK: GfkBeduerfnisse (falls BaseArchetypProfile nicht verfügbar)
-        else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[archetyp]?.umfrageWerte) {
-            archetypWerte = GfkBeduerfnisse.archetypProfile[archetyp].umfrageWerte;
-            console.warn('[AttributeSummaryCard] updateBaselineAfterReset: BaseArchetypProfile nicht verfügbar, verwende GfkBeduerfnisse');
-        }
-
-        if (!archetypWerte) {
-            console.warn('[AttributeSummaryCard] updateBaselineAfterReset: Keine Werte gefunden für', archetyp);
-            return;
-        }
-
-        // Initialisiere baseline falls nicht vorhanden
-        if (!baselineFlatNeeds[person]) {
-            baselineFlatNeeds[person] = {};
-        }
-
-        // Aktualisiere nur die zurückgesetzten Needs im Baseline
-        resetNeedIds.forEach(needId => {
-            if (archetypWerte[needId] !== undefined) {
-                baselineFlatNeeds[person][needId] = archetypWerte[needId];
-            }
-        });
-
-        console.log('[AttributeSummaryCard] Baseline aktualisiert nach Reset für', person, '- Aktualisiert:', resetNeedIds.length);
+        // v4.3: No-Op — kein Baseline mehr nötig
     }
 
     /**
-     * FIX: Synchronisiert das Baseline mit den aktuellen flatNeeds aus TiageState
-     * Wird nach Reset aufgerufen, damit GOD-modifizierte Bedürfnisse NICHT als "geändert" markiert sind.
-     * Das Baseline wird auf die aktuell berechneten flatNeeds gesetzt (inklusive GOD-Modifikatoren).
-     * @param {string} person - 'ich' oder 'partner'
-     * @param {string} archetyp - Archetyp-ID (z.B. 'single', 'duo')
+     * v4.3: No-Op — Baseline entfernt. isValueChanged nutzt TiageState.isNeedLocked() (SSOT).
+     * Signatur beibehalten für Rückwärtskompatibilität (wird exportiert).
      */
     function syncBaselineWithFlatNeeds(person, archetyp) {
-        if (typeof TiageState === 'undefined') {
-            console.warn('[AttributeSummaryCard] syncBaselineWithFlatNeeds: TiageState nicht verfügbar');
-            return;
-        }
-
-        // Hole die aktuell berechneten flatNeeds (mit GOD-Modifikatoren)
-        const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`);
-        if (!currentFlatNeeds || Object.keys(currentFlatNeeds).length === 0) {
-            console.warn('[AttributeSummaryCard] syncBaselineWithFlatNeeds: Keine flatNeeds für', person);
-            return;
-        }
-
-        // Setze Baseline auf aktuelle flatNeeds (mit GOD-Modifikatoren)
-        baselineFlatNeeds[person] = { ...currentFlatNeeds };
-        baselineArchetyp[person] = archetyp;
-
-        console.log('[AttributeSummaryCard] Baseline synchronisiert mit flatNeeds für', person, '/', archetyp,
-            '- Anzahl:', Object.keys(baselineFlatNeeds[person]).length);
+        // v4.3: No-Op — kein Baseline mehr nötig
     }
 
     /**
@@ -2697,8 +2565,7 @@ const AttributeSummaryCard = (function() {
         currentFlatPerson = currentPerson;
         currentFlatArchetypLabel = archetypLabel;
 
-        // WICHTIG: Setze Baseline für die aktuelle Person/Archetyp Kombination
-        // Das Baseline enthält die statischen Archetyp-Werte und dient als Vergleichsbasis
+        // v4.3: No-Op (Baseline entfernt, isValueChanged nutzt Locks als SSOT)
         setBaselineForPerson(currentPerson, archetyp);
 
         // Bei neuem Archetyp ODER neuer Person: Alle Einträge zurücksetzen
@@ -2866,7 +2733,7 @@ const AttributeSummaryCard = (function() {
         // FIX v1.8.568: Zähle alle gesperrten Items (inkl. durch Hauptfragen-Lock implizit gesperrte Nuancen)
         const lockedCount = calculateTotalLockedCount(currentPerson);
 
-        // Zähle geänderte Bedürfnisse (abweichend vom Archetyp-Standard)
+        // v4.3: Zähle geänderte Bedürfnisse (= gesperrt/locked, SSOT via TiageState)
         // Bei aktivem Filter: zähle nur gefilterte geänderte Bedürfnisse
         const changedCount = filteredNeeds.filter(need => isValueChanged(need.id, need.value)).length;
 
@@ -4629,7 +4496,7 @@ const AttributeSummaryCard = (function() {
         // FIX v1.8.568: Nutze zentrale Hilfsfunktion für korrekte Zählung
         const lockedNeedsCount = calculateTotalLockedCount(currentPerson);
 
-        // Zähle geänderte Bedürfnisse
+        // v4.3: Zähle geänderte Bedürfnisse (= gesperrt/locked, SSOT via TiageState)
         const changedNeedsCount = flatNeeds.filter(need => isValueChanged(need.id, need.value)).length;
 
         // Finde das Subtitle-Element und aktualisiere den Text
@@ -4819,7 +4686,8 @@ const AttributeSummaryCard = (function() {
         Object.keys(values).forEach(needId => {
             const numValue = parseInt(values[needId], 10);
             if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
-                upsertNeed(needId, { value: numValue });
+                // v4.3: locked: false verhindert Auto-Lock bei programmatischem Laden
+                upsertNeed(needId, { value: numValue, locked: false });
             }
         });
 
@@ -5599,7 +5467,7 @@ const AttributeSummaryCard = (function() {
         getSelectedNeeds: function() { return selectedNeeds; },
         // NEU: Person-spezifische Lock-Synchronisierung
         syncLocksFromState: syncLocksFromTiageState,
-        // FIX: Baseline mit aktuellen flatNeeds synchronisieren (für Reset mit GOD)
+        // v4.3: No-Op (Baseline entfernt, beibehalten für Rückwärtskompatibilität)
         syncBaselineWithFlatNeeds
     };
 })();

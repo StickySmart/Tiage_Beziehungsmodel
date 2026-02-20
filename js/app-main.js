@@ -415,7 +415,8 @@
                 try {
                     const state = JSON.parse(savedState);
                     // Check for locked needs or AGOD selections as indicator of profile
-                    const ichLocked = state.profileReview?.ich?.lockedNeeds;
+                    // v4.3: Global-Format (profileReview.ich.global) + Fallback auf altes lockedNeeds
+                    const ichLocked = state.profileReview?.ich?.global || state.profileReview?.ich?.lockedNeeds;
                     const hasLockedNeeds = ichLocked && Object.keys(ichLocked).length > 0;
                     const hasAGOD = state.personDimensions?.ich?.archetyp?.primary;
                     hasExistingProfile = hasLockedNeeds || hasAGOD;

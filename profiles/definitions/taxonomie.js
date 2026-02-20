@@ -10,7 +10,7 @@
  * - Perspektiven (#P1-#P4)
  * - Dimensionen (#D1-#D6, Kurzform A-F)
  * - RTI-Säulen (#S1-#S5) - NEU in v2.0.0
- * - Kategorien (#K1-#K11, #K14-#K18)
+ * - Kategorien (#K1-#K18)
  *
  * ALLE anderen Dateien MÜSSEN diese Definitionen referenzieren!
  *
@@ -49,7 +49,7 @@ const TiageTaxonomie = {
             label: 'Statistik',
             beschreibung: 'Empirische Forschung - Gaußsche Übereinstimmung der Werte',
             quelle: 'McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)',
-            kategorien: ['#K1', '#K2', '#K3', '#K4', '#K5', '#K6', '#K7', '#K8', '#K9', '#K10', '#K14', '#K15', '#K16', '#K17', '#K18']
+            kategorien: ['#K1', '#K2', '#K3', '#K4', '#K5', '#K6', '#K7', '#K8', '#K9', '#K10', '#K12', '#K13', '#K14', '#K15', '#K16', '#K17', '#K18']
         },
         '#P2': {
             id: '#P2',
@@ -57,7 +57,7 @@ const TiageTaxonomie = {
             label: 'Konditionierung',
             beschreibung: 'Natürlichkeit vs. Konditionierung - was ist anerzogen, was authentisch?',
             quelle: 'Osho Rajneesh - Vorträge über Liebe und Beziehungen',
-            kategorien: ['#K1', '#K3', '#K5', '#K6', '#K7', '#K8', '#K10', '#K15', '#K17']
+            kategorien: ['#K1', '#K3', '#K5', '#K6', '#K7', '#K8', '#K10', '#K12', '#K13', '#K15', '#K17']
         },
         '#P3': {
             id: '#P3',
@@ -65,7 +65,7 @@ const TiageTaxonomie = {
             label: 'Qualität',
             beschreibung: 'Static vs. Dynamic Quality - Qualität als Fundament',
             quelle: 'Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)',
-            kategorien: ['#K3', '#K4', '#K6', '#K8', '#K9', '#K10', '#K14', '#K17']
+            kategorien: ['#K3', '#K4', '#K6', '#K8', '#K9', '#K10', '#K12', '#K13', '#K14', '#K17']
         },
         '#P4': {
             id: '#P4',
@@ -220,9 +220,9 @@ const TiageTaxonomie = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // KATEGORIEN (#K1-#K11, #K14-#K18) - Bedürfnisgruppen
+    // KATEGORIEN (#K1-#K18) - Bedürfnisgruppen
     // ═══════════════════════════════════════════════════════════════════════════
-    // 10 GFK-Kategorien (Rosenberg) + 1 Dynamik + 5 Lebensbereiche
+    // 10 GFK-Kategorien (Rosenberg) + 1 Dynamik + 2 Erweiterungen + 5 Lebensbereiche
 
     kategorien: {
         // ─────────────────────────────────────────────────────────────────────────
@@ -343,6 +343,31 @@ const TiageTaxonomie = {
             color: '#8B5CF6',
             beschreibung: 'Machtdynamik und bewusster Austausch (BDSM/Kink)',
             quelle: 'Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)'
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERWEITERUNGEN (#K12-#K13) - Tiage Kern-Erweiterung
+        // ─────────────────────────────────────────────────────────────────────────
+
+        '#K12': {
+            id: '#K12',
+            key: 'beziehungsform',
+            dimension: '#D1',  // Beziehungsphilosophie
+            label: 'Beziehungsform & Lebensplanung',
+            sigma: 11,
+            color: '#E63946',
+            beschreibung: 'Beziehungsmodell, Kinderwunsch, Wohnsituation, Ehe',
+            quelle: 'Tiage Erweiterung'
+        },
+        '#K13': {
+            id: '#K13',
+            key: 'spiritualitaet',
+            dimension: '#D2',  // Werte-Alignment
+            label: 'Spiritualität & Weltanschauung',
+            sigma: 15,
+            color: '#A78BFA',
+            beschreibung: 'Religion, Sinnsuche, Ethik, politische Werte',
+            quelle: 'Tiage Erweiterung'
         },
 
         // ─────────────────────────────────────────────────────────────────────────

@@ -80,6 +80,18 @@
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
     <script src="profiles/archetypen/index.js"></script>
+    <script>
+        // FIX v4.3: Needs-Editor LIEST flatNeeds und R-Faktoren aus TiageState (SSOT).
+        // initFromState() würde sonst die von der Hauptseite korrekt berechneten Werte
+        // überschreiben (BeduerfnisIds-Timing erzeugt andere Ergebnisse).
+        // Die reaktive Kette (registerFlatNeedsSubscribers) bleibt aktiv für Slider-Änderungen.
+        if (typeof ProfileCalculator !== 'undefined') {
+            ProfileCalculator.initFromState = function() {
+                console.log('[NeedsEditor] initFromState übersprungen — SSOT aus TiageState');
+                return false;
+            };
+        }
+    </script>
     <!-- GESCHLECHTSIDENTITÄT MODIFIER (v4.0: 3 Typen mit Legacy-Aliases) -->
     <script src="profiles/modifiers/gender/mann.js"></script>
     <script src="profiles/modifiers/gender/frau.js"></script>
@@ -95,6 +107,14 @@
     <script src="profiles/modifiers/orientierung/bisexuell.js"></script>
     <script src="profiles/modifiers/orientierung/pansexuell.js"></script>
     <script src="profiles/modifiers/orientierung/queer.js"></script>
+    <!-- FFH Modifier (Fit, Fucked up, Horny) -->
+    <script src="profiles/modifiers/ffh/fit.js"></script>
+    <script src="profiles/modifiers/ffh/fuckedup.js"></script>
+    <script src="profiles/modifiers/ffh/horny.js"></script>
+    <!-- RTI Modifier -->
+    <script src="profiles/modifiers/rti/rti-modifier.js"></script>
+    <!-- Extras Modifier -->
+    <script src="profiles/modifiers/extras/extras-modifier.js"></script>
     <!-- MODIFIER INDEX -->
     <script src="profiles/modifiers/index.js"></script>
     <!-- SSOT Taxonomie -->
@@ -816,6 +836,7 @@
             // Speichere in TiageState - dies triggert den Subscriber in ResonanzCard.js
             if (typeof TiageState !== 'undefined' && TiageState.setNeed) {
                 TiageState.setNeed(currentPerson, needId, value);
+                needsEditorDirty = true;
                 console.log('[NeedsEditor] Wert in TiageState.flatNeeds gespeichert:', needId, '=', value, 'für', currentPerson);
             }
         });
@@ -830,9 +851,18 @@
         // Current state
         let currentPerson = 'ich';
         let currentArchetype = 'polyamor';
+        let needsEditorDirty = false; // Wird true wenn Slider geändert werden
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize page — warte auf BeduerfnisIds damit GOD+FFH Deltas angewendet werden
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.load) {
+                try {
+                    await BeduerfnisIds.load();
+                    console.log('[NeedsEditor] BeduerfnisIds geladen — Deltas verfügbar');
+                } catch (e) {
+                    console.warn('[NeedsEditor] BeduerfnisIds konnte nicht geladen werden:', e);
+                }
+            }
             initializeNeedsEditor();
         });
 
@@ -855,21 +885,11 @@
                 localStorage.getItem('tiage_selected_archetype_' + currentPerson) ||
                 'polyamor';
 
-            // WICHTIG: Setze Archetyp in TiageState und lade Profil
-            // Damit TiageState.flatNeeds korrekt initialisiert wird
-            if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
-                // Setze den Archetyp in TiageState
-                TiageState.set('archetypes.' + currentPerson + '.primary', currentArchetype);
-
-                // Lade das Profil (berechnet flatNeeds und schreibt in TiageState)
-                const profileData = {
-                    archetyp: currentArchetype,
-                    geschlecht: TiageState.get('personDimensions.' + currentPerson + '.geschlecht') || null,
-                    dominanz: TiageState.get('personDimensions.' + currentPerson + '.dominanz') || null,
-                    orientierung: TiageState.get('personDimensions.' + currentPerson + '.orientierung') || null
-                };
-                ProfileCalculator.loadProfile(currentPerson, profileData);
-                console.log('[NeedsEditor] Profil geladen für', currentPerson, ':', currentArchetype);
+            // SSOT v4.3: Needs-Editor LIEST flatNeeds und R-Faktoren aus TiageState.
+            // loadProfile() wurde entfernt — die Hauptseite berechnet und persistiert die Werte.
+            // Die reaktive Kette (registerFlatNeedsSubscribers) aktualisiert R-Faktoren bei Slider-Änderungen.
+            if (typeof TiageState !== 'undefined') {
+                console.log('[NeedsEditor] SSOT: Archetyp aus TiageState:', currentArchetype);
             }
 
             // Set context for AttributeSummaryCard
@@ -891,23 +911,12 @@
             renderNeedsList();
 
             // ═══════════════════════════════════════════════════════════════════
-            // WICHTIG: Initiale R-Faktor-Berechnung nach Datenladen
-            // ═══════════════════════════════════════════════════════════════════
-            // Die R-Faktoren werden IMMER nach dem Laden der Daten berechnet.
-            // Gelockte Werte werden dabei automatisch respektiert (nicht überschrieben).
-            // ═══════════════════════════════════════════════════════════════════
-            console.log('%c[NeedsEditor] === R-FAKTOR BERECHNUNG START ===', 'background: red; color: white; font-size: 14px;');
-            console.log('[NeedsEditor] ResonanzCard verfügbar?', typeof ResonanzCard !== 'undefined');
-            console.log('[NeedsEditor] ResonanzCard.recalculate verfügbar?', typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.recalculate === 'function');
-
+            // R-Faktoren berechnen nach Datenladen
             if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
-                // Kurze Verzögerung um sicherzustellen, dass alle Daten geladen sind
                 setTimeout(function() {
-                    console.log('%c[NeedsEditor] R-Faktor-Berechnung für ' + currentPerson, 'background: green; color: white;');
                     ResonanzCard.recalculate(currentPerson);
+                    console.log('[NeedsEditor] R-Faktoren berechnet für', currentPerson);
                 }, 100);
-            } else {
-                console.warn('%c[NeedsEditor] ResonanzCard.recalculate NICHT verfügbar!', 'background: orange; color: black; font-size: 14px;');
             }
 
             // Initialize Active Filter Card
@@ -938,6 +947,16 @@
                     }
                 }
             }
+
+            // Dirty-Flag zurücksetzen wenn manuell gespeichert wird
+            setTimeout(function() {
+                const saveBtn = document.querySelector('.bulk-save-btn');
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', function() {
+                        needsEditorDirty = false;
+                    });
+                }
+            }, 500);
         }
 
         /**
@@ -1038,7 +1057,8 @@
                     archetyp: newArchetype,
                     geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
                     dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
-                    orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                    orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null,
+                    geschlecht_extras: TiageState.get('personDimensions.' + person + '.geschlecht_extras') || null
                 };
                 ProfileCalculator.loadProfile(person, profileData);
                 console.log('[NeedsEditor] Profil neu geladen für', person, 'mit Archetyp:', newArchetype);
@@ -1269,7 +1289,8 @@
                             archetyp: currentArchetype,
                             geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
                             dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
-                            orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                            orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null,
+                            geschlecht_extras: TiageState.get('personDimensions.' + person + '.geschlecht_extras') || null
                         };
                         ProfileCalculator.loadProfile(person, profileData);
                         console.log('[NeedsEditor] Profil NEU berechnet für', person, ':', currentArchetype);
@@ -1310,8 +1331,7 @@
                     console.log('[NeedsEditor] ResonanzCard UI aktualisiert für', person);
                 }
 
-                // R-Faktoren IMMER neu berechnen beim Person-Wechsel.
-                // Gelockte Werte werden automatisch respektiert (nicht überschrieben).
+                // R-Faktoren neu berechnen beim Person-Wechsel
                 if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
                     ResonanzCard.recalculate(person);
                     console.log('[NeedsEditor] R-Faktoren berechnet für', person);
@@ -1375,7 +1395,17 @@
         }
 
         function goBack() {
-            // Check if there's a referrer
+            // MOMENTE-gesteuerte Speicherabfrage bei ungespeicherten Änderungen
+            const momentsEnabled = localStorage.getItem('tiage_moments_enabled') !== 'false';
+
+            if (momentsEnabled && needsEditorDirty) {
+                const save = confirm('Du hast Änderungen vorgenommen.\n\nMöchtest du vor dem Verlassen speichern?');
+                if (save) {
+                    saveCurrentState();
+                }
+            }
+
+            // Navigiere zurück
             if (document.referrer && document.referrer.includes(window.location.hostname)) {
                 window.history.back();
             } else {
@@ -1385,6 +1415,7 @@
 
         function saveAndGoBack() {
             saveCurrentState();
+            needsEditorDirty = false;
 
             // Dispatch event for main page to update
             window.dispatchEvent(new CustomEvent('flatNeedsUpdated', {

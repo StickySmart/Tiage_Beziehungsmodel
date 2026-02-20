@@ -1,10 +1,10 @@
 {
-  "version": "3.4.0",
+  "version": "3.5.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
   "aktualisiert": "2025-01-31",
-  "changelog": "v3.4.0: Kategorien #K12 (Lebensplanung) und #K13 (Finanzen & Karriere) entfernt samt aller zugehörigen Bedürfnisse (#B89-#B125, #B228). v3.3.0: REIBUNGS-LOGIK statt K.O.-Kriterien. Neues Bedürfnis: #B227 'Körperliche-Resonanz' (ersetzt Orientierungs-K.O.). v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
+  "changelog": "v3.5.0: Kategorien #K12 (Beziehungsform & Lebensplanung) und #K13 (Spiritualität & Weltanschauung) neu angelegt mit 26 Bedürfnissen (#B228-#B253). v3.4.0: Alte K12 (Lebensplanung) und K13 (Finanzen & Karriere) entfernt samt Bedürfnisse (#B89-#B125). v3.3.0: REIBUNGS-LOGIK statt K.O.-Kriterien. Neues Bedürfnis: #B227 'Körperliche-Resonanz' (ersetzt Orientierungs-K.O.). v3.2.0: Neues 'perspektive'-Feld für direkte P2/P3-Zuordnung. P2 (Konditionierung): #B50, #B53, #B178-#B183. P3 (Qualität): #B196-#B203. Ermöglicht saubere Filterung nach philosophischen Perspektiven. v3.1.0: #B219 'Service-Orientierung' → 'Service-geben' umbenannt. Neue Bedürfnisse: #B225 'Beschützt-werden', #B226 'Vertrauen-empfangen' für symmetrische Geben/Empfangen-Paare. v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
     "#P1": {
       "id": "#P1",
@@ -314,6 +314,26 @@
       "beschreibung": "Machtdynamik und bewusster Austausch (BDSM/Kink)",
       "quelle": "Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)"
     },
+    "#K12": {
+      "id": "#K12",
+      "key": "beziehungsform",
+      "label": "Beziehungsform & Lebensplanung",
+      "dimension": "#D1",
+      "sigma": 11,
+      "color": "#E63946",
+      "beschreibung": "Beziehungsmodell, Kinderwunsch, Wohnsituation, Ehe",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K13": {
+      "id": "#K13",
+      "key": "spiritualitaet",
+      "label": "Spiritualität & Weltanschauung",
+      "dimension": "#D2",
+      "sigma": 15,
+      "color": "#A78BFA",
+      "beschreibung": "Religion, Sinnsuche, Ethik, politische Werte",
+      "quelle": "Tiage Erweiterung"
+    },
     "#K14": {
       "id": "#K14",
       "key": "kommunikation_stil",
@@ -366,7 +386,7 @@
     }
   },
   "beduerfnisse": {
-    "_comment": "GFK-KERN (88 Bedürfnisse) + LEBENSTHEMEN (132 Bedürfnisse) = 220 total",
+    "_comment": "GFK-KERN (77 Bedürfnisse) + DYNAMIK (29) + ERWEITERUNGEN K12/K13 (26) + LEBENSBEREICHE (84) + REIBUNG (1) = 217 total",
     "#B1": {
       "id": "#B1",
       "label": "Körperliche-Grundbedürfnisse",
@@ -4139,6 +4159,288 @@
           "aromantisch": 35
         }
       }
+    },
+    "_comment_beziehungsform": "═══ BEZIEHUNGSFORM & LEBENSPLANUNG (#K12) ═══",
+    "#B228": {
+      "id": "#B228",
+      "label": "Beziehungsmodell",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frage": "Wie wichtig ist Übereinstimmung beim Beziehungsmodell?",
+      "frageTyp": "sub",
+      "nuancen": ["#B229", "#B230"]
+    },
+    "#B229": {
+      "id": "#B229",
+      "label": "Exklusivität",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B228",
+      "kontext": "Monogamie vs. offene Modelle"
+    },
+    "#B230": {
+      "id": "#B230",
+      "label": "Beziehungs-Hierarchie",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B228",
+      "kontext": "Primär/Sekundär-Strukturen"
+    },
+    "#B231": {
+      "id": "#B231",
+      "label": "Kinderwunsch",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K2"],
+      "frage": "Wie wichtig ist Einigkeit beim Kinderwunsch?",
+      "frageTyp": "sub",
+      "nuancen": ["#B232", "#B233"]
+    },
+    "#B232": {
+      "id": "#B232",
+      "label": "Kinderzeitpunkt",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B231",
+      "kontext": "Timing und Lebensphase"
+    },
+    "#B233": {
+      "id": "#B233",
+      "label": "Erziehungsstil",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K17"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B231",
+      "kontext": "gemeinsame Erziehungsvorstellungen"
+    },
+    "#B234": {
+      "id": "#B234",
+      "label": "Zusammenleben",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K18"],
+      "frage": "Wie wichtig ist gemeinsames Wohnen?",
+      "frageTyp": "sub",
+      "nuancen": ["#B235"]
+    },
+    "#B235": {
+      "id": "#B235",
+      "label": "Wohnform",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K5"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B234",
+      "kontext": "zusammen vs. getrennt vs. LAT"
+    },
+    "#B236": {
+      "id": "#B236",
+      "label": "Verbindlichkeit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K2"],
+      "frage": "Wie wichtig ist formelle Verbindlichkeit?",
+      "frageTyp": "sub",
+      "nuancen": ["#B237", "#B238"]
+    },
+    "#B237": {
+      "id": "#B237",
+      "label": "Ehe-Wunsch",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B236",
+      "kontext": "Heirat und rechtliche Bindung"
+    },
+    "#B238": {
+      "id": "#B238",
+      "label": "Langfristplanung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K18"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B236",
+      "kontext": "gemeinsame Zukunftsplanung"
+    },
+    "#B239": {
+      "id": "#B239",
+      "label": "Familiengründung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K6"],
+      "frage": "Wie wichtig ist Familiengründung als Lebenskonzept?",
+      "frageTyp": "haupt",
+      "nuancen": ["#B240"]
+    },
+    "#B240": {
+      "id": "#B240",
+      "label": "Patchwork-Offenheit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [0, 100],
+      "sekundaer": ["#K4"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B239",
+      "kontext": "Offenheit für verschiedene Familienformen"
+    },
+    "_comment_spiritualitaet": "═══ SPIRITUALITÄT & WELTANSCHAUUNG (#K13) ═══",
+    "#B241": {
+      "id": "#B241",
+      "label": "Spirituelle-Praxis",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K10"],
+      "frage": "Wie wichtig ist eine gemeinsame spirituelle Ausrichtung?",
+      "frageTyp": "sub",
+      "nuancen": ["#B242", "#B243"]
+    },
+    "#B242": {
+      "id": "#B242",
+      "label": "Meditation-&-Achtsamkeit",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K7"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B241",
+      "kontext": "kontemplative Praxis"
+    },
+    "#B243": {
+      "id": "#B243",
+      "label": "Religiöse-Übereinstimmung",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K6"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B241",
+      "kontext": "gemeinsamer Glaube oder Respekt"
+    },
+    "#B244": {
+      "id": "#B244",
+      "label": "Ethische-Grundhaltung",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K8"],
+      "frage": "Wie wichtig ist eine gemeinsame ethische Grundhaltung?",
+      "frageTyp": "sub",
+      "nuancen": ["#B245", "#B246"]
+    },
+    "#B245": {
+      "id": "#B245",
+      "label": "Moralische-Werte",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B244",
+      "kontext": "gemeinsamer moralischer Kompass"
+    },
+    "#B246": {
+      "id": "#B246",
+      "label": "Verantwortungsbewusstsein",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K18"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B244",
+      "kontext": "Verantwortung für Umwelt und Gesellschaft"
+    },
+    "#B247": {
+      "id": "#B247",
+      "label": "Politische-Ausrichtung",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K15"],
+      "frage": "Wie wichtig ist politische Übereinstimmung?",
+      "frageTyp": "sub",
+      "nuancen": ["#B248"]
+    },
+    "#B248": {
+      "id": "#B248",
+      "label": "Gesellschaftliches-Engagement",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K6"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B247",
+      "kontext": "Aktivismus und soziales Engagement"
+    },
+    "#B249": {
+      "id": "#B249",
+      "label": "Lebensphilosophie",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K8", "#K10"],
+      "frage": "Wie wichtig ist eine gemeinsame Lebensphilosophie?",
+      "frageTyp": "sub",
+      "nuancen": ["#B250", "#B251"]
+    },
+    "#B250": {
+      "id": "#B250",
+      "label": "Existenzielle-Fragen",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K10"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B249",
+      "kontext": "Sinn des Lebens und Sterblichkeit"
+    },
+    "#B251": {
+      "id": "#B251",
+      "label": "Wachstums-Orientierung",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K9"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B249",
+      "kontext": "persönliche Weiterentwicklung als Wert"
+    },
+    "#B252": {
+      "id": "#B252",
+      "label": "Naturverbundenheit",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K7"],
+      "frage": "Wie wichtig ist Naturverbundenheit?",
+      "frageTyp": "haupt",
+      "nuancen": ["#B253"]
+    },
+    "#B253": {
+      "id": "#B253",
+      "label": "Nachhaltigkeit",
+      "kategorie": "#K13",
+      "dimension": "#D2",
+      "skala": [0, 100],
+      "sekundaer": ["#K18"],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B252",
+      "kontext": "ökologisches Bewusstsein als Lebensstil"
     },
     "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227) - Ersetzt K.O.-Kriterien ═══",
     "#B227": {

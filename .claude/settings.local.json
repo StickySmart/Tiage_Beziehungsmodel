@@ -18,7 +18,26 @@
       "Bash(if not exist \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\js\\\\persistence\" mkdir \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\\\\js\\\\persistence\")",
       "Bash(git checkout:*)",
       "Bash(git stash:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(npm run version:bump:*)",
+      "Bash(npm test:*)",
+      "Bash(ls:*)",
+      "Bash(gh run list:*)",
+      "Bash(where:*)",
+      "Bash(git reset:*)",
+      "Bash(npm install:*)",
+      "Bash(taskkill:*)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" log --oneline -5)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" status --short)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" diff -- js/app-main.js server/index.js)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" add js/app-main.js server/index.js)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" commit -m \"$\\(cat <<''EOF''\nfix\\(app-main\\): partner null on start, FFH cache persistence, static server\n\n- getPartnerArchetype\\(\\) returns null instead of ''duo'' fallback\n- updatePartnerSelector\\(\\) no longer forces default when selectedPartner is null\n- loadDimensionsFromState\\(\\) syncs geschlechtExtrasCache before syncGeschlechtExtrasUI\n- Initial profile calculation includes geschlecht_extras for correct R-factors\n- server/index.js serves static files for localhost testing\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" push origin main)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" pull --rebase origin main)",
+      "Bash(git -C \"c:\\\\Users\\\\info\\\\OneDrive\\\\Documents\\\\GitHub\\\\Tiage_Beziehungsmodel\" stash)",
+      "Bash(git -C:*)",
+      "WebFetch(domain:soundcloud.com)"
     ]
   }
 }

@@ -47,7 +47,7 @@ test('BeduerfnisIds lädt korrekt', function() {
     assertTrue(BeduerfnisIds !== undefined, 'BeduerfnisIds sollte geladen sein');
     assertTrue(BeduerfnisIds.beduerfnisse !== undefined, 'beduerfnisse sollte existieren');
     var count = Object.keys(BeduerfnisIds.beduerfnisse).length;
-    assertTrue(count >= 200, 'Es sollten mindestens 200 Bedürfnisse existieren (gefunden: ' + count + ')');
+    assertTrue(count >= 210, 'Es sollten mindestens 210 Bedürfnisse existieren (gefunden: ' + count + ')');
 });
 
 test('Alle Kategorien in Taxonomie haben korrektes Format (#K1-#K18)', function() {

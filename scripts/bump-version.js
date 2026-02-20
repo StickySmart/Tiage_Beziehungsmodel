@@ -3,13 +3,15 @@
  * Version Bump Script für Tiage
  *
  * Aktualisiert package.json, js/version.js und README.md
- * Wird automatisch von GitHub Actions nach jedem Merge ausgeführt.
+ * Wird automatisch vom pre-commit Hook bei jedem Commit ausgeführt.
+ * Kann auch manuell mit: npm run version:bump
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // Pfade
 const packageJsonPath = path.join(__dirname, '..', 'package.json');
@@ -32,8 +34,18 @@ const now = new Date();
 const mergeDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
 const mergeTime = now.toTimeString().slice(0, 5);   // HH:MM
 
+// Git Commit-Count ermitteln (+1 weil der aktuelle Commit noch nicht gezählt ist)
+let commitCount = 0;
+try {
+    const count = execSync('git rev-list --count HEAD', { encoding: 'utf8' }).trim();
+    commitCount = parseInt(count, 10) + 1; // +1 für den aktuellen Commit
+} catch (e) {
+    console.warn('Git commit count nicht verfügbar:', e.message);
+}
+
 console.log(`Bumping version: ${currentVersion} → ${newVersion}`);
 console.log(`Merge date: ${mergeDate} ${mergeTime}`);
+console.log(`Commit count: ${commitCount}`);
 
 // 1. Package.json aktualisieren
 packageJson.version = newVersion;
@@ -44,8 +56,11 @@ console.log('✓ package.json updated');
 const versionJsContent = `/**
  * VERSION INFORMATION
  *
- * Bei jedem Merge wird die PATCH-Version (dritte Stelle) hochgezählt.
+ * Bei jedem Commit wird die PATCH-Version (dritte Stelle) hochgezählt.
  * Format: MAJOR.MINOR.PATCH
+ *
+ * Automatisch generiert von scripts/bump-version.js via pre-commit Hook.
+ * NICHT manuell bearbeiten!
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
@@ -56,9 +71,12 @@ const TiageVersion = {
     minor: ${minor},
     patch: ${newPatch},
 
-    // Letztes Merge-Datum und -Uhrzeit
+    // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '${mergeDate}',
     mergeTime: '${mergeTime}',
+
+    // Git Commit-Anzahl
+    commitCount: ${commitCount},
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
@@ -85,25 +103,25 @@ const TiageVersion = {
 // Initialisierung: Version in UI anzeigen (Header, Footer, Age Verification)
 function initVersionDisplay() {
     const versionText = \`Version \${TiageVersion.version}\`;
-    const mergeText = \`Merge: \${TiageVersion.formattedDate} um \${TiageVersion.mergeTime} Uhr\`;
+    const commitText = \`Commit #\${TiageVersion.commitCount} — \${TiageVersion.formattedDate} \${TiageVersion.mergeTime}\`;
 
     // Header-Version (zwei Zeilen oben rechts)
     const versionLine = document.getElementById('versionLine');
     const mergeLine = document.getElementById('mergeLine');
     if (versionLine) versionLine.textContent = versionText;
-    if (mergeLine) mergeLine.textContent = mergeText;
+    if (mergeLine) mergeLine.textContent = commitText;
 
     // Footer-Version
     const footerVersion = document.getElementById('footerVersion');
     if (footerVersion) {
-        footerVersion.textContent = versionText;
+        footerVersion.textContent = \`\${versionText} | \${commitText}\`;
     }
 
     // Age Verification Version (zwei Zeilen)
     const ageVersionLine = document.getElementById('ageVersionLine');
     const ageMergeLine = document.getElementById('ageMergeLine');
     if (ageVersionLine) ageVersionLine.textContent = versionText;
-    if (ageMergeLine) ageMergeLine.textContent = mergeText;
+    if (ageMergeLine) ageMergeLine.textContent = commitText;
 }
 
 // Bei DOM ready ausführen
@@ -131,4 +149,4 @@ readmeContent = readmeContent.replace(
 fs.writeFileSync(readmePath, readmeContent, 'utf8');
 console.log('✓ README.md updated');
 
-console.log(`\n✅ Version bump complete: v${newVersion}`);
+console.log(`\n✅ Version bump complete: v${newVersion} (Commit #${commitCount})`);

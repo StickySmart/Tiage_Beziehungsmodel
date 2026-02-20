@@ -1307,6 +1307,8 @@ function showDetailModal(title, contentHtml) {
     if (modal && contentEl) {
         if (titleEl) titleEl.textContent = title;
         contentEl.innerHTML = contentHtml;
+        // FIX v4.3: display zurücksetzen (close-Handler setzt display:none)
+        modal.style.display = '';
         modal.classList.add('active');
     } else {
         // Fallback: Alert

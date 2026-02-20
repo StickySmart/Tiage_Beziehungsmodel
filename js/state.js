@@ -169,19 +169,12 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // Wenn User im Survey einzelne Bedürfnisse manuell setzt, werden sie hier gespeichert.
         // Diese überschreiben die berechneten flatNeeds.
-        // ICH: Pro Archetyp gespeichert (8 Slots)
+        // v4.3: GLOBAL — Locks gelten für ALLE Archetypen gleichzeitig.
+        // Ein gesperrter Wert ist eine persönliche Einstellung, nicht archetyp-spezifisch.
         // PARTNER: Nicht mehr verwendet (keine manuellen Overrides)
         profileReview: {
             ich: {
-                // 8 Archetyp-Slots für lockedNeeds
-                single: {},
-                duo: {},
-                'duo_flex': {},
-                solopoly: {},
-                polyamor: {},
-                ra: {},
-                lat: {},
-                aromantisch: {}
+                global: {}  // v4.3: Ein globaler Slot für alle Archetypen
             },
             partner: {
                 lockedNeeds: {}  // Legacy - wird nicht mehr verwendet
@@ -382,7 +375,9 @@ const TiageState = (function() {
         if (value === null || value === undefined) return value;
 
         // Prüfe ob es ein Geschlechts-Pfad ist
-        if (!path.includes('.geschlecht')) return value;
+        // FIX v4.3: geschlecht_extras (FFH) darf NICHT normalisiert werden!
+        // '.geschlecht_extras' enthält '.geschlecht' als Substring → muss explizit ausgeschlossen werden
+        if (!path.includes('.geschlecht') || path.includes('geschlecht_extras')) return value;
 
         // v4.0: Konvertiere altes { primary, secondary } Format zu String
         if (typeof value === 'object' && value !== null) {
@@ -493,7 +488,7 @@ const TiageState = (function() {
          * Get state value (returns a deep clone to prevent external mutation)
          * SMART-GETTER: Automatische Umleitung für flatNeeds.ich und profileReview.ich
          * - flatNeeds.ich → flatNeeds.ich.[currentArchetype]
-         * - profileReview.ich → profileReview.ich.[currentArchetype]
+         * - profileReview.ich.lockedNeeds → profileReview.ich.global (v4.3)
          * Dies ermöglicht Abwärtskompatibilität mit bestehendem Code.
          * @param {string} path - Dot-notation path (e.g., 'personDimensions.ich.geschlecht')
          * @returns {*} The value at the path
@@ -514,16 +509,14 @@ const TiageState = (function() {
                 }
             }
 
-            // Smart-Getter für profileReview.ich.lockedNeeds - leitet auf aktuellen Archetyp-Slot um
+            // Smart-Getter für profileReview.ich.lockedNeeds → profileReview.ich.global
+            // v4.3: Locks sind GLOBAL — gelten für alle Archetypen
             if (path === 'profileReview.ich.lockedNeeds' || path.startsWith('profileReview.ich.lockedNeeds.')) {
-                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
                 if (path === 'profileReview.ich.lockedNeeds') {
-                    // profileReview.ich.lockedNeeds → profileReview.ich.[archetyp]
-                    return deepClone(getByPath(state, `profileReview.ich.${currentArchetype}`)) || {};
+                    return deepClone(getByPath(state, 'profileReview.ich.global')) || {};
                 } else {
-                    // profileReview.ich.lockedNeeds.#Bxx → profileReview.ich.[archetyp].#Bxx
                     const needId = path.replace('profileReview.ich.lockedNeeds.', '');
-                    return deepClone(getByPath(state, `profileReview.ich.${currentArchetype}.${needId}`));
+                    return deepClone(getByPath(state, `profileReview.ich.global.${needId}`));
                 }
             }
 
@@ -534,7 +527,7 @@ const TiageState = (function() {
          * Set state value and notify subscribers
          * SMART-SETTER: Automatische Umleitung für flatNeeds.ich und profileReview.ich
          * - flatNeeds.ich → flatNeeds.ich.[currentArchetype]
-         * - profileReview.ich.lockedNeeds → profileReview.ich.[currentArchetype]
+         * - profileReview.ich.lockedNeeds → profileReview.ich.global (v4.3)
          * Dies ermöglicht Abwärtskompatibilität mit bestehendem Code.
          * @param {string} path - Dot-notation path
          * @param {*} value - The new value
@@ -556,14 +549,14 @@ const TiageState = (function() {
                 }
             }
 
-            // Smart-Setter für profileReview.ich.lockedNeeds - leitet auf aktuellen Archetyp-Slot um
+            // Smart-Setter für profileReview.ich.lockedNeeds → profileReview.ich.global
+            // v4.3: Locks sind GLOBAL — gelten für alle Archetypen
             if (path === 'profileReview.ich.lockedNeeds' || path.startsWith('profileReview.ich.lockedNeeds.')) {
-                const currentArchetype = getByPath(state, 'archetypes.ich.primary') || 'single';
                 if (path === 'profileReview.ich.lockedNeeds') {
-                    actualPath = `profileReview.ich.${currentArchetype}`;
+                    actualPath = 'profileReview.ich.global';
                 } else {
                     const needId = path.replace('profileReview.ich.lockedNeeds.', '');
-                    actualPath = `profileReview.ich.${currentArchetype}.${needId}`;
+                    actualPath = `profileReview.ich.global.${needId}`;
                 }
             }
 
@@ -1129,66 +1122,67 @@ const TiageState = (function() {
         },
 
         /**
-         * Migrate profileReview from old format (lockedNeeds) to new format (per-archetype)
-         * Old: { ich: { lockedNeeds: {...} }, partner: { lockedNeeds: {...} } }
-         * New: { ich: { single: {...}, duo: {...}, ... }, partner: { lockedNeeds: {} } }
+         * Migrate profileReview to v4.3 GLOBAL format
+         * v4.3: Locks sind GLOBAL — ein einziger Slot für alle Archetypen.
+         *
+         * Migriert von:
+         *   - Alt v1: { ich: { lockedNeeds: {...} } }
+         *   - Alt v2: { ich: { single: {...}, duo: {...}, ... } }  (per-Archetyp)
+         * Zu:
+         *   - Neu v4.3: { ich: { global: {...} } }
+         *
+         * Bei per-Archetyp werden alle Locks gemergt (union, letzter Wert gewinnt).
          * @private
-         * @param {Object} profileReview - Old format profileReview
-         * @returns {Object} Migrated profileReview
+         * @param {Object} profileReview - Altes Format
+         * @returns {Object} Migriertes profileReview
          */
         _migrateProfileReview(profileReview) {
             if (!profileReview) return profileReview;
 
             const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
-            // Prüfen ob bereits neues Format (ich hat Archetyp-Keys statt lockedNeeds)
             if (profileReview.ich && typeof profileReview.ich === 'object') {
                 const ichKeys = Object.keys(profileReview.ich);
+
+                // v4.3: Bereits im globalen Format?
+                if (ichKeys.length === 1 && ichKeys[0] === 'global') {
+                    console.log('[TiageState] profileReview bereits im v4.3 GLOBAL Format');
+                    return profileReview;
+                }
+
+                // v2: Per-Archetyp Format → merge alle in global
                 const hasArchetypeKeys = ichKeys.some(key => archetypes.includes(key));
-
                 if (hasArchetypeKeys) {
-                    // Bereits im neuen Format - sicherstellen dass alle Archetypen existieren
-                    const migrated = {
-                        ich: {},
-                        partner: { lockedNeeds: {} }  // Partner: Legacy, wird nicht mehr verwendet
-                    };
+                    const merged = {};
                     for (const arch of archetypes) {
-                        migrated.ich[arch] = profileReview.ich[arch] || {};
+                        const archLocks = profileReview.ich[arch];
+                        if (archLocks && typeof archLocks === 'object') {
+                            Object.assign(merged, archLocks);
+                        }
                     }
-                    console.log('[TiageState] profileReview bereits im neuen Format');
-                    return migrated;
+                    const count = Object.keys(merged).length;
+                    console.log(`[TiageState] Migration v2→v4.3: ${count} Locks aus per-Archetyp in global gemergt`);
+                    return {
+                        ich: { global: merged },
+                        partner: { lockedNeeds: {} }
+                    };
                 }
 
-                // Altes Format mit lockedNeeds - kopiere in alle Archetyp-Slots
-                const oldLockedNeeds = profileReview.ich.lockedNeeds || {};
-                console.log('[TiageState] Migriere profileReview.ich von lockedNeeds zu Archetyp-Slots');
-
-                const migrated = {
-                    ich: {},
-                    partner: { lockedNeeds: {} }
-                };
-
-                // Kopiere alte lockedNeeds in alle 8 Archetyp-Slots
-                for (const arch of archetypes) {
-                    migrated.ich[arch] = { ...oldLockedNeeds };
+                // v1: Altes lockedNeeds Format → direkt übernehmen
+                if (profileReview.ich.lockedNeeds) {
+                    const oldLocks = profileReview.ich.lockedNeeds;
+                    const count = Object.keys(oldLocks).length;
+                    console.log(`[TiageState] Migration v1→v4.3: ${count} Locks aus lockedNeeds in global übernommen`);
+                    return {
+                        ich: { global: { ...oldLocks } },
+                        partner: { lockedNeeds: {} }
+                    };
                 }
-
-                console.log('[TiageState] profileReview migriert');
-                return migrated;
             }
 
             // Leeres oder unerwartetes Format - initialisiere neu
             return {
-                ich: {
-                    single: {},
-                    duo: {},
-                    'duo_flex': {},
-                    solopoly: {},
-                    polyamor: {},
-                    ra: {},
-                    lat: {},
-                    aromantisch: {}
-                },
+                ich: { global: {} },
                 partner: { lockedNeeds: {} }
             };
         },
@@ -1374,13 +1368,14 @@ const TiageState = (function() {
          * ICH: Liest aus dem aktuellen Archetyp-Slot
          * PARTNER: Gibt leeres Objekt zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
-         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * v4.3: GLOBAL — Locks gelten für alle Archetypen.
+         * @param {string} [_archetyp] - Ignoriert (Rückwärtskompatibilität)
          * @returns {Object} { '#B15': value, ... }
          */
-        getLockedNeeds(person, archetyp = null) {
+        getLockedNeeds(person, _archetyp = null) {
             if (person === 'ich') {
-                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-                return this.get(`profileReview.ich.${arch}`) || {};
+                // v4.3: GLOBAL — ein Slot für alle Archetypen
+                return this.get('profileReview.ich.lockedNeeds') || {};
             }
             // Partner: Keine manuellen Overrides mehr
             return {};
@@ -1388,8 +1383,8 @@ const TiageState = (function() {
 
         /**
          * Lock a need value (from survey)
-         * v1.8.925: GLOBAL LOCK - Speichert für ALLE 8 Archetypen gleichzeitig!
-         * Der User will dass ein gesperrtes Bedürfnis in JEDEM Archetyp denselben Wert hat.
+         * v4.3: GLOBAL LOCK — Speichert in profileReview.ich.global
+         * Gesperrte Werte gelten für ALLE Archetypen gleichermaßen.
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
@@ -1402,18 +1397,15 @@ const TiageState = (function() {
                 return;
             }
             const clampedValue = Math.min(100, Math.max(0, value));
-            // v1.8.925: GLOBAL - Speichere für ALLE Archetypen
-            const allArchetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
-            allArchetypes.forEach(arch => {
-                this.set(`profileReview.ich.${arch}.${needId}`, clampedValue);
-            });
-            console.log(`[TiageState] lockNeed GLOBAL: ${needId} = ${clampedValue} für alle 8 Archetypen`);
+            // v4.3: GLOBAL — ein einziger Slot, Smart-Setter leitet um
+            this.set(`profileReview.ich.lockedNeeds.${needId}`, clampedValue);
+            console.log(`[TiageState] lockNeed GLOBAL: ${needId} = ${clampedValue}`);
         },
 
         /**
          * Unlock a need (remove survey override)
-         * v1.8.925: GLOBAL UNLOCK - Entfernt aus ALLEN 8 Archetypen gleichzeitig!
-         * v1.8.926: Triggert Neuberechnung damit berechneter Archetyp-Wert genutzt wird
+         * v4.3: GLOBAL UNLOCK — Entfernt aus profileReview.ich.global
+         * Triggert Neuberechnung damit berechneter Archetyp-Wert genutzt wird.
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
@@ -1423,14 +1415,11 @@ const TiageState = (function() {
             if (person === 'partner') {
                 return;
             }
-            // v1.8.925: GLOBAL - Entferne aus ALLEN Archetypen
-            const allArchetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
-            allArchetypes.forEach(arch => {
-                const current = this.get(`profileReview.ich.${arch}`) || {};
-                delete current[needId];
-                this.set(`profileReview.ich.${arch}`, current);
-            });
-            console.log(`[TiageState] unlockNeed GLOBAL: ${needId} aus allen 8 Archetypen entfernt`);
+            // v4.3: GLOBAL — aus einem einzigen Slot löschen
+            const current = this.get('profileReview.ich.lockedNeeds') || {};
+            delete current[needId];
+            this.set('profileReview.ich.lockedNeeds', current);
+            console.log(`[TiageState] unlockNeed GLOBAL: ${needId} entfernt`);
 
             // v1.8.926: Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
             // Dispatch Event das ProfileCalculator zum Neuberechnen auffordert
@@ -1443,19 +1432,19 @@ const TiageState = (function() {
 
         /**
          * Check if a need is locked
-         * ICH: Prüft im aktuellen Archetyp-Slot
+         * v4.3: GLOBAL — prüft in profileReview.ich.global
          * PARTNER: Gibt immer false zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
-         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @param {string} [_archetyp] - Ignoriert (Rückwärtskompatibilität)
          * @returns {boolean}
          */
-        isNeedLocked(person, needId, archetyp = null) {
+        isNeedLocked(person, needId, _archetyp = null) {
             if (person === 'partner') {
                 return false;
             }
-            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            const locked = this.get(`profileReview.ich.${arch}.${needId}`);
+            // v4.3: GLOBAL — Smart-Getter leitet um
+            const locked = this.get(`profileReview.ich.lockedNeeds.${needId}`);
             return locked !== undefined && locked !== null;
         },
 
@@ -1521,7 +1510,7 @@ const TiageState = (function() {
             });
             this.set('flatNeeds', { ich: {}, partner: {} });
             this.set('profileReview', {
-                ich: { lockedNeeds: {} },
+                ich: { global: {} },
                 partner: { lockedNeeds: {} }
             });
         },
@@ -1686,7 +1675,7 @@ const TiageState = (function() {
                     } else {
                         console.log('[TiageState] loadFromStorage - KEINE resonanzFaktoren in localStorage!');
                     }
-                    // profileReview Migration: Altes Format (lockedNeeds) zu neuem Format (pro Archetyp)
+                    // profileReview Migration: v1/v2 → v4.3 GLOBAL Format
                     if (parsed.profileReview) {
                         const migratedProfileReview = this._migrateProfileReview(parsed.profileReview);
                         this.set('profileReview', migratedProfileReview);
@@ -1766,6 +1755,17 @@ const TiageState = (function() {
                 isLoadingFromStorage = false;
                 console.log('[TiageState] loadFromStorage - END (isLoadingFromStorage = false)');
                 this._ensureFlatNeedsInitialized();
+
+                // FIX v4.3: R-Faktoren nach dem Laden neu berechnen
+                // Während loadFromStorage() waren Subscriber unterdrückt (isSuppressResonanzRecalc),
+                // daher müssen R-Faktoren einmalig nachberechnet werden
+                setTimeout(function() {
+                    if (typeof ResonanzCard !== 'undefined' && ResonanzCard.recalculate) {
+                        console.log('[TiageState] Post-Load: R-Faktoren Neuberechnung für ich + partner');
+                        ResonanzCard.recalculate('ich');
+                        ResonanzCard.recalculate('partner');
+                    }
+                }, 300);
             }
         },
 
