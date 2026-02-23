@@ -815,10 +815,25 @@ const BeduerfnisDetailView = (function() {
                 TiageState.set(`${person}.${archetype}.needs.${needId}.customBase`, value);
                 console.log(`[BeduerfnisDetailView] Basis-Wert geändert: ${person}.${archetype}.${needId} = ${value} (typisch: ${typicalValue})`);
 
+                // FIX: Auch flatNeeds aktualisieren, damit Resonanzfaktoren neu berechnet werden
+                const modifiers = getModifiers(needId, person);
+                const finalValue = value + (modifiers.gender || 0) + (modifiers.orientierung || 0) + (modifiers.dominanz || 0);
+
+                // Hole aktuelle flatNeeds und aktualisiere diesen Wert
+                const currentFlatNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds(person) : (TiageState.get(`flatNeeds.${person}`) || {});
+                currentFlatNeeds[needId] = finalValue;
+                TiageState.set(`flatNeeds.${person}`, currentFlatNeeds);
+                console.log(`[BeduerfnisDetailView] FlatNeeds aktualisiert: ${person}.${needId} = ${finalValue}`);
+
                 // Neu rendern
                 const container = document.querySelector(`[data-need-id="${needId}"]`);
                 if (container && container.parentNode) {
                     container.outerHTML = render(needId, person);
+                }
+
+                // Trigger Neuberechnung der Hauptseite (updateDisplay)
+                if (typeof updateDisplay === 'function') {
+                    updateDisplay();
                 }
             }
         }
