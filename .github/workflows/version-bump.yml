@@ -36,7 +36,25 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
+      - name: Check if version was already bumped
+        id: check_bump
+        run: |
+          # Prüfe ob package.json oder js/version.js im letzten Commit geändert wurden
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+
+          if echo "$CHANGED_FILES" | grep -q "package.json"; then
+            echo "Version already bumped by pre-commit hook"
+            echo "already_bumped=true" >> $GITHUB_OUTPUT
+            # Hole aktuelle Version aus package.json
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "NEW_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+          else
+            echo "Version not bumped yet, will bump now"
+            echo "already_bumped=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Bump patch version
+        if: steps.check_bump.outputs.already_bumped == 'false'
         run: |
           # Run the version bump script
           node scripts/bump-version.js
@@ -47,19 +65,22 @@ jobs:
 
       - name: Commit and push version bump
         run: |
-          git add package.json js/version.js
+          # Wenn bereits gebumpt: nur Tag erstellen
+          # Wenn nicht gebumpt: Commit + Tag erstellen
 
-          # Only commit if there are changes
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
+          if [ "${{ steps.check_bump.outputs.already_bumped }}" == "false" ]; then
+            git add package.json js/version.js README.md
+
+            # Only commit if there are changes
+            if ! git diff --staged --quiet; then
+              git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
+            fi
           fi
 
-          git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
-
-          # Only create tag if it doesn't exist
+          # Tag erstellen (immer, auch wenn pre-commit schon gebumpt hat)
           if ! git tag -l "v${{ env.NEW_VERSION }}" | grep -q .; then
             git tag -a "v${{ env.NEW_VERSION }}" -m "Version ${{ env.NEW_VERSION }}"
+            echo "Created tag v${{ env.NEW_VERSION }}"
           fi
 
           git push --follow-tags
