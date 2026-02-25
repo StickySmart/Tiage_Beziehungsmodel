@@ -1632,16 +1632,26 @@ const AttributeSummaryCard = (function() {
                     TiageState.unlockNeed(currentPerson, needId);
                 }
 
-                // FIX v1.8.967: Schloss grün/rot färben basierend auf Speicher-Status
+                // FIX v1.8.968: Status-Indikator-Punkt (grün/rot) neben Schloss
                 if (needItem) {
                     const lockIcon = needItem.querySelector('.flat-need-lock');
                     if (lockIcon) {
-                        // Prüfe ob Wert tatsächlich in TiageState gespeichert ist
-                        const savedValue = TiageState.getLockedNeeds(currentPerson)[needId];
-                        const isSaved = lockState ? (savedValue !== undefined && savedValue !== null) : !TiageState.isNeedLocked(currentPerson, needId);
+                        // Entferne alten Indikator
+                        const oldIndicator = lockIcon.querySelector('.lock-status-indicator');
+                        if (oldIndicator) oldIndicator.remove();
 
-                        lockIcon.classList.remove('lock-saved', 'lock-unsaved');
-                        lockIcon.classList.add(isSaved ? 'lock-saved' : 'lock-unsaved');
+                        // Prüfe ob Wert in TiageState gespeichert ist
+                        const savedValue = TiageState.getLockedNeeds(currentPerson)[needId];
+                        const currentValue = needObj ? needObj.value : 50;
+                        const isSaved = lockState
+                            ? (savedValue !== undefined && savedValue !== null && savedValue === currentValue)
+                            : !TiageState.isNeedLocked(currentPerson, needId);
+
+                        // Erstelle Status-Indikator-Punkt
+                        const indicator = document.createElement('span');
+                        indicator.className = `lock-status-indicator ${isSaved ? 'saved' : 'unsaved'}`;
+                        indicator.title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert ✗';
+                        lockIcon.appendChild(indicator);
                     }
                 }
 

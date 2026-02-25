@@ -2025,17 +2025,31 @@ input.resonanz-input:focus {
     content: "🔒";
 }
 
-/* FIX v1.8.967: Lock-Icon Farben basierend auf Speicher-Status */
-.flat-need-lock.lock-saved {
-    color: #22c55e !important; /* Grün = gespeichert */
-    opacity: 1 !important;
-    filter: drop-shadow(0 0 2px #22c55e);
+/* FIX v1.8.968: Status-Indikator-Punkt neben Schloss */
+.flat-need-lock {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
-.flat-need-lock.lock-unsaved {
-    color: #ef4444 !important; /* Rot = nicht gespeichert */
-    opacity: 1 !important;
-    filter: drop-shadow(0 0 2px #ef4444);
+.lock-status-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.lock-status-indicator.saved {
+    background: #22c55e; /* Grün = gespeichert */
+    box-shadow: 0 0 4px #22c55e;
+}
+
+.lock-status-indicator.unsaved {
+    background: #ef4444; /* Rot = nicht gespeichert */
+    box-shadow: 0 0 4px #ef4444;
 }
 
 /* Value Changed State - Bedürfnis dessen Wert vom Standard abweicht */
