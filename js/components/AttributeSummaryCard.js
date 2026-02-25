@@ -1712,6 +1712,63 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Kopiert markierte Bedürfnisse in ALLE Archetyp-Slots
+     * FIX v1.8.970: Explicit Copy - Werte sofort in alle Slots schreiben
+     */
+    function copySelectedNeedsToAllArchetypes() {
+        if (selectedNeeds.size === 0) {
+            showLockToast('⚠ Keine Bedürfnisse markiert');
+            return;
+        }
+
+        // Ermittle aktuelle Person
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Partner kann nicht kopiert werden
+        if (currentPerson === 'partner') {
+            showLockToast('⚠ Partner-Bedürfnisse können nicht kopiert werden');
+            return;
+        }
+
+        const archetypes = ['single', 'duo', 'duoflex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        let copiedCount = 0;
+
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (!needObj) return;
+
+            const currentValue = needObj.value;
+
+            // Kopiere in alle Archetyp-Slots
+            archetypes.forEach(arch => {
+                // Hole aktuellen flatNeeds für diesen Archetyp
+                const archNeeds = TiageState.get(`flatNeeds.ich.${arch}`) || {};
+
+                // Setze den Wert
+                archNeeds[needId] = currentValue;
+
+                // Schreibe zurück
+                TiageState.set(`flatNeeds.ich.${arch}`, archNeeds);
+            });
+
+            copiedCount++;
+        });
+
+        // Speichern
+        if (typeof TiageState !== 'undefined' && copiedCount > 0) {
+            TiageState.saveToStorage();
+            showLockToast(`✓ ${copiedCount} Bedürfnis(se) in ${archetypes.length} Archetypen kopiert`);
+            console.log('[copySelectedNeedsToAllArchetypes] Kopiert:', copiedCount, 'Bedürfnisse in', archetypes.length, 'Archetypen');
+
+            // Auswahl leeren
+            clearNeedSelection();
+        }
+    }
+
+    /**
      * Speichert alle Änderungen sofort (manueller Speicher-Button)
      * Gibt visuelles Feedback beim Speichern
      */
@@ -2939,6 +2996,10 @@ const AttributeSummaryCard = (function() {
                     <button class="bulk-lock-btn" data-action="bulk-lock-needs" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">🔒</span>
                         <span class="bulk-btn-label">Ent-/Sperren</span>
+                    </button>
+                    <button class="bulk-copy-btn" data-action="bulk-copy-needs" title="Markierte Werte in ALLE Archetyp-Slots kopieren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                        <span class="bulk-btn-icon">📋</span>
+                        <span class="bulk-btn-label">In alle Archetypen</span>
                     </button>
                 </div>
                 <button class="bulk-save-btn" data-action="bulk-save-needs" title="Alle Änderungen jetzt speichern">
@@ -5507,6 +5568,7 @@ const AttributeSummaryCard = (function() {
         updateSelectedNeedsValue,
         lockSelectedNeeds,
         toggleLockSelectedNeeds,
+        copySelectedNeedsToAllArchetypes,
         saveAllChanges,
         updateSelectedLockButtonState,
         // NEU: Bulk-Increment/Decrement für markierte Bedürfnisse
@@ -5574,6 +5636,62 @@ if (typeof document !== 'undefined') {
                 AttributeSummaryCard.loadLockedHauptfragen(event.detail.person);
                 console.log('[AttributeSummaryCard] LockedHauptfragen geladen für', event.detail.person);
             }
+        }
+    });
+
+    // FIX v1.8.970: Event-Delegation für Bulk-Action-Buttons
+    document.addEventListener('click', function(event) {
+        const target = event.target.closest('[data-action]');
+        if (!target) return;
+
+        const action = target.dataset.action;
+
+        switch (action) {
+            case 'bulk-copy-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.copySelectedNeedsToAllArchetypes) {
+                    AttributeSummaryCard.copySelectedNeedsToAllArchetypes();
+                }
+                break;
+            case 'bulk-lock-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.toggleLockSelectedNeeds) {
+                    AttributeSummaryCard.toggleLockSelectedNeeds();
+                }
+                break;
+            case 'bulk-increment-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.incrementSelectedNeeds) {
+                    AttributeSummaryCard.incrementSelectedNeeds();
+                }
+                break;
+            case 'bulk-decrement-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.decrementSelectedNeeds) {
+                    AttributeSummaryCard.decrementSelectedNeeds();
+                }
+                break;
+            case 'bulk-reset-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.resetSelectedNeedsValues) {
+                    AttributeSummaryCard.resetSelectedNeedsValues();
+                }
+                break;
+            case 'bulk-save-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.saveAllChanges) {
+                    AttributeSummaryCard.saveAllChanges();
+                }
+                break;
+            case 'select-all-needs':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.selectAllFilteredNeeds) {
+                    AttributeSummaryCard.selectAllFilteredNeeds();
+                }
+                break;
+            case 'clear-needs-selection':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.clearNeedSelection) {
+                    AttributeSummaryCard.clearNeedSelection();
+                }
+                break;
+            case 'invert-needs-selection':
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.invertNeedSelection) {
+                    AttributeSummaryCard.invertNeedSelection();
+                }
+                break;
         }
     });
 }
