@@ -1773,17 +1773,18 @@ const AttributeSummaryCard = (function() {
         });
 
         const allLocked = lockedCount === selectedNeeds.size;
-        const someLocked = lockedCount > 0 && lockedCount < selectedNeeds.size;
 
+        // FIX v1.8.969: Nur 2 Zustände statt 3
         if (allLocked) {
+            // Alle gesperrt → Entsperren-Icon
             if (icon) icon.textContent = '🔓';
             btn.title = 'Alle markierten Werte entsperren';
-        } else if (someLocked) {
-            if (icon) icon.textContent = '🔐';
-            btn.title = `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} noch nicht gesperrt`;
         } else {
+            // Nicht alle gesperrt → Sperren-Icon
             if (icon) icon.textContent = '🔒';
-            btn.title = 'Alle markierten Werte sperren';
+            btn.title = lockedCount > 0
+                ? `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} sperren (${lockedCount} bereits gesperrt)`
+                : 'Alle markierten Werte sperren';
         }
     }
 
@@ -2041,14 +2042,12 @@ const AttributeSummaryCard = (function() {
             // Alle gesperrt → Entsperren Icon
             if (icon) icon.textContent = '🔓';
             btn.title = 'Alle gefilterten Bedürfnisse entsperren';
-        } else if (status.someLocked) {
-            // Teilweise gesperrt
-            if (icon) icon.textContent = '🔐';
-            btn.title = `${status.totalCount - status.lockedCount} von ${status.totalCount} noch nicht gesperrt`;
         } else {
-            // Keine gesperrt → Sperren Icon
+            // FIX v1.8.969: Nur 2 Zustände - nicht alle gesperrt → Sperren Icon
             if (icon) icon.textContent = '🔒';
-            btn.title = 'Alle gefilterten Bedürfnisse sperren';
+            btn.title = status.someLocked
+                ? `${status.totalCount - status.lockedCount} von ${status.totalCount} sperren (${status.lockedCount} bereits gesperrt)`
+                : 'Alle gefilterten Bedürfnisse sperren';
         }
     }
 
