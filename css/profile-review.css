@@ -2025,6 +2025,19 @@ input.resonanz-input:focus {
     content: "🔒";
 }
 
+/* FIX v1.8.967: Lock-Icon Farben basierend auf Speicher-Status */
+.flat-need-lock.lock-saved {
+    color: #22c55e !important; /* Grün = gespeichert */
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 2px #22c55e);
+}
+
+.flat-need-lock.lock-unsaved {
+    color: #ef4444 !important; /* Rot = nicht gespeichert */
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 2px #ef4444);
+}
+
 /* Value Changed State - Bedürfnis dessen Wert vom Standard abweicht */
 .flat-need-item.value-changed {
     background: rgba(168, 85, 247, 0.08);

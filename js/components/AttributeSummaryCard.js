@@ -1631,6 +1631,20 @@ const AttributeSummaryCard = (function() {
                 } else {
                     TiageState.unlockNeed(currentPerson, needId);
                 }
+
+                // FIX v1.8.967: Schloss grün/rot färben basierend auf Speicher-Status
+                if (needItem) {
+                    const lockIcon = needItem.querySelector('.flat-need-lock');
+                    if (lockIcon) {
+                        // Prüfe ob Wert tatsächlich in TiageState gespeichert ist
+                        const savedValue = TiageState.getLockedNeeds(currentPerson)[needId];
+                        const isSaved = lockState ? (savedValue !== undefined && savedValue !== null) : !TiageState.isNeedLocked(currentPerson, needId);
+
+                        lockIcon.classList.remove('lock-saved', 'lock-unsaved');
+                        lockIcon.classList.add(isSaved ? 'lock-saved' : 'lock-unsaved');
+                    }
+                }
+
                 lockedCount++;
             }
 
