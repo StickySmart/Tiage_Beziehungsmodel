@@ -1402,7 +1402,7 @@ const TiageState = (function() {
          */
         /**
          * Get locked needs for a person
-         * ICH: HYBRID — Global locks minus archetyp-specific unlocks
+         * ICH: Lädt direkt aus dem Archetyp-Slot
          * PARTNER: Keine manuellen Overrides
          * @param {string} person - 'ich' or 'partner'
          * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
@@ -1410,19 +1410,9 @@ const TiageState = (function() {
          */
         getLockedNeeds(person, archetyp = null) {
             if (person === 'ich') {
-                // FIX v1.8.963: HYBRID — Global locks mit archetyp-spezifischen Unlocks
+                // FIX v1.8.964: Direkt aus Archetyp-Slot lesen
                 const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-                const globalLocks = this.get('profileReview.ich.global.lockedNeeds') || {};
-                const archetypUnlocks = this.get(`profileReview.ich.${arch}.unlockedNeeds`) || {};
-
-                // Return global locks, aber ohne die archetyp-spezifisch entsperrten
-                const result = {};
-                for (const needId in globalLocks) {
-                    if (!archetypUnlocks[needId]) {
-                        result[needId] = globalLocks[needId];
-                    }
-                }
-                return result;
+                return this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
             }
             // Partner: Keine manuellen Overrides
             return {};
@@ -1430,12 +1420,12 @@ const TiageState = (function() {
 
         /**
          * Lock a need value (from survey)
-         * ICH: GLOBAL lock — affects ALL archetyps, removes archetyp unlocks
+         * ICH: Schreibt in ALLE Archetyp-Slots
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
          * @param {number} value - 0-100
-         * @param {string} [archetyp] - Ignoriert (Lock ist immer global)
+         * @param {string} [archetyp] - Ignoriert (Lock betrifft alle Archetypen)
          */
         lockNeed(person, needId, value, archetyp = null) {
             if (person === 'partner') {
@@ -1444,25 +1434,18 @@ const TiageState = (function() {
             }
             const clampedValue = Math.min(100, Math.max(0, value));
 
-            // FIX v1.8.963: GLOBAL lock — betrifft ALLE Archetypen
-            this.set(`profileReview.ich.global.lockedNeeds.${needId}`, clampedValue);
-
-            // Entferne aus ALLEN archetyp-spezifischen Unlocks
+            // FIX v1.8.964: Schreibt in ALLE Archetyp-Slots
             const archetypes = ['single', 'verheiratet', 'beziehung', 'affaere', 'bekanntschaft'];
             archetypes.forEach(arch => {
-                const unlocks = this.get(`profileReview.ich.${arch}.unlockedNeeds`) || {};
-                if (unlocks[needId]) {
-                    delete unlocks[needId];
-                    this.set(`profileReview.ich.${arch}.unlockedNeeds`, unlocks);
-                }
+                this.set(`profileReview.ich.${arch}.lockedNeeds.${needId}`, clampedValue);
             });
 
-            console.log(`[TiageState] lockNeed GLOBAL: ${needId} = ${clampedValue}`);
+            console.log(`[TiageState] lockNeed in ALLE Archetypen: ${needId} = ${clampedValue}`);
         },
 
         /**
          * Unlock a need (remove survey override)
-         * ICH: PER ARCHETYP unlock — adds to archetyp-specific unlocks (overrides global lock)
+         * ICH: Löscht nur aus aktuellem Archetyp-Slot
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
@@ -1473,13 +1456,13 @@ const TiageState = (function() {
                 return;
             }
 
-            // FIX v1.8.963: PER ARCHETYP unlock — fügt zu archetyp-spezifischen Unlocks hinzu
+            // FIX v1.8.964: Löscht nur aus aktuellem Archetyp-Slot
             const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            const current = this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
+            delete current[needId];
+            this.set(`profileReview.ich.${arch}.lockedNeeds`, current);
 
-            // Markiere als archetyp-spezifisch entsperrt (überschreibt global lock)
-            this.set(`profileReview.ich.${arch}.unlockedNeeds.${needId}`, true);
-
-            console.log(`[TiageState] unlockNeed [${arch}]: ${needId} archetyp-spezifisch entsperrt`);
+            console.log(`[TiageState] unlockNeed [${arch}]: ${needId} aus Archetyp-Slot entfernt`);
 
             // Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
             if (typeof document !== 'undefined') {
@@ -1491,7 +1474,7 @@ const TiageState = (function() {
 
         /**
          * Check if a need is locked
-         * ICH: HYBRID — globally locked AND NOT archetyp-unlocked
+         * ICH: Prüft direkt im Archetyp-Slot
          * PARTNER: Gibt immer false zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
@@ -1503,13 +1486,10 @@ const TiageState = (function() {
                 return false;
             }
 
-            // FIX v1.8.963: HYBRID — global gesperrt UND NICHT archetyp-spezifisch entsperrt
+            // FIX v1.8.964: Prüft direkt im Archetyp-Slot
             const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            const globallyLocked = this.get(`profileReview.ich.global.lockedNeeds.${needId}`);
-            const archetypUnlocked = this.get(`profileReview.ich.${arch}.unlockedNeeds.${needId}`);
-
-            // Gesperrt wenn: global lock existiert UND NICHT archetyp-spezifisch entsperrt
-            return (globallyLocked !== undefined && globallyLocked !== null) && !archetypUnlocked;
+            const locked = this.get(`profileReview.ich.${arch}.lockedNeeds.${needId}`);
+            return locked !== undefined && locked !== null;
         },
 
         // ═══════════════════════════════════════════════════════════════════
