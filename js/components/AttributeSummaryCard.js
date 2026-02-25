@@ -2567,6 +2567,19 @@ const AttributeSummaryCard = (function() {
         currentFlatPerson = currentPerson;
         currentFlatArchetypLabel = archetypLabel;
 
+        // FIX v1.8.966: Sortierung aus TiageState laden beim Archetyp-/Person-Wechsel
+        if ((isNewArchetyp || isNewPerson) && typeof TiageState !== 'undefined') {
+            const savedSorting = TiageState.get(`ui.needsSorting.${currentPerson}`);
+            if (savedSorting) {
+                currentFlatSortMode = savedSorting.sortMode || 'changed';
+                sortStack = savedSorting.sortStack || ['changed'];
+                Object.assign(sortDirections, savedSorting.sortDirections || {});
+                additiveSortMode = savedSorting.additiveSortMode || false;
+                currentSortPerson = currentPerson;
+                console.log('[AttributeSummaryCard] Sortierung aus TiageState geladen:', savedSorting);
+            }
+        }
+
         // v4.3: No-Op (Baseline entfernt, isValueChanged nutzt Locks als SSOT)
         setBaselineForPerson(currentPerson, archetyp);
 
@@ -3132,6 +3145,16 @@ const AttributeSummaryCard = (function() {
         savedStatePerPerson[currentSortPerson].sortMode = currentFlatSortMode;
         savedStatePerPerson[currentSortPerson].sortStack = [...sortStack];
         savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
+
+        // FIX v1.8.966: Sortierung in TiageState persistent speichern
+        if (typeof TiageState !== 'undefined') {
+            TiageState.set(`ui.needsSorting.${currentSortPerson}`, {
+                sortMode: currentFlatSortMode,
+                sortStack: [...sortStack],
+                sortDirections: {...sortDirections},
+                additiveSortMode: additiveSortMode
+            });
+        }
 
         console.log('[AttributeSummaryCard] Sort-Stack:', sortStack, 'Richtungen:', sortDirections);
         reRenderFlatNeeds();
