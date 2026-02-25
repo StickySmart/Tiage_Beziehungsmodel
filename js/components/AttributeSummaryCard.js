@@ -1659,6 +1659,8 @@ const AttributeSummaryCard = (function() {
             updateSelectedLockButtonState();
             // Re-render für konsistente UI-Darstellung (Hauptfrage Lock-Icons, Nuancen-Status)
             reRenderFlatNeeds();
+            // FIX v1.8.965: Auswahl nach Lock/Unlock leeren (verhindert Doppel-Lock)
+            clearNeedSelection();
         }
     }
 
