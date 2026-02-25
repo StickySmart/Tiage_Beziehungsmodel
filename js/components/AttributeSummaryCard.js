@@ -1672,11 +1672,10 @@ const AttributeSummaryCard = (function() {
             lockSingleNeed(needId);
         });
 
-        // Einmal speichern nach allen Änderungen
-        if (typeof TiageState !== 'undefined' && lockedCount > 0) {
-            TiageState.saveToStorage();
-            console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson);
-            showLockToast(lockState ? `${lockedCount} Werte gesperrt` : `${lockedCount} Werte entsperrt`);
+        // FIX v1.8.971: NICHT auto-speichern - nur im RAM (Explicit Save Workflow)
+        if (lockedCount > 0) {
+            console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson, '(nur RAM)');
+            showLockToast(lockState ? `${lockedCount} Werte gesperrt (🔴 nicht gespeichert)` : `${lockedCount} Werte entsperrt (🔴 nicht gespeichert)`);
             // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
             updateLockedCountDisplay();
             // Button-State aktualisieren
@@ -1685,6 +1684,8 @@ const AttributeSummaryCard = (function() {
             reRenderFlatNeeds();
             // FIX v1.8.965: Auswahl nach Lock/Unlock leeren (verhindert Doppel-Lock)
             clearNeedSelection();
+            // Trigger UI-Update für Status-Indikatoren
+            updateAllStatusIndicators();
         }
     }
 
@@ -1757,15 +1758,62 @@ const AttributeSummaryCard = (function() {
             copiedCount++;
         });
 
-        // Speichern
-        if (typeof TiageState !== 'undefined' && copiedCount > 0) {
-            TiageState.saveToStorage();
-            showLockToast(`✓ ${copiedCount} Bedürfnis(se) in ${archetypes.length} Archetypen kopiert`);
-            console.log('[copySelectedNeedsToAllArchetypes] Kopiert:', copiedCount, 'Bedürfnisse in', archetypes.length, 'Archetypen');
+        // FIX v1.8.971: NICHT auto-speichern - nur im RAM (Explicit Save Workflow)
+        if (copiedCount > 0) {
+            showLockToast(`✓ ${copiedCount} Bedürfnis(se) in ${archetypes.length} Archetypen kopiert (🔴 nicht gespeichert)`);
+            console.log('[copySelectedNeedsToAllArchetypes] Kopiert:', copiedCount, 'Bedürfnisse in', archetypes.length, 'Archetypen (nur RAM)');
 
             // Auswahl leeren
             clearNeedSelection();
+
+            // Trigger UI-Update für Status-Indikatoren
+            updateAllStatusIndicators();
         }
+    }
+
+    /**
+     * Aktualisiert alle Status-Indikatoren (rot/grün Punkte)
+     * FIX v1.8.971: Vergleicht RAM-Werte mit TiageState
+     */
+    function updateAllStatusIndicators() {
+        flatNeeds.forEach(need => {
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (!needItem) return;
+
+            const lockIcon = needItem.querySelector('.flat-need-lock');
+            if (!lockIcon) return;
+
+            // Entferne alten Indikator
+            const oldIndicator = lockIcon.querySelector('.lock-status-indicator');
+            if (oldIndicator) oldIndicator.remove();
+
+            // Ermittle Person
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext?.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+
+            // Hole aktuellen Archetyp
+            const archetyp = TiageState.get('archetypes.ich.primary') || 'single';
+
+            // Hole RAM-Wert
+            const ramValue = need.value;
+            const ramLocked = need.locked;
+
+            // Hole TiageState-Wert
+            const stateNeeds = TiageState.get(`flatNeeds.ich.${archetyp}`) || {};
+            const stateValue = stateNeeds[need.id];
+            const stateLocked = TiageState.isNeedLocked(currentPerson, need.id);
+
+            // Vergleiche: Synchron wenn Wert UND Lock-Status gleich
+            const isSaved = (ramValue === stateValue) && (ramLocked === stateLocked);
+
+            // Erstelle Status-Indikator
+            const indicator = document.createElement('span');
+            indicator.className = `lock-status-indicator ${isSaved ? 'saved' : 'unsaved'}`;
+            indicator.title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert (nur RAM) ✗';
+            lockIcon.appendChild(indicator);
+        });
     }
 
     /**
@@ -1778,6 +1826,9 @@ const AttributeSummaryCard = (function() {
         if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
             TiageState.saveToStorage();
             console.log('[AttributeSummaryCard] Manuelles Speichern ausgeführt');
+
+            // FIX v1.8.971: Status-Indikatoren aktualisieren (alle → grün)
+            updateAllStatusIndicators();
 
             // Visuelles Feedback
             if (btn) {
