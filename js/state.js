@@ -1400,79 +1400,88 @@ const TiageState = (function() {
          * @param {string} [_archetyp] - Ignoriert (Rückwärtskompatibilität)
          * @returns {Object} { '#B15': value, ... }
          */
-        getLockedNeeds(person, _archetyp = null) {
+        /**
+         * Get locked needs for a person
+         * ICH: Lädt aus dem aktuellen Archetyp-Slot
+         * PARTNER: Keine manuellen Overrides
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @returns {Object} { '#B1': value, '#B2': value, ... }
+         */
+        getLockedNeeds(person, archetyp = null) {
             if (person === 'ich') {
-                // v4.3: GLOBAL — ein Slot für alle Archetypen
-                return this.get('profileReview.ich.lockedNeeds') || {};
+                // FIX v1.8.962: PRO ARCHETYP — jeder Archetyp hat eigene Locks
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                return this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
             }
-            // Partner: Keine manuellen Overrides mehr
+            // Partner: Keine manuellen Overrides
             return {};
         },
 
         /**
          * Lock a need value (from survey)
-         * v4.3: GLOBAL LOCK — Speichert in profileReview.ich.global
-         * Gesperrte Werte gelten für ALLE Archetypen gleichermaßen.
+         * ICH: Speichert in profileReview.ich.{archetyp}.lockedNeeds
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
          * @param {number} value - 0-100
-         * @param {string} [_archetyp] - Ignoriert (nur für Rückwärtskompatibilität)
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        lockNeed(person, needId, value, _archetyp = null) {
+        lockNeed(person, needId, value, archetyp = null) {
             if (person === 'partner') {
                 console.warn('[TiageState] lockNeed für Partner wird ignoriert - keine manuellen Overrides');
                 return;
             }
             const clampedValue = Math.min(100, Math.max(0, value));
-            // v4.3: GLOBAL — ein einziger Slot, Smart-Setter leitet um
-            this.set(`profileReview.ich.lockedNeeds.${needId}`, clampedValue);
-            console.log(`[TiageState] lockNeed GLOBAL: ${needId} = ${clampedValue}`);
+            // FIX v1.8.962: PRO ARCHETYP — jeder Archetyp hat eigene Locks
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            this.set(`profileReview.ich.${arch}.lockedNeeds.${needId}`, clampedValue);
+            console.log(`[TiageState] lockNeed [${arch}]: ${needId} = ${clampedValue}`);
         },
 
         /**
          * Unlock a need (remove survey override)
-         * v4.3: GLOBAL UNLOCK — Entfernt aus profileReview.ich.global
-         * Triggert Neuberechnung damit berechneter Archetyp-Wert genutzt wird.
+         * ICH: Entfernt aus profileReview.ich.{archetyp}.lockedNeeds
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
-         * @param {string} [_archetyp] - Ignoriert (nur für Rückwärtskompatibilität)
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        unlockNeed(person, needId, _archetyp = null) {
+        unlockNeed(person, needId, archetyp = null) {
             if (person === 'partner') {
                 return;
             }
-            // v4.3: GLOBAL — aus einem einzigen Slot löschen
-            const current = this.get('profileReview.ich.lockedNeeds') || {};
+            // FIX v1.8.962: PRO ARCHETYP — aus archetyp-spezifischem Slot löschen
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            const current = this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
             delete current[needId];
-            this.set('profileReview.ich.lockedNeeds', current);
-            console.log(`[TiageState] unlockNeed GLOBAL: ${needId} entfernt`);
+            this.set(`profileReview.ich.${arch}.lockedNeeds`, current);
+            console.log(`[TiageState] unlockNeed [${arch}]: ${needId} entfernt`);
 
-            // v1.8.926: Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
-            // Dispatch Event das ProfileCalculator zum Neuberechnen auffordert
+            // Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
             if (typeof document !== 'undefined') {
                 document.dispatchEvent(new CustomEvent('tiage:needUnlocked', {
-                    detail: { person, needId }
+                    detail: { person, needId, archetyp: arch }
                 }));
             }
         },
 
         /**
          * Check if a need is locked
-         * v4.3: GLOBAL — prüft in profileReview.ich.global
+         * ICH: Prüft in profileReview.ich.{archetyp}.lockedNeeds
          * PARTNER: Gibt immer false zurück (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
-         * @param {string} [_archetyp] - Ignoriert (Rückwärtskompatibilität)
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          * @returns {boolean}
          */
-        isNeedLocked(person, needId, _archetyp = null) {
+        isNeedLocked(person, needId, archetyp = null) {
             if (person === 'partner') {
                 return false;
             }
-            // v4.3: GLOBAL — Smart-Getter leitet um
-            const locked = this.get(`profileReview.ich.lockedNeeds.${needId}`);
+            // FIX v1.8.962: PRO ARCHETYP — prüft archetyp-spezifisch
+            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+            const locked = this.get(`profileReview.ich.${arch}.lockedNeeds.${needId}`);
             return locked !== undefined && locked !== null;
         },
 
