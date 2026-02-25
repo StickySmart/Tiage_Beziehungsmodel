@@ -1196,32 +1196,60 @@ const TiageState = (function() {
          * @param {string} person - 'ich' or 'partner'
          * @returns {Object} { R1, R2, R3, R4 } mit value und locked
          */
-        getResonanzFaktoren(person) {
-            return this.get(`resonanzFaktoren.${person}`);
+        /**
+         * Get Resonanzfaktoren for a person
+         * ICH: Lädt aus dem aktuellen Archetyp-Slot
+         * PARTNER: Lädt aus dem flachen Slot
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @returns {Object} { R1: {value, locked}, R2: {...}, ... }
+         */
+        getResonanzFaktoren(person, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                return this.get(`resonanzFaktoren.ich.${arch}`) || { R1: {value: 1.0, locked: false}, R2: {value: 1.0, locked: false}, R3: {value: 1.0, locked: false}, R4: {value: 1.0, locked: false} };
+            }
+            return this.get(`resonanzFaktoren.partner`) || { R1: {value: 1.0, locked: false}, R2: {value: 1.0, locked: false}, R3: {value: 1.0, locked: false}, R4: {value: 1.0, locked: false} };
         },
 
         /**
          * Set a single Resonanzfaktor
+         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * PARTNER: Speichert in den flachen Slot
          * @param {string} person - 'ich' or 'partner'
          * @param {string} key - 'R1', 'R2', 'R3', or 'R4'
          * @param {number} value - v3.4: richtungsbasiert um 1.0 zentriert, R > 1.0 möglich
          * @param {boolean} locked - Whether the value is locked
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setResonanzFaktor(person, key, value, locked = false) {
+        setResonanzFaktor(person, key, value, locked = false, archetyp = null) {
             // v3.4: Kein Clamping - R-Werte werden direkt aus Berechnung übernommen
-            this.set(`resonanzFaktoren.${person}.${key}`, { value, locked });
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`resonanzFaktoren.ich.${arch}.${key}`, { value, locked });
+            } else {
+                this.set(`resonanzFaktoren.${person}.${key}`, { value, locked });
+            }
         },
 
         /**
          * Set all Resonanzfaktoren at once
+         * ICH: Speichert in den aktuellen Archetyp-Slot
+         * PARTNER: Speichert in den flachen Slot
          * v3.4: Kein Clamping - R > 1.0 möglich
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} faktoren - { R1, R2, R3, R4 }
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setResonanzFaktoren(person, faktoren) {
+        setResonanzFaktoren(person, faktoren, archetyp = null) {
             // v3.4: Kein Clamping - Werte direkt übernehmen
             const normalized = this._normalizeResonanzFaktoren(faktoren);
-            this.set(`resonanzFaktoren.${person}`, normalized);
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`resonanzFaktoren.ich.${arch}`, normalized);
+            } else {
+                this.set(`resonanzFaktoren.partner`, normalized);
+            }
         },
 
         /**

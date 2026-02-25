@@ -188,8 +188,9 @@ const ResonanzCard = (function() {
 
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
-            const fromState = TiageState.get(`resonanzFaktoren.${person}`);
-            // console.log('[ResonanzCard] load() - TiageState.get:', person, JSON.stringify(fromState)); // DISABLED: Message overflow
+            // FIX: Verwende getResonanzFaktoren() statt get() für archetyp-spezifische Speicherung
+            const fromState = TiageState.getResonanzFaktoren(person);
+            // console.log('[ResonanzCard] load() - TiageState.getResonanzFaktoren:', person, JSON.stringify(fromState)); // DISABLED: Message overflow
             if (fromState && fromState.R1) {
                 const result = {
                     R1: {
