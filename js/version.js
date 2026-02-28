@@ -18,7 +18,11 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-02-28',
+<<<<<<< HEAD
     mergeTime: '09:34',
+=======
+    mergeTime: '10:36',
+>>>>>>> 2358bfc (fix: RESET-Button setzt ICH GOD+FFH zurück (nicht Gewichtung))
 
     // Git Commit-Anzahl
     commitCount: 3001,

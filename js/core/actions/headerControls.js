@@ -214,52 +214,105 @@
             },
 
             /**
-             * Reset ICH FFH + AGOD - permanent gespeichert wie GOD.
-             * Nutzt die gleichen Save-Pfade wie Geschlecht/Orientierung/Dominanz.
+             * Reset ICH GOD + FFH - wie FREE für Partner, nur für ICH.
+             * Setzt Geschlecht, Orientierung, Dominanz + FFH zurück.
+             * Speichert permanent (TiageState + per-Archetyp localStorage).
              */
             'reset-ich-ffh-agod': function(el, event) {
-                console.log('[RESET-ICH] FFH + AGOD zurücksetzen (permanent)');
+                console.log('[RESET-ICH] GOD + FFH zurücksetzen (permanent, wie Partner FREE)');
 
-                // 1. FFH zurücksetzen → TiageState + Cache + UI (wie GOD-Änderungen)
+                if (typeof TiageState === 'undefined') return;
+
+                // 1. GOD in TiageState zurücksetzen
+                TiageState.set('personDimensions.ich.geschlecht', null);
+                TiageState.set('personDimensions.ich.orientierung', null);
+                TiageState.set('personDimensions.ich.dominanz', null);
+
+                // 2. FFH zurücksetzen
                 var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
                 if (typeof window.geschlechtExtrasCache !== 'undefined') {
                     window.geschlechtExtrasCache.ich = defaultExtras;
                 }
-                if (typeof TiageState !== 'undefined') {
-                    TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
-                }
-                // UI synchronisieren (liest aus TiageState → Cache → Buttons)
-                if (typeof window.syncGeschlechtExtrasUI === 'function') {
-                    window.syncGeschlechtExtrasUI('ich');
-                }
 
-                // 2. AGOD zurücksetzen → permanent (reset() inkl. save)
-                if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD &&
-                    typeof TiageWeights.AGOD.reset === 'function') {
-                    TiageWeights.AGOD.reset();
-                }
-
-                // 3. TiageState persistent speichern (wie bei GOD-Änderungen)
-                if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
-                    TiageState.saveToStorage();
-                }
+                // 3. Persistent speichern
+                TiageState.saveToStorage();
 
                 // 4. Per-Archetyp speichern (wie beim Archetyp-Wechsel)
-                if (typeof MemoryManagerV2 !== 'undefined' && typeof TiageState !== 'undefined') {
+                if (typeof MemoryManagerV2 !== 'undefined') {
                     var archetypes = TiageState.getArchetypes('ich');
                     var currentArch = archetypes?.primary || archetypes;
                     if (currentArch) {
                         MemoryManagerV2.saveIchForSpecificArchetyp(currentArch);
-                        console.log('[RESET-ICH] Per-Archetyp gespeichert für:', currentArch);
                     }
                 }
 
-                // 5. Synthese neu berechnen
+                // 5. UI zurücksetzen - alle aktiven States in ICH-Grids leeren
+                var allClasses = ['active', 'active-primary', 'active-secondary', 'primary-selected', 'secondary-selected'];
+
+                // Geschlecht P-Grid + S-Grid
+                document.querySelectorAll(
+                    '#ich-geschlecht-p-grid .geschlecht-btn, #mobile-ich-geschlecht-p-grid .geschlecht-btn, ' +
+                    '#ich-geschlecht-s-grid .geschlecht-btn, #mobile-ich-geschlecht-s-grid .geschlecht-btn'
+                ).forEach(function(btn) {
+                    btn.classList.remove.apply(btn.classList, allClasses);
+                    btn.querySelectorAll('.geschlecht-indicator').forEach(function(ind) { ind.remove(); });
+                });
+
+                // FFH Extras Buttons
+                document.querySelectorAll(
+                    '#ich-geschlecht-extras-grid .geschlecht-btn, #mobile-ich-geschlecht-extras-grid .geschlecht-btn'
+                ).forEach(function(btn) {
+                    btn.classList.remove.apply(btn.classList, allClasses);
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                    btn.style.opacity = '';
+                });
+
+                // Orientierung
+                document.querySelectorAll(
+                    '#ich-orientierung-grid .orientierung-btn, #mobile-ich-orientierung-grid .orientierung-btn'
+                ).forEach(function(btn) {
+                    btn.classList.remove.apply(btn.classList, allClasses);
+                    btn.querySelectorAll('.geschlecht-indicator').forEach(function(ind) { ind.remove(); });
+                });
+
+                // Dominanz
+                document.querySelectorAll(
+                    '#ich-dominanz-grid .dominanz-btn, #mobile-ich-dominanz-grid .dominanz-btn'
+                ).forEach(function(btn) {
+                    btn.classList.remove.apply(btn.classList, allClasses);
+                    btn.querySelectorAll('.geschlecht-indicator').forEach(function(ind) { ind.remove(); });
+                });
+
+                // Summaries leeren
+                ['ich-geschlecht-summary', 'ich-orientierung-summary', 'ich-dominanz-summary',
+                 'mobile-ich-geschlecht-summary', 'mobile-ich-orientierung-summary', 'mobile-ich-dominanz-summary'
+                ].forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.innerHTML = '';
+                });
+
+                // Header-Info leeren
+                ['ich-header-geschlecht', 'ich-header-dominanz', 'ich-header-orientierung',
+                 'mobile-ich-header-geschlecht', 'mobile-ich-header-dominanz', 'mobile-ich-header-orientierung'
+                ].forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.innerHTML = '';
+                });
+
+                // needs-selection Klasse zurücksetzen
+                document.querySelectorAll('[data-dimension*="ich-geschlecht"], [data-dimension*="ich-orientierung"], [data-dimension*="ich-dominanz"]').forEach(function(el) {
+                    el.classList.add('needs-selection');
+                });
+
+                // 6. Synthese neu berechnen
                 if (typeof window.updateComparisonView === 'function') {
                     window.updateComparisonView();
                 }
 
-                console.log('[RESET-ICH] FFH + AGOD permanent zurückgesetzt');
+                console.log('[RESET-ICH] GOD + FFH permanent zurückgesetzt und gespeichert');
             },
 
             /**
