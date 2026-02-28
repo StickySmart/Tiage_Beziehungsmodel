@@ -14,18 +14,14 @@ const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
     minor: 8,
-    patch: 982,
+    patch: 983,
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-02-28',
-<<<<<<< HEAD
-    mergeTime: '09:54',
-=======
-    mergeTime: '10:55',
->>>>>>> 044e013 (fix: Soundcloud-Logo durch offizielles SVG ersetzt (transparent))
+    mergeTime: '09:56',
 
     // Git Commit-Anzahl
-    commitCount: 3007,
+    commitCount: 3009,
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
