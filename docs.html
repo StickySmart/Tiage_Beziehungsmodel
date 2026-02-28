@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dokumentation | Ti-age</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="colorful-heart.svg">
     <style>
         :root {
             --bg-main: #0d0d1a;
@@ -335,14 +335,35 @@
                 </ul>
             </div>
 
-            <!-- Ad Space -->
-            <div class="ad-space">
-                <div class="ad-space-label">Werbung</div>
-                <div class="ad-space-placeholder">
-                    <!-- Hier kann Werbung eingefuegt werden -->
-                    <!-- Beispiel: Google AdSense, eigene Banner, etc. -->
-                    <p style="font-size: 12px; opacity: 0.7;">Werbeplatz verfuegbar</p>
-                </div>
+            <!-- Spenden -->
+            <div class="ad-space" style="min-height: auto; border-style: solid; border-color: rgba(234, 179, 8, 0.4);">
+                <div class="ad-space-label">Projekt unterstützen</div>
+                <p style="font-size: 12px; color: var(--text-secondary, #aaa); margin: 0 0 12px 0; line-height: 1.5;">
+                    Ti-age ist kostenlos und werbefrei.<br>
+                    Unterstütze die Entwicklung mit einer Spende!
+                </p>
+                <form action="https://www.paypal.com/donate" method="post" target="_blank" rel="noopener">
+                    <input type="hidden" name="business" value="info@ti-age.de" />
+                    <input type="hidden" name="currency_code" value="EUR" />
+                    <input type="hidden" name="item_name" value="Ti-age Spende" />
+                    <button type="submit" style="
+                        background: #0070ba;
+                        color: #fff;
+                        border: none;
+                        border-radius: 24px;
+                        padding: 10px 28px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        transition: background 0.2s, transform 0.1s;
+                    " onmouseover="this.style.background='#005ea6'" onmouseout="this.style.background='#0070ba'">
+                        <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" width="20" height="20" style="border-radius: 3px;">
+                        Spenden via PayPal
+                    </button>
+                </form>
             </div>
 
             <!-- JOYclub Widget -->
