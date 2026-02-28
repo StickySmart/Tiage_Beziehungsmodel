@@ -235,6 +235,15 @@
                     window.geschlechtExtrasCache.ich = defaultExtras;
                 }
 
+                // 2b. GFK-Kompetenz zurücksetzen
+                TiageState.set('personDimensions.ich.gfk', null);
+                if (typeof window.personDimensions !== 'undefined' && window.personDimensions.ich) {
+                    window.personDimensions.ich.gfk = null;
+                }
+                if (typeof window.mobilePersonDimensions !== 'undefined' && window.mobilePersonDimensions.ich) {
+                    window.mobilePersonDimensions.ich.gfk = null;
+                }
+
                 // 3. Persistent speichern
                 TiageState.saveToStorage();
 
@@ -284,6 +293,14 @@
                 ).forEach(function(btn) {
                     btn.classList.remove.apply(btn.classList, allClasses);
                     btn.querySelectorAll('.geschlecht-indicator').forEach(function(ind) { ind.remove(); });
+                });
+
+                // GFK-Kompetenz Buttons
+                document.querySelectorAll(
+                    '#ich-gfk-grid .gfk-btn, #mobile-ich-gfk-grid .gfk-btn, ' +
+                    '.gfk-grid[data-person="ich"] .gfk-btn'
+                ).forEach(function(btn) {
+                    btn.classList.remove.apply(btn.classList, allClasses);
                 });
 
                 // Summaries leeren
