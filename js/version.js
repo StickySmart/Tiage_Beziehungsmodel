@@ -18,7 +18,11 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-02-28',
+<<<<<<< HEAD
     mergeTime: '09:54',
+=======
+    mergeTime: '10:55',
+>>>>>>> 044e013 (fix: Soundcloud-Logo durch offizielles SVG ersetzt (transparent))
 
     // Git Commit-Anzahl
     commitCount: 3007,
