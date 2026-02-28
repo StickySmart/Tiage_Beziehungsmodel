@@ -18,7 +18,11 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-02-28',
+<<<<<<< HEAD
     mergeTime: '09:31',
+=======
+    mergeTime: '10:33',
+>>>>>>> 7f35d94 (fix: Cache-Bust auf v=20260228b für alle geänderten JS-Dateien)
 
     // Git Commit-Anzahl
     commitCount: 2999,
