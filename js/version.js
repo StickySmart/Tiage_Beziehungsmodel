@@ -18,7 +18,11 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-02-28',
+<<<<<<< HEAD
     mergeTime: '09:15',
+=======
+    mergeTime: '10:30',
+>>>>>>> 5784d12 (fix: RESET-Button zu DU verschoben + permanenter Save wie GOD)
 
     // Git Commit-Anzahl
     commitCount: 2997,

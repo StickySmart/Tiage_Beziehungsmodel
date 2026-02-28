@@ -1057,8 +1057,10 @@
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="ich-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
-                <!-- Spacer for symmetry with Partner FREE button -->
-                <div style="display: flex; justify-content: center; margin: 8px 0; height: 32px;"></div>
+                <!-- RESET Button - ICH FFH + AGOD zurücksetzen -->
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
+                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD zurücksetzen und speichern">RESET</button>
+                </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
@@ -1239,9 +1241,8 @@
                 <div class="header-geschlecht-info" id="partner-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <!-- FREE Button - Reset Partner GOD -->
-                <div style="display: flex; justify-content: center; gap: 8px; margin: 8px 0;">
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
                     <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
-                    <button type="button" data-action="temp-reset-partner" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD temporär zurücksetzen (nur RAM, wird bei Navigation wiederhergestellt)">RESET</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-multi">
@@ -1370,6 +1371,10 @@
                     <div class="header-geschlecht-info" id="mobile-ich-header-geschlecht"></div>
                     <div class="header-geschlecht-info" id="mobile-ich-header-dominanz"></div>
                     <div class="header-geschlecht-info" id="mobile-ich-header-orientierung"></div>
+                </div>
+                <!-- RESET Button - ICH FFH + AGOD zurücksetzen (Mobile) -->
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
+                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD zurücksetzen und speichern">RESET</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht-multi">
@@ -1587,9 +1592,8 @@
                     <div class="header-geschlecht-info" id="mobile-partner-header-orientierung"></div>
                 </div>
                 <!-- FREE Button - Reset Partner GOD (Mobile) -->
-                <div style="display: flex; justify-content: center; gap: 8px; margin: 8px 0;">
+                <div style="display: flex; justify-content: center; margin: 8px 0;">
                     <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
-                    <button type="button" data-action="temp-reset-partner" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD temporär zurücksetzen (nur RAM, wird bei Navigation wiederhergestellt)">RESET</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">

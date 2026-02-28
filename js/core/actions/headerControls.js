@@ -214,47 +214,52 @@
             },
 
             /**
-             * Temporärer Reset: ICH FFH + AGOD nur im RAM löschen.
-             * TiageState wird NICHT verändert → beim nächsten Reload
-             * oder Archetyp-Wechsel kommen die gespeicherten Werte zurück.
-             *
-             * WICHTIG: syncGeschlechtExtrasUI() NICHT aufrufen, da die
-             * den Cache aus TiageState überschreibt. UI direkt setzen.
+             * Reset ICH FFH + AGOD - permanent gespeichert wie GOD.
+             * Nutzt die gleichen Save-Pfade wie Geschlecht/Orientierung/Dominanz.
              */
-            'temp-reset-partner': function(el, event) {
-                console.log('[TEMP-RESET] ICH FFH + AGOD (RAM only, TiageState unverändert)');
+            'reset-ich-ffh-agod': function(el, event) {
+                console.log('[RESET-ICH] FFH + AGOD zurücksetzen (permanent)');
 
-                // 1. ICH-FFH nur im Runtime-Cache leeren (TiageState bleibt unberührt!)
+                // 1. FFH zurücksetzen → TiageState + Cache + UI (wie GOD-Änderungen)
+                var defaultExtras = { fit: false, fuckedup: false, horny: false };
                 if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                    window.geschlechtExtrasCache.ich = { fit: false, fuckedup: false, horny: false };
+                    window.geschlechtExtrasCache.ich = defaultExtras;
+                }
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                }
+                // UI synchronisieren (liest aus TiageState → Cache → Buttons)
+                if (typeof window.syncGeschlechtExtrasUI === 'function') {
+                    window.syncGeschlechtExtrasUI('ich');
                 }
 
-                // 2. ICH-FFH UI Buttons direkt deaktivieren
-                //    (OHNE syncGeschlechtExtrasUI - die liest TiageState und überschreibt Cache)
-                ['#ich-geschlecht-extras-grid .geschlecht-btn',
-                 '#mobile-ich-geschlecht-extras-grid .geschlecht-btn'
-                ].forEach(function(selector) {
-                    document.querySelectorAll(selector).forEach(function(btn) {
-                        btn.classList.remove('active');
-                        btn.style.background = '';
-                        btn.style.borderColor = '';
-                        btn.style.color = '';
-                        btn.style.opacity = '';
-                    });
-                });
-
-                // 3. AGOD nur im RAM zurücksetzen (kein TiageState.save)
+                // 2. AGOD zurücksetzen → permanent (reset() inkl. save)
                 if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD &&
-                    typeof TiageWeights.AGOD.tempReset === 'function') {
-                    TiageWeights.AGOD.tempReset();
+                    typeof TiageWeights.AGOD.reset === 'function') {
+                    TiageWeights.AGOD.reset();
                 }
 
-                // 4. Synthese neu berechnen
+                // 3. TiageState persistent speichern (wie bei GOD-Änderungen)
+                if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                    TiageState.saveToStorage();
+                }
+
+                // 4. Per-Archetyp speichern (wie beim Archetyp-Wechsel)
+                if (typeof MemoryManagerV2 !== 'undefined' && typeof TiageState !== 'undefined') {
+                    var archetypes = TiageState.getArchetypes('ich');
+                    var currentArch = archetypes?.primary || archetypes;
+                    if (currentArch) {
+                        MemoryManagerV2.saveIchForSpecificArchetyp(currentArch);
+                        console.log('[RESET-ICH] Per-Archetyp gespeichert für:', currentArch);
+                    }
+                }
+
+                // 5. Synthese neu berechnen
                 if (typeof window.updateComparisonView === 'function') {
                     window.updateComparisonView();
                 }
 
-                console.log('[TEMP-RESET] ICH FFH + AGOD done - TiageState/localStorage unverändert');
+                console.log('[RESET-ICH] FFH + AGOD permanent zurückgesetzt');
             },
 
             /**
