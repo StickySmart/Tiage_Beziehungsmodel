@@ -1,0 +1,1365 @@
+{
+  "version": "2.0.0",
+  "beschreibung": "Textes du Tarot Zen d'Osho pour les 224 besoins - Version enrichie avec des textes de sagesse individuels",
+  "quelle": "Tarot Zen d'Osho par Ma Deva Padma (St. Martins Press), basé sur les enseignements d'Osho",
+  "copyright": "Tous droits réservés aux détenteurs respectifs. Ces descriptions sont des interprétations libres.",
+
+  "beduerfnisse": {
+    "#B1": {
+      "label": "Air",
+      "frage": "Quelle importance accordez-vous à l'air frais et à la respiration libre ?",
+      "karte": "The Master",
+      "text": "Lorsque vous respirez, c'est le Tout qui respire à travers vous. La liberté commence par un seul souffle conscient."
+    },
+    "#B2": {
+      "label": "Eau",
+      "frage": "Quelle importance accordez-vous à une hydratation suffisante ?",
+      "karte": "Healing",
+      "text": "L'eau porte la mémoire. Lorsque vous vous nourrissez, vous devenez souple. La guérison se fait dans le flux."
+    },
+    "#B3": {
+      "label": "Nourriture",
+      "frage": "Quelle importance accordez-vous à une alimentation saine et régulière ?",
+      "karte": "Conditioning",
+      "text": "Ce que vous mangez vous consume. Se nourrir n'est pas seulement de l'alimentation — c'est discerner l'authenticité de l'attachement."
+    },
+    "#B4": {
+      "label": "Mouvement",
+      "frage": "Quelle importance accordez-vous au mouvement physique ?",
+      "karte": "Adventure",
+      "text": "Le mouvement est la vie. Chaque pas est une invitation vers l'inconnu. Le courage ne signifie pas la destination, mais la confiance."
+    },
+    "#B5": {
+      "label": "Toucher",
+      "frage": "Quelle importance accordez-vous au fait d'être touché par autrui ?",
+      "karte": "Touch",
+      "text": "Le toucher est le premier miroir. Le corps parle bien avant que les mots ne naissent."
+    },
+    "#B6": {
+      "label": "Repos",
+      "frage": "Quelle importance accordez-vous au repos et au sommeil suffisant ?",
+      "karte": "No-Thingness",
+      "text": "Le véritable repos ne naît pas de l'action — mais de l'être. Le néant est le plus grand refuge."
+    },
+    "#B7": {
+      "label": "Expression-sexuelle",
+      "frage": "Quelle importance accordez-vous à l'expression sexuelle ?",
+      "karte": "Passion",
+      "text": "La sexualité est un feu sacré — lorsque vous ne cherchez pas à le posséder. Expression, non appropriation."
+    },
+    "#B8": {
+      "label": "Sécurité-physique",
+      "frage": "Quelle importance accordez-vous à la sécurité physique ?",
+      "karte": "Courage",
+      "text": "La sécurité n'est pas l'absence de danger — c'est l'éclosion au cœur même de la pierre."
+    },
+    "#B9": {
+      "label": "Abri",
+      "frage": "Quelle importance accordez-vous à un logement sûr ?",
+      "karte": "Harmony",
+      "text": "Un foyer est là où le cœur n'a pas besoin de lutter. L'harmonie intérieure est le véritable abri."
+    },
+    "#B10": {
+      "label": "Constance",
+      "frage": "Quelle importance accordez-vous à la constance dans les relations ?",
+      "karte": "Completion",
+      "text": "La constance ne naît pas du fait de retenir, mais du fait de permettre à la vie de s'accomplir."
+    },
+    "#B11": {
+      "label": "Se-sentir-en-sécurité",
+      "frage": "Quelle importance accordez-vous au fait de vous sentir en sécurité émotionnellement ?",
+      "karte": "Trust",
+      "text": "Se sentir en sécurité ne signifie pas tout contrôler — mais sauter, même quand on ne voit pas le sol."
+    },
+    "#B12": {
+      "label": "Protection",
+      "frage": "Quelle importance accordez-vous au sentiment d'être protégé ?",
+      "karte": "Protection",
+      "text": "La protection n'est pas un bouclier — c'est l'espace où vous pouvez rester tendre."
+    },
+    "#B13": {
+      "label": "Stabilité",
+      "frage": "Quelle importance accordez-vous à la stabilité émotionnelle ?",
+      "karte": "Maturity",
+      "text": "La stabilité n'est pas la rigidité. C'est un équilibre mûri — en dedans comme en dehors."
+    },
+    "#B14": {
+      "label": "Légèreté",
+      "frage": "Quelle importance accordez-vous à la légèreté dans le quotidien ?",
+      "karte": "Playfulness",
+      "text": "La légèreté est l'art de faire confiance à l'instant — non parce qu'il est facile, mais parce que vous l'êtes."
+    },
+    "#B15": {
+      "label": "Sentiment-d'appartenance",
+      "frage": "Quelle importance accordez-vous au sentiment d'être en sécurité affective ?",
+      "karte": "We Are the World",
+      "text": "Le sentiment d'appartenance naît quand vous vous savez relié — non par la proximité, mais par la connexion."
+    },
+    "#B16": {
+      "label": "Chaleur",
+      "frage": "Quelle importance accordez-vous à la chaleur émotionnelle ?",
+      "karte": "Warmth",
+      "text": "La chaleur n'est pas un sentiment, mais une présence qui ne juge pas."
+    },
+    "#B17": {
+      "label": "Reconnaissance",
+      "frage": "Quelle importance accordez-vous à la reconnaissance de votre partenaire ?",
+      "karte": "Success",
+      "text": "La reconnaissance advient quand on vous voit sans masque — non pour vos performances, mais pour votre être."
+    },
+    "#B18": {
+      "label": "Proximité",
+      "frage": "Quelle importance accordez-vous à la proximité émotionnelle ?",
+      "karte": "The Lovers",
+      "text": "La proximité est le pont entre deux mondes intérieurs — elle commence par l'intimité avec soi-même."
+    },
+    "#B19": {
+      "label": "Compagnie",
+      "frage": "Quelle importance accordez-vous à la compagnie ?",
+      "karte": "Participation",
+      "text": "La compagnie nourrit quand vous n'avez pas besoin de faire vos preuves. Être là suffit."
+    },
+    "#B20": {
+      "label": "Intimité",
+      "frage": "Quelle importance accordez-vous à l'intimité ?",
+      "karte": "Intimacy",
+      "text": "L'intimité est la nudité de l'âme — non celle du corps."
+    },
+    "#B21": {
+      "label": "Amour",
+      "frage": "Quelle importance accordez-vous à l'amour ?",
+      "karte": "Love",
+      "text": "L'amour n'est pas une relation. C'est un espace. Quand vous aimez, vous laissez libre."
+    },
+    "#B22": {
+      "label": "Sollicitude",
+      "frage": "Quelle importance accordez-vous au fait de prendre soin des autres ?",
+      "karte": "Compassion",
+      "text": "La sollicitude est un don sans exigence — elle arrose sans compter."
+    },
+    "#B23": {
+      "label": "Soutien",
+      "frage": "Quelle importance accordez-vous au soutien ?",
+      "karte": "Support",
+      "text": "Le soutien est un sol invisible. Vous savez qu'il est là — parce que vous osez."
+    },
+    "#B24": {
+      "label": "Être-là-l'un-pour-l'autre",
+      "frage": "Quelle importance accordez-vous au fait d'être là l'un pour l'autre ?",
+      "karte": "Friendliness",
+      "text": "Être là l'un pour l'autre signifie grandir ensemble dans le silence — sans emprise, sans obligation."
+    },
+    "#B25": {
+      "label": "Acceptation",
+      "frage": "Quelle importance accordez-vous à l'acceptation ?",
+      "karte": "Acceptance",
+      "text": "L'acceptation est le premier souffle de liberté. Vous cessez de lutter — et la vie respire à travers vous."
+    },
+    "#B26": {
+      "label": "Compassion",
+      "frage": "Quelle importance accordez-vous à la compassion ?",
+      "karte": "Completion",
+      "text": "La compassion complète le cercle entre vous et l'autre. C'est la reconnaissance : nous ne sommes pas séparés."
+    },
+    "#B27": {
+      "label": "Considération",
+      "frage": "Quelle importance accordez-vous à la considération ?",
+      "karte": "Trust",
+      "text": "Être pris en considération signifie avoir une place dans la conscience de l'autre. C'est un acte de confiance."
+    },
+    "#B28": {
+      "label": "Empathie",
+      "frage": "Quelle importance accordez-vous à l'empathie ?",
+      "karte": "Receptivity",
+      "text": "L'empathie est la capacité d'écouter avec le cœur. La coupe doit être vide pour recueillir les larmes de l'autre."
+    },
+    "#B29": {
+      "label": "Confiance",
+      "frage": "Quelle importance accordez-vous à la confiance ?",
+      "karte": "Change",
+      "text": "La confiance est le courage de s'abandonner au changement. Elle dit oui avant qu'il n'y ait de certitude."
+    },
+    "#B30": {
+      "label": "Attention",
+      "frage": "Quelle importance accordez-vous à l'attention ?",
+      "karte": "Awareness",
+      "text": "Recevoir de l'attention est le don de la présence attentive. La conscience se tourne vers ce qui compte."
+    },
+    "#B31": {
+      "label": "Être-vu",
+      "frage": "Quelle importance accordez-vous au fait d'être vu ?",
+      "karte": "The Lovers",
+      "text": "Être vu signifie être reconnu dans son essence. Les amants se voient l'un l'autre sans voile."
+    },
+    "#B32": {
+      "label": "Être-compris",
+      "frage": "Quelle importance accordez-vous au fait d'être compris ?",
+      "karte": "Understanding",
+      "text": "Être compris va au-delà des mots. C'est le sentiment que quelqu'un parle le langage de votre cœur."
+    },
+    "#B33": {
+      "label": "Harmonie",
+      "frage": "Quelle importance accordez-vous à l'harmonie ?",
+      "karte": "Rebirth",
+      "text": "La véritable harmonie naît de la renaissance — du lâcher-prise des anciennes dissonances."
+    },
+    "#B34": {
+      "label": "Autodétermination",
+      "frage": "Quelle importance accordez-vous à l'autodétermination ?",
+      "karte": "Aloneness",
+      "text": "L'autodétermination commence dans la solitude. Seul celui qui s'appartient peut choisir librement."
+    },
+    "#B35": {
+      "label": "Pouvoir-choisir",
+      "frage": "Quelle importance accordez-vous au fait de pouvoir choisir ?",
+      "karte": "Transformation",
+      "text": "Chaque choix est une petite transformation. Pouvoir choisir signifie façonner activement sa vie."
+    },
+    "#B36": {
+      "label": "Indépendance",
+      "frage": "Quelle importance accordez-vous à l'indépendance ?",
+      "karte": "The Rebel",
+      "text": "L'indépendance est le chemin du rebelle. Il suit sa propre vérité, même quand elle va à contre-courant."
+    },
+    "#B37": {
+      "label": "Avoir-de-l'espace",
+      "frage": "Quelle importance accordez-vous au fait d'avoir de l'espace ?",
+      "karte": "Adventure",
+      "text": "Avoir de l'espace signifie liberté de découvrir. L'aventure a besoin d'étendue, non d'étroitesse."
+    },
+    "#B38": {
+      "label": "Spontanéité",
+      "frage": "Quelle importance accordez-vous à la spontanéité ?",
+      "karte": "Playfulness",
+      "text": "La spontanéité est la danse de l'instant. L'enfant joueur en vous ne connaît pas de plans — seulement la joie."
+    },
+    "#B39": {
+      "label": "Collaboration",
+      "frage": "Quelle importance accordez-vous à la collaboration ?",
+      "karte": "Participation",
+      "text": "La collaboration est une création partagée. Quand tous participent, il naît plus que la somme des parties."
+    },
+    "#B40": {
+      "label": "Communication",
+      "frage": "Quelle importance accordez-vous à la communication ?",
+      "karte": "The Lovers",
+      "text": "La véritable communication est le dialogue de deux cœurs. Les amants parlent aussi dans le silence."
+    },
+    "#B41": {
+      "label": "Communauté",
+      "frage": "Quelle importance accordez-vous à la communauté ?",
+      "karte": "We Are the World",
+      "text": "La communauté est la reconnaissance : nous sommes tous des vagues du même océan. La connexion est notre état naturel."
+    },
+    "#B42": {
+      "label": "Appartenance",
+      "frage": "Quelle importance accordez-vous à l'appartenance ?",
+      "karte": "We Are the World",
+      "text": "L'appartenance n'est pas une possession — c'est savoir que vous faites partie du Tout."
+    },
+    "#B43": {
+      "label": "Réciprocité",
+      "frage": "Quelle importance accordez-vous à la réciprocité ?",
+      "karte": "Going With The Flow",
+      "text": "La réciprocité est le flux naturel entre donner et recevoir. Comme l'eau, elle trouve son équilibre."
+    },
+    "#B44": {
+      "label": "Respect",
+      "frage": "Quelle importance accordez-vous au respect ?",
+      "karte": "The Master",
+      "text": "Le véritable respect commence par soi-même. Le maître honore la vie sous toutes ses formes."
+    },
+    "#B45": {
+      "label": "Avoir-du-sens",
+      "frage": "Quelle importance accordez-vous au fait d'avoir du sens ?",
+      "karte": "Ripeness",
+      "text": "Le sens mûrit comme un fruit. Quand le temps est venu, ce que vous avez apporté devient visible."
+    },
+    "#B46": {
+      "label": "Beauté",
+      "frage": "Quelle importance accordez-vous à la beauté ?",
+      "karte": "Creativity",
+      "text": "La beauté est le langage de l'âme. La créativité rend visible ce que le cœur ressent."
+    },
+    "#B47": {
+      "label": "Loisirs",
+      "frage": "Quelle importance accordez-vous aux loisirs ?",
+      "karte": "Moment to Moment",
+      "text": "Les loisirs sont l'art d'être dans l'instant. Ne pas remplir, mais vider — voilà le véritable repos."
+    },
+    "#B48": {
+      "label": "Joie",
+      "frage": "Quelle importance accordez-vous à la joie ?",
+      "karte": "Integration",
+      "text": "La joie naît quand toutes les parties de vous se réunissent. L'intégration est le chemin vers la joie profonde."
+    },
+    "#B49": {
+      "label": "Humour",
+      "frage": "Quelle importance accordez-vous à l'humour ?",
+      "karte": "Celebration",
+      "text": "L'humour est la célébration de l'absurde. Celui qui sait rire a compris que la vie est un jeu."
+    },
+    "#B50": {
+      "label": "Authenticité",
+      "frage": "Quelle importance accordez-vous à l'authenticité ?",
+      "karte": "Integration",
+      "text": "L'authenticité est intégration. Quand l'intérieur et l'extérieur s'accordent, vous êtes pleinement vous-même."
+    },
+    "#B51": {
+      "label": "Sincérité",
+      "frage": "Quelle importance accordez-vous à la sincérité ?",
+      "karte": "Friendliness",
+      "text": "La sincérité se révèle dans la bienveillance envers soi-même. Seul celui qui ne se déguise pas peut être véritablement amical."
+    },
+    "#B52": {
+      "label": "Intégrité",
+      "frage": "Quelle importance accordez-vous à l'intégrité ?",
+      "karte": "Healing",
+      "text": "L'intégrité est la guérison de la division intérieure. Quand vous êtes intègre, vous êtes entier."
+    },
+    "#B53": {
+      "label": "Présence",
+      "frage": "Quelle importance accordez-vous à la présence ?",
+      "karte": "Awareness",
+      "text": "La présence est la conscience vécue. Ici et maintenant — c'est le seul lieu où la vie se déroule."
+    },
+    "#B54": {
+      "label": "Ordre",
+      "frage": "Quelle importance accordez-vous à l'ordre ?",
+      "karte": "Understanding",
+      "text": "L'ordre naît de la compréhension. Quand vous percez les choses à jour, elles trouvent leur place."
+    },
+    "#B55": {
+      "label": "Conscience",
+      "frage": "Quelle importance accordez-vous à la conscience ?",
+      "karte": "Consciousness",
+      "text": "La conscience est le ciel — les pensées ne sont que des nuages. Vous êtes le ciel, pas les nuages."
+    },
+    "#B56": {
+      "label": "Défi",
+      "frage": "Quelle importance accordez-vous aux défis ?",
+      "karte": "Courage",
+      "text": "Les défis appellent votre courage. Chaque obstacle surmonté vous rend plus fort."
+    },
+    "#B57": {
+      "label": "Clarté",
+      "frage": "Quelle importance accordez-vous à la clarté ?",
+      "karte": "Breakthrough",
+      "text": "La clarté vient après la percée. Quand les brumes se dissipent, vous voyez ce qui a toujours été là."
+    },
+    "#B58": {
+      "label": "Compétence",
+      "frage": "Quelle importance accordez-vous à la compétence ?",
+      "karte": "The Creator",
+      "text": "La compétence est une maîtrise en devenir. Le créateur affine son art par une pratique empreinte d'amour."
+    },
+    "#B59": {
+      "label": "Efficience",
+      "frage": "Quelle importance accordez-vous à l'efficience ?",
+      "karte": "The Master",
+      "text": "La véritable efficience est une précision sans effort. Le maître ne gaspille aucune énergie — il coule."
+    },
+    "#B60": {
+      "label": "Efficacité",
+      "frage": "Quelle importance accordez-vous à l'efficacité ?",
+      "karte": "Totality",
+      "text": "L'efficacité naît de la totalité. Quoi que vous fassiez — faites-le entièrement, et cela portera ses fruits."
+    },
+    "#B61": {
+      "label": "Croissance",
+      "frage": "Quelle importance accordez-vous à la croissance ?",
+      "karte": "Rebirth",
+      "text": "La croissance est une renaissance continue. Chaque jour meurt quelque chose d'ancien pour que quelque chose de nouveau puisse éclore."
+    },
+    "#B62": {
+      "label": "Sens",
+      "frage": "Quelle importance accordez-vous au sens ?",
+      "karte": "Silence",
+      "text": "Dans le silence se révèle le sens. Il ne peut être pensé — seulement ressenti, dans la profondeur du silence."
+    },
+    "#B63": {
+      "label": "Contribuer",
+      "frage": "Quelle importance accordez-vous au fait de contribuer ?",
+      "karte": "Sharing",
+      "text": "Contribuer est un partage naturel. Quand vous donnez depuis l'abondance, vous vous enrichissez vous-même."
+    },
+    "#B64": {
+      "label": "Créativité",
+      "frage": "Quelle importance accordez-vous à la créativité ?",
+      "karte": "Creativity",
+      "text": "La créativité est votre nature. Quand vous créez, vous ne faites qu'un avec l'univers qui crée sans cesse."
+    },
+    "#B65": {
+      "label": "Découverte",
+      "frage": "Quelle importance accordez-vous à la découverte ?",
+      "karte": "Adventure",
+      "text": "La découverte est l'aventure de l'inconnu. Chaque pas vers le nouveau est un pas vers votre immensité."
+    },
+    "#B66": {
+      "label": "Apprentissage",
+      "frage": "Quelle importance accordez-vous à l'apprentissage ?",
+      "karte": "Understanding",
+      "text": "L'apprentissage est le chemin vers la compréhension. Le véritable élève reste toujours curieux, toujours ouvert."
+    },
+    "#B67": {
+      "label": "Expression-de-soi",
+      "frage": "Quelle importance accordez-vous à l'expression de soi ?",
+      "karte": "Integration",
+      "text": "L'expression de soi est une intégration vécue. Quand vous êtes pleinement vous-même, votre être coule naturellement vers l'extérieur."
+    },
+    "#B68": {
+      "label": "Recevoir-des-stimulations",
+      "frage": "Quelle importance accordez-vous au fait de recevoir des stimulations ?",
+      "karte": "Source",
+      "text": "Les stimulations les plus profondes viennent de la source en vous. Les impulsions extérieures éveillent ce qui vit déjà à l'intérieur."
+    },
+    "#B69": {
+      "label": "Célébrer-la-vie",
+      "frage": "Quelle importance accordez-vous au fait de célébrer la vie ?",
+      "karte": "Celebration",
+      "text": "La vie est une fête — vous n'avez besoin d'aucune raison pour célébrer. Votre existence même est raison suffisante."
+    },
+    "#B70": {
+      "label": "Inspiration",
+      "frage": "Quelle importance accordez-vous à l'inspiration ?",
+      "karte": "Inner Voice",
+      "text": "L'inspiration est la voix de la sagesse intérieure. Elle vous murmure ce que votre cœur sait déjà."
+    },
+    "#B71": {
+      "label": "Exprimer-le-deuil",
+      "frage": "Quelle importance accordez-vous au fait d'exprimer le deuil ?",
+      "karte": "Sorrow",
+      "text": "Le deuil a besoin d'expression comme la pluie a besoin de tomber. Laissez-le couler — de l'autre côté attend la clarté."
+    },
+    "#B72": {
+      "label": "Discernement",
+      "frage": "Quelle importance accordez-vous au discernement ?",
+      "karte": "New Vision",
+      "text": "Le discernement est un nouveau regard. Parfois il faut changer de perspective pour voir ce qui a toujours été là."
+    },
+    "#B73": {
+      "label": "Début-et-fin",
+      "frage": "Quelle importance accordez-vous au début et à la fin ?",
+      "karte": "Completion",
+      "text": "Chaque fin porte en elle un commencement. Le cercle se ferme pour qu'un nouveau puisse commencer."
+    },
+    "#B74": {
+      "label": "Exercer-le-contrôle",
+      "frage": "Quelle importance accordez-vous au fait d'exercer le contrôle ?",
+      "karte": "Control",
+      "text": "Le véritable contrôle réside dans le lâcher-prise du contrôle. Le maître de la vie ne contrôle pas — il coule."
+    },
+    "#B75": {
+      "label": "Abandon",
+      "frage": "Quelle importance accordez-vous à l'abandon ?",
+      "karte": "Letting Go",
+      "text": "L'abandon est un lâcher-prise dans la confiance. Les mains vides sont prêtes à recevoir."
+    },
+    "#B76": {
+      "label": "Guider",
+      "frage": "Quelle importance accordez-vous au fait de guider ?",
+      "karte": "Guidance",
+      "text": "Guider signifie montrer aux autres le chemin que vous avez vous-même parcouru. Le guide authentique inspire."
+    },
+    "#B77": {
+      "label": "Être-guidé",
+      "frage": "Quelle importance accordez-vous au fait d'être guidé ?",
+      "karte": "Trust",
+      "text": "Être guidé requiert de la confiance. C'est le courage de tendre la main à un autre dans l'obscurité."
+    },
+    "#B78": {
+      "label": "Rituel",
+      "frage": "Quelle importance accordez-vous au rituel ?",
+      "karte": "The Master",
+      "text": "Les rituels sont des actes conscients. Ils apportent le sacré dans le quotidien et le quotidien dans le sacré."
+    },
+    "#B79": {
+      "label": "Aftercare",
+      "frage": "Quelle importance accordez-vous à l'aftercare ?",
+      "karte": "Healing",
+      "text": "L'aftercare est une guérison attentive. Elle donne à ce qui s'est passé l'espace pour s'intégrer."
+    },
+    "#B80": {
+      "label": "Poser-des-limites",
+      "frage": "Quelle importance accordez-vous au fait de poser des limites ?",
+      "karte": "The Rebel",
+      "text": "Poser des limites est un acte de respect de soi. Le rebelle dit non pour protéger son oui."
+    },
+    "#B81": {
+      "label": "Respecter-les-limites",
+      "frage": "Quelle importance accordez-vous au respect des limites ?",
+      "karte": "Receptivity",
+      "text": "Respecter les limites signifie honorer l'espace de l'autre. La réceptivité commence par l'attention."
+    },
+    "#B82": {
+      "label": "Intensité",
+      "frage": "Quelle importance accordez-vous à l'intensité ?",
+      "karte": "Intensity",
+      "text": "L'intensité est la vie dans sa forme la plus pure. Brûlez intensément — mais ne vous consumez pas."
+    },
+    "#B83": {
+      "label": "Accorder-sa-confiance",
+      "frage": "Quelle importance accordez-vous au fait d'accorder votre confiance ?",
+      "karte": "Trust",
+      "text": "Accorder sa confiance est un acte de courage. Cela ouvre la porte à une connexion profonde."
+    },
+    "#B84": {
+      "label": "Assumer-la-responsabilité",
+      "frage": "Quelle importance accordez-vous au fait d'assumer la responsabilité ?",
+      "karte": "Maturity",
+      "text": "Assumer la responsabilité est un signe de maturité. Cela signifie : je suis le créateur de ma vie."
+    },
+    "#B85": {
+      "label": "Se-laisser-aller",
+      "frage": "Quelle importance accordez-vous au fait de vous laisser aller ?",
+      "karte": "Trust",
+      "text": "Se laisser aller requiert une confiance profonde. C'est le saut, sachant que l'on sera tenu."
+    },
+    "#B86": {
+      "label": "Échange-de-pouvoir",
+      "frage": "Quelle importance accordez-vous à l'échange de pouvoir ?",
+      "karte": "Transformation",
+      "text": "L'échange de pouvoir est une transformation dans la relation. Les deux partenaires se métamorphosent à travers ce jeu conscient."
+    },
+    "#B87": {
+      "label": "Être-au-service",
+      "frage": "Quelle importance accordez-vous au fait d'être au service ?",
+      "karte": "Compassion",
+      "text": "Être au service par compassion est un don sans perte. Vous donnez et recevez en même temps."
+    },
+    "#B88": {
+      "label": "Protéger",
+      "frage": "Quelle importance accordez-vous au fait de protéger ?",
+      "karte": "Courage",
+      "text": "Protéger requiert du courage — le courage de défendre ce que vous aimez."
+    },
+    "#B89": {
+      "label": "Désir-d'enfant",
+      "frage": "Quelle importance accordez-vous au désir d'enfant ?",
+      "karte": "Flowering",
+      "text": "Le désir d'enfant est l'aspiration à l'éclosion. La vie veut se poursuivre, fleurir, se transmettre."
+    },
+    "#B90": {
+      "label": "Parentalité",
+      "frage": "Quelle importance accordez-vous à la parentalité ?",
+      "karte": "The Lovers",
+      "text": "La parentalité est une forme d'amour qui lâche prise. Les amants deviennent trois — et l'amour grandit."
+    },
+    "#B91": {
+      "label": "Procréation",
+      "frage": "Quelle importance accordez-vous à la procréation ?",
+      "karte": "Source",
+      "text": "La procréation vous relie à la source de la vie elle-même. Vous devenez un canal pour un nouvel être."
+    },
+    "#B92": {
+      "label": "Fonder-une-famille",
+      "frage": "Quelle importance accordez-vous au fait de fonder une famille ?",
+      "karte": "We Are the World",
+      "text": "Fonder une famille signifie créer un cercle de connexion. Un microcosme du monde."
+    },
+    "#B93": {
+      "label": "Famille-recomposée",
+      "frage": "Quelle importance accordez-vous à la famille recomposée ?",
+      "karte": "Creativity",
+      "text": "La famille recomposée est une création familiale originale. De nouveaux motifs naissent de fils différents."
+    },
+    "#B94": {
+      "label": "Vie-sans-enfant",
+      "frage": "Quelle importance accordez-vous à une vie sans enfant ?",
+      "karte": "Aloneness",
+      "text": "Une vie sans enfant est un chemin conscient. Dans la solitude, vous trouvez d'autres formes d'accomplissement."
+    },
+    "#B95": {
+      "label": "Adoption",
+      "frage": "Quelle importance accordez-vous à l'adoption ?",
+      "karte": "Compassion",
+      "text": "L'adoption est la compassion en action. Vous ouvrez votre cœur à un enfant qui ne vient pas de vous."
+    },
+    "#B96": {
+      "label": "Enfants-d'accueil",
+      "frage": "Quelle importance accordez-vous aux enfants d'accueil ?",
+      "karte": "Healing",
+      "text": "Accueillir des enfants est un travail de guérison. Vous donnez à un enfant ce dont il a besoin pour guérir."
+    },
+    "#B97": {
+      "label": "Emménager-ensemble",
+      "frage": "Quelle importance accordez-vous au fait d'emménager ensemble ?",
+      "karte": "Harmony",
+      "text": "Emménager ensemble, c'est tisser une harmonie commune. Deux vies deviennent un espace partagé."
+    },
+    "#B98": {
+      "label": "Habiter-séparément",
+      "frage": "Quelle importance accordez-vous au fait d'habiter séparément ?",
+      "karte": "Aloneness",
+      "text": "Habiter séparément honore le besoin de solitude. La proximité a parfois besoin de distance pour respirer."
+    },
+    "#B99": {
+      "label": "Colocation",
+      "frage": "Quelle importance accordez-vous à la colocation ?",
+      "karte": "Participation",
+      "text": "La colocation est une participation partagée au quotidien. La communauté naît dans les petits moments."
+    },
+    "#B100": {
+      "label": "Chambre-à-soi",
+      "frage": "Quelle importance accordez-vous au fait d'avoir une chambre à soi ?",
+      "karte": "Aloneness",
+      "text": "Une chambre à soi est le refuge de l'âme. Dans la solitude, vous vous retrouvez."
+    },
+    "#B101": {
+      "label": "Vie-urbaine",
+      "frage": "Quelle importance accordez-vous à la vie urbaine ?",
+      "karte": "Experiencing",
+      "text": "La vie urbaine est une expérience intense. La ville vibre de vie — celui qui est ouvert en sera richement comblé."
+    },
+    "#B102": {
+      "label": "Vie-rurale",
+      "frage": "Quelle importance accordez-vous à la vie rurale ?",
+      "karte": "Harmony",
+      "text": "La vie rurale est harmonie avec la nature. Le rythme de la terre devient votre rythme."
+    },
+    "#B103": {
+      "label": "Mobilité",
+      "frage": "Quelle importance accordez-vous à la mobilité ?",
+      "karte": "Traveling",
+      "text": "La mobilité est la liberté du voyage. Celui qui peut se mouvoir peut s'épanouir."
+    },
+    "#B104": {
+      "label": "Sédentarité",
+      "frage": "Quelle importance accordez-vous à la sédentarité ?",
+      "karte": "Maturity",
+      "text": "La sédentarité est un enracinement mûri. S'enraciner signifie grandir en profondeur plutôt qu'en étendue."
+    },
+    "#B105": {
+      "label": "Mariage",
+      "frage": "Quelle importance accordez-vous au mariage ?",
+      "karte": "Commitment",
+      "text": "Le mariage est un oui conscient. C'est la décision de traverser ensemble toutes les saisons."
+    },
+    "#B106": {
+      "label": "Union-libre",
+      "frage": "Quelle importance accordez-vous à l'union libre ?",
+      "karte": "The Rebel",
+      "text": "Vivre en union libre est le chemin du rebelle. L'amour n'a pas besoin de certificat — seulement d'authenticité."
+    },
+    "#B107": {
+      "label": "Partenariat-enregistré",
+      "frage": "Quelle importance accordez-vous au partenariat enregistré ?",
+      "karte": "The Lovers",
+      "text": "Le partenariat enregistré est la reconnaissance officielle de l'amour. Les amants entrent visiblement dans le monde."
+    },
+    "#B108": {
+      "label": "Animaux-domestiques",
+      "frage": "Quelle importance accordez-vous aux animaux domestiques ?",
+      "karte": "Friendliness",
+      "text": "Les animaux domestiques enseignent la bienveillance inconditionnelle. Ils aiment sans questionner — et sont aimés en retour."
+    },
+    "#B109": {
+      "label": "Pas-d'animaux",
+      "frage": "Quelle importance accordez-vous au fait de ne pas avoir d'animaux ?",
+      "karte": "Slowing Down",
+      "text": "Ne pas avoir d'animaux crée de l'espace pour la lenteur. Moins d'obligations, plus de silence."
+    },
+    "#B110": {
+      "label": "Loisirs-communs",
+      "frage": "Quelle importance accordez-vous aux loisirs communs ?",
+      "karte": "Celebration",
+      "text": "Les loisirs communs sont des fêtes partagées. Ce qui procure de la joie grandit quand on le partage."
+    },
+    "#B111": {
+      "label": "Loisirs-personnels",
+      "frage": "Quelle importance accordez-vous aux loisirs personnels ?",
+      "karte": "Aloneness",
+      "text": "Les loisirs personnels sont des espaces de solitude. Ils nourrissent la part de vous qui n'appartient qu'à vous."
+    },
+    "#B112": {
+      "label": "Vacances-ensemble",
+      "frage": "Quelle importance accordez-vous aux vacances ensemble ?",
+      "karte": "Adventure",
+      "text": "Les vacances ensemble sont une aventure partagée. Les nouveaux lieux ouvrent de nouveaux espaces — aussi l'un pour l'autre."
+    },
+    "#B113": {
+      "label": "Vacances-séparées",
+      "frage": "Quelle importance accordez-vous aux vacances séparées ?",
+      "karte": "Aloneness",
+      "text": "Les vacances séparées honorent le besoin de solitude. Parfois il faut voyager seul pour se retrouver."
+    },
+    "#B114": {
+      "label": "Planification-à-long-terme",
+      "frage": "Quelle importance accordez-vous à la planification à long terme ?",
+      "karte": "Patience",
+      "text": "La planification à long terme est un ensemencement patient. Vous faites confiance que la graine germera en son temps."
+    },
+    "#B115": {
+      "label": "Vivre-l'instant",
+      "frage": "Quelle importance accordez-vous au fait de vivre l'instant ?",
+      "karte": "Moment to Moment",
+      "text": "Vivre l'instant est l'art suprême. Le passé et le futur disparaissent — seul reste le Maintenant."
+    },
+    "#B116": {
+      "label": "Priorité-carrière",
+      "frage": "Quelle importance accordez-vous à la priorité carrière ?",
+      "karte": "Success",
+      "text": "La priorité carrière est une énergie dirigée. Mais le véritable succès ne réside pas dans l'atteinte, mais dans le devenir."
+    },
+    "#B117": {
+      "label": "Priorité-famille",
+      "frage": "Quelle importance accordez-vous à la priorité famille ?",
+      "karte": "We Are the World",
+      "text": "La priorité famille est la connexion comme priorité. La famille est un microcosme du monde."
+    },
+    "#B118": {
+      "label": "Équilibre-vie-travail",
+      "frage": "Quelle importance accordez-vous à l'équilibre vie-travail ?",
+      "karte": "Integration",
+      "text": "L'équilibre vie-travail est une intégration vécue. Quand tous les domaines de vie coulent, l'harmonie naît."
+    },
+    "#B119": {
+      "label": "Valeurs-communes",
+      "frage": "Quelle importance accordez-vous aux valeurs communes ?",
+      "karte": "We Are the World",
+      "text": "Les valeurs communes sont le lien invisible. Elles relient plus profondément que les mots ou les actes."
+    },
+    "#B120": {
+      "label": "Respect-des-différences",
+      "frage": "Quelle importance accordez-vous au respect des différences ?",
+      "karte": "Understanding",
+      "text": "Respecter les différences signifie comprendre que la diversité est richesse. L'arc-en-ciel a besoin de toutes les couleurs."
+    },
+    "#B121": {
+      "label": "Cultiver-les-traditions",
+      "frage": "Quelle importance accordez-vous au fait de cultiver les traditions ?",
+      "karte": "Ordinariness",
+      "text": "Cultiver les traditions honore l'ordinaire. Dans ce qui revient réside le sacré du quotidien."
+    },
+    "#B122": {
+      "label": "Explorer-de-nouvelles-voies",
+      "frage": "Quelle importance accordez-vous au fait d'explorer de nouvelles voies ?",
+      "karte": "Adventure",
+      "text": "Explorer de nouvelles voies est l'aventure du pionnier. L'inconnu appelle — et vous répondez."
+    },
+    "#B123": {
+      "label": "Partager-la-spiritualité",
+      "frage": "Quelle importance accordez-vous au fait de partager la spiritualité ?",
+      "karte": "Inner Voice",
+      "text": "Partager la spiritualité signifie écouter ensemble la voix intérieure. Le silence partagé est une profondeur doublée."
+    },
+    "#B124": {
+      "label": "Vie-séculière",
+      "frage": "Quelle importance accordez-vous à une vie séculière ?",
+      "karte": "Ordinariness",
+      "text": "La vie séculière trouve le sacré dans l'ordinaire. Chaque instant est sacré — même sans rituel."
+    },
+    "#B125": {
+      "label": "Alimentation-saine",
+      "frage": "Quelle importance accordez-vous à une alimentation saine ?",
+      "karte": "Awareness",
+      "text": "L'alimentation saine est une nourriture consciente. Ce que vous mangez devient vous — choisissez avec attention."
+    },
+    "#B126": {
+      "label": "Sport-et-forme",
+      "frage": "Quelle importance accordez-vous au sport et à la forme physique ?",
+      "karte": "Totality",
+      "text": "Le sport et la forme vivent de la totalité. Donnez-vous entièrement — et le corps répondra par la vitalité."
+    },
+    "#B127": {
+      "label": "Indépendance-financière",
+      "frage": "Quelle importance accordez-vous à l'indépendance financière ?",
+      "karte": "Abundance",
+      "text": "L'indépendance financière est l'abondance extérieure comme miroir de la liberté intérieure. L'abondance attire l'abondance."
+    },
+    "#B128": {
+      "label": "Finances-communes",
+      "frage": "Quelle importance accordez-vous aux finances communes ?",
+      "karte": "Going With The Flow",
+      "text": "Les finances communes sont un flux partagé. L'argent coule entre vous comme l'eau — naturellement et librement."
+    },
+    "#B129": {
+      "label": "Finances-séparées",
+      "frage": "Quelle importance accordez-vous aux finances séparées ?",
+      "karte": "Aloneness",
+      "text": "Les finances séparées honorent l'autonomie. Chacun porte sa part — cela crée de la clarté."
+    },
+    "#B130": {
+      "label": "Frugalité",
+      "frage": "Quelle importance accordez-vous à la frugalité ?",
+      "karte": "Patience",
+      "text": "La frugalité est une garde patiente. Comme le paysan préserve ses semences, vous épargnez pour l'avenir."
+    },
+    "#B131": {
+      "label": "Générosité",
+      "frage": "Quelle importance accordez-vous à la générosité ?",
+      "karte": "Sharing",
+      "text": "La générosité est l'abondance qui déborde. Celui qui vit depuis la source ne peut s'empêcher de donner."
+    },
+    "#B132": {
+      "label": "Construction-de-patrimoine",
+      "frage": "Quelle importance accordez-vous à la construction de patrimoine ?",
+      "karte": "Abundance",
+      "text": "Construire un patrimoine, c'est créer l'abondance matérielle. Mais n'oubliez pas : la vraie richesse est intérieure."
+    },
+    "#B133": {
+      "label": "Minimalisme",
+      "frage": "Quelle importance accordez-vous au minimalisme ?",
+      "karte": "No-Thingness",
+      "text": "Le minimalisme est l'art du vide. Moins de choses, plus d'espace — plus d'espace, plus de liberté."
+    },
+    "#B134": {
+      "label": "Épanouissement-professionnel",
+      "frage": "Quelle importance accordez-vous à l'épanouissement professionnel ?",
+      "karte": "The Creator",
+      "text": "L'épanouissement professionnel est la création au quotidien. Quand le travail devient expression de votre être, c'est une vocation."
+    },
+    "#B135": {
+      "label": "Travail-comme-moyen",
+      "frage": "Quelle importance accordez-vous au travail comme moyen ?",
+      "karte": "Ordinariness",
+      "text": "Le travail comme moyen voit l'ordinaire avec lucidité. Le travail est un outil, non une identité."
+    },
+    "#B136": {
+      "label": "Travail-indépendant",
+      "frage": "Quelle importance accordez-vous au travail indépendant ?",
+      "karte": "The Rebel",
+      "text": "Le travail indépendant est le chemin du rebelle dans le monde professionnel. Vous créez selon vos propres règles."
+    },
+    "#B137": {
+      "label": "Salariat",
+      "frage": "Quelle importance accordez-vous au salariat ?",
+      "karte": "Participation",
+      "text": "Le salariat est la participation à quelque chose de plus grand. Vous contribuez à une œuvre commune."
+    },
+    "#B138": {
+      "label": "Poste-de-direction",
+      "frage": "Quelle importance accordez-vous à un poste de direction ?",
+      "karte": "Guidance",
+      "text": "Diriger est servir, non régner. Le vrai dirigeant montre le chemin qu'il emprunte lui-même."
+    },
+    "#B139": {
+      "label": "Travail-en-équipe",
+      "frage": "Quelle importance accordez-vous au travail en équipe ?",
+      "karte": "Participation",
+      "text": "Le travail en équipe est une participation chorégraphiée. Chacun danse sa partie, et ensemble naît le tout."
+    },
+    "#B140": {
+      "label": "Télétravail",
+      "frage": "Quelle importance accordez-vous au télétravail ?",
+      "karte": "Aloneness",
+      "text": "Le télétravail unit le travail et la solitude. Dans votre propre espace, vous trouvez votre propre rythme."
+    },
+    "#B141": {
+      "label": "Présence-au-bureau",
+      "frage": "Quelle importance accordez-vous à la présence au bureau ?",
+      "karte": "Participation",
+      "text": "La présence au bureau est une participation physique. Certaines énergies ne naissent que lorsque les gens sont ensemble."
+    },
+    "#B142": {
+      "label": "Horaires-flexibles",
+      "frage": "Quelle importance accordez-vous aux horaires flexibles ?",
+      "karte": "Going With The Flow",
+      "text": "Les horaires flexibles, c'est travailler dans le flux. Vous vous adaptez au rythme de la vie, non l'inverse."
+    },
+    "#B143": {
+      "label": "Structures-fixes",
+      "frage": "Quelle importance accordez-vous aux structures fixes ?",
+      "karte": "Maturity",
+      "text": "Les structures fixes donnent forme à la vie. L'âme mûre apprécie le cadre qui apporte la stabilité."
+    },
+    "#B144": {
+      "label": "Formation-continue",
+      "frage": "Quelle importance accordez-vous à la formation continue ?",
+      "karte": "Understanding",
+      "text": "La formation continue est le chemin de l'éternel élève. Celui qui cesse d'apprendre cesse de grandir."
+    },
+    "#B145": {
+      "label": "Planification-de-la-retraite",
+      "frage": "Quelle importance accordez-vous à la planification de la retraite ?",
+      "karte": "Patience",
+      "text": "Planifier la retraite signifie semer patiemment pour l'avenir. La récolte viendra — au moment juste."
+    },
+    "#B146": {
+      "label": "Année-sabbatique",
+      "frage": "Quelle importance accordez-vous à l'année sabbatique ?",
+      "karte": "Turning In",
+      "text": "L'année sabbatique est un temps de retour vers l'intérieur. L'arrêt extérieur permet le mouvement intérieur."
+    },
+    "#B147": {
+      "label": "Goût-du-risque",
+      "frage": "Quelle importance accordez-vous au goût du risque ?",
+      "karte": "Adventure",
+      "text": "Le goût du risque est le courage de l'aventure. Celui qui ne saute jamais ne découvre jamais qu'il peut voler."
+    },
+    "#B148": {
+      "label": "Recherche-de-sécurité",
+      "frage": "Quelle importance accordez-vous à la recherche de sécurité ?",
+      "karte": "Protection",
+      "text": "La recherche de sécurité est une protection sage. Parfois la prudence est la décision la plus courageuse."
+    },
+    "#B149": {
+      "label": "Échanges-quotidiens",
+      "frage": "Quelle importance accordez-vous aux échanges quotidiens ?",
+      "karte": "Friendliness",
+      "text": "Les échanges quotidiens sont la bienveillance vécue. Les petits mots tissent le fil de la connexion."
+    },
+    "#B150": {
+      "label": "Temps-de-qualité",
+      "frage": "Quelle importance accordez-vous au temps de qualité ?",
+      "karte": "Moment to Moment",
+      "text": "Le temps de qualité est un temps de présence. Ce n'est pas la quantité qui compte, mais la profondeur de chaque instant."
+    },
+    "#B151": {
+      "label": "Conversations-profondes",
+      "frage": "Quelle importance accordez-vous aux conversations profondes ?",
+      "karte": "Understanding",
+      "text": "Les conversations profondes mènent à la compréhension. Les mots deviennent des ponts entre les âmes."
+    },
+    "#B152": {
+      "label": "Conversation-légère",
+      "frage": "Quelle importance accordez-vous à la conversation légère ?",
+      "karte": "Playfulness",
+      "text": "La conversation légère est un être ludique. Tout n'a pas besoin d'être profond — parfois un sourire suffit."
+    },
+    "#B153": {
+      "label": "Ouverture-émotionnelle",
+      "frage": "Quelle importance accordez-vous à l'ouverture émotionnelle ?",
+      "karte": "Receptivity",
+      "text": "L'ouverture émotionnelle est un cœur réceptif. La coupe est vide — prête à être remplie."
+    },
+    "#B154": {
+      "label": "Communication-factuelle",
+      "frage": "Quelle importance accordez-vous à la communication factuelle ?",
+      "karte": "Consciousness",
+      "text": "La communication factuelle est une conscience claire. Les pensées sont exprimées avec précision."
+    },
+    "#B155": {
+      "label": "Aborder-les-conflits",
+      "frage": "Quelle importance accordez-vous au fait d'aborder les conflits ?",
+      "karte": "Breakthrough",
+      "text": "Aborder les conflits mène à la percée. Ce qui est exprimé peut guérir."
+    },
+    "#B156": {
+      "label": "Préserver-l'harmonie",
+      "frage": "Quelle importance accordez-vous au fait de préserver l'harmonie ?",
+      "karte": "Harmony",
+      "text": "Préserver l'harmonie est un art. Mais la véritable harmonie ne naît pas de l'évitement, mais de l'intégration."
+    },
+    "#B157": {
+      "label": "Communication-directe",
+      "frage": "Quelle importance accordez-vous à la communication directe ?",
+      "karte": "Courage",
+      "text": "La communication directe requiert du courage. Dire la vérité est un acte d'amour."
+    },
+    "#B158": {
+      "label": "Communication-diplomatique",
+      "frage": "Quelle importance accordez-vous à la communication diplomatique ?",
+      "karte": "Receptivity",
+      "text": "La communication diplomatique est réceptive à l'autre. Les mots sont choisis pour relier."
+    },
+    "#B159": {
+      "label": "Culture-du-feedback",
+      "frage": "Quelle importance accordez-vous à la culture du feedback ?",
+      "karte": "Understanding",
+      "text": "Le feedback est une compréhension mutuelle. Chaque retour est un cadeau — quand il est entendu."
+    },
+    "#B160": {
+      "label": "Communication-non-verbale",
+      "frage": "Quelle importance accordez-vous à la communication non verbale ?",
+      "karte": "Silence",
+      "text": "La communication non verbale parle dans le silence. Le corps dit ce que les mots ne peuvent pas."
+    },
+    "#B161": {
+      "label": "Écoute-active",
+      "frage": "Quelle importance accordez-vous à l'écoute active ?",
+      "karte": "Receptivity",
+      "text": "L'écoute active est une présence réceptive. Vous n'entendez pas seulement les mots — vous entendez le cœur derrière."
+    },
+    "#B162": {
+      "label": "Humour-dans-la-conversation",
+      "frage": "Quelle importance accordez-vous à l'humour dans la conversation ?",
+      "karte": "Celebration",
+      "text": "L'humour dans la conversation est une petite célébration. Le rire partagé relie plus profondément que bien des paroles."
+    },
+    "#B163": {
+      "label": "Sérieux",
+      "frage": "Quelle importance accordez-vous au sérieux ?",
+      "karte": "Maturity",
+      "text": "Le sérieux est une présence mûre. Certains sujets méritent la profondeur d'une attention indivisée."
+    },
+    "#B164": {
+      "label": "Conversations-spontanées",
+      "frage": "Quelle importance accordez-vous aux conversations spontanées ?",
+      "karte": "Playfulness",
+      "text": "Les conversations spontanées sont un échange ludique. Les moments imprévus portent souvent la plus grande magie."
+    },
+    "#B165": {
+      "label": "Conversations-planifiées",
+      "frage": "Quelle importance accordez-vous aux conversations planifiées ?",
+      "karte": "Guidance",
+      "text": "Les conversations planifiées créent un espace pour l'essentiel. Certains sujets ont besoin d'un cadre protégé."
+    },
+    "#B166": {
+      "label": "Communication-écrite",
+      "frage": "Quelle importance accordez-vous à la communication écrite ?",
+      "karte": "Consciousness",
+      "text": "La communication écrite est une conscience réfléchie. Le mot écrit porte plus de poids."
+    },
+    "#B167": {
+      "label": "Communication-orale",
+      "frage": "Quelle importance accordez-vous à la communication orale ?",
+      "karte": "Experiencing",
+      "text": "La communication orale est une expérience vivante. La voix porte bien plus que des mots."
+    },
+    "#B168": {
+      "label": "Décider-ensemble",
+      "frage": "Quelle importance accordez-vous au fait de décider ensemble ?",
+      "karte": "The Lovers",
+      "text": "Décider ensemble est l'art des amants. Deux voix trouvent une mélodie commune."
+    },
+    "#B169": {
+      "label": "Décisions-autonomes",
+      "frage": "Quelle importance accordez-vous aux décisions autonomes ?",
+      "karte": "The Rebel",
+      "text": "Les décisions autonomes sont le chemin du rebelle. Vous choisissez selon votre propre vérité."
+    },
+    "#B170": {
+      "label": "Disposition-au-compromis",
+      "frage": "Quelle importance accordez-vous à la disposition au compromis ?",
+      "karte": "Compromise",
+      "text": "Le compromis est un art. Mais distinguez entre flexibilité sage et trahison de soi."
+    },
+    "#B171": {
+      "label": "Positions-claires",
+      "frage": "Quelle importance accordez-vous aux positions claires ?",
+      "karte": "Courage",
+      "text": "Les positions claires requièrent du courage. Savoir ce que vous défendez est l'ancre dans les temps de tempête."
+    },
+    "#B172": {
+      "label": "Soutien-émotionnel",
+      "frage": "Quelle importance accordez-vous au soutien émotionnel ?",
+      "karte": "Healing",
+      "text": "Le soutien émotionnel est une présence guérissante. Parfois il suffit d'être là — sans mots."
+    },
+    "#B173": {
+      "label": "Soutien-pratique",
+      "frage": "Quelle importance accordez-vous au soutien pratique ?",
+      "karte": "Abundance",
+      "text": "Le soutien pratique est l'abondance en action. Les mains secourables montrent l'amour par les actes."
+    },
+    "#B174": {
+      "label": "Points-réguliers",
+      "frage": "Quelle importance accordez-vous aux points réguliers ?",
+      "karte": "Awareness",
+      "text": "Les points réguliers sont une attention consciente. Ils gardent le doigt sur le pouls de la relation."
+    },
+    "#B175": {
+      "label": "Réflexion-sur-la-relation",
+      "frage": "Quelle importance accordez-vous à la réflexion sur la relation ?",
+      "karte": "New Vision",
+      "text": "La réflexion sur la relation apporte un nouveau regard. S'arrêter et observer montre où vous en êtes vraiment."
+    },
+    "#B176": {
+      "label": "Flux-naturel",
+      "frage": "Quelle importance accordez-vous au flux naturel ?",
+      "karte": "Going With The Flow",
+      "text": "Le flux naturel est un écoulement sans effort. Quand vous cessez de lutter, le courant vous porte."
+    },
+    "#B177": {
+      "label": "Énergie-sociale",
+      "frage": "Quelle importance accordez-vous à l'énergie sociale ?",
+      "karte": "Experiencing",
+      "text": "L'énergie sociale est une expérience vivante avec les autres. Certaines personnes vous rechargent — cherchez-les."
+    },
+    "#B178": {
+      "label": "Convivialité",
+      "frage": "Quelle importance accordez-vous à la convivialité ?",
+      "karte": "Celebration",
+      "text": "La convivialité est la célébration commune de la vie. Des gens ensemble — c'est déjà une fête."
+    },
+    "#B179": {
+      "label": "Calme-loin-des-gens",
+      "frage": "Quelle importance accordez-vous au calme loin des gens ?",
+      "karte": "Aloneness",
+      "text": "Le calme loin des gens est une solitude bienfaisante. Le silence après l'agitation est un cadeau."
+    },
+    "#B180": {
+      "label": "Cultiver-les-amitiés",
+      "frage": "Quelle importance accordez-vous au fait de cultiver les amitiés ?",
+      "karte": "Friendliness",
+      "text": "Cultiver les amitiés est la bienveillance comme pratique. Les relations ont besoin d'attention pour fleurir."
+    },
+    "#B181": {
+      "label": "Temps-de-couple",
+      "frage": "Quelle importance accordez-vous au temps de couple ?",
+      "karte": "The Lovers",
+      "text": "Le temps de couple est le temps exclusif des amants. Dans cet espace vous n'êtes que deux — et c'est sacré."
+    },
+    "#B182": {
+      "label": "Amis-communs",
+      "frage": "Quelle importance accordez-vous aux amis communs ?",
+      "karte": "We Are the World",
+      "text": "Les amis communs élargissent votre monde. Le cercle s'agrandit, la connexion s'approfondit."
+    },
+    "#B183": {
+      "label": "Amis-personnels",
+      "frage": "Quelle importance accordez-vous aux amis personnels ?",
+      "karte": "Aloneness",
+      "text": "Les amis personnels sont des espaces d'individualité. Tout n'a pas besoin d'être partagé — certaines choses ne vous appartiennent qu'à vous."
+    },
+    "#B184": {
+      "label": "Réunions-familiales",
+      "frage": "Quelle importance accordez-vous aux réunions familiales ?",
+      "karte": "We Are the World",
+      "text": "Les réunions familiales vous relient à vos racines. Vous faites partie d'un courant plus grand de la vie."
+    },
+    "#B185": {
+      "label": "Distance-familiale",
+      "frage": "Quelle importance accordez-vous à la distance familiale ?",
+      "karte": "Aloneness",
+      "text": "La distance avec la famille peut être salutaire. Parfois vous avez besoin d'espace pour vous trouver."
+    },
+    "#B186": {
+      "label": "Fêtes-et-événements",
+      "frage": "Quelle importance accordez-vous aux fêtes et événements ?",
+      "karte": "Celebration",
+      "text": "Les fêtes et événements sont des célébrations collectives. L'énergie de nombreuses personnes amplifie la joie."
+    },
+    "#B187": {
+      "label": "Soirées-tranquilles",
+      "frage": "Quelle importance accordez-vous aux soirées tranquilles ?",
+      "karte": "Silence",
+      "text": "Les soirées tranquilles sont des oasis de silence. Dans le calme du soir, vous vous retrouvez."
+    },
+    "#B188": {
+      "label": "Rencontrer-de-nouvelles-personnes",
+      "frage": "Quelle importance accordez-vous au fait de rencontrer de nouvelles personnes ?",
+      "karte": "Adventure",
+      "text": "Rencontrer de nouvelles personnes est une aventure. Chaque être humain est un monde — attendez la découverte."
+    },
+    "#B189": {
+      "label": "Cercle-de-confiance",
+      "frage": "Quelle importance accordez-vous au cercle de confiance ?",
+      "karte": "Trust",
+      "text": "Un cercle de confiance est un cercle de foi. Ici vous pouvez être qui vous êtes vraiment."
+    },
+    "#B190": {
+      "label": "Temps-seul",
+      "frage": "Quelle importance accordez-vous au temps seul ?",
+      "karte": "Aloneness",
+      "text": "Le temps seul n'est pas la solitude — c'est l'espace où vous vous retrouvez."
+    },
+    "#B191": {
+      "label": "Être-ensemble",
+      "frage": "Quelle importance accordez-vous au fait d'être ensemble ?",
+      "karte": "We Are the World",
+      "text": "Être ensemble est la connexion vécue. Ne pas être seul est un besoin humain profond."
+    },
+    "#B192": {
+      "label": "Visites-spontanées",
+      "frage": "Quelle importance accordez-vous aux visites spontanées ?",
+      "karte": "Playfulness",
+      "text": "Les visites spontanées sont des surprises ludiques. L'inattendu apporte de la fraîcheur à la vie."
+    },
+    "#B193": {
+      "label": "Rendez-vous-planifiés",
+      "frage": "Quelle importance accordez-vous aux rendez-vous planifiés ?",
+      "karte": "Patience",
+      "text": "Les rendez-vous planifiés sont une anticipation patiente. L'attente rend les retrouvailles plus douces."
+    },
+    "#B194": {
+      "label": "Être-hôte",
+      "frage": "Quelle importance accordez-vous au fait d'être hôte ?",
+      "karte": "Sharing",
+      "text": "Être hôte est un partage généreux. Vous ouvrez votre espace et votre cœur."
+    },
+    "#B195": {
+      "label": "Être-invité",
+      "frage": "Quelle importance accordez-vous au fait d'être invité ?",
+      "karte": "Receptivity",
+      "text": "Être invité, c'est être réceptif. Vous acceptez ce que les autres vous offrent — avec gratitude."
+    },
+    "#B196": {
+      "label": "Contacts-en-ligne",
+      "frage": "Quelle importance accordez-vous aux contacts en ligne ?",
+      "karte": "Possibilities",
+      "text": "Les contacts en ligne ouvrent des possibilités. Le monde numérique relie ce que la distance sépare."
+    },
+    "#B197": {
+      "label": "Rencontres-en-personne",
+      "frage": "Quelle importance accordez-vous aux rencontres en personne ?",
+      "karte": "Experiencing",
+      "text": "Les rencontres en personne sont l'expérience pleine. La présence face à face est irremplaçable."
+    },
+    "#B198": {
+      "label": "Engagement-communautaire",
+      "frage": "Quelle importance accordez-vous à l'engagement communautaire ?",
+      "karte": "Participation",
+      "text": "L'engagement communautaire est une participation active au plus grand ensemble. Vous rendez ce que vous recevez."
+    },
+    "#B199": {
+      "label": "Vie-privée",
+      "frage": "Quelle importance accordez-vous à la vie privée ?",
+      "karte": "Silence",
+      "text": "La vie privée est un silence protégé. Certaines choses ne vous appartiennent qu'à vous — et c'est bien ainsi."
+    },
+    "#B200": {
+      "label": "Réseautage",
+      "frage": "Quelle importance accordez-vous au réseautage ?",
+      "karte": "We Are the World",
+      "text": "Le réseautage tisse des connexions. Chaque contact est un fil dans le grand tissu de la vie."
+    },
+    "#B201": {
+      "label": "Peu-de-relations-profondes",
+      "frage": "Quelle importance accordez-vous à avoir peu de relations profondes ?",
+      "karte": "Intimacy",
+      "text": "Peu de relations profondes sont l'intimité dans son essence. La qualité plutôt que la quantité — c'est le chemin du cœur."
+    },
+    "#B202": {
+      "label": "Nombreuses-connaissances",
+      "frage": "Quelle importance accordez-vous à avoir de nombreuses connaissances ?",
+      "karte": "Friendliness",
+      "text": "De nombreuses connaissances sont la bienveillance étendue. Un cœur vaste touche beaucoup de gens."
+    },
+    "#B203": {
+      "label": "Événements-culturels",
+      "frage": "Quelle importance accordez-vous aux événements culturels ?",
+      "karte": "Creativity",
+      "text": "Les événements culturels nourrissent la créativité. L'art ouvre des portes vers des mondes au-delà du quotidien."
+    },
+    "#B204": {
+      "label": "Proximité-corporelle",
+      "frage": "Quelle importance accordez-vous à la proximité corporelle ?",
+      "karte": "Touch",
+      "text": "La proximité corporelle est le langage du toucher. Le corps aspire au contact — il est fait pour cela."
+    },
+    "#B205": {
+      "label": "Câlins",
+      "frage": "Quelle importance accordez-vous aux câlins ?",
+      "karte": "Warmth",
+      "text": "Les câlins sont de la chaleur sans paroles. Dans la proximité d'un autre corps, les frontières fondent."
+    },
+    "#B206": {
+      "label": "Distance-physique",
+      "frage": "Quelle importance accordez-vous à la distance physique ?",
+      "karte": "Aloneness",
+      "text": "La distance physique crée de l'espace pour respirer. Parfois le corps a besoin de sa propre zone."
+    },
+    "#B207": {
+      "label": "Contact-physique",
+      "frage": "Quelle importance accordez-vous au contact physique ?",
+      "karte": "Touch",
+      "text": "Le contact physique est la communication originelle. La peau est le plus grand organe sensoriel — utilisez-le."
+    },
+    "#B208": {
+      "label": "Étreintes",
+      "frage": "Quelle importance accordez-vous aux étreintes ?",
+      "karte": "Love",
+      "text": "Les étreintes sont l'amour en action. Un bras autour de l'autre dit plus que mille mots."
+    },
+    "#B209": {
+      "label": "Vivre-la-douleur",
+      "frage": "Quelle importance accordez-vous au fait de vivre la douleur ?",
+      "karte": "Transformation",
+      "text": "Vivre consciemment la douleur peut transformer. En traversant le feu, vous êtes purifié."
+    },
+    "#B210": {
+      "label": "Donner-la-douleur",
+      "frage": "Quelle importance accordez-vous au fait de donner la douleur ?",
+      "karte": "Intensity",
+      "text": "Donner la douleur dans un cadre conscient est l'intensité comme cadeau. Les limites deviennent des portes."
+    },
+    "#B211": {
+      "label": "Vivre-le-bondage",
+      "frage": "Quelle importance accordez-vous au fait de vivre le bondage ?",
+      "karte": "Letting Go",
+      "text": "Vivre le bondage est une libération paradoxale. Par la contrainte extérieure, vous trouvez la liberté intérieure."
+    },
+    "#B212": {
+      "label": "Pratiquer-le-bondage",
+      "frage": "Quelle importance accordez-vous au fait de pratiquer le bondage ?",
+      "karte": "The Creator",
+      "text": "Pratiquer le bondage est un maintien créatif. Vous créez un espace où l'autre peut se laisser aller."
+    },
+    "#B213": {
+      "label": "Dévotion",
+      "frage": "Quelle importance accordez-vous à la dévotion ?",
+      "karte": "Trust",
+      "text": "La dévotion est une confiance profonde dans l'abandon. Vous vous donnez à quelque chose de plus grand que vous."
+    },
+    "#B214": {
+      "label": "Adoration",
+      "frage": "Quelle importance accordez-vous à l'adoration ?",
+      "karte": "Inner Voice",
+      "text": "L'adoration suit la voix intérieure de la vénération. Voir le divin dans l'autre est sacré."
+    },
+    "#B215": {
+      "label": "Humilité",
+      "frage": "Quelle importance accordez-vous à l'humilité ?",
+      "karte": "No-Thingness",
+      "text": "L'humilité est la reconnaissance de son propre vide. Dans le néant, vous vous prosternez aux pieds du Tout."
+    },
+    "#B216": {
+      "label": "Dominer",
+      "frage": "Quelle importance accordez-vous au fait de dominer ?",
+      "karte": "The Master",
+      "text": "Dominer est la maîtrise dans la responsabilité. Le vrai maître sert en dirigeant."
+    },
+    "#B217": {
+      "label": "Recevoir-une-punition",
+      "frage": "Quelle importance accordez-vous au fait de recevoir une punition ?",
+      "karte": "Transformation",
+      "text": "La punition dans un contexte conscient est transformation. L'ego meurt un peu, pour que vous deveniez plus libre."
+    },
+    "#B218": {
+      "label": "Punir",
+      "frage": "Quelle importance accordez-vous au fait de punir ?",
+      "karte": "Guidance",
+      "text": "Punir comme pratique consciente est guidance. Le maître corrige avec amour, non avec colère."
+    },
+    "#B219": {
+      "label": "Donner-du-service",
+      "frage": "Quelle importance accordez-vous au fait de donner du service ?",
+      "karte": "Compassion",
+      "text": "Donner du service est la compassion en action. Vous servez parce que votre cœur déborde — non par devoir."
+    },
+    "#B220": {
+      "label": "Recevoir-du-service",
+      "frage": "Quelle importance accordez-vous au fait de recevoir du service ?",
+      "karte": "Receptivity",
+      "text": "Recevoir du service est une humilité réceptive. Pouvoir accepter est un art en soi."
+    },
+    "#B221": {
+      "label": "Expérience-de-la-douleur",
+      "frage": "Quelle importance accordez-vous à l'expérience de la douleur ?",
+      "karte": "Transformation",
+      "text": "Vivre la douleur consciemment est une porte vers la transformation. Dans l'intensité réside la libération."
+    },
+    "#B222": {
+      "label": "Infliger-la-douleur",
+      "frage": "Quelle importance accordez-vous au fait d'infliger la douleur ?",
+      "karte": "Trust",
+      "text": "Infliger la douleur requiert une confiance profonde. Le donneur conscient porte la responsabilité comme un guérisseur."
+    },
+    "#B223": {
+      "label": "Expérience-du-bondage",
+      "frage": "Quelle importance accordez-vous à l'expérience du bondage ?",
+      "karte": "Surrender",
+      "text": "Dans l'abandon aux liens réside une liberté paradoxale. Le lâcher-prise commence là où le contrôle s'arrête."
+    },
+    "#B224": {
+      "label": "Sucre",
+      "frage": "Quelle importance accordez-vous à la consommation de sucre ?",
+      "karte": "Moment to Moment",
+      "text": "La douceur est un plaisir de l'instant. La question est : savourez-vous consciemment ou fuyez-vous ?"
+    },
+    "#B225": {
+      "label": "Être-protégé",
+      "frage": "Quelle importance accordez-vous au fait d'être protégé ?",
+      "karte": "The Lovers",
+      "text": "Être protégé signifie pouvoir se laisser tomber. Dans la sécurité affective réside la liberté d'être vulnérable."
+    },
+    "#B226": {
+      "label": "Recevoir-la-confiance",
+      "frage": "Quelle importance accordez-vous au fait de recevoir la confiance ?",
+      "karte": "Trust",
+      "text": "Recevoir la confiance est une responsabilité sacrée. Vous devenez le gardien d'un cadeau précieux."
+    }
+  }
+}

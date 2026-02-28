@@ -1,0 +1,1365 @@
+{
+  "version": "2.0.0",
+  "beschreibung": "Testi Osho Zen Tarot sui 224 bisogni - Versione estesa con testi di saggezza individuali",
+  "quelle": "Osho Zen Tarot di Ma Deva Padma (St. Martins Press), basato sugli insegnamenti di Osho",
+  "copyright": "Tutti i diritti appartengono ai rispettivi titolari. Queste descrizioni sono interpretazioni libere.",
+
+  "beduerfnisse": {
+    "#B1": {
+      "label": "Aria",
+      "frage": "Quanto è importante per Lei l'aria fresca e il respirare liberamente?",
+      "karte": "The Master",
+      "text": "Quando respiri, il Tutto respira attraverso di te. La libertà inizia con un singolo respiro consapevole."
+    },
+    "#B2": {
+      "label": "Acqua",
+      "frage": "Quanto è importante per Lei avere acqua e idratazione sufficienti?",
+      "karte": "Healing",
+      "text": "L'acqua porta memoria. Quando ti nutri, diventi morbido. La guarigione avviene nel fluire."
+    },
+    "#B3": {
+      "label": "Nutrimento",
+      "frage": "Quanto è importante per Lei un'alimentazione sana e regolare?",
+      "karte": "Conditioning",
+      "text": "Ciò che mangi, ti mangia. L'alimentazione non è solo nutrimento – è discernimento tra autenticità e attaccamento."
+    },
+    "#B4": {
+      "label": "Movimento",
+      "frage": "Quanto è importante per Lei il movimento fisico?",
+      "karte": "Adventure",
+      "text": "Il movimento è vita. Ogni passo è un invito nell'ignoto. Il coraggio non significa meta, ma fiducia."
+    },
+    "#B5": {
+      "label": "Contatto",
+      "frage": "Quanto è importante per Lei essere toccato dagli altri?",
+      "karte": "Touch",
+      "text": "Il contatto è il primo specchio. Il corpo parla, molto prima che nascano le parole."
+    },
+    "#B6": {
+      "label": "Riposo",
+      "frage": "Quanto è importante per Lei il riposo e il sonno sufficienti?",
+      "karte": "No-Thingness",
+      "text": "Il vero riposo non nasce dal fare – ma dall'essere. Il nulla è il rifugio più grande."
+    },
+    "#B7": {
+      "label": "Espressione-sessuale",
+      "frage": "Quanto è importante per Lei l'espressione sessuale?",
+      "karte": "Passion",
+      "text": "La sessualità è un fuoco sacro – se non vuoi possederlo. Espressione, non appropriazione."
+    },
+    "#B8": {
+      "label": "Sicurezza-fisica",
+      "frage": "Quanto è importante per Lei la sicurezza fisica?",
+      "karte": "Courage",
+      "text": "La sicurezza non è l'assenza di pericolo – è il fiorire nel mezzo della pietra."
+    },
+    "#B9": {
+      "label": "Rifugio",
+      "frage": "Quanto è importante per Lei avere uno spazio abitativo sicuro?",
+      "karte": "Harmony",
+      "text": "La casa è là dove il cuore non deve combattere. L'armonia interiore è il vero rifugio."
+    },
+    "#B10": {
+      "label": "Costanza",
+      "frage": "Quanto è importante per Lei la costanza nelle relazioni?",
+      "karte": "Completion",
+      "text": "La costanza non nasce perché ci si aggrappa, ma perché si permette alla vita di completarsi."
+    },
+    "#B11": {
+      "label": "Sentirsi-al-sicuro",
+      "frage": "Quanto è importante per Lei sentirsi emotivamente al sicuro?",
+      "karte": "Trust",
+      "text": "Sentirsi al sicuro non significa controllare tutto – ma saltare, anche quando non vedi il suolo."
+    },
+    "#B12": {
+      "label": "Protezione",
+      "frage": "Quanto è importante per Lei il senso di essere protetto?",
+      "karte": "Protection",
+      "text": "La protezione non è uno scudo – è lo spazio in cui puoi restare tenero."
+    },
+    "#B13": {
+      "label": "Stabilità",
+      "frage": "Quanto è importante per Lei la stabilità emotiva?",
+      "karte": "Maturity",
+      "text": "La stabilità non è rigidità. È equilibrio maturo – dentro come fuori."
+    },
+    "#B14": {
+      "label": "Leggerezza",
+      "frage": "Quanto è importante per Lei la leggerezza nella vita quotidiana?",
+      "karte": "Playfulness",
+      "text": "La leggerezza è l'arte di fidarsi del momento – non perché sia facile, ma perché lo sei tu."
+    },
+    "#B15": {
+      "label": "Senso-di-protezione",
+      "frage": "Quanto è importante per Lei il senso di protezione e appartenenza?",
+      "karte": "We Are the World",
+      "text": "Il senso di protezione nasce quando ti sai inserito – non attraverso la vicinanza, ma attraverso la connessione."
+    },
+    "#B16": {
+      "label": "Calore",
+      "frage": "Quanto è importante per Lei il calore emotivo?",
+      "karte": "Warmth",
+      "text": "Il calore non è un sentimento, ma presenza che non giudica."
+    },
+    "#B17": {
+      "label": "Apprezzamento",
+      "frage": "Quanto è importante per Lei l'apprezzamento dal Suo partner?",
+      "karte": "Success",
+      "text": "L'apprezzamento avviene quando sei visto senza maschera – non per le prestazioni, ma per il tuo essere."
+    },
+    "#B18": {
+      "label": "Vicinanza",
+      "frage": "Quanto è importante per Lei la vicinanza emotiva?",
+      "karte": "The Lovers",
+      "text": "La vicinanza è il ponte tra due mondi interiori – inizia con l'intimità verso te stesso."
+    },
+    "#B19": {
+      "label": "Compagnia",
+      "frage": "Quanto è importante per Lei la compagnia?",
+      "karte": "Participation",
+      "text": "La compagnia nutre quando non devi dimostrare nulla. Esserci è sufficiente."
+    },
+    "#B20": {
+      "label": "Intimità",
+      "frage": "Quanto è importante per Lei l'intimità?",
+      "karte": "Intimacy",
+      "text": "L'intimità è nudità dell'anima – non del corpo."
+    },
+    "#B21": {
+      "label": "Amore",
+      "frage": "Quanto è importante per Lei l'amore?",
+      "karte": "Love",
+      "text": "L'amore non è relazione. È spazio. Quando ami, lasci libero."
+    },
+    "#B22": {
+      "label": "Premura",
+      "frage": "Quanto è importante per Lei prendersi cura degli altri?",
+      "karte": "Compassion",
+      "text": "La premura è dedizione senza pretesa – annaffia senza contare."
+    },
+    "#B23": {
+      "label": "Sostegno",
+      "frage": "Quanto è importante per Lei il sostegno?",
+      "karte": "Support",
+      "text": "Il sostegno è un terreno invisibile. Sai che c'è – perché osi."
+    },
+    "#B24": {
+      "label": "Esserci-l'uno-per-l'altro",
+      "frage": "Quanto è importante per Lei esserci l'uno per l'altro?",
+      "karte": "Friendliness",
+      "text": "Esserci l'uno per l'altro significa poter crescere insieme nel silenzio – senza presa, senza obbligo."
+    },
+    "#B25": {
+      "label": "Accettazione",
+      "frage": "Quanto è importante per Lei l'accettazione?",
+      "karte": "Acceptance",
+      "text": "L'accettazione è il primo respiro di libertà. Smetti di combattere – e la vita respira attraverso di te."
+    },
+    "#B26": {
+      "label": "Compassione",
+      "frage": "Quanto è importante per Lei la compassione?",
+      "karte": "Completion",
+      "text": "La compassione completa il cerchio tra te e l'altro. È il riconoscimento: non siamo separati."
+    },
+    "#B27": {
+      "label": "Considerazione",
+      "frage": "Quanto è importante per Lei la considerazione?",
+      "karte": "Trust",
+      "text": "Essere considerati significa avere un posto nella coscienza dell'altro. È un atto di fiducia."
+    },
+    "#B28": {
+      "label": "Empatia",
+      "frage": "Quanto è importante per Lei l'empatia?",
+      "karte": "Receptivity",
+      "text": "L'empatia è la capacità di ascoltare con il cuore. Il calice deve essere vuoto per raccogliere le lacrime dell'altro."
+    },
+    "#B29": {
+      "label": "Fiducia",
+      "frage": "Quanto è importante per Lei la fiducia?",
+      "karte": "Change",
+      "text": "La fiducia è il coraggio di abbandonarsi al cambiamento. Dice sì prima che ci sia certezza."
+    },
+    "#B30": {
+      "label": "Attenzione",
+      "frage": "Quanto è importante per Lei ricevere attenzione?",
+      "karte": "Awareness",
+      "text": "Ricevere attenzione è il dono della consapevolezza. La coscienza si rivolge a ciò che è importante."
+    },
+    "#B31": {
+      "label": "Essere-visti",
+      "frage": "Quanto è importante per Lei essere visto?",
+      "karte": "The Lovers",
+      "text": "Essere visti significa essere riconosciuti nella propria essenza. Gli amanti si vedono senza veli."
+    },
+    "#B32": {
+      "label": "Essere-compresi",
+      "frage": "Quanto è importante per Lei essere compreso?",
+      "karte": "Understanding",
+      "text": "Essere compresi è più delle parole. È la sensazione che qualcuno parli la lingua del tuo cuore."
+    },
+    "#B33": {
+      "label": "Armonia",
+      "frage": "Quanto è importante per Lei l'armonia?",
+      "karte": "Rebirth",
+      "text": "La vera armonia nasce attraverso la rinascita – attraverso il lasciar andare le vecchie dissonanze."
+    },
+    "#B34": {
+      "label": "Autodeterminazione",
+      "frage": "Quanto è importante per Lei l'autodeterminazione?",
+      "karte": "Aloneness",
+      "text": "L'autodeterminazione inizia nella solitudine. Solo chi appartiene a se stesso può scegliere liberamente."
+    },
+    "#B35": {
+      "label": "Poter-scegliere",
+      "frage": "Quanto è importante per Lei poter scegliere?",
+      "karte": "Transformation",
+      "text": "Ogni scelta è una piccola trasformazione. Poter scegliere significa plasmare attivamente la propria vita."
+    },
+    "#B36": {
+      "label": "Indipendenza",
+      "frage": "Quanto è importante per Lei l'indipendenza?",
+      "karte": "The Rebel",
+      "text": "L'indipendenza è la via del ribelle. Segue la propria verità, anche quando va controcorrente."
+    },
+    "#B37": {
+      "label": "Avere-spazio",
+      "frage": "Quanto è importante per Lei avere spazio?",
+      "karte": "Adventure",
+      "text": "Avere spazio significa libertà di scoprire. L'avventura ha bisogno di ampiezza, non di ristrettezza."
+    },
+    "#B38": {
+      "label": "Spontaneità",
+      "frage": "Quanto è importante per Lei la spontaneità?",
+      "karte": "Playfulness",
+      "text": "La spontaneità è la danza dell'istante. Il bambino giocoso in te non conosce piani – solo gioia."
+    },
+    "#B39": {
+      "label": "Collaborazione",
+      "frage": "Quanto è importante per Lei la collaborazione?",
+      "karte": "Participation",
+      "text": "La collaborazione è creazione condivisa. Quando tutti partecipano, nasce più della somma delle parti."
+    },
+    "#B40": {
+      "label": "Comunicazione",
+      "frage": "Quanto è importante per Lei la comunicazione?",
+      "karte": "The Lovers",
+      "text": "La vera comunicazione è il dialogo di due cuori. Gli amanti parlano anche nel silenzio."
+    },
+    "#B41": {
+      "label": "Comunità",
+      "frage": "Quanto è importante per Lei la comunità?",
+      "karte": "We Are the World",
+      "text": "La comunità è il riconoscimento: siamo tutti onde dello stesso oceano. La connessione è il nostro stato naturale."
+    },
+    "#B42": {
+      "label": "Appartenenza",
+      "frage": "Quanto è importante per Lei l'appartenenza?",
+      "karte": "We Are the World",
+      "text": "L'appartenenza non è possesso – è la consapevolezza di essere parte del tutto."
+    },
+    "#B43": {
+      "label": "Reciprocità",
+      "frage": "Quanto è importante per Lei la reciprocità?",
+      "karte": "Going With The Flow",
+      "text": "La reciprocità è il flusso naturale tra dare e ricevere. Come l'acqua, trova il suo equilibrio."
+    },
+    "#B44": {
+      "label": "Rispetto",
+      "frage": "Quanto è importante per Lei il rispetto?",
+      "karte": "The Master",
+      "text": "Il vero rispetto inizia da te stesso. Il maestro onora la vita in ogni sua forma."
+    },
+    "#B45": {
+      "label": "Avere-significato",
+      "frage": "Quanto è importante per Lei avere significato?",
+      "karte": "Ripeness",
+      "text": "Il significato matura come un frutto. Quando il tempo è giunto, diventa visibile ciò che hai contribuito."
+    },
+    "#B46": {
+      "label": "Bellezza",
+      "frage": "Quanto è importante per Lei la bellezza?",
+      "karte": "Creativity",
+      "text": "La bellezza è il linguaggio dell'anima. La creatività rende visibile ciò che il cuore percepisce."
+    },
+    "#B47": {
+      "label": "Tempo-libero",
+      "frage": "Quanto è importante per Lei il tempo libero?",
+      "karte": "Moment to Moment",
+      "text": "Il tempo libero è l'arte di essere nel momento. Non riempire, ma svuotare – questo è il vero riposo."
+    },
+    "#B48": {
+      "label": "Gioia",
+      "frage": "Quanto è importante per Lei la gioia?",
+      "karte": "Integration",
+      "text": "La gioia nasce quando tutte le parti di te si uniscono. L'integrazione è la via verso la gioia profonda."
+    },
+    "#B49": {
+      "label": "Umorismo",
+      "frage": "Quanto è importante per Lei l'umorismo?",
+      "karte": "Celebration",
+      "text": "L'umorismo è la celebrazione dell'assurdo. Chi sa ridere ha compreso che la vita è un gioco."
+    },
+    "#B50": {
+      "label": "Autenticità",
+      "frage": "Quanto è importante per Lei l'autenticità?",
+      "karte": "Integration",
+      "text": "L'autenticità è integrazione. Quando l'interno e l'esterno coincidono, sei completamente te stesso."
+    },
+    "#B51": {
+      "label": "Genuinità",
+      "frage": "Quanto è importante per Lei la genuinità?",
+      "karte": "Friendliness",
+      "text": "La genuinità si mostra nell'amicizia verso te stesso. Solo chi non si finge può essere veramente amichevole."
+    },
+    "#B52": {
+      "label": "Integrità",
+      "frage": "Quanto è importante per Lei l'integrità?",
+      "karte": "Healing",
+      "text": "L'integrità è guarigione della scissione interiore. Quando sei integro, sei guarito."
+    },
+    "#B53": {
+      "label": "Presenza",
+      "frage": "Quanto è importante per Lei la presenza?",
+      "karte": "Awareness",
+      "text": "La presenza è consapevolezza vissuta. Qui e ora – è l'unico luogo dove la vita accade."
+    },
+    "#B54": {
+      "label": "Ordine",
+      "frage": "Quanto è importante per Lei l'ordine?",
+      "karte": "Understanding",
+      "text": "L'ordine nasce dalla comprensione. Quando vedi attraverso le cose, trovano il loro posto."
+    },
+    "#B55": {
+      "label": "Consapevolezza",
+      "frage": "Quanto è importante per Lei la consapevolezza?",
+      "karte": "Consciousness",
+      "text": "La consapevolezza è il cielo – i pensieri sono solo nuvole. Tu sei il cielo, non le nuvole."
+    },
+    "#B56": {
+      "label": "Sfida",
+      "frage": "Quanto è importante per Lei la sfida?",
+      "karte": "Courage",
+      "text": "Le sfide chiamano il tuo coraggio. Ogni ostacolo superato ti rende più forte."
+    },
+    "#B57": {
+      "label": "Chiarezza",
+      "frage": "Quanto è importante per Lei la chiarezza?",
+      "karte": "Breakthrough",
+      "text": "La chiarezza arriva dopo la svolta. Quando la nebbia si dirada, vedi ciò che è sempre stato lì."
+    },
+    "#B58": {
+      "label": "Competenza",
+      "frage": "Quanto è importante per Lei la competenza?",
+      "karte": "The Creator",
+      "text": "La competenza è maestria in divenire. Il creatore affina il suo mestiere attraverso la pratica amorevole."
+    },
+    "#B59": {
+      "label": "Efficienza",
+      "frage": "Quanto è importante per Lei l'efficienza?",
+      "karte": "The Master",
+      "text": "La vera efficienza è precisione senza sforzo. Il maestro non spreca energia – fluisce."
+    },
+    "#B60": {
+      "label": "Efficacia",
+      "frage": "Quanto è importante per Lei l'efficacia?",
+      "karte": "Totality",
+      "text": "L'efficacia nasce dalla totalità. Qualunque cosa tu faccia – falla interamente, e mostrerà i suoi effetti."
+    },
+    "#B61": {
+      "label": "Crescita",
+      "frage": "Quanto è importante per Lei la crescita?",
+      "karte": "Rebirth",
+      "text": "La crescita è rinascita continua. Ogni giorno muore qualcosa di vecchio, perché qualcosa di nuovo possa fiorire."
+    },
+    "#B62": {
+      "label": "Senso",
+      "frage": "Quanto è importante per Lei il senso della vita?",
+      "karte": "Silence",
+      "text": "Nel silenzio si rivela il senso. Non può essere pensato – solo sentito, nella profondità del silenzio."
+    },
+    "#B63": {
+      "label": "Dare-un-contributo",
+      "frage": "Quanto è importante per Lei dare un contributo?",
+      "karte": "Sharing",
+      "text": "Contribuire è condivisione naturale. Quando dai dall'abbondanza, arricchisci te stesso."
+    },
+    "#B64": {
+      "label": "Creatività",
+      "frage": "Quanto è importante per Lei la creatività?",
+      "karte": "Creativity",
+      "text": "La creatività è la tua natura. Quando crei, sei uno con l'universo che crea incessantemente."
+    },
+    "#B65": {
+      "label": "Scoprire",
+      "frage": "Quanto è importante per Lei scoprire?",
+      "karte": "Adventure",
+      "text": "Scoprire è l'avventura dell'ignoto. Ogni passo nel nuovo è un passo nella tua vastità."
+    },
+    "#B66": {
+      "label": "Apprendere",
+      "frage": "Quanto è importante per Lei apprendere?",
+      "karte": "Understanding",
+      "text": "Apprendere è il cammino verso la comprensione. Il vero allievo resta sempre curioso, sempre aperto."
+    },
+    "#B67": {
+      "label": "Espressione-di-sé",
+      "frage": "Quanto è importante per Lei l'espressione di sé?",
+      "karte": "Integration",
+      "text": "L'espressione di sé è integrazione vissuta. Quando sei pienamente te stesso, la tua essenza fluisce naturalmente verso l'esterno."
+    },
+    "#B68": {
+      "label": "Ricevere-stimoli",
+      "frage": "Quanto è importante per Lei ricevere stimoli?",
+      "karte": "Source",
+      "text": "Gli stimoli più profondi vengono dalla sorgente dentro di te. Gli impulsi esterni risvegliano ciò che vive già all'interno."
+    },
+    "#B69": {
+      "label": "Celebrare-la-vita",
+      "frage": "Quanto è importante per Lei celebrare la vita?",
+      "karte": "Celebration",
+      "text": "La vita è una festa – non hai bisogno di un motivo per celebrare. Il tuo stesso essere è ragione sufficiente."
+    },
+    "#B70": {
+      "label": "Ispirazione",
+      "frage": "Quanto è importante per Lei l'ispirazione?",
+      "karte": "Inner Voice",
+      "text": "L'ispirazione è la voce della saggezza interiore. Ti sussurra ciò che il tuo cuore già sa."
+    },
+    "#B71": {
+      "label": "Esprimere-il-dolore",
+      "frage": "Quanto è importante per Lei esprimere il dolore?",
+      "karte": "Sorrow",
+      "text": "Il dolore ha bisogno di espressione come la pioggia ha bisogno di cadere. Lascialo fluire – dall'altra parte attende la chiarezza."
+    },
+    "#B72": {
+      "label": "Comprendere",
+      "frage": "Quanto è importante per Lei comprendere?",
+      "karte": "New Vision",
+      "text": "La comprensione è una nuova visione. A volte devi cambiare prospettiva per vedere ciò che è sempre stato lì."
+    },
+    "#B73": {
+      "label": "Inizio-e-fine",
+      "frage": "Quanto è importante per Lei il senso di inizio e fine?",
+      "karte": "Completion",
+      "text": "Ogni fine porta in sé un inizio. Il cerchio si chiude perché uno nuovo possa cominciare."
+    },
+    "#B74": {
+      "label": "Esercitare-controllo",
+      "frage": "Quanto è importante per Lei esercitare controllo?",
+      "karte": "Control",
+      "text": "Il vero controllo sta nel lasciare andare il controllo. Il maestro della vita non controlla – fluisce."
+    },
+    "#B75": {
+      "label": "Dedizione",
+      "frage": "Quanto è importante per Lei la dedizione?",
+      "karte": "Letting Go",
+      "text": "La dedizione è lasciar andare nella fiducia. Le mani vuote sono pronte a ricevere."
+    },
+    "#B76": {
+      "label": "Dare-guida",
+      "frage": "Quanto è importante per Lei dare guida?",
+      "karte": "Guidance",
+      "text": "Dare guida significa mostrare agli altri il cammino che tu stesso hai percorso. La guida autentica ispira."
+    },
+    "#B77": {
+      "label": "Essere-guidati",
+      "frage": "Quanto è importante per Lei essere guidato?",
+      "karte": "Trust",
+      "text": "Essere guidati richiede fiducia. È il coraggio di porgere la mano a un altro nel buio."
+    },
+    "#B78": {
+      "label": "Rituale",
+      "frage": "Quanto è importante per Lei il rituale?",
+      "karte": "The Master",
+      "text": "I rituali sono azioni consapevoli. Portano il sacro nel quotidiano e il quotidiano nel sacro."
+    },
+    "#B79": {
+      "label": "Aftercare",
+      "frage": "Quanto è importante per Lei l'aftercare?",
+      "karte": "Healing",
+      "text": "L'aftercare è guarigione attenta. Dà spazio a ciò che è accaduto per integrarsi."
+    },
+    "#B80": {
+      "label": "Porre-limiti",
+      "frage": "Quanto è importante per Lei porre dei limiti?",
+      "karte": "The Rebel",
+      "text": "Porre limiti è un atto di rispetto verso se stessi. Il ribelle dice no per proteggere il suo sì."
+    },
+    "#B81": {
+      "label": "Rispettare-i-limiti",
+      "frage": "Quanto è importante per Lei rispettare i limiti?",
+      "karte": "Receptivity",
+      "text": "Rispettare i limiti significa onorare lo spazio dell'altro. La ricettività inizia con l'attenzione."
+    },
+    "#B82": {
+      "label": "Intensità",
+      "frage": "Quanto è importante per Lei l'intensità?",
+      "karte": "Intensity",
+      "text": "L'intensità è la vita nella sua forma più pura. Brucia luminoso – ma non bruciare te stesso."
+    },
+    "#B83": {
+      "label": "Donare-fiducia",
+      "frage": "Quanto è importante per Lei donare fiducia?",
+      "karte": "Trust",
+      "text": "Donare fiducia è un atto di coraggio. Apre la porta a una connessione profonda."
+    },
+    "#B84": {
+      "label": "Assumersi-responsabilità",
+      "frage": "Quanto è importante per Lei assumersi responsabilità?",
+      "karte": "Maturity",
+      "text": "Assumersi responsabilità è segno di maturità. Significa: io sono il creatore della mia vita."
+    },
+    "#B85": {
+      "label": "Lasciarsi-andare",
+      "frage": "Quanto è importante per Lei lasciarsi andare?",
+      "karte": "Trust",
+      "text": "Lasciarsi andare richiede fiducia profonda. È il salto, sapendo che sarai sorretto."
+    },
+    "#B86": {
+      "label": "Scambio-di-potere",
+      "frage": "Quanto è importante per Lei lo scambio di potere?",
+      "karte": "Transformation",
+      "text": "Lo scambio di potere è trasformazione nella relazione. Entrambi i partner si trasformano attraverso il gioco consapevole."
+    },
+    "#B87": {
+      "label": "Essere-al-servizio",
+      "frage": "Quanto è importante per Lei essere al servizio?",
+      "karte": "Compassion",
+      "text": "Essere al servizio per compassione è dedizione senza perdita. Dai e ricevi allo stesso tempo."
+    },
+    "#B88": {
+      "label": "Proteggere",
+      "frage": "Quanto è importante per Lei proteggere?",
+      "karte": "Courage",
+      "text": "Proteggere richiede coraggio – il coraggio di difendere ciò che ami."
+    },
+    "#B89": {
+      "label": "Desiderio-di-figli",
+      "frage": "Quanto è importante per Lei il desiderio di avere figli?",
+      "karte": "Flowering",
+      "text": "Il desiderio di figli è il desiderio di fioritura. La vita vuole proseguire, sbocciare, trasmettere."
+    },
+    "#B90": {
+      "label": "Genitorialità",
+      "frage": "Quanto è importante per Lei la genitorialità?",
+      "karte": "The Lovers",
+      "text": "La genitorialità è una forma d'amore che lascia andare. Gli amanti diventano tre – e l'amore cresce."
+    },
+    "#B91": {
+      "label": "Procreazione",
+      "frage": "Quanto è importante per Lei la procreazione?",
+      "karte": "Source",
+      "text": "La procreazione ti connette alla sorgente della vita stessa. Diventi canale per un nuovo essere."
+    },
+    "#B92": {
+      "label": "Fondare-una-famiglia",
+      "frage": "Quanto è importante per Lei fondare una famiglia?",
+      "karte": "We Are the World",
+      "text": "Fondare una famiglia significa creare un cerchio di connessione. Un microcosmo del mondo."
+    },
+    "#B93": {
+      "label": "Famiglia-allargata",
+      "frage": "Quanto è importante per Lei la famiglia allargata?",
+      "karte": "Creativity",
+      "text": "La famiglia allargata è creazione creativa di famiglia. Nuovi modelli nascono da fili diversi."
+    },
+    "#B94": {
+      "label": "Vita-senza-figli",
+      "frage": "Quanto è importante per Lei una vita senza figli?",
+      "karte": "Aloneness",
+      "text": "Una vita senza figli è un cammino consapevole. Nella solitudine trovi altre forme di realizzazione."
+    },
+    "#B95": {
+      "label": "Adozione",
+      "frage": "Quanto è importante per Lei l'adozione?",
+      "karte": "Compassion",
+      "text": "L'adozione è compassione in azione. Apri il tuo cuore a un bambino che non viene da te."
+    },
+    "#B96": {
+      "label": "Affido",
+      "frage": "Quanto è importante per Lei l'affido?",
+      "karte": "Healing",
+      "text": "Accogliere in affido è lavoro di guarigione. Dai a un bambino ciò di cui ha bisogno per guarire."
+    },
+    "#B97": {
+      "label": "Andare-a-convivere",
+      "frage": "Quanto è importante per Lei andare a convivere?",
+      "karte": "Harmony",
+      "text": "Andare a convivere è tessere un'armonia condivisa. Due vite diventano uno spazio comune."
+    },
+    "#B98": {
+      "label": "Vivere-separati",
+      "frage": "Quanto è importante per Lei vivere separati?",
+      "karte": "Aloneness",
+      "text": "Vivere separati onora il bisogno di solitudine. La vicinanza a volte ha bisogno di distanza per respirare."
+    },
+    "#B99": {
+      "label": "Vita-in-condivisione",
+      "frage": "Quanto è importante per Lei la vita in condivisione?",
+      "karte": "Participation",
+      "text": "La vita in condivisione è partecipazione comune al quotidiano. La comunità nasce nei piccoli momenti."
+    },
+    "#B100": {
+      "label": "Stanza-propria",
+      "frage": "Quanto è importante per Lei avere una stanza propria?",
+      "karte": "Aloneness",
+      "text": "Una stanza propria è il rifugio dell'anima. Nella solitudine ritrovi te stesso."
+    },
+    "#B101": {
+      "label": "Vita-in-città",
+      "frage": "Quanto è importante per Lei la vita in città?",
+      "karte": "Experiencing",
+      "text": "La vita in città è esperienza intensa. La città pulsa di vita – chi è aperto riceve doni preziosi."
+    },
+    "#B102": {
+      "label": "Vita-in-campagna",
+      "frage": "Quanto è importante per Lei la vita in campagna?",
+      "karte": "Harmony",
+      "text": "La vita in campagna è armonia con la natura. Il ritmo della terra diventa il tuo ritmo."
+    },
+    "#B103": {
+      "label": "Mobilità",
+      "frage": "Quanto è importante per Lei la mobilità?",
+      "karte": "Traveling",
+      "text": "La mobilità è la libertà del viaggio. Chi può muoversi, può dispiegarsi."
+    },
+    "#B104": {
+      "label": "Sedentarietà",
+      "frage": "Quanto è importante per Lei la sedentarietà?",
+      "karte": "Maturity",
+      "text": "La sedentarietà è radicamento maturo. Mettere radici significa crescere in profondità anziché in ampiezza."
+    },
+    "#B105": {
+      "label": "Sposarsi",
+      "frage": "Quanto è importante per Lei sposarsi?",
+      "karte": "Commitment",
+      "text": "Il matrimonio è un sì consapevole. È la decisione di attraversare insieme tutte le stagioni."
+    },
+    "#B106": {
+      "label": "Senza-matrimonio",
+      "frage": "Quanto è importante per Lei vivere senza matrimonio?",
+      "karte": "The Rebel",
+      "text": "Vivere senza matrimonio è la via del ribelle. L'amore non ha bisogno di un certificato – solo di verità."
+    },
+    "#B107": {
+      "label": "Unione-civile",
+      "frage": "Quanto è importante per Lei l'unione civile?",
+      "karte": "The Lovers",
+      "text": "L'unione civile è il riconoscimento ufficiale dell'amore. Gli amanti si rendono visibili al mondo."
+    },
+    "#B108": {
+      "label": "Animali-domestici",
+      "frage": "Quanto è importante per Lei avere animali domestici?",
+      "karte": "Friendliness",
+      "text": "Gli animali domestici insegnano l'amicizia incondizionata. Amano senza chiedere – e vengono amati."
+    },
+    "#B109": {
+      "label": "Nessun-animale",
+      "frage": "Quanto è importante per Lei non avere animali domestici?",
+      "karte": "Slowing Down",
+      "text": "Non avere animali domestici crea spazio per la lentezza. Meno obblighi, più silenzio."
+    },
+    "#B110": {
+      "label": "Hobby-condivisi",
+      "frage": "Quanto è importante per Lei avere hobby condivisi?",
+      "karte": "Celebration",
+      "text": "Gli hobby condivisi sono feste condivise. Ciò che dà gioia diventa più grande quando è condiviso."
+    },
+    "#B111": {
+      "label": "Hobby-propri",
+      "frage": "Quanto è importante per Lei avere hobby propri?",
+      "karte": "Aloneness",
+      "text": "Gli hobby propri sono spazi di solitudine. Nutrono la parte di te che appartiene solo a te."
+    },
+    "#B112": {
+      "label": "Vacanze-insieme",
+      "frage": "Quanto è importante per Lei le vacanze insieme?",
+      "karte": "Adventure",
+      "text": "Le vacanze insieme sono avventura condivisa. Luoghi nuovi aprono spazi nuovi – anche l'uno per l'altro."
+    },
+    "#B113": {
+      "label": "Vacanze-separate",
+      "frage": "Quanto è importante per Lei le vacanze separate?",
+      "karte": "Aloneness",
+      "text": "Le vacanze separate onorano il bisogno di solitudine. A volte devi viaggiare da solo per ritrovarti."
+    },
+    "#B114": {
+      "label": "Pianificazione-a-lungo-termine",
+      "frage": "Quanto è importante per Lei la pianificazione a lungo termine?",
+      "karte": "Patience",
+      "text": "Pianificare a lungo termine è seminare con pazienza. Confidi che il seme germoglierà al momento giusto."
+    },
+    "#B115": {
+      "label": "Vivere-nel-momento",
+      "frage": "Quanto è importante per Lei vivere nel momento?",
+      "karte": "Moment to Moment",
+      "text": "Vivere nel momento è l'arte suprema. Passato e futuro scompaiono – resta solo l'adesso."
+    },
+    "#B116": {
+      "label": "Focus-sulla-carriera",
+      "frage": "Quanto è importante per Lei il focus sulla carriera?",
+      "karte": "Success",
+      "text": "Il focus sulla carriera è energia diretta. Ma il vero successo non sta nel raggiungere, bensì nel divenire."
+    },
+    "#B117": {
+      "label": "Focus-sulla-famiglia",
+      "frage": "Quanto è importante per Lei il focus sulla famiglia?",
+      "karte": "We Are the World",
+      "text": "Il focus sulla famiglia è connessione come priorità. La famiglia è un microcosmo del mondo."
+    },
+    "#B118": {
+      "label": "Equilibrio-vita-lavoro",
+      "frage": "Quanto è importante per Lei l'equilibrio tra vita e lavoro?",
+      "karte": "Integration",
+      "text": "L'equilibrio vita-lavoro è integrazione vissuta. Quando tutti gli ambiti della vita fluiscono, nasce l'armonia."
+    },
+    "#B119": {
+      "label": "Valori-condivisi",
+      "frage": "Quanto è importante per Lei i valori condivisi?",
+      "karte": "We Are the World",
+      "text": "I valori condivisi sono il legame invisibile. Connettono più profondamente delle parole o delle azioni."
+    },
+    "#B120": {
+      "label": "Rispetto-delle-differenze",
+      "frage": "Quanto è importante per Lei il rispetto delle differenze?",
+      "karte": "Understanding",
+      "text": "Rispettare le differenze significa comprendere che la diversità è ricchezza. L'arcobaleno ha bisogno di tutti i colori."
+    },
+    "#B121": {
+      "label": "Coltivare-tradizioni",
+      "frage": "Quanto è importante per Lei coltivare le tradizioni?",
+      "karte": "Ordinariness",
+      "text": "Coltivare le tradizioni onora l'ordinario. Nel ricorrente risiede il sacro del quotidiano."
+    },
+    "#B122": {
+      "label": "Percorrere-nuove-strade",
+      "frage": "Quanto è importante per Lei percorrere nuove strade?",
+      "karte": "Adventure",
+      "text": "Percorrere nuove strade è l'avventura del pioniere. L'ignoto chiama – e tu rispondi."
+    },
+    "#B123": {
+      "label": "Condividere-la-spiritualità",
+      "frage": "Quanto è importante per Lei condividere la spiritualità?",
+      "karte": "Inner Voice",
+      "text": "Condividere la spiritualità significa ascoltare insieme la voce interiore. Il silenzio condiviso è doppia profondità."
+    },
+    "#B124": {
+      "label": "Vita-secolare",
+      "frage": "Quanto è importante per Lei una vita secolare?",
+      "karte": "Ordinariness",
+      "text": "La vita secolare trova il sacro nell'ordinario. Ogni momento è sacro – anche senza rituale."
+    },
+    "#B125": {
+      "label": "Alimentazione-sana",
+      "frage": "Quanto è importante per Lei un'alimentazione sana?",
+      "karte": "Awareness",
+      "text": "L'alimentazione sana è nutrimento consapevole. Ciò che mangi diventa te – scegli con consapevolezza."
+    },
+    "#B126": {
+      "label": "Sport-e-fitness",
+      "frage": "Quanto è importante per Lei sport e fitness?",
+      "karte": "Totality",
+      "text": "Sport e fitness vivono di totalità. Datti completamente – e il corpo risponderà con vitalità."
+    },
+    "#B127": {
+      "label": "Indipendenza-finanziaria",
+      "frage": "Quanto è importante per Lei l'indipendenza finanziaria?",
+      "karte": "Abundance",
+      "text": "L'indipendenza finanziaria è abbondanza esteriore come specchio della libertà interiore. L'abbondanza attrae abbondanza."
+    },
+    "#B128": {
+      "label": "Finanze-condivise",
+      "frage": "Quanto è importante per Lei le finanze condivise?",
+      "karte": "Going With The Flow",
+      "text": "Le finanze condivise sono un flusso comune. Il denaro scorre tra voi come l'acqua – naturale e libero."
+    },
+    "#B129": {
+      "label": "Finanze-separate",
+      "frage": "Quanto è importante per Lei le finanze separate?",
+      "karte": "Aloneness",
+      "text": "Le finanze separate onorano l'autonomia. Ognuno porta la propria parte – questo crea chiarezza."
+    },
+    "#B130": {
+      "label": "Parsimonia",
+      "frage": "Quanto è importante per Lei la parsimonia?",
+      "karte": "Patience",
+      "text": "La parsimonia è custodia paziente. Come il contadino conserva il seme, tu risparmi per il futuro."
+    },
+    "#B131": {
+      "label": "Generosità",
+      "frage": "Quanto è importante per Lei la generosità?",
+      "karte": "Sharing",
+      "text": "La generosità è abbondanza che trabocca. Chi vive dalla sorgente non può che dare."
+    },
+    "#B132": {
+      "label": "Costruzione-del-patrimonio",
+      "frage": "Quanto è importante per Lei la costruzione del patrimonio?",
+      "karte": "Abundance",
+      "text": "Costruire un patrimonio è creare abbondanza materiale. Ma non dimenticare: la vera ricchezza è interiore."
+    },
+    "#B133": {
+      "label": "Minimalismo",
+      "frage": "Quanto è importante per Lei il minimalismo?",
+      "karte": "No-Thingness",
+      "text": "Il minimalismo è l'arte del vuoto. Meno cose, più spazio – più spazio, più libertà."
+    },
+    "#B134": {
+      "label": "Realizzazione-professionale",
+      "frage": "Quanto è importante per Lei la realizzazione professionale?",
+      "karte": "The Creator",
+      "text": "La realizzazione professionale è creazione nel quotidiano. Quando il lavoro diventa espressione della tua essenza, è vocazione."
+    },
+    "#B135": {
+      "label": "Lavoro-come-mezzo",
+      "frage": "Quanto è importante per Lei il lavoro come mezzo?",
+      "karte": "Ordinariness",
+      "text": "Il lavoro come mezzo vede l'ordinario con sobrietà. Il lavoro è strumento, non identità."
+    },
+    "#B136": {
+      "label": "Lavoro-autonomo",
+      "frage": "Quanto è importante per Lei il lavoro autonomo?",
+      "karte": "The Rebel",
+      "text": "Il lavoro autonomo è la via del ribelle nel mondo del lavoro. Crei secondo le tue regole."
+    },
+    "#B137": {
+      "label": "Lavoro-dipendente",
+      "frage": "Quanto è importante per Lei il lavoro dipendente?",
+      "karte": "Participation",
+      "text": "Essere dipendente è partecipare a qualcosa di più grande. Ti inserisci in un'opera comune."
+    },
+    "#B138": {
+      "label": "Posizione-dirigenziale",
+      "frage": "Quanto è importante per Lei una posizione dirigenziale?",
+      "karte": "Guidance",
+      "text": "La leadership è servizio, non dominio. Il vero leader indica la strada che lui stesso percorre."
+    },
+    "#B139": {
+      "label": "Lavoro-di-squadra",
+      "frage": "Quanto è importante per Lei il lavoro di squadra?",
+      "karte": "Participation",
+      "text": "Il lavoro di squadra è partecipazione coreografata. Ognuno danza la propria parte, e insieme nasce il tutto."
+    },
+    "#B140": {
+      "label": "Lavoro-da-casa",
+      "frage": "Quanto è importante per Lei il lavoro da casa?",
+      "karte": "Aloneness",
+      "text": "Il lavoro da casa unisce lavoro e solitudine. Nel proprio spazio trovi il tuo proprio ritmo."
+    },
+    "#B141": {
+      "label": "Presenza-in-ufficio",
+      "frage": "Quanto è importante per Lei la presenza in ufficio?",
+      "karte": "Participation",
+      "text": "La presenza in ufficio è partecipazione fisica. Certa energia nasce solo quando le persone sono insieme."
+    },
+    "#B142": {
+      "label": "Orario-flessibile",
+      "frage": "Quanto è importante per Lei l'orario flessibile?",
+      "karte": "Going With The Flow",
+      "text": "L'orario flessibile è lavoro nel flusso. Ti adatti al ritmo della vita, non il contrario."
+    },
+    "#B143": {
+      "label": "Strutture-fisse",
+      "frage": "Quanto è importante per Lei le strutture fisse?",
+      "karte": "Maturity",
+      "text": "Le strutture fisse danno forma alla vita. L'anima matura apprezza il quadro che offre sostegno."
+    },
+    "#B144": {
+      "label": "Formazione-continua",
+      "frage": "Quanto è importante per Lei la formazione continua?",
+      "karte": "Understanding",
+      "text": "La formazione continua è il cammino dell'eterno allievo. Chi smette di imparare, smette di crescere."
+    },
+    "#B145": {
+      "label": "Pianificazione-pensione",
+      "frage": "Quanto è importante per Lei la pianificazione della pensione?",
+      "karte": "Patience",
+      "text": "Pianificare la pensione significa seminare con pazienza nel futuro. Il raccolto verrà – al momento giusto."
+    },
+    "#B146": {
+      "label": "Anno-sabbatico",
+      "frage": "Quanto è importante per Lei un anno sabbatico?",
+      "karte": "Turning In",
+      "text": "Un anno sabbatico è un tempo di ritiro interiore. La fermata esteriore permette il movimento interno."
+    },
+    "#B147": {
+      "label": "Propensione-al-rischio",
+      "frage": "Quanto è importante per Lei la propensione al rischio?",
+      "karte": "Adventure",
+      "text": "La propensione al rischio è il coraggio dell'avventura. Chi non salta mai, non scoprirà mai di saper volare."
+    },
+    "#B148": {
+      "label": "Orientamento-alla-sicurezza",
+      "frage": "Quanto è importante per Lei l'orientamento alla sicurezza?",
+      "karte": "Protection",
+      "text": "L'orientamento alla sicurezza è protezione saggia. A volte la prudenza è la decisione più coraggiosa."
+    },
+    "#B149": {
+      "label": "Scambio-quotidiano",
+      "frage": "Quanto è importante per Lei lo scambio quotidiano?",
+      "karte": "Friendliness",
+      "text": "Lo scambio quotidiano è amicizia vissuta. Piccole parole tessono la rete della connessione."
+    },
+    "#B150": {
+      "label": "Tempo-di-qualità",
+      "frage": "Quanto è importante per Lei il tempo di qualità?",
+      "karte": "Moment to Moment",
+      "text": "Il tempo di qualità è tempo presente. Non conta la quantità, ma la profondità di ogni momento."
+    },
+    "#B151": {
+      "label": "Conversazioni-profonde",
+      "frage": "Quanto è importante per Lei le conversazioni profonde?",
+      "karte": "Understanding",
+      "text": "Le conversazioni profonde portano alla comprensione. Le parole diventano ponti tra le anime."
+    },
+    "#B152": {
+      "label": "Conversazione-leggera",
+      "frage": "Quanto è importante per Lei la conversazione leggera?",
+      "karte": "Playfulness",
+      "text": "La conversazione leggera è essere giocoso. Non tutto deve essere profondo – a volte basta un sorriso."
+    },
+    "#B153": {
+      "label": "Apertura-emotiva",
+      "frage": "Quanto è importante per Lei l'apertura emotiva?",
+      "karte": "Receptivity",
+      "text": "L'apertura emotiva è un cuore ricettivo. Il calice è vuoto – pronto a essere riempito."
+    },
+    "#B154": {
+      "label": "Comunicazione-oggettiva",
+      "frage": "Quanto è importante per Lei la comunicazione oggettiva?",
+      "karte": "Consciousness",
+      "text": "La comunicazione oggettiva è coscienza chiara. I pensieri vengono espressi con precisione."
+    },
+    "#B155": {
+      "label": "Affrontare-i-conflitti",
+      "frage": "Quanto è importante per Lei affrontare i conflitti?",
+      "karte": "Breakthrough",
+      "text": "Affrontare i conflitti porta alla svolta. Ciò che viene espresso può guarire."
+    },
+    "#B156": {
+      "label": "Preservare-l'armonia",
+      "frage": "Quanto è importante per Lei preservare l'armonia?",
+      "karte": "Harmony",
+      "text": "Preservare l'armonia è un'arte. Ma la vera armonia non nasce dall'evitamento, bensì dall'integrazione."
+    },
+    "#B157": {
+      "label": "Comunicazione-diretta",
+      "frage": "Quanto è importante per Lei la comunicazione diretta?",
+      "karte": "Courage",
+      "text": "La comunicazione diretta richiede coraggio. Dire la verità è un atto d'amore."
+    },
+    "#B158": {
+      "label": "Comunicazione-diplomatica",
+      "frage": "Quanto è importante per Lei la comunicazione diplomatica?",
+      "karte": "Receptivity",
+      "text": "La comunicazione diplomatica è ricettiva verso l'altro. Le parole vengono scelte per connettere."
+    },
+    "#B159": {
+      "label": "Cultura-del-feedback",
+      "frage": "Quanto è importante per Lei la cultura del feedback?",
+      "karte": "Understanding",
+      "text": "Il feedback è comprensione reciproca. Ogni riscontro è un dono – quando viene ascoltato."
+    },
+    "#B160": {
+      "label": "Comunicazione-non-verbale",
+      "frage": "Quanto è importante per Lei la comunicazione non verbale?",
+      "karte": "Silence",
+      "text": "La comunicazione non verbale parla nel silenzio. Il corpo dice ciò che le parole non possono."
+    },
+    "#B161": {
+      "label": "Ascolto-attivo",
+      "frage": "Quanto è importante per Lei l'ascolto attivo?",
+      "karte": "Receptivity",
+      "text": "L'ascolto attivo è presenza ricettiva. Non ascolti solo le parole – ascolti il cuore che sta dietro."
+    },
+    "#B162": {
+      "label": "Umorismo-nella-conversazione",
+      "frage": "Quanto è importante per Lei l'umorismo nella conversazione?",
+      "karte": "Celebration",
+      "text": "L'umorismo nella conversazione è una piccola celebrazione. Ridere insieme connette più profondamente di molte parole."
+    },
+    "#B163": {
+      "label": "Serietà",
+      "frage": "Quanto è importante per Lei la serietà?",
+      "karte": "Maturity",
+      "text": "La serietà è presenza matura. Certi temi meritano la profondità di un'attenzione indivisa."
+    },
+    "#B164": {
+      "label": "Conversazioni-spontanee",
+      "frage": "Quanto è importante per Lei le conversazioni spontanee?",
+      "karte": "Playfulness",
+      "text": "Le conversazioni spontanee sono scambi giocosi. I momenti non pianificati portano spesso la magia più grande."
+    },
+    "#B165": {
+      "label": "Conversazioni-pianificate",
+      "frage": "Quanto è importante per Lei le conversazioni pianificate?",
+      "karte": "Guidance",
+      "text": "Le conversazioni pianificate danno spazio all'importante. Certi temi hanno bisogno di un contesto protetto."
+    },
+    "#B166": {
+      "label": "Comunicazione-scritta",
+      "frage": "Quanto è importante per Lei la comunicazione scritta?",
+      "karte": "Consciousness",
+      "text": "La comunicazione scritta è coscienza riflessa. La parola scritta ha un peso maggiore."
+    },
+    "#B167": {
+      "label": "Comunicazione-orale",
+      "frage": "Quanto è importante per Lei la comunicazione orale?",
+      "karte": "Experiencing",
+      "text": "La comunicazione orale è esperienza viva. La voce porta più delle sole parole."
+    },
+    "#B168": {
+      "label": "Decidere-insieme",
+      "frage": "Quanto è importante per Lei decidere insieme?",
+      "karte": "The Lovers",
+      "text": "Decidere insieme è l'arte degli amanti. Due voci trovano una melodia comune."
+    },
+    "#B169": {
+      "label": "Decisioni-autonome",
+      "frage": "Quanto è importante per Lei le decisioni autonome?",
+      "karte": "The Rebel",
+      "text": "Le decisioni autonome sono la via del ribelle. Scegli secondo la tua propria verità."
+    },
+    "#B170": {
+      "label": "Disponibilità-al-compromesso",
+      "frage": "Quanto è importante per Lei la disponibilità al compromesso?",
+      "karte": "Compromise",
+      "text": "Il compromesso è un'arte. Ma distingui tra flessibilità saggia e tradimento di te stesso."
+    },
+    "#B171": {
+      "label": "Posizioni-chiare",
+      "frage": "Quanto è importante per Lei le posizioni chiare?",
+      "karte": "Courage",
+      "text": "Le posizioni chiare richiedono coraggio. Sapere per cosa stai è l'ancora nei tempi di tempesta."
+    },
+    "#B172": {
+      "label": "Sostegno-emotivo",
+      "frage": "Quanto è importante per Lei il sostegno emotivo?",
+      "karte": "Healing",
+      "text": "Il sostegno emotivo è presenza che guarisce. A volte basta esserci – senza parole."
+    },
+    "#B173": {
+      "label": "Sostegno-pratico",
+      "frage": "Quanto è importante per Lei il sostegno pratico?",
+      "karte": "Abundance",
+      "text": "Il sostegno pratico è abbondanza in azione. Le mani che aiutano mostrano l'amore attraverso i fatti."
+    },
+    "#B174": {
+      "label": "Check-in-regolari",
+      "frage": "Quanto è importante per Lei i check-in regolari?",
+      "karte": "Awareness",
+      "text": "I check-in regolari sono attenzione consapevole. Tengono il dito sul polso della relazione."
+    },
+    "#B175": {
+      "label": "Riflessione-sulla-relazione",
+      "frage": "Quanto è importante per Lei la riflessione sulla relazione?",
+      "karte": "New Vision",
+      "text": "La riflessione sulla relazione porta nuova visione. Fermarsi e guardare mostra dove siete veramente."
+    },
+    "#B176": {
+      "label": "Flusso-naturale",
+      "frage": "Quanto è importante per Lei il flusso naturale?",
+      "karte": "Going With The Flow",
+      "text": "Il flusso naturale è scorrere senza sforzo. Quando smettete di lottare, la corrente vi porta."
+    },
+    "#B177": {
+      "label": "Energia-sociale",
+      "frage": "Quanto è importante per Lei l'energia sociale?",
+      "karte": "Experiencing",
+      "text": "L'energia sociale è esperienza viva con gli altri. Certe persone ti ricaricano – cercale."
+    },
+    "#B178": {
+      "label": "Convivialità",
+      "frage": "Quanto è importante per Lei la convivialità?",
+      "karte": "Celebration",
+      "text": "La convivialità è celebrazione comune della vita. Persone insieme – questo è già una festa."
+    },
+    "#B179": {
+      "label": "Quiete-dalle-persone",
+      "frage": "Quanto è importante per Lei la quiete dalle persone?",
+      "karte": "Aloneness",
+      "text": "La quiete dalle persone è solitudine salutare. Il silenzio dopo il trambusto è un dono."
+    },
+    "#B180": {
+      "label": "Coltivare-amicizie",
+      "frage": "Quanto è importante per Lei coltivare le amicizie?",
+      "karte": "Friendliness",
+      "text": "Coltivare le amicizie è amicizia come pratica. Le relazioni hanno bisogno di attenzione per fiorire."
+    },
+    "#B181": {
+      "label": "Focus-tempo-di-coppia",
+      "frage": "Quanto è importante per Lei il focus sul tempo di coppia?",
+      "karte": "The Lovers",
+      "text": "Il tempo di coppia è tempo esclusivo degli amanti. In questo spazio ci siete solo voi due – e questo è sacro."
+    },
+    "#B182": {
+      "label": "Amici-in-comune",
+      "frage": "Quanto è importante per Lei avere amici in comune?",
+      "karte": "We Are the World",
+      "text": "Gli amici in comune ampliano il vostro mondo. Il cerchio si allarga, la connessione si approfondisce."
+    },
+    "#B183": {
+      "label": "Amici-propri",
+      "frage": "Quanto è importante per Lei avere amici propri?",
+      "karte": "Aloneness",
+      "text": "Gli amici propri sono spazi dell'individuale. Non tutto deve essere condiviso – qualcosa appartiene solo a te."
+    },
+    "#B184": {
+      "label": "Incontri-familiari",
+      "frage": "Quanto è importante per Lei gli incontri familiari?",
+      "karte": "We Are the World",
+      "text": "Gli incontri familiari ti connettono alle tue radici. Sei parte di un flusso più grande della vita."
+    },
+    "#B185": {
+      "label": "Distanza-dalla-famiglia",
+      "frage": "Quanto è importante per Lei la distanza dalla famiglia?",
+      "karte": "Aloneness",
+      "text": "La distanza dalla famiglia può essere salutare. A volte hai bisogno di spazio per trovare te stesso."
+    },
+    "#B186": {
+      "label": "Feste-ed-eventi",
+      "frage": "Quanto è importante per Lei feste ed eventi?",
+      "karte": "Celebration",
+      "text": "Feste ed eventi sono celebrazioni collettive. L'energia di molte persone amplifica la gioia."
+    },
+    "#B187": {
+      "label": "Serate-tranquille",
+      "frage": "Quanto è importante per Lei le serate tranquille?",
+      "karte": "Silence",
+      "text": "Le serate tranquille sono oasi di silenzio. Nel silenzio della sera ritrovi te stesso."
+    },
+    "#B188": {
+      "label": "Conoscere-gente-nuova",
+      "frage": "Quanto è importante per Lei conoscere gente nuova?",
+      "karte": "Adventure",
+      "text": "Conoscere gente nuova è un'avventura. Ogni persona è un mondo – attendi la scoperta."
+    },
+    "#B189": {
+      "label": "Cerchia-fidata",
+      "frage": "Quanto è importante per Lei una cerchia fidata?",
+      "karte": "Trust",
+      "text": "Una cerchia fidata è un cerchio di fiducia. Qui puoi essere chi sei veramente."
+    },
+    "#B190": {
+      "label": "Tempo-da-soli",
+      "frage": "Quanto è importante per Lei il tempo da soli?",
+      "karte": "Aloneness",
+      "text": "Il tempo da soli non è solitudine – è lo spazio in cui ritrovi te stesso."
+    },
+    "#B191": {
+      "label": "Stare-insieme",
+      "frage": "Quanto è importante per Lei stare insieme?",
+      "karte": "We Are the World",
+      "text": "Stare insieme è connessione vissuta. Non essere soli è un bisogno umano profondo."
+    },
+    "#B192": {
+      "label": "Visite-spontanee",
+      "frage": "Quanto è importante per Lei le visite spontanee?",
+      "karte": "Playfulness",
+      "text": "Le visite spontanee sono sorprese giocose. L'inaspettato porta freschezza nella vita."
+    },
+    "#B193": {
+      "label": "Incontri-pianificati",
+      "frage": "Quanto è importante per Lei gli incontri pianificati?",
+      "karte": "Patience",
+      "text": "Gli incontri pianificati sono attesa paziente. L'aspettare rende il rivedersi più dolce."
+    },
+    "#B194": {
+      "label": "Essere-ospitante",
+      "frage": "Quanto è importante per Lei essere un ospitante?",
+      "karte": "Sharing",
+      "text": "Essere ospitanti è condivisione generosa. Apri il tuo spazio e il tuo cuore."
+    },
+    "#B195": {
+      "label": "Essere-ospite",
+      "frage": "Quanto è importante per Lei essere ospite?",
+      "karte": "Receptivity",
+      "text": "Essere ospite è essere ricettivo. Accogli ciò che gli altri ti offrono – con gratitudine."
+    },
+    "#B196": {
+      "label": "Contatti-online",
+      "frage": "Quanto è importante per Lei i contatti online?",
+      "karte": "Possibilities",
+      "text": "I contatti online aprono possibilità. Il mondo digitale connette ciò che la distanza separa."
+    },
+    "#B197": {
+      "label": "Incontri-di-persona",
+      "frage": "Quanto è importante per Lei gli incontri di persona?",
+      "karte": "Experiencing",
+      "text": "Gli incontri di persona sono esperienza piena. La presenza faccia a faccia è insostituibile."
+    },
+    "#B198": {
+      "label": "Impegno-nella-comunità",
+      "frage": "Quanto è importante per Lei l'impegno nella comunità?",
+      "karte": "Participation",
+      "text": "L'impegno nella comunità è partecipazione attiva al tutto più grande. Restituisci ciò che ricevi."
+    },
+    "#B199": {
+      "label": "Vita-privata",
+      "frage": "Quanto è importante per Lei la vita privata?",
+      "karte": "Silence",
+      "text": "La vita privata è silenzio protetto. Certe cose appartengono solo a te – e questo va bene."
+    },
+    "#B200": {
+      "label": "Fare-rete",
+      "frage": "Quanto è importante per Lei fare rete?",
+      "karte": "We Are the World",
+      "text": "Fare rete tesse connessioni. Ogni contatto è un filo nella grande rete della vita."
+    },
+    "#B201": {
+      "label": "Poche-relazioni-profonde",
+      "frage": "Quanto è importante per Lei poche relazioni profonde?",
+      "karte": "Intimacy",
+      "text": "Poche relazioni profonde sono intimità in essenza. Qualità sopra la quantità – questa è la via del cuore."
+    },
+    "#B202": {
+      "label": "Molte-conoscenze",
+      "frage": "Quanto è importante per Lei molte conoscenze?",
+      "karte": "Friendliness",
+      "text": "Molte conoscenze sono amicizia dispiegata. Un cuore ampio tocca molte persone."
+    },
+    "#B203": {
+      "label": "Eventi-culturali",
+      "frage": "Quanto è importante per Lei gli eventi culturali?",
+      "karte": "Creativity",
+      "text": "Gli eventi culturali nutrono la creatività. L'arte apre porte a mondi oltre il quotidiano."
+    },
+    "#B204": {
+      "label": "Vicinanza-fisica",
+      "frage": "Quanto è importante per Lei la vicinanza fisica?",
+      "karte": "Touch",
+      "text": "La vicinanza fisica è il linguaggio del tocco. Il corpo desidera il contatto – è fatto per questo."
+    },
+    "#B205": {
+      "label": "Coccole",
+      "frage": "Quanto è importante per Lei le coccole?",
+      "karte": "Warmth",
+      "text": "Le coccole sono calore senza parole. Nella vicinanza di un altro corpo i confini si sciolgono."
+    },
+    "#B206": {
+      "label": "Distanza-fisica",
+      "frage": "Quanto è importante per Lei la distanza fisica?",
+      "karte": "Aloneness",
+      "text": "La distanza fisica crea spazio per respirare. A volte il corpo ha bisogno della propria zona."
+    },
+    "#B207": {
+      "label": "Contatto-corporeo",
+      "frage": "Quanto è importante per Lei il contatto corporeo?",
+      "karte": "Touch",
+      "text": "Il contatto corporeo è comunicazione originaria. La pelle è l'organo sensoriale più grande – usalo."
+    },
+    "#B208": {
+      "label": "Abbracci",
+      "frage": "Quanto è importante per Lei gli abbracci?",
+      "karte": "Love",
+      "text": "Gli abbracci sono amore in azione. Un braccio intorno all'altro dice più di mille parole."
+    },
+    "#B209": {
+      "label": "Esperienza-del-dolore",
+      "frage": "Quanto è importante per Lei l'esperienza del dolore?",
+      "karte": "Transformation",
+      "text": "L'esperienza consapevole del dolore può trasformare. Attraversando il fuoco, vieni purificato."
+    },
+    "#B210": {
+      "label": "Dare-dolore",
+      "frage": "Quanto è importante per Lei dare dolore?",
+      "karte": "Intensity",
+      "text": "Dare dolore in un contesto consapevole è intensità come dono. I limiti diventano porte."
+    },
+    "#B211": {
+      "label": "Sperimentare-il-bondage",
+      "frage": "Quanto è importante per Lei sperimentare il bondage?",
+      "karte": "Letting Go",
+      "text": "Sperimentare il bondage è liberazione paradossale. Attraverso la restrizione esterna trovi la libertà interiore."
+    },
+    "#B212": {
+      "label": "Praticare-il-bondage",
+      "frage": "Quanto è importante per Lei praticare il bondage?",
+      "karte": "The Creator",
+      "text": "Praticare il bondage è contenere con creatività. Crei uno spazio in cui l'altro può lasciarsi andare."
+    },
+    "#B213": {
+      "label": "Devozione",
+      "frage": "Quanto è importante per Lei la devozione?",
+      "karte": "Trust",
+      "text": "La devozione è fiducia profonda nella dedizione. Ti abbandoni a qualcosa di più grande di te."
+    },
+    "#B214": {
+      "label": "Adorazione",
+      "frage": "Quanto è importante per Lei l'adorazione?",
+      "karte": "Inner Voice",
+      "text": "L'adorazione segue la voce interiore della reverenza. Vedere il divino nell'altro è sacro."
+    },
+    "#B215": {
+      "label": "Essere-umili",
+      "frage": "Quanto è importante per Lei essere umili?",
+      "karte": "No-Thingness",
+      "text": "L'umiltà è il riconoscimento del proprio vuoto. Nel nulla giaci ai piedi del tutto."
+    },
+    "#B216": {
+      "label": "Dominare",
+      "frage": "Quanto è importante per Lei dominare?",
+      "karte": "The Master",
+      "text": "Dominare è maestria nella responsabilità. Il vero maestro serve guidando."
+    },
+    "#B217": {
+      "label": "Ricevere-punizione",
+      "frage": "Quanto è importante per Lei ricevere punizione?",
+      "karte": "Transformation",
+      "text": "La punizione nel contesto consapevole è trasformazione. L'ego muore un poco, perché tu diventi più libero."
+    },
+    "#B218": {
+      "label": "Punire",
+      "frage": "Quanto è importante per Lei punire?",
+      "karte": "Guidance",
+      "text": "Punire come pratica consapevole è guida. Il maestro corregge con amore, non con rabbia."
+    },
+    "#B219": {
+      "label": "Dare-servizio",
+      "frage": "Quanto è importante per Lei dare servizio?",
+      "karte": "Compassion",
+      "text": "Dare servizio è compassione in azione. Servi perché il tuo cuore trabocca – non per dovere."
+    },
+    "#B220": {
+      "label": "Ricevere-servizio",
+      "frage": "Quanto è importante per Lei ricevere servizio?",
+      "karte": "Receptivity",
+      "text": "Ricevere servizio è umiltà ricettiva. Saper accogliere è un'arte a sé."
+    },
+    "#B221": {
+      "label": "Esperienza-del-dolore",
+      "frage": "Quanto è importante per Lei l'esperienza del dolore?",
+      "karte": "Transformation",
+      "text": "Vivere il dolore consapevolmente è una porta verso la trasformazione. Nell'intensità risiede la liberazione."
+    },
+    "#B222": {
+      "label": "Dare-dolore",
+      "frage": "Quanto è importante per Lei dare dolore?",
+      "karte": "Trust",
+      "text": "Dare dolore richiede fiducia profonda. Chi dà consapevolmente porta responsabilità come un guaritore."
+    },
+    "#B223": {
+      "label": "Sperimentare-il-bondage",
+      "frage": "Quanto è importante per Lei sperimentare il bondage?",
+      "karte": "Surrender",
+      "text": "Nell'abbandono ai vincoli risiede una libertà paradossale. Il lasciar andare inizia dove il controllo finisce."
+    },
+    "#B224": {
+      "label": "Zucchero",
+      "frage": "Quanto è importante per Lei il consumo di zucchero?",
+      "karte": "Moment to Moment",
+      "text": "La dolcezza è un piacere dell'istante. La domanda è: assapori consapevolmente o fuggi?"
+    },
+    "#B225": {
+      "label": "Essere-protetti",
+      "frage": "Quanto è importante per Lei essere protetto?",
+      "karte": "The Lovers",
+      "text": "Essere protetti significa potersi lasciar andare. Nella protezione risiede la libertà della vulnerabilità."
+    },
+    "#B226": {
+      "label": "Ricevere-fiducia",
+      "frage": "Quanto è importante per Lei ricevere fiducia?",
+      "karte": "Trust",
+      "text": "Ricevere fiducia è una responsabilità sacra. Diventi il custode di un dono prezioso."
+    }
+  }
+}

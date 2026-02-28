@@ -3,8 +3,8 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v105';
-const STATIC_CACHE_NAME = 'tiage-static-v99';
+const CACHE_NAME = 'tiage-v108';
+const STATIC_CACHE_NAME = 'tiage-static-v102';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [
@@ -17,17 +17,27 @@ const PRECACHE_URLS = [
     '/js/config.js',
     '/js/i18n.js',
     '/js/locales/de.js',
+    '/js/locales/en.js',
     '/js/locales/loader.js',
     '/js/utils/performance.js',
     '/js/utils/fuzzySearch.js',
     '/js/synthesis/constants.js',
     '/js/synthesis/synthesisCalculator.js',
+    '/js/synthesis/oshoZenTextGenerator.js',
     '/js/core/tooltips.js',
     '/js/core/archetypeDescriptions.js',
     '/js/core/tagTooltips.js',
     '/js/core/statementHelpers.js',
+    '/js/core/actionHandler.js',
+    '/js/core/actions/headerControls.js',
     '/js/ui/chartUtils.js',
-    '/css/slot-machine.css'
+    '/js/app-main.js',
+    '/js/app-i18n.js',
+    '/css/slot-machine.css',
+    // Synthese-kritische JSON-Daten
+    '/archetype-matrix.json',
+    '/profiles/data/osho-zen-beduerfnisse.json',
+    '/profiles/data/osho-zen-tarot-karten.json'
 ];
 
 // URLs die nicht gecacht werden sollen
@@ -96,7 +106,9 @@ self.addEventListener('fetch', event => {
             })
             .catch(() => {
                 // Netzwerk fehlgeschlagen - versuche Cache
-                return caches.match(event.request);
+                return caches.match(event.request).then(cachedResponse => {
+                    return cachedResponse || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+                });
             })
     );
 });

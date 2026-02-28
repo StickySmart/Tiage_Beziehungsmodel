@@ -12,7 +12,7 @@ const TiageLocaleLoader = (function() {
 
     const STORAGE_KEY = 'tiage_language';
     const DEFAULT_LANGUAGE = 'de';
-    const SUPPORTED_LANGUAGES = ['de', 'en'];
+    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it'];
 
     // Cache für geladene Locales
     const loadedLocales = {};
@@ -64,13 +64,10 @@ const TiageLocaleLoader = (function() {
         }
 
         // Prüfe ob bereits global verfügbar (falls synchron geladen)
-        if (lang === 'de' && typeof TiageLocale_DE !== 'undefined') {
-            loadedLocales.de = TiageLocale_DE;
-            return Promise.resolve(TiageLocale_DE);
-        }
-        if (lang === 'en' && typeof TiageLocale_EN !== 'undefined') {
-            loadedLocales.en = TiageLocale_EN;
-            return Promise.resolve(TiageLocale_EN);
+        var varName = 'TiageLocale_' + lang.toUpperCase();
+        if (typeof window !== 'undefined' && window[varName]) {
+            loadedLocales[lang] = window[varName];
+            return Promise.resolve(window[varName]);
         }
 
         // Dynamisch laden
@@ -83,7 +80,8 @@ const TiageLocaleLoader = (function() {
 
             script.onload = function() {
                 // Nach dem Laden ist die globale Variable verfügbar
-                const locale = lang === 'de' ? window.TiageLocale_DE : window.TiageLocale_EN;
+                var localeVarName = 'TiageLocale_' + lang.toUpperCase();
+                const locale = window[localeVarName];
                 if (locale) {
                     loadedLocales[lang] = locale;
                     console.log(`[LocaleLoader] Sprache '${lang}' geladen (${Math.round(JSON.stringify(locale).length / 1024)}KB)`);

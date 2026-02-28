@@ -158,6 +158,12 @@ body {
         font-size: 11px;
     }
 
+    /* Dropdown auf Mobile: linksbündig statt rechtsbündig */
+    .lang-dropdown {
+        right: auto;
+        left: 0;
+    }
+
     /* Visitor Info Bar auf Mobile */
     .visitor-info-bar {
         flex-wrap: wrap;

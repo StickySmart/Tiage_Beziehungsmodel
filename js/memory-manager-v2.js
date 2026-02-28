@@ -538,6 +538,19 @@ const MemoryManagerV2 = (function() {
                     }
                     if (data.geschlecht_extras) {
                         TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.ich = {
+                                fit: !!data.geschlecht_extras.fit,
+                                fuckedup: !!data.geschlecht_extras.fuckedup,
+                                horny: !!data.geschlecht_extras.horny
+                            };
+                        }
+                    } else {
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.ich = defaultExtras;
+                        }
                     }
                     if (data.agodGewichtung) {
                         TiageState.set('gewichtungen.ich', data.agodGewichtung);
@@ -626,6 +639,19 @@ const MemoryManagerV2 = (function() {
                     }
                     if (data.geschlecht_extras) {
                         TiageState.set('personDimensions.partner.geschlecht_extras', data.geschlecht_extras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.partner = {
+                                fit: !!data.geschlecht_extras.fit,
+                                fuckedup: !!data.geschlecht_extras.fuckedup,
+                                horny: !!data.geschlecht_extras.horny
+                            };
+                        }
+                    } else {
+                        var partnerDefault = { fit: false, fuckedup: false, horny: false };
+                        TiageState.set('personDimensions.partner.geschlecht_extras', partnerDefault);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.partner = partnerDefault;
+                        }
                     }
                     TiageState.saveToStorage();
                 }
@@ -634,6 +660,7 @@ const MemoryManagerV2 = (function() {
                 if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('partner');
                 if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('partner');
                 if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('partner');
+                if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('partner');
                 if (typeof window.updateAll === 'function') window.updateAll();
 
                 console.log(`[MemoryManagerV2] Partner geladen aus Slot ${slotNumber}`);
@@ -770,6 +797,21 @@ const MemoryManagerV2 = (function() {
                     // F - Fit, U - Fucked-up, H - Horny (FFH/geschlecht_extras)
                     if (data.geschlecht_extras) {
                         TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
+                        // Cache synchronisieren (syncGeschlechtExtrasUI liest aus Cache)
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.ich = {
+                                fit: !!data.geschlecht_extras.fit,
+                                fuckedup: !!data.geschlecht_extras.fuckedup,
+                                horny: !!data.geschlecht_extras.horny
+                            };
+                        }
+                    } else {
+                        // Kein gespeicherter FFH-Zustand → zurücksetzen
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.ich = defaultExtras;
+                        }
                     }
 
                     // AGOD-Gewichtung (3-Wege: 0/1/2)

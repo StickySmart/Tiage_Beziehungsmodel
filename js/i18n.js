@@ -1,7 +1,7 @@
 /**
  * INTERNATIONALIZATION (i18n) MODULE
  *
- * Handles language switching between German and English.
+ * Handles language switching between German, English, French and Italian.
  * Uses TiageState (SSOT) for persistence and provides reactive updates.
  *
  * © 2025 Ti-age.de All rights reserved.
@@ -16,7 +16,7 @@ const TiageI18n = (function() {
 
     const STORAGE_KEY = 'tiage_language';
     const DEFAULT_LANGUAGE = 'de';
-    const SUPPORTED_LANGUAGES = ['de', 'en'];
+    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it'];
 
     let currentLanguage = DEFAULT_LANGUAGE;
     let currentLocale = null;
@@ -25,7 +25,9 @@ const TiageI18n = (function() {
     // Locale references (lazy-loaded via TiageLocaleLoader)
     const locales = {
         de: typeof TiageLocale_DE !== 'undefined' ? TiageLocale_DE : null,
-        en: typeof TiageLocale_EN !== 'undefined' ? TiageLocale_EN : null
+        en: typeof TiageLocale_EN !== 'undefined' ? TiageLocale_EN : null,
+        fr: typeof TiageLocale_FR !== 'undefined' ? TiageLocale_FR : null,
+        it: typeof TiageLocale_IT !== 'undefined' ? TiageLocale_IT : null
     };
 
     /**
@@ -149,7 +151,8 @@ const TiageI18n = (function() {
      * @returns {string} The locale string (e.g., 'de-DE', 'en-US')
      */
     function getDateLocale() {
-        return currentLanguage === 'de' ? 'de-DE' : 'en-US';
+        const localeMap = { de: 'de-DE', en: 'en-US', fr: 'fr-FR', it: 'it-IT' };
+        return localeMap[currentLanguage] || 'de-DE';
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -170,16 +173,14 @@ const TiageI18n = (function() {
 
         // If not in cache, try global variable (might be loaded by now)
         if (!currentLocale) {
-            if (currentLanguage === 'de' && typeof TiageLocale_DE !== 'undefined') {
-                locales.de = TiageLocale_DE;
-                currentLocale = TiageLocale_DE;
-            } else if (currentLanguage === 'en' && typeof TiageLocale_EN !== 'undefined') {
-                locales.en = TiageLocale_EN;
-                currentLocale = TiageLocale_EN;
+            const varName = 'TiageLocale_' + currentLanguage.toUpperCase();
+            if (typeof window !== 'undefined' && window[varName]) {
+                locales[currentLanguage] = window[varName];
+                currentLocale = window[varName];
             }
         }
 
-        // If still not loaded, try TiageLocaleLoader
+        // If still not loaded, try TiageLocaleLoader cache
         if (!currentLocale && typeof TiageLocaleLoader !== 'undefined') {
             const cachedLocale = TiageLocaleLoader.getLocale(currentLanguage);
             if (cachedLocale) {
@@ -188,16 +189,36 @@ const TiageI18n = (function() {
             }
         }
 
+        // If still not loaded, actively load via TiageLocaleLoader
+        if (!currentLocale && typeof TiageLocaleLoader !== 'undefined') {
+            TiageLocaleLoader.loadLocale(currentLanguage).then(locale => {
+                if (locale && !currentLocale) {
+                    locales[currentLanguage] = locale;
+                    currentLocale = locale;
+                    // Also pre-load DE for fallback if not current language
+                    if (currentLanguage !== 'de' && !locales.de) {
+                        TiageLocaleLoader.loadLocale('de').then(deLoc => {
+                            if (deLoc) locales.de = deLoc;
+                        });
+                    }
+                    console.log(`[TiageI18n] Initialized with language: ${currentLanguage} (lazy-loaded)`);
+                }
+            }).catch(e => {
+                console.warn('[TiageI18n] Failed to load initial locale:', e);
+            });
+        }
+
         // Update HTML lang attribute
         updateHtmlLang(currentLanguage);
 
         if (currentLocale) {
             console.log(`[TiageI18n] Initialized with language: ${currentLanguage}`);
-        } else {
-            // Schedule retry when locale might be available
-            setTimeout(() => {
-                if (!currentLocale) init();
-            }, 100);
+            // Also pre-load DE for fallback if not current language
+            if (currentLanguage !== 'de' && !locales.de && typeof TiageLocaleLoader !== 'undefined') {
+                TiageLocaleLoader.loadLocale('de').then(deLoc => {
+                    if (deLoc) locales.de = deLoc;
+                });
+            }
         }
     }
 
@@ -251,6 +272,16 @@ const TiageI18n = (function() {
                 }
             }
 
+            // DE-Locale als Fallback laden (falls nicht vorhanden)
+            if (lang !== 'de' && !locales.de && typeof TiageLocaleLoader !== 'undefined') {
+                try {
+                    const deLoc = await TiageLocaleLoader.loadLocale('de');
+                    if (deLoc) locales.de = deLoc;
+                } catch (e) {
+                    // DE-Fallback optional, Fehler ignorieren
+                }
+            }
+
             currentLanguage = lang;
             currentLocale = locales[lang];
 
@@ -268,13 +299,23 @@ const TiageI18n = (function() {
         },
 
         /**
-         * Toggle between German and English
+         * Cycle through all supported languages: de → en → fr → it → de
+         * @returns {Promise<string>} The new language code
+         */
+        async cycle() {
+            const currentIndex = SUPPORTED_LANGUAGES.indexOf(currentLanguage);
+            const nextIndex = (currentIndex + 1) % SUPPORTED_LANGUAGES.length;
+            const newLang = SUPPORTED_LANGUAGES[nextIndex];
+            await this.setLanguage(newLang);
+            return newLang;
+        },
+
+        /**
+         * Toggle between German and English (legacy, kept for backward compat)
          * @returns {string} The new language code
          */
         toggle() {
-            const newLang = currentLanguage === 'de' ? 'en' : 'de';
-            this.setLanguage(newLang);
-            return newLang;
+            return this.cycle();
         },
 
         /**
@@ -298,7 +339,7 @@ const TiageI18n = (function() {
             const value = getByPath(currentLocale, path);
 
             if (value === undefined) {
-                // Try German as fallback if current is English
+                // Try German as fallback for any non-DE language
                 if (currentLanguage !== 'de' && locales.de) {
                     const deFallback = getByPath(locales.de, path);
                     if (deFallback !== undefined) return deFallback;
@@ -332,7 +373,7 @@ const TiageI18n = (function() {
          * @returns {string} The language name
          */
         getLanguageName(code) {
-            const names = { de: 'Deutsch', en: 'English' };
+            const names = { de: 'Deutsch', en: 'English', fr: 'Français', it: 'Italiano' };
             return names[code] || code;
         },
 

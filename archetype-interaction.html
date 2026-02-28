@@ -947,10 +947,19 @@
                 <div class="merge-line" id="mergeLine"></div>
             </div>
             <div class="header-buttons">
-                <button class="lang-btn" data-action="toggle-language" title="Switch Language / Sprache wechseln">
-                    <span class="lang-icon">🌐</span>
-                    <span class="lang-code" id="currentLangCode">DE</span>
-                </button>
+                <div class="lang-switcher">
+                    <button class="lang-btn" data-action="toggle-language" title="Switch Language / Sprache wechseln">
+                        <span class="lang-icon">🌐</span>
+                        <span class="lang-code" id="currentLangCode">DE</span>
+                        <span class="lang-loading" style="display:none;"></span>
+                    </button>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-item" data-action="set-language" data-lang="de"><span class="lang-flag">DE</span> Deutsch</button>
+                        <button class="lang-dropdown-item" data-action="set-language" data-lang="en"><span class="lang-flag">EN</span> English</button>
+                        <button class="lang-dropdown-item" data-action="set-language" data-lang="fr"><span class="lang-flag">FR</span> Français</button>
+                        <button class="lang-dropdown-item" data-action="set-language" data-lang="it"><span class="lang-flag">IT</span> Italiano</button>
+                    </div>
+                </div>
                 <button class="memory-btn" data-action="open-memory-modal" title="Speichern / Laden">
                     <span class="memory-icon">💾</span>
                     <span class="memory-text">Save</span>
@@ -2545,7 +2554,7 @@
                 <img src="assets/images/DasDingLogos/SWR_DASDING_Logo_V1_2Z_4C_Weiss.png" height="80" alt="DASDING" style="width: auto;" />
             </a>
             <a href="https://soundcloud.com/homo_digitalis" target="_blank" rel="noopener" title="Homo digitalis auf SoundCloud">
-                <img src="assets/images/partners/homo_digitalis.jpg" width="100" height="100" alt="Homo digitalis" style="border-radius: 50%; object-fit: cover;" />
+                <img src="assets/images/Soundcloud/soundcloud_logo.png" width="100" height="100" alt="Homo digitalis auf SoundCloud" style="object-fit: contain; background: #fff; border-radius: 12px; padding: 8px;" />
             </a>
         </div>
 
@@ -2734,7 +2743,12 @@
     <!-- Search Modules -->
     <script defer src="js/search/suggestions.js?v=20260224"></script>
 
-    <script defer src="js/app-main.js?v=20260203d"></script>
+    <!-- Extended Dimensions Modules (extracted from app-main.js) -->
+    <script defer src="js/modals/explanationModals.js?v=20260228"></script>
+    <script defer src="js/dimensions/dimensionUI.js?v=20260228"></script>
+    <script defer src="js/dimensions/gfkMatching.js?v=20260228"></script>
+
+    <script defer src="js/app-main.js?v=20260228"></script>
 
     <!-- Resonanz Profile Modal Card Update Script -->
     <script>

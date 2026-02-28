@@ -1160,7 +1160,8 @@ TiageSynthesis.Calculator = {
                 finalR1: calculatedR1
             };
 
-            console.log('[TIAGE Calculator] R1 (Leben/Orientierung) berechnet:', perspectiveResult.orientationResonance);
+            // DEBUG DISABLED v1.8.871: Feuert bei jeder Berechnung
+            // console.log('[TIAGE Calculator] R1 (Leben/Orientierung) berechnet:', perspectiveResult.orientationResonance);
         }
 
         // ═══════════════════════════════════════════════════════════════════
@@ -1279,7 +1280,8 @@ TiageSynthesis.Calculator = {
                 finalR4: calculatedR4
             };
 
-            console.log('[TIAGE Calculator] R4 (Identität) GOD-kombiniert berechnet:', perspectiveResult.identityResonance);
+            // DEBUG DISABLED v1.8.871: Feuert bei jeder Berechnung
+            // console.log('[TIAGE Calculator] R4 (Identität) GOD-kombiniert berechnet:', perspectiveResult.identityResonance);
         }
 
         if (perspectiveResult) {
@@ -2001,11 +2003,12 @@ TiageSynthesis.Calculator = {
 
         // Debug-Logging
         if (result.orientierung.hasBonus || result.dominanz.hasBonus || result.geschlecht.hasBonus) {
-            console.log('[SynthesisCalculator] Sekundär-Boni berechnet:', {
-                O: result.orientierung.hasBonus ? '+' + result.orientierung.bonusPercent + '%' : 'kein',
-                D: result.dominanz.hasBonus ? '+' + result.dominanz.bonusPercent + '%' : 'kein',
-                G: result.geschlecht.hasBonus ? '+' + result.geschlecht.bonusPercent + '%' : 'kein'
-            });
+            // DEBUG DISABLED v1.8.871: Feuert bei jeder Berechnung
+            // console.log('[SynthesisCalculator] Sekundär-Boni berechnet:', {
+            //     O: result.orientierung.hasBonus ? '+' + result.orientierung.bonusPercent + '%' : 'kein',
+            //     D: result.dominanz.hasBonus ? '+' + result.dominanz.bonusPercent + '%' : 'kein',
+            //     G: result.geschlecht.hasBonus ? '+' + result.geschlecht.bonusPercent + '%' : 'kein'
+            // });
         }
 
         return result;

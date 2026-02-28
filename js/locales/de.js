@@ -38,7 +38,44 @@ const TiageLocale_DE = {
 
         // Navigation
         page: 'Seite',
-        of: 'von'
+        of: 'von',
+
+        // Fallback / Status Texte
+        selectAllDimensions: 'Bitte alle Dimensionen auswählen.',
+        noSpecificData: 'Keine spezifischen Daten verfügbar',
+        noDescription: 'Keine Beschreibung verfügbar.',
+        noData: 'Keine Daten',
+        errorClearing: 'Fehler beim Zurücksetzen: ',
+        noNeedsFound: 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*) - sucht in #B, #K, #D, #P',
+        needsFound: '{count} Bedürfnisse gefunden',
+        needsFoundInAttributes: '{count} Bedürfnisse in {attrs} Attributen gefunden'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // QUALITÄTS-BEWERTUNG
+    // ═══════════════════════════════════════════════════════════════════════
+
+    quality: {
+        noModification: 'Keine Anpassung',
+        noAttraction: 'Keine körperliche Anziehung möglich',
+        noResonance: 'Keine Basis für Resonanz vorhanden.',
+        noResonanceDesc: 'Diese Beziehung zeigt eine Qualität von {score} – keine kompatible Basis vorhanden, deren Muster sich ausschließen.',
+        goodResonance: 'Gute Resonanz – Muster ergänzen sich.',
+        goodResonanceDesc: 'Diese Beziehung zeigt eine Qualität von {score} – eine gute Resonanz zwischen zwei Menschen, deren Muster sich ergänzen.',
+        basisPresent: 'Basis vorhanden, Arbeit erforderlich.',
+        basisPresentDesc: 'Diese Beziehung zeigt eine Qualität von {score} – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.',
+        reflectionNeeded: 'Bewusste Reflexion erforderlich.',
+        reflectionNeededDesc: 'Diese Beziehung zeigt eine Qualität von {score} – bewusste Reflexion und offene Kommunikation sind erforderlich.',
+        noModifiers: 'Keine Modifikatoren aktiv'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FEEDBACK
+    // ═══════════════════════════════════════════════════════════════════════
+
+    feedback: {
+        noFeedback: 'Noch kein Feedback vorhanden.<br>Sei der Erste!',
+        noFilterResults: 'Kein Feedback für diesen Filter.'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

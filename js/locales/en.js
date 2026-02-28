@@ -38,7 +38,44 @@ const TiageLocale_EN = {
 
         // Navigation
         page: 'Page',
-        of: 'of'
+        of: 'of',
+
+        // Fallback / Status Texts
+        selectAllDimensions: 'Please select all dimensions.',
+        noSpecificData: 'No specific data available',
+        noDescription: 'No description available.',
+        noData: 'No data',
+        errorClearing: 'Error clearing: ',
+        noNeedsFound: 'No needs found. Tip: Use * as wildcard (e.g. *child*) - searches in #B, #K, #D, #P',
+        needsFound: '{count} needs found',
+        needsFoundInAttributes: '{count} needs found in {attrs} attributes'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // QUALITY ASSESSMENT
+    // ═══════════════════════════════════════════════════════════════════════
+
+    quality: {
+        noModification: 'No modification',
+        noAttraction: 'No physical attraction possible',
+        noResonance: 'No basis for resonance present.',
+        noResonanceDesc: 'This relationship shows a quality of {score} – no compatible basis present, patterns are mutually exclusive.',
+        goodResonance: 'Good resonance – patterns complement each other.',
+        goodResonanceDesc: 'This relationship shows a quality of {score} – a good resonance between two people whose patterns complement each other.',
+        basisPresent: 'Basis present, work required.',
+        basisPresentDesc: 'This relationship shows a quality of {score} – a basis is present, but requires conscious effort and communication.',
+        reflectionNeeded: 'Conscious reflection required.',
+        reflectionNeededDesc: 'This relationship shows a quality of {score} – conscious reflection and open communication are required.',
+        noModifiers: 'No modifiers active'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FEEDBACK
+    // ═══════════════════════════════════════════════════════════════════════
+
+    feedback: {
+        noFeedback: 'No feedback yet.<br>Be the first!',
+        noFilterResults: 'No feedback for this filter.'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

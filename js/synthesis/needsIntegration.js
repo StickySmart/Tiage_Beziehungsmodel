@@ -946,7 +946,8 @@ TiageSynthesis.NeedsIntegration = {
                     }
 
                     if (Object.keys(result).length > 0) {
-                        console.log('[NeedsIntegration] SSOT: Verwende BaseArchetypProfile für', archetyp);
+                        // DEBUG DISABLED v1.8.871: Feuert bei jeder Berechnung
+                        // console.log('[NeedsIntegration] SSOT: Verwende BaseArchetypProfile für', archetyp);
                         return result;
                     }
                 }
@@ -955,7 +956,8 @@ TiageSynthesis.NeedsIntegration = {
 
         // Fallback: Legacy ARCHETYP_KOHAERENZ
         if (dimensionKohaerenzFallback && dimensionKohaerenzFallback[archetyp]) {
-            console.log('[NeedsIntegration] FALLBACK: Verwende ARCHETYP_KOHAERENZ für', archetyp);
+            // DEBUG DISABLED v1.8.871: Feuert bei jeder Berechnung
+            // console.log('[NeedsIntegration] FALLBACK: Verwende ARCHETYP_KOHAERENZ für', archetyp);
             return dimensionKohaerenzFallback[archetyp];
         }
 

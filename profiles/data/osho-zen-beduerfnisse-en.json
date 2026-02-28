@@ -1,0 +1,1365 @@
+{
+  "version": "2.0.0",
+  "description": "Osho Zen Tarot texts for the 224 needs - Extended version with individual wisdom texts",
+  "source": "Osho Zen Tarot by Ma Deva Padma (St. Martin's Press), based on the teachings of Osho",
+  "copyright": "All rights reserved by the respective owners. These descriptions are free interpretations.",
+
+  "beduerfnisse": {
+    "#B1": {
+      "label": "Air",
+      "frage": "How important is fresh air and free breathing to you?",
+      "karte": "The Master",
+      "text": "When you breathe, the whole breathes through you. Freedom begins with a single, conscious breath."
+    },
+    "#B2": {
+      "label": "Water",
+      "frage": "How important is sufficient water and hydration to you?",
+      "karte": "Healing",
+      "text": "Water carries memory. When you nourish yourself, you become soft. Healing happens in the flowing."
+    },
+    "#B3": {
+      "label": "Nourishment",
+      "frage": "How important is healthy, regular nutrition to you?",
+      "karte": "Conditioning",
+      "text": "What you eat, eats you. Nutrition is not merely food — it is the discernment between authenticity and attachment."
+    },
+    "#B4": {
+      "label": "Movement",
+      "frage": "How important is physical movement to you?",
+      "karte": "Adventure",
+      "text": "Movement is life. Every step is an invitation into the unknown. Courage means not destination, but trust."
+    },
+    "#B5": {
+      "label": "Touch",
+      "frage": "How important is it to you to be touched by others?",
+      "karte": "Touch",
+      "text": "Touch is the first mirror. The body speaks long before words arise."
+    },
+    "#B6": {
+      "label": "Rest",
+      "frage": "How important is sufficient rest and sleep to you?",
+      "karte": "No-Thingness",
+      "text": "True rest arises not from doing — but from being. Nothingness is the greatest sanctuary."
+    },
+    "#B7": {
+      "label": "Sexual-Expression",
+      "frage": "How important is sexual expression to you?",
+      "karte": "Passion",
+      "text": "Sexuality is a fire that is sacred — when you do not seek to possess it. Expression, not appropriation."
+    },
+    "#B8": {
+      "label": "Physical-Safety",
+      "frage": "How important is physical safety to you?",
+      "karte": "Courage",
+      "text": "Safety is not the absence of danger — it is the blossoming in the midst of stone."
+    },
+    "#B9": {
+      "label": "Shelter",
+      "frage": "How important is a safe living space to you?",
+      "karte": "Harmony",
+      "text": "A home is where the heart does not have to fight. Inner harmony is the true shelter."
+    },
+    "#B10": {
+      "label": "Consistency",
+      "frage": "How important is consistency in relationships to you?",
+      "karte": "Completion",
+      "text": "Consistency arises not from holding on, but from allowing life to come to completion."
+    },
+    "#B11": {
+      "label": "Feeling-Safe",
+      "frage": "How important is it to you to feel emotionally safe?",
+      "karte": "Trust",
+      "text": "To feel safe does not mean controlling everything — it means leaping even when you cannot see the ground."
+    },
+    "#B12": {
+      "label": "Protection",
+      "frage": "How important is the feeling of being protected to you?",
+      "karte": "Protection",
+      "text": "Protection is not shielding — it is the space in which you are allowed to remain soft."
+    },
+    "#B13": {
+      "label": "Stability",
+      "frage": "How important is emotional stability to you?",
+      "karte": "Maturity",
+      "text": "Stability is not rigidity. It is mature equilibrium — within and without."
+    },
+    "#B14": {
+      "label": "Lightness",
+      "frage": "How important is lightness in everyday life to you?",
+      "karte": "Playfulness",
+      "text": "Lightness is the art of trusting the moment — not because it is easy, but because you are."
+    },
+    "#B15": {
+      "label": "Sense-of-Belonging",
+      "frage": "How important is a sense of belonging to you?",
+      "karte": "We Are the World",
+      "text": "A sense of belonging arises when you know yourself to be woven in — not through proximity, but through connection."
+    },
+    "#B16": {
+      "label": "Warmth",
+      "frage": "How important is emotional warmth to you?",
+      "karte": "Warmth",
+      "text": "Warmth is not a feeling, but a presence that does not judge."
+    },
+    "#B17": {
+      "label": "Appreciation",
+      "frage": "How important is appreciation from your partner to you?",
+      "karte": "Success",
+      "text": "Appreciation happens when you are seen without a mask — not for achievement, but for your being."
+    },
+    "#B18": {
+      "label": "Closeness",
+      "frage": "How important is emotional closeness to you?",
+      "karte": "The Lovers",
+      "text": "Closeness is the bridge between two inner worlds — it begins with intimacy with yourself."
+    },
+    "#B19": {
+      "label": "Companionship",
+      "frage": "How important is companionship to you?",
+      "karte": "Participation",
+      "text": "Companionship nourishes when you do not have to prove yourself. Being present is enough."
+    },
+    "#B20": {
+      "label": "Intimacy",
+      "frage": "How important is intimacy to you?",
+      "karte": "Intimacy",
+      "text": "Intimacy is the nakedness of the soul — not of the body."
+    },
+    "#B21": {
+      "label": "Love",
+      "frage": "How important is love to you?",
+      "karte": "Love",
+      "text": "Love is not relationship. It is space. When you love, you set free."
+    },
+    "#B22": {
+      "label": "Caring",
+      "frage": "How important is it to you to care for others?",
+      "karte": "Compassion",
+      "text": "Caring is devotion without demand — it waters without counting."
+    },
+    "#B23": {
+      "label": "Support",
+      "frage": "How important is support to you?",
+      "karte": "Support",
+      "text": "Support is an invisible ground. You know it is there — because you dare."
+    },
+    "#B24": {
+      "label": "Being-There-for-Each-Other",
+      "frage": "How important is it to you to be there for each other?",
+      "karte": "Friendliness",
+      "text": "Being there for each other means being allowed to grow together in silence — without grip, without must."
+    },
+    "#B25": {
+      "label": "Acceptance",
+      "frage": "How important is acceptance to you?",
+      "karte": "Acceptance",
+      "text": "Acceptance is the first breath of freedom. You stop fighting — and life breathes through you."
+    },
+    "#B26": {
+      "label": "Compassion",
+      "frage": "How important is compassion to you?",
+      "karte": "Completion",
+      "text": "Compassion completes the circle between you and the other. It is the recognition: we are not separate."
+    },
+    "#B27": {
+      "label": "Consideration",
+      "frage": "How important is consideration to you?",
+      "karte": "Trust",
+      "text": "To be considered means to hold a place in the awareness of another. It is an act of trust."
+    },
+    "#B28": {
+      "label": "Empathy",
+      "frage": "How important is empathy to you?",
+      "karte": "Receptivity",
+      "text": "Empathy is the ability to listen with the heart. The cup must be empty to catch the tears of another."
+    },
+    "#B29": {
+      "label": "Trust",
+      "frage": "How important is trust to you?",
+      "karte": "Change",
+      "text": "Trust is the courage to surrender to change. It says yes before there is certainty."
+    },
+    "#B30": {
+      "label": "Attention",
+      "frage": "How important is attention to you?",
+      "karte": "Awareness",
+      "text": "To be noticed is the gift of attention. Awareness turns toward what truly matters."
+    },
+    "#B31": {
+      "label": "Being-Seen",
+      "frage": "How important is being seen to you?",
+      "karte": "The Lovers",
+      "text": "To be seen means to be recognized in your essence. The lovers see each other without veils."
+    },
+    "#B32": {
+      "label": "Being-Understood",
+      "frage": "How important is being understood to you?",
+      "karte": "Understanding",
+      "text": "Being understood is more than words. It is the feeling that someone speaks the language of your heart."
+    },
+    "#B33": {
+      "label": "Harmony",
+      "frage": "How important is harmony to you?",
+      "karte": "Rebirth",
+      "text": "True harmony arises through rebirth — through the release of old dissonance."
+    },
+    "#B34": {
+      "label": "Self-Determination",
+      "frage": "How important is self-determination to you?",
+      "karte": "Aloneness",
+      "text": "Self-determination begins in aloneness. Only one who belongs to oneself can choose freely."
+    },
+    "#B35": {
+      "label": "Freedom-to-Choose",
+      "frage": "How important is the freedom to choose to you?",
+      "karte": "Transformation",
+      "text": "Every choice is a small transformation. To be able to choose means to actively shape your life."
+    },
+    "#B36": {
+      "label": "Independence",
+      "frage": "How important is independence to you?",
+      "karte": "The Rebel",
+      "text": "Independence is the path of the rebel. He follows his own truth, even when it goes against the current."
+    },
+    "#B37": {
+      "label": "Having-Space",
+      "frage": "How important is having space to you?",
+      "karte": "Adventure",
+      "text": "Having space means freedom to explore. Adventure needs vastness, not confinement."
+    },
+    "#B38": {
+      "label": "Spontaneity",
+      "frage": "How important is spontaneity to you?",
+      "karte": "Playfulness",
+      "text": "Spontaneity is the dance of the moment. The playing child within you knows no plans — only joy."
+    },
+    "#B39": {
+      "label": "Collaboration",
+      "frage": "How important is collaboration to you?",
+      "karte": "Participation",
+      "text": "Collaboration is shared creation. When everyone participates, more emerges than the sum of all parts."
+    },
+    "#B40": {
+      "label": "Communication",
+      "frage": "How important is communication to you?",
+      "karte": "The Lovers",
+      "text": "True communication is the dialogue of two hearts. The lovers speak even in silence."
+    },
+    "#B41": {
+      "label": "Community",
+      "frage": "How important is community to you?",
+      "karte": "We Are the World",
+      "text": "Community is the recognition: we are all waves of the same ocean. Connection is our natural state."
+    },
+    "#B42": {
+      "label": "Belonging",
+      "frage": "How important is belonging to you?",
+      "karte": "We Are the World",
+      "text": "Belonging is not possession — it is the knowing that you are part of the whole."
+    },
+    "#B43": {
+      "label": "Reciprocity",
+      "frage": "How important is reciprocity to you?",
+      "karte": "Going With The Flow",
+      "text": "Reciprocity is the natural flow between giving and receiving. Like water, it finds its balance."
+    },
+    "#B44": {
+      "label": "Respect",
+      "frage": "How important is respect to you?",
+      "karte": "The Master",
+      "text": "True respect begins with yourself. The master honors life in every form."
+    },
+    "#B45": {
+      "label": "Having-Significance",
+      "frage": "How important is having significance to you?",
+      "karte": "Ripeness",
+      "text": "Significance ripens like a fruit. When the time has come, what you have contributed becomes visible."
+    },
+    "#B46": {
+      "label": "Beauty",
+      "frage": "How important is beauty to you?",
+      "karte": "Creativity",
+      "text": "Beauty is the language of the soul. Creativity makes visible what the heart perceives."
+    },
+    "#B47": {
+      "label": "Leisure",
+      "frage": "How important is leisure time to you?",
+      "karte": "Moment to Moment",
+      "text": "Leisure is the art of being in the moment. Not filling, but emptying — that is true restoration."
+    },
+    "#B48": {
+      "label": "Joy",
+      "frage": "How important is joy to you?",
+      "karte": "Integration",
+      "text": "Joy arises when all parts of you come together. Integration is the path to deep joy."
+    },
+    "#B49": {
+      "label": "Humor",
+      "frage": "How important is humor to you?",
+      "karte": "Celebration",
+      "text": "Humor is the celebration of the absurd. Whoever can laugh has understood that life is a play."
+    },
+    "#B50": {
+      "label": "Authenticity",
+      "frage": "How important is authenticity to you?",
+      "karte": "Integration",
+      "text": "Authenticity is integration. When inside and outside are in accord, you are wholly yourself."
+    },
+    "#B51": {
+      "label": "Genuineness",
+      "frage": "How important is genuineness to you?",
+      "karte": "Friendliness",
+      "text": "Genuineness reveals itself in friendliness toward yourself. Only one who does not pretend can be truly kind."
+    },
+    "#B52": {
+      "label": "Integrity",
+      "frage": "How important is integrity to you?",
+      "karte": "Healing",
+      "text": "Integrity is the healing of inner division. When you are whole, you are healed."
+    },
+    "#B53": {
+      "label": "Presence",
+      "frage": "How important is presence to you?",
+      "karte": "Awareness",
+      "text": "Presence is lived awareness. Here and now — that is the only place where life happens."
+    },
+    "#B54": {
+      "label": "Order",
+      "frage": "How important is order to you?",
+      "karte": "Understanding",
+      "text": "Order arises through understanding. When you see through things, they find their place."
+    },
+    "#B55": {
+      "label": "Awareness",
+      "frage": "How important is awareness to you?",
+      "karte": "Consciousness",
+      "text": "Awareness is the sky — thoughts are only clouds. You are the sky, not the clouds."
+    },
+    "#B56": {
+      "label": "Challenge",
+      "frage": "How important is challenge to you?",
+      "karte": "Courage",
+      "text": "Challenges summon your courage. Every hurdle overcome makes you stronger."
+    },
+    "#B57": {
+      "label": "Clarity",
+      "frage": "How important is clarity to you?",
+      "karte": "Breakthrough",
+      "text": "Clarity comes after the breakthrough. When the fog lifts, you see what was always there."
+    },
+    "#B58": {
+      "label": "Competence",
+      "frage": "How important is competence to you?",
+      "karte": "The Creator",
+      "text": "Competence is mastery in the making. The creator refines his craft through loving practice."
+    },
+    "#B59": {
+      "label": "Efficiency",
+      "frage": "How important is efficiency to you?",
+      "karte": "The Master",
+      "text": "True efficiency is effortless precision. The master wastes no energy — he flows."
+    },
+    "#B60": {
+      "label": "Effectiveness",
+      "frage": "How important is effectiveness to you?",
+      "karte": "Totality",
+      "text": "Effectiveness arises through totality. Whatever you do — do it completely, and it will show its effect."
+    },
+    "#B61": {
+      "label": "Growth",
+      "frage": "How important is growth to you?",
+      "karte": "Rebirth",
+      "text": "Growth is continuous rebirth. Every day something old dies so that something new may blossom."
+    },
+    "#B62": {
+      "label": "Meaning",
+      "frage": "How important is meaning to you?",
+      "karte": "Silence",
+      "text": "In silence, meaning reveals itself. It cannot be thought — only felt, in the depth of stillness."
+    },
+    "#B63": {
+      "label": "Contributing",
+      "frage": "How important is contributing to you?",
+      "karte": "Sharing",
+      "text": "Contributing is natural sharing. When you give from abundance, you enrich yourself."
+    },
+    "#B64": {
+      "label": "Creativity",
+      "frage": "How important is creativity to you?",
+      "karte": "Creativity",
+      "text": "Creativity is your nature. When you create, you are one with the universe that ceaselessly creates."
+    },
+    "#B65": {
+      "label": "Discovery",
+      "frage": "How important is discovery to you?",
+      "karte": "Adventure",
+      "text": "Discovery is the adventure of the unknown. Every step into the new is a step into your vastness."
+    },
+    "#B66": {
+      "label": "Learning",
+      "frage": "How important is learning to you?",
+      "karte": "Understanding",
+      "text": "Learning is the path to understanding. The true student remains always curious, always open."
+    },
+    "#B67": {
+      "label": "Self-Expression",
+      "frage": "How important is self-expression to you?",
+      "karte": "Integration",
+      "text": "Self-expression is lived integration. When you are wholly yourself, your essence flows naturally outward."
+    },
+    "#B68": {
+      "label": "Receiving-Inspiration",
+      "frage": "How important is receiving inspiration to you?",
+      "karte": "Source",
+      "text": "The deepest inspirations come from the source within you. Outer impulses awaken what already lives inside."
+    },
+    "#B69": {
+      "label": "Celebrating-Life",
+      "frage": "How important is celebrating life to you?",
+      "karte": "Celebration",
+      "text": "Life is a celebration — you need no reason to celebrate. Your being itself is reason enough."
+    },
+    "#B70": {
+      "label": "Inspiration",
+      "frage": "How important is inspiration to you?",
+      "karte": "Inner Voice",
+      "text": "Inspiration is the voice of inner wisdom. It whispers to you what your heart already knows."
+    },
+    "#B71": {
+      "label": "Expressing-Grief",
+      "frage": "How important is expressing grief to you?",
+      "karte": "Sorrow",
+      "text": "Grief needs expression as rain needs to fall. Let it flow — on the other side, clarity awaits."
+    },
+    "#B72": {
+      "label": "Insight",
+      "frage": "How important is insight to you?",
+      "karte": "New Vision",
+      "text": "Insight is new vision. Sometimes you must shift your perspective to see what was always there."
+    },
+    "#B73": {
+      "label": "Beginning-and-Ending",
+      "frage": "How important is the cycle of beginning and ending to you?",
+      "karte": "Completion",
+      "text": "Every ending carries a beginning within it. The circle closes so that a new one may begin."
+    },
+    "#B74": {
+      "label": "Exercising-Control",
+      "frage": "How important is exercising control to you?",
+      "karte": "Control",
+      "text": "True control lies in releasing control. The master of life does not control — he flows."
+    },
+    "#B75": {
+      "label": "Surrender",
+      "frage": "How important is surrender to you?",
+      "karte": "Letting Go",
+      "text": "Surrender is letting go in trust. Empty hands are ready to receive."
+    },
+    "#B76": {
+      "label": "Giving-Guidance",
+      "frage": "How important is giving guidance to you?",
+      "karte": "Guidance",
+      "text": "Giving guidance means showing others the path you yourself have walked. Authentic guidance inspires."
+    },
+    "#B77": {
+      "label": "Being-Guided",
+      "frage": "How important is being guided to you?",
+      "karte": "Trust",
+      "text": "Being guided requires trust. It is the courage to reach for another's hand in the dark."
+    },
+    "#B78": {
+      "label": "Ritual",
+      "frage": "How important is ritual to you?",
+      "karte": "The Master",
+      "text": "Rituals are conscious acts. They bring the sacred into the everyday and the everyday into the sacred."
+    },
+    "#B79": {
+      "label": "Aftercare",
+      "frage": "How important is aftercare to you?",
+      "karte": "Healing",
+      "text": "Aftercare is mindful healing. It gives what has happened the space for integration."
+    },
+    "#B80": {
+      "label": "Setting-Boundaries",
+      "frage": "How important is setting boundaries to you?",
+      "karte": "The Rebel",
+      "text": "Setting boundaries is an act of self-respect. The rebel says no in order to protect his yes."
+    },
+    "#B81": {
+      "label": "Respecting-Boundaries",
+      "frage": "How important is respecting boundaries to you?",
+      "karte": "Receptivity",
+      "text": "Respecting boundaries means honoring the space of the other. Receptivity begins with mindfulness."
+    },
+    "#B82": {
+      "label": "Intensity",
+      "frage": "How important is intensity to you?",
+      "karte": "Intensity",
+      "text": "Intensity is life in its purest form. Burn brightly — but do not burn yourself out."
+    },
+    "#B83": {
+      "label": "Giving-Trust",
+      "frage": "How important is giving trust to you?",
+      "karte": "Trust",
+      "text": "Giving trust is an act of courage. It opens the door to deep connection."
+    },
+    "#B84": {
+      "label": "Taking-Responsibility",
+      "frage": "How important is taking responsibility to you?",
+      "karte": "Maturity",
+      "text": "Taking responsibility is a sign of maturity. It means: I am the creator of my life."
+    },
+    "#B85": {
+      "label": "Letting-Go",
+      "frage": "How important is letting go to you?",
+      "karte": "Trust",
+      "text": "Letting go requires deep trust. It is the leap, knowing that you will be held."
+    },
+    "#B86": {
+      "label": "Power-Exchange",
+      "frage": "How important is power exchange to you?",
+      "karte": "Transformation",
+      "text": "Power exchange is transformation within relationship. Both partners are transformed through the conscious play."
+    },
+    "#B87": {
+      "label": "Being-of-Service",
+      "frage": "How important is being of service to you?",
+      "karte": "Compassion",
+      "text": "Being of service out of compassion is devotion without loss. You give and receive at the same time."
+    },
+    "#B88": {
+      "label": "Protecting",
+      "frage": "How important is protecting to you?",
+      "karte": "Courage",
+      "text": "Protecting requires courage — the courage to stand for what you love."
+    },
+    "#B89": {
+      "label": "Desire-for-Children",
+      "frage": "How important is the desire for children to you?",
+      "karte": "Flowering",
+      "text": "The desire for children is the longing for blossoming. Life wants to continue, to flower, to be passed on."
+    },
+    "#B90": {
+      "label": "Parenthood",
+      "frage": "How important is parenthood to you?",
+      "karte": "The Lovers",
+      "text": "Parenthood is a form of love that lets go. The lovers become three — and love grows."
+    },
+    "#B91": {
+      "label": "Procreation",
+      "frage": "How important is procreation to you?",
+      "karte": "Source",
+      "text": "Procreation connects you with the source of life itself. You become a channel for new being."
+    },
+    "#B92": {
+      "label": "Starting-a-Family",
+      "frage": "How important is starting a family to you?",
+      "karte": "We Are the World",
+      "text": "Starting a family means creating a circle of connection. A microcosm of the world."
+    },
+    "#B93": {
+      "label": "Blended-Family",
+      "frage": "How important is a blended family to you?",
+      "karte": "Creativity",
+      "text": "A blended family is the creative shaping of family. New patterns emerge from different threads."
+    },
+    "#B94": {
+      "label": "Child-Free-Life",
+      "frage": "How important is a child-free life to you?",
+      "karte": "Aloneness",
+      "text": "A child-free life is a conscious path. In aloneness you find other forms of fulfillment."
+    },
+    "#B95": {
+      "label": "Adoption",
+      "frage": "How important is adoption to you?",
+      "karte": "Compassion",
+      "text": "Adoption is compassion in action. You open your heart to a child that did not come from you."
+    },
+    "#B96": {
+      "label": "Foster-Children",
+      "frage": "How important are foster children to you?",
+      "karte": "Healing",
+      "text": "Taking in foster children is healing work. You give a child what it needs in order to heal."
+    },
+    "#B97": {
+      "label": "Moving-in-Together",
+      "frage": "How important is moving in together to you?",
+      "karte": "Harmony",
+      "text": "Moving in together is the weaving of shared harmony. Two lives become one shared space."
+    },
+    "#B98": {
+      "label": "Living-Apart",
+      "frage": "How important is living apart to you?",
+      "karte": "Aloneness",
+      "text": "Living apart honors the need for aloneness. Closeness sometimes needs distance in order to breathe."
+    },
+    "#B99": {
+      "label": "Shared-Living",
+      "frage": "How important is shared living to you?",
+      "karte": "Participation",
+      "text": "Shared living is collective participation in daily life. Community arises in the small moments."
+    },
+    "#B100": {
+      "label": "Own-Room",
+      "frage": "How important is having your own room to you?",
+      "karte": "Aloneness",
+      "text": "A room of your own is the retreat of the soul. In aloneness you rediscover yourself."
+    },
+    "#B101": {
+      "label": "City-Life",
+      "frage": "How important is city life to you?",
+      "karte": "Experiencing",
+      "text": "City life is intense experiencing. The city pulses with life — whoever is open will be richly gifted."
+    },
+    "#B102": {
+      "label": "Country-Life",
+      "frage": "How important is country life to you?",
+      "karte": "Harmony",
+      "text": "Country life is harmony with nature. The rhythm of the earth becomes your rhythm."
+    },
+    "#B103": {
+      "label": "Mobility",
+      "frage": "How important is mobility to you?",
+      "karte": "Traveling",
+      "text": "Mobility is the freedom of the journey. Whoever can move can unfold."
+    },
+    "#B104": {
+      "label": "Settledness",
+      "frage": "How important is settledness to you?",
+      "karte": "Maturity",
+      "text": "Settledness is mature grounding. To put down roots means to grow deep rather than wide."
+    },
+    "#B105": {
+      "label": "Marriage",
+      "frage": "How important is marriage to you?",
+      "karte": "Commitment",
+      "text": "Marriage is a conscious yes. It is the decision to walk together through all seasons."
+    },
+    "#B106": {
+      "label": "Without-Marriage",
+      "frage": "How important is living without marriage to you?",
+      "karte": "The Rebel",
+      "text": "Living without marriage is the path of the rebel. Love needs no certificate — only truthfulness."
+    },
+    "#B107": {
+      "label": "Civil-Partnership",
+      "frage": "How important is a civil partnership to you?",
+      "karte": "The Lovers",
+      "text": "Civil partnership is the official recognition of love. The lovers step visibly into the world."
+    },
+    "#B108": {
+      "label": "Pets",
+      "frage": "How important are pets to you?",
+      "karte": "Friendliness",
+      "text": "Pets teach unconditional friendliness. They love without asking — and are loved in return."
+    },
+    "#B109": {
+      "label": "No-Pets",
+      "frage": "How important is having no pets to you?",
+      "karte": "Slowing Down",
+      "text": "Having no pets creates space for slowness. Less obligation, more silence."
+    },
+    "#B110": {
+      "label": "Shared-Hobbies",
+      "frage": "How important are shared hobbies to you?",
+      "karte": "Celebration",
+      "text": "Shared hobbies are shared celebrations. What brings joy grows larger when it is shared."
+    },
+    "#B111": {
+      "label": "Individual-Hobbies",
+      "frage": "How important are individual hobbies to you?",
+      "karte": "Aloneness",
+      "text": "Individual hobbies are spaces of aloneness. They nourish the part of you that belongs only to you."
+    },
+    "#B112": {
+      "label": "Shared-Vacation",
+      "frage": "How important is shared vacation to you?",
+      "karte": "Adventure",
+      "text": "Shared vacation is shared adventure. New places open new spaces — also for each other."
+    },
+    "#B113": {
+      "label": "Separate-Vacation",
+      "frage": "How important is separate vacation to you?",
+      "karte": "Aloneness",
+      "text": "Separate vacation honors the need for aloneness. Sometimes you must travel alone to find yourself."
+    },
+    "#B114": {
+      "label": "Long-Term-Planning",
+      "frage": "How important is long-term planning to you?",
+      "karte": "Patience",
+      "text": "Long-term planning is patient sowing. You trust that the seed will sprout at the right time."
+    },
+    "#B115": {
+      "label": "Living-in-the-Moment",
+      "frage": "How important is living in the moment to you?",
+      "karte": "Moment to Moment",
+      "text": "Living in the moment is the highest art. Past and future vanish — only now remains."
+    },
+    "#B116": {
+      "label": "Career-Focus",
+      "frage": "How important is career focus to you?",
+      "karte": "Success",
+      "text": "Career focus is directed energy. Yet true success lies not in achieving, but in becoming."
+    },
+    "#B117": {
+      "label": "Family-Focus",
+      "frage": "How important is family focus to you?",
+      "karte": "We Are the World",
+      "text": "Family focus is connection as priority. The family is a microcosm of the world."
+    },
+    "#B118": {
+      "label": "Work-Life-Balance",
+      "frage": "How important is work-life balance to you?",
+      "karte": "Integration",
+      "text": "Work-life balance is lived integration. When all areas of life flow, harmony arises."
+    },
+    "#B119": {
+      "label": "Shared-Values",
+      "frage": "How important are shared values to you?",
+      "karte": "We Are the World",
+      "text": "Shared values are the invisible bond. They connect more deeply than words or deeds."
+    },
+    "#B120": {
+      "label": "Respect-for-Differences",
+      "frage": "How important is respect for differences to you?",
+      "karte": "Understanding",
+      "text": "Respecting differences means understanding that diversity is richness. The rainbow needs all its colors."
+    },
+    "#B121": {
+      "label": "Honoring-Traditions",
+      "frage": "How important is honoring traditions to you?",
+      "karte": "Ordinariness",
+      "text": "Honoring traditions cherishes the ordinary. In what recurs lies the sacredness of the everyday."
+    },
+    "#B122": {
+      "label": "Breaking-New-Ground",
+      "frage": "How important is breaking new ground to you?",
+      "karte": "Adventure",
+      "text": "Breaking new ground is the adventure of the pioneer. The unknown calls — and you answer."
+    },
+    "#B123": {
+      "label": "Sharing-Spirituality",
+      "frage": "How important is sharing spirituality to you?",
+      "karte": "Inner Voice",
+      "text": "Sharing spirituality means listening together to the inner voice. Shared silence is double the depth."
+    },
+    "#B124": {
+      "label": "Secular-Life",
+      "frage": "How important is a secular life to you?",
+      "karte": "Ordinariness",
+      "text": "Secular life finds the sacred in the ordinary. Every moment is holy — even without ritual."
+    },
+    "#B125": {
+      "label": "Healthy-Eating",
+      "frage": "How important is healthy eating to you?",
+      "karte": "Awareness",
+      "text": "Healthy eating is conscious nourishing. What you eat becomes you — choose with mindfulness."
+    },
+    "#B126": {
+      "label": "Sports-and-Fitness",
+      "frage": "How important are sports and fitness to you?",
+      "karte": "Totality",
+      "text": "Sports and fitness thrive on totality. Give yourself completely — and the body answers with vitality."
+    },
+    "#B127": {
+      "label": "Financial-Independence",
+      "frage": "How important is financial independence to you?",
+      "karte": "Abundance",
+      "text": "Financial independence is outer abundance as a mirror of inner freedom. Abundance attracts abundance."
+    },
+    "#B128": {
+      "label": "Shared-Finances",
+      "frage": "How important are shared finances to you?",
+      "karte": "Going With The Flow",
+      "text": "Shared finances are a shared flow. Money flows between you like water — naturally and freely."
+    },
+    "#B129": {
+      "label": "Separate-Finances",
+      "frage": "How important are separate finances to you?",
+      "karte": "Aloneness",
+      "text": "Separate finances honor independence. Each carries their part — and that creates clarity."
+    },
+    "#B130": {
+      "label": "Frugality",
+      "frage": "How important is frugality to you?",
+      "karte": "Patience",
+      "text": "Frugality is patient guarding. Like the farmer saves his seed, you save for the future."
+    },
+    "#B131": {
+      "label": "Generosity",
+      "frage": "How important is generosity to you?",
+      "karte": "Sharing",
+      "text": "Generosity is abundance overflowing. One who lives from the source cannot help but give."
+    },
+    "#B132": {
+      "label": "Wealth-Building",
+      "frage": "How important is wealth building to you?",
+      "karte": "Abundance",
+      "text": "Wealth building is creating material abundance. But do not forget: true richness is within."
+    },
+    "#B133": {
+      "label": "Minimalism",
+      "frage": "How important is minimalism to you?",
+      "karte": "No-Thingness",
+      "text": "Minimalism is the art of emptiness. Fewer things, more space — more space, more freedom."
+    },
+    "#B134": {
+      "label": "Professional-Fulfillment",
+      "frage": "How important is professional fulfillment to you?",
+      "karte": "The Creator",
+      "text": "Professional fulfillment is creation in daily life. When work becomes the expression of your essence, it becomes a calling."
+    },
+    "#B135": {
+      "label": "Work-as-Means",
+      "frage": "How important is work as a means to you?",
+      "karte": "Ordinariness",
+      "text": "Work as a means sees the ordinary clearly. Work is a tool, not an identity."
+    },
+    "#B136": {
+      "label": "Self-Employment",
+      "frage": "How important is self-employment to you?",
+      "karte": "The Rebel",
+      "text": "Self-employment is the path of the rebel in the world of work. You create by your own rules."
+    },
+    "#B137": {
+      "label": "Employment",
+      "frage": "How important is employment to you?",
+      "karte": "Participation",
+      "text": "Being employed is participation in something greater. You contribute to a shared endeavor."
+    },
+    "#B138": {
+      "label": "Leadership-Position",
+      "frage": "How important is a leadership position to you?",
+      "karte": "Guidance",
+      "text": "Leadership is service, not dominion. The true leader shows the way that he himself walks."
+    },
+    "#B139": {
+      "label": "Teamwork",
+      "frage": "How important is teamwork to you?",
+      "karte": "Participation",
+      "text": "Teamwork is choreographed participation. Each dances their part, and together the whole emerges."
+    },
+    "#B140": {
+      "label": "Home-Office",
+      "frage": "How important is working from home to you?",
+      "karte": "Aloneness",
+      "text": "Home office unites work and aloneness. In your own space you find your own rhythm."
+    },
+    "#B141": {
+      "label": "Office-Presence",
+      "frage": "How important is office presence to you?",
+      "karte": "Participation",
+      "text": "Office presence is physical participation. Some energy only arises when people are together."
+    },
+    "#B142": {
+      "label": "Flexible-Working-Hours",
+      "frage": "How important are flexible working hours to you?",
+      "karte": "Going With The Flow",
+      "text": "Flexible working hours mean working in flow. You adapt to the rhythm of life, not the other way around."
+    },
+    "#B143": {
+      "label": "Fixed-Structures",
+      "frage": "How important are fixed structures to you?",
+      "karte": "Maturity",
+      "text": "Fixed structures give life its form. The mature soul values the framework that provides support."
+    },
+    "#B144": {
+      "label": "Continuing-Education",
+      "frage": "How important is continuing education to you?",
+      "karte": "Understanding",
+      "text": "Continuing education is the path of the eternal student. Whoever stops learning stops growing."
+    },
+    "#B145": {
+      "label": "Retirement-Planning",
+      "frage": "How important is retirement planning to you?",
+      "karte": "Patience",
+      "text": "Planning for retirement means patiently sowing into the future. The harvest will come — at the right time."
+    },
+    "#B146": {
+      "label": "Sabbatical",
+      "frage": "How important is a sabbatical to you?",
+      "karte": "Turning In",
+      "text": "A sabbatical is a time of turning inward. The outer pause enables inner movement."
+    },
+    "#B147": {
+      "label": "Risk-Taking",
+      "frage": "How important is risk-taking to you?",
+      "karte": "Adventure",
+      "text": "Risk-taking is the courage for adventure. Whoever never leaps will never discover they can fly."
+    },
+    "#B148": {
+      "label": "Safety-Orientation",
+      "frage": "How important is safety orientation to you?",
+      "karte": "Protection",
+      "text": "Safety orientation is wise protection. Sometimes caution is the most courageous decision."
+    },
+    "#B149": {
+      "label": "Daily-Exchange",
+      "frage": "How important is daily exchange to you?",
+      "karte": "Friendliness",
+      "text": "Daily exchange is lived friendliness. Small words weave the web of connection."
+    },
+    "#B150": {
+      "label": "Quality-Time",
+      "frage": "How important is quality time to you?",
+      "karte": "Moment to Moment",
+      "text": "Quality time is present time. It is not the quantity that counts, but the depth of each moment."
+    },
+    "#B151": {
+      "label": "Deep-Conversations",
+      "frage": "How important are deep conversations to you?",
+      "karte": "Understanding",
+      "text": "Deep conversations lead to understanding. Words become bridges between souls."
+    },
+    "#B152": {
+      "label": "Light-Conversation",
+      "frage": "How important is light conversation to you?",
+      "karte": "Playfulness",
+      "text": "Light conversation is playful being. Not everything needs to be deep — sometimes a smile is enough."
+    },
+    "#B153": {
+      "label": "Emotional-Openness",
+      "frage": "How important is emotional openness to you?",
+      "karte": "Receptivity",
+      "text": "Emotional openness is a receptive heart. The cup is empty — ready to be filled."
+    },
+    "#B154": {
+      "label": "Factual-Communication",
+      "frage": "How important is factual communication to you?",
+      "karte": "Consciousness",
+      "text": "Factual communication is clear consciousness. Thoughts are expressed with precision."
+    },
+    "#B155": {
+      "label": "Addressing-Conflict",
+      "frage": "How important is addressing conflict to you?",
+      "karte": "Breakthrough",
+      "text": "Addressing conflict leads to breakthrough. What is spoken can heal."
+    },
+    "#B156": {
+      "label": "Preserving-Harmony",
+      "frage": "How important is preserving harmony to you?",
+      "karte": "Harmony",
+      "text": "Preserving harmony is an art. Yet true harmony arises not through avoidance, but through integration."
+    },
+    "#B157": {
+      "label": "Direct-Communication",
+      "frage": "How important is direct communication to you?",
+      "karte": "Courage",
+      "text": "Direct communication requires courage. Speaking the truth is an act of love."
+    },
+    "#B158": {
+      "label": "Diplomatic-Communication",
+      "frage": "How important is diplomatic communication to you?",
+      "karte": "Receptivity",
+      "text": "Diplomatic communication is receptive to the other. Words are chosen to connect."
+    },
+    "#B159": {
+      "label": "Feedback-Culture",
+      "frage": "How important is a feedback culture to you?",
+      "karte": "Understanding",
+      "text": "Feedback is mutual understanding. Every response is a gift — when it is heard."
+    },
+    "#B160": {
+      "label": "Nonverbal-Communication",
+      "frage": "How important is nonverbal communication to you?",
+      "karte": "Silence",
+      "text": "Nonverbal communication speaks in the silence. The body says what words cannot."
+    },
+    "#B161": {
+      "label": "Active-Listening",
+      "frage": "How important is active listening to you?",
+      "karte": "Receptivity",
+      "text": "Active listening is receptive presence. You hear not just words — you hear the heart behind them."
+    },
+    "#B162": {
+      "label": "Humor-in-Conversation",
+      "frage": "How important is humor in conversation to you?",
+      "karte": "Celebration",
+      "text": "Humor in conversation is a small celebration. Shared laughter connects more deeply than many words."
+    },
+    "#B163": {
+      "label": "Seriousness",
+      "frage": "How important is seriousness to you?",
+      "karte": "Maturity",
+      "text": "Seriousness is mature presence. Some topics deserve the depth of undivided attention."
+    },
+    "#B164": {
+      "label": "Spontaneous-Conversations",
+      "frage": "How important are spontaneous conversations to you?",
+      "karte": "Playfulness",
+      "text": "Spontaneous conversations are playful exchange. Unplanned moments often carry the greatest magic."
+    },
+    "#B165": {
+      "label": "Planned-Conversations",
+      "frage": "How important are planned conversations to you?",
+      "karte": "Guidance",
+      "text": "Planned conversations give space for what matters. Some topics need a protected setting."
+    },
+    "#B166": {
+      "label": "Written-Communication",
+      "frage": "How important is written communication to you?",
+      "karte": "Consciousness",
+      "text": "Written communication is reflected consciousness. The written word carries more weight."
+    },
+    "#B167": {
+      "label": "Verbal-Communication",
+      "frage": "How important is verbal communication to you?",
+      "karte": "Experiencing",
+      "text": "Verbal communication is living experience. The voice carries more than just words."
+    },
+    "#B168": {
+      "label": "Deciding-Together",
+      "frage": "How important is deciding together to you?",
+      "karte": "The Lovers",
+      "text": "Deciding together is the art of the lovers. Two voices find a shared melody."
+    },
+    "#B169": {
+      "label": "Independent-Decisions",
+      "frage": "How important are independent decisions to you?",
+      "karte": "The Rebel",
+      "text": "Independent decisions are the path of the rebel. You choose according to your own truth."
+    },
+    "#B170": {
+      "label": "Willingness-to-Compromise",
+      "frage": "How important is willingness to compromise to you?",
+      "karte": "Compromise",
+      "text": "Compromise is an art. But distinguish between wise flexibility and self-betrayal."
+    },
+    "#B171": {
+      "label": "Clear-Standpoints",
+      "frage": "How important are clear standpoints to you?",
+      "karte": "Courage",
+      "text": "Clear standpoints require courage. Knowing what you stand for is the anchor in stormy times."
+    },
+    "#B172": {
+      "label": "Emotional-Support",
+      "frage": "How important is emotional support to you?",
+      "karte": "Healing",
+      "text": "Emotional support is healing presence. Sometimes just being there is enough — without words."
+    },
+    "#B173": {
+      "label": "Practical-Support",
+      "frage": "How important is practical support to you?",
+      "karte": "Abundance",
+      "text": "Practical support is abundance in action. Helping hands show love through deeds."
+    },
+    "#B174": {
+      "label": "Regular-Check-Ins",
+      "frage": "How important are regular check-ins to you?",
+      "karte": "Awareness",
+      "text": "Regular check-ins are conscious attention. They keep a finger on the pulse of the relationship."
+    },
+    "#B175": {
+      "label": "Relationship-Reflection",
+      "frage": "How important is relationship reflection to you?",
+      "karte": "New Vision",
+      "text": "Relationship reflection brings new vision. Pausing and looking reveals where you truly stand."
+    },
+    "#B176": {
+      "label": "Natural-Flow",
+      "frage": "How important is natural flow to you?",
+      "karte": "Going With The Flow",
+      "text": "Natural flow is effortless streaming. When you stop fighting, the current carries you."
+    },
+    "#B177": {
+      "label": "Social-Energy",
+      "frage": "How important is social energy to you?",
+      "karte": "Experiencing",
+      "text": "Social energy is living experience with others. Some people recharge you — seek them out."
+    },
+    "#B178": {
+      "label": "Sociability",
+      "frage": "How important is sociability to you?",
+      "karte": "Celebration",
+      "text": "Sociability is the shared celebration of life. People together — that in itself is a feast."
+    },
+    "#B179": {
+      "label": "Quiet-from-People",
+      "frage": "How important is quiet from people to you?",
+      "karte": "Aloneness",
+      "text": "Quiet from people is healing aloneness. The silence after the bustle is a gift."
+    },
+    "#B180": {
+      "label": "Nurturing-Friendships",
+      "frage": "How important is nurturing friendships to you?",
+      "karte": "Friendliness",
+      "text": "Nurturing friendships is friendliness as practice. Relationships need attention in order to bloom."
+    },
+    "#B181": {
+      "label": "Couple-Time-Focus",
+      "frage": "How important is couple time focus to you?",
+      "karte": "The Lovers",
+      "text": "Couple time is the exclusive time of the lovers. In this space there are only you two — and that is sacred."
+    },
+    "#B182": {
+      "label": "Mutual-Friends",
+      "frage": "How important are mutual friends to you?",
+      "karte": "We Are the World",
+      "text": "Mutual friends expand your world. The circle grows larger, the connection deeper."
+    },
+    "#B183": {
+      "label": "Own-Friends",
+      "frage": "How important are your own friends to you?",
+      "karte": "Aloneness",
+      "text": "Your own friends are spaces of individuality. Not everything must be shared — some things belong only to you."
+    },
+    "#B184": {
+      "label": "Family-Gatherings",
+      "frage": "How important are family gatherings to you?",
+      "karte": "We Are the World",
+      "text": "Family gatherings connect you with your roots. You are part of a larger stream of life."
+    },
+    "#B185": {
+      "label": "Family-Distance",
+      "frage": "How important is distance from family to you?",
+      "karte": "Aloneness",
+      "text": "Distance from family can be healing. Sometimes you need space to find yourself."
+    },
+    "#B186": {
+      "label": "Parties-and-Events",
+      "frage": "How important are parties and events to you?",
+      "karte": "Celebration",
+      "text": "Parties and events are collective celebrations. The energy of many people amplifies the joy."
+    },
+    "#B187": {
+      "label": "Quiet-Evenings",
+      "frage": "How important are quiet evenings to you?",
+      "karte": "Silence",
+      "text": "Quiet evenings are oases of stillness. In the silence of the evening you find yourself again."
+    },
+    "#B188": {
+      "label": "Meeting-New-People",
+      "frage": "How important is meeting new people to you?",
+      "karte": "Adventure",
+      "text": "Meeting new people is an adventure. Every person is a world — await the discovery."
+    },
+    "#B189": {
+      "label": "Trusted-Circle",
+      "frage": "How important is a trusted circle to you?",
+      "karte": "Trust",
+      "text": "A trusted circle is a circle of trust. Here you can be who you truly are."
+    },
+    "#B190": {
+      "label": "Alone-Time",
+      "frage": "How important is alone time to you?",
+      "karte": "Aloneness",
+      "text": "Alone time is not loneliness — it is the space in which you rediscover yourself."
+    },
+    "#B191": {
+      "label": "Being-Together",
+      "frage": "How important is being together to you?",
+      "karte": "We Are the World",
+      "text": "Being together is lived connection. Not being alone is a deep human need."
+    },
+    "#B192": {
+      "label": "Spontaneous-Visits",
+      "frage": "How important are spontaneous visits to you?",
+      "karte": "Playfulness",
+      "text": "Spontaneous visits are playful surprises. The unexpected brings freshness to life."
+    },
+    "#B193": {
+      "label": "Planned-Meetings",
+      "frage": "How important are planned meetings to you?",
+      "karte": "Patience",
+      "text": "Planned meetings are patient anticipation. The waiting makes the reunion sweeter."
+    },
+    "#B194": {
+      "label": "Being-a-Host",
+      "frage": "How important is being a host to you?",
+      "karte": "Sharing",
+      "text": "Being a host is generous sharing. You open your space and your heart."
+    },
+    "#B195": {
+      "label": "Being-a-Guest",
+      "frage": "How important is being a guest to you?",
+      "karte": "Receptivity",
+      "text": "Being a guest is being receptive. You accept what others offer you — with gratitude."
+    },
+    "#B196": {
+      "label": "Online-Contacts",
+      "frage": "How important are online contacts to you?",
+      "karte": "Possibilities",
+      "text": "Online contacts open possibilities. The digital world connects what distance separates."
+    },
+    "#B197": {
+      "label": "In-Person-Meetings",
+      "frage": "How important are in-person meetings to you?",
+      "karte": "Experiencing",
+      "text": "In-person meetings are full experience. Face-to-face presence is irreplaceable."
+    },
+    "#B198": {
+      "label": "Community-Engagement",
+      "frage": "How important is community engagement to you?",
+      "karte": "Participation",
+      "text": "Community engagement is active participation in the greater whole. You give back what you receive."
+    },
+    "#B199": {
+      "label": "Private-Life",
+      "frage": "How important is private life to you?",
+      "karte": "Silence",
+      "text": "Private life is protected silence. Some things belong only to you — and that is as it should be."
+    },
+    "#B200": {
+      "label": "Networking",
+      "frage": "How important is networking to you?",
+      "karte": "We Are the World",
+      "text": "Networking weaves connections. Every contact is a thread in the great web of life."
+    },
+    "#B201": {
+      "label": "Few-Deep-Relationships",
+      "frage": "How important are few deep relationships to you?",
+      "karte": "Intimacy",
+      "text": "Few deep relationships are intimacy in its essence. Quality over quantity — that is the way of the heart."
+    },
+    "#B202": {
+      "label": "Many-Acquaintances",
+      "frage": "How important are many acquaintances to you?",
+      "karte": "Friendliness",
+      "text": "Many acquaintances are extended friendliness. An expansive heart touches many people."
+    },
+    "#B203": {
+      "label": "Cultural-Events",
+      "frage": "How important are cultural events to you?",
+      "karte": "Creativity",
+      "text": "Cultural events nourish creativity. Art opens doors to worlds beyond the everyday."
+    },
+    "#B204": {
+      "label": "Physical-Closeness",
+      "frage": "How important is physical closeness to you?",
+      "karte": "Touch",
+      "text": "Physical closeness is the language of touch. The body yearns for contact — it is made for it."
+    },
+    "#B205": {
+      "label": "Cuddling",
+      "frage": "How important is cuddling to you?",
+      "karte": "Warmth",
+      "text": "Cuddling is warmth without words. In the nearness of another body, boundaries melt away."
+    },
+    "#B206": {
+      "label": "Physical-Distance",
+      "frage": "How important is physical distance to you?",
+      "karte": "Aloneness",
+      "text": "Physical distance creates space to breathe. Sometimes the body needs its own zone."
+    },
+    "#B207": {
+      "label": "Body-Contact",
+      "frage": "How important is body contact to you?",
+      "karte": "Touch",
+      "text": "Body contact is primordial communication. The skin is the largest sense organ — use it."
+    },
+    "#B208": {
+      "label": "Hugs",
+      "frage": "How important are hugs to you?",
+      "karte": "Love",
+      "text": "Hugs are love in action. An arm around the other says more than a thousand words."
+    },
+    "#B209": {
+      "label": "Experiencing-Pain",
+      "frage": "How important is experiencing pain to you?",
+      "karte": "Transformation",
+      "text": "Conscious experience of pain can transform. Passing through the fire, you are purified."
+    },
+    "#B210": {
+      "label": "Giving-Pain",
+      "frage": "How important is giving pain to you?",
+      "karte": "Intensity",
+      "text": "Giving pain within a conscious framework is intensity as a gift. Boundaries become gateways."
+    },
+    "#B211": {
+      "label": "Experiencing-Bondage",
+      "frage": "How important is experiencing bondage to you?",
+      "karte": "Letting Go",
+      "text": "Experiencing bondage is paradoxical liberation. Through outer restriction you find inner freedom."
+    },
+    "#B212": {
+      "label": "Giving-Bondage",
+      "frage": "How important is giving bondage to you?",
+      "karte": "The Creator",
+      "text": "Giving bondage is creative holding. You create a space in which the other can let go."
+    },
+    "#B213": {
+      "label": "Devotion",
+      "frage": "How important is devotion to you?",
+      "karte": "Trust",
+      "text": "Devotion is deep trust in surrender. You give yourself to something greater than yourself."
+    },
+    "#B214": {
+      "label": "Worship",
+      "frage": "How important is worship to you?",
+      "karte": "Inner Voice",
+      "text": "Worship follows the inner voice of reverence. To see the divine in the other is sacred."
+    },
+    "#B215": {
+      "label": "Being-Humble",
+      "frage": "How important is being humble to you?",
+      "karte": "No-Thingness",
+      "text": "Humility is the recognition of one's own emptiness. In nothingness you lie at the feet of the whole."
+    },
+    "#B216": {
+      "label": "Dominating",
+      "frage": "How important is dominating to you?",
+      "karte": "The Master",
+      "text": "Dominating is mastery with responsibility. The true master serves by leading."
+    },
+    "#B217": {
+      "label": "Receiving-Punishment",
+      "frage": "How important is receiving punishment to you?",
+      "karte": "Transformation",
+      "text": "Punishment in a conscious context is transformation. The ego dies a little so that you become freer."
+    },
+    "#B218": {
+      "label": "Punishing",
+      "frage": "How important is punishing to you?",
+      "karte": "Guidance",
+      "text": "Punishing as conscious practice is guidance. The master corrects with love, not with anger."
+    },
+    "#B219": {
+      "label": "Giving-Service",
+      "frage": "How important is giving service to you?",
+      "karte": "Compassion",
+      "text": "Giving service is compassion in action. You serve because your heart overflows — not out of duty."
+    },
+    "#B220": {
+      "label": "Receiving-Service",
+      "frage": "How important is receiving service to you?",
+      "karte": "Receptivity",
+      "text": "Receiving service is receptive humility. Being able to accept is an art of its own."
+    },
+    "#B221": {
+      "label": "Pain-Experience",
+      "frage": "How important is pain experience to you?",
+      "karte": "Transformation",
+      "text": "To consciously experience pain is a gateway to transformation. In intensity lies liberation."
+    },
+    "#B222": {
+      "label": "Giving-Pain",
+      "frage": "How important is giving pain to you?",
+      "karte": "Trust",
+      "text": "To give pain requires deep trust. The conscious giver carries responsibility like a healer."
+    },
+    "#B223": {
+      "label": "Bondage-Experience",
+      "frage": "How important is experiencing bondage to you?",
+      "karte": "Surrender",
+      "text": "In the surrender to bonds lies paradoxical freedom. Letting go begins where control ends."
+    },
+    "#B224": {
+      "label": "Sugar",
+      "frage": "How important is sugar consumption to you?",
+      "karte": "Moment to Moment",
+      "text": "Sweetness is a pleasure of the moment. The question is: do you enjoy consciously, or are you fleeing?"
+    },
+    "#B225": {
+      "label": "Being-Protected",
+      "frage": "How important is being protected to you?",
+      "karte": "The Lovers",
+      "text": "Being protected means being able to let yourself fall. In the shelter of the other lies the freedom to be vulnerable."
+    },
+    "#B226": {
+      "label": "Receiving-Trust",
+      "frage": "How important is receiving trust to you?",
+      "karte": "Trust",
+      "text": "Receiving trust is a sacred responsibility. You become the guardian of a precious gift."
+    }
+  }
+}

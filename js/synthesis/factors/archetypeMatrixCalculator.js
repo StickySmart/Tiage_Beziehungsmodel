@@ -36,6 +36,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
     // Status-Tracking
     var _isReady = false;
     var _readyCallbacks = [];
+    var _initRetryCount = 0;
+    var _maxRetries = 50; // Max 5 Sekunden (50 × 100ms)
 
     /**
      * Berechnet die Ähnlichkeit zwischen zwei Archetyp-Profilen
@@ -160,13 +162,18 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
      * Initialisiert die Matrix und speichert sie für spätere Verwendung
      */
     function initialize() {
-        console.log('[ArchetypeMatrixCalculator] Initialisierung...');
-
         // Warte bis BaseArchetypProfile geladen ist
         if (typeof window.BaseArchetypProfile === 'undefined' ||
             Object.keys(window.BaseArchetypProfile).length < 8) {
-            console.log('[ArchetypeMatrixCalculator] Warte auf BaseArchetypProfile...');
-            // Retry nach kurzer Verzögerung
+            _initRetryCount++;
+            if (_initRetryCount > _maxRetries) {
+                console.warn('[ArchetypeMatrixCalculator] Timeout: BaseArchetypProfile nach', _maxRetries * 100, 'ms nicht geladen');
+                return;
+            }
+            // Retry nach kurzer Verzögerung (nur einmal loggen)
+            if (_initRetryCount === 1) {
+                console.log('[ArchetypeMatrixCalculator] Warte auf BaseArchetypProfile...');
+            }
             setTimeout(initialize, 100);
             return;
         }
@@ -336,13 +343,11 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
      * Berechnet Matrix neu (z.B. nach Änderung von Bedürfnis-Profilen)
      */
     function recalculate() {
-        console.log('[ArchetypeMatrixCalculator] Neuberechnung...');
         var matrix = generateArchetypeMatrix();
 
         if (matrix) {
             TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix = matrix;
             _isReady = true;
-            console.log('[ArchetypeMatrixCalculator] Matrix neu berechnet');
 
             // Feuere Update-Event
             window.dispatchEvent(new CustomEvent('archetype-matrix-updated', { detail: { matrix: matrix } }));
@@ -360,7 +365,6 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
     function checkAndInitialize() {
         if (typeof window.BaseArchetypProfile !== 'undefined' &&
             Object.keys(window.BaseArchetypProfile).length >= 8) {
-            console.log('[ArchetypeMatrixCalculator] Profile bereits geladen, initialisiere...');
             initialize();
             return true;
         }
@@ -369,7 +373,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
 
     // Event-Listener für 'base-archetype-profiles-ready'
     window.addEventListener('base-archetype-profiles-ready', function(event) {
-        console.log('[ArchetypeMatrixCalculator] Event "base-archetype-profiles-ready" empfangen:', event.detail);
+        // DEBUG DISABLED: Reduziere Console-Noise
+        // console.log('[ArchetypeMatrixCalculator] Event "base-archetype-profiles-ready" empfangen:', event.detail);
         if (!_isReady) {
             initialize();
         }
@@ -380,23 +385,22 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         document.addEventListener('DOMContentLoaded', function() {
             // Kurze Verzögerung, dann prüfen
             setTimeout(function() {
-                if (!_isReady && !checkAndInitialize()) {
-                    console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+                if (!_isReady) {
+                    checkAndInitialize();
                 }
             }, 50);
         });
     } else {
         // DOM bereits geladen
         setTimeout(function() {
-            if (!_isReady && !checkAndInitialize()) {
-                console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+            if (!_isReady) {
+                checkAndInitialize();
             }
         }, 50);
     }
 
     // Lausche auf Profil-Änderungen um Matrix neu zu berechnen
     window.addEventListener('archetype-profile-updated', function() {
-        console.log('[ArchetypeMatrixCalculator] Profil-Änderung erkannt, berechne neu...');
         recalculate();
     });
 

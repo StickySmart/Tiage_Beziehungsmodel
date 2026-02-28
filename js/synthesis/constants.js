@@ -112,7 +112,8 @@ TiageSynthesis.Constants = {
                     var gVal = stored.G === 0 ? 0 : (stored.G === 2 ? 50 : 25);
                     var sum = oVal + aVal + dVal + gVal;
                     var divisor = sum > 0 ? sum : 100;
-                    console.log('[TiageSynthesis.getWeights] New format detected:', stored, '→', { oVal, aVal, dVal, gVal, sum });
+                    // DEBUG DISABLED v1.8.871: Feuert bei jeder Score-Berechnung
+                    // console.log('[TiageSynthesis.getWeights] New format detected:', stored, '→', { oVal, aVal, dVal, gVal, sum });
                     return {
                         orientierung: oVal / divisor,
                         archetyp: aVal / divisor,

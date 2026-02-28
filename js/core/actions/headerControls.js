@@ -10,6 +10,60 @@
 (function() {
     'use strict';
 
+    /**
+     * Sprachwechsel mit Ladeanzeige
+     * @param {HTMLElement} langBtn - Der .lang-btn Button
+     * @param {string} [targetLang] - Zielsprache, oder null für cycle
+     */
+    async function switchLanguageWithLoading(langBtn, targetLang) {
+        if (typeof TiageI18n === 'undefined') return;
+
+        // Loading-State aktivieren
+        if (langBtn) langBtn.classList.add('is-loading');
+
+        try {
+            if (targetLang) {
+                await TiageI18n.setLanguage(targetLang);
+            } else {
+                await TiageI18n.cycle();
+            }
+        } finally {
+            // Loading-State deaktivieren
+            if (langBtn) langBtn.classList.remove('is-loading');
+        }
+
+        // UI aktualisieren
+        if (typeof updateAllTranslations === 'function') {
+            updateAllTranslations();
+        }
+
+        // Dropdown aktive Sprache highlighten
+        updateLangDropdownActive();
+    }
+
+    /**
+     * Markiert die aktive Sprache im Dropdown
+     */
+    function updateLangDropdownActive() {
+        var currentLang = typeof TiageI18n !== 'undefined' ? TiageI18n.getLanguage() : 'de';
+        document.querySelectorAll('.lang-dropdown-item').forEach(function(item) {
+            item.classList.toggle('active', item.dataset.lang === currentLang);
+        });
+    }
+
+    // Initiales Highlighting + Subscriber (nach DOMContentLoaded, da i18n.js später lädt)
+    function initLangDropdown() {
+        updateLangDropdownActive();
+        if (typeof TiageI18n !== 'undefined' && typeof TiageI18n.subscribe === 'function') {
+            TiageI18n.subscribe(updateLangDropdownActive);
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLangDropdown);
+    } else {
+        initLangDropdown();
+    }
+
     function registerActions() {
         if (typeof ActionHandler === 'undefined') {
             console.warn('[HeaderControlsActions] ActionHandler nicht verfügbar, retry in 100ms');
@@ -31,29 +85,32 @@
             },
 
             /**
-             * Sprache wechseln
+             * Sprache durchschalten (DE → EN → FR → IT → DE)
              * Ersetzt: onclick="TiageI18n.toggle(); updateAllTranslations();"
              */
-            'toggle-language': function(el, event) {
-                if (typeof TiageI18n !== 'undefined' && typeof TiageI18n.toggle === 'function') {
-                    TiageI18n.toggle();
-                }
-                if (typeof updateAllTranslations === 'function') {
-                    updateAllTranslations();
+            'toggle-language': async function(el, event) {
+                await switchLanguageWithLoading(el);
+            },
+
+            /**
+             * Sprache durchschalten (mit Age Verification Update)
+             */
+            'toggle-language-full': async function(el, event) {
+                await switchLanguageWithLoading(el);
+                if (typeof updateAgeVerificationTexts === 'function') {
+                    updateAgeVerificationTexts();
                 }
             },
 
             /**
-             * Sprache wechseln (mit Age Verification Update)
-             * Ersetzt: onclick="TiageI18n.toggle(); updateAllTranslations(); updateAgeVerificationTexts();"
+             * Direkte Sprachauswahl aus Dropdown
+             * data-lang: 'de', 'en', 'fr', 'it'
              */
-            'toggle-language-full': function(el, event) {
-                if (typeof TiageI18n !== 'undefined' && typeof TiageI18n.toggle === 'function') {
-                    TiageI18n.toggle();
-                }
-                if (typeof updateAllTranslations === 'function') {
-                    updateAllTranslations();
-                }
+            'set-language': async function(el, event) {
+                var lang = el.dataset.lang;
+                if (!lang) return;
+                var langBtn = el.closest('.lang-switcher')?.querySelector('.lang-btn');
+                await switchLanguageWithLoading(langBtn, lang);
                 if (typeof updateAgeVerificationTexts === 'function') {
                     updateAgeVerificationTexts();
                 }

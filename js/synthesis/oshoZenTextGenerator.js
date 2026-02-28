@@ -28,12 +28,28 @@ const OshoZenTextGenerator = (function() {
     // DATEN LADEN
     // ═══════════════════════════════════════════════════════════════════════════
 
+    // Aktuelle geladene Sprache
+    let loadedLanguage = null;
+
+    /**
+     * Gibt den Sprach-Suffix für Dateinamen zurück
+     * DE = '' (Original-Dateien), andere = '-en', '-fr', '-it'
+     */
+    function getLangSuffix() {
+        var lang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
+        return lang === 'de' ? '' : ('-' + lang);
+    }
+
     /**
      * Lädt die Osho Zen Bedürfnis-Texte aus der JSON-Datei
+     * Sprach-abhängig: DE = osho-zen-beduerfnisse.json, FR = osho-zen-beduerfnisse-fr.json
      * @returns {Promise<Object>} Die geladenen Daten
      */
     async function loadOshoZenData() {
-        if (oshoZenData && tarotKartenData) {
+        var currentLang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
+
+        // Bereits geladen für aktuelle Sprache?
+        if (oshoZenData && tarotKartenData && loadedLanguage === currentLang) {
             return oshoZenData;
         }
 
@@ -41,14 +57,35 @@ const OshoZenTextGenerator = (function() {
             return loadPromise;
         }
 
+        var suffix = getLangSuffix();
         isLoading = true;
+
         loadPromise = Promise.all([
-            fetch('profiles/data/osho-zen-beduerfnisse.json').then(r => r.ok ? r.json() : Promise.reject('Bedürfnisse nicht geladen')),
-            fetch('profiles/data/osho-zen-tarot-karten.json').then(r => r.ok ? r.json() : Promise.reject('Tarot-Karten nicht geladen'))
+            fetch('profiles/data/osho-zen-beduerfnisse' + suffix + '.json')
+                .then(function(r) { return r.ok ? r.json() : Promise.reject('Bedürfnisse nicht geladen'); })
+                .catch(function() {
+                    // Fallback zu DE wenn Sprach-Datei nicht existiert
+                    if (suffix !== '') {
+                        console.warn('[OshoZen] Fallback zu DE für Bedürfnisse (kein ' + suffix + ')');
+                        return fetch('profiles/data/osho-zen-beduerfnisse.json').then(function(r) { return r.json(); });
+                    }
+                    throw new Error('DE Bedürfnisse nicht geladen');
+                }),
+            fetch('profiles/data/osho-zen-tarot-karten' + suffix + '.json')
+                .then(function(r) { return r.ok ? r.json() : Promise.reject('Tarot-Karten nicht geladen'); })
+                .catch(function() {
+                    // Fallback zu DE wenn Sprach-Datei nicht existiert
+                    if (suffix !== '') {
+                        console.warn('[OshoZen] Fallback zu DE für Tarot-Karten (kein ' + suffix + ')');
+                        return fetch('profiles/data/osho-zen-tarot-karten.json').then(function(r) { return r.json(); });
+                    }
+                    throw new Error('DE Tarot-Karten nicht geladen');
+                })
         ])
             .then(([beduerfnisseData, kartenData]) => {
                 oshoZenData = beduerfnisseData;
                 tarotKartenData = kartenData;
+                loadedLanguage = currentLang;
                 buildKartenLookup();
                 isLoading = false;
                 return oshoZenData;
@@ -60,6 +97,21 @@ const OshoZenTextGenerator = (function() {
             });
 
         return loadPromise;
+    }
+
+    /**
+     * Erzwingt Neuladen für eine andere Sprache
+     * Wird von TiageI18n.subscribe() aufgerufen
+     */
+    function reloadForLanguage(lang) {
+        // Cache invalidieren
+        oshoZenData = null;
+        tarotKartenData = null;
+        kartenLookup = null;
+        loadedLanguage = null;
+        loadPromise = null;
+        isLoading = false;
+        console.log('[OshoZen] Cache invalidiert für Sprachwechsel zu:', lang);
     }
 
     /**
@@ -882,6 +934,9 @@ const OshoZenTextGenerator = (function() {
         // Hilfsfunktionen
         calculateTopMatches: calculateTopMatches,
 
+        // i18n: Sprachwechsel-Support
+        reloadForLanguage: reloadForLanguage,
+
         // Für Debugging
         getData: function() { return oshoZenData; },
         isDataLoaded: function() { return oshoZenData !== null; }
@@ -896,4 +951,11 @@ if (document.readyState === 'loading') {
     });
 } else {
     OshoZenTextGenerator.injectStyles();
+}
+
+// Bei Sprachwechsel: Osho-Daten-Cache invalidieren
+if (typeof TiageI18n !== 'undefined' && typeof TiageI18n.subscribe === 'function') {
+    TiageI18n.subscribe(function(event) {
+        OshoZenTextGenerator.reloadForLanguage(event.newLanguage);
+    });
 }

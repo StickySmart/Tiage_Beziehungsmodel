@@ -1,0 +1,984 @@
+{
+  "version": "2.0.0",
+  "beschreibung": "Database completo delle carte Osho Zen Tarot con tutte le 79 carte, descrizioni delle immagini e commenti di Osho",
+  "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
+  "kuenstlerin": "Ma Deva Padma (Susan Morgan)",
+  "copyright": "Tutti i diritti appartengono ai rispettivi titolari. Queste descrizioni sono interpretazioni libere basate su fonti pubblicamente disponibili.",
+
+  "major_arcana": {
+    "0_the_fool": {
+      "name": "The Fool",
+      "name_it": "Il Matto",
+      "nummer": 0,
+      "traditionell": "The Fool",
+      "element": "Aria",
+      "bild": "Una figura si trova sul bordo di una scogliera, pronta a saltare nell'ignoto. Gli occhi sono chiusi, il volto mostra una fiducia assoluta. Nessuna paura, solo abbandono al momento. Il cielo risplende di colori caldi.",
+      "bedeutung": "L'inizio di un viaggio nell'ignoto, innocenza infantile e fiducia",
+      "weisheit": "Il Matto e colui che parte senza sapere dove va - e proprio questo lo rende saggio. Si affida all'ignoto.",
+      "osho": "Il Matto e il piu spirituale di tutti gli archetipi. Non ha paura dell'ignoto, perche sa che la vita lo sosterrà. E come un bambino che salta tra le braccia di sua madre - senza dubbi, senza esitazioni.",
+      "schatten": "Ingenuità, avventatezza, fuga dalla realtà"
+    },
+    "1_existence": {
+      "name": "Existence",
+      "name_it": "Esistenza",
+      "nummer": 1,
+      "traditionell": "The Magician",
+      "element": "Aria",
+      "bild": "Una figura nuda fluttua nello spazio cosmico, circondata da stelle e galassie. Le braccia sono aperte, il corpo irradia luce. La figura e una cosa sola con l'universo - non separata, ma parte del grande tutto.",
+      "bedeutung": "La pienezza dell'essere, tutto e già presente",
+      "weisheit": "Non sei separato dall'esistenza. Sei un'espressione del tutto - respira, e l'universo respira attraverso di te.",
+      "osho": "L'esistenza non e qualcosa che si trova al di fuori di te. Tu sei l'esistenza. Ogni respiro e l'universo che respira attraverso di te. Ogni battito del cuore e il polso del cosmo.",
+      "schatten": "Separazione, isolamento, manipolazione"
+    },
+    "2_inner_voice": {
+      "name": "Inner Voice",
+      "name_it": "Voce Interiore",
+      "nummer": 2,
+      "traditionell": "The High Priestess",
+      "element": "Acqua",
+      "bild": "Una figura femminile siede in profonda meditazione. Dalla sua fronte - il terzo occhio - fluisce luce. Delfini giocano intorno a lei, simboli dell'intelligenza giocosa dell'intuizione, che emerge dalle profondità delle emozioni e si innalza verso il cielo.",
+      "bedeutung": "La voce della saggezza interiore, intuizione",
+      "weisheit": "Nel silenzio parla la voce interiore. Conosce la strada, anche quando la mente dubita.",
+      "osho": "La voce interiore e come i delfini - si immerge nelle profondità delle emozioni e riemerge verso il cielo. E giocosa e intelligente allo stesso tempo. Ascoltala, non il rumore della mente.",
+      "schatten": "Confusione, autoinganno, ignorare l'intuizione"
+    },
+    "3_creativity": {
+      "name": "Creativity",
+      "name_it": "Creatività",
+      "nummer": 3,
+      "traditionell": "The Empress",
+      "element": "Terra",
+      "bild": "Una figura rigogliosa e fertile, circondata da fiori, piante e creature viventi. Tutto intorno a lei fiorisce e prospera. E la madre di tutta la creazione, l'espressione vivente della forza creativa dell'universo.",
+      "bedeutung": "Forza creatrice, fertilità dello spirito",
+      "weisheit": "La creatività e la tua natura. Quando crei, sei uno con l'universo che crea incessantemente.",
+      "osho": "La creatività non e qualcosa che fai - e qualcosa che sei. Quando sei creativo, l'universo fluisce attraverso di te. Diventi il canale del divino.",
+      "schatten": "Blocco, stagnazione, espressione repressa"
+    },
+    "4_the_rebel": {
+      "name": "The Rebel",
+      "name_it": "Il Ribelle",
+      "nummer": 4,
+      "traditionell": "The Emperor",
+      "element": "Fuoco",
+      "bild": "Una figura potente sta eretta, con una torcia ardente nelle mani. Gli occhi guardano risolutamente avanti. Intorno alla figura, vecchie mura crollano - le strutture del condizionamento cadono.",
+      "bedeutung": "Autentica autodeterminazione, coraggio della propria verità",
+      "weisheit": "Il vero ribelle non segue ciecamente - ne la massa ne la resistenza. Segue la propria verità.",
+      "osho": "Il ribelle non e contro qualcosa - e per la propria verità. Non si ribella per rabbia, ma per amore della libertà. Ha il coraggio di stare da solo, se necessario.",
+      "schatten": "Testardaggine, ribellione senza senso, problemi con l'autorità"
+    },
+    "5_no_thingness": {
+      "name": "No-Thingness",
+      "name_it": "Il Nulla",
+      "nummer": 5,
+      "traditionell": "The Hierophant",
+      "element": "Terra",
+      "bild": "Una figura fluttua nel vuoto assoluto - blu puro e profondo o nero. Non ci sono oggetti, nessuna distrazione. Solo pura presenza nel nulla. La figura e rilassata, serena, una cosa sola con il vuoto.",
+      "bedeutung": "Il vuoto come sorgente di tutte le possibilità",
+      "weisheit": "Nel nulla risiede tutto. Quando ti svuoti, il tutto può fluire attraverso di te.",
+      "osho": "Il nulla non e l'assenza di qualcosa - e la pienezza di tutte le possibilità. Nel vuoto trovi tutto. Lo spazio che e vuoto può essere riempito.",
+      "schatten": "Vivere il vuoto come mancanza, mancanza di senso, depressione"
+    },
+    "6_the_lovers": {
+      "name": "The Lovers",
+      "name_it": "Gli Amanti",
+      "nummer": 6,
+      "traditionell": "The Lovers",
+      "element": "Aria",
+      "bild": "Due amanti si abbracciano e insieme formano un cuore con le ali - simbolo della libertà nell'amore. Al centro appare uno Shri Yantra, il sacro simbolo geometrico dell'unione del maschile e del femminile. Una seconda coppia appare, i cui capelli diventano stelle. Rose rosse circondano la scena.",
+      "bedeutung": "Unione degli opposti, scelta consapevole, connessione profonda",
+      "weisheit": "Il vero amore non e fusione, ma due fiamme che brillano l'una accanto all'altra - separate eppure unite.",
+      "osho": "La forma più bassa dell'amore e il sesso - e fisica. La più alta raffinazione dell'amore e la compassione. Il sesso e il seme, l'amore e il fiore, la compassione e il profumo. Gli amanti su questa carta hanno le ali - il loro amore si basa sulla libertà, non sulla speranza e sul bisogno.",
+      "schatten": "Dipendenza, incapacità di decidere, proiezione"
+    },
+    "7_awareness": {
+      "name": "Awareness",
+      "name_it": "Consapevolezza",
+      "nummer": 7,
+      "traditionell": "The Chariot",
+      "element": "Acqua",
+      "bild": "Una figura vigile, eretta, con gli occhi spalancati. Intorno alla testa irradia un alone di luce - la coscienza illumina tutto. La figura non si muove, ma tutto intorno a lei e in movimento.",
+      "bedeutung": "La coscienza come veicolo, presenza consapevole",
+      "weisheit": "La consapevolezza e la chiave. Quando sei sveglio, la vita fluisce senza sforzo attraverso di te.",
+      "osho": "La consapevolezza e l'unico veicolo che può portarti da qualche parte. Senza consapevolezza ti muovi in cerchio. Con la consapevolezza ogni passo e un viaggio verso il centro.",
+      "schatten": "Inconsapevolezza, azione reattiva, mania di controllo"
+    },
+    "8_courage": {
+      "name": "Courage",
+      "name_it": "Coraggio",
+      "nummer": 8,
+      "traditionell": "Strength",
+      "element": "Fuoco",
+      "bild": "Un piccolo fiore selvatico si e fatto strada attraverso rocce e pietre e raggiunge la luce del giorno. E circondato da un'aura di luce dorata e mostra la maestà del suo piccolo se. Senza vergogna, e pari al sole più luminoso.",
+      "bedeutung": "Forza interiore, coraggio della vulnerabilità",
+      "weisheit": "Il coraggio non e l'assenza di paura. E la disponibilità ad andare avanti nonostante la paura - con il cuore aperto.",
+      "osho": "Il seme non può sapere cosa accadrà. Non ha mai conosciuto il fiore. Eppure ci prova, fa un tentativo. Lascia cadere il guscio duro che era la sua sicurezza e comincia a muoversi. La lotta inizia: con la terra, con le pietre, con le rocce. Ma la passione per la vita lo conduce dall'oscurità alla luce.",
+      "quelle": "Osho, Dang Dang Doko Dang, Kapitel 4",
+      "schatten": "Vigliaccheria, sovracompensazione, aggressione"
+    },
+    "9_aloneness": {
+      "name": "Aloneness",
+      "name_it": "Solitudine",
+      "nummer": 9,
+      "traditionell": "The Hermit",
+      "element": "Terra",
+      "bild": "Una piccola, umile figura risplende di una luce che viene da dentro. Sta sola in un vasto spazio, ma porta con se la propria luce. La luce irradia incredibilmente forte, e il suo bastone fa germogliare foglie! Nessun arcobaleno di colori, ma pura luce bianca.",
+      "bedeutung": "La solitudine come pienezza, autosufficienza",
+      "weisheit": "La solitudine non e sentirsi soli. E lo spazio in cui trovi te stesso - completo e intero.",
+      "osho": "Quando sei solo, non sei solo - sei semplicemente solitario, e c'e una differenza enorme tra sentirsi soli e la solitudine. Sentirsi soli e uno stato negativo - l'assenza dell'altro. La solitudine e la presenza del se. E molto positiva. Sei così pieno di presenza che puoi riempire l'intero universo con la tua presenza.",
+      "schatten": "Isolamento, sentirsi soli, fuga dal mondo"
+    },
+    "10_change": {
+      "name": "Change",
+      "name_it": "Cambiamento",
+      "nummer": 10,
+      "traditionell": "Wheel of Fortune",
+      "element": "Fuoco",
+      "bild": "Una grande ruota gira incessantemente. Figure salgono e scendono. Al centro resta un nucleo silenzioso, intoccato dal cambiamento. Tutto intorno alla ruota e in movimento - stagioni, cicli, vita e morte.",
+      "bedeutung": "L'eterno cambiamento, la trasformazione come costante",
+      "weisheit": "Il cambiamento e l'unica costante. Chi si abbandona al flusso trova pace nel mezzo del cambiamento.",
+      "osho": "Tutto cambia. Questa e l'unica verità. Se ti aggrappi a qualcosa, soffrirai. Se vai con il flusso, danzerai.",
+      "schatten": "Resistenza al cambiamento, aggrapparsi, paura"
+    },
+    "11_breakthrough": {
+      "name": "Breakthrough",
+      "name_it": "Svolta",
+      "nummer": 11,
+      "traditionell": "Justice",
+      "element": "Aria",
+      "bild": "Una figura sfonda un muro o una barriera. Dall'altra parte attende la luce. Pezzi della struttura spezzata cadono - vecchi schemi, limitazioni, condizionamenti.",
+      "bedeutung": "Svolta attraverso vecchi schemi, liberazione",
+      "weisheit": "Ogni svolta inizia con il coraggio di lasciar andare il vecchio - anche quando il nuovo non e ancora visibile.",
+      "osho": "La svolta non arriva attraverso la lotta, ma attraverso la chiarezza. Quando vedi ciò che e, il falso cade da solo.",
+      "schatten": "Stagnazione, presunzione, blocco"
+    },
+    "12_new_vision": {
+      "name": "New Vision",
+      "name_it": "Nuova Visione",
+      "nummer": 12,
+      "traditionell": "The Hanged Man",
+      "element": "Acqua",
+      "bild": "Una figura appesa a testa in giù, ma il suo volto non mostra dolore - solo pace e comprensione. Il mondo e capovolto, e proprio questo consente una prospettiva completamente nuova.",
+      "bedeutung": "Nuova prospettiva attraverso il lasciar andare, resa",
+      "weisheit": "A volte devi capovolgere il mondo per vederlo correttamente. La resa apre occhi nuovi.",
+      "osho": "La resa non e una sconfitta - e la più grande vittoria. Quando smetti di lottare, vedi improvvisamente ciò che e sempre stato lì.",
+      "schatten": "Atteggiamento da vittima, passività, rigidità"
+    },
+    "13_transformation": {
+      "name": "Transformation",
+      "name_it": "Trasformazione",
+      "nummer": 13,
+      "traditionell": "Death",
+      "element": "Acqua",
+      "bild": "La figura centrale siede sul grande fiore del vuoto e tiene i simboli della trasformazione: la spada che taglia attraverso l'illusione; il serpente che si rinnova attraverso la muta; la catena spezzata delle limitazioni; il simbolo yin-yang della trascendenza della dualità. Una fenice si leva dalle fiamme sopra la testa della figura. Una mano riposa aperta e ricettiva in grembo, l'altra tocca la bocca di un volto addormentato - simbolo del silenzio.",
+      "bedeutung": "Fine e nuovo inizio, cambiamento profondo",
+      "weisheit": "La trasformazione e la piccola morte che conduce a una vita più grande. Lascia morire ciò che deve morire.",
+      "osho": "La trasformazione arriva come la morte - nel suo tempo. Accogli ogni dolore, ogni lutto, ogni difficoltà. Gautam Buddha cercò per anni, poi si arrese - e quella notte fu illuminato. La trasformazione ti porta da una dimensione a un'altra.",
+      "schatten": "Paura del cambiamento, aggrapparsi al vecchio, stagnazione"
+    },
+    "14_integration": {
+      "name": "Integration",
+      "name_it": "Integrazione",
+      "nummer": 14,
+      "traditionell": "Temperance",
+      "element": "Fuoco",
+      "bild": "La figura rappresenta l'unione mistica, la fusione degli opposti. Aquila e cigno - forza e purezza - si uniscono. Un ouroboros (serpente che si morde la coda) simboleggia la ciclicità. Yin e yang si fondono all'infinito l'uno nell'altro, ognuno porta nel suo nucleo più profondo il seme dell'opposto. Sole e luna sono uniti.",
+      "bedeutung": "Unione armoniosa di tutte le parti, equilibrio interiore",
+      "weisheit": "L'integrazione avviene quando non scindi più nulla - quando luce e ombra si stringono la mano.",
+      "osho": "Invece che la notte lotti contro il giorno, l'oscurità sopprima la luce, lavorano insieme per creare un tutto unito. Si trasformano all'infinito l'uno nell'altro. Siamo l'integrazione di aquila e cigno: uomo e donna, fuoco e acqua, vita e morte.",
+      "schatten": "Scissione interiore, frammentazione, squilibrio"
+    },
+    "15_conditioning": {
+      "name": "Conditioning",
+      "name_it": "Condizionamento",
+      "nummer": 15,
+      "traditionell": "The Devil",
+      "element": "Terra",
+      "bild": "Una figura siede prigioniera in una gabbia o rete - ma la porta e aperta. Le catene sono fatte di abitudine, non di acciaio. Una scimmia siede sulle spalle - simbolo della mente irrequieta e condizionata.",
+      "bedeutung": "Riconoscere condizionamento e programmazione",
+      "weisheit": "Le catene del condizionamento sono invisibili - finche non le vedi. Riconoscerle e il primo passo verso la libertà.",
+      "osho": "Il diavolo in questo mazzo e il condizionamento - ciò che Osho considerava il vero male. Non un demone esteriore, ma i programmi interiori che ti tengono prigioniero. La porta e sempre aperta, ma devi vederla.",
+      "schatten": "Schemi inconsci, dipendenza, eterodirezione"
+    },
+    "16_thunderbolt": {
+      "name": "Thunderbolt",
+      "name_it": "Il Fulmine",
+      "nummer": 16,
+      "traditionell": "The Tower",
+      "element": "Fuoco",
+      "bild": "Un fulmine colpisce una torre. La torre - simbolo di strutture artificiali, costruzioni dell'ego - si spezza. Figure cadono fuori. Ma sotto la torre distrutta appare un loto - il vero, l'indistruttibile.",
+      "bedeutung": "Rivelazione improvvisa, distruzione delle illusioni",
+      "weisheit": "Il fulmine distrugge solo ciò che non era autentico. Ciò che resta e indistruttibile.",
+      "osho": "Il fulmine e grazia - anche se fa male. Non distrugge te, ma ciò che non sei. Ciò che resta e la tua vera essenza.",
+      "schatten": "Shock, crollo, caos"
+    },
+    "17_silence": {
+      "name": "Silence",
+      "name_it": "Silenzio",
+      "nummer": 17,
+      "traditionell": "The Star",
+      "element": "Aria",
+      "bild": "Una figura serena siede o sta in piedi sotto un cielo stellato. Un silenzio perfetto circonda la scena. Nessun vento, nessun movimento - solo pura presenza. Una singola stella brilla particolarmente intensa.",
+      "bedeutung": "Silenzio interiore, speranza e ispirazione",
+      "weisheit": "Nel silenzio trovi ciò che le parole non potranno mai raggiungere. E il linguaggio dell'universo.",
+      "osho": "Il silenzio non e l'assenza di suoni - e la presenza di qualcosa di più profondo. Nel silenzio l'universo ti parla.",
+      "schatten": "Inquietudine interiore, disperazione, rumore della mente"
+    },
+    "18_past_lives": {
+      "name": "Past Lives",
+      "name_it": "Vite Passate",
+      "nummer": 18,
+      "traditionell": "The Moon",
+      "element": "Acqua",
+      "bild": "Ombre e nebbia avvolgono una figura. Volti del passato, scene di altri tempi appaiono e svaniscono. La luna getta una luce incerta sulla scena - nulla e come sembra.",
+      "bedeutung": "Schemi inconsci dal passato",
+      "weisheit": "Il passato continua a vivere in te - finche non lo guardi consapevolmente e lo liberi.",
+      "osho": "Il passato non e finito - continua a vivere nel tuo inconscio. Gli schemi si ripetono finche non li riconosci e li lasci andare.",
+      "schatten": "Ripetizioni inconsce, illusioni, inganno"
+    },
+    "19_innocence": {
+      "name": "Innocence",
+      "name_it": "Innocenza",
+      "nummer": 19,
+      "traditionell": "The Sun",
+      "element": "Fuoco",
+      "bild": "Un vecchio con i capelli bianchi ride gioiosamente, completamente assorto nella contemplazione di una mantide religiosa posata sul suo dito indice. I suoi occhi brillano di meraviglia come quelli di un bambino - nonostante i capelli bianchi, ha ritrovato l'innocenza.",
+      "bedeutung": "Innocenza ritrovata, gioia infantile",
+      "weisheit": "L'innocenza non e ignoranza. E la saggezza che dopo tutta la conoscenza torna alla meraviglia.",
+      "osho": "Il bambino va verso la luce; l'adulto E la luce. L'innocenza non e ingenua - e la più alta saggezza. Ha visto tutto e può ancora meravigliarsi.",
+      "schatten": "Gioia perduta, cinismo, cuore indurito"
+    },
+    "20_beyond_illusion": {
+      "name": "Beyond Illusion",
+      "name_it": "Oltre l'Illusione",
+      "nummer": 20,
+      "traditionell": "Judgement",
+      "element": "Fuoco",
+      "bild": "Una farfalla rappresenta l'esteriorità - ciò che e in costante movimento e non e reale, ma illusione. Dietro la farfalla c'e il volto della coscienza, che guarda verso l'interno, verso ciò che e eterno. Lo spazio tra gli occhi si e aperto e rivela il loto dello sviluppo spirituale e il sole nascente della coscienza.",
+      "bedeutung": "Oltre tutte le illusioni, risveglio",
+      "weisheit": "Oltre l'illusione giace la verità - non come concetto, ma come esperienza viva.",
+      "osho": "L'illusione e la farfalla - bella, ma effimera. La coscienza dietro la farfalla e eterna. Riconosci la differenza.",
+      "schatten": "Autoinganno, giudizi errati, negazione"
+    },
+    "21_completion": {
+      "name": "Completion",
+      "name_it": "Completamento",
+      "nummer": 21,
+      "traditionell": "The World",
+      "element": "Terra",
+      "bild": "L'ultimo pezzo del puzzle viene messo al suo posto - nella posizione del terzo occhio, il luogo della percezione interiore. Il volto prima frammentato diventa intero. Nel flusso in continuo cambiamento della vita, ci sono momenti di completamento in cui possiamo percepire l'intero quadro.",
+      "bedeutung": "Completamento di un ciclo, interezza",
+      "weisheit": "Il completamento non e la fine - e il momento in cui il cerchio si chiude e uno nuovo inizia.",
+      "osho": "La lente Zen ci ricorda che il completamento non significa perfezione. Si tratta di presenza. Si tratta di onorare l'intero arco dell'esperienza e sapere che sei intero - anche quando ricominci da capo.",
+      "schatten": "Incompletezza, ricerca eterna, insoddisfazione"
+    },
+    "the_master": {
+      "name": "The Master",
+      "name_it": "Il Maestro",
+      "nummer": null,
+      "traditionell": null,
+      "element": "Trascendenza",
+      "bild": "Un ritratto di Osho stesso. I suoi occhi mostrano profondità infinita - a volte si vede bontà e saggezza, a volte un sorriso consapevole. Siede in perfetto silenzio, circondato di luce. Questa carta esiste solo in questo mazzo - mostra ciò che qualcuno può diventare quando rompe l'eterno ciclo di nascita e morte e trova l'illuminazione.",
+      "bedeutung": "Maestria su se stessi, illuminazione",
+      "weisheit": "Il maestro non e colui che domina gli altri - ha padroneggiato se stesso. E libero dalla presa dell'ego.",
+      "osho": "Il maestro nello Zen non e un maestro degli altri, ma un maestro di se stesso. Ogni gesto e ogni parola riflette il suo stato illuminato. Non ha alcuno scopo personale, nessun desiderio di nulla - lascia che le cose accadano come devono. Nei suoi occhi gli allievi possono trovare la propria verità riflessa, e nel suo silenzio possono facilmente immergersi nel proprio silenzio.",
+      "schatten": "Dipendenza dal guru, ego spirituale, falsa maestria"
+    }
+  },
+
+  "minor_arcana": {
+    "fire": {
+      "element": "Fuoco",
+      "thema": "Azione, creatività, passione, energia",
+      "traditionell": "Wands/Stäbe",
+      "farbe": "Rosso",
+      "richtung": "Sud",
+      "karten": {
+        "ace_source": {
+          "name": "Source",
+          "name_it": "Sorgente",
+          "nummer": 1,
+          "bild": "Una fontana o una sorgente zampilla luce invece di acqua. Tutto inizia qui - la sorgente primordiale di tutta la creatività e l'energia.",
+          "bedeutung": "La sorgente di tutta l'energia e la creatività",
+          "weisheit": "La sorgente e dentro di te. Quando ti connetti con essa, un'energia infinita fluisce attraverso il tuo essere.",
+          "osho": "Non cercare energia all'esterno - la sorgente e dentro di te. Connettiti con essa e non conoscerai mai più la mancanza.",
+          "schatten": "Energia bloccata, mancanza di fuoco"
+        },
+        "2_possibilities": {
+          "name": "Possibilities",
+          "name_it": "Possibilità",
+          "nummer": 2,
+          "bild": "Molte porte sono aperte. Ciascuna conduce in una direzione diversa. Tutte le strade sono possibili - la scelta spetta a te.",
+          "bedeutung": "Apertura a tutte le possibilità",
+          "weisheit": "In ogni momento risiedono infinite possibilità. Apriti, e la vita ti mostrerà la sua ricchezza.",
+          "osho": "La vita e piena di possibilità. Quando ne scegli una, non ti chiudi - vai più in profondità.",
+          "schatten": "Paralisi decisionale, opportunità mancate"
+        },
+        "3_experiencing": {
+          "name": "Experiencing",
+          "name_it": "Sperimentare",
+          "nummer": 3,
+          "bild": "Una figura si immerge completamente in un'esperienza - con tutti i sensi, senza riserve. Colori e forme la avvolgono.",
+          "bedeutung": "Immersione totale nell'esperienza",
+          "weisheit": "L'esperienza e l'unico maestro. Immergiti senza trattenerti - la vita aspetta di essere vissuta.",
+          "osho": "Non vivere a metà. Immergiti completamente in ogni esperienza. Solo così impari davvero.",
+          "schatten": "Superficialità, evitamento, insensibilità"
+        },
+        "4_participation": {
+          "name": "Participation",
+          "name_it": "Partecipazione",
+          "nummer": 4,
+          "bild": "Diverse figure danzano o lavorano insieme. Ognuna contribuisce, nessuna sta in disparte. Il tutto e più della somma delle sue parti.",
+          "bedeutung": "Partecipazione attiva alla vita",
+          "weisheit": "Partecipare significa essere completamente presenti - non come spettatori, ma come co-creatori della vita.",
+          "osho": "Non essere uno spettatore della tua stessa vita. Partecipa, impegnati, sii presente.",
+          "schatten": "Passività, isolamento, atteggiamento da spettatore"
+        },
+        "5_totality": {
+          "name": "Totality",
+          "name_it": "Totalità",
+          "nummer": 5,
+          "bild": "Una figura si dedica completamente a un'attività. Nessuna distrazione, nessuna esitazione. Dedizione totale.",
+          "bedeutung": "Impegno totale, piena dedizione",
+          "weisheit": "Qualunque cosa tu faccia - falla totalmente. La mediocrità e la morte della vitalità.",
+          "osho": "La totalità e la chiave. Non importa cosa fai - fallo completamente. Un mezzo sì e un no.",
+          "schatten": "Fare le cose a metà, frammentazione, mancanza di impegno"
+        },
+        "6_success": {
+          "name": "Success",
+          "name_it": "Successo",
+          "nummer": 6,
+          "bild": "Una figura sta sulla vetta, ma non guarda trionfante verso il basso, bensì serenamente verso l'interno. Il vero successo e appagamento interiore.",
+          "bedeutung": "Il vero successo come appagamento interiore",
+          "weisheit": "Il successo non e ciò che raggiungi - e chi diventi nel processo. Il vero successo e fioritura interiore.",
+          "osho": "Il successo che il mondo conosce e vuoto. Il vero successo e quando fiorisci interiormente.",
+          "schatten": "Successo esteriore senza appagamento, avidità"
+        },
+        "7_stress": {
+          "name": "Stress",
+          "name_it": "Stress",
+          "nummer": 7,
+          "bild": "Una figura giocoleggia con troppe palle - alcune stanno già cadendo. Il volto mostra tensione. Troppo in una volta.",
+          "bedeutung": "Sovraccarico, troppe cose in aria",
+          "weisheit": "Lo stress nasce quando porti più di quanto ti appartiene. Deponi ciò che non e tuo.",
+          "osho": "Lo stress non e la situazione - e la tua reazione ad essa. Impara a lasciar andare ciò che non e essenziale.",
+          "schatten": "Esaurimento, sovraccarico, perdita di controllo"
+        },
+        "8_traveling": {
+          "name": "Traveling",
+          "name_it": "Viaggiare",
+          "nummer": 8,
+          "bild": "Una figura su un sentiero che si snoda in lontananza. Nessuna meta in vista, ma questo non la disturba. Il viaggio stesso e la meta.",
+          "bedeutung": "Il viaggio e la meta, movimento",
+          "weisheit": "La vita e un viaggio senza arrivo. Goditi il cammino - e tutto ciò che c'e.",
+          "osho": "Non c'e una meta - solo il viaggio. Goditi ogni passo, perche il prossimo non e garantito.",
+          "schatten": "Irrequietezza, fuga, mancanza di direzione"
+        },
+        "9_exhaustion": {
+          "name": "Exhaustion",
+          "name_it": "Esaurimento",
+          "nummer": 9,
+          "bild": "Una figura completamente esausta, accasciata. L'energia e esaurita. E tempo di fermarsi.",
+          "bedeutung": "L'esaurimento come segnale di pausa",
+          "weisheit": "L'esaurimento e la saggezza del corpo. Ti chiama al riposo - ascoltala.",
+          "osho": "Il corpo e saggio. Quando dice 'basta', ascolta. L'esaurimento non e un fallimento - e un invito al rinnovamento.",
+          "schatten": "Ignorare i propri limiti, collasso"
+        },
+        "10_suppression": {
+          "name": "Suppression",
+          "name_it": "Repressione",
+          "nummer": 10,
+          "bild": "Una figura siede su un coperchio, sotto il quale qualcosa ribolle e rilascia vapore. L'energia repressa cerca una via d'uscita.",
+          "bedeutung": "L'energia repressa cerca espressione",
+          "weisheit": "Ciò che reprimi diventa più forte. Lascialo fluire, o esploderà.",
+          "osho": "La repressione non funziona mai. Ciò che reprimi si accumula soltanto e un giorno esploderà.",
+          "schatten": "Rabbia repressa, esplosione, autosabotaggio"
+        },
+        "page_playfulness": {
+          "name": "Playfulness",
+          "name_it": "Giocosità",
+          "nummer": 11,
+          "bild": "Una donna celebra la gioia della vita come una farfalla appena uscita dal suo bozzolo nella luce. Ricorda la nostra infanzia, quando raccoglievamo conchiglie o costruivamo castelli di sabbia senza preoccuparci che le onde li portassero via. Sa che la vita e un gioco.",
+          "bedeutung": "Leggerezza giocosa, gioia infantile",
+          "weisheit": "Giocare e la più alta forma di ricerca. Nel gioco sei più vicino alla tua vera natura.",
+          "osho": "Nel momento in cui cominci a vedere la vita come non seria, come un gioco, ogni peso scompare dal tuo cuore. Lo Zen ha lasciato il mondo serio. Ha creato un proprio mondo che e molto giocoso, pieno di risate, dove persino i grandi maestri si comportano come bambini.",
+          "quelle": "Osho, Nansen: The Point of Departure, Kapitel 8",
+          "schatten": "Eccessiva serietà, gioia perduta"
+        },
+        "knight_intensity": {
+          "name": "Intensity",
+          "name_it": "Intensità",
+          "nummer": 12,
+          "bild": "Una figura in piena concentrazione, gli occhi ardono di passione. Ogni fibra dell'essere e diretta verso un unico punto.",
+          "bedeutung": "Intensità appassionata, energia focalizzata",
+          "weisheit": "L'intensità e la vita nella sua forma più pura. Brucia senza consumarti.",
+          "osho": "L'intensità non e tensione. E presenza totale, impegno completo con il momento.",
+          "schatten": "Fanatismo, esaurimento, passione distruttiva"
+        },
+        "queen_sharing": {
+          "name": "Sharing",
+          "name_it": "Condivisione",
+          "nummer": 13,
+          "bild": "Una figura generosa con le mani tese che distribuisce doni. Ma non dà dalla mancanza, bensì dall'abbondanza.",
+          "bedeutung": "Condivisione generosa dall'abbondanza",
+          "weisheit": "La condivisione e il movimento naturale dell'abbondanza. Quando trabocchi, non puoi fare a meno di dare.",
+          "osho": "Non condividere perche devi - condividi perche trabocchi. La vera condivisione non conosce sacrificio.",
+          "schatten": "Trattenere, avarizia, paura della mancanza"
+        },
+        "king_the_creator": {
+          "name": "The Creator",
+          "name_it": "Il Creatore",
+          "nummer": 14,
+          "bild": "Una figura maestosa circondata da opere d'arte, invenzioni, creazioni di ogni tipo. Non come proprietario, ma come canale.",
+          "bedeutung": "Maestria nella creazione artistica",
+          "weisheit": "Il creatore non crea dalla mancanza, ma dall'abbondanza. La creatività e il suo stato naturale.",
+          "osho": "Tu non sei il creatore - sei il canale. Quando ti svuoti, la creazione fluisce attraverso di te.",
+          "schatten": "Blocco creativo, distruttività"
+        }
+      }
+    },
+    "water": {
+      "element": "Acqua",
+      "thema": "Emozioni, sentimenti, intuizione, relazioni",
+      "traditionell": "Cups/Kelche",
+      "farbe": "Blu",
+      "richtung": "Ovest",
+      "karten": {
+        "ace_going_with_the_flow": {
+          "name": "Going With The Flow",
+          "name_it": "Andare con il Flusso",
+          "nummer": 1,
+          "bild": "L'acqua scorre lungo un ruscello, aggira le pietre, trova la sua strada. Nessuna forza, nessuna lotta - solo scorrere naturale.",
+          "bedeutung": "Fluire con la corrente della vita",
+          "weisheit": "L'acqua non lotta contro la roccia - vi scorre intorno. Così trova la sua strada verso il mare.",
+          "osho": "L'acqua e il simbolo perfetto del Tao. Scorre sempre verso il basso, cerca il punto più basso, eppure raggiunge l'oceano.",
+          "schatten": "Resistenza, rigidità, mania di controllo"
+        },
+        "2_friendliness": {
+          "name": "Friendliness",
+          "name_it": "Amichevolezza",
+          "nummer": 2,
+          "bild": "Due figure siedono rilassate l'una accanto all'altra. Nessuna tensione, nessuna aspettativa - solo semplice, caloroso stare insieme.",
+          "bedeutung": "Amichevolezza calorosa verso se stessi e gli altri",
+          "weisheit": "L'amichevolezza inizia con te stesso. Quando sei amico di te stesso, irradi calore nel mondo.",
+          "osho": "Sii prima amico di te stesso. Solo allora puoi essere veramente amichevole con gli altri.",
+          "schatten": "Autocritica, freddezza, rifiuto"
+        },
+        "3_celebration": {
+          "name": "Celebration",
+          "name_it": "Celebrazione",
+          "nummer": 3,
+          "bild": "Diverse figure danzano e festeggiano insieme. La gioia risplende da tutti i volti. La vita stessa viene celebrata.",
+          "bedeutung": "Celebrare la vita, condividere la gioia",
+          "weisheit": "La vita stessa e una festa. Non hai bisogno di un motivo per celebrare - il tuo essere e motivo sufficiente.",
+          "osho": "Celebra senza motivo. La vita stessa e il motivo. Non aspettare un'occasione speciale - ogni momento e speciale.",
+          "schatten": "Assenza di gioia, isolamento, emozioni represse"
+        },
+        "4_turning_in": {
+          "name": "Turning In",
+          "name_it": "Rivolgersi all'Interno",
+          "nummer": 4,
+          "bild": "Una figura si allontana dal mondo esterno e guarda verso l'interno. Gli occhi sono chiusi, ma la luce interiore risplende.",
+          "bedeutung": "Rivolgersi all'interno, introspezione",
+          "weisheit": "A volte la via verso l'esterno e chiusa, affinche tu possa trovare la via verso l'interno.",
+          "osho": "Il viaggio verso l'esterno ha i suoi limiti. Il viaggio verso l'interno e senza limiti.",
+          "schatten": "Evitamento, eccessiva introversione"
+        },
+        "5_clinging_to_the_past": {
+          "name": "Clinging to the Past",
+          "name_it": "Aggrapparsi al Passato",
+          "nummer": 5,
+          "bild": "Una figura tiene strette vecchie foto, ricordi sbiaditi, reliquie del passato. Gli occhi guardano indietro, non avanti.",
+          "bedeutung": "Aggrapparsi a esperienze passate",
+          "weisheit": "Il passato e un luogo da visitare, non da abitare. Lascia andare ciò che era.",
+          "osho": "Il passato e morto. Perche porti con te un cadavere? Deponilo e vivi.",
+          "schatten": "Nostalgia, lutto, incapacità di lasciar andare"
+        },
+        "6_the_dream": {
+          "name": "The Dream",
+          "name_it": "Il Sogno",
+          "nummer": 6,
+          "bild": "Una figura guarda in bolle di sapone che mostrano scene bellissime - ma sono fragili, irreali. Sogni e illusioni.",
+          "bedeutung": "Sogni e visioni, immaginazioni idealizzate",
+          "weisheit": "I sogni sono semi del futuro. Ma non confondere il sogno con la realtà.",
+          "osho": "I sogni possono ispirare o imprigionare. La domanda e: sogni per svegliarti o per continuare a dormire?",
+          "schatten": "Illusione, fuga dalla realtà, ideali irraggiungibili"
+        },
+        "7_projections": {
+          "name": "Projections",
+          "name_it": "Proiezioni",
+          "nummer": 7,
+          "bild": "Una figura guarda un muro su cui appaiono ombre - immagini proprie, proiettate. Ciò che vede viene da dentro.",
+          "bedeutung": "Riconoscere e ritirare le proiezioni",
+          "weisheit": "Ciò che vedi negli altri ti mostra ciò che vive in te. Ogni proiezione e un invito all'autoconoscenza.",
+          "osho": "Non vedi mai l'altro - vedi sempre solo la tua proiezione. Ritirala e riconoscerai te stesso.",
+          "schatten": "Cecità verso le proprie parti, attribuzione di colpa"
+        },
+        "8_letting_go": {
+          "name": "Letting Go",
+          "name_it": "Lasciar Andare",
+          "nummer": 8,
+          "bild": "Una figura apre le mani e lascia libero qualcosa. Vola via come un uccello. Sollievo e libertà sul volto.",
+          "bedeutung": "Lasciar andare gli attaccamenti",
+          "weisheit": "Lasciar andare non e perdere - e creare spazio per il nuovo. Le mani vuote possono ricevere.",
+          "osho": "Lasciar andare non e debolezza - e la più grande forza. Solo chi sa lasciar andare e veramente libero.",
+          "schatten": "Aggrapparsi, controllo, paura della perdita"
+        },
+        "9_laziness": {
+          "name": "Laziness",
+          "name_it": "Pigrizia",
+          "nummer": 9,
+          "bild": "Una figura ozia pigramente mentre il mondo le passa accanto. E riposo o evasione?",
+          "bedeutung": "La pigrizia come evasione o come pausa salutare",
+          "weisheit": "A volte non fare nulla e l'azione più saggia. Ma distingui il riposo dall'evasione.",
+          "osho": "C'e una pigrizia che e fuga, e una che e riposo profondo. Conosci la differenza.",
+          "schatten": "Procrastinazione, stagnazione, depressione"
+        },
+        "10_harmony": {
+          "name": "Harmony",
+          "name_it": "Armonia",
+          "nummer": 10,
+          "bild": "La figura su questa carta riflette la dolcezza e la delicatezza di questa esperienza. Delfini emergono dal cuore e formano un arco verso il terzo occhio - rappresentano la giocosità e l'intelligenza che nascono quando ci connettiamo con il cuore e da lì andiamo nel mondo.",
+          "bedeutung": "Armonia emotiva e appagamento",
+          "weisheit": "L'armonia e lo stato naturale quando smetti di lottare. Attende dietro ogni conflitto.",
+          "osho": "I delfini che emergono dal cuore mostrano l'intelligenza giocosa della vita. Quando il cuore e aperto, la vita danza.",
+          "schatten": "Disarmonia, caos emotivo"
+        },
+        "page_trust": {
+          "name": "Trust",
+          "name_it": "Fiducia",
+          "nummer": 11,
+          "bild": "La figura ha osato il salto - vola nell'aria, senza corda, senza paracadute, senza rete di sicurezza. Fiducia totale e assoluta. All'altra estremità attende qualcosa di morbido e invitante - petali di rosa.",
+          "bedeutung": "La fiducia come atteggiamento fondamentale verso la vita",
+          "weisheit": "La fiducia e il salto nell'ignoto. Dice sì alla vita prima che ci siano prove.",
+          "osho": "Abbi fiducia nella vita. Quando ti fidi, puoi lasciar cadere la tua conoscenza, mettere da parte la tua mente. Con la fiducia si apre qualcosa di incommensurabile. La vita si riempie di Dio, trabocca. Non sei ingannato; non c'e nulla che ti possa essere tolto.",
+          "quelle": "Osho, The Sun Rises in the Evening, Kapitel 9",
+          "schatten": "Sfiducia, controllo, chiusura"
+        },
+        "knight_understanding": {
+          "name": "Understanding",
+          "name_it": "Comprensione",
+          "nummer": 12,
+          "bild": "Una figura con uno sguardo gentile e consapevole. Non guarda con gli occhi del giudizio, ma con gli occhi della comprensione.",
+          "bedeutung": "Comprensione profonda al di là dell'intelletto",
+          "weisheit": "La comprensione non avviene nella testa - avviene nel cuore. Quando comprendi veramente, non giudichi più.",
+          "osho": "La comprensione non e intellettuale - e esistenziale. Quando comprendi veramente, ti trasforma.",
+          "schatten": "Superficialità, pregiudizi, intellettualizzazione"
+        },
+        "queen_receptivity": {
+          "name": "Receptivity",
+          "name_it": "Ricettività",
+          "nummer": 13,
+          "bild": "Una figura femminile con le braccia tese verso l'alto per ricevere. E completamente immersa nell'acqua. Non ha testa - nessuna mente occupata e aggressiva che possa ostacolare la sua pura ricettività. Mentre viene riempita, si svuota continuamente, trabocca e riceve ancora. Il motivo del loto che emerge da lei rappresenta l'armonia perfetta dell'universo.",
+          "bedeutung": "Ricettività e apertura",
+          "weisheit": "La ricettività e forza, non debolezza. Il calice deve essere vuoto per essere riempito.",
+          "osho": "Il femminile e ricettivo - non passivo. Riceve e trasforma. E come la terra che riceve il seme e produce un fiore.",
+          "schatten": "Chiusura, difesa, durezza"
+        },
+        "king_healing": {
+          "name": "Healing",
+          "name_it": "Guarigione",
+          "nummer": 14,
+          "bild": "La figura su questa carta e nuda, vulnerabile, aperta al tocco amorevole dell'esistenza. L'aura intorno al suo corpo e piena di luce, e la qualità di rilassamento, cura e amore che lo circonda dissolve la sua lotta e la sua sofferenza. Fiori di loto di luce appaiono sul suo corpo fisico e intorno ai corpi energetici sottili. In ognuno di questi strati sottili appare un cristallo di guarigione.",
+          "bedeutung": "Profonda guarigione dalle ferite emotive",
+          "weisheit": "La guarigione avviene quando smetti di nasconderti dalle tue ferite. Nella luce dell'attenzione si dissolvono.",
+          "osho": "Porti la tua ferita con te. Con l'ego, tutto il tuo essere e una ferita. L'uomo senza ferite dell'ego non può essere ferito. E sano, guarito, intero. La parola 'heal' (guarire) viene da 'whole' (intero), e anche 'holy' (sacro) viene da 'whole'. Egli e intero, guarito, sacro.",
+          "schatten": "Ferite represse, evitamento, dolore cronico"
+        }
+      }
+    },
+    "clouds": {
+      "element": "Aria",
+      "thema": "Pensieri, mente, comunicazione, sfide",
+      "traditionell": "Swords/Schwerter",
+      "farbe": "Grigio",
+      "richtung": "Nord",
+      "karten": {
+        "ace_consciousness": {
+          "name": "Consciousness",
+          "name_it": "Coscienza",
+          "nummer": 1,
+          "bild": "Un cielo limpido e azzurro. Nessuna nuvola, nessun pensiero - solo pura coscienza aperta. Vastità infinita.",
+          "bedeutung": "Coscienza pura, mente limpida",
+          "weisheit": "La coscienza e il cielo - i pensieri sono solo nuvole che passano. Tu sei il cielo, non le nuvole.",
+          "osho": "Tu non sei i tuoi pensieri. Sei la coscienza che osserva i pensieri. Riconoscerlo e liberazione.",
+          "schatten": "Inconsapevolezza, identificazione con i pensieri"
+        },
+        "2_schizophrenia": {
+          "name": "Schizophrenia",
+          "name_it": "Scissione",
+          "nummer": 2,
+          "bild": "Una testa con due volti che guardano in direzioni diverse. Conflitto interiore, voci contrastanti.",
+          "bedeutung": "Scissione interiore, voci contrastanti",
+          "weisheit": "La mente scissa e lo stato normale. Riconosci le molte voci - e trova colui che le ascolta tutte.",
+          "osho": "Siamo tutti un po' schizofrenici - molte voci nella testa. La domanda e: chi le ascolta tutte?",
+          "schatten": "Conflitto interiore, lacerazione, confusione"
+        },
+        "3_ice_olation": {
+          "name": "Ice-Olation",
+          "name_it": "Ghiacci-Olamento",
+          "nummer": 3,
+          "bild": "Una figura congelata in un blocco di ghiaccio. Può vedere il mondo, ma non toccarlo. Paralisi emotiva.",
+          "bedeutung": "Isolamento emotivo, sentimenti congelati",
+          "weisheit": "Il ghiaccio si scioglie nel calore dell'attenzione. Permetti a ciò che e congelato di sgelarsi.",
+          "osho": "Quando congeli i tuoi sentimenti, congeli anche la tua vita. Permettiti di scioglierti - anche se fa male.",
+          "schatten": "Freddezza, distacco, intorpidimento emotivo"
+        },
+        "4_postponement": {
+          "name": "Postponement",
+          "name_it": "Rimandare",
+          "nummer": 4,
+          "bild": "Una figura siede davanti a un compito, ma guarda altrove. 'Domani' aleggia nell'aria. Sempre domani, mai adesso.",
+          "bedeutung": "Rimandare, evitare le decisioni",
+          "weisheit": "Il domani non esiste. Ciò che rimandi, lo escludi dalla tua vita. Ora e l'unico momento.",
+          "osho": "Il domani e la più grande bugia. C'e solo l'oggi, solo l'adesso. Ciò che non vivi oggi non sarà mai vissuto.",
+          "schatten": "Procrastinazione, paralisi, vita mancata"
+        },
+        "5_comparison": {
+          "name": "Comparison",
+          "name_it": "Confronto",
+          "nummer": 5,
+          "bild": "Una figura guarda con invidia gli altri, si misura con loro. Sempre troppo poco, mai abbastanza.",
+          "bedeutung": "Confrontarsi con gli altri",
+          "weisheit": "Il confronto e la morte della gioia. Sei unico - non esiste altro metro se non la tua stessa fioritura.",
+          "osho": "Non confrontarti mai. Sei unico. Non esiste un metro di paragone, perche non c'e nessuno come te.",
+          "schatten": "Invidia, senso di inferiorità, competitività"
+        },
+        "6_the_burden": {
+          "name": "The Burden",
+          "name_it": "Il Fardello",
+          "nummer": 6,
+          "bild": "Una figura curva porta uno zaino enorme - troppo pesante. Dentro: doveri, aspettative, debiti altrui.",
+          "bedeutung": "Portare pesi che non sono propri",
+          "weisheit": "Esamina ciò che porti. Molto di esso non ti appartiene. Deponi ciò che altri ti hanno caricato addosso.",
+          "osho": "Di chi e il peso che porti? Esaminalo. Molto non e tuo - ti e stato caricato addosso.",
+          "schatten": "Sovraccarico, martirio, abnegazione"
+        },
+        "7_politics": {
+          "name": "Politics",
+          "name_it": "Politica",
+          "nummer": 7,
+          "bild": "Figure con maschere che giocano a giochi. Manipolazione, agende nascoste, giochi di potere nell'ombra.",
+          "bedeutung": "Manipolazione, giochi di potere, agende nascoste",
+          "weisheit": "La politica e il gioco dell'ego. Riconosci i giochi - e scegli di non giocare.",
+          "osho": "La politica e ovunque - non solo nel governo. Riconosci i giochi politici nella tua stessa vita.",
+          "schatten": "Manipolazione, intrighi, disonestà"
+        },
+        "8_guilt": {
+          "name": "Guilt",
+          "name_it": "Colpa",
+          "nummer": 8,
+          "bild": "Una figura porta pesanti catene - ma se le e messe da sola. La colpa come punizione autoinflitta.",
+          "bedeutung": "Sensi di colpa e le loro radici",
+          "weisheit": "La colpa e un peso che ti imponi da solo. Perdonati - la vita non conosce colpa, solo apprendimento.",
+          "osho": "La colpa e un'invenzione della religione. La vita non conosce colpa - solo esperienza e crescita.",
+          "schatten": "Colpa cronica, autopunizione, vergogna"
+        },
+        "9_sorrow": {
+          "name": "Sorrow",
+          "name_it": "Dolore",
+          "nummer": 9,
+          "bild": "Una figura rannicchiata in un dolore profondo. Le lacrime scorrono. L'ora più buia prima dell'alba.",
+          "bedeutung": "Dolore profondo, notte oscura dell'anima",
+          "weisheit": "Il dolore e il prezzo dell'amore. Permettigli di scorrere - dall'altra parte attende una nuova profondità.",
+          "osho": "Il dolore non e l'opposto della gioia - ne e la profondità. Chi non sa soffrire non sa nemmeno veramente gioire.",
+          "schatten": "Dolore represso, depressione, disperazione"
+        },
+        "10_rebirth": {
+          "name": "Rebirth",
+          "name_it": "Rinascita",
+          "nummer": 10,
+          "bild": "L'evoluzione della coscienza come descritta da Friedrich Nietzsche: un giovane ragazzo si eleva da un leone, che si eleva da un cammello. I tre stadi: cammello (che porta pesi), leone (che lotta), bambino (che gioca).",
+          "bedeutung": "Rinascita attraverso la trasformazione della mente",
+          "weisheit": "Dopo l'ora più buia viene l'alba. La rinascita avviene quando attraversi il fuoco.",
+          "osho": "La tua coscienza e solo uno specchio. Ne vieni ne vai. Diventi giovane, diventi vecchio; sei vivo, sei morto. Tutti questi stati sono solo riflessi in un eterno stagno di coscienza.",
+          "schatten": "Aggrapparsi al vecchio, paura del nuovo inizio"
+        },
+        "page_mind": {
+          "name": "Mind",
+          "name_it": "Mente",
+          "nummer": 11,
+          "bild": "Una testa piena di pensieri vorticosi, concetti, idee. La mente - un potente strumento, ma un pessimo padrone.",
+          "bedeutung": "La mente come strumento, non come padrone",
+          "weisheit": "La mente e un meraviglioso servitore, ma un terribile padrone. Usala, ma non identificarti con essa.",
+          "osho": "La mente e uno strumento. Usala quando ne hai bisogno e mettila da parte quando non ne hai bisogno.",
+          "schatten": "Sovraidentificazione con la mente, pensiero eccessivo"
+        },
+        "knight_fighting": {
+          "name": "Fighting",
+          "name_it": "Lottare",
+          "nummer": 12,
+          "bild": "Due figure in lotta - o una figura che lotta con la propria ombra. Aggressione e conflitto.",
+          "bedeutung": "Lotta interiore ed esteriore",
+          "weisheit": "La più grande lotta e quella contro te stesso. Ma a un certo punto riconosci: non c'e nessun nemico.",
+          "osho": "La lotta esteriore riflette sempre quella interiore. Trova la pace dentro di te e la lotta esteriore finirà.",
+          "schatten": "Aggressione, ricerca del conflitto, guerra interiore"
+        },
+        "queen_morality": {
+          "name": "Morality",
+          "name_it": "Moralità",
+          "nummer": 13,
+          "bild": "Una figura severa con il dito indice alzato. Giusto e sbagliato, bene e male - il mondo in bianco e nero.",
+          "bedeutung": "Morale imposta vs. morale autentica",
+          "weisheit": "La vera moralità non viene dall'esterno - nasce dalla tua stessa coscienza, dalla tua stessa chiarezza.",
+          "osho": "La morale che viene dall'esterno e una prigione. La morale che cresce dall'interno e libertà.",
+          "schatten": "Morale rigida, ipocrisia, condanna"
+        },
+        "king_control": {
+          "name": "Control",
+          "name_it": "Controllo",
+          "nummer": 14,
+          "bild": "Una figura tiene in mano molti fili come un burattinaio. Ma e lei il giocatore o la marionetta?",
+          "bedeutung": "Il controllo e i suoi limiti",
+          "weisheit": "Più controlli, più le cose ti sfuggono. La vera maestria sta nel lasciar andare il controllo.",
+          "osho": "Il controllo e un'illusione. Non puoi controllare la vita - puoi solo fluire con essa o lottare contro di essa.",
+          "schatten": "Mania di controllo, paura, microgestione"
+        }
+      }
+    },
+    "rainbows": {
+      "element": "Terra",
+      "thema": "Corpo, materia, praticità, manifestazione",
+      "traditionell": "Pentacles/Münzen",
+      "farbe": "Arcobaleno (sette colori)",
+      "richtung": "Est",
+      "karten": {
+        "ace_maturity": {
+          "name": "Maturity",
+          "name_it": "Maturità",
+          "nummer": 1,
+          "bild": "Un vecchio albero saggio con radici profonde e una chioma ampia. Molti anelli annuali, molte esperienze - ma ancora vivo.",
+          "bedeutung": "La maturità come integrazione di tutte le esperienze",
+          "weisheit": "La maturità non e l'età - e il frutto della vita vissuta. L'uomo maturo ha smesso di lottare.",
+          "osho": "La maturità non e una questione di età. E una questione di integrazione. Un uomo maturo ha digerito le sue esperienze.",
+          "schatten": "Immaturità, rifiuto di crescere"
+        },
+        "2_moment_to_moment": {
+          "name": "Moment to Moment",
+          "name_it": "Momento per Momento",
+          "nummer": 2,
+          "bild": "Singoli momenti come perle su un filo. Ciascuno completo, ciascuno unico. Nessun prima, nessun dopo - solo adesso.",
+          "bedeutung": "Vivere nell'istante presente",
+          "weisheit": "La vita accade solo adesso. Momento per momento - e l'unico tempo che esiste.",
+          "osho": "Non c'e continuità - solo singoli momenti. Vivi ciascuno come se fosse l'unico.",
+          "schatten": "Vivere nel passato o nel futuro"
+        },
+        "3_guidance": {
+          "name": "Guidance",
+          "name_it": "Guida",
+          "nummer": 3,
+          "bild": "Una figura saggia indica la strada. Non comandando, ma invitando. Il dito indica, ma devi camminare da solo.",
+          "bedeutung": "Guida dall'interno e dall'esterno",
+          "weisheit": "La guida arriva quando sei aperto. La vita invia continuamente segni - impara a leggerli.",
+          "osho": "Il vero maestro non mostra la via - indica la luna. Non guardare il dito.",
+          "schatten": "Disorientamento, ignorare i segni"
+        },
+        "4_the_miser": {
+          "name": "The Miser",
+          "name_it": "L'Avaro",
+          "nummer": 4,
+          "bild": "Una figura accovacciata su un mucchio d'oro, lo tiene stretto. Gli occhi sono pieni di paura della perdita.",
+          "bedeutung": "Avarizia e attaccamento alle cose materiali",
+          "weisheit": "L'avaro muore povero, anche se e ricco. La vera abbondanza sta nel dare, non nell'accumulare.",
+          "osho": "L'avaro e l'uomo più povero. Ha tutto e non può godere di nulla.",
+          "schatten": "Avarizia, paura della mancanza, aggrapparsi"
+        },
+        "5_the_outsider": {
+          "name": "The Outsider",
+          "name_it": "L'Outsider",
+          "nummer": 5,
+          "bild": "Una figura sta in disparte da un gruppo, osserva dall'esterno. Diversa, estranea - ma forse con uno sguardo più chiaro.",
+          "bedeutung": "Essere un outsider, non appartenere",
+          "weisheit": "L'outsider vede ciò che gli insider non possono vedere. La tua diversità e il tuo dono.",
+          "osho": "Essere un outsider può essere una benedizione. Vedi cose che gli insider non possono vedere.",
+          "schatten": "Isolamento, rifiuto, estraneità"
+        },
+        "6_compromise": {
+          "name": "Compromise",
+          "name_it": "Compromesso",
+          "nummer": 6,
+          "bild": "Due figure trattano. Entrambe danno qualcosa, entrambe ricevono qualcosa. Ma l'equilibrio e reale?",
+          "bedeutung": "I compromessi e i loro costi",
+          "weisheit": "Alcuni compromessi costano l'anima. Distingui tra flessibilità e tradimento di se stessi.",
+          "osho": "I compromessi possono essere saggezza o vigliaccheria. La domanda e: stai compromettendo la tua verità?",
+          "schatten": "Compromesso pigro, abnegazione, adattamento"
+        },
+        "7_patience": {
+          "name": "Patience",
+          "name_it": "Pazienza",
+          "nummer": 7,
+          "bild": "Un giardiniere attende con pazienza mentre la pianta cresce. Nessuna fretta, nessuna forzatura - solo attesa fiduciosa.",
+          "bedeutung": "Attesa paziente del momento giusto",
+          "weisheit": "La pazienza non e attesa passiva - e fiducia attiva che il frutto maturerà al momento giusto.",
+          "osho": "La pazienza non e passività - e attesa attiva. Il giardiniere attende con pazienza, ma continua ad annaffiare.",
+          "schatten": "Impazienza, forzare, frustrazione"
+        },
+        "8_ordinariness": {
+          "name": "Ordinariness",
+          "name_it": "Ordinarietà",
+          "nummer": 8,
+          "bild": "Una scena semplice: bere il te, lavare i piatti, piegare il bucato. Ordinario - eppure sacro.",
+          "bedeutung": "La bellezza dell'ordinario",
+          "weisheit": "Lo straordinario si nasconde nell'ordinario. Chi non vede il semplice perde l'essenziale.",
+          "osho": "Lo Zen dice: quando hai fame, mangia. Quando sei stanco, dormi. L'ordinario e il sacro.",
+          "schatten": "Ricerca del sensazionale, insoddisfazione"
+        },
+        "9_ripeness": {
+          "name": "Ripeness",
+          "name_it": "Maturazione",
+          "nummer": 9,
+          "bild": "Un frutto sull'albero - perfettamente maturo, un attimo prima di cadere da solo. Non troppo presto, non troppo tardi - esattamente al momento giusto.",
+          "bedeutung": "Il tempo maturo per la raccolta",
+          "weisheit": "Quando il frutto e maturo, cade da solo. Non forzare nulla - riconosci quando il tempo e arrivato.",
+          "osho": "C'e un tempo per ogni cosa. Il frutto maturo cade da solo - non devi tirarlo.",
+          "schatten": "Raccogliere troppo presto, impazienza, momento mancato"
+        },
+        "10_we_are_the_world": {
+          "name": "We Are the World",
+          "name_it": "Noi Siamo il Mondo",
+          "nummer": 10,
+          "bild": "Molte figure che insieme formano un cerchio. Colori diversi, forme diverse - ma tutti connessi. Una rete della vita.",
+          "bedeutung": "Connessione con tutta la vita",
+          "weisheit": "Non siamo separati - siamo onde dello stesso oceano. Ciò che fai a uno, lo fai a tutti.",
+          "osho": "Non sei un'isola - sei l'intero oceano. Riconosci la connessione, e la compassione nasce da sola.",
+          "schatten": "Isolamento, separazione, egoismo"
+        },
+        "page_adventure": {
+          "name": "Adventure",
+          "name_it": "Avventura",
+          "nummer": 11,
+          "bild": "Una figura all'inizio di un sentiero che conduce in territorio sconosciuto. Eccitazione negli occhi, uno zaino sulle spalle.",
+          "bedeutung": "Osare l'avventura della vita",
+          "weisheit": "La vita e un'avventura o non e nulla. Osa il salto - la rete appare nella caduta.",
+          "osho": "La vita e la più grande avventura. Se non rischi, non stai vivendo davvero.",
+          "schatten": "Paura dell'ignoto, ricerca della sicurezza"
+        },
+        "knight_slowing_down": {
+          "name": "Slowing Down",
+          "name_it": "Rallentare",
+          "nummer": 12,
+          "bild": "Una figura che consapevolmente rallenta. Il mondo sfreccia accanto, ma lei cammina al proprio ritmo.",
+          "bedeutung": "Rallentamento e presenza",
+          "weisheit": "Rallentare non e debolezza - e l'arte di non perdere la vita.",
+          "osho": "Il mondo dice: più veloce! Lo Zen dice: più lento. Nella lentezza trovi la profondità.",
+          "schatten": "Irrequietezza, fretta, superficialità"
+        },
+        "queen_flowering": {
+          "name": "Flowering",
+          "name_it": "Fioritura",
+          "nummer": 13,
+          "bild": "Un albero immaginario al culmine della sua fioritura e freschezza. E molto erotica, viva e piena di sorprese. Le sue maniche contengono molti semi, e quando il vento soffia, i semi vengono sparsi per mettere radici dove vogliono. Non le importa se cadono sulla terra o sulle rocce - li sparge ovunque mentre gode della vita e dell'amore.",
+          "bedeutung": "Giungere alla piena fioritura",
+          "weisheit": "Fiorire e la tua natura. Quando smetti di potarti, ti dispieghi da solo.",
+          "osho": "Dai il benvenuto alle api e invita gli uccelli a bere il tuo nettare. Diffondi la tua gioia perche tutti possano condividerla.",
+          "schatten": "Potenziale represso, sogni appassiti"
+        },
+        "king_abundance": {
+          "name": "Abundance",
+          "name_it": "Abbondanza",
+          "nummer": 14,
+          "bild": "Una figura circondata da ricchezza - non solo materiale, ma anche di amore, gioia, esperienze. Traboccante.",
+          "bedeutung": "Abbondanza in tutti gli ambiti della vita",
+          "weisheit": "L'abbondanza e uno stato interiore. Chi si sente interiormente ricco attrae ricchezza esteriore.",
+          "osho": "Lo Zen vuole che tu viva, viva nell'abbondanza, viva nella totalità, viva intensamente - non al minimo, ma al massimo, traboccando.",
+          "schatten": "Mentalità di scarsità, avidità, insoddisfazione"
+        }
+      }
+    }
+  },
+
+  "zusaetzliche_karten": {
+    "beschreibung": "Queste carte vengono utilizzate nell'app e sono concetti complementari basati sugli insegnamenti di Osho.",
+    "karten": {
+      "touch": {
+        "name": "Touch",
+        "name_it": "Tocco",
+        "bild": "Due mani che si toccano delicatamente. Flussi di energia scorrono tra le punte delle dita. Il corpo come primo mezzo di comunicazione.",
+        "bedeutung": "La forza del tocco consapevole",
+        "weisheit": "Il tocco e il primo specchio. Il corpo parla molto prima che nascano le parole.",
+        "osho": "Il corpo non e separato dall'anima - e il suo tempio. Il tocco può guarire ciò che le parole non raggiungono mai.",
+        "schatten": "Paura del contatto, distanza fisica"
+      },
+      "passion": {
+        "name": "Passion",
+        "name_it": "Passione",
+        "bild": "Fiamme che danzano senza distruggere. Fuoco sacro. Energia vitale nella sua forma più pura.",
+        "bedeutung": "Passione sacra e fuoco vitale",
+        "weisheit": "La sessualità e un fuoco che e sacro - quando non vuoi possederlo. Espressione, non appropriazione.",
+        "osho": "Il sesso e la forma più bassa di energia, ma anche il seme della più alta. Trasformala, non reprimerla.",
+        "schatten": "Passione repressa, ossessione"
+      },
+      "protection": {
+        "name": "Protection",
+        "name_it": "Protezione",
+        "bild": "Una luce calda avvolge una figura vulnerabile. Non come un muro, ma come un involucro delicato che lascia spazio per crescere.",
+        "bedeutung": "Spazio protetto per la vulnerabilità",
+        "weisheit": "La protezione non e schermatura - e lo spazio in cui puoi rimanere tenero.",
+        "osho": "La vera protezione non viene dall'esterno - viene dalla forza interiore di poter essere vulnerabile.",
+        "schatten": "Iperprotezione, muri"
+      },
+      "warmth": {
+        "name": "Warmth",
+        "name_it": "Calore",
+        "bild": "Luce soffusa e dorata che irradia da una figura. Non il sole, ma un bagliore interiore che riscalda gli altri.",
+        "bedeutung": "Calore emotivo e presenza",
+        "weisheit": "Il calore non e un sentimento, ma una presenza che non giudica.",
+        "osho": "Il calore e l'irradiazione naturale di un cuore aperto. Non devi produrlo - basta aprire il cuore.",
+        "schatten": "Freddezza, distanza emotiva"
+      },
+      "acceptance": {
+        "name": "Acceptance",
+        "name_it": "Accettazione",
+        "bild": "Una figura a braccia aperte che accoglie tutto - luce e ombra, gioia e dolore. Nessun rifiuto.",
+        "bedeutung": "Accettazione radicale di ciò che e",
+        "weisheit": "L'accettazione e il primo respiro di libertà. Smetti di lottare - e la vita respira attraverso di te.",
+        "osho": "L'accettazione non e rassegnazione - e la cessazione della lotta. Nella lotta perdi energia. Nell'accettazione la recuperi.",
+        "schatten": "Resistenza, negazione"
+      },
+      "love": {
+        "name": "Love",
+        "name_it": "Amore",
+        "bild": "Un cuore che irradia luce - non rivolto verso l'interno, ma che fluisce verso l'esterno. L'amore come dare, non come prendere.",
+        "bedeutung": "Amore incondizionato come qualità dell'essere",
+        "weisheit": "L'amore non e relazione. E spazio. Quando ami, lasci libero.",
+        "osho": "L'amore non e qualcosa che ricevi - e qualcosa che sei. Quando ami, non chiedi nulla in cambio.",
+        "schatten": "Amore possessivo, bisogno d'amore"
+      },
+      "compassion": {
+        "name": "Compassion",
+        "name_it": "Compassione",
+        "bild": "Una figura si china verso un'altra - non dall'alto in basso, ma allo stesso livello. Uguaglianza nel sentire insieme.",
+        "bedeutung": "Compassione senza compatimento",
+        "weisheit": "La cura e dedizione senza pretese - annaffia senza contare.",
+        "osho": "La compassione non e compatimento. Il compatimento guarda dall'alto in basso. La compassione e allo stesso livello - riconosce: siamo uguali.",
+        "schatten": "Compatimento come superiorità, sindrome del salvatore"
+      },
+      "support": {
+        "name": "Support",
+        "name_it": "Sostegno",
+        "bild": "Una mano sotto un'altra - che sostiene, non che preme. Sostegno invisibile che dà spazio per crescere.",
+        "bedeutung": "Terreno solido sotto i piedi",
+        "weisheit": "Il sostegno e un suolo invisibile. Sai che c'e - perche osi.",
+        "osho": "Il vero sostegno e invisibile. Non ti dà la risposta - ti dà il coraggio di cercare da solo.",
+        "schatten": "Mancanza di sostegno, combattere da soli"
+      },
+      "intimacy": {
+        "name": "Intimacy",
+        "name_it": "Intimità",
+        "bild": "Due figure che si incontrano in completa apertura. Nessuna maschera, nessun muro difensivo. Anime nude.",
+        "bedeutung": "Vicinanza profonda senza maschere",
+        "weisheit": "L'intimità e nudità dell'anima - non del corpo.",
+        "osho": "L'intimità richiede coraggio - il coraggio di mostrarti come sei veramente. E il rischio più grande e il dono più grande.",
+        "schatten": "Paura della vicinanza, relazioni superficiali"
+      },
+      "commitment": {
+        "name": "Commitment",
+        "name_it": "Impegno",
+        "bild": "Due mani che si tengono - non convulsamente, ma consapevolmente. Un sì che sostiene attraverso tutte le stagioni.",
+        "bedeutung": "Decisione consapevole all'impegno",
+        "weisheit": "L'impegno e un sì consapevole. E la decisione di camminare insieme attraverso tutte le stagioni.",
+        "osho": "Il vero impegno non nasce dal dovere, ma dall'amore. Non e una catena, ma una danza.",
+        "schatten": "Paura del legame, false promesse"
+      }
+    }
+  }
+}

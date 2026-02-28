@@ -206,7 +206,12 @@
             color: var(--text-secondary);
         }
 
-        /* Language Button */
+        /* Language Switcher with Dropdown */
+        .lang-switcher {
+            position: relative;
+            display: inline-block;
+        }
+
         .lang-btn {
             display: flex;
             align-items: center;
@@ -227,6 +232,29 @@
             color: white;
         }
 
+        .lang-btn.is-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .lang-btn.is-loading .lang-code {
+            display: none;
+        }
+
+        .lang-btn.is-loading .lang-loading {
+            display: inline-block !important;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: lang-spin 0.6s linear infinite;
+        }
+
+        @keyframes lang-spin {
+            to { transform: rotate(360deg); }
+        }
+
         .lang-icon {
             font-size: 14px;
         }
@@ -234,6 +262,66 @@
         .lang-code {
             font-weight: 700;
             text-transform: uppercase;
+        }
+
+        /* Dropdown */
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            right: 0;
+            min-width: 140px;
+            background: var(--bg-card, #1a1a2e);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 4px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .lang-switcher:hover .lang-dropdown {
+            display: block;
+        }
+
+        .lang-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-primary, #eee);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 7px;
+            transition: background 0.15s;
+            text-align: left;
+        }
+
+        .lang-dropdown-item:hover {
+            background: rgba(69,123,157,0.25);
+        }
+
+        .lang-dropdown-item.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .lang-flag {
+            font-weight: 700;
+            font-size: 11px;
+            min-width: 22px;
+            text-align: center;
+            padding: 2px 4px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .lang-dropdown-item.active .lang-flag {
+            background: rgba(255,255,255,0.25);
         }
 
         /* Help Button */
