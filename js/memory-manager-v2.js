@@ -935,6 +935,7 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" onclick="handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
                     <button class="memory-load-btn" onclick="handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
+                    <button class="memory-delete-btn" onclick="handleDeleteIchV2('${slot.archetyp}')" title="ICH-Slot löschen"${isActive ? ' disabled style="opacity:0.3"' : ''}>🗑️</button>
                 </div>
             ` : '<div class="memory-slot-empty">-</div>'}
         </div>
@@ -1018,6 +1019,29 @@ function handleDeletePartnerV2(slotNumber) {
         } else {
             showMemoryToast('Fehler beim Löschen', 'error');
         }
+    }
+}
+
+function handleDeleteIchV2(archetyp) {
+    // Aktuellen ICH-Archetyp ermitteln
+    var currentIchArchetyp = null;
+    if (typeof TiageState !== 'undefined') {
+        var archetypes = TiageState.getArchetypes('ich');
+        currentIchArchetyp = archetypes?.primary || archetypes;
+    }
+
+    // Aktiver Archetyp kann nicht gelöscht werden
+    if (archetyp === currentIchArchetyp) {
+        showMemoryToast('Aktiver Archetyp kann nicht gelöscht werden', 'error');
+        return;
+    }
+
+    var label = MemoryManagerV2.ARCHETYPE_LABELS[archetyp] || archetyp;
+    if (confirm('ICH-Daten für "' + label + '" wirklich löschen?')) {
+        var key = 'tiage_ich_' + archetyp;
+        localStorage.removeItem(key);
+        updateMemoryModalV2Content();
+        showMemoryToast(label + ' gelöscht');
     }
 }
 
@@ -1527,6 +1551,7 @@ window.handleLoadIchV2 = handleLoadIchV2;
 window.handleSavePartnerV2 = handleSavePartnerV2;
 window.handleLoadPartnerV2 = handleLoadPartnerV2;
 window.handleDeletePartnerV2 = handleDeletePartnerV2;
+window.handleDeleteIchV2 = handleDeleteIchV2;
 window.handleDisplayIchV2 = handleDisplayIchV2;
 window.handleDisplayPartnerV2 = handleDisplayPartnerV2;
 

@@ -214,6 +214,50 @@
             },
 
             /**
+             * Temporärer Reset: Partner FFH + AGOD nur im RAM löschen.
+             * TiageState wird NICHT verändert → beim nächsten Reload
+             * kommen die gespeicherten Werte aus localStorage zurück.
+             *
+             * WICHTIG: syncGeschlechtExtrasUI() NICHT aufrufen, da die
+             * den Cache aus TiageState überschreibt. UI direkt setzen.
+             */
+            'temp-reset-partner': function(el, event) {
+                console.log('[TEMP-RESET] Partner FFH + AGOD (RAM only, TiageState unverändert)');
+
+                // 1. FFH nur im Runtime-Cache leeren (TiageState bleibt unberührt!)
+                if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                    window.geschlechtExtrasCache.partner = { fit: false, fuckedup: false, horny: false };
+                }
+
+                // 2. FFH UI Buttons direkt deaktivieren
+                //    (OHNE syncGeschlechtExtrasUI - die liest TiageState und überschreibt Cache)
+                ['#partner-geschlecht-extras-grid .geschlecht-btn',
+                 '#mobile-partner-geschlecht-extras-grid .geschlecht-btn'
+                ].forEach(function(selector) {
+                    document.querySelectorAll(selector).forEach(function(btn) {
+                        btn.classList.remove('active');
+                        btn.style.background = '';
+                        btn.style.borderColor = '';
+                        btn.style.color = '';
+                        btn.style.opacity = '';
+                    });
+                });
+
+                // 3. AGOD nur im RAM zurücksetzen (kein TiageState.save)
+                if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD &&
+                    typeof TiageWeights.AGOD.tempReset === 'function') {
+                    TiageWeights.AGOD.tempReset();
+                }
+
+                // 4. Synthese neu berechnen
+                if (typeof window.updateComparisonView === 'function') {
+                    window.updateComparisonView();
+                }
+
+                console.log('[TEMP-RESET] Done - TiageState/localStorage unverändert');
+            },
+
+            /**
              * Reset Partner GOD (Geschlecht, Orientierung, Dominanz)
              * Setzt alle Partner-Attribute auf "frei" zurück
              */

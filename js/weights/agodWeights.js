@@ -169,6 +169,24 @@ var TiageWeights = TiageWeights || {};
         console.log('[AGOD] Weights reset to defaults:', agodWeights);
     }
 
+    /**
+     * Temporärer Reset: Setzt AGOD nur im RAM zurück (OHNE save).
+     * Beim nächsten Archetyp-Wechsel oder Reload werden die
+     * persistierten Werte aus TiageState/localStorage wiederhergestellt.
+     */
+    function tempReset() {
+        agodWeights = { ...AGOD_DEFAULT_WEIGHTS };
+        updateUI();
+        // KEIN save() → TiageState/localStorage bleibt unverändert
+
+        // Trigger synthesis recalculation
+        if (typeof updateComparisonView === 'function') {
+            updateComparisonView();
+        }
+
+        console.log('[AGOD] Weights temp-reset (RAM only):', agodWeights);
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // GETTERS
     // ═══════════════════════════════════════════════════════════════════════
@@ -291,6 +309,7 @@ var TiageWeights = TiageWeights || {};
         // Setters
         set: set,
         reset: reset,
+        tempReset: tempReset,
 
         // Getters
         get: get,

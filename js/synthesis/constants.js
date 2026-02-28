@@ -93,12 +93,34 @@ TiageSynthesis.Constants = {
     // - Dominanz:     20% Logos / 80% Pathos (Energetische Dynamik)
     // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
-    // WEIGHTS werden dynamisch aus TiageState geladen (SSOT)
-    // Getter-Funktion für aktuelle Gewichtungen
+    // WEIGHTS werden dynamisch geladen
+    // Priorität: Runtime (TiageWeights.AGOD) → TiageState → Defaults
     getWeights: function(person) {
         person = person || 'ich';
 
-        // PRIORITÄT 1: TiageState (Single Source of Truth - persistent)
+        // PRIORITÄT 0: Runtime AGOD (ermöglicht tempReset ohne TiageState-Änderung)
+        try {
+            if (person === 'ich' && typeof TiageWeights !== 'undefined' &&
+                TiageWeights.AGOD && typeof TiageWeights.AGOD.get === 'function') {
+                var runtime = TiageWeights.AGOD.get();
+                if (runtime && typeof runtime.O === 'number' && runtime.O >= 0 && runtime.O <= 2) {
+                    var oR = runtime.O === 0 ? 0 : (runtime.O === 2 ? 50 : 25);
+                    var aR = runtime.A === 0 ? 0 : (runtime.A === 2 ? 50 : 25);
+                    var dR = runtime.D === 0 ? 0 : (runtime.D === 2 ? 50 : 25);
+                    var gR = runtime.G === 0 ? 0 : (runtime.G === 2 ? 50 : 25);
+                    var sumR = oR + aR + dR + gR;
+                    var divR = sumR > 0 ? sumR : 100;
+                    return {
+                        orientierung: oR / divR,
+                        archetyp: aR / divR,
+                        dominanz: dR / divR,
+                        geschlecht: gR / divR
+                    };
+                }
+            }
+        } catch (e) { /* ignore, fall through to TiageState */ }
+
+        // PRIORITÄT 1: TiageState (persistent)
         try {
             if (typeof TiageState !== 'undefined') {
                 var stored = TiageState.get('gewichtungen.' + person);
