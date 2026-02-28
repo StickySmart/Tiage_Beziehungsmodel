@@ -175,9 +175,9 @@ const MemoryManagerV2 = (function() {
                 }
             }
 
-            // Fallback for FFH: Try geschlechtExtrasCache
-            if (!data.geschlecht_extras && typeof geschlechtExtrasCache !== 'undefined' && geschlechtExtrasCache.ich) {
-                data.geschlecht_extras = geschlechtExtrasCache.ich;
+            // Fallback for FFH: Try geschlechtExtrasCache (exposed via window from app-main.js)
+            if (!data.geschlecht_extras && typeof window.geschlechtExtrasCache !== 'undefined' && window.geschlechtExtrasCache.ich) {
+                data.geschlecht_extras = { ...window.geschlechtExtrasCache.ich };
             }
 
             // AGOD-Gewichtung (neues Format: 0/1/2)
@@ -194,16 +194,15 @@ const MemoryManagerV2 = (function() {
 
             const storedGewichtung = TiageState.get('gewichtungen.ich');
 
-            // Primary: Use TiageWeights.AGOD.get() which has the current UI state
-            // This is the Single Source of Truth for AGOD weights
-            if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
-                data.agodGewichtung = TiageWeights.AGOD.get();
-                console.log('[MemoryManagerV2] AGOD from TiageWeights.AGOD.get():', data.agodGewichtung);
-            }
-            // Fallback: Check if stored value is in new 3-way format
-            else if (isNew3WayFormat(storedGewichtung)) {
+            // Primary: TiageState (persistiert, übersteht tempReset)
+            if (isNew3WayFormat(storedGewichtung)) {
                 data.agodGewichtung = storedGewichtung;
-                console.log('[MemoryManagerV2] AGOD from TiageState (new format):', data.agodGewichtung);
+                console.log('[MemoryManagerV2] AGOD from TiageState (persistent):', data.agodGewichtung);
+            }
+            // Fallback: Runtime (nur wenn TiageState leer)
+            else if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
+                data.agodGewichtung = TiageWeights.AGOD.get();
+                console.log('[MemoryManagerV2] AGOD from Runtime (fallback):', data.agodGewichtung);
             }
             // Last resort: defaults
             else {

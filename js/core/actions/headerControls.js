@@ -214,25 +214,25 @@
             },
 
             /**
-             * Temporärer Reset: Partner FFH + AGOD nur im RAM löschen.
+             * Temporärer Reset: ICH FFH + AGOD nur im RAM löschen.
              * TiageState wird NICHT verändert → beim nächsten Reload
-             * kommen die gespeicherten Werte aus localStorage zurück.
+             * oder Archetyp-Wechsel kommen die gespeicherten Werte zurück.
              *
              * WICHTIG: syncGeschlechtExtrasUI() NICHT aufrufen, da die
              * den Cache aus TiageState überschreibt. UI direkt setzen.
              */
             'temp-reset-partner': function(el, event) {
-                console.log('[TEMP-RESET] Partner FFH + AGOD (RAM only, TiageState unverändert)');
+                console.log('[TEMP-RESET] ICH FFH + AGOD (RAM only, TiageState unverändert)');
 
-                // 1. FFH nur im Runtime-Cache leeren (TiageState bleibt unberührt!)
+                // 1. ICH-FFH nur im Runtime-Cache leeren (TiageState bleibt unberührt!)
                 if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                    window.geschlechtExtrasCache.partner = { fit: false, fuckedup: false, horny: false };
+                    window.geschlechtExtrasCache.ich = { fit: false, fuckedup: false, horny: false };
                 }
 
-                // 2. FFH UI Buttons direkt deaktivieren
+                // 2. ICH-FFH UI Buttons direkt deaktivieren
                 //    (OHNE syncGeschlechtExtrasUI - die liest TiageState und überschreibt Cache)
-                ['#partner-geschlecht-extras-grid .geschlecht-btn',
-                 '#mobile-partner-geschlecht-extras-grid .geschlecht-btn'
+                ['#ich-geschlecht-extras-grid .geschlecht-btn',
+                 '#mobile-ich-geschlecht-extras-grid .geschlecht-btn'
                 ].forEach(function(selector) {
                     document.querySelectorAll(selector).forEach(function(btn) {
                         btn.classList.remove('active');
@@ -254,7 +254,7 @@
                     window.updateComparisonView();
                 }
 
-                console.log('[TEMP-RESET] Done - TiageState/localStorage unverändert');
+                console.log('[TEMP-RESET] ICH FFH + AGOD done - TiageState/localStorage unverändert');
             },
 
             /**
