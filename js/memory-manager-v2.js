@@ -770,7 +770,24 @@ const MemoryManagerV2 = (function() {
             try {
                 const raw = localStorage.getItem(key);
                 if (!raw) {
-                    console.log(`[MemoryManagerV2] Keine gespeicherten GODFUFH-Daten für: ${archetyp} - behalte aktuelle Werte`);
+                    console.log(`[MemoryManagerV2] Keine gespeicherten GODFUFH-Daten für: ${archetyp} - setze GOD+FFH zurück`);
+                    // FIX: Bei fehlendem Slot alle GOD+FFH-Werte zurücksetzen
+                    // (sonst werden Werte vom vorherigen Archetyp übernommen)
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.set('personDimensions.ich.geschlecht', null);
+                        TiageState.set('personDimensions.ich.orientierung', null);
+                        TiageState.set('personDimensions.ich.dominanz', null);
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                            window.geschlechtExtrasCache.ich = defaultExtras;
+                        }
+                    }
+                    // UI synchronisieren
+                    if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
+                    if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
+                    if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
+                    if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('ich');
                     return false;
                 }
 
@@ -778,20 +795,14 @@ const MemoryManagerV2 = (function() {
 
                 // Daten in TiageState laden (OHNE Archetyp zu setzen!)
                 if (typeof TiageState !== 'undefined') {
-                    // G - Geschlecht
-                    if (data.geschlecht) {
-                        TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
-                    }
+                    // G - Geschlecht (null wenn nicht gespeichert → alten Wert nicht übernehmen)
+                    TiageState.set('personDimensions.ich.geschlecht', data.geschlecht || null);
 
                     // O - Orientierung
-                    if (data.orientierung) {
-                        TiageState.set('personDimensions.ich.orientierung', data.orientierung);
-                    }
+                    TiageState.set('personDimensions.ich.orientierung', data.orientierung || null);
 
                     // D - Dominanz
-                    if (data.dominanz) {
-                        TiageState.set('personDimensions.ich.dominanz', data.dominanz);
-                    }
+                    TiageState.set('personDimensions.ich.dominanz', data.dominanz || null);
 
                     // F - Fit, U - Fucked-up, H - Horny (FFH/geschlecht_extras)
                     if (data.geschlecht_extras) {

@@ -6,7 +6,7 @@
  * (c) 2025 Ti-age.de Tous droits reserves.
  */
 
-const TiageLocale_FR = {
+var TiageLocale_FR = {
     code: 'fr',
     name: 'Fran\u00e7ais',
 

@@ -6,7 +6,7 @@
  * © 2025 Ti-age.de Tutti i diritti riservati.
  */
 
-const TiageLocale_IT = {
+var TiageLocale_IT = {
     code: 'it',
     name: 'Italiano',
 
