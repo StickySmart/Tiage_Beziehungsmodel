@@ -5868,18 +5868,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Default if no selections
             if (list1.length === 0 || list2.length === 0) return 75;
 
-            // Find best combination
-            let bestScore = 0;
+            // Gewichteter Durchschnitt: Primär 70%, Sekundär 30%
+            const PRIMARY_WEIGHT = 0.7;
+            const SECONDARY_WEIGHT = 0.3;
+
+            // Berechne gewichteten Score für jede Person-Kombination
+            let totalWeight = 0;
+            let weightedSum = 0;
+
             for (const d1 of list1) {
                 for (const d2 of list2) {
                     const score = calculateSingleDominanzHarmony(d1.type, d1.status, d2.type, d2.status);
-                    if (score > bestScore) {
-                        bestScore = score;
-                    }
+                    // Gewicht = Produkt der jeweiligen Gewichte
+                    const w1 = d1.status === 'primary' ? PRIMARY_WEIGHT : SECONDARY_WEIGHT;
+                    const w2 = d2.status === 'primary' ? PRIMARY_WEIGHT : SECONDARY_WEIGHT;
+                    const combinedWeight = w1 * w2;
+                    weightedSum += score * combinedWeight;
+                    totalWeight += combinedWeight;
                 }
             }
 
-            return bestScore;
+            return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 75;
         }
 
         // Factor 3: Orientation Compatibility (25%) - uses existing checkPhysicalCompatibility
