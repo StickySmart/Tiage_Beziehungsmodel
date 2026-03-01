@@ -3,8 +3,8 @@
  * Version: 1.1.0 - Erweiterte Precache-Liste
  */
 
-const CACHE_NAME = 'tiage-v109';
-const STATIC_CACHE_NAME = 'tiage-static-v103';
+const CACHE_NAME = 'tiage-v110';
+const STATIC_CACHE_NAME = 'tiage-static-v104';
 
 // Kritische Ressourcen die sofort gecacht werden
 const PRECACHE_URLS = [
@@ -37,7 +37,8 @@ const PRECACHE_URLS = [
     // Synthese-kritische JSON-Daten
     '/archetype-matrix.json',
     '/profiles/data/osho-zen-beduerfnisse.json',
-    '/profiles/data/osho-zen-tarot-karten.json'
+    '/profiles/data/osho-zen-tarot-karten.json',
+    '/relationship-menu.html'
 ];
 
 // URLs die nicht gecacht werden sollen

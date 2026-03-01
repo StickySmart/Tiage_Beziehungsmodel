@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beziehungsmenü | Ti-age</title>
+    <link rel="icon" type="image/svg+xml" href="colorful-heart.svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+    <style>
+        :root {
+            --bg-main: #0d0d1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #252542;
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #9b5de5;
+            --primary-light: #d4a5ff;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #22c55e;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .rm-header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #16213e 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+        }
+        .rm-header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .rm-back-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .rm-back-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--primary);
+        }
+        .rm-title {
+            font-size: 20px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .rm-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Sticky Progress */
+        .rm-progress-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            backdrop-filter: blur(10px);
+        }
+        .rm-progress-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .rm-progress-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .rm-progress-track {
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .rm-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease, background 0.4s ease;
+            width: 0%;
+            background: var(--danger);
+        }
+
+        /* Main Content */
+        .rm-main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Intro */
+        .rm-intro {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .rm-intro h2 {
+            color: var(--text-primary);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .rm-intro p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .rm-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .rm-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        .rm-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Category Card */
+        .rm-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .rm-category-header {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .rm-category-header:hover {
+            background: var(--bg-card-hover);
+        }
+        .rm-category-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .rm-category-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.06);
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-left: auto;
+            margin-right: 12px;
+        }
+        .rm-category-chevron {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+        .rm-category.collapsed .rm-category-chevron {
+            transform: rotate(-90deg);
+        }
+        .rm-category-body {
+            padding: 0 20px 16px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+        .rm-category.collapsed .rm-category-body {
+            max-height: 0 !important;
+            padding: 0 20px;
+        }
+
+        /* Item Row */
+        .rm-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            gap: 12px;
+        }
+        .rm-item:last-of-type {
+            border-bottom: none;
+        }
+        .rm-item-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Toggle Button Group */
+        .rm-toggle-group {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .rm-toggle-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            opacity: 0.5;
+        }
+        .rm-toggle-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        .rm-toggle-btn.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        .rm-toggle-btn[data-value="erforderlich"].active {
+            background: var(--success);
+            border-color: var(--success);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+        }
+        .rm-toggle-btn[data-value="wunsch"].active {
+            background: var(--warning);
+            border-color: var(--warning);
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
+        }
+        .rm-toggle-btn[data-value="vielleicht"].active {
+            background: var(--info);
+            border-color: var(--info);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+        }
+        .rm-toggle-btn[data-value="ausgeschlossen"].active {
+            background: var(--danger);
+            border-color: var(--danger);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Notes */
+        .rm-notes {
+            margin-top: 12px;
+        }
+        .rm-notes-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .rm-notes textarea {
+            width: 100%;
+            min-height: 60px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            padding: 10px;
+            resize: vertical;
+        }
+        .rm-notes textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Sticky Action Bar */
+        .rm-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: linear-gradient(0deg, var(--bg-card) 80%, transparent);
+            padding: 20px 20px 16px;
+        }
+        .rm-action-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .rm-action-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .rm-action-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+        .rm-action-btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+        .rm-action-btn.primary:hover {
+            filter: brightness(1.15);
+        }
+        .rm-action-btn.danger {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+        .rm-action-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--danger);
+        }
+
+        /* Toast */
+        .rm-toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--success);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 200;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .rm-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Footer */
+        .rm-footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+        .rm-footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .rm-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .rm-title { font-size: 16px; }
+            .rm-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .rm-toggle-group { align-self: stretch; }
+            .rm-toggle-btn { flex: 1; }
+            .rm-action-inner { flex-wrap: wrap; }
+            .rm-action-btn { flex: 1; min-width: 100px; text-align: center; }
+        }
+
+        /* Print / PDF */
+        @media print {
+            .rm-header, .rm-progress-bar, .rm-action-bar, .rm-back-btn { display: none !important; }
+            body { background: #fff; color: #333; }
+            .rm-category { border: 1px solid #ddd; break-inside: avoid; }
+            .rm-category-header { background: #f5f5f5; }
+            .rm-toggle-btn { display: none; }
+            .rm-item::after {
+                content: attr(data-selected);
+                font-weight: 600;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="rm-header">
+        <div class="rm-header-inner">
+            <a href="archetype-interaction.html" class="rm-back-btn">&larr; Zurück</a>
+            <div>
+                <div class="rm-title">Anti-Rolltreppen Beziehungsmenü</div>
+                <div class="rm-subtitle">Was wünschst du dir in deiner Beziehung?</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="rm-progress-bar">
+        <div class="rm-progress-inner">
+            <div class="rm-progress-text">
+                <span id="progressLabel">0/58 Items beantwortet</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="rm-progress-track">
+                <div class="rm-progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="rm-main" id="menuContainer">
+        <!-- Intro -->
+        <div class="rm-intro">
+            <h2>Wie funktioniert das Menü?</h2>
+            <p>Bewerte jedes Beziehungselement mit einer der vier Optionen. Deine Antworten werden automatisch gespeichert und du kannst sie jederzeit als PDF exportieren.</p>
+            <div class="rm-legend">
+                <div class="rm-legend-item">
+                    <div class="rm-legend-dot" style="background: var(--success);"></div>
+                    Erforderlich
+                </div>
+                <div class="rm-legend-item">
+                    <div class="rm-legend-dot" style="background: var(--warning);"></div>
+                    Wunsch
+                </div>
+                <div class="rm-legend-item">
+                    <div class="rm-legend-dot" style="background: var(--info);"></div>
+                    Vielleicht
+                </div>
+                <div class="rm-legend-item">
+                    <div class="rm-legend-dot" style="background: var(--danger);"></div>
+                    Ausgeschlossen
+                </div>
+            </div>
+        </div>
+        <!-- Categories rendered by JS -->
+    </main>
+
+    <!-- Sticky Action Bar -->
+    <div class="rm-action-bar">
+        <div class="rm-action-inner">
+            <button class="rm-action-btn danger" onclick="resetAll()">&#8634; Reset</button>
+            <button class="rm-action-btn primary" onclick="saveAndNotify()">&#128190; Speichern</button>
+            <button class="rm-action-btn" onclick="exportToPDF()">&#128196; PDF</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="rm-toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer class="rm-footer">
+        <p>Basierend auf dem <a href="https://tinyurl.com/bdesktte" target="_blank" rel="noopener">Non-Escalator Relationship Menu</a> von poly_jane (Reddit).</p>
+        <p style="margin-top: 6px;">&copy; 2025-2026 <a href="https://ti-age.de">Ti-age.de</a> — Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    // MENU DATA — Single Source of Truth for categories + items
+    // ============================================================
+    var MENU_DATA = [
+        {
+            id: 'commitment',
+            emoji: '\u{1F3E0}',
+            title: 'Commitment',
+            items: [
+                { id: 'schluessel-haben', label: 'Schlüssel haben' },
+                { id: 'zusammenleben', label: 'Zusammenleben' },
+                { id: 'haustiere-teilen', label: 'Haustiere teilen' },
+                { id: 'priorisierung', label: 'Priorisierung über andere Partner' },
+                { id: 'beziehungslabels', label: 'Beziehungslabels verwenden' },
+                { id: 'zukunft-planen', label: 'Zukunft planen' },
+                { id: 'langfristiges-engagement', label: 'Langfristiges Engagement' }
+            ]
+        },
+        {
+            id: 'emotionale-intimitaet',
+            emoji: '\u{1F497}',
+            title: 'Emotionale Intimität',
+            items: [
+                { id: 'glueck-ausdruecken', label: 'Glück und Freude ausdrücken' },
+                { id: 'unterstuetzung-bieten', label: 'Unterstützung in schweren Zeiten' },
+                { id: 'verletzlich-teilen', label: 'Verletzliche Gefühle teilen' },
+                { id: 'ich-liebe-dich', label: '"Ich liebe dich" sagen' },
+                { id: 'vergangenheit-teilen', label: 'Geschichten über die Vergangenheit' },
+                { id: 'hoffnungen-teilen', label: 'Hoffnungen für die Zukunft teilen' },
+                { id: 'vorlieben-kennen', label: 'Persönliche Vorlieben kennen' }
+            ]
+        },
+        {
+            id: 'soziale-integration',
+            emoji: '\u{1F465}',
+            title: 'Soziale Integration',
+            items: [
+                { id: 'metamours-treffen', label: 'Metamours treffen' },
+                { id: 'familie-treffen', label: 'Familie treffen' },
+                { id: 'freunde-treffen', label: 'Freunde treffen' },
+                { id: 'paarzeit-freunde', label: 'Paar-Zeit mit Freunden / Familie' },
+                { id: 'positive-metamour-beziehung', label: 'Positive Beziehung zu Metamours' },
+                { id: 'plus-eins-events', label: '+1 bei sozialen Events' },
+                { id: 'paar-oeffentlichkeit', label: 'Als Paar in der Öffentlichkeit' }
+            ]
+        },
+        {
+            id: 'nicht-sexuelle-koerperlichkeit',
+            emoji: '\u{1F91D}',
+            title: 'Nicht-Sexuelle Körperlichkeit',
+            items: [
+                { id: 'koerperliche-zuneigung', label: 'Körperliche Zuneigung' },
+                { id: 'kuscheln', label: 'Kuscheln' },
+                { id: 'haendchenhalten', label: 'Händchenhalten' },
+                { id: 'massage', label: 'Massage' },
+                { id: 'kuessen', label: 'Küssen' },
+                { id: 'oeffentliche-zaertlichkeit', label: 'Öffentliche Zärtlichkeit (PDA)' }
+            ]
+        },
+        {
+            id: 'sexuelle-intimitaet',
+            emoji: '\u{1F525}',
+            title: 'Sexuelle Intimität',
+            items: [
+                { id: 'kompatible-libido', label: 'Kompatible Libido' },
+                { id: 'sexuelle-chemie', label: 'Sexuelle Chemie' },
+                { id: 'oralsex', label: 'Oralsex' },
+                { id: 'manueller-sex', label: 'Manueller Sex' },
+                { id: 'gegenseitige-masturbation', label: 'Gegenseitige Masturbation' },
+                { id: 'penetration', label: 'Penetration / GV' },
+                { id: 'sexspielzeug', label: 'Sexspielzeug verwenden' },
+                { id: 'kondom-sti', label: 'Kondomnutzung / STI-Tests' },
+                { id: 'kink-gruppensex', label: 'Kink / Gruppensex' }
+            ]
+        },
+        {
+            id: 'kommunikation',
+            emoji: '\u{1F4AC}',
+            title: 'Kommunikation',
+            items: [
+                { id: 'taegliche-checkins', label: 'Tägliche Check-ins' },
+                { id: 'textnachrichten', label: 'Textnachrichten' },
+                { id: 'telefon-video', label: 'Telefon- / Videoanrufe' },
+                { id: 'arbeit-hobbys', label: 'Arbeit und Hobbys besprechen' },
+                { id: 'familie-partner-besprechen', label: 'Familie / Partner besprechen' },
+                { id: 'meinungsverschiedenheiten', label: 'Meinungsverschiedenheiten ausdrücken' },
+                { id: 'konflikte-loesen', label: 'Konflikte lösen' }
+            ]
+        },
+        {
+            id: 'qualitaetszeit',
+            emoji: '\u{23F0}',
+            title: 'Qualitätszeit',
+            items: [
+                { id: 'regelmaessige-zeit', label: 'Regelmäßige Zeit zusammen' },
+                { id: 'date-nights', label: 'Date-Nights' },
+                { id: 'uebernachten', label: 'Übernachten' },
+                { id: 'gemeinsame-hobbys', label: 'Gemeinsame Hobbys / Aktivitäten' },
+                { id: 'urlaub-paar', label: 'Urlaub als Paar' }
+            ]
+        },
+        {
+            id: 'autonomie',
+            emoji: '\u{1F98B}',
+            title: 'Autonomie',
+            items: [
+                { id: 'balance-zeit', label: 'Balance: Zeit zusammen & getrennt' },
+                { id: 'unabhaengige-interessen', label: 'Unabhängige Interessen verfolgen' },
+                { id: 'unabhaengige-freundschaften', label: 'Unabhängige Freundschaften' },
+                { id: 'alleinzeit', label: 'Alleinzeit' }
+            ]
+        },
+        {
+            id: 'finanzen',
+            emoji: '\u{1F4B0}',
+            title: 'Finanzen',
+            items: [
+                { id: 'gemeinsames-konto', label: 'Gemeinsames Konto' },
+                { id: 'urlaubskasse', label: 'Gemeinsame Urlaubskasse' },
+                { id: 'finanzielle-unterstuetzung', label: 'Finanzielle Unterstützung' }
+            ]
+        },
+        {
+            id: 'exklusivitaet',
+            emoji: '\u{1F48D}',
+            title: 'Exklusivität',
+            items: [
+                { id: 'sexuelle-exklusivitaet', label: 'Sexuelle Exklusivität' },
+                { id: 'emotionale-exklusivitaet', label: 'Emotionale Exklusivität' },
+                { id: 'romantische-exklusivitaet', label: 'Romantische Exklusivität' }
+            ]
+        }
+    ];
+
+    var TOGGLE_VALUES = [
+        { value: 'erforderlich', emoji: '\u2705', label: 'Erforderlich' },
+        { value: 'wunsch',       emoji: '\u{1F49B}', label: 'Wunsch' },
+        { value: 'vielleicht',   emoji: '\u{1F914}', label: 'Vielleicht' },
+        { value: 'ausgeschlossen', emoji: '\u274C', label: 'Ausgeschlossen' }
+    ];
+
+    var STORAGE_KEY = 'tiage-relationship-menu';
+    var TOTAL_ITEMS = MENU_DATA.reduce(function(sum, cat) { return sum + cat.items.length; }, 0);
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    var menuState = loadMenuData();
+
+    function getDefaultState() {
+        var responses = {};
+        var notes = {};
+        MENU_DATA.forEach(function(cat) {
+            responses[cat.id] = {};
+            cat.items.forEach(function(item) {
+                responses[cat.id][item.id] = null;
+            });
+            notes[cat.id] = '';
+        });
+        return {
+            version: '1.0',
+            lastUpdated: null,
+            responses: responses,
+            notes: notes
+        };
+    }
+
+    function loadMenuData() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                // Merge with defaults to handle new categories/items
+                var defaults = getDefaultState();
+                Object.keys(defaults.responses).forEach(function(catId) {
+                    if (!parsed.responses[catId]) parsed.responses[catId] = defaults.responses[catId];
+                    Object.keys(defaults.responses[catId]).forEach(function(itemId) {
+                        if (!(itemId in parsed.responses[catId])) {
+                            parsed.responses[catId][itemId] = null;
+                        }
+                    });
+                });
+                if (!parsed.notes) parsed.notes = defaults.notes;
+                return parsed;
+            }
+        } catch (e) {
+            console.warn('[RM] Failed to load:', e);
+        }
+        return getDefaultState();
+    }
+
+    function saveMenuData() {
+        menuState.lastUpdated = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(menuState));
+    }
+
+    // ============================================================
+    // RENDERING
+    // ============================================================
+    function renderMenu() {
+        var container = document.getElementById('menuContainer');
+        var html = container.innerHTML; // keep the intro div
+
+        MENU_DATA.forEach(function(cat) {
+            var answered = 0;
+            cat.items.forEach(function(item) {
+                if (menuState.responses[cat.id] && menuState.responses[cat.id][item.id]) answered++;
+            });
+
+            html += '<div class="rm-category" id="cat-' + cat.id + '">';
+            html += '<div class="rm-category-header" onclick="toggleCategory(\'' + cat.id + '\')">';
+            html += '<span class="rm-category-title">' + cat.emoji + ' ' + cat.title + '</span>';
+            html += '<span class="rm-category-count">' + answered + '/' + cat.items.length + '</span>';
+            html += '<span class="rm-category-chevron">&#9660;</span>';
+            html += '</div>';
+            html += '<div class="rm-category-body">';
+
+            cat.items.forEach(function(item) {
+                var currentVal = (menuState.responses[cat.id] && menuState.responses[cat.id][item.id]) || null;
+                html += '<div class="rm-item">';
+                html += '<span class="rm-item-label">' + item.label + '</span>';
+                html += '<div class="rm-toggle-group">';
+                TOGGLE_VALUES.forEach(function(tv) {
+                    var isActive = currentVal === tv.value;
+                    html += '<button class="rm-toggle-btn' + (isActive ? ' active' : '') + '"';
+                    html += ' data-value="' + tv.value + '"';
+                    html += ' title="' + tv.label + '"';
+                    html += ' onclick="activateToggle(\'' + cat.id + '\', \'' + item.id + '\', \'' + tv.value + '\')">';
+                    html += tv.emoji;
+                    html += '</button>';
+                });
+                html += '</div></div>';
+            });
+
+            // Notes
+            var noteVal = (menuState.notes && menuState.notes[cat.id]) || '';
+            html += '<div class="rm-notes">';
+            html += '<div class="rm-notes-label">Notizen zu ' + cat.title + ':</div>';
+            html += '<textarea placeholder="Eigene Gedanken..." oninput="updateNote(\'' + cat.id + '\', this.value)">' + escapeHtml(noteVal) + '</textarea>';
+            html += '</div>';
+
+            html += '</div></div>';
+        });
+
+        container.innerHTML = html;
+        updateProgress();
+    }
+
+    function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ============================================================
+    // INTERACTIONS
+    // ============================================================
+    function activateToggle(categoryId, itemId, value) {
+        if (!menuState.responses[categoryId]) menuState.responses[categoryId] = {};
+        var current = menuState.responses[categoryId][itemId];
+
+        // Toggle: clicking same value deselects
+        if (current === value) {
+            menuState.responses[categoryId][itemId] = null;
+        } else {
+            menuState.responses[categoryId][itemId] = value;
+        }
+
+        saveMenuData();
+        updateItemUI(categoryId, itemId);
+        updateCategoryCount(categoryId);
+        updateProgress();
+    }
+
+    function updateItemUI(categoryId, itemId) {
+        var val = menuState.responses[categoryId][itemId];
+        var cat = document.getElementById('cat-' + categoryId);
+        if (!cat) return;
+        var items = cat.querySelectorAll('.rm-item');
+        // Find the right item by matching data
+        MENU_DATA.forEach(function(c) {
+            if (c.id !== categoryId) return;
+            c.items.forEach(function(item, idx) {
+                if (item.id !== itemId) return;
+                var row = items[idx];
+                if (!row) return;
+                var btns = row.querySelectorAll('.rm-toggle-btn');
+                btns.forEach(function(btn) {
+                    if (btn.getAttribute('data-value') === val) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            });
+        });
+    }
+
+    function updateCategoryCount(categoryId) {
+        var cat = document.getElementById('cat-' + categoryId);
+        if (!cat) return;
+        var countEl = cat.querySelector('.rm-category-count');
+        if (!countEl) return;
+        var catData = MENU_DATA.find(function(c) { return c.id === categoryId; });
+        if (!catData) return;
+        var answered = 0;
+        catData.items.forEach(function(item) {
+            if (menuState.responses[categoryId] && menuState.responses[categoryId][item.id]) answered++;
+        });
+        countEl.textContent = answered + '/' + catData.items.length;
+    }
+
+    function toggleCategory(categoryId) {
+        var cat = document.getElementById('cat-' + categoryId);
+        if (cat) cat.classList.toggle('collapsed');
+    }
+
+    function updateNote(categoryId, value) {
+        if (!menuState.notes) menuState.notes = {};
+        menuState.notes[categoryId] = value;
+        saveMenuData();
+    }
+
+    // ============================================================
+    // PROGRESS
+    // ============================================================
+    function updateProgress() {
+        var answered = 0;
+        MENU_DATA.forEach(function(cat) {
+            cat.items.forEach(function(item) {
+                if (menuState.responses[cat.id] && menuState.responses[cat.id][item.id]) answered++;
+            });
+        });
+        var pct = Math.round((answered / TOTAL_ITEMS) * 100);
+        var label = document.getElementById('progressLabel');
+        var percent = document.getElementById('progressPercent');
+        var fill = document.getElementById('progressFill');
+        if (label) label.textContent = answered + '/' + TOTAL_ITEMS + ' Items beantwortet';
+        if (percent) percent.textContent = pct + '%';
+        if (fill) {
+            fill.style.width = pct + '%';
+            if (pct < 33) fill.style.background = 'var(--danger)';
+            else if (pct < 66) fill.style.background = 'var(--warning)';
+            else fill.style.background = 'var(--success)';
+        }
+    }
+
+    // ============================================================
+    // ACTIONS
+    // ============================================================
+    function saveAndNotify() {
+        saveMenuData();
+        showToast('Gespeichert!');
+    }
+
+    function resetAll() {
+        if (!confirm('Alle Antworten und Notizen zurücksetzen?')) return;
+        menuState = getDefaultState();
+        saveMenuData();
+        renderMenu();
+        showToast('Zurückgesetzt');
+    }
+
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function() { toast.classList.remove('show'); }, 2000);
+    }
+
+    // ============================================================
+    // PDF EXPORT
+    // ============================================================
+    function exportToPDF() {
+        var valueLabels = {
+            erforderlich: 'Erforderlich',
+            wunsch: 'Wunsch',
+            vielleicht: 'Vielleicht',
+            ausgeschlossen: 'Ausgeschlossen'
+        };
+        var valueColors = {
+            erforderlich: '#22c55e',
+            wunsch: '#eab308',
+            vielleicht: '#3b82f6',
+            ausgeschlossen: '#ef4444'
+        };
+
+        var html = '<div style="font-family: Arial, sans-serif; color: #333; padding: 20px;">';
+        html += '<h1 style="font-size: 22px; margin-bottom: 4px;">Anti-Rolltreppen Beziehungsmenü</h1>';
+        html += '<p style="color: #888; font-size: 12px; margin-bottom: 20px;">Erstellt: ' + new Date().toLocaleDateString('de-DE') + '</p>';
+
+        MENU_DATA.forEach(function(cat) {
+            html += '<div style="margin-bottom: 16px; page-break-inside: avoid;">';
+            html += '<h2 style="font-size: 16px; border-bottom: 2px solid #ddd; padding-bottom: 6px; margin-bottom: 8px;">' + cat.emoji + ' ' + cat.title + '</h2>';
+
+            cat.items.forEach(function(item) {
+                var val = (menuState.responses[cat.id] && menuState.responses[cat.id][item.id]) || null;
+                var label = val ? valueLabels[val] : '—';
+                var color = val ? valueColors[val] : '#999';
+                html += '<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px;">';
+                html += '<span>' + item.label + '</span>';
+                html += '<span style="color: ' + color + '; font-weight: 600;">' + label + '</span>';
+                html += '</div>';
+            });
+
+            var note = (menuState.notes && menuState.notes[cat.id]) || '';
+            if (note.trim()) {
+                html += '<div style="margin-top: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px; font-size: 12px; color: #666;">';
+                html += '<strong>Notizen:</strong> ' + escapeHtml(note);
+                html += '</div>';
+            }
+
+            html += '</div>';
+        });
+
+        html += '<p style="margin-top: 24px; font-size: 11px; color: #aaa; text-align: center;">Quelle: Non-Escalator Relationship Menu (poly_jane) — ti-age.de</p>';
+        html += '</div>';
+
+        var el = document.createElement('div');
+        el.innerHTML = html;
+        document.body.appendChild(el);
+
+        var opt = {
+            margin: [10, 10, 10, 10],
+            filename: 'beziehungsmenue-' + new Date().toISOString().slice(0, 10) + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        if (typeof html2pdf === 'undefined') {
+            alert('PDF-Library wird geladen, bitte kurz warten und erneut versuchen.');
+            document.body.removeChild(el);
+            return;
+        }
+
+        html2pdf().set(opt).from(el).save().then(function() {
+            document.body.removeChild(el);
+            showToast('PDF heruntergeladen');
+        }).catch(function(err) {
+            console.error('[RM] PDF export failed:', err);
+            document.body.removeChild(el);
+            alert('PDF-Export fehlgeschlagen: ' + err.message);
+        });
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        renderMenu();
+    });
+    </script>
+</body>
+</html>
