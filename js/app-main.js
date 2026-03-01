@@ -15058,6 +15058,18 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     : '✓ Auswahl gelöscht!<br><small>Profile erhalten. Lade neu...</small>';
                 document.body.appendChild(toast);
 
+                // Service Worker + Browser-Cache leeren
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(regs) {
+                        regs.forEach(function(r) { r.unregister(); });
+                    });
+                }
+                if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                        names.forEach(function(n) { caches.delete(n); });
+                    });
+                }
+
                 // Seite nach kurzer Verzögerung neu laden
                 setTimeout(() => {
                     window.location.reload();
