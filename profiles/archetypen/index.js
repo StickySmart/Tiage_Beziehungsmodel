@@ -248,10 +248,11 @@
                 }
             },
 
-            // ResonanzFaktoren: TiageState.resonanzFaktoren.{person}
+            // ResonanzFaktoren: TiageState.resonanzFaktoren.{person}.{archetyp}
             get resonanzFaktoren() {
                 if (typeof TiageState !== 'undefined') {
-                    return TiageState.get(`resonanzFaktoren.${person}`);
+                    // FIX: Per-Archetyp-Pfad lesen (wie setResonanzFaktoren schreibt)
+                    return TiageState.getResonanzFaktoren(person);
                 }
                 return null;
             },
@@ -652,7 +653,8 @@
             // (Berechnung liefert 1.0 wenn Katalog-Daten fehlen → persistierte Werte gehen verloren)
             if (calculatedProfile.resonanzFaktoren) {
                 const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loaded === true;
-                const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`);
+                // FIX: Per-Archetyp-Pfad lesen (wie setResonanzFaktoren schreibt)
+                const currentResonanz = TiageState.getResonanzFaktoren(person);
                 const hasPersistedValues = currentResonanz && currentResonanz.R1 &&
                     (currentResonanz.R1.value !== undefined && currentResonanz.R1.value !== 1.0);
 
@@ -881,7 +883,8 @@
 
         if (calculatedResonanz) {
             // Respektiere Locks: Nur nicht-gelockte R-Faktoren überschreiben
-            const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`) || {};
+            // FIX: Per-Archetyp-Pfad lesen (wie setResonanzFaktoren schreibt)
+            const currentResonanz = TiageState.getResonanzFaktoren(person) || {};
             const newResonanz = {};
 
             ['R1', 'R2', 'R3', 'R4'].forEach(key => {
