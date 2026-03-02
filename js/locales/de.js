@@ -876,6 +876,38 @@ var TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // BINDUNGSSTIL-MODAL ("Wie tickst Du?")
+    // ═══════════════════════════════════════════════════════════════════════
+
+    bindungsstil: {
+        title: 'Wie tickst Du?',
+        chooseTitle: 'Wähle was zu dir passt',
+        subtitle: 'Nach Bowlby/Ainsworth - wird als Tie-Breaker bei gleichem Score verwendet',
+        primaryLabel: 'So tickst du meistens (70%)',
+        secondaryLabel: 'So tickst du im Stress (30%)',
+        sicher: 'Sicher',
+        aengstlich: 'Ängstlich',
+        vermeidend: 'Vermeidend',
+        desorganisiert: 'Desorganisiert',
+        sicherDesc: 'Nähe & Autonomie ok',
+        aengstlichDesc: 'Angst vor Verlust',
+        vermeidendDesc: 'Hält Distanz',
+        desorganisiertDesc: 'Will Nähe & flüchtet',
+        sicherTooltip: 'Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen',
+        aengstlichTooltip: 'Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden',
+        vermeidendTooltip: 'Du hältst meistens emotionale Distanz und brauchst viel Freiraum',
+        desorganisiertTooltip: 'Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen',
+        sicherStressTooltip: 'Im Stress bleibst du gelassen und kannst dich gut regulieren',
+        aengstlichStressTooltip: 'Im Stress wirst du klammernder und brauchst mehr Bestätigung',
+        vermeidendStressTooltip: 'Im Stress ziehst du dich zurück und machst dicht',
+        desorganisiertStressTooltip: 'Im Stress reagierst du unberechenbar - mal nah, mal distanziert',
+        rtiLabel: 'RTI-Säulen Prioritäten',
+        rtiLegend: '0 = Egal · 1 = Normal · 2 = Wichtig',
+        rtiClickHint: 'Klicken für Definition',
+        startSearch: 'Suche starten'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GESCHLECHTS-INFO-MODAL
     // ═══════════════════════════════════════════════════════════════════════
 

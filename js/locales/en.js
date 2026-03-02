@@ -875,6 +875,38 @@ var TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // ATTACHMENT STYLE MODAL ("How Do You Tick?")
+    // ═══════════════════════════════════════════════════════════════════════
+
+    bindungsstil: {
+        title: 'How Do You Tick?',
+        chooseTitle: 'Choose what fits you',
+        subtitle: 'Based on Bowlby/Ainsworth - used as tie-breaker for equal scores',
+        primaryLabel: 'How you usually tick (70%)',
+        secondaryLabel: 'How you tick under stress (30%)',
+        sicher: 'Secure',
+        aengstlich: 'Anxious',
+        vermeidend: 'Avoidant',
+        desorganisiert: 'Disorganized',
+        sicherDesc: 'Closeness & autonomy ok',
+        aengstlichDesc: 'Fear of loss',
+        vermeidendDesc: 'Keeps distance',
+        desorganisiertDesc: 'Wants closeness & flees',
+        sicherTooltip: 'You usually feel comfortable with closeness and can set boundaries well',
+        aengstlichTooltip: 'You usually seek a lot of closeness and often fear being abandoned',
+        vermeidendTooltip: 'You usually keep emotional distance and need a lot of space',
+        desorganisiertTooltip: 'You usually oscillate between longing for closeness and the urge to flee',
+        sicherStressTooltip: 'Under stress you stay calm and can self-regulate well',
+        aengstlichStressTooltip: 'Under stress you become more clingy and need more reassurance',
+        vermeidendStressTooltip: 'Under stress you withdraw and shut down',
+        desorganisiertStressTooltip: 'Under stress you react unpredictably - sometimes close, sometimes distant',
+        rtiLabel: 'RTI Pillar Priorities',
+        rtiLegend: '0 = Ignore · 1 = Normal · 2 = Important',
+        rtiClickHint: 'Click for definition',
+        startSearch: 'Start search'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GENDER INFO MODAL
     // ═══════════════════════════════════════════════════════════════════════
 

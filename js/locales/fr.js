@@ -633,6 +633,38 @@ var TiageLocale_FR = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // MODAL STYLE D'ATTACHEMENT (\u00ab Comment fonctionnes-tu ? \u00bb)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    bindungsstil: {
+        title: 'Comment fonctionnes-tu\u00a0?',
+        chooseTitle: 'Choisis ce qui te correspond',
+        subtitle: 'Selon Bowlby/Ainsworth - utilis\u00e9 comme crit\u00e8re de d\u00e9partage en cas de score \u00e9gal',
+        primaryLabel: 'Comment tu fonctionnes habituellement (70%)',
+        secondaryLabel: 'Comment tu fonctionnes sous stress (30%)',
+        sicher: 'S\u00e9curis\u00e9',
+        aengstlich: 'Anxieux',
+        vermeidend: '\u00c9vitant',
+        desorganisiert: 'D\u00e9sorganis\u00e9',
+        sicherDesc: 'Proximit\u00e9 et autonomie ok',
+        aengstlichDesc: 'Peur de la perte',
+        vermeidendDesc: 'Garde ses distances',
+        desorganisiertDesc: 'Veut la proximit\u00e9 et fuit',
+        sicherTooltip: 'Tu te sens g\u00e9n\u00e9ralement \u00e0 l\'aise avec la proximit\u00e9 et tu sais poser des limites',
+        aengstlichTooltip: 'Tu cherches g\u00e9n\u00e9ralement beaucoup de proximit\u00e9 et tu as souvent peur d\'\u00eatre abandonn\u00e9',
+        vermeidendTooltip: 'Tu maintiens g\u00e9n\u00e9ralement une distance \u00e9motionnelle et tu as besoin de beaucoup d\'espace',
+        desorganisiertTooltip: 'Tu oscilles g\u00e9n\u00e9ralement entre d\u00e9sir de proximit\u00e9 et envie de fuir',
+        sicherStressTooltip: 'Sous stress, tu restes calme et tu sais bien t\'autor\u00e9guler',
+        aengstlichStressTooltip: 'Sous stress, tu deviens plus d\u00e9pendant et tu cherches plus de r\u00e9assurance',
+        vermeidendStressTooltip: 'Sous stress, tu te retires et tu te fermes',
+        desorganisiertStressTooltip: 'Sous stress, tu r\u00e9agis de mani\u00e8re impr\u00e9visible - parfois proche, parfois distant',
+        rtiLabel: 'Priorit\u00e9s des piliers RTI',
+        rtiLegend: '0 = Ignorer \u00b7 1 = Normal \u00b7 2 = Important',
+        rtiClickHint: 'Cliquer pour la d\u00e9finition',
+        startSearch: 'Lancer la recherche'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // MODAL INFO GENRE
     // ═══════════════════════════════════════════════════════════════════════
 

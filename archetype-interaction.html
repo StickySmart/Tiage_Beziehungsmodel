@@ -622,62 +622,62 @@
     <div class="modal-overlay" id="slotMachineModal" data-action="close-slot-machine-modal" style="z-index: 2700;">
         <div class="modal slot-machine-modal" data-stop-propagation style="max-width: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
             <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <span class="modal-title">Wie tickst Du?</span>
+                <span class="modal-title" data-i18n="bindungsstil.title">Wie tickst Du?</span>
                 <button class="modal-close" data-action="close-slot-machine-modal">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <!-- Phase 1: Bindungsmuster Auswahl -->
                 <div id="slotPhase1" class="slot-phase">
-                    <h3 style="color: #e94560; margin-bottom: 15px; text-align: center;">Wähle was zu dir passt</h3>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-bottom: 20px;">
+                    <h3 style="color: #e94560; margin-bottom: 15px; text-align: center;" data-i18n="bindungsstil.chooseTitle">Wähle was zu dir passt</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; margin-bottom: 20px;" data-i18n="bindungsstil.subtitle">
                         Nach Bowlby/Ainsworth - wird als Tie-Breaker bei gleichem Score verwendet
                     </p>
 
                     <div class="bindung-selection">
                         <div class="bindung-group">
-                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du meistens (70%)</label>
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="bindungsstil.primaryLabel">So tickst du meistens (70%)</label>
                             <div class="bindung-options" id="bindungPrimaryOptions">
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="sicher" title="Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="sicher" title="Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen" data-i18n-title="bindungsstil.sicherTooltip">
                                     <span class="bindung-icon">🛡️</span>
-                                    <span class="bindung-name">Sicher</span>
-                                    <span class="bindung-desc">Nähe & Autonomie ok</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.sicher">Sicher</span>
+                                    <span class="bindung-desc" data-i18n="bindungsstil.sicherDesc">Nähe & Autonomie ok</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="aengstlich" title="Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="aengstlich" title="Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden" data-i18n-title="bindungsstil.aengstlichTooltip">
                                     <span class="bindung-icon">💔</span>
-                                    <span class="bindung-name">Ängstlich</span>
-                                    <span class="bindung-desc">Angst vor Verlust</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.aengstlich">Ängstlich</span>
+                                    <span class="bindung-desc" data-i18n="bindungsstil.aengstlichDesc">Angst vor Verlust</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="vermeidend" title="Du hältst meistens emotionale Distanz und brauchst viel Freiraum">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="vermeidend" title="Du hältst meistens emotionale Distanz und brauchst viel Freiraum" data-i18n-title="bindungsstil.vermeidendTooltip">
                                     <span class="bindung-icon">🚪</span>
-                                    <span class="bindung-name">Vermeidend</span>
-                                    <span class="bindung-desc">Hält Distanz</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.vermeidend">Vermeidend</span>
+                                    <span class="bindung-desc" data-i18n="bindungsstil.vermeidendDesc">Hält Distanz</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="desorganisiert" title="Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="primary" data-value="desorganisiert" title="Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen" data-i18n-title="bindungsstil.desorganisiertTooltip">
                                     <span class="bindung-icon">🌀</span>
-                                    <span class="bindung-name">Desorganisiert</span>
-                                    <span class="bindung-desc">Will Nähe & flüchtet</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.desorganisiert">Desorganisiert</span>
+                                    <span class="bindung-desc" data-i18n="bindungsstil.desorganisiertDesc">Will Nähe & flüchtet</span>
                                 </button>
                             </div>
                         </div>
 
                         <div class="bindung-group" style="margin-top: 20px;">
-                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;">So tickst du im Stress (30%)</label>
+                            <label style="color: #4A90E2; font-weight: bold; margin-bottom: 8px; display: block;" data-i18n="bindungsstil.secondaryLabel">So tickst du im Stress (30%)</label>
                             <div class="bindung-options" id="bindungSecondaryOptions">
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="sicher" title="Im Stress bleibst du gelassen und kannst dich gut regulieren">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="sicher" title="Im Stress bleibst du gelassen und kannst dich gut regulieren" data-i18n-title="bindungsstil.sicherStressTooltip">
                                     <span class="bindung-icon">🛡️</span>
-                                    <span class="bindung-name">Sicher</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.sicher">Sicher</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="aengstlich" title="Im Stress wirst du klammernder und brauchst mehr Bestätigung">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="aengstlich" title="Im Stress wirst du klammernder und brauchst mehr Bestätigung" data-i18n-title="bindungsstil.aengstlichStressTooltip">
                                     <span class="bindung-icon">💔</span>
-                                    <span class="bindung-name">Ängstlich</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.aengstlich">Ängstlich</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="vermeidend" title="Im Stress ziehst du dich zurück und machst dicht">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="vermeidend" title="Im Stress ziehst du dich zurück und machst dicht" data-i18n-title="bindungsstil.vermeidendStressTooltip">
                                     <span class="bindung-icon">🚪</span>
-                                    <span class="bindung-name">Vermeidend</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.vermeidend">Vermeidend</span>
                                 </button>
-                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="desorganisiert" title="Im Stress reagierst du unberechenbar - mal nah, mal distanziert">
+                                <button class="bindung-btn" data-action="select-bindung" data-slot="secondary" data-value="desorganisiert" title="Im Stress reagierst du unberechenbar - mal nah, mal distanziert" data-i18n-title="bindungsstil.desorganisiertStressTooltip">
                                     <span class="bindung-icon">🌀</span>
-                                    <span class="bindung-name">Desorganisiert</span>
+                                    <span class="bindung-name" data-i18n="bindungsstil.desorganisiert">Desorganisiert</span>
                                 </button>
                             </div>
                         </div>
@@ -686,16 +686,16 @@
                     <!-- RTI-Säulen Prioritäten (5 Säulen nach Petzold) -->
                     <div class="reibung-questions" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
                         <label style="color: #F4A261; font-weight: bold; margin-bottom: 8px; display: block;">
-                            ⚡ RTI-Säulen Prioritäten
+                            ⚡ <span data-i18n="bindungsstil.rtiLabel">RTI-Säulen Prioritäten</span>
                         </label>
-                        <p style="color: rgba(255,255,255,0.5); font-size: 10px; margin-bottom: 12px;">
+                        <p style="color: rgba(255,255,255,0.5); font-size: 10px; margin-bottom: 12px;" data-i18n="bindungsstil.rtiLegend">
                             0 = Egal · 1 = Normal · 2 = Wichtig
                         </p>
 
                         <!-- S1: Leiblichkeit (Körperliche Anziehung) -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #E84393; font-size: 11px; min-width: 24px; font-weight: 600;">S1</span>
-                            <span data-action="open-rti-pillar-modal" data-pillar="S1" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🫀 Leiblichkeit</span>
+                            <span data-action="open-rti-pillar-modal" data-pillar="S1" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition" data-i18n-title="bindungsstil.rtiClickHint">🫀 <span data-i18n="rti.pillars.S1">Leiblichkeit</span></span>
                             <div class="rti-toggle-group" id="rtiToggleS1" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S1" data-value="0" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S1" data-value="1" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -706,7 +706,7 @@
                         <!-- S2: Soziales Netzwerk (Beziehungsform) -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #3B82F6; font-size: 11px; min-width: 24px; font-weight: 600;">S2</span>
-                            <span data-action="open-rti-pillar-modal" data-pillar="S2" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">👥 Soziales Netzwerk</span>
+                            <span data-action="open-rti-pillar-modal" data-pillar="S2" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition" data-i18n-title="bindungsstil.rtiClickHint">👥 <span data-i18n="rti.pillars.S2">Soziales Netzwerk</span></span>
                             <div class="rti-toggle-group" id="rtiToggleS2" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S2" data-value="0" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S2" data-value="1" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -717,7 +717,7 @@
                         <!-- S3: Autonomie & Leistung -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #22c55e; font-size: 11px; min-width: 24px; font-weight: 600;">S3</span>
-                            <span data-action="open-rti-pillar-modal" data-pillar="S3" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🎯 Autonomie</span>
+                            <span data-action="open-rti-pillar-modal" data-pillar="S3" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition" data-i18n-title="bindungsstil.rtiClickHint">🎯 <span data-i18n="rti.pillars.S3">Autonomie</span></span>
                             <div class="rti-toggle-group" id="rtiToggleS3" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S3" data-value="0" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S3" data-value="1" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -728,7 +728,7 @@
                         <!-- S4: Sicherheit & Stabilität -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <span style="color: #f59e0b; font-size: 11px; min-width: 24px; font-weight: 600;">S4</span>
-                            <span data-action="open-rti-pillar-modal" data-pillar="S4" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">🛡️ Sicherheit</span>
+                            <span data-action="open-rti-pillar-modal" data-pillar="S4" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition" data-i18n-title="bindungsstil.rtiClickHint">🛡️ <span data-i18n="rti.pillars.S4">Sicherheit</span></span>
                             <div class="rti-toggle-group" id="rtiToggleS4" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S4" data-value="0" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S4" data-value="1" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -739,7 +739,7 @@
                         <!-- S5: Werte & Sinn -->
                         <div class="rti-toggle-row" style="display: flex; align-items: center; gap: 10px;">
                             <span style="color: #8b5cf6; font-size: 11px; min-width: 24px; font-weight: 600;">S5</span>
-                            <span data-action="open-rti-pillar-modal" data-pillar="S5" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition">💫 Werte & Sinn</span>
+                            <span data-action="open-rti-pillar-modal" data-pillar="S5" style="color: var(--text-secondary); font-size: 11px; flex: 1; cursor: pointer;" title="Klicken für Definition" data-i18n-title="bindungsstil.rtiClickHint">💫 <span data-i18n="rti.pillars.S5">Werte & Sinn</span></span>
                             <div class="rti-toggle-group" id="rtiToggleS5" style="display: flex; gap: 2px;">
                                 <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S5" data-value="0" style="font-size: 11px; padding: 4px 8px;">0</button>
                                 <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S5" data-value="1" style="font-size: 11px; padding: 4px 8px;">1</button>
@@ -749,7 +749,7 @@
                     </div>
 
                     <button class="slot-start-btn" id="slotStartBtn" data-action="start-slot-machine" disabled style="margin-top: 25px;">
-                        🎰 Suche starten
+                        🎰 <span data-i18n="bindungsstil.startSearch">Suche starten</span>
                     </button>
                 </div>
 

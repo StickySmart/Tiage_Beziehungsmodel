@@ -875,6 +875,38 @@ var TiageLocale_IT = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // MODALE STILE DI ATTACCAMENTO ("Come funzioni?")
+    // ═══════════════════════════════════════════════════════════════════════
+
+    bindungsstil: {
+        title: 'Come funzioni?',
+        chooseTitle: 'Scegli ciò che ti rappresenta',
+        subtitle: 'Secondo Bowlby/Ainsworth - usato come spareggio in caso di punteggio uguale',
+        primaryLabel: 'Come funzioni di solito (70%)',
+        secondaryLabel: 'Come funzioni sotto stress (30%)',
+        sicher: 'Sicuro',
+        aengstlich: 'Ansioso',
+        vermeidend: 'Evitante',
+        desorganisiert: 'Disorganizzato',
+        sicherDesc: 'Vicinanza e autonomia ok',
+        aengstlichDesc: 'Paura della perdita',
+        vermeidendDesc: 'Mantiene distanza',
+        desorganisiertDesc: 'Vuole vicinanza e fugge',
+        sicherTooltip: 'Di solito ti senti a tuo agio con la vicinanza e sai porre limiti',
+        aengstlichTooltip: 'Di solito cerchi molta vicinanza e hai spesso paura di essere abbandonato',
+        vermeidendTooltip: 'Di solito mantieni distanza emotiva e hai bisogno di molto spazio',
+        desorganisiertTooltip: 'Di solito oscilli tra desiderio di vicinanza e impulso a fuggire',
+        sicherStressTooltip: 'Sotto stress rimani calmo e sai autoregolarti bene',
+        aengstlichStressTooltip: 'Sotto stress diventi più bisognoso e cerchi più rassicurazioni',
+        vermeidendStressTooltip: 'Sotto stress ti ritiri e ti chiudi',
+        desorganisiertStressTooltip: 'Sotto stress reagisci in modo imprevedibile - a volte vicino, a volte distante',
+        rtiLabel: 'Priorità pilastri RTI',
+        rtiLegend: '0 = Ignora · 1 = Normale · 2 = Importante',
+        rtiClickHint: 'Clicca per la definizione',
+        startSearch: 'Avvia ricerca'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // MODALE INFO GENERE
     // ═══════════════════════════════════════════════════════════════════════
 

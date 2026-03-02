@@ -213,18 +213,21 @@ var TiageSlotMachine = (function() {
 
         if (!tooltip) return;
 
+        // i18n helper
+        const t = (key, fallback) => (typeof TiageI18n !== 'undefined' && typeof TiageI18n.t === 'function') ? TiageI18n.t(key, fallback) : fallback;
+
         const tooltipData = {
             primary: {
-                sicher: { icon: '🛡️', title: 'Sicher', text: 'Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen' },
-                aengstlich: { icon: '💔', title: 'Ängstlich', text: 'Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden' },
-                vermeidend: { icon: '🚪', title: 'Vermeidend', text: 'Du hältst meistens emotionale Distanz und brauchst viel Freiraum' },
-                desorganisiert: { icon: '🌀', title: 'Desorganisiert', text: 'Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen' }
+                sicher: { icon: '🛡️', title: t('bindungsstil.sicher', 'Sicher'), text: t('bindungsstil.sicherTooltip', 'Du fühlst dich meistens wohl mit Nähe und kannst gut Grenzen setzen') },
+                aengstlich: { icon: '💔', title: t('bindungsstil.aengstlich', 'Ängstlich'), text: t('bindungsstil.aengstlichTooltip', 'Du suchst meistens viel Nähe und hast oft Angst, verlassen zu werden') },
+                vermeidend: { icon: '🚪', title: t('bindungsstil.vermeidend', 'Vermeidend'), text: t('bindungsstil.vermeidendTooltip', 'Du hältst meistens emotionale Distanz und brauchst viel Freiraum') },
+                desorganisiert: { icon: '🌀', title: t('bindungsstil.desorganisiert', 'Desorganisiert'), text: t('bindungsstil.desorganisiertTooltip', 'Du schwankst meistens zwischen Sehnsucht nach Nähe und dem Drang zu fliehen') }
             },
             secondary: {
-                sicher: { icon: '🛡️', title: 'Sicher (Stress)', text: 'Im Stress bleibst du gelassen und kannst dich gut regulieren' },
-                aengstlich: { icon: '💔', title: 'Ängstlich (Stress)', text: 'Im Stress wirst du klammernder und brauchst mehr Bestätigung' },
-                vermeidend: { icon: '🚪', title: 'Vermeidend (Stress)', text: 'Im Stress ziehst du dich zurück und machst dicht' },
-                desorganisiert: { icon: '🌀', title: 'Desorganisiert (Stress)', text: 'Im Stress reagierst du unberechenbar - mal nah, mal distanziert' }
+                sicher: { icon: '🛡️', title: t('bindungsstil.sicher', 'Sicher') + ' (Stress)', text: t('bindungsstil.sicherStressTooltip', 'Im Stress bleibst du gelassen und kannst dich gut regulieren') },
+                aengstlich: { icon: '💔', title: t('bindungsstil.aengstlich', 'Ängstlich') + ' (Stress)', text: t('bindungsstil.aengstlichStressTooltip', 'Im Stress wirst du klammernder und brauchst mehr Bestätigung') },
+                vermeidend: { icon: '🚪', title: t('bindungsstil.vermeidend', 'Vermeidend') + ' (Stress)', text: t('bindungsstil.vermeidendStressTooltip', 'Im Stress ziehst du dich zurück und machst dicht') },
+                desorganisiert: { icon: '🌀', title: t('bindungsstil.desorganisiert', 'Desorganisiert') + ' (Stress)', text: t('bindungsstil.desorganisiertStressTooltip', 'Im Stress reagierst du unberechenbar - mal nah, mal distanziert') }
             }
         };
 
