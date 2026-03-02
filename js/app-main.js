@@ -704,10 +704,10 @@
             updateCategoryBars(interaction.scores || {});
 
             const proList = document.getElementById('partnerPro');
-            proList.innerHTML = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
+            proList.innerHTML = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || `<li>${TiageI18n.t('ui.noData', 'Keine Daten')}</li>`;
 
             const contraList = document.getElementById('partnerContra');
-            contraList.innerHTML = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+            contraList.innerHTML = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || `<li>${TiageI18n.t('ui.noData', 'Keine Daten')}</li>`;
         }
 
         // Radar chart: delegated to js/ui/chartUtils.js (TiageChartUtils module)
@@ -2230,8 +2230,8 @@
                 }
             });
 
-            const proItems = combinedPro.map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
-            const contraItems = combinedContra.map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+            const proItems = combinedPro.map(p => `<li>${p}</li>`).join('') || `<li>${TiageI18n.t('ui.noData', 'Keine Daten')}</li>`;
+            const contraItems = combinedContra.map(c => `<li>${c}</li>`).join('') || `<li>${TiageI18n.t('ui.noData', 'Keine Daten')}</li>`;
 
             // Perspective indicator
             const perspectiveLabel = currentMatchModalView === 'pathos'
@@ -2266,7 +2266,7 @@
                     <div class="match-modal-info">
                         <h3 style="color: ${partnerArch.color}">
                             ${partnerArch.name}
-                            <span class="type-info-icon" onclick="openDefinitionModal('${partnerArch.id}')" title="Definition anzeigen">ℹ</span>
+                            <span class="type-info-icon" onclick="openDefinitionModal('${partnerArch.id}')" title="${TiageI18n.t('ui.showDefinition', 'Definition anzeigen')}">ℹ</span>
                         </h3>
                         <p>${partnerArch.shortDescription || ''}</p>
                     </div>
@@ -2529,7 +2529,7 @@
                 if (nameInput) nameInput.value = '';
                 if (textInput) {
                     textInput.value = '';
-                    textInput.placeholder = `Antwort auf ${parentName}...`;
+                    textInput.placeholder = TiageI18n.t('ui.replyTo', 'Antwort auf {name}...').replace('{name}', parentName);
                 }
             }
         }
@@ -3135,7 +3135,8 @@
                 grid.innerHTML = sOptions.map(opt => {
                     const isSelected = opt.value === currentSecondary;
                     const selectedClass = isSelected ? ' secondary-selected' : '';
-                    return `<button type="button" class="geschlecht-btn geschlecht-s-btn${selectedClass}" data-value="${opt.value}" onclick="handleGeschlechtSClick('${person}', '${opt.value}', this)">${opt.label}${isSelected ? '<span class="geschlecht-indicator indicator-secondary" title="Identität (Sekundär)">S</span>' : ''}</button>`;
+                    const secTitle = TiageI18n.t('ui.identitySecondary', 'Identität (Sekundär)');
+                    return `<button type="button" class="geschlecht-btn geschlecht-s-btn${selectedClass}" data-value="${opt.value}" onclick="handleGeschlechtSClick('${person}', '${opt.value}', this)">${opt.label}${isSelected ? `<span class="geschlecht-indicator indicator-secondary" title="${secTitle}">S</span>` : ''}</button>`;
                 }).join('');
             }
 
@@ -3785,7 +3786,7 @@
             const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</p>`;
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
@@ -3833,7 +3834,7 @@
             }
 
             if (!matching) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</p>`;
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
@@ -3841,9 +3842,9 @@
 
             // Titel setzen
             if (type === 'gemeinsam') {
-                title.textContent = 'Gemeinsame Bedürfnisse';
+                title.textContent = TiageI18n.t('ui.sharedNeeds', 'Gemeinsame Bedürfnisse');
             } else {
-                title.textContent = 'Unterschiedliche Prioritäten';
+                title.textContent = TiageI18n.t('synthese.challengingDiffs', 'Unterschiedliche Prioritäten');
             }
 
             // Daten für Anzeige vorbereiten
@@ -3852,7 +3853,7 @@
                 : (matching.topKonflikte || []);
 
             if (items.length === 0) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Einträge vorhanden.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noEntriesFound', 'Keine Einträge vorhanden.')}</p>`;
             } else {
                 let html = '';
 
@@ -3871,9 +3872,9 @@
                         ">
                             <span style="font-size: 14px;">ℹ️</span>
                             <div style="flex: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">${TiageI18n.t('ui.archetypeBaseValues', 'Archetyp-Basis-Werte')}</div>
                                 <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
-                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                    ${TiageI18n.t('ui.archetypeBaseValuesDesc', 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.')}
                                 </div>
                             </div>
                         </div>
@@ -4021,7 +4022,7 @@
             // Need aus Katalog holen
             const need = katalog.beduerfnisse[bId];
             if (!need) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Bedürfnis ' + needId + ' nicht gefunden.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.needNotFound', 'Bedürfnis {id} nicht gefunden.').replace('{id}', needId)}</p>`;
                 modal.classList.add('active');
                 return;
             }
@@ -4530,7 +4531,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</p>`;
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
@@ -4573,14 +4574,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             if (!matching) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                body.innerHTML = `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</p>`;
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
             }
 
             // Titel setzen
-            title.textContent = 'Bedürfnis-Vergleich';
+            title.textContent = TiageI18n.t('ui.needsComparison', 'Bedürfnis-Vergleich');
 
             // Vollständige Listen aus details holen
             const type = needsFullModalCurrentTab;
@@ -4753,9 +4754,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     ">
                         <span style="font-size: 14px;">ℹ️</span>
                         <div style="flex: 1;">
-                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">${TiageI18n.t('synthese.archetypeBaseValues', 'Archetyp-Basis-Werte')}</div>
                             <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
-                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                ${TiageI18n.t('synthese.archetypeBaseValuesDesc', 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.')}
                             </div>
                         </div>
                     </div>
@@ -4808,7 +4809,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // Update display
             if (missing.length > 0) {
-                infoElement.textContent = 'Fehlende Auswahl - ' + missing.join(' | ');
+                infoElement.textContent = TiageI18n.t('ui.missingSelection', 'Fehlende Auswahl') + ' - ' + missing.join(' | ');
                 infoElement.classList.add('visible');
             } else {
                 infoElement.textContent = '';
@@ -5463,15 +5464,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (hasLogosWarning) {
                     document.getElementById('logosWarning').classList.add('active');
                     const warningTitle = logosCheck.score < 30
-                        ? 'Verstandsebene-Warnung: Fundamentale philosophische Unterschiede'
-                        : 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze';
+                        ? TiageI18n.t('warnings.fundamentalDifferences', 'Verstandsebene-Warnung: Fundamentale philosophische Unterschiede')
+                        : TiageI18n.t('warnings.differentApproaches', 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze');
                     document.getElementById('logosWarningTitle').textContent = warningTitle;
                     document.getElementById('logosWarningSubtitle').textContent =
-                        `Beziehungsphilosophie: ${logosCheck.score}`;
+                        TiageI18n.t('warnings.relationshipPhilosophy', 'Beziehungsphilosophie: {score}').replace('{score}', logosCheck.score);
                     document.getElementById('logosWarningScore').textContent = `${logosCheck.score}`;
                     document.getElementById('logosWarningText').textContent = logosCheck.score < 30
-                        ? 'Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.'
-                        : 'Ihr habt verschiedene Vorstellungen von Beziehungen. Offene Kommunikation ist wichtig.';
+                        ? TiageI18n.t('warnings.warningText', 'Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.')
+                        : TiageI18n.t('warnings.infoText', 'Ihr habt verschiedene Vorstellungen von Beziehungen. Offene Kommunikation ist wichtig.');
                 }
 
                 if (hasPathosUncertain) {
@@ -5520,27 +5521,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         function showPathosLogosInfo() {
             // Show info modal about Pathos vs Logos
-            const title = 'Pathos vs. Logos';
+            const title = TiageI18n.t('warnings.pathosLogosTitle', 'Pathos vs. Logos');
             const content = `
                 <div style="line-height: 1.6;">
-                    <h4 style="color: var(--primary); margin-bottom: 10px;">GEFÜHLSEBENE (Emotion/Körper)</h4>
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">${TiageI18n.t('warnings.emotionLevel', 'GEFÜHLSEBENE (Emotion/Körper)')}</h4>
                     <ul style="margin-bottom: 15px; padding-left: 20px;">
-                        <li>Körperliche und emotionale Anziehung</li>
-                        <li>Sexuelle Orientierung</li>
-                        <li>Nicht durch Lernen oder Kommunikation veränderbar</li>
-                        <li><strong>Ohne Gefühlsebene:</strong> Keine romantische Beziehung möglich</li>
+                        <li>${TiageI18n.t('warnings.emotionDesc', 'Körperliche und emotionale Anziehung')}</li>
+                        <li>${TiageI18n.t('warnings.emotionDimension', 'Sexuelle Orientierung')}</li>
+                        <li>${TiageI18n.t('warnings.emotionImmutable', 'Nicht durch Lernen oder Kommunikation veränderbar')}</li>
+                        <li>${TiageI18n.t('warnings.emotionConsequence', 'Ohne Gefühlsebene: Keine romantische Beziehung möglich')}</li>
                     </ul>
 
-                    <h4 style="color: var(--warning); margin-bottom: 10px;">VERSTANDSEBENE (Philosophie/Überzeugungen)</h4>
+                    <h4 style="color: var(--warning); margin-bottom: 10px;">${TiageI18n.t('warnings.reasonLevel', 'VERSTANDSEBENE (Philosophie/Überzeugungen)')}</h4>
                     <ul style="margin-bottom: 15px; padding-left: 20px;">
-                        <li>Beziehungsphilosophie und rationale Überzeugungen</li>
-                        <li>Überzeugungen und Werte</li>
-                        <li>Kann durch Kommunikation und Lernen verändert werden</li>
-                        <li><strong>Ohne Verstandsebene:</strong> Schwierige, aber mögliche Beziehung</li>
+                        <li>${TiageI18n.t('warnings.reasonDesc', 'Beziehungsphilosophie und rationale Überzeugungen')}</li>
+                        <li>${TiageI18n.t('warnings.reasonDimension', 'Überzeugungen und Werte')}</li>
+                        <li>${TiageI18n.t('warnings.reasonMutable', 'Kann durch Kommunikation und Lernen verändert werden')}</li>
+                        <li>${TiageI18n.t('warnings.reasonConsequence', 'Ohne Verstandsebene: Schwierige, aber mögliche Beziehung')}</li>
                     </ul>
 
                     <p style="font-style: italic; color: var(--text-muted);">
-                        "Die Gefühlsebene ist das Fundament - ohne körperliche Anziehung kann keine romantische Beziehung entstehen. Die Verstandsebene ist das Dach - es schützt und strukturiert, kann aber umgebaut werden."
+                        ${TiageI18n.t('warnings.pathosLogosQuote', '"Die Gefühlsebene ist das Fundament - ohne körperliche Anziehung kann keine romantische Beziehung entstehen. Die Verstandsebene ist das Dach - es schützt und strukturiert, kann aber umgebaut werden."')}
                     </p>
                 </div>
             `;
@@ -8357,20 +8358,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 warningsContainer.innerHTML = warningHTML;
             } else if (pathosCheck.result === 'unmöglich' || pathosCheck.result === 'hohe_reibung') {
                 // v4.0: 'hohe_reibung' ersetzt 'unmöglich' - gleiche Behandlung in der UI
-                warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 Keine emotionale/körperliche Anziehung: ${pathosCheck.reason || 'Inkompatible Orientierungen'}</div>`;
+                warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 ${TiageI18n.t('warnings.noAttraction', 'Keine emotionale/körperliche Anziehung:')} ${pathosCheck.reason || TiageI18n.t('warnings.noAttractionDesc', 'Orientierungs-Inkompatibilität verhindert romantische Beziehung')}</div>`;
             } else if (pathosCheck.result === 'unsicher') {
-                warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ Unsichere körperliche Anziehung (Exploration-Phase)</div>`;
+                warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ ${TiageI18n.t('warnings.uncertainAttraction', 'Unsichere körperliche Anziehung (Exploration-Phase)')}</div>`;
             }
 
             // Warnung bei unsicherem Dominanz-Status (prüfe ob mindestens eine Auswahl "interessiert" ist)
             const hasInteressiert1 = person1.dominanz && Object.values(person1.dominanz).some(s => s === 'interessiert');
             const hasInteressiert2 = person2.dominanz && Object.values(person2.dominanz).some(s => s === 'interessiert');
             if (hasInteressiert1 || hasInteressiert2) {
-                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Unsichere Dominanz-Dynamik (Exploration-Phase – reduzierte Konfidenz)</div>`;
+                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ ${TiageI18n.t('warnings.uncertainDominance', 'Unsichere Dominanz-Dynamik (Exploration-Phase – reduzierte Konfidenz)')}</div>`;
             }
 
             if (logosCheck.score < 50) {
-                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Verstandsebene-Warnung: Philosophie nur ${logosCheck.score}</div>`;
+                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ ${TiageI18n.t('warnings.philosophyWarning', 'Verstandsebene-Warnung: Philosophie nur {score}').replace('{score}', logosCheck.score)}</div>`;
             }
 
             // If dimensions incomplete, show empty state and return
@@ -8389,7 +8390,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (desktopScoreCircle) desktopScoreCircle.style.background = 'transparent';
 
                 const categoryBars = document.getElementById('expandCategoryBars');
-                if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
+                if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">' + TiageI18n.t('toast.selectAllDimensions', 'Bitte alle Dimensionen auswählen.') + '</p>';
 
                 const expandRadar = document.getElementById('expandRadarChart');
                 if (expandRadar) expandRadar.innerHTML = '';
@@ -10109,7 +10110,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     mobileScoreNote.style.display = 'block';
                 } else if (qualityResult.noRealNeeds) {
                     // Warnung: Keine echten Needs verfügbar - R1-R3 sind neutral (1.0)
-                    mobileScoreNote.innerHTML = '<div class="needs-warning-message" style="color: #f39c12; background: rgba(243, 156, 18, 0.15); border: 1px solid #f39c12; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: center;"><strong style="display: block; margin-bottom: 4px;">⚠️ Keine Bedürfnis-Daten</strong><span style="font-size: 0.9em; opacity: 0.95;">R1-R3 Resonanz-Faktoren können nicht berechnet werden. Bitte Bedürfnis-Werte im Profil anpassen.</span></div>';
+                    mobileScoreNote.innerHTML = '<div class="needs-warning-message" style="color: #f39c12; background: rgba(243, 156, 18, 0.15); border: 1px solid #f39c12; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: center;"><strong style="display: block; margin-bottom: 4px;">⚠️ ' + TiageI18n.t('warnings.noNeedsData', 'Keine Bedürfnis-Daten') + '</strong><span style="font-size: 0.9em; opacity: 0.95;">' + TiageI18n.t('warnings.noNeedsDataDesc', 'R1-R3 Resonanz-Faktoren können nicht berechnet werden. Bitte Bedürfnis-Werte im Profil anpassen.') + '</span></div>';
                     mobileScoreNote.style.display = 'block';
                 } else {
                     // Bestimme Resonanzlevel basierend auf Score
@@ -10179,18 +10180,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (proList && interaction.pros?.length) {
                     proList.innerHTML = interaction.pros.map(p => `<li>${p}</li>`).join('');
                 } else if (proList) {
-                    proList.innerHTML = '<li>Keine spezifischen Vorteile bekannt</li>';
+                    proList.innerHTML = `<li>${TiageI18n.t('ui.noSpecificAdvantages', 'Keine spezifischen Vorteile bekannt')}</li>`;
                 }
 
                 // Contra list
                 if (contraList && interaction.contras?.length) {
                     contraList.innerHTML = interaction.contras.map(c => `<li>${c}</li>`).join('');
                 } else if (contraList) {
-                    contraList.innerHTML = '<li>Keine spezifischen Herausforderungen bekannt</li>';
+                    contraList.innerHTML = `<li>${TiageI18n.t('ui.noSpecificChallenges', 'Keine spezifischen Herausforderungen bekannt')}</li>`;
                 }
             } else {
-                if (proList) proList.innerHTML = '<li>Keine Daten verfügbar</li>';
-                if (contraList) contraList.innerHTML = '<li>Keine Daten verfügbar</li>';
+                if (proList) proList.innerHTML = `<li>${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</li>`;
+                if (contraList) contraList.innerHTML = `<li>${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</li>`;
             }
         }
 
@@ -10895,7 +10896,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     TiageState.saveToStorage();
 
                     // Kurze Info einblenden
-                    showLockSavedToast(locked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
+                    showLockSavedToast(locked ? TiageI18n.t('toast.locked', 'Wert gesperrt & gespeichert') : TiageI18n.t('toast.unlocked', 'Wert entsperrt'));
                 });
 
 var flatNeedSaveDebounceTimer = null;
@@ -10945,7 +10946,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 // Initialize MomentsToggle in header
                 if (typeof MomentsToggle !== 'undefined' && typeof MomentsToggle.init === 'function') {
                     MomentsToggle.init();
-                    // console.log('[TIAGE DEBUG] MomentsToggle initialized');
+                }
+
+                // Initialize Workflow Guide (floating panel)
+                if (typeof WorkflowGuide !== 'undefined' && typeof WorkflowGuide.init === 'function') {
+                    WorkflowGuide.init();
                 }
 
                 // Initialize AGOD weight inputs (loads from TiageState, defaults to all=1 if no data)
@@ -11229,10 +11234,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             });
 
             if (type === 'score') {
-                titleEl.textContent = "Ti-Age Synthese";
+                titleEl.textContent = TiageI18n.t('synthese.title', 'Ti-Age Synthese');
                 iconEl.textContent = '📊';
-                categoryEl.textContent = 'Kompatibilitäts-Analyse';
-                subtitleEl.textContent = 'Score – Pro & Contra';
+                categoryEl.textContent = TiageI18n.t('synthese.compatibilityAnalysis', 'Kompatibilitäts-Analyse');
+                subtitleEl.textContent = TiageI18n.t('synthese.scoreProContra', 'Score – Pro & Contra');
                 typeIndicatorEl.style.display = 'flex';
                 contentEl.innerHTML = getScoreContent();
                 if (scoreBtn) {
@@ -11242,10 +11247,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 }
                 if (modalScoreBtn) modalScoreBtn.classList.add('active');
             } else if (type === 'oshozen') {
-                titleEl.textContent = "Ti-Age Synthese";
+                titleEl.textContent = TiageI18n.t('synthese.title', 'Ti-Age Synthese');
                 iconEl.textContent = '🔥';
-                categoryEl.textContent = 'Osho Zen Tarot';
-                subtitleEl.textContent = 'Gemeinsame Bedürfnisse';
+                categoryEl.textContent = TiageI18n.t('synthese.oshoZenTarot', 'Osho Zen Tarot');
+                subtitleEl.textContent = TiageI18n.t('synthese.sharedNeeds', 'Gemeinsame Bedürfnisse');
                 typeIndicatorEl.style.display = 'flex';
                 contentEl.innerHTML = getOshoZenContent();
                 if (oshoZenBtn) {
@@ -11259,10 +11264,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 showTiageSyntheseContent('oshozen');
                 return;
             } else if (type === 'needs') {
-                titleEl.textContent = "Ti-Age Synthese";
+                titleEl.textContent = TiageI18n.t('synthese.title', 'Ti-Age Synthese');
                 iconEl.textContent = '💚';
-                categoryEl.textContent = 'GFK-Bedürfnisanalyse';
-                subtitleEl.textContent = 'Bedürfnis-Match mit Differenz';
+                categoryEl.textContent = TiageI18n.t('synthese.gfkAnalysis', 'GFK-Bedürfnisanalyse');
+                subtitleEl.textContent = TiageI18n.t('synthese.needsMatchWithDiff', 'Bedürfnis-Match mit Differenz');
                 typeIndicatorEl.style.display = 'flex';
                 contentEl.innerHTML = getNeedsContent();
                 if (needsBtn) {
@@ -11272,10 +11277,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 }
                 if (modalNeedsBtn) modalNeedsBtn.classList.add('active');
             } else if (type === 'rti') {
-                titleEl.textContent = "Ti-Age Synthese";
+                titleEl.textContent = TiageI18n.t('synthese.title', 'Ti-Age Synthese');
                 iconEl.textContent = '🏛️';
-                categoryEl.textContent = '5 Säulen der Identität';
-                subtitleEl.textContent = 'RTI nach Petzold – Reibungs-Analyse';
+                categoryEl.textContent = TiageI18n.t('synthese.fivePillars', '5 Säulen der Identität');
+                subtitleEl.textContent = TiageI18n.t('synthese.rtiSubtitle', 'RTI nach Petzold – Reibungs-Analyse');
                 typeIndicatorEl.style.display = 'flex';
                 contentEl.innerHTML = getRTIContent();
                 if (rtiBtn) {
@@ -11357,22 +11362,22 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     <div style="margin-top: 12px; padding: 12px; background: rgba(100,100,110,0.15); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
                         <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
                             <div>
-                                <span style="font-weight: 600; color: var(--text-secondary);">Basis-Archetyp:</span>
+                                <span style="font-weight: 600; color: var(--text-secondary);">${TiageI18n.t('synthese.baseArchetype', 'Basis-Archetyp:')}</span>
                                 <span style="margin-left: 6px; font-weight: 700; color: var(--primary);">${baseArchetypeScore}%</span>
                                 <span style="margin-left: 4px; font-size: 11px;">(${scoreLabel})</span>
                             </div>
                             <div style="color: var(--border);">→</div>
                             <div>
-                                <span style="font-weight: 600; color: var(--text-secondary);">Gesamt-Score:</span>
+                                <span style="font-weight: 600; color: var(--text-secondary);">${TiageI18n.t('synthese.totalScore', 'Gesamt-Score:')}</span>
                                 <span style="margin-left: 6px; font-weight: 700; color: ${scoreColor};">${scoreValue}%</span>
                                 <span style="margin-left: 4px; font-size: 11px;">(mit Modifikatoren)</span>
                             </div>
                         </div>
                         <div style="margin-top: 8px; font-size: 11px; text-align: center; opacity: 0.8;">
                             ${scoreValue > baseArchetypeScore ?
-                                `Modifikatoren erhöhen den Score um +${scoreValue - baseArchetypeScore} Prozentpunkte` :
+                                TiageI18n.t('synthese.modifiersIncrease', 'Modifikatoren erhöhen den Score um +{diff} Prozentpunkte').replace('{diff}', scoreValue - baseArchetypeScore) :
                                 scoreValue < baseArchetypeScore ?
-                                `Modifikatoren senken den Score um ${baseArchetypeScore - scoreValue} Prozentpunkte` :
+                                TiageI18n.t('synthese.modifiersDecrease', 'Modifikatoren senken den Score um {diff} Prozentpunkte').replace('{diff}', baseArchetypeScore - scoreValue) :
                                 TiageI18n.t('quality.noModifiers', 'Keine Modifikatoren aktiv')}
                         </div>
                     </div>
@@ -11380,11 +11385,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 <!-- Pro/Contra Lists -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                     <div>
-                        <h4 style="color: var(--success); margin-bottom: 12px; font-size: 14px;">✓ Was funktioniert</h4>
+                        <h4 style="color: var(--success); margin-bottom: 12px; font-size: 14px;">${TiageI18n.t('synthese.whatWorks', '✓ Was funktioniert')}</h4>
                         <ul style="list-style: none; padding: 0; margin: 0;">${proListHtml}</ul>
                     </div>
                     <div>
-                        <h4 style="color: var(--danger); margin-bottom: 12px; font-size: 14px;">✗ Herausforderungen</h4>
+                        <h4 style="color: var(--danger); margin-bottom: 12px; font-size: 14px;">${TiageI18n.t('synthese.challengesLabel', '✗ Herausforderungen')}</h4>
                         <ul style="list-style: none; padding: 0; margin: 0;">${contraListHtml}</ul>
                     </div>
                 </div>
@@ -11496,13 +11501,13 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // b.id ist jetzt #B-ID (z.B. "#B34"), b.key ist numerisch (34), b.label ist Display-Name
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                return `<span style="${greenTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
+                return `<span style="${greenTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="${TiageI18n.t('ui.clickForDefinition', 'Klicken für Definition')}" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             // Unterschiedliche Bedürfnisse Tags (max 5) - clickable
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                return `<span style="${redTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
+                return `<span style="${redTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="${TiageI18n.t('ui.clickForDefinition', 'Klicken für Definition')}" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             return `
@@ -11520,9 +11525,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         ">
                             <span style="font-size: 14px;">ℹ️</span>
                             <div style="flex: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">${TiageI18n.t('ui.archetypeBaseValues', 'Archetyp-Basis-Werte')}</div>
                                 <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
-                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                    ${TiageI18n.t('ui.archetypeBaseValuesDesc', 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.')}
                                 </div>
                             </div>
                         </div>
@@ -11648,9 +11653,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         ">
                             <span style="font-size: 14px;">ℹ️</span>
                             <div style="flex: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">${TiageI18n.t('ui.archetypeBaseValues', 'Archetyp-Basis-Werte')}</div>
                                 <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
-                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                    ${TiageI18n.t('ui.archetypeBaseValuesDesc', 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.')}
                                 </div>
                             </div>
                         </div>
@@ -12404,7 +12409,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
                 // Status-Symbol: 🔒 nur wenn locked
                 const statusSymbol = r.locked
-                    ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert - bleibt bei Archetyp-Wechsel erhalten">🔒</span>'
+                    ? `<span style="color: #f97316; margin-left: 2px;" title="${TiageI18n.t('ui.fixedOnSwitch', 'Fixiert - bleibt bei Archetyp-Wechsel erhalten')}">🔒</span>`
                     : '';
 
                 // Row background (empty for now, can be used for highlighting)
@@ -12587,11 +12592,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="background: rgba(0,0,0,0.3);">
-                                        <th style="padding: 10px; text-align: left; font-size: 11px; color: var(--text-muted); font-weight: 500;">Bedürfnis</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 11px; color: var(--text-muted); font-weight: 500;">${TiageI18n.t('synthese.need', 'Bedürfnis')}</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">Typ.</th>
-                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #a78bfa; font-weight: 500;" title="Dominanz">D</th>
-                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #60a5fa; font-weight: 500;" title="Geschlecht">G</th>
-                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #f472b6; font-weight: 500;" title="Orientierung">O</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #a78bfa; font-weight: 500;" title="${TiageI18n.t('dimensionLabels.dominanz', 'Dominanz')}">D</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #60a5fa; font-weight: 500;" title="${TiageI18n.t('dimensionLabels.geschlecht', 'Geschlecht')}">G</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #f472b6; font-weight: 500;" title="${TiageI18n.t('dimensionLabels.orientierung', 'Orientierung')}">O</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Wert' : 'P.Wert'}</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
                                     </tr>
@@ -12863,8 +12868,8 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
                 const lockIcon = showLock
                     ? (isLocked
-                        ? `<span style="margin-left: 4px; opacity: 0.9;" title="Manuell gesperrt (ändern in Attribute)">🔒</span>`
-                        : `<span style="margin-left: 4px; opacity: 0.3;" title="Automatisch berechnet">🔓</span>`)
+                        ? `<span style="margin-left: 4px; opacity: 0.9;" title="${TiageI18n.t('ui.manuallyLocked', 'Manuell gesperrt (ändern in Attribute)')}">🔒</span>`
+                        : `<span style="margin-left: 4px; opacity: 0.3;" title="${TiageI18n.t('ui.autoCalculated', 'Automatisch berechnet')}">🔓</span>`)
                     : '';
 
                 return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>${lockIcon}`;
@@ -12884,7 +12889,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 // Klickbare Zellen für Herleitung
                 const clickStyleIch = 'cursor: pointer; transition: background 0.15s;';
                 const clickStylePartner = 'cursor: pointer; transition: background 0.15s;';
-                const hoverTitle = 'Klick für Herleitung';
+                const hoverTitle = TiageI18n.t('ui.clickForDerivation', 'Klick für Herleitung');
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -12926,8 +12931,8 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 24px;">🎛️</span>
                             <div>
-                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren (R1-R4)</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Kohärenz zwischen Bedürfnissen und Archetyp</p>
+                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">${TiageI18n.t('modals.resonanzHeading', 'Resonanzfaktoren (R1-R4)')}</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${TiageI18n.t('modals.resonanzCoherence', 'Kohärenz zwischen Bedürfnissen und Archetyp')}</p>
                             </div>
                         </div>
                         <button onclick="closeResonanzfaktorenModal()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-secondary); transition: all 0.2s;">×</button>
@@ -12937,22 +12942,22 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 16px 24px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <!-- ICH Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', -1)" title="${TiageI18n.t('modals.prevArchetype', 'Vorheriger Archetyp')}" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
                             <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ICH</div>
                                 <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${ichName}</div>
                             </div>
-                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', 1)" title="${TiageI18n.t('modals.nextArchetype', 'Nächster Archetyp')}" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
                         <div style="font-size: 18px; color: var(--text-muted);">×</div>
                         <!-- PARTNER Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', -1)" title="${TiageI18n.t('modals.prevArchetype', 'Vorheriger Archetyp')}" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
                             <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
                                 <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${partnerName}</div>
                             </div>
-                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', 1)" title="${TiageI18n.t('modals.nextArchetype', 'Nächster Archetyp')}" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
                     </div>
 
@@ -12962,10 +12967,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="border-bottom: 2px solid rgba(139,92,246,0.3); background: rgba(0,0,0,0.2);">
-                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">R-Faktor → AGOD</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">PAARUNG</th>
+                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">${TiageI18n.t('modals.rFactorAgod', 'R-Faktor → AGOD')}</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">${TiageI18n.t('ui.ich', 'ICH')}</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">${TiageI18n.t('ui.partner', 'PARTNER')}</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">${TiageI18n.t('modals.paarung', 'PAARUNG')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -12977,29 +12982,29 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                         <!-- Erläuterung -->
                         <div style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 11px; color: var(--text-muted); line-height: 1.6;">
                             <div style="margin-bottom: 8px;">
-                                <strong style="color: var(--text-secondary);">Was zeigt diese Tabelle?</strong>
+                                <strong style="color: var(--text-secondary);">${TiageI18n.t('modals.tableWhat', 'Was zeigt diese Tabelle?')}</strong>
                             </div>
                             <div>
-                                <strong style="color: #22c55e;">ICH</strong> / <strong style="color: #ef4444;">PARTNER</strong>:
-                                <em>Kohärenz</em> zwischen Bedürfnissen und gewähltem Archetyp.<br>
-                                <strong style="color: #8B5CF6;">PAARUNG</strong>:
-                                R_ICH × R_PARTNER (Produkt der individuellen Kohärenz-Werte).<br>
-                                Der PAARUNGS-Wert multipliziert den jeweiligen AGOD-Score:
+                                <strong style="color: #22c55e;">${TiageI18n.t('ui.ich', 'ICH')}</strong> / <strong style="color: #ef4444;">${TiageI18n.t('ui.partner', 'PARTNER')}</strong>:
+                                ${TiageI18n.t('modals.tableIchPartner', 'Kohärenz zwischen Bedürfnissen und gewähltem Archetyp.')}<br>
+                                <strong style="color: #8B5CF6;">${TiageI18n.t('modals.paarung', 'PAARUNG')}</strong>:
+                                ${TiageI18n.t('modals.tablePaarung', 'R_ICH × R_PARTNER (Produkt der individuellen Kohärenz-Werte).')}<br>
+                                ${TiageI18n.t('modals.tablePaarungMultiplies', 'Der PAARUNGS-Wert multipliziert den jeweiligen AGOD-Score:')}
                             </div>
                             <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
                                 Q = (O × wO × R₁) + (A × wA × R₂) + (D × wD × R₃) + (G × wG × R₄)
                             </div>
                             <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
-                                <span style="color: #22c55e;">● &gt;1.0 = verstärkt Score</span>
-                                <span style="color: #eab308;">● =1.0 = neutral</span>
-                                <span style="color: #ef4444;">● &lt;1.0 = schwächt Score</span>
+                                <span style="color: #22c55e;">${TiageI18n.t('modals.legendBoost', '● >1.0 = verstärkt Score')}</span>
+                                <span style="color: #eab308;">${TiageI18n.t('modals.legendNeutral', '● =1.0 = neutral')}</span>
+                                <span style="color: #ef4444;">${TiageI18n.t('modals.legendWeaken', '● <1.0 = schwächt Score')}</span>
                             </div>
                             <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <span>🔒 = manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)</span><br>
-                                <span>🔓 = automatisch (wird bei Archetyp-Wechsel neu berechnet)</span>
+                                <span>${TiageI18n.t('modals.lockManual', '🔒 = manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)')}</span><br>
+                                <span>${TiageI18n.t('modals.lockAuto', '🔓 = automatisch (wird bei Archetyp-Wechsel neu berechnet)')}</span>
                             </div>
                             <div style="margin-top: 10px; padding: 8px; background: rgba(139,92,246,0.15); border-radius: 6px; border: 1px solid rgba(139,92,246,0.3);">
-                                <span style="color: var(--text-secondary);">💡 <strong>Tipp:</strong> Klicke auf einen ICH- oder PARTNER-Wert, um die vollständige Herleitung zu sehen!</span>
+                                <span style="color: var(--text-secondary);">${TiageI18n.t('modals.tipClickValue', '💡 Tipp: Klicke auf einen ICH- oder PARTNER-Wert, um die vollständige Herleitung zu sehen!')}</span>
                             </div>
                         </div>
                     </div>
@@ -13169,9 +13174,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             if (typeof OshoZenTextGenerator === 'undefined') {
                 return `
                     <div style="padding: 20px; text-align: center; color: var(--text-muted);">
-                        <p>Osho Zen Modul wird geladen...</p>
+                        <p>${TiageI18n.t('synthese.oshoLoading', 'Osho Zen Modul wird geladen...')}</p>
                         <p style="font-size: 0.85rem; margin-top: 10px;">
-                            Bitte stelle sicher, dass <code>oshoZenTextGenerator.js</code> geladen ist.
+                            ${TiageI18n.t('synthese.oshoEnsureLoaded', 'Bitte stelle sicher, dass oshoZenTextGenerator.js geladen ist.')}
                         </p>
                     </div>
                 `;
@@ -13192,7 +13197,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 return `
                     <div style="padding: 20px; text-align: center; color: var(--text-muted);">
                         <div style="font-size: 2rem; margin-bottom: 10px;">🔥</div>
-                        <p>Lade Osho Zen Texte...</p>
+                        <p>${TiageI18n.t('synthese.oshoLoadingTexts', 'Lade Osho Zen Texte...')}</p>
                     </div>
                 `;
             }
@@ -13374,11 +13379,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp) {
-                return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                return '<p style="color: var(--text-muted);">' + TiageI18n.t('synthese.noDataAvailable', 'Keine Daten verfügbar.') + '</p>';
             }
 
-            const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
-            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+            const ichName = archetypeDescriptions[currentArchetype]?.name || TiageI18n.t('ui.ich', 'ICH');
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || TiageI18n.t('ui.partner', 'Partner');
 
             // NEU: Direkt aus TiageState.flatNeeds lesen (inkl. lockedNeeds)
             let matching = null;
@@ -13415,7 +13420,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             }
 
             if (!matching) {
-                return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                return `<p style="color: var(--text-muted);">${TiageI18n.t('ui.noDataAvailable', 'Keine Daten verfügbar.')}</p>`;
             }
 
             // Lock-Icons helper für Anzeige
@@ -13441,8 +13446,8 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 48px; font-weight: 700; color: ${scoreColor};">${scoreValue}%</div>
                     <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
-                        Bedürfnis-Übereinstimmung
-                        <span onclick="openNeedsScoreExplanation();" style="cursor: help; margin-left: 6px; opacity: 0.8; font-size: 14px;" title="Wie wird dieser Wert berechnet?">ℹ️</span>
+                        ${TiageI18n.t('synthese.needsMatchLabel', 'Bedürfnis-Übereinstimmung:')}
+                        <span onclick="openNeedsScoreExplanation();" style="cursor: help; margin-left: 6px; opacity: 0.8; font-size: 14px;" title="ℹ️">ℹ️</span>
                     </div>
                 </div>
             `;
@@ -13462,9 +13467,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     ">
                         <span style="font-size: 14px;">ℹ️</span>
                         <div style="flex: 1;">
-                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">${TiageI18n.t('synthese.archetypeBaseValues', 'Archetyp-Basis-Werte')}</div>
                             <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
-                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                ${TiageI18n.t('synthese.archetypeBaseValuesDesc', 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.')}
                             </div>
                         </div>
                     </div>
@@ -13555,7 +13560,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 html += `
                     <div style="margin-bottom: 20px;">
                         <div style="font-size: 11px; color: #22c55e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                            <span style="font-size: 14px;">✓</span> Gemeinsame & Kompatible Bedürfnisse
+                            <span style="font-size: 14px;">✓</span> ${TiageI18n.t('synthese.sharedCompatible', '✓ Gemeinsame & Kompatible Bedürfnisse').replace('✓ ', '')}
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
                 `;
@@ -13592,7 +13597,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
+                                    ${ichLocked ? `<span style="font-size: 10px; color: #eab308;" title="${TiageI18n.t('ui.locked', 'Verschlossen')}">🔒</span>` : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -13602,7 +13607,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
+                                    ${partnerLocked ? `<span style="font-size: 10px; color: #eab308;" title="${TiageI18n.t('ui.locked', 'Verschlossen')}">🔒</span>` : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
@@ -13616,7 +13621,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 html += `
                         </div>
                         <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
-                            ${gemeinsam.length} gemeinsame & kompatible Bedürfnisse
+                            ${TiageI18n.t('synthese.sharedCount', '{count} gemeinsame & kompatible Bedürfnisse').replace('{count}', gemeinsam.length)}
                         </div>
                     </div>
                 `;
@@ -13627,7 +13632,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 html += `
                     <div style="margin-bottom: 10px;">
                         <div style="font-size: 11px; color: #ef4444; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                            <span style="font-size: 14px;">✗</span> Herausfordernde Unterschiede
+                            <span style="font-size: 14px;">✗</span> ${TiageI18n.t('synthese.challengingDiffs', '✗ Herausfordernde Unterschiede').replace('✗ ', '')}
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
                 `;
@@ -13664,7 +13669,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
+                                    ${ichLocked ? `<span style="font-size: 10px; color: #eab308;" title="${TiageI18n.t('ui.locked', 'Verschlossen')}">🔒</span>` : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -13674,7 +13679,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
+                                    ${partnerLocked ? `<span style="font-size: 10px; color: #eab308;" title="${TiageI18n.t('ui.locked', 'Verschlossen')}">🔒</span>` : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
@@ -13688,7 +13693,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 html += `
                         </div>
                         <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
-                            ${konflikt.length} unterschiedliche Prioritäten
+                            ${TiageI18n.t('synthese.diffCount', '{count} unterschiedliche Prioritäten').replace('{count}', konflikt.length)}
                         </div>
                     </div>
                 `;
@@ -13708,7 +13713,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
             // Prüfe ob TiageTaxonomie und TiageBeduerfnisse verfügbar
             if (typeof TiageTaxonomie === 'undefined' || typeof TiageBeduerfnisse === 'undefined') {
-                return '<p style="color: var(--text-muted);">RTI-Berechnung nicht verfügbar (Module fehlen).</p>';
+                return '<p style="color: var(--text-muted);">' + TiageI18n.t('synthese.rtiNotAvailable', 'RTI-Berechnung nicht verfügbar (Module fehlen).') + '</p>';
             }
 
             // FlatNeeds holen
@@ -13716,7 +13721,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             const partnerFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('partner') || {}) : {};
 
             if (Object.keys(ichFlatNeeds).length === 0 || Object.keys(partnerFlatNeeds).length === 0) {
-                return '<p style="color: var(--text-muted);">Keine Bedürfnis-Daten verfügbar.</p>';
+                return '<p style="color: var(--text-muted);">' + TiageI18n.t('toast.noNeedsData', 'Keine Bedürfnis-Daten verfügbar') + '</p>';
             }
 
             // Kategorie → Dimension Mapping aufbauen (aus TiageTaxonomie)
@@ -13790,7 +13795,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 48px; font-weight: 700; color: ${scoreColor};">${avgHarmonie}%</div>
                     <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
-                        Identitäts-Harmonie
+                        ${TiageI18n.t('synthese.identityHarmony', 'Identitäts-Harmonie')}
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
                         ${ichName} ↔ ${partnerName}
@@ -13805,11 +13810,10 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     border-left: 3px solid var(--primary);
                 ">
                     <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                        <strong>RTI nach Petzold</strong> – 5 Säulen der Identität
+                        <strong>RTI nach Petzold</strong> – ${TiageI18n.t('synthese.fivePillars', '5 Säulen der Identität')}
                     </div>
                     <div style="font-size: 10px; color: var(--text-muted); line-height: 1.5;">
-                        Jede Säule repräsentiert einen fundamentalen Aspekt menschlicher Identität.
-                        Reibung entsteht, wenn Bedürfnisse in einer Säule unterschiedlich ausgeprägt sind.
+                        ${TiageI18n.t('synthese.rtiExplanation', 'Jede Säule repräsentiert einen fundamentalen Aspekt menschlicher Identität. Reibung entsteht, wenn Bedürfnisse in einer Säule unterschiedlich ausgeprägt sind.')}
                     </div>
                 </div>
 
@@ -13818,11 +13822,11 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
 
             // Säulen-Icons und Beschreibungen
             const saeulenMeta = {
-                S1: { icon: '🫀', kurz: 'Körper, Gesundheit, Sexualität' },
-                S2: { icon: '👥', kurz: 'Beziehungsform, Freunde, Familie' },
-                S3: { icon: '🎯', kurz: 'Selbstverwirklichung, Kreativität' },
-                S4: { icon: '🏠', kurz: 'Lebensplanung, Alltag, Materielles' },
-                S5: { icon: '💫', kurz: 'Weltanschauung, Spiritualität, Sinn' }
+                S1: { icon: '🫀', kurz: TiageI18n.t('synthese.pillarDesc.S1', 'Körper, Gesundheit, Sexualität') },
+                S2: { icon: '👥', kurz: TiageI18n.t('synthese.pillarDesc.S2', 'Beziehungsform, Freunde, Familie') },
+                S3: { icon: '🎯', kurz: TiageI18n.t('synthese.pillarDesc.S3', 'Selbstbestimmung, Arbeit, Leistung') },
+                S4: { icon: '🏠', kurz: TiageI18n.t('synthese.pillarDesc.S4', 'Stabilität, Finanzen, Wohnen') },
+                S5: { icon: '💫', kurz: TiageI18n.t('synthese.pillarDesc.S5', 'Spiritualität, Ethik, Sinn') }
             };
 
             // PerspektivenHinweise für S1 und S2 (aus beduerfnis-katalog.json)
@@ -13937,9 +13941,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 // Level-Badge
                 let levelBadge = '';
                 if (saeule.level === 'hoch') {
-                    levelBadge = '<span style="font-size: 9px; background: rgba(239,68,68,0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Hohe Reibung</span>';
+                    levelBadge = `<span style="font-size: 9px; background: rgba(239,68,68,0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">${TiageI18n.t('synthese.highFriction', 'Hohe Reibung')}</span>`;
                 } else if (saeule.level === 'mittel') {
-                    levelBadge = '<span style="font-size: 9px; background: rgba(234,179,8,0.2); color: #eab308; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Mittlere Reibung</span>';
+                    levelBadge = `<span style="font-size: 9px; background: rgba(234,179,8,0.2); color: #eab308; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">${TiageI18n.t('synthese.mediumFriction', 'Mittlere Reibung')}</span>`;
                 }
 
                 // PerspektivenHinweise für diese Säule holen
@@ -13952,7 +13956,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     hinweiseHtml = `
                         <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
                             <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
-                                Perspektiven-Hinweise:
+                                ${TiageI18n.t('synthese.perspectiveHints', 'Perspektiven-Hinweise:')}
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
                                 ${Object.entries(hinweise).map(([perspKey, texts]) => {
@@ -15594,9 +15598,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             var badge = document.getElementById('profileReviewBadge');
             if (badge) {
                 if (person === 'ich') {
-                    badge.textContent = 'Deine Profileinstellung';
+                    badge.textContent = TiageI18n.t('ui.yourProfileSetting', 'Deine Profileinstellung');
                 } else {
-                    badge.textContent = 'Partner-Profileinstellung';
+                    badge.textContent = TiageI18n.t('ui.partnerProfileSetting', 'Partner-Profileinstellung');
                 }
             }
 
@@ -16336,9 +16340,9 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     }
 
                     if (query && query.trim() !== '' && visibleNeeds < totalNeeds) {
-                        subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + visibleNeeds + ' von ' + totalNeeds + ' Bedürfnissen)';
+                        subtitle.textContent = TiageI18n.t('ui.yourProfile', 'Dein {archetype}-Profil ({visible} von {total} Bedürfnissen)').replace('{archetype}', archetypLabel).replace('{visible}', visibleNeeds).replace('{total}', totalNeeds);
                     } else {
-                        subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + totalNeeds + ' Bedürfnisse)';
+                        subtitle.textContent = TiageI18n.t('ui.yourProfileAll', 'Dein {archetype}-Profil ({total} Bedürfnisse)').replace('{archetype}', archetypLabel).replace('{total}', totalNeeds);
                     }
                 }
             }
@@ -16412,7 +16416,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     archetypLabel = archetypMatch ? archetypMatch[1] : 'Profil';
                 }
 
-                subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + totalNeeds + ' Bedürfnisse)';
+                subtitle.textContent = TiageI18n.t('ui.yourProfileAll', 'Dein {archetype}-Profil ({total} Bedürfnisse)').replace('{archetype}', archetypLabel).replace('{total}', totalNeeds);
             }
         }
         window.resetProfileReviewFilter = resetProfileReviewFilter;
@@ -17091,7 +17095,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 hint.innerHTML = '<span class="search-active-selection">' +
                     '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
                     '<span class="search-active-label">"' + suggestion.label + '"</span>' +
-                    '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Suche entfernen">×</button>' +
+                    '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="' + TiageI18n.t('ui.removeSearch', 'Suche entfernen') + '">×</button>' +
                     '</span>';
                 hint.classList.add('has-active-selection');
                 hint.classList.remove('has-results', 'no-results');
@@ -17112,7 +17116,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 '<span class="search-active-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
                 '<span class="search-active-label">' + iconPrefix + suggestion.label + '</span>' +
                 '<span class="search-active-id">' + suggestion.id + '</span>' +
-                '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Auswahl entfernen">×</button>' +
+                '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="' + TiageI18n.t('ui.removeSelection', 'Auswahl entfernen') + '">×</button>' +
                 '</span>';
             hint.classList.add('has-active-selection');
             hint.classList.remove('has-results', 'no-results');

@@ -48,7 +48,34 @@ var TiageLocale_DE = {
         errorClearing: 'Fehler beim Zurücksetzen: ',
         noNeedsFound: 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*) - sucht in #B, #K, #D, #P',
         needsFound: '{count} Bedürfnisse gefunden',
-        needsFoundInAttributes: '{count} Bedürfnisse in {attrs} Attributen gefunden'
+        needsFoundInAttributes: '{count} Bedürfnisse in {attrs} Attributen gefunden',
+
+        // Fehlende UI-Strings
+        noDataAvailable: 'Keine Daten verfügbar.',
+        noEntriesFound: 'Keine Einträge vorhanden.',
+        needNotFound: 'Bedürfnis {id} nicht gefunden.',
+        noSpecificAdvantages: 'Keine spezifischen Vorteile bekannt',
+        noSpecificChallenges: 'Keine spezifischen Herausforderungen bekannt',
+        sharedNeeds: 'Gemeinsame Bedürfnisse',
+        needsComparison: 'Bedürfnis-Vergleich',
+        showDefinition: 'Definition anzeigen',
+        identitySecondary: 'Identität (Sekundär)',
+        clickForDefinition: 'Klicken für Definition',
+        clickForDerivation: 'Klick für Herleitung',
+        fixedOnSwitch: 'Fixiert - bleibt bei Archetyp-Wechsel erhalten',
+        manuallyLocked: 'Manuell gesperrt (ändern in Attribute)',
+        autoCalculated: 'Automatisch berechnet',
+        locked: 'Verschlossen',
+        removeSearch: 'Suche entfernen',
+        removeSelection: 'Auswahl entfernen',
+        yourProfileSetting: 'Deine Profileinstellung',
+        partnerProfileSetting: 'Partner-Profileinstellung',
+        yourProfile: 'Dein {archetype}-Profil ({visible} von {total} Bedürfnissen)',
+        yourProfileAll: 'Dein {archetype}-Profil ({total} Bedürfnisse)',
+        missingSelection: 'Fehlende Auswahl',
+        replyTo: 'Antwort auf {name}...',
+        archetypeBaseValues: 'Archetyp-Basis-Werte',
+        archetypeBaseValuesDesc: 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -67,6 +94,38 @@ var TiageLocale_DE = {
         reflectionNeeded: 'Bewusste Reflexion erforderlich.',
         reflectionNeededDesc: 'Diese Beziehung zeigt eine Qualität von {score} – bewusste Reflexion und offene Kommunikation sind erforderlich.',
         noModifiers: 'Keine Modifikatoren aktiv'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // WARNUNGEN
+    // ═══════════════════════════════════════════════════════════════════════
+
+    warnings: {
+        noAttraction: 'Keine emotionale/körperliche Anziehung:',
+        noAttractionDesc: 'Orientierungs-Inkompatibilität verhindert romantische Beziehung',
+        uncertainAttraction: 'Unsichere körperliche Anziehung (Exploration-Phase)',
+        uncertainDominance: 'Unsichere Dominanz-Dynamik (Exploration-Phase – reduzierte Konfidenz)',
+        philosophyWarning: 'Verstandsebene-Warnung: Philosophie nur {score}',
+        noNeedsData: 'Keine Bedürfnis-Daten',
+        noNeedsDataDesc: 'R1-R3 Resonanz-Faktoren können nicht berechnet werden. Bitte Bedürfnis-Werte im Profil anpassen.',
+        fundamentalDifferences: 'Verstandsebene-Warnung: Fundamentale philosophische Unterschiede',
+        differentApproaches: 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze',
+        relationshipPhilosophy: 'Beziehungsphilosophie: {score}',
+        warningText: 'Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.',
+        infoText: 'Ihr habt verschiedene Vorstellungen von Beziehungen. Offene Kommunikation ist wichtig.',
+        // Pathos vs. Logos Modal
+        pathosLogosTitle: 'Pathos vs. Logos',
+        emotionLevel: 'GEFÜHLSEBENE (Emotion/Körper)',
+        emotionDesc: 'Körperliche und emotionale Anziehung',
+        emotionDimension: 'Sexuelle Orientierung',
+        emotionImmutable: 'Nicht durch Lernen oder Kommunikation veränderbar',
+        emotionConsequence: 'Ohne Gefühlsebene: Keine romantische Beziehung möglich',
+        reasonLevel: 'VERSTANDSEBENE (Philosophie/Überzeugungen)',
+        reasonDesc: 'Beziehungsphilosophie und rationale Überzeugungen',
+        reasonDimension: 'Überzeugungen und Werte',
+        reasonMutable: 'Kann durch Kommunikation und Lernen verändert werden',
+        reasonConsequence: 'Ohne Verstandsebene: Schwierige, aber mögliche Beziehung',
+        pathosLogosQuote: '"Die Gefühlsebene ist das Fundament - ohne körperliche Anziehung kann keine romantische Beziehung entstehen. Die Verstandsebene ist das Dach - es schützt und strukturiert, kann aber umgebaut werden."'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -1363,6 +1422,319 @@ var TiageLocale_DE = {
             pirsig: 'PIRSIG',
             osho: 'OSHO',
             verstanden: 'Verstanden'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // CENTER-SPALTE (Resonanz, Gewichtung, AGOD, Score)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    center: {
+        resonanzHeading: 'Resonanzfaktoren',
+        gewichtungHeading: 'Gewichtung',
+        gewichtungDesc: '0 = Egal · 1 = Normal · 2 = Wichtig',
+        agodLabels: {
+            A: 'ARCHETYP',
+            G: 'GESCHLECHT',
+            O: 'ORIENTIERUNG',
+            D: 'DOMINANZ'
+        },
+        agodTitles: {
+            A: 'Archetyp - Gewichtung',
+            G: 'Geschlecht - Gewichtung',
+            O: 'Orientierung - Gewichtung',
+            D: 'Dominanz - Gewichtung'
+        },
+        syntheseScoreLabel: 'TI-AGE SYNTHESE SCORE',
+        findMatch: 'FINDE PASSENDEN PARTNER',
+        findMatchTitle: 'Finde den besten Partner - testet alle 864 Kombinationen',
+        pleaseSelect: '– Bitte wählen –',
+        noArchetypeSelected: 'Kein Archetyp gewählt',
+        resetWeights: 'Standard (alle auf 1)',
+        openSynthese: 'Ti-Age Synthese öffnen',
+        rFactorTitles: {
+            R1: 'R1 - Leben (Orientierung)',
+            R2: 'R2 - Philosophie (Archetyp)',
+            R3: 'R3 - Kink (Dominanz)',
+            R4: 'R4 - Identität (Geschlecht)'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HEADER / BESUCHER-LEISTE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    header: {
+        visitorBadge: 'Besucher',
+        privacyNotice: 'Anonym – keine personenbezogenen Daten',
+        privacyTitle: 'Es werden keine personenbezogenen Daten gespeichert',
+        clearBtn: 'Leeren',
+        clearTitle: 'Alle gespeicherten Daten löschen und UI zurücksetzen'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // DIMENSION-LABELS + LEGENDS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    dimensionLabels: {
+        geschlecht: 'GESCHLECHT',
+        orientierung: 'ORIENTIERUNG',
+        dominanz: 'DOMINANZ',
+        gfk: 'GFK-KOMPETENZ',
+        primarySecondaryRules: '(P=Primär, S=Sekundär - Regeln)',
+        primarySecondary: '(P=Primär, S=Sekundär)',
+        gfkAutoDesc: 'Die GFK-Kompetenz wird automatisch basierend auf den gewählten Beziehungsarchetypen berechnet.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // MOBILE NAVIGATION
+    // ═══════════════════════════════════════════════════════════════════════
+
+    mobile: {
+        next: 'Weiter →',
+        nextToPartner: 'Weiter zum Partner →',
+        resetSelection: 'Auswahl zurücksetzen',
+        yourPartner: 'DEIN PARTNER',
+        bestMatchTitle: 'Best Match Finder',
+        bestMatchDesc: 'Finde den besten Partner basierend auf deinem Profil',
+        testsAllCombinations: 'Testet alle 864 Archetyp-Kombinationen',
+        selectManually: 'Partner manuell auswählen →',
+        pageTitlePartner: 'Dein Partner',
+        pageTitleBestMatch: 'Partner finden'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // RTI SÄULEN (Petzold)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    rti: {
+        pillars: {
+            S1: 'Leiblichkeit',
+            S2: 'Soziales Netzwerk',
+            S3: 'Autonomie',
+            S4: 'Sicherheit',
+            S5: 'Werte & Sinn'
+        },
+        clickForDef: 'Klicken für Definition'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // MODALS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    modals: {
+        resonanzTitle: 'Resonanzfaktoren',
+        resonanzHelpTitle: 'Resonanzfaktoren - Berechnung',
+        adjustAttributes: 'ICH-Attribute anpassen',
+        commentTitle: 'Kommentar senden',
+        visitorNr: 'Besucher-Nr',
+        whatDoYouThink: 'Was denkst Du?',
+        commentPlaceholder: 'Schreibe hier deine Gedanken...',
+        maxChars: 'Max. 2000 Zeichen',
+        submit: 'Absenden',
+        factorDetails: 'Faktor-Details',
+        compatibilityAnalysis: 'Kompatibilitäts-Analyse',
+        statisticalMatch: 'Statistische Archetypen-Übereinstimmung',
+        definition: 'Definition',
+        beduerfnisseAnpassen: 'Bedürfnisse anpassen',
+        syntheseTitle: 'Ti-Age Synthese',
+        // Resonanz-Modal
+        resonanzHeading: 'Resonanzfaktoren (R1-R4)',
+        resonanzCoherence: 'Kohärenz zwischen Bedürfnissen und Archetyp',
+        prevArchetype: 'Vorheriger Archetyp',
+        nextArchetype: 'Nächster Archetyp',
+        rFactorAgod: 'R-Faktor → AGOD',
+        paarung: 'PAARUNG',
+        tableWhat: 'Was zeigt diese Tabelle?',
+        tableIchPartner: 'Kohärenz zwischen Bedürfnissen und gewähltem Archetyp.',
+        tablePaarung: 'R_ICH × R_PARTNER (Produkt der individuellen Kohärenz-Werte).',
+        tablePaarungMultiplies: 'Der PAARUNGS-Wert multipliziert den jeweiligen AGOD-Score:',
+        legendBoost: '● >1.0 = verstärkt Score',
+        legendNeutral: '● =1.0 = neutral',
+        legendWeaken: '● <1.0 = schwächt Score',
+        lockManual: '🔒 = manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)',
+        lockAuto: '🔓 = automatisch (wird bei Archetyp-Wechsel neu berechnet)',
+        tipClickValue: '💡 Tipp: Klicke auf einen ICH- oder PARTNER-Wert, um die vollständige Herleitung zu sehen!'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FFH (Fit, Fucked up, Horny)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    ffh: {
+        fit: 'Fit',
+        fitDesc: 'Sport und körperliche Fitness sind dir wichtig.',
+        fuckedup: 'Fucked up',
+        fuckedupDesc: 'Du hast einen unkonventionellen oder intensiven Lebensstil.',
+        horny: 'Horny',
+        hornyDesc: 'Sexualität spielt eine wichtige Rolle in deinem Leben.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TOAST-NACHRICHTEN
+    // ═══════════════════════════════════════════════════════════════════════
+
+    toast: {
+        locked: 'Wert gesperrt & gespeichert',
+        unlocked: 'Wert entsperrt',
+        selectAllDimensions: 'Bitte alle Dimensionen auswählen.',
+        noNeedsData: 'Keine Bedürfnis-Daten verfügbar',
+        saved: 'Gespeichert!'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // NEEDS-EDITOR
+    // ═══════════════════════════════════════════════════════════════════════
+
+    needsEditor: {
+        pageTitle: 'Bedürfnis-Editor',
+        allNeeds: 'Alle Bedürfnisse',
+        analyzing: '219 Bedürfnisse werden analysiert...'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SYNTHESE-MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    synthese: {
+        // Modal-Titel & Tabs
+        title: 'Ti-Age Synthese',
+        compatibilityAnalysis: 'Kompatibilitäts-Analyse',
+        scoreProContra: 'Score – Pro & Contra',
+        oshoZenTarot: 'Osho Zen Tarot',
+        sharedNeeds: 'Gemeinsame Bedürfnisse',
+        gfkAnalysis: 'GFK-Bedürfnisanalyse',
+        needsMatchWithDiff: 'Bedürfnis-Match mit Differenz',
+        fivePillars: '5 Säulen der Identität',
+        rtiSubtitle: 'RTI nach Petzold – Reibungs-Analyse',
+
+        // Score-Inhalte
+        baseArchetype: 'Basis-Archetyp:',
+        totalScore: 'Gesamt-Score:',
+        modifiersIncrease: 'Modifikatoren erhöhen den Score um +{diff} Prozentpunkte',
+        modifiersDecrease: 'Modifikatoren senken den Score um {diff} Prozentpunkte',
+        whatWorks: '✓ Was funktioniert',
+        challengesLabel: '✗ Herausforderungen',
+
+        // Bedürfnis-Inhalte
+        noDataAvailable: 'Keine Daten verfügbar.',
+        archetypeBaseValues: 'Archetyp-Basis-Werte',
+        archetypeBaseValuesDesc: 'Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.',
+        needsMatchLabel: 'Bedürfnis-Übereinstimmung:',
+        sharedCompatible: '✓ Gemeinsame & Kompatible Bedürfnisse',
+        challengingDiffs: '✗ Herausfordernde Unterschiede',
+        sharedCount: '{count} gemeinsame & kompatible Bedürfnisse',
+        diffCount: '{count} unterschiedliche Prioritäten',
+        noNeedsData: 'Keine Bedürfnis-Daten verfügbar.',
+
+        // RTI-Inhalte
+        rtiNotAvailable: 'RTI-Berechnung nicht verfügbar (Module fehlen).',
+        identityHarmony: 'Identitäts-Harmonie',
+        rtiFullTitle: 'RTI nach Petzold – 5 Säulen der Identität',
+        rtiExplanation: 'Jede Säule repräsentiert einen fundamentalen Aspekt menschlicher Identität. Reibung entsteht, wenn Bedürfnisse in einer Säule unterschiedlich ausgeprägt sind.',
+        highFriction: 'Hohe Reibung',
+        mediumFriction: 'Mittlere Reibung',
+        perspectiveHints: 'Perspektiven-Hinweise:',
+        harmony: 'Harmonie',
+        dimensionScores: 'Dimensions-Scores (A-F)',
+
+        // Säulen-Beschreibungen
+        pillarDesc: {
+            S1: 'Körper, Gesundheit, Sexualität',
+            S2: 'Beziehungsform, Freunde, Familie',
+            S3: 'Selbstbestimmung, Arbeit, Leistung',
+            S4: 'Stabilität, Finanzen, Wohnen',
+            S5: 'Spiritualität, Ethik, Sinn'
+        },
+
+        // Resonanz-Modal
+        resonanzCoherence: 'Kohärenz zwischen Bedürfnissen und Archetyp',
+        whatShowsTable: 'Was zeigt diese Tabelle?',
+        tipClickValue: 'Tipp: Klicke auf einen ICH- oder PARTNER-Wert, um die vollständige Herleitung zu sehen!',
+        manuallyLocked: 'Manuell gesperrt (ändern in Attribute)',
+        autoCalculated: 'Automatisch berechnet',
+        multiplied: '→ multipliziert',
+        boostsScore: 'verstärkt Score',
+        neutralLabel: 'neutral',
+        weakensScore: 'schwächt Score',
+        lockedNoChange: 'manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)',
+        resonanzXperspektiven: 'RESONANZFAKTOREN × PERSPEKTIVEN',
+        weakensPercent: '−% schwächt',
+
+        // Faktor-Labels
+        factorLabels: {
+            R1: 'Leben',
+            R2: 'Philosophie',
+            R3: 'Dynamik',
+            R4: 'Identität'
+        },
+        factorDescs: {
+            R1: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
+            R2: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
+            R3: 'Dynamik, Sicherheit',
+            R4: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation'
+        },
+
+        // Perspektiven
+        perspectives: {
+            statistik: 'Statistik',
+            statistikDesc: 'Empirisch nachgewiesene Grundbedürfnisse',
+            konditionierung: 'Konditionierung',
+            konditionierungDesc: 'Natürliche vs. anerzogene Bedürfnisse',
+            qualitaet: 'Qualität',
+            qualitaetDesc: 'Statische vs. dynamische Qualitätsaspekte',
+            machtdynamik: 'Bewusste Machtdynamik und Consent'
+        },
+
+        // Osho Zen
+        oshoLoading: 'Osho Zen Modul wird geladen...',
+        oshoLoadingTexts: 'Lade Osho Zen Texte...',
+        oshoLoadingData: 'Lade Osho Zen Daten...',
+        oshoNoSharedNeeds: 'Keine gemeinsamen Bedürfnisse gefunden.',
+        oshoEnsureProfiles: 'Stellt sicher, dass beide Profile Bedürfnisse ausgefüllt haben.',
+        oshoTopNeeds: '🔥 Eure Top {count} gemeinsamen Bedürfnisse',
+        oshoBasedOn: 'Basierend auf der Übereinstimmung eurer Bedürfnis-Profile',
+        oshoNeedAlt: 'Bedürfnis {label}',
+        oshoFooter: 'Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern.',
+
+        // Dynamik-Sätze
+        dynamikBoth: 'Eure Dynamik lebt von {dynamik} – hier liegt Wachstumspotential in {wachstum}.',
+        dynamikOnly: 'Eure Dynamik entfaltet sich durch {dynamik}.',
+        growthOnly: 'Wachstumspotential zeigt sich in {wachstum}.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // WORKFLOW-GUIDE (Floating Panel)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    workflow: {
+        stepOf: 'Schritt {current} von {total}',
+        minimize: 'Minimieren',
+        maximize: 'Workflow-Guide',
+        step1: {
+            title: 'Wähle deinen Archetyp',
+            desc: 'Dein Beziehungsmodell bestimmt, wie du Liebe und Partnerschaft lebst. Von klassisch-monogam (Duo) bis beziehungsanarchisch (RA) – es gibt kein richtig oder falsch.',
+            philosophy: '„Qualität beginnt mit Selbsterkenntnis. Wer bin ich in der Liebe?" — Pirsig'
+        },
+        step2: {
+            title: 'Definiere deine Dimensionen',
+            desc: 'Geschlecht, sexuelle Orientierung und Dominanz-Präferenz bilden dein Profil. Primär = gelebt, Sekundär = interessiert.',
+            philosophy: '„Du bist nicht der Körper, nicht der Geist. Finde heraus, wer du jenseits aller Labels bist." — Osho'
+        },
+        step3: {
+            title: 'Wähle den Partner-Archetyp',
+            desc: 'Welches Beziehungsmodell lebt dein Partner? Falls unsicher: probiere verschiedene Kombinationen aus.',
+            philosophy: '„Der andere ist kein Objekt, sondern ein Spiegel. Was du suchst, spiegelt was du bist." — Pirsig'
+        },
+        step4: {
+            title: 'Definiere Partner-Dimensionen',
+            desc: 'Trage Geschlecht, Orientierung und Dominanz deines Partners ein. Genauere Angaben = genaueres Ergebnis.',
+            philosophy: '„Wahrnehmen ohne zu urteilen ist die höchste Form der Intelligenz." — Osho'
+        },
+        step5: {
+            title: 'Ergebnis erkunden',
+            desc: 'Klicke auf die vollständige Ti-Age Synthese. Die Resonanzfaktoren zeigen, wo eure Muster harmonieren oder reiben.',
+            philosophy: '„Qualität ist kein Urteil — sie ist die Erfahrung von Übereinstimmung." — Pirsig'
         }
     }
 };

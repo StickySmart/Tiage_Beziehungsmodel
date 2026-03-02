@@ -1,0 +1,239 @@
+/**
+ * WORKFLOW-GUIDE CSS
+ *
+ * Floating Panel unten rechts, Dark-Theme mit Glass-Morphism.
+ * Kontextsensitiver Workflow-Guide mit 5 Schritten.
+ *
+ * Z-Index: 1500 (über Content, unter Modals bei 2000+)
+ *
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FLOATING PANEL
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    max-width: calc(100vw - 40px);
+    z-index: 1500;
+
+    background: rgba(26, 26, 46, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    color: var(--text-primary, #f0f0f0);
+    font-family: inherit;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide-in Animation */
+.workflow-guide--entering {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HEADER (immer sichtbar)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.workflow-guide__header:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.workflow-guide__step-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.workflow-guide__step-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.workflow-guide__step-label {
+    font-size: var(--font-xs, 0.85rem);
+    color: var(--text-secondary, #a0a0b0);
+    white-space: nowrap;
+}
+
+.workflow-guide__step-title-mini {
+    font-size: var(--font-xs, 0.85rem);
+    font-weight: 600;
+    color: var(--primary-light, #A8D5E2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.workflow-guide__toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary, #a0a0b0);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 0.3s ease, color 0.2s;
+    flex-shrink: 0;
+}
+
+.workflow-guide__toggle-btn:hover {
+    color: var(--text-primary, #f0f0f0);
+}
+
+.workflow-guide--minimized .workflow-guide__toggle-btn {
+    transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BODY (ausklappbar)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide__body {
+    max-height: 400px;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                padding 0.35s ease;
+    opacity: 1;
+    padding: 0 16px 14px;
+}
+
+.workflow-guide--minimized .workflow-guide__body {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 16px;
+}
+
+/* Divider */
+.workflow-guide__divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin-bottom: 12px;
+}
+
+/* Step Title (im Body) */
+.workflow-guide__title {
+    font-size: var(--font-sm, 0.95rem);
+    font-weight: 600;
+    color: var(--primary-light, #A8D5E2);
+    margin: 0 0 8px 0;
+}
+
+/* Step Description */
+.workflow-guide__desc {
+    font-size: var(--font-xs, 0.85rem);
+    color: var(--text-secondary, #a0a0b0);
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+/* Philosophy Quote */
+.workflow-guide__philosophy {
+    font-size: var(--font-xs, 0.82rem);
+    color: var(--toggle-text, #e0d0ff);
+    font-style: italic;
+    line-height: 1.45;
+    margin: 0 0 14px 0;
+    padding: 8px 12px;
+    background: rgba(155, 93, 229, 0.08);
+    border-left: 2px solid var(--toggle-glow-secondary, #9b5de5);
+    border-radius: 0 6px 6px 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PROGRESS DOTS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide__dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.workflow-guide__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.workflow-guide__dot--done {
+    background: var(--primary-light, #A8D5E2);
+}
+
+.workflow-guide__dot--active {
+    background: var(--primary, #457B9D);
+    box-shadow: 0 0 6px rgba(69, 123, 157, 0.5);
+    transform: scale(1.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FOOTER (Dots + Minimieren in Body)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE (Mobile)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+    .workflow-guide {
+        bottom: 12px;
+        right: 8px;
+        left: 8px;
+        width: auto;
+        max-width: none;
+        border-radius: 12px;
+    }
+
+    .workflow-guide__header {
+        padding: 10px 14px;
+    }
+
+    .workflow-guide__body {
+        padding: 0 14px 12px;
+    }
+
+    .workflow-guide--minimized .workflow-guide__body {
+        padding: 0 14px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HIDDEN STATE (via MomentsToggle)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide--hidden {
+    display: none;
+}

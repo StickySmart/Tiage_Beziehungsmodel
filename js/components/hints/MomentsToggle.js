@@ -120,7 +120,12 @@ const MomentsToggle = (function() {
             }
         });
 
-        console.log(`[TIAGE] ${hints.length} Momente ${enabled ? 'eingeblendet' : 'ausgeblendet'}`);
+        // Workflow Guide ein-/ausblenden
+        if (typeof WorkflowGuide !== 'undefined' && typeof WorkflowGuide.setVisible === 'function') {
+            WorkflowGuide.setVisible(enabled);
+        }
+
+        console.log(`[TIAGE] Momente ${enabled ? 'eingeblendet' : 'ausgeblendet'}`);
     }
 
     /**

@@ -107,6 +107,12 @@
                 window.updateAnalysisOverview();
             }
 
+            // NEW: Update center column, visitor bar, RTI pillars, selects, mobile
+            updateVisitorBar();
+            updateRtiPillars();
+            updateSelectOptions();
+            updateMatchButtonTitles();
+
             // Trigger custom event for other scripts to react
             document.dispatchEvent(new CustomEvent('languageChanged', {
                 detail: { language: lang, locale: TiageI18n.getLocale() }
@@ -608,6 +614,95 @@
         // Alias for age verification button onclick
         function updateAgeVerificationTexts() {
             updateAgeVerificationModal();
+        }
+
+        /**
+         * Update visitor bar (Besucher badge + privacy notice + clear button title)
+         */
+        function updateVisitorBar() {
+            // Visitor badge: "👤 Besucher #----"
+            const badge = document.querySelector('.visitor-id-badge');
+            if (badge) {
+                const idSpan = badge.querySelector('#headerVisitorId');
+                const idText = idSpan ? idSpan.outerHTML : '';
+                badge.innerHTML = '👤 ' + TiageI18n.t('header.visitorBadge', 'Besucher') + ' ' + idText;
+            }
+
+            // Privacy notice: "🔒 Anonym – keine personenbezogenen Daten"
+            const privacy = document.querySelector('.privacy-notice');
+            if (privacy) {
+                privacy.textContent = '🔒 ' + TiageI18n.t('header.privacyNotice', 'Anonym – keine personenbezogenen Daten');
+                privacy.title = TiageI18n.t('header.privacyTitle', 'Es werden keine personenbezogenen Daten gespeichert');
+            }
+
+            // Clear button title
+            const clearBtn = document.querySelector('.clear-storage-btn');
+            if (clearBtn) {
+                clearBtn.title = TiageI18n.t('header.clearTitle', 'Alle gespeicherten Daten löschen und UI zurücksetzen');
+            }
+        }
+
+        /**
+         * Update RTI pillar labels (emoji + translated name)
+         */
+        function updateRtiPillars() {
+            const emojis = { S1: '🫀', S2: '👥', S3: '🎯', S4: '🛡️', S5: '💫' };
+            const clickTitle = TiageI18n.t('rti.clickForDef', 'Klicken für Definition');
+
+            ['S1', 'S2', 'S3', 'S4', 'S5'].forEach(pillar => {
+                const el = document.querySelector(`[data-action="open-rti-pillar-modal"][data-pillar="${pillar}"]`);
+                if (el) {
+                    el.textContent = emojis[pillar] + ' ' + TiageI18n.t(`rti.pillars.${pillar}`, el.textContent);
+                    el.title = clickTitle;
+                }
+            });
+
+            // RTI heading
+            const rtiLabel = document.querySelector('.reibung-questions > label');
+            if (rtiLabel) {
+                rtiLabel.innerHTML = '⚡ ' + TiageI18n.t('center.gewichtungHeading', 'RTI-Säulen Prioritäten');
+            }
+        }
+
+        /**
+         * Update select option "– Bitte wählen –" texts
+         */
+        function updateSelectOptions() {
+            const pleaseSelect = TiageI18n.t('center.pleaseSelect', '– Bitte wählen –');
+            const noArchetype = TiageI18n.t('center.noArchetypeSelected', 'Kein Archetyp gewählt');
+
+            ['ichSelect', 'partnerSelect', 'mobileIchSelect', 'mobilePartnerSelect'].forEach(id => {
+                const select = document.getElementById(id);
+                if (select) {
+                    const emptyOption = select.querySelector('option[value=""]');
+                    if (emptyOption) {
+                        emptyOption.textContent = pleaseSelect;
+                        emptyOption.title = noArchetype;
+                    }
+                }
+            });
+        }
+
+        /**
+         * Update best-match button titles and lightbulb title
+         */
+        function updateMatchButtonTitles() {
+            const matchTitle = TiageI18n.t('center.findMatchTitle', 'Finde den besten Partner - testet alle 864 Kombinationen');
+            document.querySelectorAll('.best-match-btn').forEach(btn => {
+                btn.title = matchTitle;
+            });
+
+            // Lightbulb title
+            const lightbulb = document.querySelector('.lightbulb-button');
+            if (lightbulb) {
+                lightbulb.title = TiageI18n.t('center.openSynthese', 'Ti-Age Synthese öffnen');
+            }
+
+            // Score circle title
+            const scoreCircle = document.getElementById('mainScoreCircle');
+            if (scoreCircle) {
+                scoreCircle.title = TiageI18n.t('center.syntheseScoreLabel', 'Ti-Age Synthese Score');
+            }
         }
 
         /**

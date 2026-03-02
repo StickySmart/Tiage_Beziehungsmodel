@@ -280,12 +280,16 @@ const OshoZenTextGenerator = (function() {
      * @param {string} name2 - Name von Person 2
      * @returns {string} HTML-String
      */
+    function t(key, fallback) {
+        return (typeof TiageI18n !== 'undefined') ? TiageI18n.t(key, fallback) : fallback;
+    }
+
     function generateHTML(topMatches, name1 = 'Ich', name2 = 'Partner') {
         if (!topMatches || topMatches.length === 0) {
             return `
                 <div class="osho-zen-empty">
-                    <p>Keine gemeinsamen Bedürfnisse gefunden.</p>
-                    <p class="hint">Stellt sicher, dass beide Profile Bedürfnisse ausgefüllt haben.</p>
+                    <p>${t('synthese.oshoNoSharedNeeds', 'Keine gemeinsamen Bedürfnisse gefunden.')}</p>
+                    <p class="hint">${t('synthese.oshoEnsureProfiles', 'Stellt sicher, dass beide Profile Bedürfnisse ausgefüllt haben.')}</p>
                 </div>
             `;
         }
@@ -293,8 +297,8 @@ const OshoZenTextGenerator = (function() {
         let html = `
             <div class="osho-zen-container">
                 <div class="osho-zen-header">
-                    <h3>🔥 Eure Top ${topMatches.length} gemeinsamen Bedürfnisse</h3>
-                    <p class="osho-zen-subtitle">Basierend auf der Übereinstimmung eurer Bedürfnis-Profile</p>
+                    <h3>${t('synthese.oshoTopNeeds', '🔥 Eure Top {count} gemeinsamen Bedürfnisse').replace('{count}', topMatches.length)}</h3>
+                    <p class="osho-zen-subtitle">${t('synthese.oshoBasedOn', 'Basierend auf der Übereinstimmung eurer Bedürfnis-Profile')}</p>
                 </div>
                 <div class="osho-zen-list">
         `;
@@ -336,7 +340,7 @@ const OshoZenTextGenerator = (function() {
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
                         <div class="osho-zen-image-container">
                             <img src="${getNeedImagePath(match.id)}"
-                                 alt="Bedürfnis ${match.label}"
+                                 alt="${t('synthese.oshoNeedAlt', 'Bedürfnis {label}').replace('{label}', match.label)}"
                                  class="osho-zen-need-image"
                                  loading="lazy"
                                  onerror="this.style.display='none'"
@@ -358,8 +362,7 @@ const OshoZenTextGenerator = (function() {
                 </div>
                 <div class="osho-zen-footer">
                     <small>
-                        <em>Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press),
-                        basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern.</em>
+                        <em>${t('synthese.oshoFooter', 'Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern.')}</em>
                     </small>
                 </div>
             </div>
@@ -435,7 +438,7 @@ const OshoZenTextGenerator = (function() {
     function generateSync(config) {
         if (!oshoZenData) {
             console.warn('OshoZenTextGenerator: Daten noch nicht geladen. Verwende generate() stattdessen.');
-            return '<div class="osho-zen-loading">Lade Osho Zen Daten...</div>';
+            return '<div class="osho-zen-loading">' + (typeof TiageI18n !== 'undefined' ? TiageI18n.t('synthese.oshoLoadingData', 'Lade Osho Zen Daten...') : 'Lade Osho Zen Daten...') + '</div>';
         }
 
         const {

@@ -30,6 +30,7 @@
     <script src="js/locales/de.js"></script>
     <script src="js/locales/en.js"></script>
     <script src="js/i18n.js"></script>
+    <script src="js/locales/loader.js"></script>
     <script src="js/version.js"></script>
 
     <!-- TIAGE Micro-Statements Databases -->
@@ -445,7 +446,7 @@
                     <span>&#x2190;</span>
                     <span>Zurück</span>
                 </button>
-                <h1 class="needs-editor-title">Alle Bedürfnisse</h1>
+                <h1 class="needs-editor-title" data-i18n="needsEditor.allNeeds">Alle Bedürfnisse</h1>
                 <span class="needs-editor-badge" id="needsEditorBadge">Profil</span>
             </div>
         </header>
@@ -498,7 +499,7 @@
                 <div class="needs-loading-container" id="needsLoadingIndicator">
                     <div class="needs-loading-spinner"></div>
                     <div class="needs-loading-text">Daten werden geladen und berechnet</div>
-                    <div class="needs-loading-subtext">219 Bedürfnisse werden analysiert...</div>
+                    <div class="needs-loading-subtext" data-i18n="needsEditor.analyzing">219 Bedürfnisse werden analysiert...</div>
                 </div>
             </div>
         </main>
@@ -1139,10 +1140,6 @@
                         if (AttributeSummaryCard.syncLocksFromState) {
                             AttributeSummaryCard.syncLocksFromState();
                         }
-                        // Lade auch gelockte Hauptfragen für diese Person
-                        if (AttributeSummaryCard.loadLockedHauptfragen) {
-                            AttributeSummaryCard.loadLockedHauptfragen(currentPerson);
-                        }
                     }
                     const count = Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length;
                     console.log('[NeedsEditor] Loaded from TiageState:', count, 'needs for', currentPerson);
@@ -1161,9 +1158,6 @@
                         // FIX v1.8.559: Auch bei localStorage-Fallback Locks synchronisieren
                         if (AttributeSummaryCard.syncLocksFromState) {
                             AttributeSummaryCard.syncLocksFromState();
-                        }
-                        if (AttributeSummaryCard.loadLockedHauptfragen) {
-                            AttributeSummaryCard.loadLockedHauptfragen(currentPerson);
                         }
                     }
                     console.log('[NeedsEditor] Loaded from localStorage for', currentPerson);
@@ -1832,7 +1826,7 @@
          * NEU: Durchsucht auch Nuancen und zeigt Hauptfragen wenn Nuancen matchen
          */
         function applyActiveFilters() {
-            var hauptfrageItems = document.querySelectorAll('.hauptfrage-item');
+            var hauptfrageItems = document.querySelectorAll('.flat-need-item.is-hauptfrage');
             var isHauptfragenMode = hauptfrageItems.length > 0;
 
             // Hole Filter von ActiveFilterCard
@@ -1883,8 +1877,8 @@
             if (isHauptfragenMode) {
                 // HAUPTFRAGEN-MODUS: Durchsuche auch Nuancen
                 hauptfrageItems.forEach(function(hauptfrageItem) {
-                    var hauptfrageId = hauptfrageItem.getAttribute('data-hauptfrage-id') || '';
-                    var hauptfrageLabel = hauptfrageItem.querySelector('.hauptfrage-label');
+                    var hauptfrageId = hauptfrageItem.getAttribute('data-need') || '';
+                    var hauptfrageLabel = hauptfrageItem.querySelector('.flat-need-label');
                     var hauptfrageLabelText = hauptfrageLabel ? hauptfrageLabel.textContent : '';
                     var hauptfrageSearchable = getSearchableTextsForNeed(hauptfrageId, hauptfrageLabelText);
 

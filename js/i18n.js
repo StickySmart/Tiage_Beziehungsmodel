@@ -104,7 +104,11 @@ const TiageI18n = (function() {
      */
     function saveToStorage(lang) {
         try {
-            // TiageState als SSOT
+            // Immer in localStorage schreiben (für schnellen Zugriff beim Init,
+            // bevor TiageState geladen ist)
+            localStorage.setItem(STORAGE_KEY, lang);
+
+            // TiageState als SSOT (falls bereits geladen)
             if (typeof TiageState !== 'undefined') {
                 TiageState.set('ui.language', lang);
                 TiageState.saveToStorage();

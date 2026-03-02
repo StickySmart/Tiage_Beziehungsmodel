@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="css/memory-manager.css">
     <!-- Philosophy Hint Styling -->
     <link rel="stylesheet" href="css/philosophy-hint.css">
+    <!-- Workflow Guide Styling -->
+    <link rel="stylesheet" href="css/workflow-guide.css">
     <!-- Resonanz Tree View Styling -->
     <link rel="stylesheet" href="css/resonanz-tree-view.css">
     <!-- Slot Machine Modal Styling -->
@@ -969,7 +971,7 @@
                 </button>
                 <button class="clear-storage-btn" data-action="clear-all-storage" title="Alle gespeicherten Daten löschen und UI zurücksetzen">
                     <span class="clear-icon">🗑️</span>
-                    <span class="clear-text">Leeren</span>
+                    <span class="clear-text" data-i18n="header.clearBtn">Leeren</span>
                 </button>
                 <a href="docs.html?doc=docs/help-guide.md" class="help-btn" title="Hilfe & Dokumentation">?</a>
             </div>
@@ -1100,59 +1102,59 @@
             <div class="center-column">
                 <!-- R-Faktor Display (Resonanz der Paarung) -->
                 <div class="r-factor-heading" style="text-align: center; margin-bottom: 6px;">
-                    <div style="color: #10B981; font-size: 14px; font-weight: 600;">Resonanzfaktoren</div>
+                    <div style="color: #10B981; font-size: 14px; font-weight: 600;" data-i18n="center.resonanzHeading">Resonanzfaktoren</div>
                     <div style="color: var(--text-muted); font-size: 10px;" id="rFactorSubtitle">ICH × PARTNER</div>
                 </div>
                 <div class="r-factor-display" id="rFactorDisplay">
-                    <div class="r-factor-box" id="rFactorR1" title="R1 - Leben (Orientierung)">
+                    <div class="r-factor-box" id="rFactorR1" data-i18n-title="center.rFactorTitles.R1" title="R1 - Leben (Orientierung)">
                         <span class="r-factor-label">R1</span>
                         <span class="r-factor-value" id="rValueR1">-</span>
                     </div>
-                    <div class="r-factor-box" id="rFactorR2" title="R2 - Philosophie (Archetyp)">
+                    <div class="r-factor-box" id="rFactorR2" data-i18n-title="center.rFactorTitles.R2" title="R2 - Philosophie (Archetyp)">
                         <span class="r-factor-label">R2</span>
                         <span class="r-factor-value" id="rValueR2">-</span>
                     </div>
-                    <div class="r-factor-box" id="rFactorR3" title="R3 - Kink (Dominanz)">
+                    <div class="r-factor-box" id="rFactorR3" data-i18n-title="center.rFactorTitles.R3" title="R3 - Kink (Dominanz)">
                         <span class="r-factor-label">R3</span>
                         <span class="r-factor-value" id="rValueR3">-</span>
                     </div>
-                    <div class="r-factor-box" id="rFactorR4" title="R4 - Identität (Geschlecht)">
+                    <div class="r-factor-box" id="rFactorR4" data-i18n-title="center.rFactorTitles.R4" title="R4 - Identität (Geschlecht)">
                         <span class="r-factor-label">R4</span>
                         <span class="r-factor-value" id="rValueR4">-</span>
                     </div>
                 </div>
                 <!-- AGOD Weight Toggles (3-Wege-Schalter) - Sortierung: A, G, O, D -->
                 <div class="agod-heading" style="text-align: center; margin-bottom: 8px;">
-                    <div style="color: #F59E0B; font-size: 14px; font-weight: 600;">Gewichtung</div>
-                    <div style="color: var(--text-muted); font-size: 10px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
+                    <div style="color: #F59E0B; font-size: 14px; font-weight: 600;" data-i18n="center.gewichtungHeading">Gewichtung</div>
+                    <div style="color: var(--text-muted); font-size: 10px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig</div>
                 </div>
                 <div class="agod-weight-toggles" id="agodWeightToggles">
-                    <div class="agod-toggle-row" data-factor="A" title="Archetyp - Gewichtung">
-                        <span class="agod-toggle-label">Archetyp</span>
+                    <div class="agod-toggle-row" data-factor="A" data-i18n-title="center.agodTitles.A" title="Archetyp - Gewichtung">
+                        <span class="agod-toggle-label" data-i18n="center.agodLabels.A">Archetyp</span>
                         <div class="agod-toggle-group" id="agodToggleA">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="A" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="2">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="G" title="Geschlecht - Gewichtung">
-                        <span class="agod-toggle-label">Geschlecht</span>
+                    <div class="agod-toggle-row" data-factor="G" data-i18n-title="center.agodTitles.G" title="Geschlecht - Gewichtung">
+                        <span class="agod-toggle-label" data-i18n="center.agodLabels.G">Geschlecht</span>
                         <div class="agod-toggle-group" id="agodToggleG">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="G" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="2">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="O" title="Orientierung - Gewichtung">
-                        <span class="agod-toggle-label">Orientierung</span>
+                    <div class="agod-toggle-row" data-factor="O" data-i18n-title="center.agodTitles.O" title="Orientierung - Gewichtung">
+                        <span class="agod-toggle-label" data-i18n="center.agodLabels.O">Orientierung</span>
                         <div class="agod-toggle-group" id="agodToggleO">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="O" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="2">2</button>
                         </div>
                     </div>
-                    <div class="agod-toggle-row" data-factor="D" title="Dominanz - Gewichtung">
-                        <span class="agod-toggle-label">Dominanz</span>
+                    <div class="agod-toggle-row" data-factor="D" data-i18n-title="center.agodTitles.D" title="Dominanz - Gewichtung">
+                        <span class="agod-toggle-label" data-i18n="center.agodLabels.D">Dominanz</span>
                         <div class="agod-toggle-group" id="agodToggleD">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="D" data-value="1">1</button>
@@ -1161,7 +1163,7 @@
                     </div>
                 </div>
                 <!-- Score Label -->
-                <div class="score-label">Ti-Age Synthese Score</div>
+                <div class="score-label" data-i18n="center.syntheseScoreLabel">Ti-Age Synthese Score</div>
                 <!-- Lightbulb Button (moved to top) -->
                 <div class="lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
                     <span class="lightbulb-icon">💡</span>
@@ -1179,7 +1181,7 @@
                 <!-- Slot Machine Button - Finde passenden Partner -->
                 <button class="best-match-btn slot-machine-center-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen">
                     <span class="match-icon">🎰</span>
-                    <span class="match-text">FINDE PASSENDEN PARTNER</span>
+                    <span class="match-text" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
                 </button>
             </div>
 
@@ -1483,10 +1485,10 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="2">Weiter →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="2" data-i18n="mobile.next">Weiter →</button>
 
             <!-- Reset Button -->
-            <button data-action="reset-all" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+            <button data-action="reset-all" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;" data-i18n="mobile.resetSelection">
                 🔄 Auswahl zurücksetzen
             </button>
         </div>
@@ -1495,33 +1497,33 @@
         <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: BEST MATCH">
             <div class="page-header">
                 <button class="btn-back" data-action="mobile-go-to-page" data-page="1">←</button>
-                <span class="page-title">Partner finden</span>
+                <span class="page-title" data-i18n="mobile.pageTitleBestMatch">Partner finden</span>
             </div>
 
             <!-- Best Match Card -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F4A261; padding: 20px; margin-bottom: 15px;">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="color: #F4A261; font-weight: 700; font-size: var(--font-lg); margin-bottom: 8px;">
-                        🎰 Best Match Finder
+                        🎰 <span data-i18n="mobile.bestMatchTitle">Best Match Finder</span>
                     </div>
-                    <div style="color: var(--text-secondary); font-size: var(--font-sm);">
+                    <div style="color: var(--text-secondary); font-size: var(--font-sm);" data-i18n="mobile.bestMatchDesc">
                         Finde den besten Partner basierend auf deinem Profil
                     </div>
                 </div>
 
                 <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
                     <span class="match-icon" style="font-size: 32px;">🎰</span>
-                    <span class="match-text" style="font-size: 14px;">FINDE PASSENDEN PARTNER</span>
+                    <span class="match-text" style="font-size: 14px;" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
                 </button>
 
-                <div style="text-align: center; margin-top: 15px; color: var(--text-muted); font-size: 11px;">
+                <div style="text-align: center; margin-top: 15px; color: var(--text-muted); font-size: 11px;" data-i18n="mobile.testsAllCombinations">
                     Testet alle 864 Archetyp-Kombinationen
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="3">Weiter zum Partner →</button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="3" data-i18n="mobile.nextToPartner">Weiter zum Partner →</button>
 
-            <button class="btn-secondary-mobile" data-action="mobile-go-to-page" data-page="3" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+            <button class="btn-secondary-mobile" data-action="mobile-go-to-page" data-page="3" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;" data-i18n="mobile.selectManually">
                 Partner manuell auswählen →
             </button>
         </div>
@@ -1530,13 +1532,13 @@
         <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER">
             <div class="page-header">
                 <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
-                <span class="page-title">Dein Partner</span>
+                <span class="page-title" data-i18n="mobile.pageTitlePartner">Dein Partner</span>
             </div>
 
             <!-- PARTNER Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👥</span> DEIN PARTNER <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
+                    <span>👥</span> <span data-i18n="mobile.yourPartner">DEIN PARTNER</span> <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
@@ -1760,13 +1762,13 @@
         <div class="mobile-settings-section" id="mobileSettingsSection">
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F59E0B; padding: 15px; margin: 15px 0;">
                 <div class="mobile-gewichtung-heading" style="text-align: center; margin-bottom: 12px;">
-                    <div style="color: #F59E0B; font-size: 16px; font-weight: 600;">Gewichtung</div>
-                    <div style="color: var(--text-muted); font-size: 11px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
+                    <div style="color: #F59E0B; font-size: 16px; font-weight: 600;" data-i18n="center.gewichtungHeading">Gewichtung</div>
+                    <div style="color: var(--text-muted); font-size: 11px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig</div>
                 </div>
                 <!-- AGOD Gewichtung 3-Wege-Schalter für Mobile -->
                 <div class="mobile-gewichtung-container" id="mobileGewichtungContainer">
                     <div class="mobile-gewichtung-row" data-factor="A">
-                        <span class="mobile-gewichtung-label">Archetyp</span>
+                        <span class="mobile-gewichtung-label" data-i18n="center.agodLabels.A">Archetyp</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleA">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="A" data-value="1">1</button>
@@ -1774,7 +1776,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="G">
-                        <span class="mobile-gewichtung-label">Geschlecht</span>
+                        <span class="mobile-gewichtung-label" data-i18n="center.agodLabels.G">Geschlecht</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleG">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="G" data-value="1">1</button>
@@ -1782,7 +1784,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="O">
-                        <span class="mobile-gewichtung-label">Orientierung</span>
+                        <span class="mobile-gewichtung-label" data-i18n="center.agodLabels.O">Orientierung</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleO">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="O" data-value="1">1</button>
@@ -1790,7 +1792,7 @@
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="D">
-                        <span class="mobile-gewichtung-label">Dominanz</span>
+                        <span class="mobile-gewichtung-label" data-i18n="center.agodLabels.D">Dominanz</span>
                         <div class="agod-toggle-group mobile" id="mobileToggleD">
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="D" data-value="1">1</button>
@@ -1799,7 +1801,7 @@
                     </div>
                 </div>
                 <div class="mobile-gewichtung-footer" style="display: flex; justify-content: center; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
-                    <button type="button" data-action="reset-agod-weights" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;">Standard (alle auf 1)</button>
+                    <button type="button" data-action="reset-agod-weights" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 11px;" data-i18n="center.resetWeights">Standard (alle auf 1)</button>
                 </div>
             </div>
         </div>
@@ -2730,6 +2732,7 @@
     <script defer src="js/components/hints/HintState.js"></script>
     <script defer src="js/components/hints/index.js"></script>
     <script defer src="js/components/hints/MomentsToggle.js"></script>
+    <script defer src="js/components/WorkflowGuide.js"></script>
 
     <!-- Weight Modules -->
     <script defer src="js/weights/agodWeights.js?v=20260301a"></script>

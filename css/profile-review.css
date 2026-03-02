@@ -1737,28 +1737,18 @@ input.resonanz-input:focus {
     display: none !important;
 }
 
-/* HAUPTFRAGEN VIEW: Filter states for hauptfrage-item */
-.hauptfrage-item.filter-hidden {
-    display: none !important;
-}
-
-/* Hauptfrage wird angezeigt weil Nuancen matchen (nicht die Hauptfrage selbst) */
-.hauptfrage-item.has-matching-nuancen {
+/* HAUPTFRAGEN VIEW: Filter states (unified via .flat-need-item.is-hauptfrage) */
+.flat-need-item.is-hauptfrage.has-matching-nuancen {
     opacity: 0.85;
     border-left: 3px solid rgba(147, 51, 234, 0.5);
 }
 
-/* Lock-Icon bei Hauptfragen immer anzeigen (auch wenn nur Nuancen matchen) */
-/* Erlaubt Sperren/Entsperren aller Hauptfragen unabhängig vom Filter-Match */
-
-/* Slider und Input bei Hauptfragen deaktivieren wenn nur Nuancen matchen */
-/* Der Wert zeigt weiterhin den Durchschnitt aller Nuancen, ist aber nicht editierbar */
-.hauptfrage-item.has-matching-nuancen .hauptfrage-slider {
+.flat-need-item.is-hauptfrage.has-matching-nuancen .need-slider {
     pointer-events: none;
     opacity: 0.5;
 }
 
-.hauptfrage-item.has-matching-nuancen .hauptfrage-input {
+.flat-need-item.is-hauptfrage.has-matching-nuancen .flat-need-input {
     pointer-events: none;
     opacity: 0.5;
 }
@@ -3386,318 +3376,9 @@ input.resonanz-input:focus {
     padding: 12px;
 }
 
-/* Einzelnes Hauptfrage-Item - CARD STYLE */
-.hauptfrage-item {
-    background: var(--bg-secondary, rgba(255, 255, 255, 0.03));
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Enhanced Card Style */
-.hauptfrage-item.hauptfrage-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.hauptfrage-item:hover {
-    background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.hauptfrage-item.expanded {
-    background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Hauptfrage SELECTED State - alle Nuancen ausgewählt */
-.hauptfrage-item.hauptfrage-selected {
-    background: linear-gradient(145deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
-    border-color: rgba(34, 197, 94, 0.5);
-    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2), 0 4px 12px rgba(34, 197, 94, 0.15);
-}
-
-.hauptfrage-item.hauptfrage-selected:hover {
-    background: linear-gradient(145deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.12));
-    border-color: rgba(34, 197, 94, 0.6);
-}
-
-/* Hauptfrage PARTIAL SELECTED State - einige Nuancen ausgewählt */
-.hauptfrage-item.hauptfrage-partial-selected {
-    background: linear-gradient(145deg, rgba(34, 197, 94, 0.08), rgba(255, 255, 255, 0.03));
-    border-color: rgba(34, 197, 94, 0.3);
-    border-style: dashed;
-}
-
-/* Hauptfrage Header */
-.hauptfrage-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 14px;
-    cursor: pointer;
-    gap: 10px;
-    min-height: 48px;
-}
-
-.hauptfrage-header:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-/* Expand Icon */
-.hauptfrage-expand-icon {
-    font-size: 10px;
-    color: var(--text-muted, #888);
-    width: 16px;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-}
-
-.hauptfrage-item.expanded .hauptfrage-expand-icon {
-    color: var(--accent-color, #22c55e);
-}
-
-/* Hauptfrage mit geänderten Nuancen */
-.hauptfrage-item.has-changed-nuancen {
-    border-left: 3px solid var(--primary, #c084fc);
-}
-
-.hauptfrage-changed-indicator {
-    color: var(--primary, #c084fc);
-    font-weight: bold;
-    margin-left: 4px;
-    font-size: 14px;
-}
-
-/* Hauptfrage mit einigen (nicht allen) gelockten Nuancen */
-.hauptfrage-item.has-locked-nuancen {
-    border-left: 3px solid rgba(245, 158, 11, 0.5);
-}
-
-.hauptfrage-item.has-locked-nuancen .hauptfrage-header {
-    background: rgba(245, 158, 11, 0.04);
-}
-
-/* Nuancen-Status Info (zeigt Anzahl gelockt/geändert) */
-.nuancen-status-info {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-left: 4px;
-}
-
-/* Partial Lock Icon (einige Nuancen gelockt) */
-.hauptfrage-lock-icon.partial-locked::before {
-    content: "🔐";
-    opacity: 0.7;
-}
-
-.hauptfrage-lock-icon.partial-locked {
-    opacity: 1 !important;
-}
-
-/* Hauptfrage Label */
-.hauptfrage-label {
-    flex: 1;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-primary, #fff);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Nuancen-Zähler */
-.hauptfrage-nuancen-count {
-    font-size: 11px;
-    color: var(--text-muted, #666);
-    margin-right: 12px;
-    white-space: nowrap;
-}
-
-/* Wert-Container mit Bar */
-.hauptfrage-value-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 100px;
-    position: relative;
-}
-
-.hauptfrage-bar {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 4px;
-    border-radius: 2px;
-    opacity: 0.6;
-    transition: width 0.3s ease;
-}
-
-.hauptfrage-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary, #fff);
-    min-width: 32px;
-    text-align: right;
-    position: relative;
-    z-index: 1;
-    margin-left: auto;
-}
-
-/* Hauptfragen-Controls (Lock-Icon) */
-.hauptfrage-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 12px;
-}
-
-.hauptfrage-lock-icon {
-    cursor: pointer;
-    font-size: 16px;
-    opacity: 0.6;
-    transition: opacity 0.2s, transform 0.2s;
-    user-select: none;
-}
-
-.hauptfrage-lock-icon::before {
-    content: "🔓";
-}
-
-.hauptfrage-lock-icon:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.hauptfrage-lock-icon.locked::before {
-    content: "🔒";
-}
-
-.hauptfrage-lock-icon.locked {
-    opacity: 1;
-    color: #22c55e;
-}
-
-/* Auto-gelockt durch Nuancen - andere Farbe (orange) */
-.hauptfrage-lock-icon.auto-locked {
-    color: #f59e0b;
-}
-
-.hauptfrage-lock-icon.auto-locked::before {
-    content: "🔐";
-}
-
-/* Hauptfrage durch Nuancen gelockt */
-.hauptfrage-item.locked-by-nuancen {
-    border-left: 3px solid #f59e0b;
-}
-
-.hauptfrage-item.locked-by-nuancen .hauptfrage-header {
-    background: rgba(245, 158, 11, 0.08);
-}
-
-.hauptfrage-item.locked-by-nuancen .hauptfrage-slider-row {
-    background: rgba(245, 158, 11, 0.05);
-}
-
-/* Hauptfrage-Slider-Row - Card Style */
-.hauptfrage-slider-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px 16px 48px;
-    background: rgba(0, 0, 0, 0.12);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Selected state slider row */
-.hauptfrage-item.hauptfrage-selected .hauptfrage-slider-row {
-    background: rgba(34, 197, 94, 0.08);
-}
-
-.hauptfrage-slider {
-    flex: 1;
-    height: 6px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.hauptfrage-slider:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.hauptfrage-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--dimension-color, #457b9d);
-    cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.hauptfrage-slider:not(:disabled)::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-}
-
-.hauptfrage-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--dimension-color, #457b9d);
-    cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-}
-
-.hauptfrage-input {
-    width: 48px;
-    padding: 4px 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-    color: var(--text-primary, #fff);
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.hauptfrage-input:focus {
-    outline: none;
-    border-color: var(--dimension-color, #457b9d);
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.hauptfrage-input[readonly] {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Hauptfrage gelockt - visuelle Markierung */
-.hauptfrage-item.hauptfrage-locked {
-    border-left: 3px solid #22c55e;
-}
-
-.hauptfrage-item.hauptfrage-locked .hauptfrage-header {
-    background: rgba(34, 197, 94, 0.08);
-}
-
-.hauptfrage-item.hauptfrage-locked .hauptfrage-slider-row {
-    background: rgba(34, 197, 94, 0.05);
-}
+/* REFACTORING v1.8.985: Alte .hauptfrage-* CSS-Klassen entfernt
+ * Hauptfragen verwenden jetzt .flat-need-item.is-hauptfrage (unified rendering)
+ * Siehe neue Styles weiter oben bei .flat-need-item.is-hauptfrage */
 
 /* Nuancen gelockt durch Hauptfrage */
 .nuancen-list.nuancen-locked-by-parent {
@@ -3762,27 +3443,6 @@ input.resonanz-input:focus {
     .flat-needs-list.hauptfragen-mode {
         gap: 8px;
         padding: 8px;
-    }
-
-    .hauptfrage-header {
-        padding: 10px 12px;
-        flex-wrap: wrap;
-    }
-
-    .hauptfrage-label {
-        font-size: 12px;
-    }
-
-    .hauptfrage-nuancen-count {
-        font-size: 10px;
-    }
-
-    .hauptfrage-value-container {
-        min-width: 60px;
-    }
-
-    .hauptfrage-slider-row {
-        padding: 10px 12px 12px 36px;
     }
 
     .nuancen-list {
@@ -3942,5 +3602,115 @@ input.resonanz-input:focus {
 
     .god-mod-part {
         padding: 0 3px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UNIFIED RENDERING v1.8.985: Hauptfragen-Features in flat-need-item
+   Hauptfragen nutzen jetzt das gleiche Template wie Nuancen
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Hauptfrage-Marker */
+.flat-need-item.is-hauptfrage {
+    border-width: 3px;
+    border-left-width: 5px;
+}
+
+/* Expand Icon (▶/▼) */
+.need-expand-icon {
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 6px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.need-expand-icon:hover {
+    opacity: 1;
+}
+
+/* Nuancen Count Badge */
+.need-nuancen-count {
+    font-size: 0.75rem;
+    color: #999;
+    margin-left: auto;
+    margin-right: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.need-nuancen-count:hover {
+    color: #ccc;
+}
+
+/* Nuancen-Liste (eingebettet in flat-need-item) */
+.flat-need-item.is-hauptfrage > .nuancen-list {
+    padding-left: 16px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4px;
+}
+
+.flat-need-item.is-hauptfrage > .nuancen-list .flat-need-item {
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SAVE STATUS BADGE
+   FIX v1.8.975: Zeigt Speicher-Status (🟢 gespeichert / 🔴 nur RAM)
+   Explicit Save Workflow - zeigt ob RAM-Werte mit TiageState synchron sind
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.save-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    margin-right: 6px;
+    cursor: help;
+    transition: all 0.2s ease;
+    opacity: 0.9;
+}
+
+.save-status-badge:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Gespeichert (grün) - subtiler */
+.save-status-badge.save-status-saved {
+    opacity: 0.6;
+}
+
+.save-status-badge.save-status-saved:hover {
+    opacity: 0.8;
+}
+
+/* Nicht gespeichert (rot) - auffälliger */
+.save-status-badge.save-status-unsaved {
+    opacity: 1;
+    animation: saveStatusPulse 2s ease-in-out infinite;
+}
+
+@keyframes saveStatusPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+    .save-status-badge {
+        font-size: 14px;
+        margin-right: 4px;
     }
 }

@@ -486,6 +486,40 @@ const AttributeSummaryCard = (function() {
             });
         });
 
+        // REFACTORING v1.8.982: Hauptfragen auch in flatNeeds aufnehmen
+        // Hauptfragen werden jetzt wie Nuancen behandelt (einheitliche Speicherstruktur)
+        if (typeof HauptfrageAggregation !== 'undefined') {
+            const hauptfragen = HauptfrageAggregation.getHauptfragen();
+
+            // TEMPORARY: Alte Hauptfragen-Locks aus separatem Storage laden (Migration)
+            const savedLockedHauptfragen = TiageState.get(`profileReview.${person}.lockedHauptfragen`) || [];
+
+            Object.keys(hauptfragen).forEach(hauptfrageId => {
+                const hf = hauptfragen[hauptfrageId];
+
+                // Check if Hauptfrage is locked (alte Struktur während Migration)
+                const isLocked = lockedNeeds.hasOwnProperty(hauptfrageId) || savedLockedHauptfragen.includes(hauptfrageId);
+
+                // Wert laden: erst aus lockedNeeds, dann aus altem Storage, dann Default 50
+                let value = 50;
+                if (lockedNeeds.hasOwnProperty(hauptfrageId)) {
+                    value = lockedNeeds[hauptfrageId];
+                } else if (savedLockedHauptfragen.includes(hauptfrageId)) {
+                    value = TiageState.get(`profileReview.${person}.lockedHauptfragenValues.${hauptfrageId}`) || 50;
+                }
+                value = roundTo25(value);
+
+                flatNeeds.push({
+                    id: hauptfrageId,
+                    key: parseInt(hauptfrageId.replace('#B', ''), 10) || 0,
+                    stringKey: hf.key || '',
+                    label: hf.label || hauptfrageId,
+                    value: value,
+                    locked: isLocked
+                });
+            });
+        }
+
         // Cache als gültig markieren
         flatNeedsCacheValid = true;
         flatNeedsCachePerson = person;
@@ -515,11 +549,10 @@ const AttributeSummaryCard = (function() {
     let originalNeedValues = new Map();
 
     /**
-     * HAUPTFRAGEN-LOCK FEATURE: Set zum Speichern gelockter Hauptfragen
-     * Wenn eine Hauptfrage gelockt ist, sind auch alle ihre Nuancen gelockt.
-     * Der Slider-Wert der Hauptfrage wird direkt gesetzt (nicht aus Nuancen berechnet).
+     * REFACTORING v1.8.982: lockedHauptfragen Set ENTFERNT
+     * Hauptfragen werden jetzt wie Nuancen in flatNeeds[] gespeichert mit .locked Property
+     * Kein separates Set mehr nötig - einheitliche Speicherstruktur!
      */
-    let lockedHauptfragen = new Set();
 
     /**
      * Helper: Findet ein Bedürfnis nach ID im flatNeeds Array
@@ -541,103 +574,52 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Helper: Berechnet die Gesamtzahl der gesperrten Items
-     * FIX v1.8.568: Berücksichtigt sowohl direkt gesperrte Nuancen als auch
-     * Nuancen die durch gesperrte Hauptfragen implizit gesperrt sind
+     * REFACTORING v1.8.982: Vereinfacht - zählt alle locked Items in flatNeeds[]
      * @param {string} currentPerson - 'ich' oder 'partner'
      * @returns {number} Anzahl der gesperrten Items
      */
     function calculateTotalLockedCount(currentPerson) {
-        let lockedCount = 0;
-        const alreadyCountedNuancen = new Set();
-
-        // 1. Direkt gesperrte Nuancen aus TiageState
-        if (typeof TiageState !== 'undefined' && TiageState.getLockedNeeds) {
-            const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
-            Object.keys(lockedNeeds).forEach(id => {
-                lockedCount++;
-                alreadyCountedNuancen.add(id);
-            });
-        }
-
-        // 2. Nuancen die durch gesperrte Hauptfragen implizit gesperrt sind
-        if (lockedHauptfragen.size > 0 && typeof HauptfrageAggregation !== 'undefined') {
-            const hauptfragen = HauptfrageAggregation.getHauptfragen();
-
-            lockedHauptfragen.forEach(hfId => {
-                const hf = hauptfragen[hfId];
-                if (hf && hf.nuancen && hf.nuancen.length > 0) {
-                    // Hauptfrage hat Nuancen - zähle die nicht bereits gezählten
-                    hf.nuancen.forEach(nuanceId => {
-                        if (!alreadyCountedNuancen.has(nuanceId)) {
-                            lockedCount++;
-                            alreadyCountedNuancen.add(nuanceId);
-                        }
-                    });
-                } else {
-                    // Hauptfrage ohne Nuancen - zähle die Hauptfrage selbst
-                    if (!alreadyCountedNuancen.has(hfId)) {
-                        lockedCount++;
-                        alreadyCountedNuancen.add(hfId);
-                    }
-                }
-            });
-        }
-
-        return lockedCount;
+        // REFACTORING v1.8.982: Einfach alle .locked Items in flatNeeds zählen
+        // Hauptfragen und Nuancen werden jetzt einheitlich behandelt
+        return flatNeeds.filter(need => need.locked === true).length;
     }
 
     /**
-     * Helper: Aktualisiert ein Bedürfnis
-     * SSOT v1.8.691: Schreibt IMMER zu TiageState, Cache wird invalidiert
+     * Helper: Aktualisiert ein Bedürfnis NUR in RAM
+     * SSOT FIX v1.8.983: Explicit Save Workflow - NUR in flatNeeds[] schreiben
+     * Speichern in TiageState erst bei saveAllChanges() via syncRamToState()
      *
      * @param {string} id - Die #B-ID
-     * @param {Object} updates - Zu aktualisierende Felder
+     * @param {Object} updates - Zu aktualisierende Felder (value, locked)
      */
     function upsertNeed(id, updates) {
-        // SSOT: Schreibe zu TiageState (einzige Datenquelle)
-        if (typeof TiageState === 'undefined') {
-            console.error('[AttributeSummaryCard] TiageState nicht verfügbar!');
-            return;
+        // Finde oder erstelle Need in flatNeeds[]
+        let needObj = findNeedById(id);
+
+        if (!needObj) {
+            // Need existiert noch nicht - erstelle es
+            needObj = {
+                id: id,
+                key: parseInt(id.replace('#B', ''), 10) || 0,
+                stringKey: '',
+                label: id,
+                value: 50,
+                locked: false
+            };
+            flatNeeds.push(needObj);
         }
 
-        let currentPerson = 'ich';
-        if (window.currentProfileReviewContext?.person) {
-            currentPerson = window.currentProfileReviewContext.person;
+        // Aktualisiere Felder in RAM
+        if (updates.value !== undefined) {
+            needObj.value = updates.value;
         }
-
-        // Value zu TiageState schreiben
-        if (updates.value !== undefined && TiageState.setNeed) {
-            TiageState.setNeed(currentPerson, id, updates.value);
-        }
-
-        // Lock-Status zu TiageState schreiben
         if (updates.locked !== undefined) {
-            if (updates.locked && TiageState.lockNeed) {
-                const currentValue = updates.value !== undefined ? updates.value : 50;
-                TiageState.lockNeed(currentPerson, id, currentValue);
-            } else if (!updates.locked && TiageState.unlockNeed) {
-                TiageState.unlockNeed(currentPerson, id);
-            }
-        }
-        // v4.3: AUTO-LOCK — Slider-Änderungen automatisch sperren
-        // Wenn value geändert wird OHNE explizites locked → auto-lock (nur ICH)
-        // Damit User-Werte bei Archetyp-Wechsel erhalten bleiben (SSOT).
-        // Reset/programmatische Änderungen setzen locked: false explizit.
-        else if (updates.value !== undefined && currentPerson === 'ich' && TiageState.lockNeed) {
-            TiageState.lockNeed(currentPerson, id, updates.value);
+            needObj.locked = updates.locked;
         }
 
-        // Cache invalidieren - nächster Zugriff lädt frisch von TiageState
-        invalidateFlatNeedsCache();
-
-        // Lokalen Cache auch aktualisieren für sofortige UI-Reaktion
-        const index = findNeedIndex(id);
-        if (index >= 0) {
-            flatNeeds[index] = { ...flatNeeds[index], ...updates };
-        }
-
-        // Debounced in localStorage persistieren
-        debouncedSaveToStorage();
+        // SSOT FIX v1.8.983: KEIN Auto-Save mehr!
+        // Werte bleiben in RAM bis User "Speichern" klickt
+        console.log(`[upsertNeed] RAM: ${id} = ${needObj.value}, locked: ${needObj.locked}`);
     }
 
     /**
@@ -678,6 +660,9 @@ const AttributeSummaryCard = (function() {
 
         // Update Auswahl-Counter
         updateSelectionCounter();
+
+        // FIX v1.8.974: Update Lock-Button-Status sofort
+        updateSelectedLockButtonState();
     }
 
     /**
@@ -694,12 +679,15 @@ const AttributeSummaryCard = (function() {
         originalNeedValues.clear();
 
         // FIX: Auch Hauptfrage-Selection-Classes entfernen
-        document.querySelectorAll('.hauptfrage-item.hauptfrage-selected, .hauptfrage-item.hauptfrage-partial-selected').forEach(item => {
-            item.classList.remove('hauptfrage-selected', 'hauptfrage-partial-selected');
+        document.querySelectorAll('.flat-need-item.is-hauptfrage.need-selected, .flat-need-item.is-hauptfrage.need-partial-selected').forEach(item => {
+            item.classList.remove('need-selected', 'need-partial-selected');
         });
 
         // Update Auswahl-Counter
         updateSelectionCounter();
+
+        // FIX v1.8.974: Update Lock-Button-Status sofort
+        updateSelectedLockButtonState();
     }
 
     /**
@@ -722,7 +710,7 @@ const AttributeSummaryCard = (function() {
             }
 
             // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
-            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
@@ -731,7 +719,7 @@ const AttributeSummaryCard = (function() {
             if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
                 const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
                 if (parentHf) {
-                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
                     // Wenn Parent-Hauptfrage durch Filter versteckt ist, ist auch Nuance versteckt
                     if (parentItem && parentItem.classList.contains('filter-hidden')) {
                         return false;
@@ -820,6 +808,9 @@ const AttributeSummaryCard = (function() {
         // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
         updateHauptfragenSelectionVisuals();
+
+        // FIX v1.8.974: Update Lock-Button-Status sofort
+        updateSelectedLockButtonState();
     }
 
     /**
@@ -841,7 +832,7 @@ const AttributeSummaryCard = (function() {
             }
 
             // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
-            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
@@ -850,7 +841,7 @@ const AttributeSummaryCard = (function() {
             if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
                 const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
                 if (parentHf) {
-                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
                     if (parentItem && parentItem.classList.contains('filter-hidden')) {
                         return false;
                     }
@@ -910,6 +901,9 @@ const AttributeSummaryCard = (function() {
         // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
         updateHauptfragenSelectionVisuals();
+
+        // FIX v1.8.974: Update Lock-Button-Status sofort
+        updateSelectedLockButtonState();
     }
 
     /**
@@ -968,9 +962,9 @@ const AttributeSummaryCard = (function() {
             });
 
             // Hauptfrage-Item auch aktualisieren
-            const hfItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+            const hfItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
             if (hfItem) {
-                hfItem.classList.remove('hauptfrage-selected');
+                hfItem.classList.remove('need-selected');
             }
         } else {
             // Alle auswählen
@@ -990,9 +984,9 @@ const AttributeSummaryCard = (function() {
             });
 
             // Hauptfrage-Item auch als ausgewählt markieren
-            const hfItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+            const hfItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
             if (hfItem) {
-                hfItem.classList.add('hauptfrage-selected');
+                hfItem.classList.add('need-selected');
             }
         }
 
@@ -1009,6 +1003,9 @@ const AttributeSummaryCard = (function() {
 
         // Update Auswahl-Counter
         updateSelectionCounter();
+
+        // FIX v1.8.974: Update Lock-Button-Status sofort
+        updateSelectedLockButtonState();
 
         console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} ${allSelected ? 'abgewählt' : 'ausgewählt'} mit ${filteredNuancen.length} gefilterten Nuancen. Total: ${selectedNeeds.size}`);
     }
@@ -1047,8 +1044,8 @@ const AttributeSummaryCard = (function() {
         const hauptfragen = HauptfrageAggregation.getHauptfragen();
         if (!hauptfragen) return;
 
-        document.querySelectorAll('.hauptfrage-item[data-hauptfrage-id]').forEach(hfItem => {
-            const hfId = hfItem.getAttribute('data-hauptfrage-id');
+        document.querySelectorAll('.flat-need-item.is-hauptfrage[data-need]').forEach(hfItem => {
+            const hfId = hfItem.getAttribute('data-need');
             const hf = hauptfragen[hfId];
             if (!hf) return;
 
@@ -1058,11 +1055,11 @@ const AttributeSummaryCard = (function() {
             const someSelected = allIds.some(id => selectedNeeds.has(id));
 
             // Aktualisiere Klassen
-            hfItem.classList.remove('hauptfrage-selected', 'hauptfrage-partial-selected');
+            hfItem.classList.remove('need-selected', 'need-partial-selected');
             if (allSelected) {
-                hfItem.classList.add('hauptfrage-selected');
+                hfItem.classList.add('need-selected');
             } else if (someSelected) {
-                hfItem.classList.add('hauptfrage-partial-selected');
+                hfItem.classList.add('need-partial-selected');
             }
         });
     }
@@ -1376,8 +1373,8 @@ const AttributeSummaryCard = (function() {
             // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
             if (hasNuancen) {
                 // Hauptfrage-Element finden
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
-                const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
+                const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
+                const slider = hauptfrageItem?.querySelector('.need-slider');
                 if (slider && hauptfrageItem) {
                     // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
                     adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
@@ -1387,7 +1384,7 @@ const AttributeSummaryCard = (function() {
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
-                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    const input = hauptfrageItem.querySelector('.flat-need-input');
                     if (input) input.value = newValue;
                 }
             } else {
@@ -1410,10 +1407,10 @@ const AttributeSummaryCard = (function() {
                     updateChangedIndicator(needItem, needId, newValue);
                 } else {
                     // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
-                    const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                    const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
                     if (hauptfrageItem) {
-                        const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-                        const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                        const slider = hauptfrageItem.querySelector('.need-slider');
+                        const input = hauptfrageItem.querySelector('.flat-need-input');
                         if (slider) {
                             slider.value = newValue;
                             const dimColor = getDimensionColor(needId);
@@ -1490,8 +1487,8 @@ const AttributeSummaryCard = (function() {
             // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
             if (hasNuancen) {
                 // Hauptfrage-Element finden
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
-                const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
+                const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
+                const slider = hauptfrageItem?.querySelector('.need-slider');
                 if (slider && hauptfrageItem) {
                     // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
                     adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
@@ -1501,7 +1498,7 @@ const AttributeSummaryCard = (function() {
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
-                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    const input = hauptfrageItem.querySelector('.flat-need-input');
                     if (input) input.value = newValue;
                 }
             } else {
@@ -1524,10 +1521,10 @@ const AttributeSummaryCard = (function() {
                     updateChangedIndicator(needItem, needId, newValue);
                 } else {
                     // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
-                    const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${needId}"]`);
+                    const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
                     if (hauptfrageItem) {
-                        const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-                        const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                        const slider = hauptfrageItem.querySelector('.need-slider');
+                        const input = hauptfrageItem.querySelector('.flat-need-input');
                         if (slider) {
                             slider.value = newValue;
                             const dimColor = getDimensionColor(needId);
@@ -1617,46 +1614,20 @@ const AttributeSummaryCard = (function() {
                 needItem.classList.toggle('need-locked', lockState);
                 const slider = needItem.querySelector('.need-slider');
                 const input = needItem.querySelector('.flat-need-input');
-                const lockIcon = needItem.querySelector('.flat-need-lock');
+                const lockIcon = needItem.querySelector('.need-lock-icon');
                 if (slider) slider.disabled = lockState;
                 if (input) input.readOnly = lockState;
                 if (lockIcon) lockIcon.textContent = lockState ? '🔒' : '🔓';
+
+                // FIX v1.8.972: Aktualisiere "Geändert *" Indikator sofort
+                const currentValue = needObj ? needObj.value : 50;
+                updateChangedIndicator(needItem, needId, currentValue);
             }
 
-            // Speichere Lock-Status in TiageState (SSOT)
-            if (typeof TiageState !== 'undefined') {
-                if (lockState) {
-                    const currentValue = needObj ? needObj.value : 50;
-                    TiageState.lockNeed(currentPerson, needId, currentValue);
-                } else {
-                    TiageState.unlockNeed(currentPerson, needId);
-                }
-
-                // FIX v1.8.968: Status-Indikator-Punkt (grün/rot) neben Schloss
-                if (needItem) {
-                    const lockIcon = needItem.querySelector('.flat-need-lock');
-                    if (lockIcon) {
-                        // Entferne alten Indikator
-                        const oldIndicator = lockIcon.querySelector('.lock-status-indicator');
-                        if (oldIndicator) oldIndicator.remove();
-
-                        // Prüfe ob Wert in TiageState gespeichert ist
-                        const savedValue = TiageState.getLockedNeeds(currentPerson)[needId];
-                        const currentValue = needObj ? needObj.value : 50;
-                        const isSaved = lockState
-                            ? (savedValue !== undefined && savedValue !== null && savedValue === currentValue)
-                            : !TiageState.isNeedLocked(currentPerson, needId);
-
-                        // Erstelle Status-Indikator-Punkt
-                        const indicator = document.createElement('span');
-                        indicator.className = `lock-status-indicator ${isSaved ? 'saved' : 'unsaved'}`;
-                        indicator.title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert ✗';
-                        lockIcon.appendChild(indicator);
-                    }
-                }
-
-                lockedCount++;
-            }
+            // SSOT FIX v1.8.983: NICHT sofort in TiageState schreiben!
+            // Lock wird nur in RAM (flatNeeds[]) gesetzt
+            // Erst bei saveAllChanges() wird syncRamToState() → TiageState geschrieben
+            lockedCount++;
 
             // Event
             document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
@@ -1680,12 +1651,10 @@ const AttributeSummaryCard = (function() {
             updateLockedCountDisplay();
             // Button-State aktualisieren
             updateSelectedLockButtonState();
-            // Re-render für konsistente UI-Darstellung (Hauptfrage Lock-Icons, Nuancen-Status)
-            reRenderFlatNeeds();
+            // FIX v1.8.979: Konsistent mit toggleFlatNeedLock() - nur Badges aktualisieren, kein komplettes Re-Rendering
+            updateAllSaveStatusBadges();
             // FIX v1.8.965: Auswahl nach Lock/Unlock leeren (verhindert Doppel-Lock)
             clearNeedSelection();
-            // Trigger UI-Update für Status-Indikatoren
-            updateAllStatusIndicators();
         }
     }
 
@@ -1695,14 +1664,11 @@ const AttributeSummaryCard = (function() {
     function toggleLockSelectedNeeds() {
         if (selectedNeeds.size === 0) return;
 
-        // Prüfe ob alle markierten bereits gesperrt sind
+        // FIX v1.8.973: Prüfe ob alle markierten bereits gesperrt sind
         let allLocked = true;
-        let someLockedCount = 0;
         selectedNeeds.forEach(needId => {
             const needObj = findNeedById(needId);
-            if (needObj && needObj.locked) {
-                someLockedCount++;
-            } else {
+            if (!needObj || !needObj.locked) {
                 allLocked = false;
             }
         });
@@ -1766,13 +1732,51 @@ const AttributeSummaryCard = (function() {
             // Auswahl leeren
             clearNeedSelection();
 
-            // Trigger UI-Update für Status-Indikatoren
-            updateAllStatusIndicators();
+            // FIX v1.8.975: updateAllStatusIndicators() entfernt - nicht nötig, da keine UI-Änderung in aktueller Ansicht
         }
     }
 
     /**
-     * Aktualisiert alle Status-Indikatoren (rot/grün Punkte)
+     * FIX v1.8.977: Aktualisiert nur die Save-Status-Badges (🟢/🔴)
+     * Ohne komplettes Re-Rendering der Liste
+     */
+    function updateAllSaveStatusBadges() {
+        // Aktualisiere Badges für flache Needs (Nuancen)
+        flatNeeds.forEach(need => {
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (!needItem) return;
+
+            const controls = needItem.querySelector('.flat-need-controls');
+            if (!controls) return;
+
+            // Finde existierenden Badge
+            const oldBadge = controls.querySelector('.save-status-badge');
+
+            // Erstelle neuen Badge
+            const newBadgeHtml = renderSaveStatusBadge(need.id, need.value, need.locked);
+
+            if (oldBadge && newBadgeHtml) {
+                // Ersetze alten Badge mit neuem
+                const temp = document.createElement('div');
+                temp.innerHTML = newBadgeHtml;
+                const newBadge = temp.firstChild;
+                oldBadge.replaceWith(newBadge);
+            } else if (!oldBadge && newBadgeHtml) {
+                // Füge neuen Badge am Anfang ein
+                const temp = document.createElement('div');
+                temp.innerHTML = newBadgeHtml;
+                const newBadge = temp.firstChild;
+                controls.insertBefore(newBadge, controls.firstChild);
+            }
+        });
+
+        // UNIFIED v1.8.985: Kein separater Hauptfragen-Code mehr nötig!
+        // Hauptfragen nutzen jetzt .flat-need-item[data-need] wie Nuancen
+        // → Werden bereits im flatNeeds.forEach() oben erfasst
+    }
+
+    /**
+     * DEPRECATED: Verwende updateAllSaveStatusBadges() stattdessen
      * FIX v1.8.971: Vergleicht RAM-Werte mit TiageState
      */
     function updateAllStatusIndicators() {
@@ -1780,7 +1784,7 @@ const AttributeSummaryCard = (function() {
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (!needItem) return;
 
-            const lockIcon = needItem.querySelector('.flat-need-lock');
+            const lockIcon = needItem.querySelector('.need-lock-icon');
             if (!lockIcon) return;
 
             // Entferne alten Indikator
@@ -1817,6 +1821,48 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * SSOT: Synchronisiert RAM (flatNeeds[]) → TiageState
+     * Schreibt ALLE Locks und Values von flatNeeds in TiageState
+     * MUSS vor saveToStorage() aufgerufen werden!
+     */
+    function syncRamToState() {
+        if (typeof TiageState === 'undefined') {
+            console.error('[SSOT] TiageState nicht verfügbar!');
+            return;
+        }
+
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        console.log(`[SSOT] Sync RAM → TiageState für ${currentPerson} (${flatNeeds.length} needs)`);
+
+        // Alle Needs durchgehen und in TiageState schreiben
+        flatNeeds.forEach(need => {
+            if (need.locked) {
+                // Need ist gelockt → lockNeed() mit aktuellem Wert
+                if (TiageState.lockNeed) {
+                    TiageState.lockNeed(currentPerson, need.id, need.value);
+                }
+            } else {
+                // Need ist NICHT gelockt → entsperren falls es vorher gelockt war
+                if (TiageState.isNeedLocked && TiageState.isNeedLocked(currentPerson, need.id)) {
+                    if (TiageState.unlockNeed) {
+                        TiageState.unlockNeed(currentPerson, need.id);
+                    }
+                }
+                // Wert trotzdem schreiben (für ungelockte Needs)
+                if (TiageState.setNeed) {
+                    TiageState.setNeed(currentPerson, need.id, need.value);
+                }
+            }
+        });
+
+        console.log('[SSOT] ✅ Sync abgeschlossen - RAM → TiageState');
+    }
+
+    /**
      * Speichert alle Änderungen sofort (manueller Speicher-Button)
      * Gibt visuelles Feedback beim Speichern
      */
@@ -1824,11 +1870,12 @@ const AttributeSummaryCard = (function() {
         const btn = document.querySelector('.bulk-save-btn');
 
         if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
-            TiageState.saveToStorage();
-            console.log('[AttributeSummaryCard] Manuelles Speichern ausgeführt');
+            // SSOT FIX v1.8.983: ERST RAM → TiageState synchronisieren!
+            syncRamToState();
 
-            // FIX v1.8.971: Status-Indikatoren aktualisieren (alle → grün)
-            updateAllStatusIndicators();
+            // DANN persistieren (localStorage)
+            TiageState.saveToStorage();
+            console.log('[AttributeSummaryCard] ✅ Manuelles Speichern ausgeführt (RAM → State → Storage)');
 
             // Visuelles Feedback
             if (btn) {
@@ -1842,6 +1889,9 @@ const AttributeSummaryCard = (function() {
                     if (icon) icon.textContent = originalIcon;
                 }, 1500);
             }
+
+            // FIX v1.8.977: Aktualisiere nur Save-Status-Badges (🔴 → 🟢), kein komplettes Re-Rendering
+            updateAllSaveStatusBadges();
         } else {
             console.warn('[AttributeSummaryCard] TiageState.saveToStorage nicht verfügbar');
             if (btn) {
@@ -1882,17 +1932,15 @@ const AttributeSummaryCard = (function() {
 
         const allLocked = lockedCount === selectedNeeds.size;
 
-        // FIX v1.8.969: Nur 2 Zustände statt 3
+        // FIX v1.8.973: Nur 2 Zustände - kein "teilweise gesperrt" Text
         if (allLocked) {
             // Alle gesperrt → Entsperren-Icon
             if (icon) icon.textContent = '🔓';
-            btn.title = 'Alle markierten Werte entsperren';
+            btn.title = 'Markierte Werte entsperren';
         } else {
-            // Nicht alle gesperrt → Sperren-Icon
+            // Nicht alle gesperrt → Sperren-Icon (egal ob teilweise oder gar nicht)
             if (icon) icon.textContent = '🔒';
-            btn.title = lockedCount > 0
-                ? `${selectedNeeds.size - lockedCount} von ${selectedNeeds.size} sperren (${lockedCount} bereits gesperrt)`
-                : 'Alle markierten Werte sperren';
+            btn.title = 'Markierte Werte sperren';
         }
     }
 
@@ -1913,7 +1961,7 @@ const AttributeSummaryCard = (function() {
             }
 
             // Hauptfrage-Filter prüfen
-            const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${need.id}"]`);
+            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
             if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
                 return false;
             }
@@ -1922,7 +1970,7 @@ const AttributeSummaryCard = (function() {
             if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
                 const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
                 if (parentHf) {
-                    const parentItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${parentHf.id}"]`);
+                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
                     if (parentItem && parentItem.classList.contains('filter-hidden')) {
                         return false;
                     }
@@ -2006,7 +2054,7 @@ const AttributeSummaryCard = (function() {
             needItem.classList.toggle('need-locked', lockState);
             const slider = needItem.querySelector('.need-slider');
             const input = needItem.querySelector('.flat-need-input');
-            const lockIcon = needItem.querySelector('.flat-need-lock');
+            const lockIcon = needItem.querySelector('.need-lock-icon');
             if (slider) slider.disabled = lockState;
             if (input) input.readOnly = lockState;
             if (lockIcon) lockIcon.textContent = lockState ? '🔒' : '🔓';
@@ -2149,13 +2197,11 @@ const AttributeSummaryCard = (function() {
         } else if (status.allLocked) {
             // Alle gesperrt → Entsperren Icon
             if (icon) icon.textContent = '🔓';
-            btn.title = 'Alle gefilterten Bedürfnisse entsperren';
+            btn.title = 'Gefilterte Bedürfnisse entsperren';
         } else {
-            // FIX v1.8.969: Nur 2 Zustände - nicht alle gesperrt → Sperren Icon
+            // FIX v1.8.973: Nur 2 Zustände - kein "teilweise gesperrt" Text
             if (icon) icon.textContent = '🔒';
-            btn.title = status.someLocked
-                ? `${status.totalCount - status.lockedCount} von ${status.totalCount} sperren (${status.lockedCount} bereits gesperrt)`
-                : 'Alle gefilterten Bedürfnisse sperren';
+            btn.title = 'Gefilterte Bedürfnisse sperren';
         }
     }
 
@@ -2360,17 +2406,20 @@ const AttributeSummaryCard = (function() {
      * v4.3 SSOT: "geändert" = "gesperrt" — kein fragiles Baseline mehr.
      * Ein gesperrtes Bedürfnis ist eine bewusste User-Entscheidung, egal ob
      * der Wert zufällig dem Archetyp-Standard entspricht oder nicht.
+     *
+     * FIX v1.8.972: Prüfe RAM-Status (flatNeeds.locked), nicht TiageState.
+     * Mit Explicit Save Workflow sind Lock-Änderungen erst im RAM.
+     *
      * @param {string} needId - #B-ID (z.B. '#B34')
      * @param {number} currentValue - Wird nicht mehr für Vergleich genutzt (Rückwärtskompatibilität)
      * @returns {boolean} true wenn vom User gesperrt, false wenn system-berechnet
      */
     function isValueChanged(needId, currentValue) {
-        if (typeof TiageState !== 'undefined' && TiageState.isNeedLocked) {
-            let currentPerson = 'ich';
-            if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-            return TiageState.isNeedLocked(currentPerson, needId);
+        // FIX v1.8.972: Prüfe RAM-Status (flatNeeds), nicht TiageState
+        // Mit Explicit Save Workflow sind Lock-Änderungen erst im RAM, nicht in persistent storage.
+        const needObj = findNeedById(needId);
+        if (needObj) {
+            return needObj.locked === true;
         }
         return false;
     }
@@ -3074,140 +3123,60 @@ const AttributeSummaryCard = (function() {
             html += `<div class="flat-needs-list-wrapper">
                 <div class="flat-needs-list hauptfragen-mode">`;
 
+            // UNIFIED RENDERING v1.8.985: Hauptfragen nutzen jetzt renderFlatNeedItem()
             hauptfragenData.forEach(hf => {
                 const isExpanded = expandedHauptfragen.has(hf.id);
                 const dimColor = getDimensionColor(hf.id);
                 const nuancenCount = hf.nuancenCount || 0;
                 const aggregatedValue = hf.aggregatedValue;
-                const isHauptfrageLocked = lockedHauptfragen.has(hf.id);
+                const isHauptfrageLocked = findNeedById(hf.id)?.locked === true;
                 const hasNuancen = nuancenCount > 0;
 
-                // Zähle gelockte Nuancen
-                let lockedNuancenCount = 0;
+                // Hauptfrage ist effektiv gelockt wenn: explizit gelockt ODER alle Nuancen gelockt
                 let allNuancenLocked = false;
                 if (hasNuancen && hf.nuancen && hf.nuancen.length > 0) {
-                    lockedNuancenCount = hf.nuancen.filter(nuanceId => {
-                        const nuanceObj = findNeedById(nuanceId);
-                        return nuanceObj?.locked === true;
-                    }).length;
-                    allNuancenLocked = lockedNuancenCount === hf.nuancen.length;
+                    allNuancenLocked = hf.nuancen.every(nuanceId => findNeedById(nuanceId)?.locked === true);
                 }
-                const hasLockedNuancen = lockedNuancenCount > 0;
-                const someNuancenLocked = hasLockedNuancen && !allNuancenLocked;
-
-                // Hauptfrage ist effektiv gelockt wenn: explizit gelockt ODER alle Nuancen gelockt
                 const isEffectivelyLocked = isHauptfrageLocked || allNuancenLocked;
 
-                // Slider ist disabled wenn: gelockt (explizit oder durch Nuancen) UND hat Nuancen
-                // Bei Hauptfragen ohne Nuancen ist Slider immer editierbar
-                const sliderDisabled = hasNuancen && isEffectivelyLocked;
-
-                // Zähle geänderte Nuancen
-                const changedNuancenCount = (hf.nuancen || []).filter(nuanceId => {
-                    const nuanceObj = findNeedById(nuanceId);
-                    return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
-                }).length;
-                const hasChangedNuancen = changedNuancenCount > 0;
-
-                // FIX: Prüfe auch ob Hauptfrage selbst geändert wurde (für Hauptfragen ohne Nuancen)
-                const hauptfrageDirectlyChanged = !hasNuancen && isValueChanged(hf.id, aggregatedValue);
-                const hasAnyChange = hasChangedNuancen || hauptfrageDirectlyChanged;
-
-                // CSS-Klassen
-                const changedClass = hasAnyChange ? ' has-changed-nuancen' : '';
-                const lockedClass = isEffectivelyLocked ? ' hauptfrage-locked' : '';
-                const lockedByNuancenClass = allNuancenLocked && !isHauptfrageLocked ? ' locked-by-nuancen' : '';
-                const partialLockedClass = someNuancenLocked ? ' has-locked-nuancen' : '';
-
-                // Indikator: Sternchen für geänderte Nuancen ODER direkte Änderung
-                const changedIndicator = hasAnyChange
-                    ? `<span class="hauptfrage-changed-indicator" title="${hauptfrageDirectlyChanged ? 'Wert wurde geändert' : `${changedNuancenCount} Nuance(n) geändert`}">*</span>`
-                    : '';
-
-                // Nuancen-Status Info (zeigt gelockt/geändert Anzahl)
-                let nuancenStatusInfo = '';
-                if (hasNuancen) {
-                    const statusParts = [];
-                    if (lockedNuancenCount > 0) statusParts.push(`${lockedNuancenCount}🔒`);
-                    if (changedNuancenCount > 0) statusParts.push(`${changedNuancenCount}*`);
-                    nuancenStatusInfo = statusParts.length > 0 ? ` <span class="nuancen-status-info">${statusParts.join(' ')}</span>` : '';
-                }
-
-                // Slider-Style für Hauptfrage (Wert auf 25er-Schritte runden)
+                // Slider-Wert runden
                 const sliderValue = roundTo25(aggregatedValue !== null ? aggregatedValue : 50);
-                const sliderStyle = dimColor
-                    ? `style="background: ${getSliderFillGradient(dimColor, sliderValue)};"`
-                    : '';
 
-                // Lock-Icon Tooltip
-                let lockTitle = '';
-                if (allNuancenLocked && !isHauptfrageLocked) {
-                    lockTitle = 'Alle Nuancen gesperrt - Hauptfrage automatisch fixiert';
-                } else if (someNuancenLocked) {
-                    lockTitle = `${lockedNuancenCount}/${nuancenCount} Nuancen gesperrt`;
-                } else if (isHauptfrageLocked) {
-                    lockTitle = 'Entsperren (Nuancen wieder editierbar)';
-                } else {
-                    lockTitle = 'Sperren (fixiert Wert, sperrt Nuancen)';
-                }
-
-                // Prüfe Auswahl-Status: Alle Nuancen + Hauptfrage ausgewählt?
-                const allIds = [hf.id, ...(hf.nuancen || [])];
-                const isHauptfrageSelected = allIds.every(id => selectedNeeds.has(id));
-                const someSelected = allIds.some(id => selectedNeeds.has(id));
-                const selectedClass = isHauptfrageSelected ? ' hauptfrage-selected' : (someSelected ? ' hauptfrage-partial-selected' : '');
-
-                // Hauptfrage-Item mit Expand-Toggle und Slider - CARD STYLE (Klick auf Card = Markieren)
-                html += `
-                <div class="hauptfrage-item hauptfrage-card${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}${lockedByNuancenClass}${partialLockedClass}${selectedClass}" data-hauptfrage-id="${hf.id}"
-                     onclick="AttributeSummaryCard.toggleHauptfrageSelection('${hf.id}')"
-                     title="Klicken um Hauptfrage + alle Nuancen zu markieren">
-                    <div class="hauptfrage-header">
-                        <span class="hauptfrage-expand-icon" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
-                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
-                            ${hf.id} ${hf.label}${changedIndicator}
-                        </span>
-                        <span class="hauptfrage-nuancen-count" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)${nuancenStatusInfo}` : '(direkt)'}</span>
-                        <div class="hauptfrage-controls" onclick="event.stopPropagation();">
-                            <span class="hauptfrage-lock-icon ${isEffectivelyLocked ? 'locked' : ''}${allNuancenLocked && !isHauptfrageLocked ? ' auto-locked' : ''}${someNuancenLocked ? ' partial-locked' : ''}"
-                                  onclick="AttributeSummaryCard.toggleHauptfrageLock('${hf.id}', this)"
-                                  title="${lockTitle}"></span>
-                        </div>
-                    </div>
-                    <div class="hauptfrage-slider-row" onclick="event.stopPropagation();">
-                        <input type="range" class="hauptfrage-slider"
-                               min="0" max="100" step="25" value="${sliderValue}"
-                               oninput="AttributeSummaryCard.onHauptfrageSliderInput('${hf.id}', this.value, this)"
-                               ${sliderStyle}
-                               ${sliderDisabled ? 'disabled' : ''}>
-                        <input type="text" class="hauptfrage-input" value="${sliderValue}" maxlength="3"
-                               onchange="AttributeSummaryCard.updateHauptfrageValue('${hf.id}', this.value)"
-                               ${sliderDisabled ? 'readonly' : ''}>
-                    </div>`;
-
-                // Nuancen-Liste (wenn aufgeklappt und Nuancen vorhanden)
+                // Nuancen-HTML pre-rendern (wenn aufgeklappt)
+                let nuancenHtml = '';
                 if (isExpanded && hf.nuancen && hf.nuancen.length > 0) {
-                    html += `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}" onclick="event.stopPropagation();">`;
+                    nuancenHtml = `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}" onclick="event.stopPropagation();">`;
                     hf.nuancen.forEach(nuanceId => {
                         const nuanceObj = findNeedById(nuanceId);
                         if (nuanceObj) {
-                            // Wenn Hauptfrage gelockt → Nuancen auch gelockt
                             const isLocked = isHauptfrageLocked || nuanceObj.locked || false;
-                            const nuanceValue = nuanceObj.value;
-                            html += renderFlatNeedItem(
+                            nuancenHtml += renderFlatNeedItem(
                                 nuanceId,
                                 `${nuanceId} ${nuanceObj.label}`,
-                                nuanceValue,
+                                nuanceObj.value,
                                 isLocked,
                                 dimColor,
-                                false // Nicht verstecken in expandierter Ansicht
+                                false
                             );
                         }
                     });
-                    html += `</div>`; // Close nuancen-list
+                    nuancenHtml += `</div>`;
                 }
 
-                html += `</div>`; // Close hauptfrage-item
+                // UNIFIED: Hauptfrage mit renderFlatNeedItem() rendern
+                html += renderFlatNeedItem(
+                    hf.id,
+                    `${hf.id} ${hf.label}`,
+                    sliderValue,
+                    isEffectivelyLocked,
+                    dimColor,
+                    false,
+                    {
+                        nuancenCount: nuancenCount,
+                        isExpanded: isExpanded,
+                        nuancenHtml: nuancenHtml
+                    }
+                );
             });
 
             html += `</div>`; // Close flat-needs-list
@@ -3365,8 +3334,8 @@ const AttributeSummaryCard = (function() {
         showOnlyChangedNeeds = state?.showOnlyChanged || false;
         currentSortPerson = person;
 
-        // Lade auch gelockte Hauptfragen für diese Person
-        loadLockedHauptfragen(person);
+        // REFACTORING v1.8.982: loadLockedHauptfragen() entfernt
+        // Hauptfragen werden jetzt in getFlatNeedsFromState() geladen
 
         console.log('[AttributeSummaryCard] State geladen für', person, ':', { sortMode: currentFlatSortMode, sortStack, sortDescending: currentSortDescending, showOnlyChanged: showOnlyChangedNeeds });
     }
@@ -3597,6 +3566,49 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Rendert den Speicher-Status-Badge (🟢 gespeichert / 🔴 nicht gespeichert)
+     * FIX v1.8.975: Explicit Save Workflow - zeigt ob RAM-Werte mit TiageState übereinstimmen
+     * @param {string} needId - #B-ID
+     * @param {number} ramValue - Aktueller Wert im RAM
+     * @param {boolean} ramLocked - Lock-Status im RAM
+     * @returns {string} HTML für den Status-Badge
+     */
+    function renderSaveStatusBadge(needId, ramValue, ramLocked) {
+        // Prüfe ob TiageState verfügbar ist
+        if (typeof TiageState === 'undefined' || !TiageState.get || !TiageState.isNeedLocked) {
+            // Fallback: Zeige 🔴 (nicht gespeichert) wenn TiageState nicht verfügbar
+            return `<span class="save-status-badge save-status-unsaved" title="Storage nicht verfügbar">🔴</span>`;
+        }
+
+        try {
+            // Ermittle Person und Archetyp
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext?.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+            const archetyp = TiageState.get('archetypes.ich.primary') || 'single';
+
+            // REFACTORING v1.8.982: Vereinfachte Logik - alle Needs (inkl. Hauptfragen) in flatNeeds
+            // Einheitliche Speicherstruktur - keine Sonderbehandlung mehr nötig!
+            const stateNeeds = TiageState.get(`flatNeeds.${currentPerson}.${archetyp}`) || {};
+            const stateValue = stateNeeds[needId];
+            const stateLocked = TiageState.isNeedLocked(currentPerson, needId);
+
+            // Vergleiche: Synchron wenn Wert UND Lock-Status gleich
+            const isSaved = (ramValue === stateValue) && (ramLocked === stateLocked);
+
+            const icon = isSaved ? '🟢' : '🔴';
+            const title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert (nur RAM) ✗';
+            const cssClass = isSaved ? 'save-status-saved' : 'save-status-unsaved';
+
+            return `<span class="save-status-badge ${cssClass}" title="${title}">${icon}</span>`;
+        } catch (error) {
+            console.error('[renderSaveStatusBadge] Fehler:', error, 'needId:', needId);
+            return `<span class="save-status-badge save-status-unsaved" title="Fehler beim Laden">🔴</span>`;
+        }
+    }
+
+    /**
      * Rendert ein einzelnes Bedürfnis-Item für die flache Darstellung
      * @param {string} needId - Bedürfnis-ID
      * @param {string} label - Anzeige-Label
@@ -3605,9 +3617,29 @@ const AttributeSummaryCard = (function() {
      * @param {string|null} dimensionColor - Optional: Farbe für border-left (bei Kategorie-Sortierung)
      * @param {boolean} shouldHide - Ob durch DimensionKategorieFilter versteckt
      */
-    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
+    /**
+     * UNIFIED RENDERING v1.8.985: Eine Funktion für ALLE Needs (Hauptfragen + Nuancen)
+     *
+     * @param {string} needId - #B-ID
+     * @param {string} label - Anzeige-Label
+     * @param {number} value - Wert 0-100
+     * @param {boolean} isLocked - Ob fixiert
+     * @param {string|null} dimensionColor - Farbe für border-left
+     * @param {boolean} shouldHide - Ob durch Filter versteckt
+     * @param {Object} [hfOptions] - Hauptfragen-Optionen (nur wenn Hauptfrage)
+     * @param {number} [hfOptions.nuancenCount] - Anzahl Nuancen
+     * @param {boolean} [hfOptions.isExpanded] - Aufgeklappt?
+     * @param {string} [hfOptions.nuancenHtml] - Pre-gerendertes Nuancen-HTML
+     */
+    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false, hfOptions = null) {
         // Wert auf 25er-Schritte runden
         value = roundTo25(value);
+        const isHauptfrage = hfOptions !== null;
+        const nuancenCount = hfOptions?.nuancenCount || 0;
+        const hasNuancen = nuancenCount > 0;
+        const isExpanded = hfOptions?.isExpanded || false;
+        const nuancenHtml = hfOptions?.nuancenHtml || '';
+
         // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -3616,32 +3648,53 @@ const AttributeSummaryCard = (function() {
         const isSelected = selectedNeeds.has(needId);
         const selectedClass = isSelected ? ' need-selected' : '';
         const filterHiddenClass = shouldHide ? ' dimension-filter-hidden' : '';
-        // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
+        const hauptfrageClass = isHauptfrage ? ' is-hauptfrage' : '';
+        const expandedClass = isExpanded ? ' expanded' : '';
+
+        // Slider-Track-Hintergrund
         const sliderStyle = dimensionColor
             ? `style="background: ${getSliderFillGradient(dimensionColor, value)};"`
             : '';
-        // Prüfe ob Wert geändert wurde (für Markierung und Filter)
+
+        // Prüfe ob Wert geändert wurde
         const valueChanged = isValueChanged(needId, value);
         const changedIndicator = valueChanged ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
-        // CSS-Klasse für geänderte Werte (visuelle Hervorhebung)
         const changedClass = valueChanged ? ' value-changed' : '';
-        // R-Faktor Badge (zeigt zu welchem R-Faktor dieses Bedürfnis beiträgt)
+
+        // Badges
         const rFactorBadge = renderRFactorBadge(needId, value);
-        // GOD-Modifikator Badge (zeigt G/O/D Einfluss auf dieses Bedürfnis)
         const godModBadge = renderGodModifierBadge(needId);
+        const saveStatusBadge = renderSaveStatusBadge(needId, value, isLocked);
+
+        // Expand-Icon (nur bei Hauptfragen mit Nuancen)
+        const expandIcon = (isHauptfrage && hasNuancen)
+            ? `<span class="need-expand-icon" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${needId}')">${isExpanded ? '▼' : '▶'}</span>`
+            : '';
+
+        // Nuancen-Count Badge (nur bei Hauptfragen)
+        const nuancenBadge = isHauptfrage
+            ? `<span class="need-nuancen-count" onclick="event.stopPropagation(); ${hasNuancen ? `AttributeSummaryCard.toggleHauptfrageExpand('${needId}')` : ''}">${hasNuancen ? `(${nuancenCount} Nuancen)` : '(direkt)'}</span>`
+            : '';
+
+        // Lock-Title
+        const lockTitle = isLocked ? 'Entsperren' : 'Sperren';
+
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}${hauptfrageClass}${expandedClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
             <div class="flat-need-header">
+                ${expandIcon}
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
+                ${nuancenBadge}
                 <div class="flat-need-controls">
+                    ${saveStatusBadge}
                     ${godModBadge}
                     ${rFactorBadge}
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
-                          title="Wert fixieren"></span>
+                          title="${lockTitle}"></span>
                 </div>
             </div>
             <div class="flat-need-slider-row">
@@ -3656,6 +3709,7 @@ const AttributeSummaryCard = (function() {
                        onclick="event.stopPropagation()"
                        ${isLocked ? 'readonly' : ''}>
             </div>
+            ${nuancenHtml}
         </div>`;
     }
 
@@ -3785,10 +3839,10 @@ const AttributeSummaryCard = (function() {
         const newValue = roundTo25(aggregation.value);
 
         // Aktualisiere die UI
-        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrage.id}"]`);
+        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrage.id}"]`);
         if (hauptfrageItem) {
-            const bar = hauptfrageItem.querySelector('.hauptfrage-bar');
-            const valueSpan = hauptfrageItem.querySelector('.hauptfrage-value');
+            const bar = hauptfrageItem.querySelector('.need-bar');
+            const valueSpan = hauptfrageItem.querySelector('.need-value');
 
             if (bar) {
                 bar.style.width = `${newValue || 0}%`;
@@ -3798,9 +3852,9 @@ const AttributeSummaryCard = (function() {
             }
 
             // NEU: Aktualisiere auch Slider und Input (wenn nicht gelockt)
-            if (!lockedHauptfragen.has(hauptfrage.id)) {
-                const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-                const input = hauptfrageItem.querySelector('.hauptfrage-input');
+            if (!findNeedById(hauptfrage.id)?.locked === true) {
+                const slider = hauptfrageItem.querySelector('.need-slider');
+                const input = hauptfrageItem.querySelector('.flat-need-input');
 
                 if (slider && newValue !== null) {
                     slider.value = newValue;
@@ -3831,9 +3885,9 @@ const AttributeSummaryCard = (function() {
             }
 
             // Sternchen-Indikator aktualisieren
-            const labelSpan = hauptfrageItem.querySelector('.hauptfrage-label');
+            const labelSpan = hauptfrageItem.querySelector('.flat-need-label');
             if (labelSpan) {
-                let indicator = labelSpan.querySelector('.hauptfrage-changed-indicator');
+                let indicator = labelSpan.querySelector('.value-changed-indicator');
                 if (hasChangedNuancen) {
                     if (!indicator) {
                         indicator = document.createElement('span');
@@ -3861,41 +3915,38 @@ const AttributeSummaryCard = (function() {
      * @param {HTMLElement} lockElement - Das Lock-Icon-Element
      */
     function toggleHauptfrageLock(hauptfrageId, lockElement) {
-        const isCurrentlyLocked = lockedHauptfragen.has(hauptfrageId);
+        // REFACTORING v1.8.982: Hauptfragen jetzt in flatNeeds[] - wie Nuancen behandeln
+        const needObj = findNeedById(hauptfrageId);
+        if (!needObj) {
+            console.warn(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} nicht in flatNeeds gefunden!`);
+            return;
+        }
+
+        const isCurrentlyLocked = needObj.locked === true;
         const newLockState = !isCurrentlyLocked;
 
-        if (newLockState) {
-            lockedHauptfragen.add(hauptfrageId);
-        } else {
-            lockedHauptfragen.delete(hauptfrageId);
+        // Update in RAM (flatNeeds[])
+        needObj.locked = newLockState;
+
+        // Get current value from UI
+        const hauptfrageItem = lockElement?.closest('.flat-need-item.is-hauptfrage');
+        let currentValue = 50;
+        if (hauptfrageItem) {
+            const input = hauptfrageItem.querySelector('.flat-need-input');
+            currentValue = parseInt(input?.value, 10) || 50;
         }
+        needObj.value = currentValue;
 
-        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} Lock: ${newLockState}`);
+        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} Lock: ${newLockState} (nur RAM)`);
 
-        // Speichere Lock-Status in TiageState
-        if (typeof TiageState !== 'undefined') {
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
+        // FIX v1.8.981: Explicit Save Workflow - NICHT sofort in TiageState speichern
+        // Konsistent mit toggleFlatNeedLock() - User muss "Speichern" klicken
 
-            // Speichere gelockte Hauptfragen als Array
-            const lockedArray = Array.from(lockedHauptfragen);
-            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragen`, lockedArray);
+        // Toast-Meldung (🔴 nicht gespeichert)
+        showLockToast(newLockState ? '🔴 Hauptfrage gesperrt (nicht gespeichert)' : '🔴 Hauptfrage entsperrt (nicht gespeichert)');
 
-            // Wenn gelockt: Speichere auch den aktuellen Wert
-            if (newLockState) {
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
-                if (hauptfrageItem) {
-                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
-                    const currentValue = parseInt(input?.value, 10) || 50;
-                    TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, currentValue);
-                }
-            }
-        }
-
-        // UI aktualisieren - komplettes Re-Render für konsistente Darstellung
-        reRenderFlatNeeds();
+        // FIX v1.8.981: Aktualisiere Save-Status-Badges
+        updateAllSaveStatusBadges();
     }
 
     /**
@@ -3910,7 +3961,7 @@ const AttributeSummaryCard = (function() {
         const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
 
         // Prüfe ob Hauptfrage explizit gelockt ist
-        if (lockedHauptfragen.has(hauptfrageId)) {
+        if (findNeedById(hauptfrageId)?.locked === true) {
             return; // Gelockt = nicht editierbar
         }
 
@@ -3923,9 +3974,9 @@ const AttributeSummaryCard = (function() {
         if (isNaN(numValue)) return;
 
         // Sync Input-Feld
-        const hauptfrageItem = sliderElement.closest('.hauptfrage-item');
+        const hauptfrageItem = sliderElement.closest('.flat-need-item.is-hauptfrage');
         if (hauptfrageItem) {
-            const input = hauptfrageItem.querySelector('.hauptfrage-input');
+            const input = hauptfrageItem.querySelector('.flat-need-input');
             if (input) input.value = numValue;
 
             // Slider-Track-Hintergrund aktualisieren
@@ -3944,21 +3995,14 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Speichere den Wert in TiageState und flatNeeds (nur für Hauptfragen OHNE Nuancen)
-        if (typeof TiageState !== 'undefined') {
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
-        }
-
+        // REFACTORING v1.8.982: upsertNeed() speichert jetzt Hauptfragen wie Nuancen
+        // Keine separate lockedHauptfragenValues Struktur mehr nötig!
         upsertNeed(hauptfrageId, { value: numValue });
 
         // Event für externe Listener
         document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
             bubbles: true,
-            detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
+            detail: { hauptfrageId, value: numValue, isLocked: findNeedById(hauptfrageId)?.locked === true, hasNuancen }
         }));
 
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
@@ -4169,7 +4213,7 @@ const AttributeSummaryCard = (function() {
         sliderElement.value = value;
 
         if (hauptfrageItem) {
-            const input = hauptfrageItem.querySelector('.hauptfrage-input');
+            const input = hauptfrageItem.querySelector('.flat-need-input');
             if (input) input.value = value;
         }
 
@@ -4193,7 +4237,7 @@ const AttributeSummaryCard = (function() {
         if (!hauptfrage) return;
 
         // Finde das DOM-Element wenn nicht übergeben
-        const item = hauptfrageItem || document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+        const item = hauptfrageItem || document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
         if (!item) return;
 
         // Zähle geänderte Nuancen
@@ -4212,9 +4256,9 @@ const AttributeSummaryCard = (function() {
         }
 
         // Sternchen-Indikator aktualisieren
-        const labelSpan = item.querySelector('.hauptfrage-label');
+        const labelSpan = item.querySelector('.flat-need-label');
         if (labelSpan) {
-            let indicator = labelSpan.querySelector('.hauptfrage-changed-indicator');
+            let indicator = labelSpan.querySelector('.value-changed-indicator');
             if (hasChangedNuancen) {
                 if (!indicator) {
                     indicator = document.createElement('span');
@@ -4229,7 +4273,7 @@ const AttributeSummaryCard = (function() {
         }
 
         // Nuancen-Status-Info aktualisieren (rechts neben der Nuancen-Anzahl)
-        const nuancenCountSpan = item.querySelector('.hauptfrage-nuancen-count');
+        const nuancenCountSpan = item.querySelector('.need-nuancen-count');
         if (nuancenCountSpan && nuancen.length > 0) {
             // Zähle gelockte Nuancen
             const lockedNuancenCount = nuancen.filter(nId => {
@@ -4341,7 +4385,7 @@ const AttributeSummaryCard = (function() {
         const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
 
         // Prüfe ob Hauptfrage explizit gelockt ist
-        if (lockedHauptfragen.has(hauptfrageId)) {
+        if (findNeedById(hauptfrageId)?.locked === true) {
             return; // Gelockt = nicht editierbar
         }
 
@@ -4354,8 +4398,8 @@ const AttributeSummaryCard = (function() {
         const numValue = roundTo25(parseInt(value, 10));
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
-        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
-        const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
+        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
+        const slider = hauptfrageItem?.querySelector('.need-slider');
 
         // Wenn Nuancen vorhanden: Nuancen anpassen um Zielwert zu erreichen
         if (hasNuancen && slider) {
@@ -4376,20 +4420,14 @@ const AttributeSummaryCard = (function() {
         }
 
         // Speichere den Wert in TiageState und flatNeeds
-        if (typeof TiageState !== 'undefined') {
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
-        }
-
+        // REFACTORING v1.8.982: upsertNeed() speichert jetzt Hauptfragen wie Nuancen
+        // Keine separate lockedHauptfragenValues Struktur mehr nötig!
         upsertNeed(hauptfrageId, { value: numValue });
 
         // Event für externe Listener
         document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
             bubbles: true,
-            detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
+            detail: { hauptfrageId, value: numValue, isLocked: findNeedById(hauptfrageId)?.locked === true, hasNuancen }
         }));
 
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
@@ -4407,43 +4445,19 @@ const AttributeSummaryCard = (function() {
         const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(nuanceId);
         if (!hauptfrage) return false;
 
-        return lockedHauptfragen.has(hauptfrage.id);
+        return findNeedById(hauptfrage.id)?.locked === true;
     }
 
     /**
-     * Lädt gelockte Hauptfragen aus TiageState
-     * @param {string} person - 'ich' oder 'partner'
+     * REFACTORING v1.8.982: loadLockedHauptfragen() ENTFERNT
+     * Hauptfragen werden jetzt in getFlatNeedsFromState() geladen (wie Nuancen)
      */
-    function loadLockedHauptfragen(person) {
-        lockedHauptfragen.clear();
-
-        if (typeof TiageState !== 'undefined') {
-            const lockedArray = TiageState.get(`profileReview.${person}.lockedHauptfragen`);
-            if (Array.isArray(lockedArray)) {
-                lockedArray.forEach(id => lockedHauptfragen.add(id));
-                console.log(`[AttributeSummaryCard] ${lockedHauptfragen.size} gelockte Hauptfragen geladen für ${person}`);
-            }
-        }
-    }
 
     /**
-     * Gibt den gelockten Wert einer Hauptfrage zurück (oder null wenn nicht gelockt)
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @returns {number|null} Der gelockte Wert oder null
+     * REFACTORING v1.8.982: getLockedHauptfrageValue() ENTFERNT
+     * Werte werden jetzt direkt aus flatNeeds[] gelesen (wie Nuancen)
+     * Verwendung: findNeedById(hauptfrageId)?.value
      */
-    function getLockedHauptfrageValue(hauptfrageId) {
-        if (!lockedHauptfragen.has(hauptfrageId)) return null;
-
-        if (typeof TiageState !== 'undefined') {
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-            return TiageState.get(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`) || null;
-        }
-
-        return null;
-    }
 
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -4529,39 +4543,31 @@ const AttributeSummaryCard = (function() {
 
             const slider = needItem.querySelector('.need-slider');
             const input = needItem.querySelector('.flat-need-input');
+            const lockIcon = needItem.querySelector('.need-lock-icon');
 
             if (slider) slider.disabled = isLocked;
             if (input) input.readOnly = isLocked;
+
+            // FIX v1.8.984: UPDATE LOCK ICON! 🔒/🔓
+            if (lockIcon) {
+                lockIcon.textContent = isLocked ? '🔒' : '🔓';
+                lockIcon.title = isLocked ? 'Wert fixiert - Klick zum Entsperren' : 'Wert flexibel - Klick zum Fixieren';
+            }
         }
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // DIREKT: Speichere Lock-Status in TiageState (SSOT)
+        // FIX v1.8.978: Explicit Save Workflow - NUR in RAM speichern, nicht sofort in TiageState
+        // Konsistent mit Bulk-Lock-Button - User muss "Speichern" klicken
         // ═══════════════════════════════════════════════════════════════════════════
-        if (typeof TiageState !== 'undefined') {
-            // Ermittle aktuelle Person aus Kontext
-            var currentPerson = 'ich';
-            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
 
-            if (isLocked) {
-                // Beim Sperren: Speichere Wert
-                const currentValue = needObj ? needObj.value : 50;
-                TiageState.lockNeed(currentPerson, needId, currentValue);
-                console.log('[toggleFlatNeedLock] Gesperrt & gespeichert:', needId, '=', currentValue, 'für', currentPerson);
-            } else {
-                // Beim Entsperren: Entferne aus lockedNeeds
-                TiageState.unlockNeed(currentPerson, needId);
-                console.log('[toggleFlatNeedLock] Entsperrt:', needId, 'für', currentPerson);
-            }
-            TiageState.saveToStorage();
+        // Toast-Meldung (🔴 nicht gespeichert)
+        showLockToast(isLocked ? '🔴 Wert gesperrt (nicht gespeichert)' : '🔴 Wert entsperrt (nicht gespeichert)');
 
-            // Toast-Meldung
-            showLockToast(isLocked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
+        // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
+        updateLockedCountDisplay();
 
-            // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
-            updateLockedCountDisplay();
-        }
+        // FIX v1.8.979: Konsistent mit lockSelectedNeeds() - gleiche Update-Funktion
+        updateAllSaveStatusBadges();
 
         // Event (für andere Listener)
         document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
@@ -4584,36 +4590,27 @@ const AttributeSummaryCard = (function() {
      * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
      */
     function updateHauptfrageLockDisplay(hauptfrageId) {
-        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+        // UNIFIED v1.8.985: Verwendet jetzt flat-need-item Selektoren
+        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
         if (!hauptfrageItem) return;
 
-        const isHauptfrageLocked = lockedHauptfragen.has(hauptfrageId);
+        const isHauptfrageLocked = findNeedById(hauptfrageId)?.locked === true;
         const allNuancenLocked = areAllNuancenLocked(hauptfrageId);
         const isEffectivelyLocked = isHauptfrageLocked || allNuancenLocked;
 
-        // Update CSS-Klassen
-        hauptfrageItem.classList.toggle('hauptfrage-locked', isEffectivelyLocked);
-        hauptfrageItem.classList.toggle('locked-by-nuancen', allNuancenLocked && !isHauptfrageLocked);
+        // Update CSS-Klassen (einheitlich mit flat needs)
+        hauptfrageItem.classList.toggle('need-locked', isEffectivelyLocked);
 
-        // Update Lock-Icon
-        const lockIcon = hauptfrageItem.querySelector('.hauptfrage-lock-icon');
+        // Update Lock-Icon (einheitlich: .need-lock-icon)
+        const lockIcon = hauptfrageItem.querySelector('.need-lock-icon');
         if (lockIcon) {
-            lockIcon.classList.toggle('locked', isEffectivelyLocked);
-            lockIcon.classList.toggle('auto-locked', allNuancenLocked && !isHauptfrageLocked);
-
-            // Update Tooltip
-            if (allNuancenLocked && !isHauptfrageLocked) {
-                lockIcon.title = 'Alle Nuancen gesperrt - Hauptfrage automatisch fixiert';
-            } else if (isHauptfrageLocked) {
-                lockIcon.title = 'Entsperren (Nuancen wieder editierbar)';
-            } else {
-                lockIcon.title = 'Sperren (fixiert Wert, sperrt Nuancen)';
-            }
+            lockIcon.textContent = isEffectivelyLocked ? '🔒' : '🔓';
+            lockIcon.title = isEffectivelyLocked ? 'Entsperren' : 'Sperren';
         }
 
-        // Update Slider und Input
-        const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-        const input = hauptfrageItem.querySelector('.hauptfrage-input');
+        // Update Slider und Input (einheitlich: .need-slider, .flat-need-input)
+        const slider = hauptfrageItem.querySelector('.need-slider');
+        const input = hauptfrageItem.querySelector('.flat-need-input');
         const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
         const sliderDisabled = hasNuancen && isEffectivelyLocked;
 
@@ -4897,7 +4894,7 @@ const AttributeSummaryCard = (function() {
                 needItem.classList.remove('need-locked');
                 const slider = needItem.querySelector('.need-slider');
                 const input = needItem.querySelector('.flat-need-input');
-                const lockIcon = needItem.querySelector('.flat-need-lock');
+                const lockIcon = needItem.querySelector('.need-lock-icon');
 
                 if (slider) slider.disabled = false;
                 if (input) input.readOnly = false;
@@ -5605,8 +5602,7 @@ const AttributeSummaryCard = (function() {
         onHauptfrageSliderInput,
         updateHauptfrageValue,
         isNuanceLockedByHauptfrage,
-        loadLockedHauptfragen,
-        getLockedHauptfrageValue,
+        // REFACTORING v1.8.982: loadLockedHauptfragen & getLockedHauptfrageValue entfernt
         GFK_KATEGORIEN,
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
@@ -5682,11 +5678,8 @@ if (typeof document !== 'undefined') {
                 console.log('[AttributeSummaryCard] Selektionen zurückgesetzt');
             }
 
-            // Gelockte Hauptfragen für neue Person laden
-            if (AttributeSummaryCard.loadLockedHauptfragen && event.detail?.person) {
-                AttributeSummaryCard.loadLockedHauptfragen(event.detail.person);
-                console.log('[AttributeSummaryCard] LockedHauptfragen geladen für', event.detail.person);
-            }
+            // REFACTORING v1.8.982: loadLockedHauptfragen() entfernt
+            // Hauptfragen werden automatisch in getFlatNeedsFromState() geladen
         }
     });
 
