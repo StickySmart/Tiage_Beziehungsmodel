@@ -761,11 +761,16 @@
             // Reset: G, O, D, A (Archetyp), R1-R4 (Resonanzfaktoren)
             // ═══════════════════════════════════════════════════════════════
 
-            // Reset personDimensions for partner (G, O, D)
+            // Reset personDimensions for partner (G, O, D, GFK)
             if (typeof personDimensions !== 'undefined' && personDimensions.partner) {
                 personDimensions.partner.geschlecht = null;
                 personDimensions.partner.orientierung = null;
                 personDimensions.partner.dominanz = null;
+                personDimensions.partner.gfk = null;
+            }
+            // v4.4: GFK für ICH auch zurücksetzen (GFK ist paarabhängig)
+            if (typeof personDimensions !== 'undefined' && personDimensions.ich) {
+                personDimensions.ich.gfk = null;
             }
 
             // Reset mobilePersonDimensions for partner
@@ -773,6 +778,10 @@
                 mobilePersonDimensions.partner.geschlecht = null;
                 mobilePersonDimensions.partner.orientierung = null;
                 mobilePersonDimensions.partner.dominanz = null;
+                mobilePersonDimensions.partner.gfk = null;
+            }
+            if (typeof mobilePersonDimensions !== 'undefined' && mobilePersonDimensions.ich) {
+                mobilePersonDimensions.ich.gfk = null;
             }
 
             // Reset partner archetype global variables
@@ -889,6 +898,17 @@
                 el.classList.add('needs-selection');
             });
 
+            // v4.4: GFK-UI sofort zurücksetzen (BEIDE Seiten)
+            if (typeof syncGfkUI === 'function') {
+                syncGfkUI('ich');
+                syncGfkUI('partner');
+            }
+
+            // v4.4: Lightbulb-Blink deaktivieren (kein Score ohne Partner)
+            if (typeof stopLightbulbBlink === 'function') {
+                stopLightbulbBlink();
+            }
+
             // Trigger recalculation
             if (typeof updateComparisonView === 'function') {
                 updateComparisonView();
@@ -904,7 +924,7 @@
                 updateRFactorDisplay();
             }
 
-            console.log('[Partner FREE] Reset complete - G, O, D, A (Archetyp) und R-Faktoren zurückgesetzt');
+            console.log('[Partner FREE] Reset complete - G, O, D, A, GFK und R-Faktoren zurückgesetzt');
         }
 
         // Expose globally
@@ -969,8 +989,11 @@
             }
 
             // Trigger lightbulb blink animation when score is calculated
+            // v4.4: Blink deaktivieren wenn Score incomplete/0
             if (currentScore > 0) {
                 triggerLightbulbBlink();
+            } else {
+                stopLightbulbBlink();
             }
 
             // Update Score Summary Line in Synthese Modal

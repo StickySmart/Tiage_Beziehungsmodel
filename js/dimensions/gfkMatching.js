@@ -138,7 +138,17 @@ var TiageGfkMatching = (function() {
         var ichArchetype = typeof window.getIchArchetype === 'function' ? window.getIchArchetype() : null;
         var partnerArchetype = typeof window.getPartnerArchetype === 'function' ? window.getPartnerArchetype() : null;
 
-        if (!ichArchetype || !partnerArchetype) return;
+        if (!ichArchetype || !partnerArchetype) {
+            // v4.4: Kein Partner → GFK für BEIDE auf null setzen + UI zurücksetzen
+            if (personDimensions.ich) personDimensions.ich.gfk = null;
+            if (personDimensions.partner) personDimensions.partner.gfk = null;
+            lastGfkMatchingResult = null;
+            syncGfkUI('ich');
+            syncGfkUI('partner');
+            updateGfkSummary('ich');
+            updateGfkSummary('partner');
+            return;
+        }
 
         var ichNormalized = ichArchetype;
         var partnerNormalized = partnerArchetype;

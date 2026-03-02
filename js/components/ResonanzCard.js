@@ -1484,9 +1484,6 @@ const ResonanzCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function recalculateResonanzForPerson(person) {
-        // DEBUG disabled - was causing infinite console messages
-        // console.log('[ResonanzCard.recalculate] START für', person);
-
         // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
         if (typeof TiageState !== 'undefined') {
@@ -1499,8 +1496,19 @@ const ResonanzCard = (function() {
                 archetypeKey = selectedPartner;
             }
         }
-        // DEBUG disabled - was causing infinite console messages
-        // console.log('[ResonanzCard.recalculate] Archetyp:', archetypeKey);
+
+        // v4.4: BeduerfnisIds-Schutz — nicht mit 1.0 überschreiben wenn Katalog nicht geladen
+        if (typeof TiageState !== 'undefined') {
+            const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loaded === true;
+            if (!beduerfnisIdsReady) {
+                const currentResonanz = TiageState.getResonanzFaktoren(person);
+                const hasPersistedValues = currentResonanz && currentResonanz.R1 &&
+                    (currentResonanz.R1.value !== undefined && currentResonanz.R1.value !== 1.0);
+                if (hasPersistedValues) {
+                    return;  // Katalog nicht geladen → persistierte Werte behalten
+                }
+            }
+        }
 
         // Hole Bedürfnisse (getPersonNeeds ist Teil von ResonanzCard)
         const needs = ResonanzCard.getPersonNeeds(person, archetypeKey);

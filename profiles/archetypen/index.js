@@ -648,37 +648,12 @@
             }
             // Wenn bereits im NEW format: NICHT überschreiben!
 
-            // resonanzFaktoren setzen (respektiere Locks!)
-            // FIX v4.3: Nicht überschreiben wenn BeduerfnisIds noch nicht geladen
-            // (Berechnung liefert 1.0 wenn Katalog-Daten fehlen → persistierte Werte gehen verloren)
-            if (calculatedProfile.resonanzFaktoren) {
-                const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loaded === true;
-                // FIX: Per-Archetyp-Pfad lesen (wie setResonanzFaktoren schreibt)
-                const currentResonanz = TiageState.getResonanzFaktoren(person);
-                const hasPersistedValues = currentResonanz && currentResonanz.R1 &&
-                    (currentResonanz.R1.value !== undefined && currentResonanz.R1.value !== 1.0);
-
-                if (!beduerfnisIdsReady && hasPersistedValues) {
-                    // BeduerfnisIds nicht geladen → Berechnung würde 1.0 liefern
-                    // Persistierte Werte behalten statt zu überschreiben
-                    console.log(`[ProfileCalculator] Behalte persistierte resonanzFaktoren für ${person} (BeduerfnisIds nicht geladen)`);
-                } else {
-                    const newResonanz = {};
-                    ['R1', 'R2', 'R3', 'R4'].forEach(key => {
-                        const current = currentResonanz?.[key];
-                        const calculated = calculatedProfile.resonanzFaktoren[key];
-                        // Nur überschreiben wenn nicht locked
-                        if (!current?.locked) {
-                            newResonanz[key] = calculated;
-                        } else {
-                            newResonanz[key] = current;
-                        }
-                    });
-                    // v3.2: Mit Clamping (0.5-1.5 → 0-1)
-                    TiageState.setResonanzFaktoren(person, newResonanz);
-                    console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person} (clamped):`, JSON.stringify(newResonanz));
-                }
-            }
+            // v4.4: R-Faktoren werden NICHT mehr von loadProfile geschrieben!
+            // Der reaktive Subscriber (flatNeeds.ich → recalculateResonanzForPerson)
+            // berechnet R-Faktoren korrekt aus den gemergten Needs (inkl. locked).
+            // Vorher: loadProfile überschrieb Subscriber-Werte mit R aus reinen Archetyp-Needs
+            // → Divergenz zwischen Hauptseite und needs-editor.
+            // BeduerfnisIds-Schutz ist jetzt in recalculateResonanzForPerson() eingebaut.
         }
 
         console.log(`[ProfileCalculator] Profil geladen: ${person}`, {
@@ -858,6 +833,18 @@
         const archetyp = TiageState.get(`archetypes.${person}.primary`);
         if (!archetyp) return;
 
+        // v4.4: BeduerfnisIds-Schutz — nicht mit 1.0 überschreiben wenn Katalog nicht geladen
+        const beduerfnisIdsReady = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds._loaded === true;
+        if (!beduerfnisIdsReady) {
+            const currentResonanz = TiageState.getResonanzFaktoren(person);
+            const hasPersistedValues = currentResonanz && currentResonanz.R1 &&
+                (currentResonanz.R1.value !== undefined && currentResonanz.R1.value !== 1.0);
+            if (hasPersistedValues) {
+                // Katalog nicht geladen → Berechnung würde 1.0 liefern → persistierte Werte behalten
+                return;
+            }
+        }
+
         // Hole aktuelle flatNeeds (werden für Resonanz-Berechnung benötigt)
         // FIX v4.3: getFlatNeeds() statt get('flatNeeds.ich') — letzteres gibt bei ICH
         // verschachteltes Eltern-Objekt { ra: {...}, single: {...} } zurück
@@ -867,8 +854,6 @@
         const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
-
-        // console.log(`[ProfileCalculator] recalculateResonanz für ${person.toUpperCase()}:`, { archetyp, needsCount: Object.keys(flatNeeds).length }); // DISABLED: Message overflow
 
         // Berechne Resonanzfaktoren
         const profileContext = {
