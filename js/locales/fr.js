@@ -1350,8 +1350,16 @@ var TiageLocale_FR = {
     },
 
     synthese: {
-        title: 'Ti-Age Synthèse',
-        compatibilityAnalysis: 'Analyse de compatibilité',
+        // Pas de partenaire
+        noPartnerSelected: 'Aucun partenaire s\u00e9lectionn\u00e9',
+        selectPartnerHint: 'S\u00e9lectionne un arch\u00e9type partenaire sur la page principale.',
+        selectPartnerHintCompare: 'S\u00e9lectionne un arch\u00e9type partenaire sur la page principale pour la comparaison.',
+        selectPartnerHintNeeds: 'S\u00e9lectionne un arch\u00e9type partenaire sur la page principale pour voir les besoins communs.',
+        selectPartnerHintPerspective: 'S\u00e9lectionne un arch\u00e9type partenaire sur la page principale pour voir les perspectives, l\'\u00e9quilibre t\u00eate-c\u0153ur et pour/contre.',
+        selectPartnerHintRTI: 'Seules tes valeurs ICH sont affich\u00e9es. S\u00e9lectionne un arch\u00e9type partenaire sur la page principale pour voir la comparaison.',
+
+        title: 'Ti-Age Synth\u00e8se',
+        compatibilityAnalysis: 'Analyse de compatibilit\u00e9',
         scoreProContra: 'Score – Pour & Contre',
         oshoZenTarot: 'Osho Zen Tarot',
         sharedNeeds: 'Besoins partagés',

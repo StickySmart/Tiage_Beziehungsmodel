@@ -24,6 +24,14 @@
     <script src="js/utils/hauptfrageAggregation.js"></script>
     <script src="js/state.js"></script>
 
+    <!-- i18n / Sprache -->
+    <script src="js/locales/de.js"></script>
+    <script src="js/locales/en.js"></script>
+    <script src="js/locales/it.js"></script>
+    <script src="js/locales/fr.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/locales/loader.js"></script>
+
     <!-- Archetypen Profile (müssen vor index.js geladen werden) -->
     <script src="profiles/archetypen/single.js"></script>
     <script src="profiles/archetypen/duo.js"></script>
@@ -572,8 +580,8 @@
                         </div>
                         <div style="text-align:center; padding: 40px 20px; color: var(--text-muted);">
                             <div style="font-size:36px; margin-bottom:12px;">🔥</div>
-                            <p style="font-size:14px; margin-bottom:8px;">Kein Partner ausgewählt</p>
-                            <p style="font-size:12px;">Wähle einen Partner-Archetypen auf der Hauptseite um die gemeinsamen Bedürfnisse zu sehen.</p>
+                            <p style="font-size:14px; margin-bottom:8px;">${TiageI18n.t('synthese.noPartnerSelected', 'Kein Partner ausgewählt')}</p>
+                            <p style="font-size:12px;">${TiageI18n.t('synthese.selectPartnerHintNeeds', 'Wähle einen Partner-Archetypen auf der Hauptseite um die gemeinsamen Bedürfnisse zu sehen.')}</p>
                         </div>
                     </div>
                 `;

@@ -1597,6 +1597,14 @@ var TiageLocale_DE = {
     // ═══════════════════════════════════════════════════════════════════════
 
     synthese: {
+        // Kein Partner
+        noPartnerSelected: 'Kein Partner ausgewählt',
+        selectPartnerHint: 'Wähle einen Partner-Archetypen auf der Hauptseite.',
+        selectPartnerHintCompare: 'Wähle einen Partner-Archetypen auf der Hauptseite für den Vergleich.',
+        selectPartnerHintNeeds: 'Wähle einen Partner-Archetypen auf der Hauptseite um die gemeinsamen Bedürfnisse zu sehen.',
+        selectPartnerHintPerspective: 'Wähle einen Partner-Archetypen auf der Hauptseite um Perspektiven, Kopf-Herz-Balance und Pro/Contra zu sehen.',
+        selectPartnerHintRTI: 'Es werden nur deine ICH-Werte angezeigt. Wähle einen Partner-Archetypen auf der Hauptseite um den Vergleich zu sehen.',
+
         // Modal-Titel & Tabs
         title: 'Ti-Age Synthese',
         compatibilityAnalysis: 'Kompatibilitäts-Analyse',

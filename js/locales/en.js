@@ -1592,6 +1592,14 @@ var TiageLocale_EN = {
     },
 
     synthese: {
+        // No partner
+        noPartnerSelected: 'No partner selected',
+        selectPartnerHint: 'Select a partner archetype on the main page.',
+        selectPartnerHintCompare: 'Select a partner archetype on the main page for comparison.',
+        selectPartnerHintNeeds: 'Select a partner archetype on the main page to see shared needs.',
+        selectPartnerHintPerspective: 'Select a partner archetype on the main page to see perspectives, head-heart balance and pro/contra.',
+        selectPartnerHintRTI: 'Only your ICH values are shown. Select a partner archetype on the main page to see the comparison.',
+
         title: 'Ti-Age Synthesis',
         compatibilityAnalysis: 'Compatibility Analysis',
         scoreProContra: 'Score – Pro & Contra',
