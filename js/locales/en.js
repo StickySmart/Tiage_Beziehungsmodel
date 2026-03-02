@@ -1682,6 +1682,18 @@ var TiageLocale_EN = {
         stepOf: 'Step {current} of {total}',
         minimize: 'Minimize',
         maximize: 'Workflow Guide',
+        greeting: {
+            title: 'Welcome to Ti-Age',
+            desc: 'This is not matching. This is a conversation with yourself – about what you truly want.',
+            philosophy: 'Tiage doesn\'t calculate dream partners. It shows you which patterns you live in relationships – and where you differ from your labels.',
+            expandHint: 'What awaits me?',
+            expandedContent: 'You will make choices: Archetype, Orientation, Dominance, Gender. Each selection loads statistical expectations. Then you show where you are different. Take your time. There are no wrong answers.'
+        },
+        returning: {
+            title: 'Welcome back',
+            desc: 'You\'re back. Your profile is waiting – just as you left it.',
+            philosophy: 'Your locked values are still there. They remain, regardless of which labels you try. If you\'ve changed: The model has too.'
+        },
         step1: {
             title: 'Choose your Archetype',
             desc: 'Your relationship model defines how you live love and partnership. From classic monogamy (Duo) to relationship anarchy (RA) – there is no right or wrong.',

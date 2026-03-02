@@ -404,8 +404,8 @@
             // Initialize dimension info link event listeners
             initDimensionInfoLinks();
 
-            // Initialize Philosophy Greeting Hints (0a or 0b)
-            initGreetingHint();
+            // Greeting Hint wird jetzt über den WorkflowGuide (Schritt 0) angezeigt
+            // initGreetingHint();
 
             updateAll();
         }

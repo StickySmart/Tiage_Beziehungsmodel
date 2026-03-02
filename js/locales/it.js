@@ -1682,6 +1682,18 @@ var TiageLocale_IT = {
         stepOf: 'Passo {current} di {total}',
         minimize: 'Minimizza',
         maximize: 'Guida al Workflow',
+        greeting: {
+            title: 'Benvenuto su Ti-Age',
+            desc: 'Questo non è un matching. È una conversazione con te stesso – su ciò che vuoi davvero.',
+            philosophy: 'Tiage non calcola partner ideali. Ti mostra quali schemi vivi nelle relazioni – e dove ti distingui dalle tue etichette.',
+            expandHint: 'Cosa mi aspetta?',
+            expandedContent: 'Farai delle scelte: Archetipo, Orientamento, Dominanza, Genere. Ogni selezione carica aspettative statistiche. Poi mostri dove sei diverso. Prenditi il tuo tempo. Non ci sono risposte sbagliate.'
+        },
+        returning: {
+            title: 'Bentornato',
+            desc: 'Sei tornato. Il tuo profilo ti aspetta – così come lo hai lasciato.',
+            philosophy: 'I tuoi valori bloccati sono ancora lì. Rimangono, indipendentemente dalle etichette che provi. Se sei cambiato: anche il modello.'
+        },
         step1: {
             title: 'Scegli il tuo Archetipo',
             desc: 'Il tuo modello relazionale definisce come vivi amore e partnership. Dalla monogamia classica (Duo) all\'anarchia relazionale (RA) – non esiste giusto o sbagliato.',

@@ -1440,6 +1440,18 @@ var TiageLocale_FR = {
         stepOf: '\u00c9tape {current} sur {total}',
         minimize: 'Minimiser',
         maximize: 'Guide du Workflow',
+        greeting: {
+            title: 'Bienvenue sur Ti-Age',
+            desc: 'Ce n\'est pas du matching. C\'est une conversation avec toi-m\u00eame \u2013 sur ce que tu veux vraiment.',
+            philosophy: 'Tiage ne calcule pas de partenaires id\u00e9aux. Il te montre quels sch\u00e9mas tu vis dans tes relations \u2013 et o\u00f9 tu te distingues de tes \u00e9tiquettes.',
+            expandHint: 'Que m\'attend-il ?',
+            expandedContent: 'Tu feras des choix : Arch\u00e9type, Orientation, Dominance, Genre. Chaque s\u00e9lection charge des attentes statistiques. Ensuite tu montres o\u00f9 tu es diff\u00e9rent. Prends ton temps. Il n\'y a pas de mauvaises r\u00e9ponses.'
+        },
+        returning: {
+            title: 'Bon retour',
+            desc: 'Tu es de retour. Ton profil t\'attend \u2013 tel que tu l\'as laiss\u00e9.',
+            philosophy: 'Tes valeurs verrouill\u00e9es sont toujours l\u00e0. Elles restent, quelles que soient les \u00e9tiquettes que tu essaies. Si tu as chang\u00e9 : le mod\u00e8le aussi.'
+        },
         step1: {
             title: 'Choisis ton Arch\u00e9type',
             desc: 'Ton mod\u00e8le relationnel d\u00e9finit comment tu vis l\'amour et le partenariat. De la monogamie classique (Duo) \u00e0 l\'anarchie relationnelle (RA) \u2013 il n\'y a ni juste ni faux.',

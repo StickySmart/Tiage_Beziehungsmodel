@@ -166,6 +166,34 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   GREETING ACTION BUTTON
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.workflow-guide__greeting-action {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--primary, #457B9D), var(--primary-light, #A8D5E2));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--font-xs, 0.85rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.workflow-guide__greeting-action:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.workflow-guide__greeting-action:active {
+    transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PROGRESS DOTS
    ═══════════════════════════════════════════════════════════════════════ */
 

@@ -5,7 +5,8 @@
  * Erkennt automatisch den aktuellen Schritt basierend auf TiageState.
  * Zeigt Workflow-Anleitung + philosophisches Zitat (Pirsig/Osho).
  *
- * 5 Schritte:
+ * 6 Schritte (0-5):
+ *   0. Begrüßung (neuer User / wiederkehrender User)
  *   1. ICH-Archetyp wählen
  *   2. ICH-Dimensionen (GOD) ausfüllen
  *   3. Partner-Archetyp wählen
@@ -20,10 +21,13 @@ const WorkflowGuide = (function() {
 
     const TOTAL_STEPS = 5;
     const STORAGE_KEY = 'tiage_workflow_minimized';
+    const GREETING_DISMISSED_KEY = 'tiage_workflow_greeting_seen';
 
     let panelEl = null;
-    let currentStep = 1;
+    let currentStep = 0;
     let isMinimized = false;
+    let isReturningUser = false;
+    let greetingDismissed = false;
     let unsubscribes = [];
 
     /**
@@ -36,9 +40,49 @@ const WorkflowGuide = (function() {
     }
 
     /**
-     * Erkennt den aktuellen Workflow-Schritt (1-5)
+     * Prüft ob der User ein bestehendes Profil hat
+     */
+    function checkReturningUser() {
+        try {
+            const savedState = localStorage.getItem('tiage_state');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                const ichLocked = state.profileReview?.ich?.global || state.profileReview?.ich?.lockedNeeds;
+                const hasLockedNeeds = ichLocked && Object.keys(ichLocked).length > 0;
+                const hasAGOD = state.personDimensions?.ich?.archetyp?.primary;
+                return hasLockedNeeds || hasAGOD;
+            }
+        } catch (e) { /* ignore */ }
+        return false;
+    }
+
+    /**
+     * Prüft ob die Begrüßung bereits gesehen wurde (in dieser Session)
+     */
+    function isGreetingDismissed() {
+        try {
+            return sessionStorage.getItem(GREETING_DISMISSED_KEY) === 'true';
+        } catch (e) { return false; }
+    }
+
+    /**
+     * Markiert die Begrüßung als gesehen
+     */
+    function dismissGreeting() {
+        greetingDismissed = true;
+        try {
+            sessionStorage.setItem(GREETING_DISMISSED_KEY, 'true');
+        } catch (e) { /* ignore */ }
+    }
+
+    /**
+     * Erkennt den aktuellen Workflow-Schritt (0-5)
+     * 0 = Begrüßung (nur wenn noch nicht dismissed)
      */
     function detectStep() {
+        // Schritt 0: Begrüßung (nur einmal pro Session)
+        if (!greetingDismissed) return 0;
+
         if (typeof TiageState === 'undefined') return 1;
 
         const ichArch = TiageState.getArchetype('ich');
@@ -60,6 +104,15 @@ const WorkflowGuide = (function() {
      * Gibt die Daten für einen Schritt zurück
      */
     function getStepData(step) {
+        if (step === 0) {
+            // Begrüßung: unterschiedlich für neue vs. wiederkehrende User
+            const key = isReturningUser ? 'workflow.returning' : 'workflow.greeting';
+            return {
+                title: t(`${key}.title`, 'Willkommen'),
+                desc: t(`${key}.desc`, ''),
+                philosophy: t(`${key}.philosophy`, '')
+            };
+        }
         const stepKey = `workflow.step${step}`;
         return {
             title: t(`${stepKey}.title`, `Schritt ${step}`),
@@ -76,14 +129,20 @@ const WorkflowGuide = (function() {
 
         const step = currentStep;
         const data = getStepData(step);
-        const stepLabel = t('workflow.stepOf', 'Schritt {current} von {total}')
-            .replace('{current}', step)
-            .replace('{total}', TOTAL_STEPS);
+        const isGreeting = (step === 0);
+
+        // Step Label
+        const stepLabel = isGreeting
+            ? '👋'
+            : t('workflow.stepOf', 'Schritt {current} von {total}')
+                .replace('{current}', step)
+                .replace('{total}', TOTAL_STEPS);
 
         // Header
         const header = panelEl.querySelector('.workflow-guide__header');
         if (header) {
-            header.querySelector('.workflow-guide__step-label').textContent = stepLabel;
+            header.querySelector('.workflow-guide__step-icon').textContent = isGreeting ? '👋' : '📋';
+            header.querySelector('.workflow-guide__step-label').textContent = isGreeting ? '' : stepLabel;
             header.querySelector('.workflow-guide__step-title-mini').textContent = data.title;
         }
 
@@ -96,8 +155,41 @@ const WorkflowGuide = (function() {
         if (descEl) descEl.textContent = data.desc;
         if (philoEl) philoEl.textContent = data.philosophy;
 
-        // Dots
+        // Weiter-Button (nur bei Begrüßung)
+        renderGreetingAction(isGreeting);
+
+        // Dots (nicht bei Begrüßung)
         renderDots();
+    }
+
+    /**
+     * Zeigt/versteckt den "Weiter"-Button bei der Begrüßung
+     */
+    function renderGreetingAction(isGreeting) {
+        if (!panelEl) return;
+
+        let actionEl = panelEl.querySelector('.workflow-guide__greeting-action');
+
+        if (isGreeting) {
+            if (!actionEl) {
+                actionEl = document.createElement('button');
+                actionEl.className = 'workflow-guide__greeting-action';
+                actionEl.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dismissGreeting();
+                    update();
+                });
+                const body = panelEl.querySelector('.workflow-guide__body');
+                const footer = panelEl.querySelector('.workflow-guide__footer');
+                if (body && footer) {
+                    body.insertBefore(actionEl, footer);
+                }
+            }
+            actionEl.textContent = t('ui.next', 'Weiter') + ' →';
+            actionEl.style.display = '';
+        } else if (actionEl) {
+            actionEl.style.display = 'none';
+        }
     }
 
     /**
@@ -108,6 +200,10 @@ const WorkflowGuide = (function() {
         if (!dotsEl) return;
 
         dotsEl.innerHTML = '';
+
+        // Keine Dots bei Begrüßung
+        if (currentStep === 0) return;
+
         for (let i = 1; i <= TOTAL_STEPS; i++) {
             const dot = document.createElement('span');
             dot.className = 'workflow-guide__dot';
@@ -224,6 +320,10 @@ const WorkflowGuide = (function() {
     function init() {
         // Lade Minimiert-Status
         loadMinimized();
+
+        // Returning-User erkennen
+        isReturningUser = checkReturningUser();
+        greetingDismissed = isGreetingDismissed();
 
         // Panel erstellen
         panelEl = createPanel();

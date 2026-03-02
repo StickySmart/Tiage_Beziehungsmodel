@@ -1711,6 +1711,18 @@ var TiageLocale_DE = {
         stepOf: 'Schritt {current} von {total}',
         minimize: 'Minimieren',
         maximize: 'Workflow-Guide',
+        greeting: {
+            title: 'Willkommen bei Ti-Age',
+            desc: 'Das hier ist kein Matching. Das hier ist ein Gespräch mit dir selbst – über das, was du wirklich willst.',
+            philosophy: 'Tiage berechnet keine Traumpartner. Es zeigt dir, welche Muster du in Beziehungen lebst – und wo du dich von deinen Labels unterscheidest.',
+            expandHint: 'Was erwartet mich?',
+            expandedContent: 'Du wirst Entscheidungen treffen: Archetyp, Orientierung, Dominanz, Geschlecht. Jede Auswahl lädt statistische Erwartungen. Dann zeigst du, wo du anders bist. Nimm dir Zeit. Es gibt keine falschen Antworten.'
+        },
+        returning: {
+            title: 'Willkommen zurück',
+            desc: 'Du bist zurück. Dein Profil wartet – so wie du es verlassen hast.',
+            philosophy: 'Deine gelockten Werte sind noch da. Sie bleiben, egal welche Labels du ausprobierst. Falls du dich verändert hast: Das Modell auch.'
+        },
         step1: {
             title: 'Wähle deinen Archetyp',
             desc: 'Dein Beziehungsmodell bestimmt, wie du Liebe und Partnerschaft lebst. Von klassisch-monogam (Duo) bis beziehungsanarchisch (RA) – es gibt kein richtig oder falsch.',
