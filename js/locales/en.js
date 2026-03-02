@@ -961,7 +961,48 @@ var TiageLocale_EN = {
         nutzungsbedingungen: 'Terms of Use',
         impressum: 'Legal Notice',
         copyright: 'All rights reserved',
-        rechtliches: 'Legal'
+        rechtliches: 'Legal',
+        hilfe: 'Help',
+        backToCalculator: 'Back to Calculator',
+
+        // Philosophical Foundations
+        philosophischeGrundlagen: 'Philosophical Foundations',
+        tiageSynthese: 'Tiage Synthesis',
+        tiageSyntheseDesc: '- The Overall Concept',
+        pirsigPhilosophie: 'Pirsig Philosophy',
+        pirsigDesc: '- Metaphysics of Quality',
+        oshoPhilosophie: 'OSHO Philosophy',
+        oshoDesc: '- Consciousness and Relationship',
+        pathosLogos: 'Pathos/Logos',
+        pathosLogosDesc: '- The 40:60 Weighting',
+        resonanzTheorie: 'Resonance Theory',
+        resonanzDesc: '- The Meta-Factor',
+        beziehungsmenu: 'Relationship Menu',
+        beziehungsmenuDesc: '- Anti-Escalator Menu',
+
+        // Scientific Sources
+        wissenschaftlicheQuellen: 'Scientific Sources',
+        researchSources: 'Research Sources',
+        researchSourcesDesc: '- Complete Source Collection',
+
+        // Docs page navigation
+        theorie: 'Theory',
+        quellen: 'Sources',
+        kommentare: 'Comments',
+        startseite: 'Home',
+        dokumentation: 'Documentation',
+        ladeDokumentation: 'Loading documentation...',
+        die4Faktoren: 'The 4 Factors',
+
+        // Donations
+        projektUnterstuetzen: 'Support the Project',
+        spendenText: 'Ti-age is free and ad-free. Support development with a donation!',
+        spendenButton: 'Donate via PayPal',
+
+        // Errors
+        fehlerBeimLaden: 'Loading Error',
+        dokuNichtGeladen: 'The requested documentation could not be loaded.',
+        zurueckZurUebersicht: 'Back to Overview'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

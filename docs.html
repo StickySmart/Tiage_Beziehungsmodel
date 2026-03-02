@@ -271,6 +271,14 @@
             }
         }
     </style>
+
+    <!-- i18n / Sprache -->
+    <script src="js/locales/de.js"></script>
+    <script src="js/locales/en.js"></script>
+    <script src="js/locales/it.js"></script>
+    <script src="js/locales/fr.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/locales/loader.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -278,14 +286,14 @@
         <div class="doc-header-inner">
             <a href="archetype-interaction.html" class="doc-back-btn">
                 <span>&larr;</span>
-                <span>Zurueck zum Rechner</span>
+                <span data-i18n="footer.backToCalculator">Zurueck zum Rechner</span>
             </a>
             <a href="archetype-interaction.html" class="doc-logo">Ti-Age</a>
             <nav class="doc-nav">
-                <a href="docs.html?doc=docs/help-guide.md">Hilfe</a>
-                <a href="docs.html?doc=docs/theory/tiage-synthesis.md">Theorie</a>
-                <a href="docs.html?doc=profiles/docs/research-sources.md">Quellen</a>
-                <a href="archetype-interaction.html?openComments=1">Kommentare</a>
+                <a href="docs.html?doc=docs/help-guide.md" data-i18n="footer.hilfe">Hilfe</a>
+                <a href="docs.html?doc=docs/theory/tiage-synthesis.md" data-i18n="footer.theorie">Theorie</a>
+                <a href="docs.html?doc=profiles/docs/research-sources.md" data-i18n="footer.quellen">Quellen</a>
+                <a href="archetype-interaction.html?openComments=1" data-i18n="footer.kommentare">Kommentare</a>
             </nav>
         </div>
     </header>
@@ -295,12 +303,12 @@
         <!-- Content Area -->
         <main class="doc-content">
             <div class="doc-breadcrumb" id="breadcrumb">
-                <a href="archetype-interaction.html">Startseite</a> &rsaquo;
-                <span id="currentPage">Dokumentation</span>
+                <a href="archetype-interaction.html" data-i18n="footer.startseite">Startseite</a> &rsaquo;
+                <span id="currentPage" data-i18n="footer.dokumentation">Dokumentation</span>
             </div>
             <div id="docBody">
                 <div class="md-loading">
-                    <span class="md-spinner"></span> Lade Dokumentation...
+                    <span class="md-spinner"></span> <span data-i18n="footer.ladeDokumentation">Lade Dokumentation...</span>
                 </div>
             </div>
         </main>
@@ -309,37 +317,37 @@
         <aside class="doc-sidebar">
             <!-- Navigation -->
             <div class="sidebar-card">
-                <h3>Philosophische Grundlagen</h3>
+                <h3 data-i18n="footer.philosophischeGrundlagen">Philosophische Grundlagen</h3>
                 <ul class="sidebar-links">
-                    <li><a href="docs.html?doc=docs/theory/tiage-synthesis.md">Tiage-Synthese</a></li>
-                    <li><a href="docs.html?doc=docs/theory/pirsig.md">Pirsig-Philosophie</a></li>
-                    <li><a href="docs.html?doc=docs/theory/osho.md">OSHO-Philosophie</a></li>
-                    <li><a href="docs.html?doc=docs/theory/pathos-logos.md">Pathos/Logos</a></li>
-                    <li><a href="docs.html?doc=docs/theory/resonance.md">Resonanz-Theorie</a></li>
-                    <li><a href="docs.html?doc=docs/theory/factors.md">Die 4 Faktoren</a></li>
+                    <li><a href="docs.html?doc=docs/theory/tiage-synthesis.md" data-i18n="footer.tiageSynthese">Tiage-Synthese</a></li>
+                    <li><a href="docs.html?doc=docs/theory/pirsig.md" data-i18n="footer.pirsigPhilosophie">Pirsig-Philosophie</a></li>
+                    <li><a href="docs.html?doc=docs/theory/osho.md" data-i18n="footer.oshoPhilosophie">OSHO-Philosophie</a></li>
+                    <li><a href="docs.html?doc=docs/theory/pathos-logos.md" data-i18n="footer.pathosLogos">Pathos/Logos</a></li>
+                    <li><a href="docs.html?doc=docs/theory/resonance.md" data-i18n="footer.resonanzTheorie">Resonanz-Theorie</a></li>
+                    <li><a href="docs.html?doc=docs/theory/factors.md" data-i18n="footer.die4Faktoren">Die 4 Faktoren</a></li>
                 </ul>
             </div>
 
             <div class="sidebar-card">
-                <h3>Rechtliches</h3>
+                <h3 data-i18n="footer.rechtliches">Rechtliches</h3>
                 <ul class="sidebar-links">
-                    <li><a href="datenschutz.html">Datenschutz</a></li>
-                    <li><a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></li>
+                    <li><a href="datenschutz.html" data-i18n="footer.datenschutz">Datenschutz</a></li>
+                    <li><a href="nutzungsbedingungen.html" data-i18n="footer.nutzungsbedingungen">Nutzungsbedingungen</a></li>
                 </ul>
             </div>
 
             <div class="sidebar-card">
-                <h3>Wissenschaftliche Quellen</h3>
+                <h3 data-i18n="footer.wissenschaftlicheQuellen">Wissenschaftliche Quellen</h3>
                 <ul class="sidebar-links">
-                    <li><a href="docs.html?doc=profiles/docs/research-sources.md">Research Sources</a></li>
+                    <li><a href="docs.html?doc=profiles/docs/research-sources.md" data-i18n="footer.researchSources">Research Sources</a></li>
                 </ul>
             </div>
 
             <!-- Spenden -->
             <div class="ad-space" style="min-height: auto; border-style: solid; border-color: rgba(234, 179, 8, 0.4);">
-                <div class="ad-space-label">Projekt unterstützen</div>
-                <p style="font-size: 12px; color: var(--text-secondary, #aaa); margin: 0 0 12px 0; line-height: 1.5;">
-                    Ti-age ist kostenlos und werbefrei.<br>
+                <div class="ad-space-label" data-i18n="footer.projektUnterstuetzen">Projekt unterstützen</div>
+                <p style="font-size: 12px; color: var(--text-secondary, #aaa); margin: 0 0 12px 0; line-height: 1.5;" data-i18n="footer.spendenText">
+                    Ti-age ist kostenlos und werbefrei.
                     Unterstütze die Entwicklung mit einer Spende!
                 </p>
                 <form action="https://www.paypal.com/donate" method="post" target="_blank" rel="noopener">
@@ -361,7 +369,7 @@
                         transition: background 0.2s, transform 0.1s;
                     " onmouseover="this.style.background='#005ea6'" onmouseout="this.style.background='#0070ba'">
                         <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" width="20" height="20" style="border-radius: 3px;">
-                        Spenden via PayPal
+                        <span data-i18n="footer.spendenButton">Spenden via PayPal</span>
                     </button>
                 </form>
             </div>
@@ -379,32 +387,53 @@
 
     <!-- Footer -->
     <footer class="doc-footer">
-        <div>&copy; 2025 Ti-Age - Alle Rechte vorbehalten</div>
+        <div>&copy; 2025 Ti-Age - <span data-i18n="footer.copyright">Alle Rechte vorbehalten</span></div>
         <div style="margin-top: 10px;">
-            <a href="archetype-interaction.html">Zurueck zum Rechner</a>
+            <a href="archetype-interaction.html" data-i18n="footer.backToCalculator">Zurueck zum Rechner</a>
             <span style="color: var(--primary);">|</span>
-            <a href="datenschutz.html">Datenschutz</a>
+            <a href="datenschutz.html" data-i18n="footer.datenschutz">Datenschutz</a>
             <span style="color: var(--primary);">|</span>
-            <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+            <a href="nutzungsbedingungen.html" data-i18n="footer.nutzungsbedingungen">Nutzungsbedingungen</a>
         </div>
     </footer>
 
     <!-- Markdown Loader -->
     <script src="js/markdown-loader.js"></script>
     <script>
-        // Document titles mapping
-        const docTitles = {
-            'docs/help-guide.md': 'Hilfe & Dokumentation',
-            'docs/theory/tiage-synthesis.md': 'Tiage-Synthese',
-            'docs/theory/pirsig.md': 'Pirsig-Philosophie',
-            'docs/theory/osho.md': 'OSHO-Philosophie',
-            'docs/theory/pathos-logos.md': 'Pathos/Logos Gewichtung',
-            'docs/theory/resonance.md': 'Resonanz-Theorie',
-            'docs/theory/factors.md': 'Die 4 Faktoren',
-            'docs/legal/datenschutz.md': 'Datenschutz',
-            'docs/legal/nutzungsbedingungen.md': 'Nutzungsbedingungen',
-            'profiles/docs/research-sources.md': 'Research Sources'
-        };
+        // i18n helper
+        function t(key, fallback) {
+            return (typeof TiageI18n !== 'undefined' && typeof TiageI18n.t === 'function')
+                ? TiageI18n.t(key, fallback) : fallback;
+        }
+
+        // Update all data-i18n elements
+        function updateI18nElements() {
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                var translated = t(key, null);
+                if (translated && translated !== key) {
+                    el.textContent = translated;
+                }
+            });
+        }
+
+        // Document titles mapping (i18n-aware)
+        function getDocTitles() {
+            return {
+                'docs/help-guide.md': t('footer.hilfe', 'Hilfe') + ' & ' + t('footer.dokumentation', 'Dokumentation'),
+                'docs/theory/tiage-synthesis.md': t('footer.tiageSynthese', 'Tiage-Synthese'),
+                'docs/theory/pirsig.md': t('footer.pirsigPhilosophie', 'Pirsig-Philosophie'),
+                'docs/theory/osho.md': t('footer.oshoPhilosophie', 'OSHO-Philosophie'),
+                'docs/theory/pathos-logos.md': t('footer.pathosLogos', 'Pathos/Logos'),
+                'docs/theory/resonance.md': t('footer.resonanzTheorie', 'Resonanz-Theorie'),
+                'docs/theory/factors.md': t('footer.die4Faktoren', 'Die 4 Faktoren'),
+                'docs/legal/datenschutz.md': t('footer.datenschutz', 'Datenschutz'),
+                'docs/legal/nutzungsbedingungen.md': t('footer.nutzungsbedingungen', 'Nutzungsbedingungen'),
+                'profiles/docs/research-sources.md': t('footer.researchSources', 'Research Sources')
+            };
+        }
+        // Backwards compat
+        var docTitles = getDocTitles();
 
         // Get document path from URL
         function getDocPath() {
@@ -426,7 +455,8 @@
 
         // Update breadcrumb
         function updateBreadcrumb(docPath) {
-            const title = docTitles[docPath] || docPath.split('/').pop().replace('.md', '');
+            const titles = getDocTitles();
+            const title = titles[docPath] || docPath.split('/').pop().replace('.md', '');
             document.getElementById('currentPage').textContent = title;
             document.title = title + ' | Ti-age';
         }
@@ -464,7 +494,7 @@
             updateBreadcrumb(docPath);
 
             const docBody = document.getElementById('docBody');
-            docBody.innerHTML = '<div class="md-loading"><span class="md-spinner"></span> Lade Dokumentation...</div>';
+            docBody.innerHTML = '<div class="md-loading"><span class="md-spinner"></span> ' + t('footer.ladeDokumentation', 'Lade Dokumentation...') + '</div>';
 
             try {
                 const html = await MarkdownLoader.load(docPath);
@@ -485,10 +515,10 @@
             } catch (error) {
                 docBody.innerHTML = `
                     <div class="md-error">
-                        <h2>Fehler beim Laden</h2>
-                        <p>Die angeforderte Dokumentation konnte nicht geladen werden.</p>
+                        <h2>${t('footer.fehlerBeimLaden', 'Fehler beim Laden')}</h2>
+                        <p>${t('footer.dokuNichtGeladen', 'Die angeforderte Dokumentation konnte nicht geladen werden.')}</p>
                         <p style="margin-top: 10px; font-size: 12px; opacity: 0.7;">${error.message}</p>
-                        <p style="margin-top: 15px;"><a href="docs.html" style="color: var(--primary);">Zurueck zur Uebersicht</a></p>
+                        <p style="margin-top: 15px;"><a href="docs.html" style="color: var(--primary);">${t('footer.zurueckZurUebersicht', 'Zurück zur Übersicht')}</a></p>
                     </div>
                 `;
             }
@@ -502,6 +532,18 @@
 
         // Initial load
         document.addEventListener('DOMContentLoaded', function() {
+            // i18n: Update all data-i18n elements
+            updateI18nElements();
+
+            // i18n: Subscribe to language changes
+            if (typeof TiageI18n !== 'undefined' && typeof TiageI18n.subscribe === 'function') {
+                TiageI18n.subscribe(function() {
+                    updateI18nElements();
+                    // Re-update breadcrumb with translated title
+                    updateBreadcrumb(getDocPath());
+                });
+            }
+
             const docPath = getDocPath();
             loadDocument(docPath);
 

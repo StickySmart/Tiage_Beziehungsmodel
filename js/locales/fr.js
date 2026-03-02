@@ -719,7 +719,48 @@ var TiageLocale_FR = {
         nutzungsbedingungen: 'Conditions d\'utilisation',
         impressum: 'Mentions l\u00e9gales',
         copyright: 'Tous droits r\u00e9serv\u00e9s',
-        rechtliches: 'Informations l\u00e9gales'
+        rechtliches: 'Informations l\u00e9gales',
+        hilfe: 'Aide',
+        backToCalculator: 'Retour au calculateur',
+
+        // Fondements philosophiques
+        philosophischeGrundlagen: 'Fondements philosophiques',
+        tiageSynthese: 'Synth\u00e8se Tiage',
+        tiageSyntheseDesc: '- Le concept global',
+        pirsigPhilosophie: 'Philosophie de Pirsig',
+        pirsigDesc: '- M\u00e9taphysique de la qualit\u00e9',
+        oshoPhilosophie: 'Philosophie OSHO',
+        oshoDesc: '- Conscience et relation',
+        pathosLogos: 'Pathos/Logos',
+        pathosLogosDesc: '- La pond\u00e9ration 40:60',
+        resonanzTheorie: 'Th\u00e9orie de la r\u00e9sonance',
+        resonanzDesc: '- Le m\u00e9ta-facteur',
+        beziehungsmenu: 'Menu relationnel',
+        beziehungsmenuDesc: '- Menu anti-escalade',
+
+        // Sources scientifiques
+        wissenschaftlicheQuellen: 'Sources scientifiques',
+        researchSources: 'Sources de recherche',
+        researchSourcesDesc: '- Collection compl\u00e8te des sources',
+
+        // Navigation page docs
+        theorie: 'Th\u00e9orie',
+        quellen: 'Sources',
+        kommentare: 'Commentaires',
+        startseite: 'Accueil',
+        dokumentation: 'Documentation',
+        ladeDokumentation: 'Chargement de la documentation...',
+        die4Faktoren: 'Les 4 facteurs',
+
+        // Dons
+        projektUnterstuetzen: 'Soutenir le projet',
+        spendenText: 'Ti-age est gratuit et sans publicit\u00e9. Soutenez le d\u00e9veloppement avec un don\u00a0!',
+        spendenButton: 'Faire un don via PayPal',
+
+        // Erreurs
+        fehlerBeimLaden: 'Erreur de chargement',
+        dokuNichtGeladen: 'La documentation demand\u00e9e n\'a pas pu \u00eatre charg\u00e9e.',
+        zurueckZurUebersicht: 'Retour \u00e0 l\'aper\u00e7u'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

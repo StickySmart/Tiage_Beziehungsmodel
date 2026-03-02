@@ -962,7 +962,48 @@ var TiageLocale_DE = {
         nutzungsbedingungen: 'Nutzungsbedingungen',
         impressum: 'Impressum',
         copyright: 'Alle Rechte vorbehalten',
-        rechtliches: 'Rechtliches'
+        rechtliches: 'Rechtliches',
+        hilfe: 'Hilfe',
+        backToCalculator: 'Zurück zum Rechner',
+
+        // Philosophische Grundlagen
+        philosophischeGrundlagen: 'Philosophische Grundlagen',
+        tiageSynthese: 'Tiage-Synthese',
+        tiageSyntheseDesc: '- Das Gesamtkonzept',
+        pirsigPhilosophie: 'Pirsig-Philosophie',
+        pirsigDesc: '- Metaphysik der Qualität',
+        oshoPhilosophie: 'OSHO-Philosophie',
+        oshoDesc: '- Bewusstsein und Beziehung',
+        pathosLogos: 'Pathos/Logos',
+        pathosLogosDesc: '- Die 40:60 Gewichtung',
+        resonanzTheorie: 'Resonanz-Theorie',
+        resonanzDesc: '- Der Meta-Faktor',
+        beziehungsmenu: 'Beziehungsmenü',
+        beziehungsmenuDesc: '- Anti-Rolltreppen Menü',
+
+        // Wissenschaftliche Quellen
+        wissenschaftlicheQuellen: 'Wissenschaftliche Quellen',
+        researchSources: 'Research Sources',
+        researchSourcesDesc: '- Vollständige Quellensammlung',
+
+        // Docs-Seite Navigation
+        theorie: 'Theorie',
+        quellen: 'Quellen',
+        kommentare: 'Kommentare',
+        startseite: 'Startseite',
+        dokumentation: 'Dokumentation',
+        ladeDokumentation: 'Lade Dokumentation...',
+        die4Faktoren: 'Die 4 Faktoren',
+
+        // Spenden
+        projektUnterstuetzen: 'Projekt unterstützen',
+        spendenText: 'Ti-age ist kostenlos und werbefrei. Unterstütze die Entwicklung mit einer Spende!',
+        spendenButton: 'Spenden via PayPal',
+
+        // Fehler
+        fehlerBeimLaden: 'Fehler beim Laden',
+        dokuNichtGeladen: 'Die angeforderte Dokumentation konnte nicht geladen werden.',
+        zurueckZurUebersicht: 'Zurück zur Übersicht'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
