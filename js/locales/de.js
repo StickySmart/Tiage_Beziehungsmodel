@@ -1747,6 +1747,30 @@ var TiageLocale_DE = {
             title: 'Ergebnis erkunden',
             desc: 'Klicke auf die vollständige Ti-Age Synthese. Die Resonanzfaktoren zeigen, wo eure Muster harmonieren oder reiben.',
             philosophy: '„Qualität ist kein Urteil — sie ist die Erfahrung von Übereinstimmung." — Pirsig'
+        },
+
+        // Needs-Editor spezifische Schritte
+        needsEditor: {
+            intro: {
+                title: 'Deine Bedürfnisse anpassen',
+                desc: 'Hier siehst du alle 219 Bedürfnisse deines Profils. Die Werte kommen aus deinem Archetyp und deinen Dimensionen – sie sind statistischer Durchschnitt, nicht deine Wahrheit.',
+                philosophy: '„Das hier bist nicht du. Das hier ist, was dein Label erwarten lässt." — Pirsig'
+            },
+            slider: {
+                title: 'Werte verschieben',
+                desc: 'Ziehe die Regler nach links (weniger wichtig) oder rechts (wichtiger). Die Grundwerte zeigen, was Statistik vermutet – deine Anpassungen zeigen, wer du wirklich bist.',
+                philosophy: '„Wer anfängt Fragen zu stellen, hat schon begonnen sich zu befreien." — Osho'
+            },
+            lock: {
+                title: 'Werte sichern',
+                desc: 'Klicke auf das Schloss-Symbol um einen Wert zu fixieren. Gelockte Werte bleiben erhalten, auch wenn du Archetyp oder Dimensionen änderst. Sie sind dein Kern.',
+                philosophy: '„Was du lockst, ist deine Wahrheit – unabhängig vom Label." — Pirsig'
+            },
+            filter: {
+                title: 'Filtern & Suchen',
+                desc: 'Nutze die Suchleiste oder Kategorie-Filter um bestimmte Bedürfnisse zu finden. Klicke auf ein Bedürfnis für die vollständige Definition und Herleitung.',
+                philosophy: '„Bewusstsein beginnt dort, wo du hinschaust – nicht wo du hingeschickt wirst." — Osho'
+            }
         }
     }
 };

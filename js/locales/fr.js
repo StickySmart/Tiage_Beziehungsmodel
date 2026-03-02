@@ -1444,7 +1444,7 @@ var TiageLocale_FR = {
             title: 'Bienvenue sur Ti-Age',
             desc: 'Ce n\'est pas du matching. C\'est une conversation avec toi-m\u00eame \u2013 sur ce que tu veux vraiment.',
             philosophy: 'Tiage ne calcule pas de partenaires id\u00e9aux. Il te montre quels sch\u00e9mas tu vis dans tes relations \u2013 et o\u00f9 tu te distingues de tes \u00e9tiquettes.',
-            expandHint: 'Que m\'attend-il ?',
+            expandHint: 'Qu\'est-ce qui m\'attend ?',
             expandedContent: 'Tu feras des choix : Arch\u00e9type, Orientation, Dominance, Genre. Chaque s\u00e9lection charge des attentes statistiques. Ensuite tu montres o\u00f9 tu es diff\u00e9rent. Prends ton temps. Il n\'y a pas de mauvaises r\u00e9ponses.'
         },
         returning: {
@@ -1476,6 +1476,30 @@ var TiageLocale_FR = {
             title: 'Explorer les R\u00e9sultats',
             desc: 'Clique sur la Synth\u00e8se Ti-Age compl\u00e8te. Les facteurs de r\u00e9sonance montrent o\u00f9 vos sch\u00e9mas s\'harmonisent ou entrent en conflit.',
             philosophy: '\u00ab La qualit\u00e9 n\'est pas un jugement \u2014 c\'est l\'exp\u00e9rience de l\'alignement. \u00bb \u2014 Pirsig'
+        },
+
+        // \u00c9tapes sp\u00e9cifiques de l\'\u00e9diteur de besoins
+        needsEditor: {
+            intro: {
+                title: 'Personnalise tes Besoins',
+                desc: 'Ici tu vois les 219 besoins de ton profil. Les valeurs proviennent de ton arch\u00e9type et de tes dimensions \u2013 ce sont des moyennes statistiques, pas ta v\u00e9rit\u00e9.',
+                philosophy: '\u00ab Ce n\'est pas toi. C\'est ce que ton \u00e9tiquette sugg\u00e8re. \u00bb \u2014 Pirsig'
+            },
+            slider: {
+                title: 'Ajuster les Valeurs',
+                desc: 'Fais glisser les curseurs vers la gauche (moins important) ou vers la droite (plus important). Les valeurs de base montrent ce que la statistique pr\u00e9dit \u2013 tes ajustements montrent qui tu es vraiment.',
+                philosophy: '\u00ab Celui qui commence \u00e0 poser des questions a d\u00e9j\u00e0 commenc\u00e9 \u00e0 se lib\u00e9rer. \u00bb \u2014 Osho'
+            },
+            lock: {
+                title: 'Verrouiller les Valeurs',
+                desc: 'Clique sur l\'ic\u00f4ne du cadenas pour fixer une valeur. Les valeurs verrouill\u00e9es persistent m\u00eame si tu changes d\'arch\u00e9type ou de dimensions. Elles sont ton noyau.',
+                philosophy: '\u00ab Ce que tu verrouilles est ta v\u00e9rit\u00e9 \u2013 ind\u00e9pendante de toute \u00e9tiquette. \u00bb \u2014 Pirsig'
+            },
+            filter: {
+                title: 'Filtrer et Chercher',
+                desc: 'Utilise la barre de recherche ou les filtres par cat\u00e9gorie pour trouver des besoins sp\u00e9cifiques. Clique sur un besoin pour la d\u00e9finition compl\u00e8te et la d\u00e9rivation.',
+                philosophy: '\u00ab La conscience commence l\u00e0 o\u00f9 tu regardes \u2013 pas l\u00e0 o\u00f9 on t\'envoie. \u00bb \u2014 Osho'
+            }
         }
     }
 };

@@ -1716,8 +1716,32 @@ var TiageLocale_IT = {
         },
         step5: {
             title: 'Esplora i Risultati',
-            desc: 'Clicca sulla Sintesi Ti-Age completa. I fattori di risonanza mostrano dove i vostri schemi armonizzano o confliggono.',
+            desc: 'Clicca sulla Sintesi Ti-Age completa. I fattori di risonanza mostrano dove i vostri schemi si armonizzano o entrano in conflitto.',
             philosophy: '„La qualità non è un giudizio — è l\'esperienza dell\'allineamento." — Pirsig'
+        },
+
+        // Passi specifici dell\'editor dei bisogni
+        needsEditor: {
+            intro: {
+                title: 'Personalizza i tuoi Bisogni',
+                desc: 'Qui vedi tutti i 219 bisogni del tuo profilo. I valori provengono dal tuo archetipo e dalle tue dimensioni – sono medie statistiche, non la tua verità.',
+                philosophy: '„Questo non sei tu. Questo è ciò che la tua etichetta suggerisce." — Pirsig'
+            },
+            slider: {
+                title: 'Regola i Valori',
+                desc: 'Trascina i cursori a sinistra (meno importante) o a destra (più importante). I valori base mostrano cosa prevede la statistica – le tue modifiche mostrano chi sei davvero.',
+                philosophy: '„Chi inizia a fare domande ha già cominciato a liberarsi." — Osho'
+            },
+            lock: {
+                title: 'Blocca i Valori',
+                desc: 'Clicca sull\'icona del lucchetto per fissare un valore. I valori bloccati rimangono anche se cambi archetipo o dimensioni. Sono il tuo nucleo.',
+                philosophy: '„Ciò che blocchi è la tua verità – indipendente da qualsiasi etichetta." — Pirsig'
+            },
+            filter: {
+                title: 'Filtra e Cerca',
+                desc: 'Usa la barra di ricerca o i filtri per categoria per trovare bisogni specifici. Clicca su un bisogno per la definizione completa e la derivazione.',
+                philosophy: '„La consapevolezza inizia dove guardi – non dove ti mandano." — Osho'
+            }
         }
     }
 };

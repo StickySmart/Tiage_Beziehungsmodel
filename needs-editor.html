@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="css/resonanz-tree-view.css">
     <!-- Active Filter Card Styling -->
     <link rel="stylesheet" href="css/active-filter-card.css">
+    <!-- Workflow Guide Styling -->
+    <link rel="stylesheet" href="css/workflow-guide.css">
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
@@ -29,6 +31,8 @@
     <!-- TIAGE i18n - Internationalisierung -->
     <script src="js/locales/de.js"></script>
     <script src="js/locales/en.js"></script>
+    <script src="js/locales/it.js"></script>
+    <script src="js/locales/fr.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/locales/loader.js"></script>
     <script src="js/version.js"></script>
@@ -533,6 +537,8 @@
     <script src="js/components/PerspektivenModal.js"></script>
     <!-- Active Filter Card -->
     <script src="js/components/ActiveFilterCard.js"></script>
+    <!-- Workflow Guide -->
+    <script src="js/components/WorkflowGuide.js"></script>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════
@@ -865,6 +871,11 @@
                 }
             }
             initializeNeedsEditor();
+
+            // Workflow Guide initialisieren
+            if (typeof WorkflowGuide !== 'undefined' && typeof WorkflowGuide.init === 'function') {
+                WorkflowGuide.init();
+            }
         });
 
         function initializeNeedsEditor() {

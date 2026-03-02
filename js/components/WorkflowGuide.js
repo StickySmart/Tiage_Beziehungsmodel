@@ -23,11 +23,16 @@ const WorkflowGuide = (function() {
     const STORAGE_KEY = 'tiage_workflow_minimized';
     const GREETING_DISMISSED_KEY = 'tiage_workflow_greeting_seen';
 
+    // Needs-Editor Schritte (kontextsensitiv)
+    const NEEDS_EDITOR_STEPS = ['intro', 'slider', 'lock', 'filter'];
+
     let panelEl = null;
     let currentStep = 0;
     let isMinimized = false;
     let isReturningUser = false;
     let greetingDismissed = false;
+    let isNeedsEditorPage = false;
+    let needsEditorStepIndex = 0;
     let unsubscribes = [];
 
     /**
@@ -76,10 +81,22 @@ const WorkflowGuide = (function() {
     }
 
     /**
-     * Erkennt den aktuellen Workflow-Schritt (0-5)
-     * 0 = Begrüßung (nur wenn noch nicht dismissed)
+     * Erkennt die aktuelle Seite
+     */
+    function detectPage() {
+        return window.location.pathname.includes('needs-editor');
+    }
+
+    /**
+     * Erkennt den aktuellen Workflow-Schritt
+     * Hauptseite: 0 (Begrüßung) bis 5
+     * Needs-Editor: needsEditor-Schritte (0-3)
      */
     function detectStep() {
+        if (isNeedsEditorPage) {
+            return needsEditorStepIndex;
+        }
+
         // Schritt 0: Begrüßung (nur einmal pro Session)
         if (!greetingDismissed) return 0;
 
@@ -104,6 +121,17 @@ const WorkflowGuide = (function() {
      * Gibt die Daten für einen Schritt zurück
      */
     function getStepData(step) {
+        // Needs-Editor: eigene Schritte
+        if (isNeedsEditorPage) {
+            const stepName = NEEDS_EDITOR_STEPS[step] || 'intro';
+            const key = `workflow.needsEditor.${stepName}`;
+            return {
+                title: t(`${key}.title`, stepName),
+                desc: t(`${key}.desc`, ''),
+                philosophy: t(`${key}.philosophy`, '')
+            };
+        }
+
         if (step === 0) {
             // Begrüßung: unterschiedlich für neue vs. wiederkehrende User
             const key = isReturningUser ? 'workflow.returning' : 'workflow.greeting';
@@ -129,19 +157,26 @@ const WorkflowGuide = (function() {
 
         const step = currentStep;
         const data = getStepData(step);
-        const isGreeting = (step === 0);
+        const isGreeting = (!isNeedsEditorPage && step === 0);
 
         // Step Label
-        const stepLabel = isGreeting
-            ? '👋'
-            : t('workflow.stepOf', 'Schritt {current} von {total}')
+        let stepLabel;
+        if (isGreeting) {
+            stepLabel = '👋';
+        } else if (isNeedsEditorPage) {
+            stepLabel = t('workflow.stepOf', 'Schritt {current} von {total}')
+                .replace('{current}', step + 1)
+                .replace('{total}', NEEDS_EDITOR_STEPS.length);
+        } else {
+            stepLabel = t('workflow.stepOf', 'Schritt {current} von {total}')
                 .replace('{current}', step)
                 .replace('{total}', TOTAL_STEPS);
+        }
 
         // Header
         const header = panelEl.querySelector('.workflow-guide__header');
         if (header) {
-            header.querySelector('.workflow-guide__step-icon').textContent = isGreeting ? '👋' : '📋';
+            header.querySelector('.workflow-guide__step-icon').textContent = isGreeting ? '👋' : (isNeedsEditorPage ? '📝' : '📋');
             header.querySelector('.workflow-guide__step-label').textContent = isGreeting ? '' : stepLabel;
             header.querySelector('.workflow-guide__step-title-mini').textContent = data.title;
         }
@@ -155,29 +190,39 @@ const WorkflowGuide = (function() {
         if (descEl) descEl.textContent = data.desc;
         if (philoEl) philoEl.textContent = data.philosophy;
 
-        // Weiter-Button (nur bei Begrüßung)
-        renderGreetingAction(isGreeting);
+        // Aktions-Button (Begrüßung: "Weiter", Needs-Editor: "Nächster Tipp")
+        renderActionButton(isGreeting);
 
-        // Dots (nicht bei Begrüßung)
+        // Dots
         renderDots();
     }
 
     /**
-     * Zeigt/versteckt den "Weiter"-Button bei der Begrüßung
+     * Zeigt/versteckt den Aktions-Button
+     * - Bei Begrüßung: "Weiter →" (dismissed die Begrüßung)
+     * - Bei Needs-Editor: "Nächster Tipp →" (blättert durch Schritte)
      */
-    function renderGreetingAction(isGreeting) {
+    function renderActionButton(isGreeting) {
         if (!panelEl) return;
 
+        const showButton = isGreeting || isNeedsEditorPage;
         let actionEl = panelEl.querySelector('.workflow-guide__greeting-action');
 
-        if (isGreeting) {
+        if (showButton) {
             if (!actionEl) {
                 actionEl = document.createElement('button');
                 actionEl.className = 'workflow-guide__greeting-action';
                 actionEl.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    dismissGreeting();
-                    update();
+                    if (isNeedsEditorPage) {
+                        // Nächster Needs-Editor Schritt (zyklisch)
+                        needsEditorStepIndex = (needsEditorStepIndex + 1) % NEEDS_EDITOR_STEPS.length;
+                        currentStep = needsEditorStepIndex;
+                        render();
+                    } else {
+                        dismissGreeting();
+                        update();
+                    }
                 });
                 const body = panelEl.querySelector('.workflow-guide__body');
                 const footer = panelEl.querySelector('.workflow-guide__footer');
@@ -185,7 +230,12 @@ const WorkflowGuide = (function() {
                     body.insertBefore(actionEl, footer);
                 }
             }
-            actionEl.textContent = t('ui.next', 'Weiter') + ' →';
+
+            if (isNeedsEditorPage) {
+                actionEl.textContent = t('ui.next', 'Weiter') + ' →';
+            } else {
+                actionEl.textContent = t('ui.next', 'Weiter') + ' →';
+            }
             actionEl.style.display = '';
         } else if (actionEl) {
             actionEl.style.display = 'none';
@@ -201,14 +251,21 @@ const WorkflowGuide = (function() {
 
         dotsEl.innerHTML = '';
 
-        // Keine Dots bei Begrüßung
-        if (currentStep === 0) return;
+        // Keine Dots bei Begrüßung (Hauptseite)
+        if (!isNeedsEditorPage && currentStep === 0) return;
 
-        for (let i = 1; i <= TOTAL_STEPS; i++) {
+        const totalDots = isNeedsEditorPage ? NEEDS_EDITOR_STEPS.length : TOTAL_STEPS;
+        const startIndex = isNeedsEditorPage ? 0 : 1;
+
+        for (let i = startIndex; i < startIndex + totalDots; i++) {
             const dot = document.createElement('span');
             dot.className = 'workflow-guide__dot';
-            if (i < currentStep) dot.classList.add('workflow-guide__dot--done');
-            if (i === currentStep) dot.classList.add('workflow-guide__dot--active');
+            if (isNeedsEditorPage) {
+                if (i === currentStep) dot.classList.add('workflow-guide__dot--active');
+            } else {
+                if (i < currentStep) dot.classList.add('workflow-guide__dot--done');
+                if (i === currentStep) dot.classList.add('workflow-guide__dot--active');
+            }
             dotsEl.appendChild(dot);
         }
     }
@@ -321,9 +378,12 @@ const WorkflowGuide = (function() {
         // Lade Minimiert-Status
         loadMinimized();
 
-        // Returning-User erkennen
+        // Seitenerkennung
+        isNeedsEditorPage = detectPage();
+
+        // Returning-User erkennen (nur auf Hauptseite relevant)
         isReturningUser = checkReturningUser();
-        greetingDismissed = isGreetingDismissed();
+        greetingDismissed = isNeedsEditorPage ? true : isGreetingDismissed();
 
         // Panel erstellen
         panelEl = createPanel();

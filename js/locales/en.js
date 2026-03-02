@@ -1718,6 +1718,30 @@ var TiageLocale_EN = {
             title: 'Explore Results',
             desc: 'Click on the full Ti-Age Synthesis. The resonance factors show where your patterns harmonize or clash.',
             philosophy: '"Quality is not a judgment — it is the experience of alignment." — Pirsig'
+        },
+
+        // Needs-Editor specific steps
+        needsEditor: {
+            intro: {
+                title: 'Customize your Needs',
+                desc: 'Here you see all 219 needs of your profile. The values come from your archetype and dimensions – they are statistical averages, not your truth.',
+                philosophy: '"This is not you. This is what your label suggests." — Pirsig'
+            },
+            slider: {
+                title: 'Adjust Values',
+                desc: 'Drag the sliders left (less important) or right (more important). The base values show what statistics predict – your adjustments show who you really are.',
+                philosophy: '"Whoever starts asking questions has already begun to free themselves." — Osho'
+            },
+            lock: {
+                title: 'Lock Values',
+                desc: 'Click the lock icon to fix a value. Locked values persist even if you change archetype or dimensions. They are your core.',
+                philosophy: '"What you lock is your truth – independent of any label." — Pirsig'
+            },
+            filter: {
+                title: 'Filter & Search',
+                desc: 'Use the search bar or category filters to find specific needs. Click on a need for the full definition and derivation.',
+                philosophy: '"Awareness begins where you look – not where you are sent." — Osho'
+            }
         }
     }
 };
