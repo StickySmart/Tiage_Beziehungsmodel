@@ -415,7 +415,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B1",
-      "kontext": "ausreichend trinken"
+      "kontext": "ausreichend trinken",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin auf ausreichende Flüssigkeitszufuhr und gesunde Ernährungsgewohnheiten achtet?",
+      "frageQuelle": "GFK Körperliche Bedürfnisse"
     },
     "#B3": {
       "id": "#B3",
@@ -428,7 +430,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B1",
-      "kontext": "gesunde Ernährung"
+      "kontext": "gesunde Ernährung",
+      "frage": "Wie wichtig ist es Ihnen, gemeinsame Mahlzeiten und Esskultur mit Ihrem Partner/Ihrer Partnerin zu teilen?",
+      "frageQuelle": "GFK Körperliche Bedürfnisse, PAIR Recreational Intimacy"
     },
     "#B4": {
       "id": "#B4",
@@ -445,7 +449,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B1",
-      "kontext": "körperliche Aktivität"
+      "kontext": "körperliche Aktivität",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin körperliche Aktivität und Bewegung wertschätzt?",
+      "frageQuelle": "GFK Körperliche Bedürfnisse"
     },
     "#B5": {
       "id": "#B5",
@@ -529,7 +535,9 @@
           "lat": 70,
           "aromantisch": 40
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, Ihre sexuellen Bedürfnisse und Wünsche in einer Beziehung offen ausdrücken zu können?",
+      "frageQuelle": "PAIR Sexual Intimacy: 'sharing affection, physical and sexual closeness'"
     },
     "#B8": {
       "id": "#B8",
@@ -563,7 +571,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B8",
-      "kontext": "sicherer Wohnraum"
+      "kontext": "sicherer Wohnraum",
+      "frage": "Wie wichtig ist es Ihnen, einen gemeinsamen sicheren Rückzugsort mit Ihrem Partner/Ihrer Partnerin zu haben?",
+      "frageQuelle": "GFK Körperliche Bedürfnisse: Unterkunft"
     },
     "#B10": {
       "id": "#B10",
@@ -593,7 +603,9 @@
           "lat": 70,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihre Beziehung von Beständigkeit und Verlässlichkeit geprägt ist?",
+      "frageQuelle": "ECR-R Anxiety: 'I rarely worry about my partner leaving me' (reversed concept)"
     },
     "#B11": {
       "id": "#B11",
@@ -646,7 +658,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B11",
-      "kontext": "Schutz & Geborgenheit"
+      "kontext": "Schutz & Geborgenheit",
+      "frage": "Wie wichtig ist es Ihnen, sich in Ihrer Beziehung emotional und physisch geschützt zu fühlen?",
+      "frageQuelle": "GFK Sicherheit: Schutz; Gottman Safety Scales"
     },
     "#B13": {
       "id": "#B13",
@@ -676,7 +690,9 @@
           "lat": 70,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen emotionale Stabilität und Vorhersehbarkeit in Ihrer Beziehung?",
+      "frageQuelle": "ECR-R Anxiety Scale, Gottman: Trust"
     },
     "#B14": {
       "id": "#B14",
@@ -722,7 +738,9 @@
           "lat": 65,
           "aromantisch": 50
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, sich bei Ihrem Partner/Ihrer Partnerin geborgen und aufgehoben zu fühlen?",
+      "frageQuelle": "ECR-R: 'It helps to turn to my romantic partner in times of need'; GFK: Geborgenheit"
     },
     "#B16": {
       "id": "#B16",
@@ -738,7 +756,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B18",
-      "kontext": "emotionale Wärme"
+      "kontext": "emotionale Wärme",
+      "frage": "Wie wichtig ist es Ihnen, emotionale Wärme und Herzlichkeit von Ihrem Partner/Ihrer Partnerin zu erfahren?",
+      "frageQuelle": "PAIR Emotional Intimacy: 'feeling closeness'; GFK: Wärme"
     },
     "#B17": {
       "id": "#B17",
@@ -834,7 +854,9 @@
           "lat": 80,
           "aromantisch": 35
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen emotionale und körperliche Intimität in einer Beziehung?",
+      "frageQuelle": "PAIR: 5 Intimacy Dimensions (Emotional, Social, Sexual, Intellectual, Recreational)"
     },
     "#B21": {
       "id": "#B21",
@@ -865,7 +887,9 @@
           "lat": 80,
           "aromantisch": 30
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, Liebe in Ihrer Beziehung sowohl zu geben als auch zu empfangen?",
+      "frageQuelle": "GFK Verbindung: Liebe; Gottman Fondness & Admiration"
     },
     "#B22": {
       "id": "#B22",
@@ -915,7 +939,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B22",
-      "kontext": "Unterstützung erhalten"
+      "kontext": "Unterstützung erhalten",
+      "frage": "Wie wichtig ist es Ihnen, von Ihrem Partner/Ihrer Partnerin in schwierigen Zeiten unterstützt zu werden?",
+      "frageQuelle": "PAIR Emotional Intimacy: 'be supported without defensiveness'; ECR-R: 'turn to partner in times of need'"
     },
     "#B24": {
       "id": "#B24",
@@ -945,7 +971,9 @@
           "lat": 75,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, füreinander da zu sein – in guten wie in schweren Zeiten?",
+      "frageQuelle": "Relationship Menu: 'Unterstützung bei gesundheitlichen Problemen', 'Bereitschaft, Herausforderungen zu meistern'"
     },
     "#B25": {
       "id": "#B25",
@@ -1009,7 +1037,9 @@
           "lat": 75,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Mitgefühl für Ihre Sorgen und Nöte zeigt?",
+      "frageQuelle": "GFK Einfühlung: Empathie; Gottman Emotional Attunement"
     },
     "#B27": {
       "id": "#B27",
@@ -1025,7 +1055,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B25",
-      "kontext": "berücksichtigt werden"
+      "kontext": "berücksichtigt werden",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihre Bedürfnisse und Wünsche in der Beziehung berücksichtigt werden?",
+      "frageQuelle": "GFK: Gleichbehandlung; Gottman Bids for Connection"
     },
     "#B28": {
       "id": "#B28",
@@ -1055,7 +1087,9 @@
           "lat": 75,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin sich in Ihre Gefühlswelt hineinversetzen kann?",
+      "frageQuelle": "GFK Einfühlung; PAIR Emotional Intimacy: 'My partner can really understand my hurts and joys'"
     },
     "#B29": {
       "id": "#B29",
@@ -1102,7 +1136,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B31",
-      "kontext": "Beachtung finden"
+      "kontext": "Beachtung finden",
+      "frage": "Wie wichtig ist es Ihnen, von Ihrem Partner/Ihrer Partnerin wahrgenommen und beachtet zu werden?",
+      "frageQuelle": "Gottman: Turning Towards, Bids for Connection"
     },
     "#B31": {
       "id": "#B31",
@@ -1165,7 +1201,9 @@
           "lat": 80,
           "aromantisch": 85
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, sich von Ihrem Partner/Ihrer Partnerin wirklich verstanden zu fühlen?",
+      "frageQuelle": "ECR-R: 'My partner really understands me and my needs'; GFK: Verständnis"
     },
     "#B33": {
       "id": "#B33",
@@ -1257,7 +1295,9 @@
           "lat": 80,
           "aromantisch": 85
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, in Ihrer Beziehung eigene Entscheidungen treffen zu können?",
+      "frageQuelle": "GFK Autonomie: Freiheit, Selbstbestimmung"
     },
     "#B36": {
       "id": "#B36",
@@ -1287,7 +1327,9 @@
           "lat": 85,
           "aromantisch": 90
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen persönliche Unabhängigkeit innerhalb einer Beziehung?",
+      "frageQuelle": "Relationship Menu Autonomie: 'Pflege von unabhängigen Freundschaften'; GFK Autonomie"
     },
     "#B37": {
       "id": "#B37",
@@ -1317,7 +1359,9 @@
           "lat": 95,
           "aromantisch": 85
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, eigenen Raum und Zeit für sich zu haben, auch wenn Sie in einer Beziehung sind?",
+      "frageQuelle": "Relationship Menu: 'Balance von gemeinsamer und getrennter Zeit'; GFK Autonomie"
     },
     "#B38": {
       "id": "#B38",
@@ -1383,7 +1427,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B39",
-      "kontext": "gute Kommunikation"
+      "kontext": "gute Kommunikation",
+      "frage": "Wie wichtig ist Ihnen offene und ehrliche Kommunikation in einer Beziehung?",
+      "frageQuelle": "Gottman Conflict Scales; Relationship Menu: 'Tiefe Ehrlichkeit', 'Gewaltfreie Kommunikation'"
     },
     "#B41": {
       "id": "#B41",
@@ -1413,7 +1459,9 @@
           "lat": 65,
           "aromantisch": 75
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, mit Ihrem Partner/Ihrer Partnerin ein Gefühl von Gemeinschaft und Zusammengehörigkeit zu teilen?",
+      "frageQuelle": "GFK Verbindung: Gemeinschaft; PAIR Social Intimacy"
     },
     "#B42": {
       "id": "#B42",
@@ -1463,7 +1511,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B39",
-      "kontext": "gegenseitiges Geben"
+      "kontext": "gegenseitiges Geben",
+      "frage": "Wie wichtig ist Ihnen Gegenseitigkeit und Ausgewogenheit im Geben und Nehmen in Ihrer Beziehung?",
+      "frageQuelle": "GFK Verbindung; Equity Theory in Relationships"
     },
     "#B44": {
       "id": "#B44",
@@ -1497,7 +1547,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B42",
-      "kontext": "Bedeutung für andere haben"
+      "kontext": "Bedeutung für andere haben",
+      "frage": "Wie wichtig ist es Ihnen, für Ihren Partner/Ihre Partnerin bedeutsam und wichtig zu sein?",
+      "frageQuelle": "Gottman: Love Maps (knowing partner's inner world); GFK: Bedeutung"
     },
     "#B46": {
       "id": "#B46",
@@ -1514,7 +1566,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B48",
-      "kontext": "Schönheit erleben"
+      "kontext": "Schönheit erleben",
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin Schönheit und Ästhetik zu genießen?",
+      "frageQuelle": "GFK Geistige Bedürfnisse: Ästhetik; PAIR Recreational Intimacy"
     },
     "#B47": {
       "id": "#B47",
@@ -1581,7 +1635,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B48",
-      "kontext": "Humor & Lachen"
+      "kontext": "Humor & Lachen",
+      "frage": "Wie wichtig ist es Ihnen, mit Ihrem Partner/Ihrer Partnerin lachen und Humor teilen zu können?",
+      "frageQuelle": "GFK Geistige Bedürfnisse: Humor; Gottman: Shared Meaning"
     },
     "#B50": {
       "id": "#B50",
@@ -1632,7 +1688,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B50",
-      "kontext": "echtes Sein"
+      "kontext": "echtes Sein",
+      "frage": "Wie wichtig ist es Ihnen, in Ihrer Beziehung authentisch und echt sein zu können?",
+      "frageQuelle": "GFK Integrität: Authentizität; Big Five: Openness"
     },
     "#B52": {
       "id": "#B52",
@@ -1649,7 +1707,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B50",
-      "kontext": "integer handeln"
+      "kontext": "integer handeln",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin integer und in Übereinstimmung mit seinen/ihren Werten handelt?",
+      "frageQuelle": "GFK Integrität; Schwartz Values: Conformity (acting consistently with values)"
     },
     "#B53": {
       "id": "#B53",
@@ -1667,7 +1727,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B55",
-      "kontext": "im Moment sein"
+      "kontext": "im Moment sein",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin im gemeinsamen Moment wirklich präsent ist?",
+      "frageQuelle": "Gottman: Turning Towards, Quality Attention; Mindfulness Research"
     },
     "#B54": {
       "id": "#B54",
@@ -1683,7 +1745,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B55",
-      "kontext": "geordnetes Denken"
+      "kontext": "geordnetes Denken",
+      "frage": "Wie wichtig ist Ihnen ein ähnliches Bedürfnis nach Ordnung wie bei Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Big Five: Conscientiousness (Orderliness); GFK Geistige Bedürfnisse: Ordnung"
     },
     "#B55": {
       "id": "#B55",
@@ -1734,7 +1798,9 @@
           "lat": 60,
           "aromantisch": 70
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin Herausforderungen anzunehmen und zu meistern?",
+      "frageQuelle": "Relationship Menu: 'Bereitschaft, Herausforderungen zu meistern'; GFK Entwicklung"
     },
     "#B57": {
       "id": "#B57",
@@ -1751,7 +1817,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B55",
-      "kontext": "klare Gedanken"
+      "kontext": "klare Gedanken",
+      "frage": "Wie wichtig ist Ihnen Klarheit und Transparenz in der Kommunikation mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "GFK Sicherheit: Klarheit; Gottman: Clear Communication"
     },
     "#B58": {
       "id": "#B58",
@@ -1801,7 +1869,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B58",
-      "kontext": "effizient arbeiten"
+      "kontext": "effizient arbeiten",
+      "frage": "Wie wichtig ist es Ihnen, dass Sie und Ihr Partner/Ihre Partnerin gemeinsame Aufgaben effizient bewältigen?",
+      "frageQuelle": "Big Five: Conscientiousness; GFK Entwicklung: Effektivität"
     },
     "#B60": {
       "id": "#B60",
@@ -1818,7 +1888,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B58",
-      "kontext": "wirksam sein"
+      "kontext": "wirksam sein",
+      "frage": "Wie wichtig ist es Ihnen, sich in Ihrer Beziehung wirksam und einflussreich zu fühlen?",
+      "frageQuelle": "GFK Entwicklung: Wirksamkeit; Self-Efficacy Theory (Bandura)"
     },
     "#B61": {
       "id": "#B61",
@@ -1867,7 +1939,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B61",
-      "kontext": "Sinn finden"
+      "kontext": "Sinn finden",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihre Beziehung Sinn und Bedeutung in Ihrem Leben stiftet?",
+      "frageQuelle": "GFK Entwicklung: Sinn, Bedeutung; Gottman: Shared Meaning System"
     },
     "#B63": {
       "id": "#B63",
@@ -1884,7 +1958,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B61",
-      "kontext": "etwas beitragen"
+      "kontext": "etwas beitragen",
+      "frage": "Wie wichtig ist es Ihnen, einen bedeutsamen Beitrag zum Leben Ihres Partners/Ihrer Partnerin zu leisten?",
+      "frageQuelle": "GFK Entwicklung: Beitrag; Schwartz: Benevolence"
     },
     "#B64": {
       "id": "#B64",
@@ -1966,7 +2042,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B65",
-      "kontext": "Neues lernen"
+      "kontext": "Neues lernen",
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin zu lernen und sich weiterzuentwickeln?",
+      "frageQuelle": "GFK Entwicklung: Lernen; Big Five: Openness (Intellect)"
     },
     "#B67": {
       "id": "#B67",
@@ -1996,7 +2074,9 @@
           "lat": 80,
           "aromantisch": 85
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, sich in Ihrer Beziehung frei ausdrücken und entfalten zu können?",
+      "frageQuelle": "GFK Entwicklung: Kreativität, Selbst-Ausdruck; Schwartz: Self-Direction"
     },
     "#B68": {
       "id": "#B68",
@@ -2026,7 +2106,9 @@
           "lat": 70,
           "aromantisch": 75
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, von Ihrem Partner/Ihrer Partnerin inspiriert und angeregt zu werden?",
+      "frageQuelle": "GFK Geistige Bedürfnisse: Inspiration; PAIR Intellectual Intimacy"
     },
     "#B69": {
       "id": "#B69",
@@ -2088,7 +2170,9 @@
           "lat": 75,
           "aromantisch": 80
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Sie inspiriert und bereichert?",
+      "frageQuelle": "GFK Geistige Bedürfnisse: Inspiration; Big Five: Openness"
     },
     "#B71": {
       "id": "#B71",
@@ -2138,7 +2222,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B71",
-      "kontext": "Einsicht & Erkenntnis"
+      "kontext": "Einsicht & Erkenntnis",
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin eigene Fehler einsehen und zugeben kann?",
+      "frageQuelle": "Gottman: Accepting Influence, Repair Attempts"
     },
     "#B73": {
       "id": "#B73",
@@ -2155,7 +2241,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B71",
-      "kontext": "Vergänglichkeit akzeptieren"
+      "kontext": "Vergänglichkeit akzeptieren",
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam Abschlüsse zu feiern und neue Anfänge zu gestalten?",
+      "frageQuelle": "GFK Entwicklung: Feiern, Trauern; Gottman: Shared Rituals"
     },
     "#B74": {
       "id": "#B74",
@@ -3535,7 +3623,9 @@
           "lat": 45,
           "aromantisch": 25
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Teil Ihres Freundeskreises wird?",
+      "frageQuelle": "PAIR Social Intimacy: 'having common friends'"
     },
     "#B157": {
       "id": "#B157",
@@ -3565,7 +3655,9 @@
           "lat": 65,
           "aromantisch": 50
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen ein gemeinsames soziales Netzwerk mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "PAIR Social Intimacy: 'social network'"
     },
     "#B158": {
       "id": "#B158",
@@ -3594,7 +3686,9 @@
           "lat": 75,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin eigene Freundschaften pflegt?",
+      "frageQuelle": "Relationship Menu Autonomie: 'Pflege von unabhängigen Freundschaften'"
     },
     "#B159": {
       "id": "#B159",
@@ -3624,7 +3718,9 @@
           "lat": 60,
           "aromantisch": 45
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin neue Freundschaften zu schließen?",
+      "frageQuelle": "PAIR Social Intimacy; Big Five: Extraversion"
     },
     "_comment_intimitaet": "═══ INTIMITÄT & ROMANTIK (#K16) ═══",
     "#B160": {
@@ -4810,7 +4906,9 @@
           "lat": 70,
           "aromantisch": 70
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Wert auf Sauberkeit im gemeinsamen Zuhause legt?",
+      "frageQuelle": "Big Five: Conscientiousness; Gottman: Housework discussions"
     },
     "#B198": {
       "id": "#B198",
@@ -4840,7 +4938,9 @@
           "lat": 65,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen ein strukturierter Alltag mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Big Five: Conscientiousness (Organization)"
     },
     "#B199": {
       "id": "#B199",
@@ -4870,7 +4970,9 @@
           "lat": 50,
           "aromantisch": 50
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen, dass Ihr Partner/Ihre Partnerin ein ähnliches Maß an Chaos toleriert wie Sie?",
+      "frageQuelle": "Big Five: low Conscientiousness; Eigene Formulierung"
     },
     "#B200": {
       "id": "#B200",
@@ -4900,7 +5002,9 @@
           "lat": 70,
           "aromantisch": 70
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin gut organisiert ist?",
+      "frageQuelle": "Big Five: Conscientiousness"
     },
     "#B201": {
       "id": "#B201",
@@ -4930,7 +5034,9 @@
           "lat": 75,
           "aromantisch": 70
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen Flexibilität bei der Aufteilung von Haushaltsaufgaben?",
+      "frageQuelle": "Gottman: Housework; Big Five: Openness"
     },
     "#B202": {
       "id": "#B202",
@@ -4997,7 +5103,9 @@
           "lat": 65,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin Abenteuer zu erleben?",
+      "frageQuelle": "Big Five: Openness (Adventurousness); PAIR Recreational Intimacy"
     },
     "#B204": {
       "id": "#B204",
@@ -5026,7 +5134,9 @@
           "lat": 70,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin neue Orte zu entdecken?",
+      "frageQuelle": "Big Five: Openness; PAIR Recreational Intimacy"
     },
     "#B205": {
       "id": "#B205",
@@ -5086,7 +5196,9 @@
           "lat": 75,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, gemeinsam mit Ihrem Partner/Ihrer Partnerin Urlaub zu machen?",
+      "frageQuelle": "Relationship Menu: 'Zusammen Urlaub machen'; PAIR Recreational Intimacy"
     },
     "#B207": {
       "id": "#B207",
@@ -5116,7 +5228,9 @@
           "lat": 70,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Ihre Reiselust teilt?",
+      "frageQuelle": "Big Five: Openness"
     },
     "#B208": {
       "id": "#B208",
@@ -5146,7 +5260,9 @@
           "lat": 60,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin eine ähnliche Heimatverbundenheit hat wie Sie?",
+      "frageQuelle": "Schwartz: Security, Tradition"
     },
     "_comment_genussmittel": "═══ GENUSSMITTEL (K7 Ergänzung) ═══",
     "#B209": {
@@ -5180,7 +5296,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B209",
-      "kontext": "Alkoholkonsum"
+      "kontext": "Alkoholkonsum",
+      "frage": "Wie wichtig ist Ihnen ein ähnlicher Umgang mit Alkohol wie bei Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Gottman Individual Areas of Concern: Drug and Alcohol Use"
     },
     "#B211": {
       "id": "#B211",
@@ -5193,7 +5311,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B209",
-      "kontext": "Cannabis-Konsum"
+      "kontext": "Cannabis-Konsum",
+      "frage": "Wie wichtig ist Ihnen eine übereinstimmende Haltung zu Cannabis mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Gottman Individual Areas of Concern: Drug Use"
     },
     "#B224": {
       "id": "#B224",
@@ -5206,7 +5326,9 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B209",
-      "kontext": "Zuckerkonsum"
+      "kontext": "Zuckerkonsum",
+      "frage": "Wie wichtig ist Ihnen ein ähnlicher Umgang mit Ernährung und Genussmitteln wie bei Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Eigene Formulierung nach GFK Körperliche Bedürfnisse"
     },
     "#B212": {
       "id": "#B212",
@@ -5654,7 +5776,9 @@
           "lat": 60,
           "aromantisch": 30
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen sexuelle Exklusivität in einer Beziehung?",
+      "frageQuelle": "Relationship Menu: 'Sexuelle Exklusivität'"
     },
     "#B230": {
       "id": "#B230",
@@ -5680,7 +5804,9 @@
           "lat": 50,
           "aromantisch": 20
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, in einer Beziehung eine klare Priorität vor anderen Beziehungen zu haben?",
+      "frageQuelle": "Relationship Menu: 'Vorrang vor anderen Beziehungen'; Polyamorie-Forschung"
     },
     "#B231": {
       "id": "#B231",
@@ -5738,7 +5864,9 @@
           "lat": 35,
           "aromantisch": 15
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, mit Ihrem Partner/Ihrer Partnerin ähnliche Vorstellungen zum Kinderzeitpunkt zu haben?",
+      "frageQuelle": "Gottman: Shared Goals, Life Dreams"
     },
     "#B233": {
       "id": "#B233",
@@ -5767,7 +5895,9 @@
           "lat": 50,
           "aromantisch": 30
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen Übereinstimmung mit Ihrem Partner/Ihrer Partnerin in Erziehungsfragen?",
+      "frageQuelle": "Gottman Shared Meaning: Parenting Values"
     },
     "#B234": {
       "id": "#B234",
@@ -5827,7 +5957,9 @@
           "lat": 75,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen eine gemeinsame Vorstellung zur Wohnform (zusammen/getrennt leben)?",
+      "frageQuelle": "Relationship Menu: 'Zusammenleben'; LAT Research"
     },
     "#B236": {
       "id": "#B236",
@@ -5885,7 +6017,9 @@
           "lat": 35,
           "aromantisch": 10
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen die Option einer Eheschließung in Ihrer Beziehung?",
+      "frageQuelle": "Relationship Menu: 'Heirat'"
     },
     "#B238": {
       "id": "#B238",
@@ -5914,7 +6048,9 @@
           "lat": 60,
           "aromantisch": 35
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, mit Ihrem Partner/Ihrer Partnerin langfristig zu planen?",
+      "frageQuelle": "Relationship Menu: 'Planung für die Zukunft', 'Erwartung einer langfristigen Bindung'"
     },
     "#B239": {
       "id": "#B239",
@@ -5974,7 +6110,9 @@
           "lat": 60,
           "aromantisch": 45
         }
-      }
+      },
+      "frage": "Wie offen sind Sie für eine Patchwork-Konstellation mit Kindern aus früheren Beziehungen?",
+      "frageQuelle": "Relationship Menu: 'Gemeinsame Erziehung von Kindern aus anderen Beziehungen'"
     },
     "_comment_spiritualitaet": "═══ SPIRITUALITÄT & WELTANSCHAUUNG (#K13) ═══",
     "#B241": {
@@ -6036,7 +6174,9 @@
           "lat": 60,
           "aromantisch": 55
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin Meditation oder Achtsamkeitspraktiken schätzt?",
+      "frageQuelle": "Mindfulness Research; Schwartz: Self-Transcendence"
     },
     "#B243": {
       "id": "#B243",
@@ -6065,7 +6205,9 @@
           "lat": 45,
           "aromantisch": 35
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen religiöse oder weltanschauliche Übereinstimmung mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Schwartz Values: Tradition; Gottman: Shared Values"
     },
     "#B244": {
       "id": "#B244",
@@ -6123,7 +6265,9 @@
           "lat": 70,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen eine gemeinsame moralische Grundhaltung mit Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Schwartz Values: Benevolence, Universalism"
     },
     "#B246": {
       "id": "#B246",
@@ -6152,7 +6296,9 @@
           "lat": 75,
           "aromantisch": 70
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin verantwortungsbewusst handelt?",
+      "frageQuelle": "Big Five: Conscientiousness; Schwartz: Benevolence"
     },
     "#B247": {
       "id": "#B247",
@@ -6212,7 +6358,9 @@
           "lat": 55,
           "aromantisch": 45
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin sich gesellschaftlich engagiert?",
+      "frageQuelle": "Schwartz: Universalism, Benevolence"
     },
     "#B249": {
       "id": "#B249",
@@ -6274,7 +6422,9 @@
           "lat": 65,
           "aromantisch": 60
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, existenzielle Fragen mit Ihrem Partner/Ihrer Partnerin zu teilen?",
+      "frageQuelle": "Big Five: Openness (Ideas); PAIR Intellectual Intimacy"
     },
     "#B251": {
       "id": "#B251",
@@ -6303,7 +6453,9 @@
           "lat": 75,
           "aromantisch": 65
         }
-      }
+      },
+      "frage": "Wie wichtig ist es Ihnen, dass Ihr Partner/Ihre Partnerin an persönlichem Wachstum interessiert ist?",
+      "frageQuelle": "GFK Entwicklung: Wachstum; Growth Mindset Research (Dweck)"
     },
     "#B252": {
       "id": "#B252",
@@ -6363,7 +6515,9 @@
           "lat": 60,
           "aromantisch": 55
         }
-      }
+      },
+      "frage": "Wie wichtig ist Ihnen ein nachhaltiger Lebensstil bei Ihrem Partner/Ihrer Partnerin?",
+      "frageQuelle": "Schwartz: Universalism (protecting environment)"
     },
     "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227) - Ersetzt K.O.-Kriterien ═══",
     "#B227": {
