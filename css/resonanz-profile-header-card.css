@@ -91,6 +91,14 @@
     border-color: var(--dimension-color, rgba(139, 92, 246, 0.6));
 }
 
+/* Aktiver Filter-Zustand */
+.resonanz-profile-value-item.filter-active {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--dimension-color) 25%, transparent) 0%, color-mix(in srgb, var(--dimension-color) 10%, transparent) 100%);
+    border-color: var(--dimension-color, rgba(139, 92, 246, 0.8));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
+                0 0 12px var(--dimension-color, rgba(139, 92, 246, 0.5));
+}
+
 .resonanz-profile-value-label {
     font-size: 14px;
     font-weight: 700;

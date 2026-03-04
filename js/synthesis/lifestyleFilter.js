@@ -11,21 +11,28 @@ var TiageSynthesis = TiageSynthesis || {};
 
 TiageSynthesis.LifestyleFilter = {
 
+    // i18n helper
+    _t: function(key, fallback) {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.t) {
+            return TiageI18n.t(key, fallback);
+        }
+        return fallback || key;
+    },
+
     // ═══════════════════════════════════════════════════════════════════════════
     // K.O.-REGELN (Deal-Breaker)
     // ═══════════════════════════════════════════════════════════════════════════
 
     koRules: {
-        // Kinderwunsch: ja ↔ nein = K.O.
         kinderWunsch: {
             incompatible: [['ja', 'nein']],
-            message: 'Kinderwunsch unvereinbar'
+            messageKey: 'lifestyle.koKinder',
+            messageFallback: 'Kinderwunsch unvereinbar'
         },
-
-        // Wohnform: zusammen ↔ getrennt (nur wenn einer "zusammen" will)
         wohnform: {
             incompatible: [['zusammen', 'getrennt'], ['zusammen', 'alleine']],
-            message: 'Wohnvorstellungen unvereinbar'
+            messageKey: 'lifestyle.koWohnen',
+            messageFallback: 'Wohnvorstellungen unvereinbar'
         }
     },
 
@@ -34,47 +41,53 @@ TiageSynthesis.LifestyleFilter = {
     // ═══════════════════════════════════════════════════════════════════════════
 
     warningRules: {
-        // Kategorische Warnungen
         categorical: {
             kinderWunsch: {
                 pairs: [['ja', 'vielleicht'], ['nein', 'vielleicht']],
-                message: 'Kinderwunsch unterschiedlich'
+                messageKey: 'lifestyle.warnKinder',
+                messageFallback: 'Kinderwunsch unterschiedlich'
             },
             eheWunsch: {
                 pairs: [['ja', 'nein']],
-                message: 'Ehewunsch unterschiedlich'
+                messageKey: 'lifestyle.warnEhe',
+                messageFallback: 'Ehewunsch unterschiedlich'
             },
             finanzen: {
                 pairs: [['gemeinsam', 'getrennt']],
-                message: 'Finanzvorstellungen unterschiedlich'
+                messageKey: 'lifestyle.warnFinanzen',
+                messageFallback: 'Finanzvorstellungen unterschiedlich'
             }
         },
-
-        // Numerische Warnungen (Schwellenwert für Differenz)
         numeric: {
             religiositaet: {
                 threshold: 0.40,
-                message: 'Religiöse Einstellung unterschiedlich'
+                messageKey: 'lifestyle.warnReligion',
+                messageFallback: 'Religiöse Einstellung unterschiedlich'
             },
             traditionVsModern: {
                 threshold: 0.45,
-                message: 'Tradition/Moderne-Einstellung unterschiedlich'
+                messageKey: 'lifestyle.warnTradition',
+                messageFallback: 'Tradition/Moderne-Einstellung unterschiedlich'
             },
             eifersuchtNeigung: {
                 threshold: 0.35,
-                message: 'Eifersuchtsniveau unterschiedlich'
+                messageKey: 'lifestyle.warnEifersucht',
+                messageFallback: 'Eifersuchtsniveau unterschiedlich'
             },
             alleinZeitBeduernis: {
                 threshold: 0.35,
-                message: 'Bedürfnis nach Alleinzeit unterschiedlich'
+                messageKey: 'lifestyle.warnAlleinzeit',
+                messageFallback: 'Bedürfnis nach Alleinzeit unterschiedlich'
             },
             koerperlicheNaehe: {
                 threshold: 0.35,
-                message: 'Bedürfnis nach körperlicher Nähe unterschiedlich'
+                messageKey: 'lifestyle.warnNaehe',
+                messageFallback: 'Bedürfnis nach körperlicher Nähe unterschiedlich'
             },
             sexFrequenz: {
                 threshold: 0.35,
-                message: 'Erwartungen an Intimität unterschiedlich'
+                messageKey: 'lifestyle.warnIntimitaet',
+                messageFallback: 'Erwartungen an Intimität unterschiedlich'
             }
         }
     },
@@ -83,13 +96,6 @@ TiageSynthesis.LifestyleFilter = {
     // HAUPTFUNKTION
     // ═══════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Prüft zwei baseAttributes-Objekte auf Kompatibilität
-     *
-     * @param {object} attrs1 - baseAttributes Person 1
-     * @param {object} attrs2 - baseAttributes Person 2
-     * @returns {object} { isKO, koReasons, warnings, isCompatible }
-     */
     check: function(attrs1, attrs2) {
         var result = {
             isKO: false,
@@ -99,13 +105,11 @@ TiageSynthesis.LifestyleFilter = {
         };
 
         if (!attrs1 || !attrs2) {
-            return result; // Keine Daten = kein Filter
+            return result;
         }
 
-        // K.O.-Checks
         this._checkKOs(attrs1, attrs2, result);
 
-        // Wenn kein K.O., dann Warnungen prüfen
         if (!result.isKO) {
             this._checkWarnings(attrs1, attrs2, result);
         }
@@ -115,9 +119,6 @@ TiageSynthesis.LifestyleFilter = {
         return result;
     },
 
-    /**
-     * Prüft K.O.-Kriterien
-     */
     _checkKOs: function(attrs1, attrs2, result) {
         var self = this;
 
@@ -128,7 +129,6 @@ TiageSynthesis.LifestyleFilter = {
 
             if (!val1 || !val2) return;
 
-            // Prüfe alle inkompatiblen Paare
             rule.incompatible.forEach(function(pair) {
                 if (self._isPairMatch(val1, val2, pair)) {
                     result.isKO = true;
@@ -136,20 +136,17 @@ TiageSynthesis.LifestyleFilter = {
                         attribute: attr,
                         value1: val1,
                         value2: val2,
-                        message: rule.message
+                        messageKey: rule.messageKey,
+                        message: self._t(rule.messageKey, rule.messageFallback)
                     });
                 }
             });
         });
     },
 
-    /**
-     * Prüft Warnungs-Kriterien
-     */
     _checkWarnings: function(attrs1, attrs2, result) {
         var self = this;
 
-        // Kategorische Warnungen
         Object.keys(this.warningRules.categorical).forEach(function(attr) {
             var rule = self.warningRules.categorical[attr];
             var val1 = attrs1[attr];
@@ -163,14 +160,14 @@ TiageSynthesis.LifestyleFilter = {
                         attribute: attr,
                         value1: val1,
                         value2: val2,
-                        message: rule.message,
+                        messageKey: rule.messageKey,
+                        message: self._t(rule.messageKey, rule.messageFallback),
                         type: 'categorical'
                     });
                 }
             });
         });
 
-        // Numerische Warnungen
         Object.keys(this.warningRules.numeric).forEach(function(attr) {
             var rule = self.warningRules.numeric[attr];
             var val1 = attrs1[attr];
@@ -186,16 +183,14 @@ TiageSynthesis.LifestyleFilter = {
                     value2: val2,
                     diff: Math.round(diff * 100) / 100,
                     threshold: rule.threshold,
-                    message: rule.message,
+                    messageKey: rule.messageKey,
+                    message: self._t(rule.messageKey, rule.messageFallback),
                     type: 'numeric'
                 });
             }
         });
     },
 
-    /**
-     * Hilfsfunktion: Prüft ob zwei Werte einem Paar entsprechen (in beliebiger Reihenfolge)
-     */
     _isPairMatch: function(val1, val2, pair) {
         return (val1 === pair[0] && val2 === pair[1]) ||
                (val1 === pair[1] && val2 === pair[0]);
@@ -205,13 +200,6 @@ TiageSynthesis.LifestyleFilter = {
     // HILFSFUNKTIONEN
     // ═══════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Holt baseAttributes aus archetypeDefinitions für einen Archetyp
-     *
-     * @param {string} archetypId - ID des Archetyps
-     * @param {object} archetypeDefinitions - Die Archetyp-Definitionen
-     * @returns {object|null} baseAttributes oder null
-     */
     getBaseAttributes: function(archetypId, archetypeDefinitions) {
         if (!archetypeDefinitions || !archetypId) return null;
 
@@ -219,14 +207,6 @@ TiageSynthesis.LifestyleFilter = {
         return archetype ? archetype.baseAttributes : null;
     },
 
-    /**
-     * Convenience: Prüft zwei Archetypen direkt
-     *
-     * @param {string} archetype1 - ID Archetyp 1
-     * @param {string} archetype2 - ID Archetyp 2
-     * @param {object} archetypeDefinitions - Die Archetyp-Definitionen
-     * @returns {object} Filter-Ergebnis
-     */
     checkArchetypes: function(archetype1, archetype2, archetypeDefinitions) {
         var attrs1 = this.getBaseAttributes(archetype1, archetypeDefinitions);
         var attrs2 = this.getBaseAttributes(archetype2, archetypeDefinitions);
@@ -234,18 +214,14 @@ TiageSynthesis.LifestyleFilter = {
         return this.check(attrs1, attrs2);
     },
 
-    /**
-     * Formatiert das Ergebnis für die UI
-     *
-     * @param {object} result - Ergebnis von check()
-     * @returns {object} { status, icon, messages }
-     */
     formatForUI: function(result) {
+        var self = this;
+
         if (result.isKO) {
             return {
                 status: 'ko',
                 icon: '🚫',
-                title: 'Nicht kompatibel',
+                title: self._t('lifestyle.statusKO', 'Nicht kompatibel'),
                 messages: result.koReasons.map(function(r) { return r.message; })
             };
         }
@@ -254,7 +230,7 @@ TiageSynthesis.LifestyleFilter = {
             return {
                 status: 'warning',
                 icon: '⚠️',
-                title: 'Gesprächsbedarf',
+                title: self._t('lifestyle.statusWarnung', 'Gesprächsbedarf'),
                 messages: result.warnings.map(function(w) { return w.message; })
             };
         }
@@ -262,7 +238,7 @@ TiageSynthesis.LifestyleFilter = {
         return {
             status: 'ok',
             icon: '✓',
-            title: 'Kompatibel',
+            title: self._t('lifestyle.statusOK', 'Kompatibel'),
             messages: []
         };
     }

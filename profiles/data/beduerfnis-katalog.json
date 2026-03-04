@@ -465,7 +465,20 @@
       "frageTyp": "haupt",
       "nuancen": [
         "#B7"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 45
+        }
+      }
     },
     "#B6": {
       "id": "#B6",
@@ -503,7 +516,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B5",
-      "kontext": "sexuelle Bedürfnisse"
+      "kontext": "sexuelle Bedürfnisse",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 40
+        }
+      }
     },
     "#B8": {
       "id": "#B8",
@@ -554,7 +580,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B11",
-      "kontext": "Beständigkeit im Leben"
+      "kontext": "Beständigkeit im Leben",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 70,
+          "ra": 45,
+          "lat": 70,
+          "aromantisch": 60
+        }
+      }
     },
     "#B11": {
       "id": "#B11",
@@ -577,7 +616,20 @@
         "#B12",
         "#B13",
         "#B15"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      }
     },
     "#B12": {
       "id": "#B12",
@@ -611,7 +663,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B11",
-      "kontext": "stabile Verhältnisse"
+      "kontext": "stabile Verhältnisse",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 65,
+          "ra": 45,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B14": {
       "id": "#B14",
@@ -644,7 +709,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B11",
-      "kontext": "sich geborgen fühlen"
+      "kontext": "sich geborgen fühlen",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 45,
+          "lat": 65,
+          "aromantisch": 50
+        }
+      }
     },
     "#B16": {
       "id": "#B16",
@@ -697,7 +775,20 @@
         "#B16",
         "#B20",
         "#B21"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      }
     },
     "#B19": {
       "id": "#B19",
@@ -761,7 +852,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B18",
-      "kontext": "Liebe spüren & geben"
+      "kontext": "Liebe spüren & geben",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 95,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 30
+        }
+      }
     },
     "#B22": {
       "id": "#B22",
@@ -781,7 +885,20 @@
       "nuancen": [
         "#B23",
         "#B24"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B23": {
       "id": "#B23",
@@ -815,7 +932,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B22",
-      "kontext": "füreinander da sein"
+      "kontext": "füreinander da sein",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B25": {
       "id": "#B25",
@@ -866,7 +996,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B25",
-      "kontext": "Mitgefühl erfahren"
+      "kontext": "Mitgefühl erfahren",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B27": {
       "id": "#B27",
@@ -899,7 +1042,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B25",
-      "kontext": "empathisches Verständnis"
+      "kontext": "empathisches Verständnis",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B29": {
       "id": "#B29",
@@ -916,7 +1072,20 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen Vertrauen?",
-      "frageTyp": "haupt"
+      "frageTyp": "haupt",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 95,
+          "duo_flex": 90,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 85,
+          "aromantisch": 70
+        }
+      }
     },
     "#B30": {
       "id": "#B30",
@@ -983,7 +1152,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B31",
-      "kontext": "verstanden werden"
+      "kontext": "verstanden werden",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      }
     },
     "#B33": {
       "id": "#B33",
@@ -999,7 +1181,20 @@
         "#K6"
       ],
       "frage": "Wie wichtig ist Ihnen Harmonie?",
-      "frageTyp": "sub"
+      "frageTyp": "sub",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 60
+        }
+      }
     },
     "#B34": {
       "id": "#B34",
@@ -1022,7 +1217,7 @@
         "#B37"
       ],
       "kohaerenz": {
-        "rFaktor": "R2",
+        "rFaktor": "R1",
         "typischeWerte": {
           "single": 95,
           "duo": 45,
@@ -1049,7 +1244,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B34",
-      "kontext": "eigene Wahl treffen"
+      "kontext": "eigene Wahl treffen",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 90,
+          "duo": 50,
+          "duo_flex": 75,
+          "solopoly": 95,
+          "polyamor": 85,
+          "ra": 100,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      }
     },
     "#B36": {
       "id": "#B36",
@@ -1068,10 +1276,7 @@
       "hauptbeduerfnis": "#B34",
       "kontext": "unabhängig sein",
       "kohaerenz": {
-        "rFaktor": [
-          "R2",
-          "R3"
-        ],
+        "rFaktor": "R1",
         "typischeWerte": {
           "single": 95,
           "duo": 35,
@@ -1099,7 +1304,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B34",
-      "kontext": "eigenen Raum haben"
+      "kontext": "eigenen Raum haben",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 90,
+          "duo": 40,
+          "duo_flex": 75,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 95,
+          "aromantisch": 85
+        }
+      }
     },
     "#B38": {
       "id": "#B38",
@@ -1135,7 +1353,20 @@
       "nuancen": [
         "#B40",
         "#B43"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B40": {
       "id": "#B40",
@@ -1171,7 +1402,7 @@
       "hauptbeduerfnis": "#B42",
       "kontext": "Teil einer Gemeinschaft",
       "kohaerenz": {
-        "rFaktor": "R2",
+        "rFaktor": "R1",
         "typischeWerte": {
           "single": 50,
           "duo": 70,
@@ -1204,7 +1435,7 @@
         "#B45"
       ],
       "kohaerenz": {
-        "rFaktor": "R2",
+        "rFaktor": "R1",
         "typischeWerte": {
           "single": 45,
           "duo": 90,
@@ -1300,7 +1531,20 @@
       "frage": "Wie wichtig ist Ihnen unverplante Freizeit?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B6",
-      "kontext": "unverplante Zeit"
+      "kontext": "unverplante Zeit",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 75,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 65,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 85
+        }
+      }
     },
     "#B48": {
       "id": "#B48",
@@ -1360,7 +1604,7 @@
         "#B52"
       ],
       "kohaerenz": {
-        "rFaktor": "R4",
+        "rFaktor": "R1",
         "typischeWerte": {
           "single": 90,
           "duo": 70,
@@ -1477,7 +1721,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B58",
-      "kontext": "Herausforderungen suchen"
+      "kontext": "Herausforderungen suchen",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 70,
+          "ra": 80,
+          "lat": 60,
+          "aromantisch": 70
+        }
+      }
     },
     "#B57": {
       "id": "#B57",
@@ -1515,7 +1772,20 @@
         "#B56",
         "#B59",
         "#B60"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      }
     },
     "#B59": {
       "id": "#B59",
@@ -1568,7 +1838,20 @@
       "nuancen": [
         "#B62",
         "#B63"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      }
     },
     "#B62": {
       "id": "#B62",
@@ -1620,7 +1903,20 @@
       "frageTyp": "sub",
       "nuancen": [
         "#B67"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 55,
+          "duo_flex": 70,
+          "solopoly": 80,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      }
     },
     "#B65": {
       "id": "#B65",
@@ -1640,7 +1936,20 @@
       "nuancen": [
         "#B66",
         "#B68"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      }
     },
     "#B66": {
       "id": "#B66",
@@ -1704,7 +2013,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B65",
-      "kontext": "Anreize & Impulse"
+      "kontext": "Anreize & Impulse",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      }
     },
     "#B69": {
       "id": "#B69",
@@ -1723,7 +2045,20 @@
       "frageTyp": "sub",
       "nuancen": [
         "#B70"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      }
     },
     "#B70": {
       "id": "#B70",
@@ -1740,7 +2075,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B69",
-      "kontext": "Inspiration & Begeisterung"
+      "kontext": "Inspiration & Begeisterung",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 75,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      }
     },
     "#B71": {
       "id": "#B71",
@@ -1760,7 +2108,20 @@
       "nuancen": [
         "#B72",
         "#B73"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 55
+        }
+      }
     },
     "#B72": {
       "id": "#B72",
@@ -1987,7 +2348,20 @@
         "#B81",
         "#B83",
         "#B226"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 85,
+          "duo": 50,
+          "duo_flex": 80,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      }
     },
     "#B81": {
       "id": "#B81",
@@ -2030,7 +2404,20 @@
         "#B221",
         "#B222",
         "#B223"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      }
     },
     "#B83": {
       "id": "#B83",
@@ -2100,7 +2487,20 @@
       "frage": "Wie wichtig ist sich fallenlassen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B82",
-      "kontext": "Kontrolle abgeben"
+      "kontext": "Kontrolle abgeben",
+      "kohaerenz": {
+        "rFaktor": "R3",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 80,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 65,
+          "ra": 35,
+          "lat": 55,
+          "aromantisch": 35
+        }
+      }
     },
     "#B86": {
       "id": "#B86",
@@ -2204,7 +2604,20 @@
         "#B128",
         "#B129",
         "#B130"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 50
+        }
+      }
     },
     "#B127": {
       "id": "#B127",
@@ -2222,7 +2635,20 @@
       "frage": "Wie wichtig sind tiefgehende Gespräche?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B126",
-      "kontext": "tiefe Themen"
+      "kontext": "tiefe Themen",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 45
+        }
+      }
     },
     "#B128": {
       "id": "#B128",
@@ -2239,7 +2665,20 @@
       "frage": "Wie wichtig ist Small Talk?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B126",
-      "kontext": "leichter Austausch"
+      "kontext": "leichter Austausch",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 60,
+          "duo_flex": 55,
+          "solopoly": 50,
+          "polyamor": 65,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 35
+        }
+      }
     },
     "#B129": {
       "id": "#B129",
@@ -2257,7 +2696,20 @@
       "frage": "Wie wichtig ist gemeinsames Schweigen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B126",
-      "kontext": "gemeinsames Schweigen"
+      "kontext": "gemeinsames Schweigen",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 65,
+          "polyamor": 70,
+          "ra": 75,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      }
     },
     "#B130": {
       "id": "#B130",
@@ -2275,7 +2727,20 @@
       "frage": "Wie wichtig ist verbale Verbindung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B126",
-      "kontext": "Verbindung durch Worte"
+      "kontext": "Verbindung durch Worte",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 65,
+          "aromantisch": 35
+        }
+      }
     },
     "#B131": {
       "id": "#B131",
@@ -2291,7 +2756,20 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen aktives Zuhören?",
-      "frageTyp": "haupt"
+      "frageTyp": "haupt",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 90,
+          "duo_flex": 90,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 65
+        }
+      }
     },
     "#B132": {
       "id": "#B132",
@@ -2314,7 +2792,20 @@
         "#B135",
         "#B136",
         "#B137"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 70,
+          "lat": 60,
+          "aromantisch": 30
+        }
+      }
     },
     "#B133": {
       "id": "#B133",
@@ -2331,7 +2822,20 @@
       "frage": "Wie wichtig ist Gefühle zeigen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B132",
-      "kontext": "Emotionen ausdrücken"
+      "kontext": "Emotionen ausdrücken",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B134": {
       "id": "#B134",
@@ -2349,7 +2853,20 @@
       "frage": "Wie wichtig ist Verletzlichkeit zeigen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B132",
-      "kontext": "verletzlich sein"
+      "kontext": "verletzlich sein",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 70,
+          "lat": 50,
+          "aromantisch": 25
+        }
+      }
     },
     "#B135": {
       "id": "#B135",
@@ -2363,7 +2880,20 @@
       "frage": "Wie wichtig ist emotionale Zurückhaltung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B132",
-      "kontext": "Gefühle für sich behalten"
+      "kontext": "Gefühle für sich behalten",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 75,
+          "duo": 30,
+          "duo_flex": 40,
+          "solopoly": 60,
+          "polyamor": 35,
+          "ra": 50,
+          "lat": 65,
+          "aromantisch": 80
+        }
+      }
     },
     "#B136": {
       "id": "#B136",
@@ -2380,7 +2910,20 @@
       "frage": "Wie wichtig ist emotionale Sicherheit?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B132",
-      "kontext": "sichere emotionale Basis"
+      "kontext": "sichere emotionale Basis",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 55
+        }
+      }
     },
     "#B137": {
       "id": "#B137",
@@ -2398,7 +2941,20 @@
       "frage": "Wie wichtig ist Gefühle teilen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B132",
-      "kontext": "emotionale Intimität"
+      "kontext": "emotionale Intimität",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 55,
+          "aromantisch": 25
+        }
+      }
     },
     "#B138": {
       "id": "#B138",
@@ -2418,7 +2974,20 @@
         "#B139",
         "#B140",
         "#B141"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 80,
+          "duo_flex": 90,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 55
+        }
+      }
     },
     "#B139": {
       "id": "#B139",
@@ -2436,7 +3005,20 @@
       "frage": "Wie wichtig ist offene Aussprache?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B138",
-      "kontext": "offene Auseinandersetzung"
+      "kontext": "offene Auseinandersetzung",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      }
     },
     "#B140": {
       "id": "#B140",
@@ -2453,7 +3035,20 @@
       "frage": "Wie stark vermeiden Sie Konflikte?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B138",
-      "kontext": "Konflikte meiden"
+      "kontext": "Konflikte meiden",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 40,
+          "duo_flex": 30,
+          "solopoly": 45,
+          "polyamor": 35,
+          "ra": 35,
+          "lat": 50,
+          "aromantisch": 65
+        }
+      }
     },
     "#B141": {
       "id": "#B141",
@@ -2470,7 +3065,20 @@
       "frage": "Wie wichtig ist konstruktives Streiten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B138",
-      "kontext": "konstruktives Streiten"
+      "kontext": "konstruktives Streiten",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 75,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 80,
+          "ra": 80,
+          "lat": 65,
+          "aromantisch": 45
+        }
+      }
     },
     "#B142": {
       "id": "#B142",
@@ -2486,7 +3094,20 @@
         "#K4"
       ],
       "frage": "Wie wichtig ist Ihnen Versöhnung nach Konflikten?",
-      "frageTyp": "haupt"
+      "frageTyp": "haupt",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 55
+        }
+      }
     },
     "_comment_soziales": "═══ SOZIALES LEBEN (#K15) ═══",
     "#B143": {
@@ -2499,7 +3120,20 @@
         100
       ],
       "frage": "Wie wichtig ist soziale Energie für Sie?",
-      "frageTyp": "sub"
+      "frageTyp": "sub",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 65,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 55,
+          "aromantisch": 35
+        }
+      }
     },
     "#B144": {
       "id": "#B144",
@@ -2516,7 +3150,20 @@
       "frage": "Wie gerne sind Sie unter Menschen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B151",
-      "kontext": "soziale Interaktion"
+      "kontext": "soziale Interaktion",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 55,
+          "aromantisch": 30
+        }
+      }
     },
     "#B145": {
       "id": "#B145",
@@ -2533,7 +3180,20 @@
       "frage": "Wie stark brauchen Sie Ruhe von Menschen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B149",
-      "kontext": "bewusster Rückzug"
+      "kontext": "bewusster Rückzug",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 55,
+          "polyamor": 40,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 90
+        }
+      }
     },
     "#B146": {
       "id": "#B146",
@@ -2550,7 +3210,20 @@
       "frage": "Wie wichtig ist alleine Energie tanken?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B149",
-      "kontext": "Energie tanken"
+      "kontext": "Energie tanken",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 90,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 80,
+          "polyamor": 55,
+          "ra": 75,
+          "lat": 85,
+          "aromantisch": 95
+        }
+      }
     },
     "#B147": {
       "id": "#B147",
@@ -2567,7 +3240,20 @@
       "frage": "Wie wichtig ist regelmäßig Menschen treffen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B151",
-      "kontext": "aktiv Kontakte pflegen"
+      "kontext": "aktiv Kontakte pflegen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 55,
+          "aromantisch": 35
+        }
+      }
     },
     "#B148": {
       "id": "#B148",
@@ -2584,7 +3270,20 @@
       "frage": "Wie stark bevorzugen Sie kleine Gruppen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B151",
-      "kontext": "intime Gruppengröße"
+      "kontext": "intime Gruppengröße",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 65,
+          "aromantisch": 50
+        }
+      }
     },
     "#B149": {
       "id": "#B149",
@@ -2605,7 +3304,20 @@
         "#B146",
         "#B150",
         "#B153"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 55,
+          "duo_flex": 70,
+          "solopoly": 90,
+          "polyamor": 65,
+          "ra": 85,
+          "lat": 90,
+          "aromantisch": 95
+        }
+      }
     },
     "#B150": {
       "id": "#B150",
@@ -2623,7 +3335,20 @@
       "frage": "Wie wichtig ist Raum für eigene Hobbys?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B149",
-      "kontext": "eigene Aktivitäten"
+      "kontext": "eigene Aktivitäten",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 90,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      }
     },
     "#B151": {
       "id": "#B151",
@@ -2644,7 +3369,20 @@
         "#B147",
         "#B148",
         "#B155"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 30
+        }
+      }
     },
     "#B152": {
       "id": "#B152",
@@ -2659,7 +3397,20 @@
         "#K3"
       ],
       "frage": "Wie wichtig ist Ihnen exklusive Zeit zu zweit?",
-      "frageTyp": "haupt"
+      "frageTyp": "haupt",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 65,
+          "aromantisch": 20
+        }
+      }
     },
     "#B153": {
       "id": "#B153",
@@ -2677,7 +3428,20 @@
       "frage": "Wie wichtig sind eigene Interessen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B149",
-      "kontext": "persönliche Entfaltung"
+      "kontext": "persönliche Entfaltung",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 95,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 95,
+          "polyamor": 80,
+          "ra": 95,
+          "lat": 90,
+          "aromantisch": 95
+        }
+      }
     },
     "#B154": {
       "id": "#B154",
@@ -2699,7 +3463,20 @@
         "#B157",
         "#B158",
         "#B159"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      }
     },
     "#B155": {
       "id": "#B155",
@@ -2716,7 +3493,20 @@
       "frage": "Wie wichtig sind gemeinsame Freunde?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B151",
-      "kontext": "gemeinsamer Freundeskreis"
+      "kontext": "gemeinsamer Freundeskreis",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      }
     },
     "#B156": {
       "id": "#B156",
@@ -2732,7 +3522,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B154",
-      "kontext": "Freunde mit Partner teilen"
+      "kontext": "Freunde mit Partner teilen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 45,
+          "aromantisch": 25
+        }
+      }
     },
     "#B157": {
       "id": "#B157",
@@ -2749,7 +3552,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B154",
-      "kontext": "stabiles soziales Netzwerk"
+      "kontext": "stabiles soziales Netzwerk",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 50
+        }
+      }
     },
     "#B158": {
       "id": "#B158",
@@ -2765,7 +3581,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B154",
-      "kontext": "Freundschaften pflegen"
+      "kontext": "Freundschaften pflegen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      }
     },
     "#B159": {
       "id": "#B159",
@@ -2782,7 +3611,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B154",
-      "kontext": "neue Freunde finden"
+      "kontext": "neue Freunde finden",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 60,
+          "aromantisch": 45
+        }
+      }
     },
     "_comment_intimitaet": "═══ INTIMITÄT & ROMANTIK (#K16) ═══",
     "#B160": {
@@ -2810,14 +3652,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 40,
-          "duo": 90,
+          "single": 35,
+          "duo": 95,
           "duo_flex": 85,
-          "solopoly": 55,
-          "polyamor": 90,
-          "ra": 55,
-          "lat": 75,
-          "aromantisch": 50
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 65,
+          "aromantisch": 25
         }
       }
     },
@@ -2837,7 +3679,20 @@
       "frage": "Wie wichtig ist Kuscheln?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B160",
-      "kontext": "Kuscheln & Schmusen"
+      "kontext": "Kuscheln & Schmusen",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 60,
+          "aromantisch": 20
+        }
+      }
     },
     "#B162": {
       "id": "#B162",
@@ -2854,7 +3709,20 @@
       "frage": "Wie wichtig ist körperlicher Abstand?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B160",
-      "kontext": "körperlicher Abstand"
+      "kontext": "körperlicher Abstand",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 80,
+          "duo": 25,
+          "duo_flex": 40,
+          "solopoly": 60,
+          "polyamor": 35,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 85
+        }
+      }
     },
     "#B163": {
       "id": "#B163",
@@ -2872,7 +3740,20 @@
       "frage": "Wie wichtig ist Körperkontakt?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B160",
-      "kontext": "physischer Kontakt"
+      "kontext": "physischer Kontakt",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 60,
+          "aromantisch": 25
+        }
+      }
     },
     "#B164": {
       "id": "#B164",
@@ -2890,7 +3771,20 @@
       "frage": "Wie wichtig sind Umarmungen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B160",
-      "kontext": "Umarmungen"
+      "kontext": "Umarmungen",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 65,
+          "aromantisch": 30
+        }
+      }
     },
     "#B165": {
       "id": "#B165",
@@ -2907,7 +3801,20 @@
       "frage": "Wie wichtig ist Händchenhalten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B160",
-      "kontext": "Händchenhalten"
+      "kontext": "Händchenhalten",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 15
+        }
+      }
     },
     "#B166": {
       "id": "#B166",
@@ -2929,7 +3836,20 @@
         "#B169",
         "#B170",
         "#B171"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 80,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 10
+        }
+      }
     },
     "#B167": {
       "id": "#B167",
@@ -2947,7 +3867,20 @@
       "frage": "Wie wichtig sind Überraschungen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B166",
-      "kontext": "spontane Freuden"
+      "kontext": "spontane Freuden",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 20
+        }
+      }
     },
     "#B168": {
       "id": "#B168",
@@ -2964,7 +3897,20 @@
       "frage": "Wie wichtig sind Dates?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B166",
-      "kontext": "gemeinsame Dates"
+      "kontext": "gemeinsame Dates",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 20
+        }
+      }
     },
     "#B169": {
       "id": "#B169",
@@ -2981,7 +3927,20 @@
       "frage": "Wie wichtig ist Romantik im Alltag?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B166",
-      "kontext": "Romantik im Alltag"
+      "kontext": "Romantik im Alltag",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 85,
+          "duo_flex": 70,
+          "solopoly": 40,
+          "polyamor": 75,
+          "ra": 35,
+          "lat": 55,
+          "aromantisch": 10
+        }
+      }
     },
     "#B170": {
       "id": "#B170",
@@ -2999,7 +3958,20 @@
       "frage": "Wie wichtig sind kleine Aufmerksamkeiten?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B166",
-      "kontext": "kleine Aufmerksamkeiten"
+      "kontext": "kleine Aufmerksamkeiten",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 50,
+          "polyamor": 80,
+          "ra": 45,
+          "lat": 60,
+          "aromantisch": 25
+        }
+      }
     },
     "#B171": {
       "id": "#B171",
@@ -3016,7 +3988,20 @@
       "frage": "Wie wichtig sind Liebesbekundungen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B166",
-      "kontext": "Liebesworte & -gesten"
+      "kontext": "Liebesworte & -gesten",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 85,
+          "ra": 40,
+          "lat": 55,
+          "aromantisch": 10
+        }
+      }
     },
     "#B172": {
       "id": "#B172",
@@ -3038,7 +4023,20 @@
         "#B175",
         "#B176",
         "#B177"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 40
+        }
+      }
     },
     "#B173": {
       "id": "#B173",
@@ -3056,7 +4054,20 @@
       "frage": "Wie wichtig ist sexuelle Intimität?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "sexuelle Verbundenheit"
+      "kontext": "sexuelle Verbundenheit",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 65,
+          "aromantisch": 35
+        }
+      }
     },
     "#B174": {
       "id": "#B174",
@@ -3074,7 +4085,20 @@
       "frage": "Wie wichtig ist körperliche Lust?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "körperliches Verlangen"
+      "kontext": "körperliches Verlangen",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 80,
+          "duo_flex": 85,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 45
+        }
+      }
     },
     "#B175": {
       "id": "#B175",
@@ -3096,14 +4120,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 40,
-          "duo": 75,
-          "duo_flex": 60,
-          "solopoly": 45,
-          "polyamor": 70,
-          "ra": 40,
+          "single": 50,
+          "duo": 65,
+          "duo_flex": 90,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 85,
           "lat": 60,
-          "aromantisch": 35
+          "aromantisch": 40
         }
       }
     },
@@ -3127,14 +4151,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 90,
-          "duo": 60,
-          "duo_flex": 80,
-          "solopoly": 90,
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
           "polyamor": 85,
-          "ra": 95,
-          "lat": 80,
-          "aromantisch": 95
+          "ra": 65,
+          "lat": 65,
+          "aromantisch": 30
         }
       }
     },
@@ -3153,7 +4177,20 @@
       "frage": "Wie wichtig ist sexuelle Zufriedenheit?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B172",
-      "kontext": "erfülltes Sexleben"
+      "kontext": "erfülltes Sexleben",
+      "kohaerenz": {
+        "rFaktor": "R1",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 90,
+          "duo_flex": 90,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 50
+        }
+      }
     },
     "_comment_werte": "═══ WERTE & HALTUNGEN (#K17) ═══",
     "#B178": {
@@ -3176,7 +4213,20 @@
         "#B180",
         "#B182",
         "#B183"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 60,
+          "solopoly": 65,
+          "polyamor": 70,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      }
     },
     "#B179": {
       "id": "#B179",
@@ -3194,7 +4244,20 @@
       "frage": "Wie wichtig ist religiöse Praxis?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B178",
-      "kontext": "religiöse Praxis"
+      "kontext": "religiöse Praxis",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 50,
+          "duo_flex": 45,
+          "solopoly": 45,
+          "polyamor": 50,
+          "ra": 40,
+          "lat": 45,
+          "aromantisch": 40
+        }
+      }
     },
     "#B180": {
       "id": "#B180",
@@ -3212,7 +4275,20 @@
       "frage": "Wie wichtig ist religiöse Gemeinschaft?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B178",
-      "kontext": "spirituelle Gemeinschaft"
+      "kontext": "spirituelle Gemeinschaft",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 55,
+          "duo_flex": 45,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 35,
+          "lat": 40,
+          "aromantisch": 35
+        }
+      }
     },
     "#B181": {
       "id": "#B181",
@@ -3228,7 +4304,20 @@
         "#K5"
       ],
       "frage": "Wie wichtig ist Ihnen eine säkulare Lebensweise?",
-      "frageTyp": "sub"
+      "frageTyp": "sub",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 65,
+          "ra": 75,
+          "lat": 60,
+          "aromantisch": 65
+        }
+      }
     },
     "#B182": {
       "id": "#B182",
@@ -3247,7 +4336,20 @@
       "frage": "Wie wichtig ist Sinnsuche?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B178",
-      "kontext": "existenzielle Fragen"
+      "kontext": "existenzielle Fragen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 80,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B183": {
       "id": "#B183",
@@ -3265,7 +4367,20 @@
       "frage": "Wie wichtig ist Transzendenz?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B178",
-      "kontext": "über sich hinaus"
+      "kontext": "über sich hinaus",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 60,
+          "solopoly": 65,
+          "polyamor": 70,
+          "ra": 70,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      }
     },
     "#B184": {
       "id": "#B184",
@@ -3287,7 +4402,20 @@
         "#B187",
         "#B188",
         "#B189"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 60,
+          "duo_flex": 55,
+          "solopoly": 50,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      }
     },
     "#B185": {
       "id": "#B185",
@@ -3304,7 +4432,20 @@
       "frage": "Wie wichtig ist moderne Lebensführung?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B184",
-      "kontext": "zeitgemäße Lebensführung"
+      "kontext": "zeitgemäße Lebensführung",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 80,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      }
     },
     "#B186": {
       "id": "#B186",
@@ -3321,7 +4462,20 @@
       "frage": "Wie wichtig sind konservative Werte?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B184",
-      "kontext": "konservative Haltung"
+      "kontext": "konservative Haltung",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 60,
+          "duo_flex": 35,
+          "solopoly": 25,
+          "polyamor": 25,
+          "ra": 20,
+          "lat": 45,
+          "aromantisch": 45
+        }
+      }
     },
     "#B187": {
       "id": "#B187",
@@ -3339,7 +4493,20 @@
       "frage": "Wie wichtig sind progressive Werte?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B184",
-      "kontext": "progressive Haltung"
+      "kontext": "progressive Haltung",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 50,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 90,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      }
     },
     "#B188": {
       "id": "#B188",
@@ -3356,7 +4523,20 @@
       "frage": "Wie wichtig ist kulturelle Tradition?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B184",
-      "kontext": "kulturelles Erbe"
+      "kontext": "kulturelles Erbe",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 60,
+          "duo_flex": 50,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 40,
+          "lat": 50,
+          "aromantisch": 45
+        }
+      }
     },
     "#B189": {
       "id": "#B189",
@@ -3374,7 +4554,20 @@
       "frage": "Wie wichtig ist Offenheit für Neues?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B184",
-      "kontext": "Innovation"
+      "kontext": "Innovation",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 60,
+          "duo_flex": 85,
+          "solopoly": 90,
+          "polyamor": 90,
+          "ra": 95,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B190": {
       "id": "#B190",
@@ -3395,7 +4588,20 @@
         "#B192",
         "#B194",
         "#B195"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 65,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 60
+        }
+      }
     },
     "#B191": {
       "id": "#B191",
@@ -3412,7 +4618,20 @@
       "frage": "Wie wichtig ist nachhaltige Lebensweise?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B190",
-      "kontext": "nachhaltige Lebensweise"
+      "kontext": "nachhaltige Lebensweise",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 65,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 60
+        }
+      }
     },
     "#B192": {
       "id": "#B192",
@@ -3429,7 +4648,20 @@
       "frage": "Wie wichtig ist ökologisches Denken?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B190",
-      "kontext": "ökologisches Denken"
+      "kontext": "ökologisches Denken",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      }
     },
     "#B193": {
       "id": "#B193",
@@ -3441,7 +4673,20 @@
         100
       ],
       "frage": "Wie wichtig ist Ihnen pragmatisches Handeln?",
-      "frageTyp": "sub"
+      "frageTyp": "sub",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 65,
+          "duo_flex": 60,
+          "solopoly": 60,
+          "polyamor": 55,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      }
     },
     "#B194": {
       "id": "#B194",
@@ -3458,7 +4703,20 @@
       "frage": "Wie wichtig sind Klimaschutzmaßnahmen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B190",
-      "kontext": "Klimamaßnahmen"
+      "kontext": "Klimamaßnahmen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      }
     },
     "#B195": {
       "id": "#B195",
@@ -3475,7 +4733,20 @@
       "frage": "Wie wichtig ist sparsamer Umgang mit Ressourcen?",
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B190",
-      "kontext": "sparsamer Umgang"
+      "kontext": "sparsamer Umgang",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 60,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 70,
+          "ra": 70,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      }
     },
     "_comment_praktisches": "═══ PRAKTISCHES LEBEN (#K18) ═══",
     "#B196": {
@@ -3499,7 +4770,20 @@
         "#B200",
         "#B199",
         "#B201"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 55,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      }
     },
     "#B197": {
       "id": "#B197",
@@ -3513,7 +4797,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B196",
-      "kontext": "Sauberkeit & Hygiene"
+      "kontext": "Sauberkeit & Hygiene",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 75,
+          "duo_flex": 65,
+          "solopoly": 60,
+          "polyamor": 65,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      }
     },
     "#B198": {
       "id": "#B198",
@@ -3530,7 +4827,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B196",
-      "kontext": "strukturierte Abläufe"
+      "kontext": "strukturierte Abläufe",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 50,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      }
     },
     "#B199": {
       "id": "#B199",
@@ -3547,7 +4857,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B196",
-      "kontext": "Unordnung aushalten"
+      "kontext": "Unordnung aushalten",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 40,
+          "duo_flex": 60,
+          "solopoly": 65,
+          "polyamor": 60,
+          "ra": 70,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      }
     },
     "#B200": {
       "id": "#B200",
@@ -3564,7 +4887,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B196",
-      "kontext": "gute Organisation"
+      "kontext": "gute Organisation",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 55,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      }
     },
     "#B201": {
       "id": "#B201",
@@ -3581,7 +4917,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B196",
-      "kontext": "flexible Haushaltsführung"
+      "kontext": "flexible Haushaltsführung",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 75,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      }
     },
     "#B202": {
       "id": "#B202",
@@ -3604,7 +4953,20 @@
         "#B204",
         "#B206",
         "#B207"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B203": {
       "id": "#B203",
@@ -3622,7 +4984,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B202",
-      "kontext": "abenteuerliche Erlebnisse"
+      "kontext": "abenteuerliche Erlebnisse",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 60,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 90,
+          "lat": 65,
+          "aromantisch": 60
+        }
+      }
     },
     "#B204": {
       "id": "#B204",
@@ -3638,7 +5013,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B202",
-      "kontext": "neue Orte erkunden"
+      "kontext": "neue Orte erkunden",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B205": {
       "id": "#B205",
@@ -3656,7 +5044,20 @@
       "frageTyp": "sub",
       "nuancen": [
         "#B208"
-      ]
+      ],
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 75,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 60
+        }
+      }
     },
     "#B206": {
       "id": "#B206",
@@ -3672,7 +5073,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B202",
-      "kontext": "Urlaubsreisen"
+      "kontext": "Urlaubsreisen",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B207": {
       "id": "#B207",
@@ -3689,7 +5103,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B202",
-      "kontext": "Sehnsucht nach Ferne"
+      "kontext": "Sehnsucht nach Ferne",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 75,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B208": {
       "id": "#B208",
@@ -3706,7 +5133,20 @@
       ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B205",
-      "kontext": "Verbundenheit mit Heimat"
+      "kontext": "Verbundenheit mit Heimat",
+      "kohaerenz": {
+        "rFaktor": "R2",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 75,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 60
+        }
+      }
     },
     "_comment_genussmittel": "═══ GENUSSMITTEL (K7 Ergänzung) ═══",
     "#B209": {
@@ -4166,138 +5606,375 @@
       "label": "Beziehungsmodell",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frage": "Wie wichtig ist Übereinstimmung beim Beziehungsmodell?",
       "frageTyp": "sub",
-      "nuancen": ["#B229", "#B230"]
+      "nuancen": [
+        "#B229",
+        "#B230"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 25
+        }
+      }
     },
     "#B229": {
       "id": "#B229",
       "label": "Exklusivität",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B228",
-      "kontext": "Monogamie vs. offene Modelle"
+      "kontext": "Monogamie vs. offene Modelle",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 95,
+          "duo_flex": 40,
+          "solopoly": 20,
+          "polyamor": 25,
+          "ra": 15,
+          "lat": 60,
+          "aromantisch": 30
+        }
+      }
     },
     "#B230": {
       "id": "#B230",
       "label": "Beziehungs-Hierarchie",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B228",
-      "kontext": "Primär/Sekundär-Strukturen"
+      "kontext": "Primär/Sekundär-Strukturen",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 85,
+          "duo_flex": 60,
+          "solopoly": 25,
+          "polyamor": 70,
+          "ra": 15,
+          "lat": 50,
+          "aromantisch": 20
+        }
+      }
     },
     "#B231": {
       "id": "#B231",
       "label": "Kinderwunsch",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K2"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
       "frage": "Wie wichtig ist Einigkeit beim Kinderwunsch?",
       "frageTyp": "sub",
-      "nuancen": ["#B232", "#B233"]
+      "nuancen": [
+        "#B232",
+        "#B233"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 70,
+          "duo_flex": 50,
+          "solopoly": 35,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 40,
+          "aromantisch": 20
+        }
+      }
     },
     "#B232": {
       "id": "#B232",
       "label": "Kinderzeitpunkt",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B231",
-      "kontext": "Timing und Lebensphase"
+      "kontext": "Timing und Lebensphase",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 65,
+          "duo_flex": 45,
+          "solopoly": 30,
+          "polyamor": 50,
+          "ra": 25,
+          "lat": 35,
+          "aromantisch": 15
+        }
+      }
     },
     "#B233": {
       "id": "#B233",
       "label": "Erziehungsstil",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K17"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K17"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B231",
-      "kontext": "gemeinsame Erziehungsvorstellungen"
+      "kontext": "gemeinsame Erziehungsvorstellungen",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 30,
+          "duo": 70,
+          "duo_flex": 60,
+          "solopoly": 50,
+          "polyamor": 65,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      }
     },
     "#B234": {
       "id": "#B234",
       "label": "Zusammenleben",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K18"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K18"
+      ],
       "frage": "Wie wichtig ist gemeinsames Wohnen?",
       "frageTyp": "sub",
-      "nuancen": ["#B235"]
+      "nuancen": [
+        "#B235"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 25,
+          "polyamor": 65,
+          "ra": 20,
+          "lat": 20,
+          "aromantisch": 10
+        }
+      }
     },
     "#B235": {
       "id": "#B235",
       "label": "Wohnform",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K5"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B234",
-      "kontext": "zusammen vs. getrennt vs. LAT"
+      "kontext": "zusammen vs. getrennt vs. LAT",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 70,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      }
     },
     "#B236": {
       "id": "#B236",
       "label": "Verbindlichkeit",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K2"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
       "frage": "Wie wichtig ist formelle Verbindlichkeit?",
       "frageTyp": "sub",
-      "nuancen": ["#B237", "#B238"]
+      "nuancen": [
+        "#B237",
+        "#B238"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 25,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 50,
+          "polyamor": 80,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 20
+        }
+      }
     },
     "#B237": {
       "id": "#B237",
       "label": "Ehe-Wunsch",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B236",
-      "kontext": "Heirat und rechtliche Bindung"
+      "kontext": "Heirat und rechtliche Bindung",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 15,
+          "duo": 80,
+          "duo_flex": 45,
+          "solopoly": 20,
+          "polyamor": 40,
+          "ra": 10,
+          "lat": 35,
+          "aromantisch": 10
+        }
+      }
     },
     "#B238": {
       "id": "#B238",
       "label": "Langfristplanung",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K18"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K18"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B236",
-      "kontext": "gemeinsame Zukunftsplanung"
+      "kontext": "gemeinsame Zukunftsplanung",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 35
+        }
+      }
     },
     "#B239": {
       "id": "#B239",
       "label": "Familiengründung",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K6"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
       "frage": "Wie wichtig ist Familiengründung als Lebenskonzept?",
       "frageTyp": "haupt",
-      "nuancen": ["#B240"]
+      "nuancen": [
+        "#B240"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 20,
+          "duo": 75,
+          "duo_flex": 50,
+          "solopoly": 30,
+          "polyamor": 55,
+          "ra": 25,
+          "lat": 40,
+          "aromantisch": 15
+        }
+      }
     },
     "#B240": {
       "id": "#B240",
       "label": "Patchwork-Offenheit",
       "kategorie": "#K12",
       "dimension": "#D1",
-      "skala": [0, 100],
-      "sekundaer": ["#K4"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B239",
-      "kontext": "Offenheit für verschiedene Familienformen"
+      "kontext": "Offenheit für verschiedene Familienformen",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 40,
+          "duo": 55,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 60,
+          "aromantisch": 45
+        }
+      }
     },
     "_comment_spiritualitaet": "═══ SPIRITUALITÄT & WELTANSCHAUUNG (#K13) ═══",
     "#B241": {
@@ -4305,142 +5982,388 @@
       "label": "Spirituelle-Praxis",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K10"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10"
+      ],
       "frage": "Wie wichtig ist eine gemeinsame spirituelle Ausrichtung?",
       "frageTyp": "sub",
-      "nuancen": ["#B242", "#B243"]
+      "nuancen": [
+        "#B242",
+        "#B243"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 45,
+          "duo": 50,
+          "duo_flex": 55,
+          "solopoly": 60,
+          "polyamor": 65,
+          "ra": 60,
+          "lat": 50,
+          "aromantisch": 45
+        }
+      }
     },
     "#B242": {
       "id": "#B242",
       "label": "Meditation-&-Achtsamkeit",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K7"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B241",
-      "kontext": "kontemplative Praxis"
+      "kontext": "kontemplative Praxis",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 70,
+          "ra": 75,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      }
     },
     "#B243": {
       "id": "#B243",
       "label": "Religiöse-Übereinstimmung",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K6"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B241",
-      "kontext": "gemeinsamer Glaube oder Respekt"
+      "kontext": "gemeinsamer Glaube oder Respekt",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 35,
+          "duo": 60,
+          "duo_flex": 45,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 35
+        }
+      }
     },
     "#B244": {
       "id": "#B244",
       "label": "Ethische-Grundhaltung",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K8"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
       "frage": "Wie wichtig ist eine gemeinsame ethische Grundhaltung?",
       "frageTyp": "sub",
-      "nuancen": ["#B245", "#B246"]
+      "nuancen": [
+        "#B245",
+        "#B246"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      }
     },
     "#B245": {
       "id": "#B245",
       "label": "Moralische-Werte",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
+      "skala": [
+        0,
+        100
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B244",
-      "kontext": "gemeinsamer moralischer Kompass"
+      "kontext": "gemeinsamer moralischer Kompass",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 70,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B246": {
       "id": "#B246",
       "label": "Verantwortungsbewusstsein",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K18"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K18"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B244",
-      "kontext": "Verantwortung für Umwelt und Gesellschaft"
+      "kontext": "Verantwortung für Umwelt und Gesellschaft",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      }
     },
     "#B247": {
       "id": "#B247",
       "label": "Politische-Ausrichtung",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K15"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K15"
+      ],
       "frage": "Wie wichtig ist politische Übereinstimmung?",
       "frageTyp": "sub",
-      "nuancen": ["#B248"]
+      "nuancen": [
+        "#B248"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 60,
+          "solopoly": 60,
+          "polyamor": 65,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      }
     },
     "#B248": {
       "id": "#B248",
       "label": "Gesellschaftliches-Engagement",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K6"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B247",
-      "kontext": "Aktivismus und soziales Engagement"
+      "kontext": "Aktivismus und soziales Engagement",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 70,
+          "lat": 55,
+          "aromantisch": 45
+        }
+      }
     },
     "#B249": {
       "id": "#B249",
       "label": "Lebensphilosophie",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K8", "#K10"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K10"
+      ],
       "frage": "Wie wichtig ist eine gemeinsame Lebensphilosophie?",
       "frageTyp": "sub",
-      "nuancen": ["#B250", "#B251"]
+      "nuancen": [
+        "#B250",
+        "#B251"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 65,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 80,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      }
     },
     "#B250": {
       "id": "#B250",
       "label": "Existenzielle-Fragen",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K10"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B249",
-      "kontext": "Sinn des Lebens und Sterblichkeit"
+      "kontext": "Sinn des Lebens und Sterblichkeit",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 65,
+          "aromantisch": 60
+        }
+      }
     },
     "#B251": {
       "id": "#B251",
       "label": "Wachstums-Orientierung",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K9"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B249",
-      "kontext": "persönliche Weiterentwicklung als Wert"
+      "kontext": "persönliche Weiterentwicklung als Wert",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 70,
+          "duo": 70,
+          "duo_flex": 85,
+          "solopoly": 90,
+          "polyamor": 90,
+          "ra": 95,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      }
     },
     "#B252": {
       "id": "#B252",
       "label": "Naturverbundenheit",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K7"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7"
+      ],
       "frage": "Wie wichtig ist Naturverbundenheit?",
       "frageTyp": "haupt",
-      "nuancen": ["#B253"]
+      "nuancen": [
+        "#B253"
+      ],
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 60,
+          "duo": 65,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 60
+        }
+      }
     },
     "#B253": {
       "id": "#B253",
       "label": "Nachhaltigkeit",
       "kategorie": "#K13",
       "dimension": "#D2",
-      "skala": [0, 100],
-      "sekundaer": ["#K18"],
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K18"
+      ],
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B252",
-      "kontext": "ökologisches Bewusstsein als Lebensstil"
+      "kontext": "ökologisches Bewusstsein als Lebensstil",
+      "kohaerenz": {
+        "rFaktor": "R4",
+        "typischeWerte": {
+          "single": 55,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      }
     },
     "_comment_reibung": "═══ REIBUNGS-BEDÜRFNISSE (#B227) - Ersetzt K.O.-Kriterien ═══",
     "#B227": {
@@ -4482,14 +6405,14 @@
       "kohaerenz": {
         "rFaktor": "R1",
         "typischeWerte": {
-          "single": 60,
+          "single": 45,
           "duo": 85,
-          "duo_flex": 80,
+          "duo_flex": 85,
           "solopoly": 70,
-          "polyamor": 75,
-          "ra": 65,
-          "lat": 75,
-          "aromantisch": 25
+          "polyamor": 80,
+          "ra": 70,
+          "lat": 65,
+          "aromantisch": 35
         }
       }
     }

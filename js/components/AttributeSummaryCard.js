@@ -74,91 +74,46 @@ const AttributeSummaryCard = (function() {
      * @param {number} value - Der Eingabewert (0-100)
      * @returns {number} Der gerundete Wert
      */
-    function roundTo25(value) {
+    function roundTo10(value) {
         const num = parseFloat(value) || 0;
-        return Math.round(num / 25) * 25;
+        return Math.round(num / 10) * 10;
     }
+    // Alias für Rückwärtskompatibilität
+    const roundTo25 = roundTo10;
 
     /**
      * R-FAKTOR EINFLUSS-INDIKATOR
      * Ermittelt zu welchem R-Faktor ein Bedürfnis beiträgt.
+     * Nutzt DimensionKategorieFilter.DIMENSIONEN.kategorienKeys (SSOT).
+     * Alle 216 Needs haben eine Kategorie → alle bekommen ein R-Badge.
      *
-     * Mapping:
-     * - R1 (Leben) = ORIENTIERUNG_NEEDS (Sexualität, Intimität)
-     * - R2 (Philosophie) = ARCHETYP_NEEDS (Lebensplanung, Bindung)
-     * - R3 (Dynamik) = DOMINANZ_NEEDS (Machtdynamik)
-     * - R4 (Identität) = GESCHLECHT_NEEDS (Authentizität, Ausdruck)
-     *
-     * @param {string} needId - Die Bedürfnis-ID (#B-ID oder String-Key)
+     * @param {string} needId - Die Bedürfnis-ID (#B-ID)
      * @returns {object|null} { factor: 'R1'|'R2'|'R3'|'R4', color: '#...', label: '...' } oder null
      */
     function getRFactorForNeed(needId) {
-        // Konvertiere #B-ID zu String-Key falls nötig
-        let stringKey = needId;
-        if (needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
-            stringKey = BeduerfnisIds.toKey(needId) || needId;
-        }
+        // Primäre Quelle: DimensionKategorieFilter (Kategorie-basiert, deckt ALLE 216 Needs ab)
+        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
+            const dims = DimensionKategorieFilter.DIMENSIONEN;
 
-        // Hole NEEDS_INTEGRATION aus TiageSynthesis.Constants
-        const constants = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants)
-            ? TiageSynthesis.Constants.NEEDS_INTEGRATION
-            : null;
-
-        if (!constants) return null;
-
-        // R-Faktor Konfiguration
-        const R_FACTOR_CONFIG = {
-            R1: { label: 'Leben', color: '#E63946', needs: constants.ORIENTIERUNG_NEEDS || [] },
-            R2: { label: 'Philosophie', color: '#2A9D8F', needs: constants.ARCHETYP_NEEDS || [] },
-            R3: { label: 'Dynamik', color: '#8B5CF6', needs: constants.DOMINANZ_NEEDS || [] },
-            R4: { label: 'Identität', color: '#F4A261', needs: constants.GESCHLECHT_NEEDS || [] }
-        };
-
-        // Suche in welchem R-Faktor das Bedürfnis vorkommt
-        for (const [factor, config] of Object.entries(R_FACTOR_CONFIG)) {
-            if (config.needs.includes(stringKey)) {
-                return {
-                    factor: factor,
-                    color: config.color,
-                    label: config.label
-                };
+            // Hole die Kategorie des Needs
+            let categoryKey = null;
+            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse && BeduerfnisIds.beduerfnisse[needId]) {
+                const need = BeduerfnisIds.beduerfnisse[needId];
+                const catId = need.kategorie;
+                if (catId && typeof window.TiageTaxonomie !== 'undefined' && window.TiageTaxonomie.kategorien) {
+                    const cat = window.TiageTaxonomie.kategorien[catId];
+                    if (cat && cat.key) categoryKey = cat.key;
+                }
             }
-        }
 
-        // Zusätzlich: Prüfe ARCHETYP_KOHAERENZ für die 4-5 Kern-Bedürfnisse pro Dimension
-        const kohaerenz = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants)
-            ? TiageSynthesis.Constants.ARCHETYP_KOHAERENZ
-            : null;
-
-        if (kohaerenz) {
-            const KOHAERENZ_MAPPING = {
-                R1: { label: 'Leben', color: '#E63946', dimension: 'leben' },
-                R2: { label: 'Philosophie', color: '#2A9D8F', dimension: 'philosophie' },
-                R3: { label: 'Dynamik', color: '#8B5CF6', dimension: 'dynamik' },
-                R4: { label: 'Identität', color: '#F4A261', dimension: 'identitaet' }
-            };
-
-            for (const [factor, config] of Object.entries(KOHAERENZ_MAPPING)) {
-                const dimData = kohaerenz[config.dimension];
-                if (dimData) {
-                    // Prüfe jeden Archetyp
-                    for (const archetype of Object.keys(dimData)) {
-                        const archetypNeeds = dimData[archetype];
-                        if (archetypNeeds) {
-                            for (const needKey of Object.keys(archetypNeeds)) {
-                                const needEntry = archetypNeeds[needKey];
-                                // Prüfe sowohl needKey als auch #B-ID
-                                if (needKey === stringKey ||
-                                    (needEntry && needEntry.id === needId)) {
-                                    return {
-                                        factor: factor,
-                                        color: config.color,
-                                        label: config.label,
-                                        isCore: true // Markiere als Kern-Bedürfnis
-                                    };
-                                }
-                            }
-                        }
+            if (categoryKey) {
+                for (const [factor, config] of Object.entries(dims)) {
+                    if (config.kategorienKeys && config.kategorienKeys.includes(categoryKey)) {
+                        return {
+                            factor: factor,
+                            color: config.color,
+                            label: config.label
+                        };
                     }
                 }
             }
@@ -189,6 +144,98 @@ const AttributeSummaryCard = (function() {
                       title="${rInfo.label}: Wert ${value} → Beitrag ×${contribution}">
                     ${rInfo.factor}
                 </span>`;
+    }
+
+    /**
+     * MODIFIER-BADGES: Zeigt pro Need welche Modifikatoren den Wert verändert haben
+     * z.B. "G:+10" (Geschlecht), "O:+6" (Orientierung), "D:-4" (Dominanz), "H:+10" (Horny)
+     *
+     * @param {string} needId - Die Bedürfnis-ID (#B-ID)
+     * @returns {string} HTML-String mit Modifier-Badges oder leer
+     */
+    function renderModifierBadges(needId) {
+        if (typeof ProfileModifiers === 'undefined' || typeof TiageState === 'undefined') return '';
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.toKey) return '';
+
+        const stringKey = BeduerfnisIds.toKey(needId);
+        if (!stringKey) return '';
+
+        const person = currentFlatPerson || 'ich';
+        const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+        const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+        const extras = TiageState.get(`personDimensions.${person}.geschlecht_extras`) || {};
+
+        const badges = [];
+
+        // Hilfsfunktion: Delta für einen Modifier berechnen
+        function getDelta(mod, category) {
+            if (!mod || !mod.deltas || mod.deltas[stringKey] === undefined) return 0;
+            const multiplier = ProfileModifiers.getRtiMultiplier(category);
+            return mod.deltas[stringKey] * multiplier;
+        }
+
+        // Gender
+        if (geschlecht) {
+            const gMod = ProfileModifiers.getGenderModifier(
+                typeof geschlecht === 'string' ? geschlecht : geschlecht?.primary,
+                typeof geschlecht === 'object' ? geschlecht?.secondary : undefined
+            );
+            const delta = getDelta(gMod, 'gender');
+            if (delta !== 0) badges.push({ label: 'G', delta, color: '#F4A261' });
+        }
+
+        // Orientierung
+        if (orientierung) {
+            let orientierungen = [];
+            if (Array.isArray(orientierung)) orientierungen = orientierung;
+            else if (typeof orientierung === 'string') orientierungen = [orientierung];
+            else if (orientierung?.primary) {
+                orientierungen.push(orientierung.primary);
+                if (orientierung.secondary) orientierungen.push(orientierung.secondary);
+            }
+
+            let totalDelta = 0;
+            orientierungen.forEach(ori => {
+                const oMod = ProfileModifiers.getOrientierungModifier(ori);
+                totalDelta += getDelta(oMod, 'orientierung');
+            });
+            if (totalDelta !== 0) badges.push({ label: 'O', delta: totalDelta, color: '#E63946' });
+        }
+
+        // Dominanz
+        if (dominanz) {
+            const dVal = typeof dominanz === 'object' ? dominanz.primary : dominanz;
+            const dMod = ProfileModifiers.getDominanzModifier(dVal);
+            const delta = getDelta(dMod, 'dominanz');
+            if (delta !== 0) badges.push({ label: 'D', delta, color: '#8B5CF6' });
+        }
+
+        // FFH: Fit, Fuckedup, Horny
+        if (extras.fit) {
+            const fMod = ProfileModifiers.getFFHModifier('fit');
+            const delta = getDelta(fMod, 'fit');
+            if (delta !== 0) badges.push({ label: 'Fi', delta, color: '#2ECC71' });
+        }
+        if (extras.fuckedup) {
+            const fuMod = ProfileModifiers.getFFHModifier('fuckedup');
+            const delta = getDelta(fuMod, 'fuckedup');
+            if (delta !== 0) badges.push({ label: 'Fu', delta, color: '#E74C3C' });
+        }
+        if (extras.horny) {
+            const hMod = ProfileModifiers.getFFHModifier('horny');
+            const delta = getDelta(hMod, 'horny');
+            if (delta !== 0) badges.push({ label: 'H', delta, color: '#EC4899' });
+        }
+
+        if (badges.length === 0) return '';
+
+        return badges.map(b => {
+            const sign = b.delta > 0 ? '+' : '';
+            const displayDelta = Number.isInteger(b.delta) ? b.delta : b.delta.toFixed(1);
+            return `<span class="modifier-badge" style="--mod-color: ${b.color};"
+                          title="${b.label}: ${sign}${displayDelta} (Modifier)">${b.label}:${sign}${displayDelta}</span>`;
+        }).join('');
     }
 
     /**
@@ -486,39 +533,8 @@ const AttributeSummaryCard = (function() {
             });
         });
 
-        // REFACTORING v1.8.982: Hauptfragen auch in flatNeeds aufnehmen
-        // Hauptfragen werden jetzt wie Nuancen behandelt (einheitliche Speicherstruktur)
-        if (typeof HauptfrageAggregation !== 'undefined') {
-            const hauptfragen = HauptfrageAggregation.getHauptfragen();
-
-            // TEMPORARY: Alte Hauptfragen-Locks aus separatem Storage laden (Migration)
-            const savedLockedHauptfragen = TiageState.get(`profileReview.${person}.lockedHauptfragen`) || [];
-
-            Object.keys(hauptfragen).forEach(hauptfrageId => {
-                const hf = hauptfragen[hauptfrageId];
-
-                // Check if Hauptfrage is locked (alte Struktur während Migration)
-                const isLocked = lockedNeeds.hasOwnProperty(hauptfrageId) || savedLockedHauptfragen.includes(hauptfrageId);
-
-                // Wert laden: erst aus lockedNeeds, dann aus altem Storage, dann Default 50
-                let value = 50;
-                if (lockedNeeds.hasOwnProperty(hauptfrageId)) {
-                    value = lockedNeeds[hauptfrageId];
-                } else if (savedLockedHauptfragen.includes(hauptfrageId)) {
-                    value = TiageState.get(`profileReview.${person}.lockedHauptfragenValues.${hauptfrageId}`) || 50;
-                }
-                value = roundTo25(value);
-
-                flatNeeds.push({
-                    id: hauptfrageId,
-                    key: parseInt(hauptfrageId.replace('#B', ''), 10) || 0,
-                    stringKey: hf.key || '',
-                    label: hf.label || hauptfrageId,
-                    value: value,
-                    locked: isLocked
-                });
-            });
-        }
+        // v1.8.998: Hauptfragen-Duplikat-Ladung ENTFERNT
+        // Alle Needs (haupt + nuance + sub) werden bereits oben aus BeduerfnisIds geladen
 
         // Cache als gültig markieren
         flatNeedsCacheValid = true;
@@ -624,33 +640,57 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Togglet die Auswahl eines Bedürfnisses
-     * SSOT v2.0: Partner-Bedürfnisse können nicht ausgewählt werden (nicht editierbar)
+     * v1.8.990: CTRL+Klick für Mehrfachauswahl, normaler Klick = Einzelauswahl
      * @param {string} needId - Die #B-ID
+     * @param {Event} [event] - Click-Event (für CTRL-Erkennung)
      */
-    function toggleNeedSelection(needId) {
+    function toggleNeedSelection(needId, event) {
         // SSOT v2.0: Partner-Bedürfnisse können nicht für Bulk-Edit ausgewählt werden
         if (currentFlatPerson === 'partner') {
             return; // Keine Auswahl bei Partner - alles read-only
         }
-        if (selectedNeeds.has(needId)) {
-            selectedNeeds.delete(needId);
-            // Entferne auch den ursprünglichen Wert
-            originalNeedValues.delete(needId);
+
+        const isCtrl = event && (event.ctrlKey || event.metaKey);
+
+        if (isCtrl) {
+            // CTRL+Klick: Toggle dieses Item zur Auswahl hinzu/entfernen
+            if (selectedNeeds.has(needId)) {
+                selectedNeeds.delete(needId);
+                originalNeedValues.delete(needId);
+            } else {
+                selectedNeeds.add(needId);
+                const needObj = findNeedById(needId);
+                if (needObj) {
+                    originalNeedValues.set(needId, needObj.value);
+                }
+            }
         } else {
-            selectedNeeds.add(needId);
-            // Speichere den aktuellen Wert als Original
-            const needObj = findNeedById(needId);
-            if (needObj) {
-                originalNeedValues.set(needId, needObj.value);
+            // Normaler Klick: Nur dieses eine Item auswählen (oder abwählen wenn schon allein ausgewählt)
+            const wasOnlySelected = selectedNeeds.size === 1 && selectedNeeds.has(needId);
+
+            // Alle bisherigen abwählen
+            selectedNeeds.forEach(id => {
+                const item = document.querySelector(`.flat-need-item[data-need="${id}"]`);
+                if (item) item.classList.remove('need-selected');
+            });
+            selectedNeeds.clear();
+            originalNeedValues.clear();
+
+            if (!wasOnlySelected) {
+                // Dieses auswählen
+                selectedNeeds.add(needId);
+                const needObj = findNeedById(needId);
+                if (needObj) {
+                    originalNeedValues.set(needId, needObj.value);
+                }
             }
         }
 
-        // Update UI
-        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-        if (needItem) {
-            const isSelected = selectedNeeds.has(needId);
-            needItem.classList.toggle('need-selected', isSelected);
-        }
+        // Update UI für alle Items
+        document.querySelectorAll('.flat-need-item').forEach(item => {
+            const id = item.getAttribute('data-need');
+            item.classList.toggle('need-selected', selectedNeeds.has(id));
+        });
 
         // Event
         document.dispatchEvent(new CustomEvent('needSelectionChange', {
@@ -660,9 +700,6 @@ const AttributeSummaryCard = (function() {
 
         // Update Auswahl-Counter
         updateSelectionCounter();
-
-        // FIX v1.8.974: Update Lock-Button-Status sofort
-        updateSelectedLockButtonState();
     }
 
     /**
@@ -678,10 +715,7 @@ const AttributeSummaryCard = (function() {
         selectedNeeds.clear();
         originalNeedValues.clear();
 
-        // FIX: Auch Hauptfrage-Selection-Classes entfernen
-        document.querySelectorAll('.flat-need-item.is-hauptfrage.need-selected, .flat-need-item.is-hauptfrage.need-partial-selected').forEach(item => {
-            item.classList.remove('need-selected', 'need-partial-selected');
-        });
+        // v1.8.998: Hauptfrage-Klassen entfernt — alle Items uniform
 
         // Update Auswahl-Counter
         updateSelectionCounter();
@@ -692,56 +726,22 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Wählt alle gefilterten Bedürfnisse aus oder ab
-     * Toggle-Logik: Wenn alle gefilterten bereits ausgewählt → alle abwählen, sonst alle auswählen
-     * WICHTIG: Bei keinem aktiven Filter werden ALLE Bedürfnisse ausgewählt (inkl. nicht-expandierte Nuancen)
+     * v1.8.998: Vereinfacht — alle Needs gleichberechtigt, keine Hierarchie
      */
     function selectAllFilteredNeeds() {
-        // Hilfsfunktion: Prüft ob ein Need durch Filter (inkl. Suchfilter) sichtbar ist
         function isNeedVisibleByFilters(need) {
-            // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-
-            // DOM-basierte Filter prüfen - für Items die ein DOM-Element haben
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
-
-            // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
-            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
-            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
-                return false;
-            }
-
-            // FIX: Für Nuancen ohne DOM-Element: Prüfe ob Parent-Hauptfrage durch Filter versteckt ist
-            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
-                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                if (parentHf) {
-                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
-                    // Wenn Parent-Hauptfrage durch Filter versteckt ist, ist auch Nuance versteckt
-                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
-                        return false;
-                    }
-                }
-            }
-
             return true;
         }
 
-        // FIX v1.8.835: Nur Hauptfragen markieren (berechnungsrelevant), nicht Nuancen
-        // Hauptfragen sind die 31 aggregierten Bedürfnisse die in die Synthese eingehen
-        const hauptfragenIds = typeof HauptfrageAggregation !== 'undefined'
-            ? new Set(Object.keys(HauptfrageAggregation.getHauptfragen()))
-            : new Set();
-
-        // Ermittle alle Bedürfnisse die durch aktive Filter erlaubt sind
-        // UND die Hauptfragen sind (nicht Nuancen)
-        const visibleNeeds = flatNeeds.filter(need =>
-            isNeedVisibleByFilters(need) &&
-            (hauptfragenIds.size === 0 || hauptfragenIds.has(need.id))
-        );
+        // Alle sichtbaren Needs (keine Hierarchie-Filterung)
+        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
 
         // Ermittle Bedürfnisse die durch Filter ausgeschlossen sind
         const hiddenNeeds = flatNeeds.filter(need => !isNeedVisibleByFilters(need));
@@ -807,7 +807,7 @@ const AttributeSummaryCard = (function() {
 
         // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
-        updateHauptfragenSelectionVisuals();
+        // v1.8.998: updateHauptfragenSelectionVisuals() entfernt
 
         // FIX v1.8.974: Update Lock-Button-Status sofort
         updateSelectedLockButtonState();
@@ -818,49 +818,19 @@ const AttributeSummaryCard = (function() {
      * Ausgewählte werden abgewählt und umgekehrt
      */
     function invertNeedSelection() {
-        // Hilfsfunktion: Prüft ob ein Need durch Filter (inkl. Suchfilter) sichtbar ist
+        // v1.8.998: Vereinfacht — alle Needs gleichberechtigt
         function isNeedVisibleByFilters(need) {
-            // DimensionKategorieFilter prüfen (primärer Filter)
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-
-            // DOM-basierte Filter prüfen - für Items die ein DOM-Element haben
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
-
-            // Prüfe ob es eine Hauptfrage ist und ob sie durch Filter versteckt ist
-            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
-            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
-                return false;
-            }
-
-            // FIX: Für Nuancen ohne DOM-Element: Prüfe ob Parent-Hauptfrage durch Filter versteckt ist
-            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
-                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                if (parentHf) {
-                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
-                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
-                        return false;
-                    }
-                }
-            }
-
             return true;
         }
 
-        // FIX v1.8.835: Nur Hauptfragen invertieren (berechnungsrelevant), nicht Nuancen
-        const hauptfragenIds = typeof HauptfrageAggregation !== 'undefined'
-            ? new Set(Object.keys(HauptfrageAggregation.getHauptfragen()))
-            : new Set();
-
-        // Ermittle alle Bedürfnisse die durch Filter erlaubt sind UND Hauptfragen sind
-        const visibleNeeds = flatNeeds.filter(need =>
-            isNeedVisibleByFilters(need) &&
-            (hauptfragenIds.size === 0 || hauptfragenIds.has(need.id))
-        );
+        const visibleNeeds = flatNeeds.filter(need => isNeedVisibleByFilters(need));
 
         if (visibleNeeds.length === 0) {
             return;
@@ -900,115 +870,13 @@ const AttributeSummaryCard = (function() {
 
         // Update Auswahl-Counter und Hauptfrage-Visuals
         updateSelectionCounter();
-        updateHauptfragenSelectionVisuals();
+        // v1.8.998: updateHauptfragenSelectionVisuals() entfernt
 
         // FIX v1.8.974: Update Lock-Button-Status sofort
         updateSelectedLockButtonState();
     }
 
-    /**
-     * MULTI-SELECT: Markiert/Demarkiert eine Hauptfrage zusammen mit allen ihren GEFILTERTEN Nuancen
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage (z.B. '#B1')
-     */
-    function toggleHauptfrageSelection(hauptfrageId) {
-        // Hole Hauptfragen-Daten aus dem Cache
-        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
-            ? HauptfrageAggregation.getHauptfragen()
-            : {};
-
-        const hf = hauptfragen[hauptfrageId];
-        if (!hf) {
-            console.warn('[AttributeSummaryCard] Hauptfrage nicht gefunden:', hauptfrageId);
-            return;
-        }
-
-        // Sammle alle IDs: Hauptfrage + alle Nuancen - NUR GEFILTERTE
-        const allNuancen = hf.nuancen || [];
-        const filteredNuancen = allNuancen.filter(nuanceId => {
-            // DimensionKategorieFilter prüfen
-            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(nuanceId)) {
-                return false;
-            }
-            return true;
-        });
-
-        // Hauptfrage selbst auch prüfen
-        const hauptfrageVisible = typeof DimensionKategorieFilter === 'undefined' ||
-            DimensionKategorieFilter.shouldShowNeed(hauptfrageId);
-
-        // Alle sichtbaren IDs sammeln
-        const allIds = hauptfrageVisible ? [hauptfrageId, ...filteredNuancen] : filteredNuancen;
-
-        if (allIds.length === 0) {
-            console.log('[AttributeSummaryCard] Keine sichtbaren Nuancen für', hauptfrageId);
-            return;
-        }
-
-        // Prüfe ob alle bereits ausgewählt sind
-        const allSelected = allIds.every(id => selectedNeeds.has(id));
-
-        if (allSelected) {
-            // Alle abwählen
-            allIds.forEach(id => {
-                if (selectedNeeds.has(id)) {
-                    selectedNeeds.delete(id);
-                    originalNeedValues.delete(id);
-
-                    const needItem = document.querySelector(`.flat-need-item[data-need="${id}"]`);
-                    if (needItem) {
-                        needItem.classList.remove('need-selected');
-                    }
-                }
-            });
-
-            // Hauptfrage-Item auch aktualisieren
-            const hfItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
-            if (hfItem) {
-                hfItem.classList.remove('need-selected');
-            }
-        } else {
-            // Alle auswählen
-            allIds.forEach(id => {
-                if (!selectedNeeds.has(id)) {
-                    selectedNeeds.add(id);
-                    const needObj = findNeedById(id);
-                    if (needObj) {
-                        originalNeedValues.set(id, needObj.value);
-                    }
-
-                    const needItem = document.querySelector(`.flat-need-item[data-need="${id}"]`);
-                    if (needItem) {
-                        needItem.classList.add('need-selected');
-                    }
-                }
-            });
-
-            // Hauptfrage-Item auch als ausgewählt markieren
-            const hfItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
-            if (hfItem) {
-                hfItem.classList.add('need-selected');
-            }
-        }
-
-        // Event
-        document.dispatchEvent(new CustomEvent('needSelectionChange', {
-            bubbles: true,
-            detail: {
-                action: allSelected ? 'deselectHauptfrage' : 'selectHauptfrage',
-                hauptfrageId,
-                nuancenCount: filteredNuancen.length,
-                totalSelected: selectedNeeds.size
-            }
-        }));
-
-        // Update Auswahl-Counter
-        updateSelectionCounter();
-
-        // FIX v1.8.974: Update Lock-Button-Status sofort
-        updateSelectedLockButtonState();
-
-        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} ${allSelected ? 'abgewählt' : 'ausgewählt'} mit ${filteredNuancen.length} gefilterten Nuancen. Total: ${selectedNeeds.size}`);
-    }
+    // v1.8.998: toggleHauptfrageSelection() ENTFERNT — alle Needs gleichberechtigt, einzeln markierbar
 
     /**
      * MULTI-SELECT: Aktualisiert den Auswahl-Counter in der UI
@@ -1017,58 +885,35 @@ const AttributeSummaryCard = (function() {
         const counter = document.querySelector('.selection-counter');
         if (counter) {
             const count = selectedNeeds.size;
-            counter.textContent = count > 0 ? `${count} markiert` : '';
+            counter.textContent = count > 0 ? `${count} markiert (CTRL+Klick für Mehrfachauswahl)` : 'Klick = markieren, CTRL+Klick = mehrere';
             counter.classList.toggle('has-selection', count > 0);
         }
 
-        // FIX: Auch die Bulk-Buttons aktivieren/deaktivieren
-        const bulkCard = document.querySelector('.bulk-increment-card');
+        // Bulk-Action-Buttons aktivieren/deaktivieren
+        const bulkCard = document.querySelector('.bulk-action-card');
         if (bulkCard) {
             const hasSelection = selectedNeeds.size > 0;
             bulkCard.classList.toggle('disabled', !hasSelection);
 
-            // Buttons innerhalb aktivieren/deaktivieren
             bulkCard.querySelectorAll('button').forEach(btn => {
                 btn.disabled = !hasSelection;
             });
         }
     }
 
-    /**
-     * MULTI-SELECT: Aktualisiert die visuellen Selektions-Klassen aller Hauptfragen
-     * Basierend auf dem aktuellen Zustand von selectedNeeds
-     */
-    function updateHauptfragenSelectionVisuals() {
-        if (typeof HauptfrageAggregation === 'undefined') return;
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        if (!hauptfragen) return;
-
-        document.querySelectorAll('.flat-need-item.is-hauptfrage[data-need]').forEach(hfItem => {
-            const hfId = hfItem.getAttribute('data-need');
-            const hf = hauptfragen[hfId];
-            if (!hf) return;
-
-            // Prüfe Auswahl-Status: Alle Nuancen + Hauptfrage ausgewählt?
-            const allIds = [hfId, ...(hf.nuancen || [])];
-            const allSelected = allIds.every(id => selectedNeeds.has(id));
-            const someSelected = allIds.some(id => selectedNeeds.has(id));
-
-            // Aktualisiere Klassen
-            hfItem.classList.remove('need-selected', 'need-partial-selected');
-            if (allSelected) {
-                hfItem.classList.add('need-selected');
-            } else if (someSelected) {
-                hfItem.classList.add('need-partial-selected');
-            }
-        });
-    }
+    // v1.8.998: updateHauptfragenSelectionVisuals() ENTFERNT — keine Hierarchie-basierte Selektion mehr
 
     /**
      * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
      * Lädt die Werte aus GfkBeduerfnisse.archetypProfile (SSOT Katalog)
      */
     function resetSelectedNeedsValues() {
+        // Nur markierte Needs zurücksetzen — nichts tun wenn keine markiert
+        if (selectedNeeds.size === 0) {
+            console.log('[AttributeSummaryCard] Reset: Keine Needs markiert — nichts zu tun');
+            return;
+        }
+
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
         if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
@@ -1081,160 +926,85 @@ const AttributeSummaryCard = (function() {
             currentArchetyp = window.currentProfileReviewContext.archetypeKey;
         }
 
-        // SSOT: BaseArchetypProfile (Archetyp-Profil-Dateien)
-        if (!currentArchetyp || typeof BaseArchetypProfile === 'undefined' ||
-            !BaseArchetypProfile[currentArchetyp]) {
-            console.error('[AttributeSummaryCard] Archetyp nicht in BaseArchetypProfile gefunden:', currentArchetyp);
-            alert('Zurücksetzen nicht möglich: Archetyp-Profil nicht gefunden.');
+        if (!currentArchetyp) {
+            console.error('[AttributeSummaryCard] Kein Archetyp für Reset gefunden');
             return;
         }
 
-        const umfrageWerte = BaseArchetypProfile[currentArchetyp].umfrageWerte;
-        if (!umfrageWerte || Object.keys(umfrageWerte).length === 0) {
-            console.error('[AttributeSummaryCard] Keine Umfragewerte in BaseArchetypProfile für', currentArchetyp);
-            alert('Zurücksetzen nicht möglich: Keine Umfragewerte für diesen Archetyp.');
+        const needsToReset = Array.from(selectedNeeds);
+        console.log(`[AttributeSummaryCard] Reset: ${needsToReset.length} markierte Needs für ${currentPerson}/${currentArchetyp}`);
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCHRITT 1: Berechnete Zielwerte holen (Basis + Modifikatoren)
+        // ═══════════════════════════════════════════════════════════════════════════
+        let calculatedValues = null;
+        if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+            const geschlecht = typeof TiageState !== 'undefined' ? TiageState.get(`personDimensions.${currentPerson}.geschlecht`) : null;
+            const dominanz = typeof TiageState !== 'undefined' ? TiageState.get(`personDimensions.${currentPerson}.dominanz`) : null;
+            const orientierung = typeof TiageState !== 'undefined' ? TiageState.get(`personDimensions.${currentPerson}.orientierung`) : null;
+            const geschlecht_extras = typeof TiageState !== 'undefined' ? TiageState.get(`personDimensions.${currentPerson}.geschlecht_extras`) || {} : {};
+            calculatedValues = ProfileCalculator.calculateFlatNeeds(currentArchetyp, geschlecht, dominanz, orientierung, geschlecht_extras);
+        }
+
+        // Fallback: Roh-Werte aus BaseArchetypProfile
+        if (!calculatedValues || Object.keys(calculatedValues).length === 0) {
+            if (typeof BaseArchetypProfile !== 'undefined' && BaseArchetypProfile[currentArchetyp]) {
+                calculatedValues = BaseArchetypProfile[currentArchetyp].umfrageWerte || {};
+            }
+        }
+
+        if (!calculatedValues) {
+            console.error('[AttributeSummaryCard] Keine Zielwerte für Reset gefunden');
             return;
         }
 
-        console.log(`[AttributeSummaryCard] Reset mit Umfragewerten aus BaseArchetypProfile für ${currentPerson}/${currentArchetyp}`);
-
-        // Hole Hauptfragen-Daten für Nuancen-Zugriff
-        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
-            ? HauptfrageAggregation.getHauptfragen()
-            : [];
-
-        // Sammle alle zu resettenden IDs (inkl. Nuancen der markierten Hauptfragen)
-        // FIX: Verwende Set um Duplikate zu vermeiden
-        const needsToResetSet = new Set();
-        if (selectedNeeds.size > 0) {
-            selectedNeeds.forEach(needId => {
-                needsToResetSet.add(needId);
-                // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
-                const hauptfrage = hauptfragen[needId];
-                if (hauptfrage?.nuancen) {
-                    hauptfrage.nuancen.forEach(nuanceId => needsToResetSet.add(nuanceId));
-                }
-            });
-        } else {
-            Object.keys(umfrageWerte).forEach(id => needsToResetSet.add(id));
-        }
-        const needsToReset = Array.from(needsToResetSet);
-
-        console.log(`[AttributeSummaryCard] ${selectedNeeds.size > 0 ? 'Ausgewählte' : 'Alle'} Bedürfnisse werden zurückgesetzt:`, needsToReset.length);
-
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCHRITT 2: NUR markierte Needs auf berechnete Werte zurücksetzen
+        // ═══════════════════════════════════════════════════════════════════════════
         let resetCount = 0;
-        let skippedLocked = 0;
-        let skippedNoValue = 0;
-        const actuallyResetNeeds = []; // FIX: Nur tatsächlich zurückgesetzte Needs tracken
         needsToReset.forEach(needId => {
-            // FIX v1.8.700: Prüfe Lock-Status direkt aus TiageState (SSOT)
-            // statt aus flatNeeds, da flatNeeds möglicherweise nicht alle Needs enthält
-            const isLocked = typeof TiageState !== 'undefined' && TiageState.isNeedLocked
-                ? TiageState.isNeedLocked(currentPerson, needId)
-                : false;
+            const targetValue = calculatedValues[needId];
+            if (targetValue === undefined) return;
 
-            // WICHTIG: Gesperrte Bedürfnisse NICHT zurücksetzen
-            if (isLocked) {
-                skippedLocked++;
-                return;
+            // Unlock + Wert setzen
+            upsertNeed(needId, { value: targetValue, locked: false });
+
+            // TiageState Lock entfernen (setNeedLocked existiert nicht — unlockNeed nutzen)
+            if (typeof TiageState !== 'undefined' && TiageState.unlockNeed) {
+                TiageState.unlockNeed(currentPerson, needId);
             }
 
-            const originalValue = umfrageWerte[needId];
-            if (originalValue === undefined) {
-                skippedNoValue++;
-                return;
-            }
-
-            // FIX v1.8.700: upsertNeed schreibt direkt zu TiageState
-            // und braucht kein needObj - Reset funktioniert auch wenn
-            // das Need nicht in flatNeeds enthalten ist
-            // v4.3: locked: false verhindert Auto-Lock bei Reset
-            upsertNeed(needId, { value: originalValue, locked: false });
-
-            // Update UI - nur wenn das Need in flatNeeds existiert
-            const needObj = findNeedById(needId);
-            if (needObj) {
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    if (slider) slider.value = originalValue;
-                    if (input) input.value = originalValue;
-
-                    // Slider-Track-Hintergrund aktualisieren
-                    const dimColor = getDimensionColor(needId);
-                    if (dimColor && slider) {
-                        slider.style.background = getSliderFillGradient(dimColor, originalValue, slider);
-                    }
-
-                    // Changed-Indicator (*) aktualisieren
-                    updateChangedIndicator(needItem, needId, originalValue);
-                }
-            }
-
-            // Aktualisiere auch den gespeicherten Original-Wert
-            originalNeedValues.set(needId, originalValue);
-            actuallyResetNeeds.push(needId); // FIX: Tracke tatsächlich zurückgesetzte Needs
             resetCount++;
         });
 
-        console.log(`[AttributeSummaryCard] Reset: ${resetCount} zurückgesetzt, ${skippedLocked} gesperrt übersprungen, ${skippedNoValue} ohne Originalwert`);
+        console.log(`[AttributeSummaryCard] Reset: ${resetCount} von ${needsToReset.length} Needs zurückgesetzt`);
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // FIX v1.8.711: Schreibe ALLE 226 Needs explizit zu TiageState
-        // Damit TiageState.flatNeeds nach Reset vollständig ist und keine
-        // undefined-Werte beim nächsten Laden auftreten
+        // SCHRITT 3: RAM → TiageState synchronisieren + Persistieren
         // ═══════════════════════════════════════════════════════════════════════════
-        if (selectedNeeds.size === 0 && typeof TiageState !== 'undefined' && TiageState.setFlatNeeds) {
-            // Vollständiger Reset: Schreibe ALLE Werte aus BaseArchetypProfile
-            const completeNeeds = {};
-            const lockedNeeds = TiageState.getLockedNeeds ? TiageState.getLockedNeeds(currentPerson) || {} : {};
-
-            // Alle Needs aus BaseArchetypProfile übernehmen
-            Object.keys(umfrageWerte).forEach(needId => {
-                // Gesperrte Needs behalten ihren Wert
-                if (lockedNeeds.hasOwnProperty(needId)) {
-                    completeNeeds[needId] = lockedNeeds[needId];
-                } else {
-                    completeNeeds[needId] = umfrageWerte[needId];
-                }
-            });
-
-            // Schreibe alle 226 Needs auf einmal zu TiageState
-            TiageState.setFlatNeeds(currentPerson, completeNeeds);
-            console.log(`[AttributeSummaryCard] VOLLSTÄNDIGER Reset: ${Object.keys(completeNeeds).length} Needs zu TiageState geschrieben für ${currentPerson}`);
-        }
-
-        // Trigger event for resonance recalculation
-        if (resetCount > 0) {
-            document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
-
-            // Update Hauptfrage-Aggregationen für alle betroffenen Hauptfragen
-            needsToReset.forEach(needId => {
-                updateParentHauptfrageValue(needId);
-            });
-
-            // v4.3: No-Op (Baseline entfernt — Reset überspringt gesperrte, Rest ist unlocked → geändert=false)
-            updateBaselineAfterReset(currentPerson, currentArchetyp, actuallyResetNeeds);
-        }
-
-        // FIX: Reset soll NUR Werte zurücksetzen - NICHT Filter oder Markierung ändern
-        // Aktualisiere Subtitle (geänderte Anzahl)
-        updateLockedCountDisplay();
-
-        // FIX v1.8.701: Explizit speichern nach Reset (nicht nur debounced)
-        // Damit beim Wechsel ICH/PARTNER die Werte korrekt geladen werden
+        syncRamToState();
         if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
             TiageState.saveToStorage();
-            console.log('[AttributeSummaryCard] Reset gespeichert für', currentPerson);
+            console.log('[AttributeSummaryCard] Reset persistiert für', currentPerson);
         }
 
-        // FIX v1.8.700: Cache invalidieren damit flatNeeds beim Re-Render
-        // frisch aus TiageState geladen wird (enthält jetzt alle Reset-Werte)
-        if (resetCount > 0) {
-            invalidateFlatNeedsCache();
-            reRenderFlatNeeds();
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCHRITT 4: UI aktualisieren
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
+        updateLockedCountDisplay();
+        invalidateFlatNeedsCache();
+        reRenderFlatNeeds();
+
+        // Resonanzfaktoren neu berechnen und Header aktualisieren
+        if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.recalculateResonanzForPerson) {
+            ProfileCalculator.recalculateResonanzForPerson(currentPerson);
         }
+        if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.update) {
+            ResonanzProfileHeaderCard.update();
+        }
+
+        console.log(`[AttributeSummaryCard] Reset abgeschlossen: ${resetCount} Needs für ${currentPerson}/${currentArchetyp}`);
     }
 
     /**
@@ -1321,7 +1091,7 @@ const AttributeSummaryCard = (function() {
      * Werte die 100 erreichen bleiben dort bis alle anderen auch 100 sind
      * @param {number} step - Schrittgröße (Standard: 5)
      */
-    function incrementSelectedNeeds(step = 25) {
+    function incrementSelectedNeeds(step = 10) {
         console.log("[incrementSelectedNeeds] START", {
             selectedSize: selectedNeeds.size,
             flatNeedsLen: flatNeeds.length,
@@ -1347,83 +1117,34 @@ const AttributeSummaryCard = (function() {
                 return; // Skip locked needs
             }
 
-            // FIX: Für Hauptfragen mit Nuancen den aggregierten Wert verwenden
-            const hasNuancen = checkHauptfrageHasNuancen(needId);
-            let currentValue;
-            if (hasNuancen) {
-                // Aggregierten Wert der Nuancen holen
-                currentValue = getAggregatedValueForHauptfrage(needId);
-                if (currentValue === null) currentValue = needObj?.value ?? 50;
-            } else {
-                currentValue = needObj?.value ?? 50;
-            }
-
-            console.log('[incrementSelectedNeeds] Processing:', { needId, hasNuancen, currentValue, storedValue: needObj?.value });
+            // v1.8.998: Alle Needs flach — kein Hauptfrage/Nuancen-Unterschied
+            const currentValue = needObj?.value ?? 50;
 
             // Wert bleibt bei 100 wenn bereits erreicht
             if (currentValue >= 100) {
                 skippedMax++;
-                console.log('[incrementSelectedNeeds] SKIP (max):', needId);
                 return;
             }
 
             processedCount++;
             const newValue = Math.min(100, currentValue + step);
 
-            // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
-            if (hasNuancen) {
-                // Hauptfrage-Element finden
-                const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
-                const slider = hauptfrageItem?.querySelector('.need-slider');
-                if (slider && hauptfrageItem) {
-                    // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
-                    adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
-                    // Slider UI aktualisieren
+            upsertNeed(needId, { value: newValue });
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) {
                     slider.value = newValue;
                     const dimColor = getDimensionColor(needId);
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
-                    const input = hauptfrageItem.querySelector('.flat-need-input');
-                    if (input) input.value = newValue;
                 }
-            } else {
-                // Update value für Nuancen oder Hauptfragen ohne Nuancen
-                upsertNeed(needId, { value: newValue });
-
-                // Update UI - versuche zuerst flat-need-item (Nuancen), dann hauptfrage-item (Hauptfragen ohne Nuancen)
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    if (slider) {
-                        slider.value = newValue;
-                        const dimColor = getDimensionColor(needId);
-                        if (dimColor) {
-                            slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                        }
-                    }
-                    if (input) input.value = newValue;
-                    updateChangedIndicator(needItem, needId, newValue);
-                } else {
-                    // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
-                    const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
-                    if (hauptfrageItem) {
-                        const slider = hauptfrageItem.querySelector('.need-slider');
-                        const input = hauptfrageItem.querySelector('.flat-need-input');
-                        if (slider) {
-                            slider.value = newValue;
-                            const dimColor = getDimensionColor(needId);
-                            if (dimColor) {
-                                slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                            }
-                        }
-                        if (input) input.value = newValue;
-                    }
-                }
-
-                // Update Hauptfrage-Aggregation (für Nuancen)
-                updateParentHauptfrageValue(needId);
+                if (input) input.value = newValue;
+                updateChangedIndicator(needItem, needId, newValue);
             }
 
             // Event für Änderungstracking
@@ -1443,7 +1164,7 @@ const AttributeSummaryCard = (function() {
      * Werte die 0 erreichen bleiben dort bis alle anderen auch 0 sind
      * @param {number} step - Schrittgröße (Standard: 5)
      */
-    function decrementSelectedNeeds(step = 25) {
+    function decrementSelectedNeeds(step = 10) {
         console.log("[decrementSelectedNeeds] START", { selectedSize: selectedNeeds.size, flatNeedsLen: flatNeeds.length });
         if (selectedNeeds.size === 0) return;
 
@@ -1464,16 +1185,8 @@ const AttributeSummaryCard = (function() {
                 return; // Skip locked needs
             }
 
-            // FIX: Für Hauptfragen mit Nuancen den aggregierten Wert verwenden
-            const hasNuancen = checkHauptfrageHasNuancen(needId);
-            let currentValue;
-            if (hasNuancen) {
-                // Aggregierten Wert der Nuancen holen
-                currentValue = getAggregatedValueForHauptfrage(needId);
-                if (currentValue === null) currentValue = needObj?.value ?? 50;
-            } else {
-                currentValue = needObj?.value ?? 50;
-            }
+            // v1.8.998: Alle Needs flach — kein Hauptfrage/Nuancen-Unterschied
+            const currentValue = needObj?.value ?? 50;
 
             // Wert bleibt bei 0 wenn bereits erreicht
             if (currentValue <= 0) {
@@ -1484,60 +1197,22 @@ const AttributeSummaryCard = (function() {
             processedCount++;
             const newValue = Math.max(0, currentValue - step);
 
-            // FIX: Für Hauptfragen mit Nuancen die Nuancen anpassen
-            if (hasNuancen) {
-                // Hauptfrage-Element finden
-                const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
-                const slider = hauptfrageItem?.querySelector('.need-slider');
-                if (slider && hauptfrageItem) {
-                    // adjustNuancenToTarget passt Nuancen an um den Zielwert zu erreichen
-                    adjustNuancenToTarget(needId, newValue, slider, hauptfrageItem);
-                    // Slider UI aktualisieren
+            upsertNeed(needId, { value: newValue });
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) {
                     slider.value = newValue;
                     const dimColor = getDimensionColor(needId);
                     if (dimColor) {
                         slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
-                    const input = hauptfrageItem.querySelector('.flat-need-input');
-                    if (input) input.value = newValue;
                 }
-            } else {
-                // Update value für Nuancen oder Hauptfragen ohne Nuancen
-                upsertNeed(needId, { value: newValue });
-
-                // Update UI - versuche zuerst flat-need-item (Nuancen), dann hauptfrage-item (Hauptfragen ohne Nuancen)
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    if (slider) {
-                        slider.value = newValue;
-                        const dimColor = getDimensionColor(needId);
-                        if (dimColor) {
-                            slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                        }
-                    }
-                    if (input) input.value = newValue;
-                    updateChangedIndicator(needItem, needId, newValue);
-                } else {
-                    // FIX: Hauptfragen ohne Nuancen haben hauptfrage-item, nicht flat-need-item
-                    const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${needId}"]`);
-                    if (hauptfrageItem) {
-                        const slider = hauptfrageItem.querySelector('.need-slider');
-                        const input = hauptfrageItem.querySelector('.flat-need-input');
-                        if (slider) {
-                            slider.value = newValue;
-                            const dimColor = getDimensionColor(needId);
-                            if (dimColor) {
-                                slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                            }
-                        }
-                        if (input) input.value = newValue;
-                    }
-                }
-
-                // Update Hauptfrage-Aggregation (für Nuancen)
-                updateParentHauptfrageValue(needId);
+                if (input) input.value = newValue;
+                updateChangedIndicator(needItem, needId, newValue);
             }
 
             // Event für Änderungstracking
@@ -1569,7 +1244,7 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse inkl. deren Nuancen
+     * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse
      * SSOT v2.0: Partner-Bedürfnisse sind NICHT manuell editierbar
      * @param {boolean} lockState - true = sperren, false = entsperren
      */
@@ -1585,11 +1260,6 @@ const AttributeSummaryCard = (function() {
             console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
             return;
         }
-
-        // Hole Hauptfragen-Daten für Nuancen-Zugriff
-        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
-            ? HauptfrageAggregation.getHauptfragen()
-            : [];
 
         let lockedCount = 0;
         const processedNeeds = new Set(); // FIX: Verhindere Doppelzählung
@@ -1624,9 +1294,7 @@ const AttributeSummaryCard = (function() {
                 updateChangedIndicator(needItem, needId, currentValue);
             }
 
-            // SSOT FIX v1.8.983: NICHT sofort in TiageState schreiben!
-            // Lock wird nur in RAM (flatNeeds[]) gesetzt
-            // Erst bei saveAllChanges() wird syncRamToState() → TiageState geschrieben
+            // v1.8.990: Lock wird in RAM gesetzt, Auto-Save erfolgt nach der Schleife
             lockedCount++;
 
             // Event
@@ -1643,17 +1311,23 @@ const AttributeSummaryCard = (function() {
             lockSingleNeed(needId);
         });
 
-        // FIX v1.8.971: NICHT auto-speichern - nur im RAM (Explicit Save Workflow)
+        // v1.8.990: Lock = Auto-Save — sofort persistieren
         if (lockedCount > 0) {
-            console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson, '(nur RAM)');
-            showLockToast(lockState ? `${lockedCount} Werte gesperrt (🔴 nicht gespeichert)` : `${lockedCount} Werte entsperrt (🔴 nicht gespeichert)`);
+            // RAM → TiageState → Storage
+            syncRamToState();
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+
+            console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson, '(auto-saved)');
+            showLockToast(lockState ? `🟢 ${lockedCount} Werte gesperrt & gespeichert` : `🟢 ${lockedCount} Werte entsperrt & gespeichert`);
             // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
             updateLockedCountDisplay();
             // Button-State aktualisieren
             updateSelectedLockButtonState();
-            // FIX v1.8.979: Konsistent mit toggleFlatNeedLock() - nur Badges aktualisieren, kein komplettes Re-Rendering
+            // Badges aktualisieren (sollten jetzt alle 🟢 sein)
             updateAllSaveStatusBadges();
-            // FIX v1.8.965: Auswahl nach Lock/Unlock leeren (verhindert Doppel-Lock)
+            // Auswahl nach Lock/Unlock leeren (verhindert Doppel-Lock)
             clearNeedSelection();
         }
     }
@@ -1724,15 +1398,19 @@ const AttributeSummaryCard = (function() {
             copiedCount++;
         });
 
-        // FIX v1.8.971: NICHT auto-speichern - nur im RAM (Explicit Save Workflow)
+        // v1.8.990: Copy = Auto-Save — sofort persistieren
         if (copiedCount > 0) {
-            showLockToast(`✓ ${copiedCount} Bedürfnis(se) in ${archetypes.length} Archetypen kopiert (🔴 nicht gespeichert)`);
-            console.log('[copySelectedNeedsToAllArchetypes] Kopiert:', copiedCount, 'Bedürfnisse in', archetypes.length, 'Archetypen (nur RAM)');
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+
+            showLockToast(`🟢 ${copiedCount} Bedürfnis(se) in ${archetypes.length} Archetypen kopiert & gespeichert`);
+            console.log('[copySelectedNeedsToAllArchetypes] Kopiert:', copiedCount, 'Bedürfnisse in', archetypes.length, 'Archetypen (auto-saved)');
 
             // Auswahl leeren
             clearNeedSelection();
-
-            // FIX v1.8.975: updateAllStatusIndicators() entfernt - nicht nötig, da keine UI-Änderung in aktueller Ansicht
+            // Badges aktualisieren
+            updateAllSaveStatusBadges();
         }
     }
 
@@ -1960,23 +1638,6 @@ const AttributeSummaryCard = (function() {
                 return false;
             }
 
-            // Hauptfrage-Filter prüfen
-            const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${need.id}"]`);
-            if (hauptfrageItem && hauptfrageItem.classList.contains('filter-hidden')) {
-                return false;
-            }
-
-            // Für Nuancen: Prüfe Parent-Hauptfrage
-            if (!needItem && !hauptfrageItem && typeof HauptfrageAggregation !== 'undefined') {
-                const parentHf = HauptfrageAggregation.getHauptfrageForNuance(need.id);
-                if (parentHf) {
-                    const parentItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${parentHf.id}"]`);
-                    if (parentItem && parentItem.classList.contains('filter-hidden')) {
-                        return false;
-                    }
-                }
-            }
-
             return true;
         }
 
@@ -1984,7 +1645,8 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Ermittelt den Lock-Status aller gefilterten Needs inkl. Nuancen
+     * Ermittelt den Lock-Status aller gefilterten Needs
+     * v1.8.998: Vereinfacht — keine Nuancen-Kaskade mehr
      * @returns {{ allLocked: boolean, someLocked: boolean, lockedCount: number, totalCount: number }}
      */
     function getFilteredNeedsLockStatus() {
@@ -1993,32 +1655,14 @@ const AttributeSummaryCard = (function() {
             return { allLocked: false, someLocked: false, lockedCount: 0, totalCount: 0 };
         }
 
-        // Hole Hauptfragen-Daten für Nuancen-Zugriff
-        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
-            ? HauptfrageAggregation.getHauptfragen()
-            : [];
-
         let lockedCount = 0;
-        let totalCount = 0;
+        const totalCount = visibleNeeds.length;
 
         visibleNeeds.forEach(need => {
-            // Hauptfrage zählen
             const needObj = findNeedById(need.id);
-            totalCount++;
             if (needObj && needObj.locked) {
                 lockedCount++;
             }
-
-            // Nuancen zählen (hauptfragen ist ein Objekt, kein Array)
-            const hauptfrage = hauptfragen[need.id];
-            const nuancen = hauptfrage?.nuancen || [];
-            nuancen.forEach(nuanceId => {
-                totalCount++;
-                const nuanceObj = findNeedById(nuanceId);
-                if (nuanceObj && nuanceObj.locked) {
-                    lockedCount++;
-                }
-            });
         });
 
         return {
@@ -2080,7 +1724,8 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse inkl. Nuancen
+     * BULK-LOCK TOGGLE: Sperrt/Entsperrt alle gefilterten (sichtbaren) Bedürfnisse
+     * v1.8.998: Vereinfacht — keine Nuancen-Kaskade mehr
      * - Wenn ALLE gesperrt → alle entsperren
      * - Wenn TEILWEISE oder KEINE gesperrt → alle noch nicht gesperrten sperren
      */
@@ -2091,7 +1736,6 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Ermittle alle sichtbaren Bedürfnisse (Hauptfragen)
         const visibleNeeds = getVisibleFilteredNeeds();
 
         if (visibleNeeds.length === 0) {
@@ -2099,54 +1743,23 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        // Status ermitteln (inkl. Nuancen)
         const status = getFilteredNeedsLockStatus();
-
-        // Logik:
-        // - Alle gesperrt → alle entsperren
-        // - Nicht alle gesperrt (teilweise oder keine) → alle noch nicht gesperrten sperren
         const shouldUnlock = status.allLocked;
-
         let changedCount = 0;
-
-        // Hole Hauptfragen-Daten für Nuancen-Zugriff
-        const hauptfragen = typeof HauptfrageAggregation !== 'undefined'
-            ? HauptfrageAggregation.getHauptfragen()
-            : [];
 
         visibleNeeds.forEach(need => {
             const needId = need.id;
             const needObj = findNeedById(needId);
             const isCurrentlyLocked = needObj && needObj.locked;
 
-            // Finde zugehörige Hauptfrage für Nuancen (hauptfragen ist ein Objekt, kein Array)
-            const hauptfrage = hauptfragen[needId];
-            const nuancen = hauptfrage?.nuancen || [];
-
             if (shouldUnlock) {
-                // Entsperren: Hauptfrage und alle Nuancen
                 if (isCurrentlyLocked) {
                     changedCount += setNeedLockState(needId, false, currentPerson);
                 }
-                // Auch alle Nuancen entsperren
-                nuancen.forEach(nuanceId => {
-                    const nuanceObj = findNeedById(nuanceId);
-                    if (nuanceObj && nuanceObj.locked) {
-                        changedCount += setNeedLockState(nuanceId, false, currentPerson);
-                    }
-                });
             } else {
-                // Sperren: Hauptfrage und alle Nuancen (nur nicht-gesperrte)
                 if (!isCurrentlyLocked) {
                     changedCount += setNeedLockState(needId, true, currentPerson);
                 }
-                // Auch alle Nuancen sperren
-                nuancen.forEach(nuanceId => {
-                    const nuanceObj = findNeedById(nuanceId);
-                    if (!nuanceObj || !nuanceObj.locked) {
-                        changedCount += setNeedLockState(nuanceId, true, currentPerson);
-                    }
-                });
             }
         });
 
@@ -2275,14 +1888,12 @@ const AttributeSummaryCard = (function() {
     /**
      * Hauptfragen-Ansicht: Zeigt nur Hauptfragen mit aggregierten Werten
      * Nuancen werden als aufklappbare Details darunter angezeigt
-     * Default: true (vereinfachte Ansicht)
+     * v1.8.998: ENTFERNT — alle Needs werden flach angezeigt
      */
-    let showOnlyHauptfragen = true;
 
     /**
-     * Set der aufgeklappten Hauptfragen (speichert IDs der expandierten Hauptfragen)
+     * v1.8.998: expandedHauptfragen ENTFERNT — keine Expand/Collapse mehr
      */
-    let expandedHauptfragen = new Set();
 
     /**
      * Filter: Zeigt nur geänderte Bedürfnisse an
@@ -2515,31 +2126,8 @@ const AttributeSummaryCard = (function() {
         }
     }
 
-    /**
-     * DEPRECATED: Toggle zwischen Hauptfragen und allen Bedürfnissen
-     * Hauptfragen-Filter wurde entfernt (Benutzer-Feedback)
-     */
-    /**
-     * Toggle zwischen Hauptfragen-Ansicht und Detail-Ansicht
-     */
-    function toggleHauptfragenFilter() {
-        showOnlyHauptfragen = !showOnlyHauptfragen;
-        console.log('[AttributeSummaryCard] Hauptfragen-Ansicht:', showOnlyHauptfragen ? 'AN' : 'AUS');
-        reRenderFlatNeeds();
-    }
-
-    /**
-     * Toggle einer einzelnen Hauptfrage (aufklappen/zuklappen der Nuancen)
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     */
-    function toggleHauptfrageExpand(hauptfrageId) {
-        if (expandedHauptfragen.has(hauptfrageId)) {
-            expandedHauptfragen.delete(hauptfrageId);
-        } else {
-            expandedHauptfragen.add(hauptfrageId);
-        }
-        reRenderFlatNeeds();
-    }
+    // v1.8.998: toggleHauptfragenFilter() und toggleHauptfrageExpand() ENTFERNT
+    // Alle Needs werden flach ohne Hierarchie angezeigt
 
     /**
      * Prüft ob ein Bedürfnis angezeigt werden soll (nur Hauptfragen, keine Nuancen)
@@ -2556,11 +2144,7 @@ const AttributeSummaryCard = (function() {
         if (!need) {
             return false;
         }
-        // Nuancen nicht anzeigen (nur für Feuer-Synthese)
-        if (need.frageTyp === 'nuance') {
-            return false;
-        }
-        // Hauptfragen oder alte Daten ohne frageTyp → anzeigen
+        // v1.8.998: Alle Needs gleichberechtigt anzeigen (keine Hauptfrage/Nuance-Hierarchie)
         return true;
     }
 
@@ -2932,118 +2516,20 @@ const AttributeSummaryCard = (function() {
         // Bei aktivem Filter: zähle nur gefilterte geänderte Bedürfnisse
         const changedCount = filteredNeeds.filter(need => isValueChanged(need.id, need.value)).length;
 
-        // Hauptfragen-Daten für aggregierte Ansicht
-        let hauptfragenCount = 0;
-        let hauptfragenData = [];
-        let totalHauptfragen = 0; // Für Subtitle: Anzahl berechnungsrelevanter Hauptfragen
-        if (typeof HauptfrageAggregation !== 'undefined') {
-            // Mapping der UI-Sortieroptionen auf HauptfrageAggregation-Parameter
-            // UI: 'value', 'name', 'id', 'status', 'changed'
-            // HauptfrageAggregation: 'value', 'label', 'kategorie', 'id'
-            let sortParam = 'value';
-            let sortDescending = true;
-            let needsCustomChangedSort = false;
-
-            switch (currentFlatSortMode) {
-                case 'name':
-                    sortParam = 'label';
-                    sortDescending = false; // A-Z aufsteigend
-                    break;
-                case 'id':
-                    sortParam = 'id';
-                    sortDescending = false; // #B1, #B2, ... aufsteigend
-                    break;
-                case 'changed':
-                    // Spezielle Sortierung: Hauptfragen mit geänderten Nuancen zuerst
-                    sortParam = 'value'; // Initial nach Wert
-                    sortDescending = true;
-                    needsCustomChangedSort = true;
-                    break;
-                case 'status':
-                case 'value':
-                default:
-                    sortParam = 'value';
-                    sortDescending = true; // Höchste zuerst
-                    break;
-            }
-
-            hauptfragenData = HauptfrageAggregation.getAggregatedHauptfragenList(
-                Object.fromEntries(flatNeeds.map(n => [n.id, n.value])),
-                sortParam,
-                sortDescending
-            );
-
-            // Spezielle "Geändert"-Sortierung für Hauptfragen:
-            // Hauptfragen mit geänderten Nuancen zuerst/letzt (je nach Richtung), dann nach Anzahl geänderter Nuancen
-            if (needsCustomChangedSort) {
-                const changedDirection = sortDirections.changed ? 1 : -1; // true = ↓ (mehr zuerst), false = ↑ (weniger zuerst)
-                hauptfragenData.sort((a, b) => {
-                    const aChangedCount = (a.nuancen || []).filter(nuanceId => {
-                        const nuanceObj = findNeedById(nuanceId);
-                        return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
-                    }).length;
-                    const bChangedCount = (b.nuancen || []).filter(nuanceId => {
-                        const nuanceObj = findNeedById(nuanceId);
-                        return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
-                    }).length;
-                    // Sortierrichtung berücksichtigen
-                    if (bChangedCount !== aChangedCount) {
-                        return (bChangedCount - aChangedCount) * changedDirection;
-                    }
-                    // Bei gleicher Anzahl (insbes. 0 Änderungen): nach #B-Nummer sortieren für konsistente Reihenfolge
-                    const numA = parseInt((a.id || '').replace('#B', ''), 10) || 0;
-                    const numB = parseInt((b.id || '').replace('#B', ''), 10) || 0;
-                    return numA - numB;
-                });
-            }
-
-            // Filtere Hauptfragen nach aktivem DimensionKategorieFilter
-            // Eine Hauptfrage ist sichtbar wenn mindestens eine ihrer Nuancen sichtbar ist
-            // totalHauptfragen = Anzahl VOR Filterung (für Berechnungen relevant)
-            totalHauptfragen = hauptfragenData.length;
-            if (typeof DimensionKategorieFilter !== 'undefined' && filteredCount < sortedNeeds.length) {
-                hauptfragenData = hauptfragenData.filter(hf => {
-                    // Prüfe ob die Hauptfrage selbst sichtbar ist
-                    if (DimensionKategorieFilter.shouldShowNeed(hf.id)) {
-                        return true;
-                    }
-                    // Prüfe ob mindestens eine Nuance sichtbar ist
-                    if (hf.nuancen && hf.nuancen.length > 0) {
-                        return hf.nuancen.some(nuanceId => DimensionKategorieFilter.shouldShowNeed(nuanceId));
-                    }
-                    return false;
-                });
-            }
-            hauptfragenCount = hauptfragenData.length;
-        }
+        // v1.8.998: Hauptfragen-Aggregation ENTFERNT — alle Needs sind flach gleichberechtigt
 
         // Subtitle mit Filter-Info, gesperrten und geänderten Bedürfnissen
         const filterActive = filteredCount < totalNeedsCount;
-        let subtitleText;
-        if (showOnlyHauptfragen) {
-            // Bei Hauptfragen-Ansicht: Zeige gefilterte Anzahl wenn Filter aktiv
-            if (filterActive) {
-                subtitleText = `Dein ${archetypLabel}-Profil (Gefiltert: ${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
-            } else {
-                subtitleText = `Dein ${archetypLabel}-Profil (${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
-            }
-        } else {
-            // Zeige Hauptfragen-Anzahl (berechnungsrelevant) statt Gesamt-Bedürfnisse
-            // Fallback auf totalNeedsCount wenn HauptfrageAggregation nicht verfügbar
-            const displayCount = totalHauptfragen > 0 ? totalHauptfragen : totalNeedsCount;
-            const displayLabel = totalHauptfragen > 0 ? 'Hauptfragen' : 'Bedürfnisse';
-            console.log('[AttributeSummaryCard] Subtitle Debug: totalHauptfragen=' + totalHauptfragen + ', totalNeedsCount=' + totalNeedsCount + ', displayCount=' + displayCount);
-            subtitleText = filterActive
-                ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
-                : `Dein ${archetypLabel}-Profil (${displayCount} ${displayLabel}), davon gesperrt: ${lockedCount}`;
-        }
+        let subtitleText = filterActive
+            ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount} von ${totalNeedsCount}), davon gesperrt: ${lockedCount}`
+            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
         // Füge geänderte Zählung hinzu wenn > 0
         if (changedCount > 0) {
             subtitleText += `, geändert: ${changedCount}`;
         }
 
-        // Titel je nach Ansichtsmodus
-        const titleText = showOnlyHauptfragen ? 'Bedürfnisse (Hauptfragen)' : 'Alle Bedürfnisse';
+        // v1.8.998: Einheitlicher Titel (keine Hauptfragen-Ansicht mehr)
+        const titleText = 'Alle Bedürfnisse';
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -3075,31 +2561,16 @@ const AttributeSummaryCard = (function() {
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
 
             <div class="flat-needs-selection-bar">
-                <span class="flat-needs-selection-label">Markieren:</span>
-                <button class="flat-needs-selection-btn" data-action="select-all-needs" title="Alle 31 Hauptfragen auswählen (berechnungsrelevant)">✓ Alle</button>
-                <button class="flat-needs-selection-btn" data-action="clear-needs-selection" title="Alle Auswahlen aufheben">✗ Keine</button>
-                <button class="flat-needs-selection-btn" data-action="invert-needs-selection" title="Hauptfragen-Auswahl umkehren">⇄ Umkehren</button>
-                <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : ''}</span>
-                <div class="bulk-increment-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
-                    <button class="bulk-increment-btn bulk-increment" data-action="bulk-increment-needs" title="Alle markierten Werte um 25 erhöhen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
-                        <span class="bulk-btn-icon">+</span>
-                        <span class="bulk-btn-label">25</span>
-                    </button>
-                    <button class="bulk-increment-btn bulk-decrement" data-action="bulk-decrement-needs" title="Alle markierten Werte um 25 verringern" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
-                        <span class="bulk-btn-icon">−</span>
-                        <span class="bulk-btn-label">25</span>
-                    </button>
-                    <button class="bulk-reset-btn" data-action="bulk-reset-needs" title="Alle ungesperrten Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
+                <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : 'Klick = markieren, CTRL+Klick = mehrere'}</span>
+                <div class="selection-quick-btns">
+                    <button class="selection-quick-btn" data-action="select-all-needs" title="Alle sichtbaren markieren">Alle</button>
+                    <button class="selection-quick-btn" data-action="clear-needs-selection" title="Keine markieren">Keine</button>
+                    <button class="selection-quick-btn" data-action="invert-needs-selection" title="Markierung umkehren">Umkehren</button>
+                </div>
+                <div class="bulk-action-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
+                    <button class="bulk-reset-btn" data-action="bulk-reset-needs" title="Markierte (nicht gesperrte) Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
                         <span class="bulk-btn-icon">↺</span>
                         <span class="bulk-btn-label">Reset</span>
-                    </button>
-                    <button class="bulk-lock-btn" data-action="bulk-lock-needs" title="Alle markierten Werte sperren/entsperren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
-                        <span class="bulk-btn-icon">🔒</span>
-                        <span class="bulk-btn-label">Ent-/Sperren</span>
-                    </button>
-                    <button class="bulk-copy-btn" data-action="bulk-copy-needs" title="Markierte Werte in ALLE Archetyp-Slots kopieren" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
-                        <span class="bulk-btn-icon">📋</span>
-                        <span class="bulk-btn-label">In alle Archetypen</span>
                     </button>
                 </div>
                 <button class="bulk-save-btn" data-action="bulk-save-needs" title="Alle Änderungen jetzt speichern">
@@ -3112,103 +2583,23 @@ const AttributeSummaryCard = (function() {
         // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
         // Kein zweiter Container nötig - wurde entfernt um duplicate ID zu vermeiden
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // BEDINGTE RENDER-LOGIK: Hauptfragen-Ansicht vs. Detail-Ansicht
-        // ═══════════════════════════════════════════════════════════════════════════
+        // v1.8.998: Einheitliche flache Liste — alle Needs gleichberechtigt
+        html += `<div class="flat-needs-list-wrapper">
+            <div class="flat-needs-list">`;
+        sortedNeeds.forEach(need => {
+            const needObj = findNeedById(need.id);
+            const isLocked = needObj?.locked || false;
+            const dimColor = getDimensionColor(need.id);
 
-        if (showOnlyHauptfragen && hauptfragenData.length > 0) {
-            // ═══════════════════════════════════════════════════════════════════════════
-            // HAUPTFRAGEN-ANSICHT: Zeigt nur Hauptfragen mit aggregierten Werten
-            // ═══════════════════════════════════════════════════════════════════════════
-            html += `<div class="flat-needs-list-wrapper">
-                <div class="flat-needs-list hauptfragen-mode">`;
+            const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
+            const hiddenByDimensionFilter = typeof DimensionKategorieFilter !== 'undefined' &&
+                !DimensionKategorieFilter.shouldShowNeed(need.id);
+            const shouldHide = hiddenByChangedFilter || hiddenByDimensionFilter;
 
-            // UNIFIED RENDERING v1.8.985: Hauptfragen nutzen jetzt renderFlatNeedItem()
-            hauptfragenData.forEach(hf => {
-                const isExpanded = expandedHauptfragen.has(hf.id);
-                const dimColor = getDimensionColor(hf.id);
-                const nuancenCount = hf.nuancenCount || 0;
-                const aggregatedValue = hf.aggregatedValue;
-                const isHauptfrageLocked = findNeedById(hf.id)?.locked === true;
-                const hasNuancen = nuancenCount > 0;
-
-                // Hauptfrage ist effektiv gelockt wenn: explizit gelockt ODER alle Nuancen gelockt
-                let allNuancenLocked = false;
-                if (hasNuancen && hf.nuancen && hf.nuancen.length > 0) {
-                    allNuancenLocked = hf.nuancen.every(nuanceId => findNeedById(nuanceId)?.locked === true);
-                }
-                const isEffectivelyLocked = isHauptfrageLocked || allNuancenLocked;
-
-                // Slider-Wert runden
-                const sliderValue = roundTo25(aggregatedValue !== null ? aggregatedValue : 50);
-
-                // Nuancen-HTML pre-rendern (wenn aufgeklappt)
-                let nuancenHtml = '';
-                if (isExpanded && hf.nuancen && hf.nuancen.length > 0) {
-                    nuancenHtml = `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}" onclick="event.stopPropagation();">`;
-                    hf.nuancen.forEach(nuanceId => {
-                        const nuanceObj = findNeedById(nuanceId);
-                        if (nuanceObj) {
-                            const isLocked = isHauptfrageLocked || nuanceObj.locked || false;
-                            nuancenHtml += renderFlatNeedItem(
-                                nuanceId,
-                                `${nuanceId} ${nuanceObj.label}`,
-                                nuanceObj.value,
-                                isLocked,
-                                dimColor,
-                                false
-                            );
-                        }
-                    });
-                    nuancenHtml += `</div>`;
-                }
-
-                // UNIFIED: Hauptfrage mit renderFlatNeedItem() rendern
-                html += renderFlatNeedItem(
-                    hf.id,
-                    `${hf.id} ${hf.label}`,
-                    sliderValue,
-                    isEffectivelyLocked,
-                    dimColor,
-                    false,
-                    {
-                        nuancenCount: nuancenCount,
-                        isExpanded: isExpanded,
-                        nuancenHtml: nuancenHtml
-                    }
-                );
-            });
-
-            html += `</div>`; // Close flat-needs-list
-            html += `</div>`; // Close flat-needs-list-wrapper
-        } else {
-            // ═══════════════════════════════════════════════════════════════════════════
-            // DETAIL-ANSICHT: Zeigt alle Bedürfnisse flach
-            // ═══════════════════════════════════════════════════════════════════════════
-            html += `<div class="flat-needs-list-wrapper">
-                <div class="flat-needs-list kategorie-mode">`;
-            // Rendere alle Bedürfnisse mit aktiven Filtern
-            sortedNeeds.forEach(need => {
-                const needObj = findNeedById(need.id);
-                const isLocked = needObj?.locked || false;
-                // Zeige immer Dimension-Farbe
-                const dimColor = getDimensionColor(need.id);
-
-                // "Nur Geänderte" Filter - zeigt nur Bedürfnisse deren Wert vom Standard abweicht
-                const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
-
-                // DimensionKategorieFilter anwenden (Kategorie-Filter)
-                const hiddenByDimensionFilter = typeof DimensionKategorieFilter !== 'undefined' &&
-                    !DimensionKategorieFilter.shouldShowNeed(need.id);
-
-                // Beide Filter kombinieren
-                const shouldHide = hiddenByChangedFilter || hiddenByDimensionFilter;
-
-                html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
-            });
-            html += `</div>`; // Close flat-needs-list
-            html += `</div>`; // Close flat-needs-list-wrapper
-        }
+            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
+        });
+        html += `</div>`;
+        html += `</div>`;
 
         html += '</div>'; // Close flat-needs-container
         return html;
@@ -3618,29 +3009,18 @@ const AttributeSummaryCard = (function() {
      * @param {boolean} shouldHide - Ob durch DimensionKategorieFilter versteckt
      */
     /**
-     * UNIFIED RENDERING v1.8.985: Eine Funktion für ALLE Needs (Hauptfragen + Nuancen)
-     *
+     * v1.8.998: Vereinfachtes Rendering — alle Needs gleichberechtigt (keine Hierarchie)
      * @param {string} needId - #B-ID
      * @param {string} label - Anzeige-Label
      * @param {number} value - Wert 0-100
      * @param {boolean} isLocked - Ob fixiert
      * @param {string|null} dimensionColor - Farbe für border-left
      * @param {boolean} shouldHide - Ob durch Filter versteckt
-     * @param {Object} [hfOptions] - Hauptfragen-Optionen (nur wenn Hauptfrage)
-     * @param {number} [hfOptions.nuancenCount] - Anzahl Nuancen
-     * @param {boolean} [hfOptions.isExpanded] - Aufgeklappt?
-     * @param {string} [hfOptions.nuancenHtml] - Pre-gerendertes Nuancen-HTML
      */
-    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false, hfOptions = null) {
-        // Wert auf 25er-Schritte runden
+    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
+        // v1.8.998: Vereinfacht — keine hfOptions, keine Hauptfrage/Nuancen-Unterscheidung
         value = roundTo25(value);
-        const isHauptfrage = hfOptions !== null;
-        const nuancenCount = hfOptions?.nuancenCount || 0;
-        const hasNuancen = nuancenCount > 0;
-        const isExpanded = hfOptions?.isExpanded || false;
-        const nuancenHtml = hfOptions?.nuancenHtml || '';
 
-        // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
             : '';
@@ -3648,58 +3028,39 @@ const AttributeSummaryCard = (function() {
         const isSelected = selectedNeeds.has(needId);
         const selectedClass = isSelected ? ' need-selected' : '';
         const filterHiddenClass = shouldHide ? ' dimension-filter-hidden' : '';
-        const hauptfrageClass = isHauptfrage ? ' is-hauptfrage' : '';
-        const expandedClass = isExpanded ? ' expanded' : '';
 
-        // Slider-Track-Hintergrund
         const sliderStyle = dimensionColor
             ? `style="background: ${getSliderFillGradient(dimensionColor, value)};"`
             : '';
 
-        // Prüfe ob Wert geändert wurde
         const valueChanged = isValueChanged(needId, value);
         const changedIndicator = valueChanged ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
         const changedClass = valueChanged ? ' value-changed' : '';
 
-        // Badges
         const rFactorBadge = renderRFactorBadge(needId, value);
-        const godModBadge = renderGodModifierBadge(needId);
+        const godModBadge = renderModifierBadges(needId);
         const saveStatusBadge = renderSaveStatusBadge(needId, value, isLocked);
-
-        // Expand-Icon (nur bei Hauptfragen mit Nuancen)
-        const expandIcon = (isHauptfrage && hasNuancen)
-            ? `<span class="need-expand-icon" onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageExpand('${needId}')">${isExpanded ? '▼' : '▶'}</span>`
-            : '';
-
-        // Nuancen-Count Badge (nur bei Hauptfragen)
-        const nuancenBadge = isHauptfrage
-            ? `<span class="need-nuancen-count" onclick="event.stopPropagation(); ${hasNuancen ? `AttributeSummaryCard.toggleHauptfrageExpand('${needId}')` : ''}">${hasNuancen ? `(${nuancenCount} Nuancen)` : '(direkt)'}</span>`
-            : '';
-
-        // Lock-Title
         const lockTitle = isLocked ? 'Entsperren' : 'Sperren';
 
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}${hauptfrageClass}${expandedClass}" data-need="${needId}" ${itemStyle}
-             onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
+             onclick="AttributeSummaryCard.toggleNeedSelection('${needId}', event)">
             <div class="flat-need-header">
-                ${expandIcon}
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
-                ${nuancenBadge}
                 <div class="flat-need-controls">
                     ${saveStatusBadge}
                     ${godModBadge}
                     ${rFactorBadge}
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
-                          title="${lockTitle}"></span>
+                          title="${lockTitle}">${isLocked ? '🔒' : '🔓'}</span>
                 </div>
             </div>
             <div class="flat-need-slider-row">
                 <input type="range" class="need-slider"
-                       min="0" max="100" step="25" value="${value}"
+                       min="0" max="100" step="10" value="${value}"
                        oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
                        onclick="event.stopPropagation()"
                        ${sliderStyle}
@@ -3709,7 +3070,6 @@ const AttributeSummaryCard = (function() {
                        onclick="event.stopPropagation()"
                        ${isLocked ? 'readonly' : ''}>
             </div>
-            ${nuancenHtml}
         </div>`;
     }
 
@@ -3730,13 +3090,10 @@ const AttributeSummaryCard = (function() {
         const numValue = parseInt(value, 10);
         if (isNaN(numValue)) return;
 
-        // BULK-EDIT: Wenn dieses Bedürfnis markiert ist, alle markierten aktualisieren
-        if (selectedNeeds.has(needId) && selectedNeeds.size > 1) {
-            updateAllSelectedNeedsUI(numValue, needId);
-        }
-
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { value: numValue });
+
+        // v1.8.998: Hauptfrage→Nuancen Propagation ENTFERNT — alle Needs unabhängig
 
         // Auto-Sort auf "changed" wenn Wert geändert wird (ohne Rerender)
         if (isValueChanged(needId, numValue) && currentFlatSortMode !== 'changed') {
@@ -3758,6 +3115,18 @@ const AttributeSummaryCard = (function() {
 
             // Changed-Indicator (*) aktualisieren
             updateChangedIndicator(needItem, needId, numValue);
+
+            // FIX v1.8.998: Save-Status-Badge aktualisieren (🟢→🔴)
+            const controls = needItem.querySelector('.flat-need-controls');
+            if (controls) {
+                const oldBadge = controls.querySelector('.save-status-badge');
+                const newBadgeHtml = renderSaveStatusBadge(needId, numValue, needObj?.locked || false);
+                if (oldBadge && newBadgeHtml) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = newBadgeHtml;
+                    oldBadge.replaceWith(temp.firstChild);
+                }
+            }
         }
 
         // Event für Änderungstracking
@@ -3765,9 +3134,6 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { needId, value: numValue }
         }));
-
-        // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
-        updateParentHauptfrageValue(needId);
 
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
         updateLockedCountDisplay();
@@ -3814,267 +3180,12 @@ const AttributeSummaryCard = (function() {
                 detail: { needId: selectedNeedId, value: value, bulk: true }
             }));
 
-            // Aktualisiere Hauptfrage-Aggregation
-            updateParentHauptfrageValue(selectedNeedId);
+            // v1.8.998: updateParentHauptfrageValue() entfernt — keine Aggregation
         });
     }
 
-    /**
-     * Aktualisiert den aggregierten Wert einer Hauptfrage in der UI
-     * wenn eine ihrer Nuancen geändert wurde
-     * @param {string} nuanceId - Die ID der geänderten Nuance
-     */
-    function updateParentHauptfrageValue(nuanceId) {
-        if (typeof HauptfrageAggregation === 'undefined') return;
-
-        // Finde die übergeordnete Hauptfrage
-        const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(nuanceId);
-        if (!hauptfrage) return;
-
-        // Berechne den neuen aggregierten Wert
-        const currentNeeds = {};
-        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
-
-        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrage.id, currentNeeds);
-        const newValue = roundTo25(aggregation.value);
-
-        // Aktualisiere die UI
-        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrage.id}"]`);
-        if (hauptfrageItem) {
-            const bar = hauptfrageItem.querySelector('.need-bar');
-            const valueSpan = hauptfrageItem.querySelector('.need-value');
-
-            if (bar) {
-                bar.style.width = `${newValue || 0}%`;
-            }
-            if (valueSpan) {
-                valueSpan.textContent = newValue !== null ? newValue : '-';
-            }
-
-            // NEU: Aktualisiere auch Slider und Input (wenn nicht gelockt)
-            if (!findNeedById(hauptfrage.id)?.locked === true) {
-                const slider = hauptfrageItem.querySelector('.need-slider');
-                const input = hauptfrageItem.querySelector('.flat-need-input');
-
-                if (slider && newValue !== null) {
-                    slider.value = newValue;
-                    // Slider-Track-Hintergrund aktualisieren
-                    const dimColor = getDimensionColor(hauptfrage.id);
-                    if (dimColor) {
-                        slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                    }
-                }
-                if (input && newValue !== null) {
-                    input.value = newValue;
-                }
-            }
-
-            // Aktualisiere die Änderungsmarkierung für diese Hauptfrage
-            const nuancen = hauptfrage.nuancen || [];
-            const changedNuancenCount = nuancen.filter(nId => {
-                const nuanceObj = findNeedById(nId);
-                return nuanceObj && isValueChanged(nId, nuanceObj.value);
-            }).length;
-            const hasChangedNuancen = changedNuancenCount > 0;
-
-            // CSS-Klasse aktualisieren
-            if (hasChangedNuancen) {
-                hauptfrageItem.classList.add('has-changed-nuancen');
-            } else {
-                hauptfrageItem.classList.remove('has-changed-nuancen');
-            }
-
-            // Sternchen-Indikator aktualisieren
-            const labelSpan = hauptfrageItem.querySelector('.flat-need-label');
-            if (labelSpan) {
-                let indicator = labelSpan.querySelector('.value-changed-indicator');
-                if (hasChangedNuancen) {
-                    if (!indicator) {
-                        indicator = document.createElement('span');
-                        indicator.className = 'hauptfrage-changed-indicator';
-                        indicator.textContent = '*';
-                        labelSpan.appendChild(indicator);
-                    }
-                    indicator.title = `${changedNuancenCount} Nuance(n) geändert`;
-                } else if (indicator) {
-                    indicator.remove();
-                }
-            }
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════════
-    // HAUPTFRAGEN-SLIDER UND LOCK FUNKTIONEN
-    // ═══════════════════════════════════════════════════════════════════════════
-
-    /**
-     * Toggle Lock für eine Hauptfrage
-     * Wenn gelockt: Slider ist editierbar, Nuancen sind gesperrt
-     * Wenn entsperrt: Slider zeigt aggregierten Wert, Nuancen sind editierbar
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @param {HTMLElement} lockElement - Das Lock-Icon-Element
-     */
-    function toggleHauptfrageLock(hauptfrageId, lockElement) {
-        // REFACTORING v1.8.982: Hauptfragen jetzt in flatNeeds[] - wie Nuancen behandeln
-        const needObj = findNeedById(hauptfrageId);
-        if (!needObj) {
-            console.warn(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} nicht in flatNeeds gefunden!`);
-            return;
-        }
-
-        const isCurrentlyLocked = needObj.locked === true;
-        const newLockState = !isCurrentlyLocked;
-
-        // Update in RAM (flatNeeds[])
-        needObj.locked = newLockState;
-
-        // Get current value from UI
-        const hauptfrageItem = lockElement?.closest('.flat-need-item.is-hauptfrage');
-        let currentValue = 50;
-        if (hauptfrageItem) {
-            const input = hauptfrageItem.querySelector('.flat-need-input');
-            currentValue = parseInt(input?.value, 10) || 50;
-        }
-        needObj.value = currentValue;
-
-        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} Lock: ${newLockState} (nur RAM)`);
-
-        // FIX v1.8.981: Explicit Save Workflow - NICHT sofort in TiageState speichern
-        // Konsistent mit toggleFlatNeedLock() - User muss "Speichern" klicken
-
-        // Toast-Meldung (🔴 nicht gespeichert)
-        showLockToast(newLockState ? '🔴 Hauptfrage gesperrt (nicht gespeichert)' : '🔴 Hauptfrage entsperrt (nicht gespeichert)');
-
-        // FIX v1.8.981: Aktualisiere Save-Status-Badges
-        updateAllSaveStatusBadges();
-    }
-
-    /**
-     * Handler für Hauptfrage-Slider Input
-     * Erlaubt wenn: Hauptfrage NICHT gelockt UND (keine Nuancen ODER nicht alle Nuancen gelockt)
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @param {string|number} value - Der neue Slider-Wert
-     * @param {HTMLElement} sliderElement - Das Slider-Element
-     */
-    function onHauptfrageSliderInput(hauptfrageId, value, sliderElement) {
-        // Prüfe ob Hauptfrage Nuancen hat
-        const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
-
-        // Prüfe ob Hauptfrage explizit gelockt ist
-        if (findNeedById(hauptfrageId)?.locked === true) {
-            return; // Gelockt = nicht editierbar
-        }
-
-        // Prüfe ob alle Nuancen gelockt sind
-        if (hasNuancen && areAllNuancenLocked(hauptfrageId)) {
-            return; // Alle Nuancen gelockt = nicht editierbar
-        }
-
-        const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) return;
-
-        // Sync Input-Feld
-        const hauptfrageItem = sliderElement.closest('.flat-need-item.is-hauptfrage');
-        if (hauptfrageItem) {
-            const input = hauptfrageItem.querySelector('.flat-need-input');
-            if (input) input.value = numValue;
-
-            // Slider-Track-Hintergrund aktualisieren
-            const dimColor = getDimensionColor(hauptfrageId);
-            if (dimColor) {
-                sliderElement.style.background = getSliderFillGradient(dimColor, numValue, sliderElement);
-            }
-        }
-
-        // Wenn Nuancen vorhanden: Nuancen anpassen um Zielwert zu erreichen
-        // Begrenzt durch gelockte Nuancen (max/min erreichbarer Wert)
-        if (hasNuancen) {
-            const result = adjustNuancenToTarget(hauptfrageId, numValue, sliderElement, hauptfrageItem);
-            if (result.handled) {
-                return; // Nuancen wurden angepasst
-            }
-        }
-
-        // REFACTORING v1.8.982: upsertNeed() speichert jetzt Hauptfragen wie Nuancen
-        // Keine separate lockedHauptfragenValues Struktur mehr nötig!
-        upsertNeed(hauptfrageId, { value: numValue });
-
-        // Event für externe Listener
-        document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
-            bubbles: true,
-            detail: { hauptfrageId, value: numValue, isLocked: findNeedById(hauptfrageId)?.locked === true, hasNuancen }
-        }));
-
-        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
-        updateLockedCountDisplay();
-    }
-
-    /**
-     * Berechnet den aggregierten Wert der Nuancen einer Hauptfrage.
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @returns {number|null} Der aggregierte Wert oder null
-     */
-    function getAggregatedValueForHauptfrage(hauptfrageId) {
-        if (typeof HauptfrageAggregation === 'undefined') return null;
-
-        const currentNeeds = {};
-        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
-
-        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
-        return roundTo25(aggregation.value);
-    }
-
-    /**
-     * Berechnet den min/max erreichbaren aggregierten Wert basierend auf gelockten Nuancen.
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @returns {Object} { min, max, hasLockedNuancen }
-     */
-    function getAggregatedValueLimits(hauptfrageId) {
-        if (typeof HauptfrageAggregation === 'undefined') return { min: 0, max: 100, hasLockedNuancen: false };
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
-
-        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
-            return { min: 0, max: 100, hasLockedNuancen: false };
-        }
-
-        // Sammle gelockte und nicht-gelockte Nuancen
-        const lockedNuancen = [];
-        const unlockedNuancen = [];
-
-        for (const nuanceId of hauptfrage.nuancen) {
-            const nuanceObj = findNeedById(nuanceId);
-            if (nuanceObj?.locked) {
-                lockedNuancen.push({ id: nuanceId, value: nuanceObj.value ?? 50 });
-            } else {
-                unlockedNuancen.push({ id: nuanceId, value: nuanceObj?.value ?? 50 });
-            }
-        }
-
-        if (lockedNuancen.length === 0) {
-            // Keine gelockten Nuancen = voller Bereich
-            return { min: 0, max: 100, hasLockedNuancen: false };
-        }
-
-        // Berechne Min: alle nicht-gelockten auf 0
-        const minNeeds = {};
-        flatNeeds.forEach(n => { minNeeds[n.id] = n.value; });
-        unlockedNuancen.forEach(n => { minNeeds[n.id] = 0; });
-        const minAgg = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, minNeeds);
-
-        // Berechne Max: alle nicht-gelockten auf 100
-        const maxNeeds = {};
-        flatNeeds.forEach(n => { maxNeeds[n.id] = n.value; });
-        unlockedNuancen.forEach(n => { maxNeeds[n.id] = 100; });
-        const maxAgg = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, maxNeeds);
-
-        return {
-            min: roundTo25(minAgg.value ?? 0),
-            max: roundTo25(maxAgg.value ?? 100),
-            hasLockedNuancen: true
-        };
-    }
+    // v1.8.998: updateParentHauptfrageValue, toggleHauptfrageLock, onHauptfrageSliderInput,
+    // getAggregatedValueForHauptfrage, getAggregatedValueLimits ENTFERNT — keine Hierarchie mehr
 
     /**
      * Passt die nicht-gelockten Nuancen einer Hauptfrage an, um den Zielwert zu erreichen.
@@ -4085,379 +3196,11 @@ const AttributeSummaryCard = (function() {
      * @param {HTMLElement} hauptfrageItem - Das Hauptfrage-Container-Element
      * @returns {Object} { handled: boolean, finalValue: number }
      */
-    function adjustNuancenToTarget(hauptfrageId, targetValue, sliderElement, hauptfrageItem) {
-        if (typeof HauptfrageAggregation === 'undefined') return { handled: false };
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
-
-        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
-            return { handled: false };
-        }
-
-        // Hole die Grenzen basierend auf gelockten Nuancen
-        const limits = getAggregatedValueLimits(hauptfrageId);
-
-        // Begrenze den Zielwert auf den erreichbaren Bereich UND runde auf 25er-Schritte
-        let clampedTarget = Math.max(limits.min, Math.min(limits.max, targetValue));
-        clampedTarget = roundTo25(clampedTarget);
-
-        // Sammle nicht-gelockte Nuancen
-        const unlockedNuancen = [];
-        for (const nuanceId of hauptfrage.nuancen) {
-            const nuanceObj = findNeedById(nuanceId);
-            if (!nuanceObj?.locked) {
-                unlockedNuancen.push({
-                    id: nuanceId,
-                    value: nuanceObj?.value ?? 50
-                });
-            }
-        }
-
-        if (unlockedNuancen.length === 0) {
-            // Alle gelockt - zeige nur aktuellen Wert
-            const currentValue = getAggregatedValueForHauptfrage(hauptfrageId);
-            updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, currentValue);
-            return { handled: true, finalValue: currentValue };
-        }
-
-        // Spezialfall: Bei Zielwert 0 oder 100 alle Nuancen direkt setzen
-        // ABER nur wenn ALLE Nuancen unlocked sind (keine gelockten Nuancen)
-        // (vermeidet Rundungsprobleme wie 99+100/2 = 99.5 → 100)
-        if ((clampedTarget === 0 || clampedTarget === 100) && !limits.hasLockedNuancen) {
-            for (const nuance of unlockedNuancen) {
-                nuance.value = clampedTarget;
-            }
-            // Finale Werte in State und UI übertragen
-            for (const nuance of unlockedNuancen) {
-                updateNuanceSlider(nuance.id, nuance.value);
-            }
-            updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, clampedTarget);
-            return { handled: true, finalValue: clampedTarget };
-        }
-
-        // Iterative Anpassung der nicht-gelockten Nuancen
-        const maxIterations = 20;
-        let iteration = 0;
-
-        while (iteration < maxIterations) {
-            // Berechne aktuellen aggregierten Wert
-            const currentNeeds = {};
-            flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
-            unlockedNuancen.forEach(n => { currentNeeds[n.id] = n.value; });
-
-            const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
-            const currentValue = aggregation.value;
-
-            if (currentValue === null) break;
-
-            const diff = clampedTarget - currentValue;
-
-            // Ziel erreicht? (Toleranz: 12.5 = halber 25er-Schritt, da Durchschnitt von 25er-Werten)
-            if (Math.abs(diff) < 12.5) break;
-
-            // Finde anpassbare Nuancen (nicht an Grenzen)
-            const adjustable = unlockedNuancen.filter(n => {
-                if (diff > 0) return n.value < 100;
-                return n.value > 0;
-            });
-
-            if (adjustable.length === 0) break;
-
-            // Verteile Differenz
-            const diffPerNuance = diff / adjustable.length;
-            let anyChanged = false;
-
-            for (const nuance of adjustable) {
-                const oldValue = nuance.value;
-                let newValue = nuance.value + diffPerNuance * 1.2; // Leichte Überkorrektur für schnellere Konvergenz
-                newValue = roundTo25(Math.max(0, Math.min(100, newValue)));
-
-                if (newValue !== oldValue) {
-                    nuance.value = newValue;
-                    anyChanged = true;
-                }
-            }
-
-            if (!anyChanged) break;
-            iteration++;
-        }
-
-        // Finale Werte in State und UI übertragen
-        for (const nuance of unlockedNuancen) {
-            updateNuanceSlider(nuance.id, nuance.value);
-        }
-
-        // Berechne finalen aggregierten Wert
-        const finalValue = getAggregatedValueForHauptfrage(hauptfrageId);
-
-        // Aktualisiere Hauptfrage UI
-        updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, finalValue);
-
-        // FIX: Aktualisiere den * Indikator der Hauptfrage sofort
-        // (bisher wurde dieser nur beim Aufklappen berechnet)
-        updateHauptfrageChangedIndicator(hauptfrageId, hauptfrageItem);
-
-        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
-        updateLockedCountDisplay();
-
-        return { handled: true, finalValue };
-    }
-
-    /**
-     * Aktualisiert die UI-Elemente einer Hauptfrage (Slider, Input, Track)
-     */
-    function updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, value) {
-        if (value === null) return;
-
-        sliderElement.value = value;
-
-        if (hauptfrageItem) {
-            const input = hauptfrageItem.querySelector('.flat-need-input');
-            if (input) input.value = value;
-        }
-
-        const dimColor = getDimensionColor(hauptfrageId);
-        if (dimColor) {
-            sliderElement.style.background = getSliderFillGradient(dimColor, value, sliderElement);
-        }
-    }
-
-    /**
-     * Aktualisiert den * Indikator einer Hauptfrage basierend auf geänderten Nuancen
-     * FIX v1.8.568: Diese Funktion wird jetzt auch bei Hauptfrage-Slider-Änderungen aufgerufen
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @param {HTMLElement|null} hauptfrageItem - Das DOM-Element (optional, wird gesucht wenn nicht übergeben)
-     */
-    function updateHauptfrageChangedIndicator(hauptfrageId, hauptfrageItem) {
-        if (typeof HauptfrageAggregation === 'undefined') return;
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
-        if (!hauptfrage) return;
-
-        // Finde das DOM-Element wenn nicht übergeben
-        const item = hauptfrageItem || document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
-        if (!item) return;
-
-        // Zähle geänderte Nuancen
-        const nuancen = hauptfrage.nuancen || [];
-        const changedNuancenCount = nuancen.filter(nId => {
-            const nuanceObj = findNeedById(nId);
-            return nuanceObj && isValueChanged(nId, nuanceObj.value);
-        }).length;
-        const hasChangedNuancen = changedNuancenCount > 0;
-
-        // CSS-Klasse aktualisieren
-        if (hasChangedNuancen) {
-            item.classList.add('has-changed-nuancen');
-        } else {
-            item.classList.remove('has-changed-nuancen');
-        }
-
-        // Sternchen-Indikator aktualisieren
-        const labelSpan = item.querySelector('.flat-need-label');
-        if (labelSpan) {
-            let indicator = labelSpan.querySelector('.value-changed-indicator');
-            if (hasChangedNuancen) {
-                if (!indicator) {
-                    indicator = document.createElement('span');
-                    indicator.className = 'hauptfrage-changed-indicator';
-                    indicator.textContent = '*';
-                    labelSpan.appendChild(indicator);
-                }
-                indicator.title = `${changedNuancenCount} Nuance(n) geändert`;
-            } else if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        // Nuancen-Status-Info aktualisieren (rechts neben der Nuancen-Anzahl)
-        const nuancenCountSpan = item.querySelector('.need-nuancen-count');
-        if (nuancenCountSpan && nuancen.length > 0) {
-            // Zähle gelockte Nuancen
-            const lockedNuancenCount = nuancen.filter(nId => {
-                const nuanceObj = findNeedById(nId);
-                return nuanceObj?.locked;
-            }).length;
-
-            // Baue Status-Info zusammen
-            const statusParts = [];
-            if (lockedNuancenCount > 0) statusParts.push(`${lockedNuancenCount}🔒`);
-            if (changedNuancenCount > 0) statusParts.push(`${changedNuancenCount}*`);
-
-            // Entferne alte Status-Info und füge neue hinzu
-            const existingStatusInfo = nuancenCountSpan.querySelector('.nuancen-status-info');
-            if (existingStatusInfo) existingStatusInfo.remove();
-
-            if (statusParts.length > 0) {
-                const statusInfoSpan = document.createElement('span');
-                statusInfoSpan.className = 'nuancen-status-info';
-                statusInfoSpan.textContent = ' ' + statusParts.join(' ');
-                nuancenCountSpan.appendChild(statusInfoSpan);
-            }
-        }
-    }
-
-    /**
-     * Aktualisiert einen einzelnen Nuance-Slider (Wert, UI, State)
-     * @param {string} nuanceId - Die #B-ID der Nuance
-     * @param {number} newValue - Der neue Wert
-     */
-    function updateNuanceSlider(nuanceId, newValue) {
-        // Speichere den Wert
-        upsertNeed(nuanceId, { value: newValue });
-
-        // Finde das DOM-Element und aktualisiere die UI
-        const nuanceItem = document.querySelector(`.flat-need-item[data-need="${nuanceId}"]`);
-        if (nuanceItem) {
-            const slider = nuanceItem.querySelector('.need-slider');
-            const input = nuanceItem.querySelector('.flat-need-input');
-
-            if (slider) {
-                slider.value = newValue;
-                // Slider-Track-Hintergrund aktualisieren
-                const dimColor = getDimensionColor(nuanceId);
-                if (dimColor) {
-                    slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
-                }
-            }
-            if (input) {
-                input.value = newValue;
-            }
-
-            // Changed-Indicator aktualisieren
-            updateChangedIndicator(nuanceItem, nuanceId, newValue);
-        }
-
-        // Event für Änderungstracking
-        document.dispatchEvent(new CustomEvent('flatNeedChange', {
-            bubbles: true,
-            detail: { needId: nuanceId, value: newValue, fromHauptfrage: true }
-        }));
-    }
-
-    /**
-     * Prüft ob eine Hauptfrage Nuancen hat
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @returns {boolean} True wenn Nuancen vorhanden
-     */
-    function checkHauptfrageHasNuancen(hauptfrageId) {
-        if (typeof HauptfrageAggregation === 'undefined') return true; // Fallback: annehmen dass Nuancen existieren
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
-
-        if (!hauptfrage) return true; // Fallback
-
-        return (hauptfrage.nuancen && hauptfrage.nuancen.length > 0);
-    }
-
-    /**
-     * Prüft ob ALLE Nuancen einer Hauptfrage gelockt sind
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @returns {boolean} True wenn alle Nuancen gelockt sind
-     */
-    function areAllNuancenLocked(hauptfrageId) {
-        if (typeof HauptfrageAggregation === 'undefined') return false;
-
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
-
-        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
-            return false; // Keine Nuancen = nicht "alle gelockt"
-        }
-
-        return hauptfrage.nuancen.every(nuanceId => {
-            const nuanceObj = findNeedById(nuanceId);
-            return nuanceObj?.locked === true;
-        });
-    }
-
-    /**
-     * Aktualisiert den Wert einer Hauptfrage (via Input-Feld)
-     * Erlaubt wenn: keine Nuancen (direkter Wert)
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @param {string|number} value - Der neue Wert
-     */
-    function updateHauptfrageValue(hauptfrageId, value) {
-        // Prüfe ob Hauptfrage Nuancen hat
-        const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
-
-        // Prüfe ob Hauptfrage explizit gelockt ist
-        if (findNeedById(hauptfrageId)?.locked === true) {
-            return; // Gelockt = nicht editierbar
-        }
-
-        // Prüfe ob alle Nuancen gelockt sind
-        if (hasNuancen && areAllNuancenLocked(hauptfrageId)) {
-            return; // Alle Nuancen gelockt = nicht editierbar
-        }
-
-        // FIX: Wert auf 25er Schritte runden
-        const numValue = roundTo25(parseInt(value, 10));
-        if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
-
-        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
-        const slider = hauptfrageItem?.querySelector('.need-slider');
-
-        // Wenn Nuancen vorhanden: Nuancen anpassen um Zielwert zu erreichen
-        if (hasNuancen && slider) {
-            const result = adjustNuancenToTarget(hauptfrageId, numValue, slider, hauptfrageItem);
-            if (result.handled) {
-                return; // Nuancen wurden angepasst
-            }
-        }
-
-        // Sync Slider (nur für Hauptfragen OHNE Nuancen)
-        if (hauptfrageItem && slider) {
-            slider.value = numValue;
-
-            const dimColor = getDimensionColor(hauptfrageId);
-            if (dimColor) {
-                slider.style.background = getSliderFillGradient(dimColor, numValue, slider);
-            }
-        }
-
-        // Speichere den Wert in TiageState und flatNeeds
-        // REFACTORING v1.8.982: upsertNeed() speichert jetzt Hauptfragen wie Nuancen
-        // Keine separate lockedHauptfragenValues Struktur mehr nötig!
-        upsertNeed(hauptfrageId, { value: numValue });
-
-        // Event für externe Listener
-        document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
-            bubbles: true,
-            detail: { hauptfrageId, value: numValue, isLocked: findNeedById(hauptfrageId)?.locked === true, hasNuancen }
-        }));
-
-        // Aktualisiere den Subtitle mit der neuen Geändert-Zählung (für Hauptfragen ohne Nuancen)
-        updateLockedCountDisplay();
-    }
-
-    /**
-     * Prüft ob eine Nuance durch ihre Hauptfrage gelockt ist
-     * @param {string} nuanceId - Die #B-ID der Nuance
-     * @returns {boolean} True wenn die übergeordnete Hauptfrage gelockt ist
-     */
-    function isNuanceLockedByHauptfrage(nuanceId) {
-        if (typeof HauptfrageAggregation === 'undefined') return false;
-
-        const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(nuanceId);
-        if (!hauptfrage) return false;
-
-        return findNeedById(hauptfrage.id)?.locked === true;
-    }
-
-    /**
-     * REFACTORING v1.8.982: loadLockedHauptfragen() ENTFERNT
-     * Hauptfragen werden jetzt in getFlatNeedsFromState() geladen (wie Nuancen)
-     */
-
-    /**
-     * REFACTORING v1.8.982: getLockedHauptfrageValue() ENTFERNT
-     * Werte werden jetzt direkt aus flatNeeds[] gelesen (wie Nuancen)
-     * Verwendung: findNeedById(hauptfrageId)?.value
-     */
+    // v1.8.998: adjustNuancenToTarget, updateHauptfrageUI, updateHauptfrageChangedIndicator,
+    // updateNuanceSlider ENTFERNT — keine Hierarchie/Aggregation mehr
+
+    // v1.8.998: checkHauptfrageHasNuancen, areAllNuancenLocked, updateHauptfrageValue,
+    // isNuanceLockedByHauptfrage ENTFERNT — keine Hierarchie mehr
 
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -4481,6 +3224,8 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { value: numValue });
 
+        // v1.8.998: Hauptfrage→Nuancen Propagation ENTFERNT — alle Needs unabhängig
+
         // Auto-Sort auf "changed" wenn Wert geändert wird
         if (isValueChanged(needId, numValue) && currentFlatSortMode !== 'changed') {
             currentFlatSortMode = 'changed';
@@ -4491,10 +3236,29 @@ const AttributeSummaryCard = (function() {
         const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
         if (needItem) {
             const slider = needItem.querySelector('.need-slider');
-            if (slider) slider.value = numValue;
+            if (slider) {
+                slider.value = numValue;
+                // Slider-Track-Hintergrund aktualisieren
+                const dimColor = getDimensionColor(needId);
+                if (dimColor) {
+                    slider.style.background = getSliderFillGradient(dimColor, numValue, slider);
+                }
+            }
 
             // Changed-Indicator (*) aktualisieren
             updateChangedIndicator(needItem, needId, numValue);
+
+            // FIX v1.8.998: Save-Status-Badge aktualisieren (🟢→🔴)
+            const controls = needItem.querySelector('.flat-need-controls');
+            if (controls) {
+                const oldBadge = controls.querySelector('.save-status-badge');
+                const newBadgeHtml = renderSaveStatusBadge(needId, numValue, needObj?.locked || false);
+                if (oldBadge && newBadgeHtml) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = newBadgeHtml;
+                    oldBadge.replaceWith(temp.firstChild);
+                }
+            }
         }
 
         // Event
@@ -4502,9 +3266,6 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { needId, value: numValue }
         }));
-
-        // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
-        updateParentHauptfrageValue(needId);
 
         // Aktualisiere den Subtitle mit der neuen Geändert-Zählung
         updateLockedCountDisplay();
@@ -4521,21 +3282,12 @@ const AttributeSummaryCard = (function() {
             console.warn('[AttributeSummaryCard] Partner-Bedürfnisse sind nicht editierbar');
             return;
         }
-        console.log('[DEBUG toggleFlatNeedLock] Called with:', needId);
         const needObj = findNeedById(needId);
         const newLockState = needObj ? !needObj.locked : true;
-
-        // BULK-EDIT: Wenn dieses Bedürfnis markiert ist, alle markierten sperren/entsperren
-        if (selectedNeeds.has(needId) && selectedNeeds.size > 1) {
-            lockSelectedNeeds(newLockState);
-            return; // lockSelectedNeeds handled alles
-        }
 
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { locked: newLockState });
         const isLocked = newLockState;
-        console.log('[DEBUG toggleFlatNeedLock] isLocked:', isLocked);
-
         // Update UI
         const needItem = lockElement.closest('.flat-need-item');
         if (needItem) {
@@ -4555,13 +3307,13 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // FIX v1.8.978: Explicit Save Workflow - NUR in RAM speichern, nicht sofort in TiageState
-        // Konsistent mit Bulk-Lock-Button - User muss "Speichern" klicken
-        // ═══════════════════════════════════════════════════════════════════════════
+        // v1.8.990: Lock = Auto-Save — sofort persistieren
+        syncRamToState();
+        if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+            TiageState.saveToStorage();
+        }
 
-        // Toast-Meldung (🔴 nicht gespeichert)
-        showLockToast(isLocked ? '🔴 Wert gesperrt (nicht gespeichert)' : '🔴 Wert entsperrt (nicht gespeichert)');
+        showLockToast(isLocked ? '🟢 Wert gesperrt & gespeichert' : '🟢 Wert entsperrt & gespeichert');
 
         // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
         updateLockedCountDisplay();
@@ -4575,47 +3327,7 @@ const AttributeSummaryCard = (function() {
             detail: { needId, locked: isLocked }
         }));
 
-        // NEU: Prüfe ob diese Nuance zu einer Hauptfrage gehört und aktualisiere deren Lock-Status
-        if (typeof HauptfrageAggregation !== 'undefined') {
-            const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(needId);
-            if (hauptfrage) {
-                // Re-render um den "auto-locked" Status der Hauptfrage zu aktualisieren
-                updateHauptfrageLockDisplay(hauptfrage.id);
-            }
-        }
-    }
-
-    /**
-     * Aktualisiert die Lock-Anzeige einer Hauptfrage (nach Nuancen-Lock-Änderung)
-     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     */
-    function updateHauptfrageLockDisplay(hauptfrageId) {
-        // UNIFIED v1.8.985: Verwendet jetzt flat-need-item Selektoren
-        const hauptfrageItem = document.querySelector(`.flat-need-item.is-hauptfrage[data-need="${hauptfrageId}"]`);
-        if (!hauptfrageItem) return;
-
-        const isHauptfrageLocked = findNeedById(hauptfrageId)?.locked === true;
-        const allNuancenLocked = areAllNuancenLocked(hauptfrageId);
-        const isEffectivelyLocked = isHauptfrageLocked || allNuancenLocked;
-
-        // Update CSS-Klassen (einheitlich mit flat needs)
-        hauptfrageItem.classList.toggle('need-locked', isEffectivelyLocked);
-
-        // Update Lock-Icon (einheitlich: .need-lock-icon)
-        const lockIcon = hauptfrageItem.querySelector('.need-lock-icon');
-        if (lockIcon) {
-            lockIcon.textContent = isEffectivelyLocked ? '🔒' : '🔓';
-            lockIcon.title = isEffectivelyLocked ? 'Entsperren' : 'Sperren';
-        }
-
-        // Update Slider und Input (einheitlich: .need-slider, .flat-need-input)
-        const slider = hauptfrageItem.querySelector('.need-slider');
-        const input = hauptfrageItem.querySelector('.flat-need-input');
-        const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
-        const sliderDisabled = hasNuancen && isEffectivelyLocked;
-
-        if (slider) slider.disabled = sliderDisabled;
-        if (input) input.readOnly = sliderDisabled;
+        // v1.8.998: Hauptfrage-Lock-Propagation entfernt — keine Hierarchie mehr
     }
 
     /**
@@ -5151,7 +3863,7 @@ const AttributeSummaryCard = (function() {
                     </div>
                     <div class="need-slider-row">
                         <input type="range" class="need-slider"
-                               min="0" max="100" step="25" value="${needValue}"
+                               min="0" max="100" step="10" value="${needValue}"
                                oninput="AttributeSummaryCard.onSliderInput('${attrId}', '${need}', this.value, this)"
                                onclick="event.stopPropagation()">
                         <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
@@ -5594,22 +4306,13 @@ const AttributeSummaryCard = (function() {
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
-        toggleHauptfragenFilter,
-        // NEU: Hauptfragen-Ansicht mit aufklappbaren Nuancen
-        toggleHauptfrageExpand,
-        // NEU: Hauptfragen-Slider mit Lock-Mechanismus
-        toggleHauptfrageLock,
-        onHauptfrageSliderInput,
-        updateHauptfrageValue,
-        isNuanceLockedByHauptfrage,
-        // REFACTORING v1.8.982: loadLockedHauptfragen & getLockedHauptfrageValue entfernt
+        // v1.8.998: Hauptfragen-Funktionen entfernt (keine Hierarchie mehr)
         GFK_KATEGORIEN,
-        // NEU: Multi-Select Feature für Bedürfnisse
+        // Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
         clearNeedSelection,
         selectAllFilteredNeeds,
         invertNeedSelection,
-        toggleHauptfrageSelection,
         resetSelectedNeedsValues,
         resetFilters,
         updateSelectedNeedsValue,

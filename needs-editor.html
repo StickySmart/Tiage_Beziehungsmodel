@@ -58,7 +58,7 @@
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/lifestyleFilter.js"></script>
     <script src="js/utils/statistics.js"></script>
-    <script src="js/utils/hauptfrageAggregation.js"></script>
+    <!-- v1.8.998: hauptfrageAggregation.js entfernt — keine Hierarchie im Needs-Editor -->
     <script src="js/synthesis/synthesisCalculator.js"></script>
     <script src="js/synthesis/pathosTextGenerator.js"></script>
     <script src="js/synthesis/logosTextGenerator.js"></script>
@@ -1835,11 +1835,11 @@
         /**
          * Filtert Bedürfnisse basierend auf ActiveFilterCard
          * Wird bei jeder Filter-Änderung aufgerufen
-         * NEU: Durchsucht auch Nuancen und zeigt Hauptfragen wenn Nuancen matchen
+         * v1.8.998: Vereinfacht — alle Needs sind flache Items (keine Hauptfrage/Nuancen-Hierarchie)
          */
         function applyActiveFilters() {
-            var hauptfrageItems = document.querySelectorAll('.flat-need-item.is-hauptfrage');
-            var isHauptfragenMode = hauptfrageItems.length > 0;
+            // v1.8.998: Alle Needs sind flache Items in .flat-needs-list
+            var allNeedItems = document.querySelectorAll('.flat-needs-list > .flat-need-item');
 
             // Hole Filter von ActiveFilterCard
             var filters = [];
@@ -1851,126 +1851,65 @@
 
             // Keine Filter aktiv → alle anzeigen
             if (filters.length === 0) {
-                // Reset Hauptfragen
-                hauptfrageItems.forEach(function(item) {
-                    item.classList.remove('filter-hidden', 'filter-match', 'has-matching-nuancen');
-                });
-                // Reset Nuancen (flat-need-items innerhalb von nuancen-list)
-                document.querySelectorAll('.nuancen-list .flat-need-item').forEach(function(item) {
+                allNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
-                // Reset Detail-Ansicht Items
-                document.querySelectorAll('.flat-needs-list.kategorie-mode > .flat-need-item').forEach(function(item) {
-                    item.classList.remove('filter-hidden', 'filter-match');
-                });
-                updateFilteredCountDisplay(hauptfrageItems.length || document.querySelectorAll('.flat-need-item').length,
-                    hauptfrageItems.length || document.querySelectorAll('.flat-need-item').length, false);
+                updateFilteredCountDisplay(allNeedItems.length, allNeedItems.length, false);
                 console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
                 return;
             }
 
             var totalMatches = 0;
 
-            // Hilfsfunktion: Prüft ob ein Text die Filter erfüllt
+            // Hilfsfunktion: Prüft ob ein einzelner Filter matcht
+            // FIX v1.8.998: Für R1-R4/P1-P4 nur exakte ID matchen (nicht Label als Substring)
+            // "leben" soll nicht "Lebensplanung", "Zusammenleben" etc. matchen
+            function matchesSingleFilter(searchableString, f) {
+                if (f.type === 'dimension' || f.type === 'perspektive') {
+                    // Strukturierte Filter: Nur exakte ID matchen (z.B. " r1 " im Text)
+                    // getSearchableTextsForNeed() fügt "R1" als separates Token hinzu
+                    var idLower = f.id.toLowerCase();
+                    // Wortgrenzen prüfen: ID muss als eigenständiges Token vorkommen
+                    var regex = new RegExp('(^|\\s|,)' + idLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(\\s|,|$)');
+                    return regex.test(searchableString);
+                }
+                // Text-Filter: Substring-Match wie bisher
+                return searchableString.includes(f.id.toLowerCase()) ||
+                       searchableString.includes(f.label.toLowerCase());
+            }
+
             function matchesFilters(searchableString) {
                 if (mode === 'AND') {
                     return filters.every(function(f) {
-                        return searchableString.includes(f.id.toLowerCase()) ||
-                               searchableString.includes(f.label.toLowerCase());
+                        return matchesSingleFilter(searchableString, f);
                     });
                 } else {
                     return filters.some(function(f) {
-                        return searchableString.includes(f.id.toLowerCase()) ||
-                               searchableString.includes(f.label.toLowerCase());
+                        return matchesSingleFilter(searchableString, f);
                     });
                 }
             }
 
-            if (isHauptfragenMode) {
-                // HAUPTFRAGEN-MODUS: Durchsuche auch Nuancen
-                hauptfrageItems.forEach(function(hauptfrageItem) {
-                    var hauptfrageId = hauptfrageItem.getAttribute('data-need') || '';
-                    var hauptfrageLabel = hauptfrageItem.querySelector('.flat-need-label');
-                    var hauptfrageLabelText = hauptfrageLabel ? hauptfrageLabel.textContent : '';
-                    var hauptfrageSearchable = getSearchableTextsForNeed(hauptfrageId, hauptfrageLabelText);
+            // v1.8.998: Einheitliche Filterung — alle Needs gleichberechtigt
+            allNeedItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || '';
+                var needLabel = item.querySelector('.flat-need-label');
+                var labelText = needLabel ? needLabel.textContent : '';
+                var searchableString = getSearchableTextsForNeed(needId, labelText);
+                var matches = matchesFilters(searchableString);
 
-                    // Prüfe ob Hauptfrage selbst matcht
-                    var hauptfrageMatches = matchesFilters(hauptfrageSearchable);
+                item.classList.toggle('filter-hidden', !matches);
+                item.classList.toggle('filter-match', matches);
 
-                    // Hole Nuancen für diese Hauptfrage und prüfe ob mindestens eine matcht
-                    var nuancenMatches = [];
-                    var hasMatchingNuancen = false;
-
-                    if (typeof HauptfrageAggregation !== 'undefined') {
-                        var hauptfrage = HauptfrageAggregation.getHauptfragen()[hauptfrageId];
-                        if (hauptfrage && hauptfrage.nuancen && hauptfrage.nuancen.length > 0) {
-                            hauptfrage.nuancen.forEach(function(nuanceId) {
-                                var nuanceObj = typeof findNeedById === 'function' ? findNeedById(nuanceId) : null;
-                                if (!nuanceObj && typeof GfkBeduerfnisse !== 'undefined') {
-                                    // Fallback: Hole Nuance-Label aus BeduerfnisIds
-                                    var needData = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse ?
-                                        window.BeduerfnisIds.beduerfnisse[nuanceId] : null;
-                                    if (needData) {
-                                        nuanceObj = { label: needData.label || nuanceId };
-                                    }
-                                }
-                                var nuanceLabel = nuanceObj ? nuanceObj.label : nuanceId;
-                                var nuanceSearchable = getSearchableTextsForNeed(nuanceId, nuanceId + ' ' + nuanceLabel);
-                                var nuanceMatches = matchesFilters(nuanceSearchable);
-                                nuancenMatches.push({ id: nuanceId, matches: nuanceMatches });
-                                if (nuanceMatches) hasMatchingNuancen = true;
-                            });
-                        }
-                    }
-
-                    // Hauptfrage anzeigen wenn: sie selbst matcht ODER mindestens eine Nuance matcht
-                    var showHauptfrage = hauptfrageMatches || hasMatchingNuancen;
-
-                    hauptfrageItem.classList.toggle('filter-hidden', !showHauptfrage);
-                    hauptfrageItem.classList.toggle('filter-match', hauptfrageMatches);
-                    hauptfrageItem.classList.toggle('has-matching-nuancen', hasMatchingNuancen && !hauptfrageMatches);
-
-                    // Filtere auch die Nuancen-Items im DOM (wenn aufgeklappt)
-                    var nuancenList = hauptfrageItem.querySelector('.nuancen-list');
-                    if (nuancenList) {
-                        nuancenMatches.forEach(function(nuance) {
-                            var nuanceItem = nuancenList.querySelector('.flat-need-item[data-need="' + nuance.id + '"]');
-                            if (nuanceItem) {
-                                // Bei Hauptfrage-Match: Alle Nuancen zeigen
-                                // Bei Nuancen-Match: Nur matchende Nuancen zeigen
-                                var showNuance = hauptfrageMatches || nuance.matches;
-                                nuanceItem.classList.toggle('filter-hidden', !showNuance);
-                                nuanceItem.classList.toggle('filter-match', nuance.matches);
-                            }
-                        });
-                    }
-
-                    if (showHauptfrage) totalMatches++;
-                });
-            } else {
-                // DETAIL-MODUS: Einfache Filterung wie bisher
-                var flatNeedItems = document.querySelectorAll('.flat-needs-list.kategorie-mode > .flat-need-item');
-                flatNeedItems.forEach(function(item) {
-                    var needId = item.getAttribute('data-need') || '';
-                    var needLabel = item.querySelector('.flat-need-label');
-                    var labelText = needLabel ? needLabel.textContent : '';
-                    var searchableString = getSearchableTextsForNeed(needId, labelText);
-                    var matches = matchesFilters(searchableString);
-
-                    item.classList.toggle('filter-hidden', !matches);
-                    item.classList.toggle('filter-match', matches);
-
-                    if (matches) totalMatches++;
-                });
-            }
+                if (matches) totalMatches++;
+            });
 
             // Aktualisiere Subtitle mit Filter-Ergebnis
-            var totalItems = isHauptfragenMode ? hauptfrageItems.length : document.querySelectorAll('.flat-need-item').length;
-            updateFilteredCountDisplay(totalMatches, totalItems, filters.length > 0);
+            updateFilteredCountDisplay(totalMatches, allNeedItems.length, filters.length > 0);
 
-            console.log('[ActiveFilter] Mode:', mode, '- Hauptfragen:', isHauptfragenMode,
+            console.log('[ActiveFilter] Mode:', mode,
                 '- Filter:', filters.map(function(f) { return f.label; }).join(', '),
-                '- Matches:', totalMatches);
+                '- Matches:', totalMatches, 'von', allNeedItems.length);
         }
 
         /**

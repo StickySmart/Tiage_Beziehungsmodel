@@ -390,10 +390,15 @@ const ResonanzProfileHeaderCard = (function() {
      * @param {string} resonanzId - R1, R2, R3 oder R4
      */
     function searchByResonanz(resonanzId) {
-        // Nutze ActiveFilterCard für Multi-Filter
+        // Nutze ActiveFilterCard für Multi-Filter (Toggle: Klick hinzufügt, erneuter Klick entfernt)
         if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
-            ActiveFilterCard.addFilter(resonanzId);
-            console.log('[ResonanzProfileHeaderCard] Filter hinzugefügt:', resonanzId);
+            if (ActiveFilterCard.isFilterActive && ActiveFilterCard.isFilterActive(resonanzId)) {
+                ActiveFilterCard.removeFilter(resonanzId.toUpperCase());
+                console.log('[ResonanzProfileHeaderCard] Filter entfernt (Toggle):', resonanzId);
+            } else {
+                ActiveFilterCard.addFilter(resonanzId);
+                console.log('[ResonanzProfileHeaderCard] Filter hinzugefügt:', resonanzId);
+            }
         } else {
             // Fallback: Direkter Suchfeld-Eintrag
             const searchInput = document.getElementById('profileReviewSearchInput');
@@ -415,12 +420,26 @@ const ResonanzProfileHeaderCard = (function() {
         }
     });
 
-    // Lausche auf Filter-Änderungen um Snapshot zu speichern
-    // Wenn Filter geändert wird, speichere aktuelle R-Werte als Referenz
+    // Lausche auf Filter-Änderungen um Snapshot zu speichern und Buttons zu highlighten
     document.addEventListener('activeFilterChange', function(event) {
         console.log('[ResonanzProfileHeaderCard] Filter geändert, speichere Snapshot');
         saveSnapshot();
+        updateFilterHighlights();
     });
+
+    /**
+     * Aktualisiert die visuellen Highlights der R-Buttons basierend auf aktiven Filtern
+     */
+    function updateFilterHighlights() {
+        ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+            const item = document.querySelector(`[data-resonanz-key="${key}"]`);
+            if (!item) return;
+            const isActive = typeof ActiveFilterCard !== 'undefined' &&
+                             ActiveFilterCard.isFilterActive &&
+                             ActiveFilterCard.isFilterActive(key);
+            item.classList.toggle('filter-active', isActive);
+        });
+    }
 
     // Auch bei Person-Wechsel (ICH/PARTNER) Snapshot zurücksetzen
     window.addEventListener('personChanged', function(event) {

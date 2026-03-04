@@ -1372,11 +1372,11 @@ const TiageState = (function() {
          * PARTNER: Speichert in den flachen Slot
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B1'
-         * @param {number} value - 0-100
+         * @param {number} value - 0+ (kein oberes Limit, Modifier können >100 erzeugen)
          * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
         setNeed(person, needId, value, archetyp = null) {
-            const clampedValue = Math.min(100, Math.max(0, value));
+            const clampedValue = Math.max(0, value);
             if (person === 'ich') {
                 const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
                 this.set(`flatNeeds.ich.${arch}.${needId}`, clampedValue);
@@ -1424,7 +1424,7 @@ const TiageState = (function() {
          * PARTNER: Wird ignoriert (keine manuellen Overrides)
          * @param {string} person - 'ich' or 'partner'
          * @param {string} needId - e.g. '#B15'
-         * @param {number} value - 0-100
+         * @param {number} value - 0+ (kein oberes Limit, Modifier können >100 erzeugen)
          * @param {string} [archetyp] - Ignoriert (Lock betrifft alle Archetypen)
          */
         lockNeed(person, needId, value, archetyp = null) {
@@ -1432,7 +1432,7 @@ const TiageState = (function() {
                 console.warn('[TiageState] lockNeed für Partner wird ignoriert - keine manuellen Overrides');
                 return;
             }
-            const clampedValue = Math.min(100, Math.max(0, value));
+            const clampedValue = Math.max(0, value);
 
             // FIX v1.8.964: Schreibt in ALLE Archetyp-Slots
             const archetypes = ['single', 'verheiratet', 'beziehung', 'affaere', 'bekanntschaft'];

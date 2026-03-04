@@ -50,9 +50,9 @@ const DimensionKategorieFilter = (function() {
             label: 'Leben',
             icon: '🔥',
             color: '#E63946',
-            beschreibung: 'Orientierung - Existenz, Zuneigung, Muße',
+            beschreibung: 'Orientierung - Existenz, Zuneigung, Freiheit, Identität, Muße, Intimität',
             sourceLabel: 'Orientierung',
-            kategorienKeys: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
+            kategorienKeys: ['existenz', 'zuneigung', 'freiheit', 'teilnahme', 'musse', 'identitaet', 'intimitaet_romantik'],
             taxonomieDimensionen: ['#D3'] // Nähe-Distanz
         },
         'R2': {
@@ -62,9 +62,9 @@ const DimensionKategorieFilter = (function() {
             label: 'Philosophie',
             icon: '🧠',
             color: '#2A9D8F',
-            beschreibung: 'Archetyp - Lebensplanung, Finanzen, Werte',
+            beschreibung: 'Archetyp - Werte, Soziales, Praktisches Leben',
             sourceLabel: 'Archetyp',
-            kategorienKeys: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
+            kategorienKeys: ['werte_haltungen', 'soziales_leben', 'praktisches_leben'],
             taxonomieDimensionen: ['#D1', '#D2'] // Beziehungsphilosophie, Werte-Alignment
         },
         'R3': {
@@ -86,9 +86,9 @@ const DimensionKategorieFilter = (function() {
             label: 'Identität',
             icon: '💚',
             color: '#F4A261',
-            beschreibung: 'Geschlecht - Authentizität, Selbstausdruck',
+            beschreibung: 'Geschlecht - Authentizität, Harmonie, Spiritualität',
             sourceLabel: 'Geschlecht',
-            kategorienKeys: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
+            kategorienKeys: ['verstaendnis', 'erschaffen', 'verbundenheit', 'beziehungsform', 'spiritualitaet', 'kommunikation_stil'],
             taxonomieDimensionen: ['#D5', '#D6'] // Kommunikation, Soziale-Kompatibilität
         }
     };
@@ -147,7 +147,10 @@ const DimensionKategorieFilter = (function() {
         'R1': [
             { id: '#K1', key: 'existenz', label: 'Existenz', beschreibung: 'Grundbedürfnisse: Atmen, Essen, Schlafen', color: '#E63946' },
             { id: '#K3', key: 'zuneigung', label: 'Zuneigung', beschreibung: 'Liebe, Nähe, emotionale Verbindung', color: '#E84393' },
+            { id: '#K5', key: 'freiheit', label: 'Freiheit', beschreibung: 'Autonomie, Wahlfreiheit, Selbstbestimmung', color: '#2ECC71' },
+            { id: '#K6', key: 'teilnahme', label: 'Teilnahme', beschreibung: 'Mitgestaltung, Zugehörigkeit, Beitragen', color: '#E67E22' },
             { id: '#K7', key: 'musse', label: 'Muße', beschreibung: 'Erholung, Freude und Genuss', color: '#118AB2' },
+            { id: '#K8', key: 'identitaet', label: 'Identität', beschreibung: 'Selbstbild, Rolle, Ausdruck', color: '#F39C12' },
             { id: '#K16', key: 'intimitaet_romantik', label: 'Intimität & Romantik', beschreibung: 'Körperliche Nähe, Sex, Romantik', color: '#EC4899' }
         ],
         'R2': [
@@ -163,6 +166,8 @@ const DimensionKategorieFilter = (function() {
             { id: '#K4', key: 'verstaendnis', label: 'Verständnis', beschreibung: 'Gesehen und verstanden werden', color: '#9B5DE5' },
             { id: '#K9', key: 'erschaffen', label: 'Kreativität & Erschaffen', beschreibung: 'Kreativität und Lernen', color: '#FF6B6B' },
             { id: '#K10', key: 'verbundenheit', label: 'Verbundenheit', beschreibung: 'Tiefe existenzielle Verbindung', color: '#A8DADC' },
+            { id: '#K12', key: 'beziehungsform', label: 'Beziehungsform & Lebensplanung', beschreibung: 'Beziehungsmodell, Kinderwunsch, Zusammenleben', color: '#E91E63' },
+            { id: '#K13', key: 'spiritualitaet', label: 'Spiritualität', beschreibung: 'Sinn, Transzendenz, inneres Wachstum', color: '#9C27B0' },
             { id: '#K14', key: 'kommunikation_stil', label: 'Kommunikationsstil', beschreibung: 'Gespräche, Emotionen, Konflikte', color: '#3B82F6' }
         ]
     };

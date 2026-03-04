@@ -986,6 +986,27 @@ var TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // LIFESTYLE-FILTER
+    // ═══════════════════════════════════════════════════════════════════════
+
+    lifestyle: {
+        koKinder: 'Kinderwunsch unvereinbar',
+        koWohnen: 'Wohnvorstellungen unvereinbar',
+        warnKinder: 'Kinderwunsch unterschiedlich',
+        warnEhe: 'Ehewunsch unterschiedlich',
+        warnFinanzen: 'Finanzvorstellungen unterschiedlich',
+        warnReligion: 'Religiöse Einstellung unterschiedlich',
+        warnTradition: 'Tradition/Moderne-Einstellung unterschiedlich',
+        warnEifersucht: 'Eifersuchtsniveau unterschiedlich',
+        warnAlleinzeit: 'Bedürfnis nach Alleinzeit unterschiedlich',
+        warnNaehe: 'Bedürfnis nach körperlicher Nähe unterschiedlich',
+        warnIntimitaet: 'Erwartungen an Intimität unterschiedlich',
+        statusKO: 'Nicht kompatibel',
+        statusWarnung: 'Gesprächsbedarf',
+        statusOK: 'Kompatibel'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // FOOTER
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -1670,6 +1691,67 @@ var TiageLocale_DE = {
     // ═══════════════════════════════════════════════════════════════════════
 
     synthese: {
+        // Tab-Tooltips (Standalone-Seiten)
+        tabScore: 'Score & Übersicht',
+        tabResonanz: 'Ti-Age Gemeinsame Bedürfnisse',
+        tabNuancen: 'Ti-Age Nuancen',
+        tabProContra: 'Resonanzfaktoren',
+        tabRTI: 'RTI Säulen (Petzold)',
+        tabMenu: 'Anti-Rolltreppen Beziehungsmenü',
+
+        // Archetyp-Nav
+        labelIch: 'ICH',
+        labelPartner: 'PARTNER',
+
+        // Lademeldungen
+        loadingUebersicht: 'Lade Synthese-Daten...',
+        loadingResonanz: 'Lade Osho Zen Resonanz...',
+        loadingNuancen: 'Lade Ti-Age Nuancen...',
+        loadingProContra: 'Lade Resonanzfaktoren...',
+        loadingRTI: 'Lade RTI-Daten...',
+        loadingOshoTexte: 'Lade Osho Zen Texte...',
+
+        // Fehlermeldungen
+        errorOshoLoad: 'Fehler beim Laden der Osho Zen Daten.',
+        errorBeduerfnisseNichtGeladen: 'Bedürfnisse nicht geladen',
+        errorTarotNichtGeladen: 'Tarot-Karten nicht geladen',
+        errorDEBeduerfnisse: 'DE Bedürfnisse nicht geladen',
+        errorDETarot: 'DE Tarot-Karten nicht geladen',
+
+        // Übersicht-Seite
+        scoreTitle: 'Kompatibilitäts-Score',
+        scoreSubtitle: 'Statistische Archetypen-Übereinstimmung',
+        manuallyAdjusted: 'Bedürfnis(se) manuell angepasst',
+        manuallyAdjustedNote: '* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst',
+
+        // Statistik/Nuancen-Seite
+        hauptfragen: 'Ti-Age Hauptfragen',
+        hauptfragenSubtitle: 'Resonanz → Kategorien → Nuancen',
+        deineBeduerfnisse: 'Deine Bedürfnisse (ICH)',
+        beduerfnisMatch: 'Bedürfnis-Übereinstimmung',
+        differenz: 'Differenz',
+        keineBeduerfnisse: 'Keine Bedürfnisse gefunden.',
+
+        // Resonanz-Seite
+        resonanzTitle: 'Ti-Age Gemeinsame Bedürfnisse',
+        resonanzSubtitle: 'Resonanz & Übereinstimmung',
+
+        // Gewichtungs-Buttons (ProContra + RTI)
+        gewichtungEgal: 'Egal / Ignorieren',
+        gewichtungNormal: 'Normal',
+        gewichtungWichtig: 'Wichtig / Doppelt',
+
+        // RTI
+        mehrErfahren: 'Mehr erfahren',
+        prioritaetLabel: 'Priorität für dich:',
+
+        // Seiten-Titel
+        pageTitleUebersicht: 'Ti-Age Synthese | Übersicht',
+        pageTitleResonanz: 'Ti-Age Synthese | Osho Zen Resonanz',
+        pageTitleNuancen: 'Ti-Age Synthese | Bedürfnisanalyse',
+        pageTitleProContra: 'Ti-Age Synthese | Resonanzfaktoren',
+        pageTitleRTI: 'Ti-Age Synthese | RTI Säulen',
+
         // Kein Partner
         noPartnerSelected: 'Kein Partner ausgewählt',
         selectPartnerHint: 'Wähle einen Partner-Archetypen auf der Hauptseite.',

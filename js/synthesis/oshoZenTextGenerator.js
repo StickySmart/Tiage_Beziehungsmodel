@@ -15,6 +15,14 @@
 const OshoZenTextGenerator = (function() {
     'use strict';
 
+    // i18n helper
+    function t(key, fallback) {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.t) {
+            return TiageI18n.t(key, fallback);
+        }
+        return fallback || key;
+    }
+
     // Cache für die geladenen Osho Zen Daten
     let oshoZenData = null;
     let tarotKartenData = null;
@@ -62,24 +70,24 @@ const OshoZenTextGenerator = (function() {
 
         loadPromise = Promise.all([
             fetch('profiles/data/osho-zen-beduerfnisse' + suffix + '.json')
-                .then(function(r) { return r.ok ? r.json() : Promise.reject('Bedürfnisse nicht geladen'); })
+                .then(function(r) { return r.ok ? r.json() : Promise.reject(t('synthese.errorBeduerfnisseNichtGeladen', 'Bedürfnisse nicht geladen')); })
                 .catch(function() {
                     // Fallback zu DE wenn Sprach-Datei nicht existiert
                     if (suffix !== '') {
                         console.warn('[OshoZen] Fallback zu DE für Bedürfnisse (kein ' + suffix + ')');
                         return fetch('profiles/data/osho-zen-beduerfnisse.json').then(function(r) { return r.json(); });
                     }
-                    throw new Error('DE Bedürfnisse nicht geladen');
+                    throw new Error(t('synthese.errorDEBeduerfnisse', 'DE Bedürfnisse nicht geladen'));
                 }),
             fetch('profiles/data/osho-zen-tarot-karten' + suffix + '.json')
-                .then(function(r) { return r.ok ? r.json() : Promise.reject('Tarot-Karten nicht geladen'); })
+                .then(function(r) { return r.ok ? r.json() : Promise.reject(t('synthese.errorTarotNichtGeladen', 'Tarot-Karten nicht geladen')); })
                 .catch(function() {
                     // Fallback zu DE wenn Sprach-Datei nicht existiert
                     if (suffix !== '') {
                         console.warn('[OshoZen] Fallback zu DE für Tarot-Karten (kein ' + suffix + ')');
                         return fetch('profiles/data/osho-zen-tarot-karten.json').then(function(r) { return r.json(); });
                     }
-                    throw new Error('DE Tarot-Karten nicht geladen');
+                    throw new Error(t('synthese.errorDETarot', 'DE Tarot-Karten nicht geladen'));
                 })
         ])
             .then(([beduerfnisseData, kartenData]) => {
@@ -91,7 +99,7 @@ const OshoZenTextGenerator = (function() {
                 return oshoZenData;
             })
             .catch(error => {
-                console.error('Fehler beim Laden der Osho Zen Daten:', error);
+                console.error(t('synthese.errorOshoLoad', 'Fehler beim Laden der Osho Zen Daten:'), error);
                 isLoading = false;
                 throw error;
             });

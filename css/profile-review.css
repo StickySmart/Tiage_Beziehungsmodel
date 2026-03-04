@@ -1217,18 +1217,10 @@ input.resonanz-input:focus {
     transform: scale(0.9);
 }
 
-.need-lock-icon::before {
-    content: '🔓';
-}
-
 /* Locked Need State */
 .attribute-need-item.with-slider.need-locked {
     border-left-color: #f59e0b;
     background: rgba(245, 158, 11, 0.08);
-}
-
-.attribute-need-item.with-slider.need-locked .need-lock-icon::before {
-    content: '🔒';
 }
 
 .attribute-need-item.with-slider.need-locked .need-lock-icon {
@@ -1737,26 +1729,7 @@ input.resonanz-input:focus {
     display: none !important;
 }
 
-/* HAUPTFRAGEN VIEW: Filter states (unified via .flat-need-item.is-hauptfrage) */
-.flat-need-item.is-hauptfrage.has-matching-nuancen {
-    opacity: 0.85;
-    border-left: 3px solid rgba(147, 51, 234, 0.5);
-}
-
-.flat-need-item.is-hauptfrage.has-matching-nuancen .need-slider {
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-.flat-need-item.is-hauptfrage.has-matching-nuancen .flat-need-input {
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-/* Nuancen innerhalb von nuancen-list filtern */
-.nuancen-list .flat-need-item.filter-hidden {
-    display: none !important;
-}
+/* v1.8.998: Hauptfragen-Hierarchie CSS ENTFERNT — alle Needs flach */
 
 /* FIX: DimensionKategorieFilter versteckt Bedürfnisse, aber lässt sie im DOM für Suche */
 .flat-need-item.dimension-filter-hidden {
@@ -1891,15 +1864,18 @@ input.resonanz-input:focus {
     background: rgba(245, 158, 11, 0.1);
 }
 
-/* Selected state for multi-select */
+/* Selected state for multi-select — outline statt border (inline border-left nicht überschreiben) */
 .flat-need-item.need-selected {
-    background: rgba(34, 197, 94, 0.2);
-    border-left-color: #22c55e !important;
-    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+    outline: 3px solid #ef4444 !important;
+    outline-offset: -3px;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+    z-index: 1;
 }
 
 .flat-need-item.need-selected:hover {
-    background: rgba(34, 197, 94, 0.25);
+    outline: 3px solid #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+    z-index: 1;
 }
 
 .flat-need-header {
@@ -1998,21 +1974,12 @@ input.resonanz-input:focus {
     transition: opacity 0.2s;
 }
 
-.flat-need-item .need-lock-icon::before {
-    content: "🔓";
-    font-size: 14px;
-}
-
 .flat-need-item .need-lock-icon:hover {
     opacity: 1;
 }
 
 .flat-need-item.need-locked .need-lock-icon {
     opacity: 1;
-}
-
-.flat-need-item.need-locked .need-lock-icon::before {
-    content: "🔒";
 }
 
 /* FIX v1.8.968: Status-Indikator-Punkt neben Schloss */
@@ -2301,12 +2268,6 @@ input.resonanz-input:focus {
     border: 1px solid rgba(34, 197, 94, 0.15);
 }
 
-.flat-needs-selection-label {
-    font-size: 12px;
-    color: #22c55e;
-    font-weight: 500;
-}
-
 .flat-needs-selection-btn {
     padding: 4px 10px;
     font-size: 11px;
@@ -2328,6 +2289,34 @@ input.resonanz-input:focus {
     transform: scale(0.95);
 }
 
+/* Alle / Keine / Umkehren Quick-Buttons */
+.selection-quick-btns {
+    display: flex;
+    gap: 4px;
+}
+
+.selection-quick-btn {
+    padding: 3px 8px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 4px;
+    color: var(--text-secondary, #aaa);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.selection-quick-btn:hover {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.5);
+    color: #22c55e;
+}
+
+.selection-quick-btn:active {
+    transform: scale(0.95);
+}
+
 /* Selection Counter */
 .selection-counter {
     font-size: 12px;
@@ -2346,10 +2335,10 @@ input.resonanz-input:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* Bulk Increment/Decrement Card (Plus/Minus Buttons für markierte Werte)      */
+/* Bulk Action Card (Reset + Save Buttons für markierte Werte)                 */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 
-.bulk-increment-card {
+.bulk-action-card {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -2361,61 +2350,10 @@ input.resonanz-input:focus {
     box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
 }
 
-.bulk-increment-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    min-width: 40px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.bulk-increment-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.bulk-increment-btn:active {
-    transform: scale(0.95);
-}
-
-.bulk-increment-btn.bulk-decrement {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%);
-    border-color: rgba(239, 68, 68, 0.4);
-}
-
-.bulk-increment-btn.bulk-decrement:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.35) 0%, rgba(220, 38, 38, 0.25) 100%);
-    border-color: rgba(239, 68, 68, 0.6);
-}
-
-.bulk-increment-btn.bulk-increment {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.15) 100%);
-    border-color: rgba(34, 197, 94, 0.4);
-}
-
-.bulk-increment-btn.bulk-increment:hover {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.35) 0%, rgba(22, 163, 74, 0.25) 100%);
-    border-color: rgba(34, 197, 94, 0.6);
-}
-
 .bulk-btn-icon {
     font-size: 16px;
     font-weight: 700;
     line-height: 1;
-}
-
-.bulk-decrement .bulk-btn-icon {
-    color: #ef4444;
-}
-
-.bulk-increment .bulk-btn-icon {
-    color: #22c55e;
 }
 
 .bulk-btn-label {
@@ -2464,88 +2402,13 @@ input.resonanz-input:focus {
     margin-top: 2px;
 }
 
-/* Lock Button für markierte Werte */
-.bulk-lock-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    min-width: 52px;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.15) 100%);
-    border: 1px solid rgba(59, 130, 246, 0.4);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-left: 4px;
+/* Disabled State für Bulk-Action-Card (wenn nichts markiert) */
+.bulk-action-card.disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
-.bulk-lock-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0.25) 100%);
-    border-color: rgba(59, 130, 246, 0.6);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-}
-
-.bulk-lock-btn:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-.bulk-lock-btn .bulk-btn-icon {
-    font-size: 14px;
-    line-height: 1;
-}
-
-.bulk-lock-btn .bulk-btn-label {
-    font-size: 9px;
-    color: var(--text-muted, #888);
-    margin-top: 2px;
-}
-
-/* FIX v1.8.970: Copy Button für "In alle Archetypen kopieren" */
-.bulk-copy-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    min-width: 52px;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(147, 51, 234, 0.15) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-left: 4px;
-}
-
-.bulk-copy-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 100%);
-    border-color: rgba(168, 85, 247, 0.6);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
-}
-
-.bulk-copy-btn:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-.bulk-copy-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.bulk-copy-btn .bulk-btn-icon {
-    font-size: 14px;
-    line-height: 1;
-}
-
-.bulk-copy-btn .bulk-btn-label {
-    font-size: 9px;
-    color: var(--text-muted, #888);
-    margin-top: 2px;
-}
-
-.bulk-lock-btn:disabled {
+.bulk-action-card.disabled .bulk-reset-btn {
     cursor: not-allowed;
     opacity: 0.5;
 }
@@ -2605,20 +2468,7 @@ input.resonanz-input:focus {
     border-color: rgba(239, 68, 68, 0.6);
 }
 
-/* Disabled State für Bulk-Buttons (wenn nichts markiert) */
-.bulk-increment-card.disabled {
-    opacity: 0.4;
-    pointer-events: none;
-}
-
-.bulk-increment-card.disabled .bulk-increment-btn,
-.bulk-increment-card.disabled .bulk-reset-btn,
-.bulk-increment-card.disabled .bulk-lock-btn {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.bulk-increment-btn:disabled,
+.bulk-reset-btn:disabled,
 .bulk-reset-btn:disabled {
     cursor: not-allowed;
     opacity: 0.5;
@@ -3364,96 +3214,7 @@ input.resonanz-input:focus {
     text-shadow: none;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   HAUPTFRAGEN-ANSICHT - Konsolidierte Bedürfnisse mit aufklappbaren Nuancen
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Hauptfragen-Modus Container */
-.flat-needs-list.hauptfragen-mode {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px;
-}
-
-/* REFACTORING v1.8.985: Alte .hauptfrage-* CSS-Klassen entfernt
- * Hauptfragen verwenden jetzt .flat-need-item.is-hauptfrage (unified rendering)
- * Siehe neue Styles weiter oben bei .flat-need-item.is-hauptfrage */
-
-/* Nuancen gelockt durch Hauptfrage */
-.nuancen-list.nuancen-locked-by-parent {
-    opacity: 0.7;
-    position: relative;
-}
-
-.nuancen-list.nuancen-locked-by-parent::before {
-    content: "🔒 Nuancen gesperrt (Hauptfrage gelockt)";
-    display: block;
-    font-size: 11px;
-    color: var(--text-muted, #888);
-    padding: 4px 8px;
-    margin-bottom: 4px;
-    background: rgba(34, 197, 94, 0.1);
-    border-radius: 4px;
-}
-
-.nuancen-list.nuancen-locked-by-parent .flat-need-item {
-    pointer-events: none;
-}
-
-.nuancen-list.nuancen-locked-by-parent .need-slider,
-.nuancen-list.nuancen-locked-by-parent .flat-need-input {
-    opacity: 0.5;
-}
-
-/* Nuancen-Liste (expandiert) - Card Style */
-.nuancen-list {
-    padding: 8px 12px 12px 48px;
-    background: rgba(0, 0, 0, 0.18);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* Nuancen-Items als Sub-Cards */
-.nuancen-list .flat-need-item {
-    background: rgba(255, 255, 255, 0.02);
-    border-left-width: 3px;
-    padding: 10px 12px;
-    margin: 0;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.15s ease;
-}
-
-.nuancen-list .flat-need-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Selected Nuancen inside list */
-.nuancen-list .flat-need-item.need-selected {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: rgba(34, 197, 94, 0.4);
-}
-
-/* Mobile Anpassungen */
-@media (max-width: 768px) {
-    .flat-needs-list.hauptfragen-mode {
-        gap: 8px;
-        padding: 8px;
-    }
-
-    .nuancen-list {
-        padding: 6px 8px 8px 32px;
-        gap: 4px;
-    }
-
-    .nuancen-list .flat-need-item {
-        padding: 8px 10px;
-    }
-}
+/* v1.8.998: HAUPTFRAGEN-ANSICHT + NUANCEN-LISTE CSS ENTFERNT — alle Needs flach */
 
 /* ═══════════════════════════════════════════════════════════════════════
  * R-FAKTOR EINFLUSS-BADGES
@@ -3592,6 +3353,27 @@ input.resonanz-input:focus {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Neue Modifier-Badges (G, O, D, Fi, Fu, H) */
+.modifier-badge {
+    display: inline-block;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: monospace;
+    cursor: help;
+    margin-right: 3px;
+    background: color-mix(in srgb, var(--mod-color) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mod-color) 50%, transparent);
+    color: var(--mod-color);
+    transition: all 0.2s ease;
+}
+
+.modifier-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
 /* Mobile Anpassung */
 @media (max-width: 768px) {
     .god-modifier-badge {
@@ -3603,60 +3385,15 @@ input.resonanz-input:focus {
     .god-mod-part {
         padding: 0 3px;
     }
+
+    .modifier-badge {
+        font-size: 9px;
+        padding: 0 3px;
+        margin-right: 2px;
+    }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   UNIFIED RENDERING v1.8.985: Hauptfragen-Features in flat-need-item
-   Hauptfragen nutzen jetzt das gleiche Template wie Nuancen
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Hauptfrage-Marker */
-.flat-need-item.is-hauptfrage {
-    border-width: 3px;
-    border-left-width: 5px;
-}
-
-/* Expand Icon (▶/▼) */
-.need-expand-icon {
-    cursor: pointer;
-    font-size: 12px;
-    margin-right: 6px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    user-select: none;
-    flex-shrink: 0;
-}
-
-.need-expand-icon:hover {
-    opacity: 1;
-}
-
-/* Nuancen Count Badge */
-.need-nuancen-count {
-    font-size: 0.75rem;
-    color: #999;
-    margin-left: auto;
-    margin-right: 8px;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.need-nuancen-count:hover {
-    color: #ccc;
-}
-
-/* Nuancen-Liste (eingebettet in flat-need-item) */
-.flat-need-item.is-hauptfrage > .nuancen-list {
-    padding-left: 16px;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
-    margin-top: 4px;
-}
-
-.flat-need-item.is-hauptfrage > .nuancen-list .flat-need-item {
-    margin-bottom: 2px;
-    font-size: 0.9rem;
-}
+/* v1.8.998: UNIFIED RENDERING Hauptfragen-Features ENTFERNT — alle Needs flach */
 
 /* ═══════════════════════════════════════════════════════════════════════════
    SAVE STATUS BADGE

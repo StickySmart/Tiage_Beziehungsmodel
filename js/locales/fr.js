@@ -743,6 +743,27 @@ var TiageLocale_FR = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // FILTRE STYLE DE VIE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    lifestyle: {
+        koKinder: 'D\u00e9sir d\'enfant incompatible',
+        koWohnen: 'Pr\u00e9f\u00e9rences de logement incompatibles',
+        warnKinder: 'D\u00e9sir d\'enfant diff\u00e9rent',
+        warnEhe: 'D\u00e9sir de mariage diff\u00e9rent',
+        warnFinanzen: 'Attentes financi\u00e8res diff\u00e9rentes',
+        warnReligion: 'Attitude religieuse diff\u00e9rente',
+        warnTradition: 'Attitude tradition/modernit\u00e9 diff\u00e9rente',
+        warnEifersucht: 'Niveaux de jalousie diff\u00e9rents',
+        warnAlleinzeit: 'Besoin de temps seul diff\u00e9rent',
+        warnNaehe: 'Besoin de proximit\u00e9 physique diff\u00e9rent',
+        warnIntimitaet: 'Attentes d\'intimit\u00e9 diff\u00e9rentes',
+        statusKO: 'Non compatible',
+        statusWarnung: 'Discussion n\u00e9cessaire',
+        statusOK: 'Compatible'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // PIED DE PAGE
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -1423,6 +1444,67 @@ var TiageLocale_FR = {
     },
 
     synthese: {
+        // Infobulles des onglets (Pages autonomes)
+        tabScore: 'Score & Aper\u00e7u',
+        tabResonanz: 'Ti-Age Besoins partag\u00e9s',
+        tabNuancen: 'Ti-Age Nuances',
+        tabProContra: 'Facteurs de r\u00e9sonance',
+        tabRTI: 'Piliers RTI (Petzold)',
+        tabMenu: 'Menu relationnel Anti-escalator',
+
+        // Navigation arch\u00e9type
+        labelIch: 'MOI',
+        labelPartner: 'PARTENAIRE',
+
+        // Messages de chargement
+        loadingUebersicht: 'Chargement des donn\u00e9es de synth\u00e8se...',
+        loadingResonanz: 'Chargement de la r\u00e9sonance Osho Zen...',
+        loadingNuancen: 'Chargement des nuances Ti-Age...',
+        loadingProContra: 'Chargement des facteurs de r\u00e9sonance...',
+        loadingRTI: 'Chargement des donn\u00e9es RTI...',
+        loadingOshoTexte: 'Chargement des textes Osho Zen...',
+
+        // Messages d'erreur
+        errorOshoLoad: 'Erreur lors du chargement des donn\u00e9es Osho Zen.',
+        errorBeduerfnisseNichtGeladen: 'Besoins non charg\u00e9s',
+        errorTarotNichtGeladen: 'Cartes de Tarot non charg\u00e9es',
+        errorDEBeduerfnisse: 'Besoins DE non charg\u00e9s',
+        errorDETarot: 'Cartes de Tarot DE non charg\u00e9es',
+
+        // Page aper\u00e7u
+        scoreTitle: 'Score de compatibilit\u00e9',
+        scoreSubtitle: 'Correspondance statistique des arch\u00e9types',
+        manuallyAdjusted: 'Besoin(s) ajust\u00e9(s) manuellement',
+        manuallyAdjustedNote: '* = Besoin(s) dans cette dimension ajust\u00e9(s) manuellement',
+
+        // Page statistiques/nuances
+        hauptfragen: 'Ti-Age Questions cl\u00e9s',
+        hauptfragenSubtitle: 'R\u00e9sonance \u2192 Cat\u00e9gories \u2192 Nuances',
+        deineBeduerfnisse: 'Tes besoins (MOI)',
+        beduerfnisMatch: 'Correspondance des besoins',
+        differenz: 'Diff\u00e9rence',
+        keineBeduerfnisse: 'Aucun besoin trouv\u00e9.',
+
+        // Page r\u00e9sonance
+        resonanzTitle: 'Ti-Age Besoins partag\u00e9s',
+        resonanzSubtitle: 'R\u00e9sonance & correspondance',
+
+        // Boutons de pond\u00e9ration (ProContra + RTI)
+        gewichtungEgal: 'Ignorer',
+        gewichtungNormal: 'Normal',
+        gewichtungWichtig: 'Important / Double',
+
+        // RTI
+        mehrErfahren: 'En savoir plus',
+        prioritaetLabel: 'Priorit\u00e9 pour toi :',
+
+        // Titres de page
+        pageTitleUebersicht: 'Ti-Age Synth\u00e8se | Aper\u00e7u',
+        pageTitleResonanz: 'Ti-Age Synth\u00e8se | R\u00e9sonance Osho Zen',
+        pageTitleNuancen: 'Ti-Age Synth\u00e8se | Analyse des besoins',
+        pageTitleProContra: 'Ti-Age Synth\u00e8se | Facteurs de r\u00e9sonance',
+        pageTitleRTI: 'Ti-Age Synth\u00e8se | Piliers RTI',
+
         // Pas de partenaire
         noPartnerSelected: 'Aucun partenaire s\u00e9lectionn\u00e9',
         selectPartnerHint: 'S\u00e9lectionne un arch\u00e9type partenaire sur la page principale.',

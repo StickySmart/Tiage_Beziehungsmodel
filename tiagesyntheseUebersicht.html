@@ -57,6 +57,9 @@
     <script src="js/synthesis/needsIntegration.js"></script>
     <script src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
 
+    <!-- Shared Synthese-Seiten Module -->
+    <script src="js/synthesis/synthesePageShared.js"></script>
+
     <style>
         .synthese-page {
             min-height: 100vh;
@@ -572,15 +575,15 @@
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </a>
-                <span class="synthese-title">Ti-Age Synthese</span>
+                <span class="synthese-title" data-i18n="synthese.title">Ti-Age Synthese</span>
             </div>
             <div class="synthese-tabs">
-                <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht">🎯</a>
-                <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
-                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
-                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">⚖️</a>
-                <a href="tiagesyntheseRTI.html" class="synthese-tab" title="RTI Säulen (Petzold)">⚡</a>
-                <a href="relationship-menu.html" class="synthese-tab" title="Anti-Rolltreppen Beziehungsmenü">💝</a>
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht" data-i18n-title="synthese.tabScore">🎯</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen" data-i18n-title="synthese.tabNuancen">💚</a>
+                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren" data-i18n-title="synthese.tabProContra">⚖️</a>
+                <a href="tiagesyntheseRTI.html" class="synthese-tab" title="RTI Säulen (Petzold)" data-i18n-title="synthese.tabRTI">⚡</a>
+                <a href="relationship-menu.html" class="synthese-tab" title="Anti-Rolltreppen Beziehungsmenü" data-i18n-title="synthese.tabMenu">💝</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
@@ -590,7 +593,7 @@
             <div class="archetype-selector">
                 <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
                 <div class="archetype-info">
-                    <div class="archetype-label ich">ICH</div>
+                    <div class="archetype-label ich" data-i18n="synthese.labelIch">ICH</div>
                     <div class="archetype-name" id="ichArchetypeName">-</div>
                 </div>
                 <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
@@ -599,7 +602,7 @@
             <div class="archetype-selector">
                 <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)">‹</button>
                 <div class="archetype-info">
-                    <div class="archetype-label partner">PARTNER</div>
+                    <div class="archetype-label partner" data-i18n="synthese.labelPartner">PARTNER</div>
                     <div class="archetype-name" id="partnerArchetypeName">-</div>
                 </div>
                 <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)">›</button>
@@ -610,7 +613,7 @@
         <div class="synthese-content" id="syntheseContent">
             <div class="synthese-loading">
                 <div class="synthese-loading-spinner"></div>
-                <p>Lade Synthese-Daten...</p>
+                <p data-i18n="synthese.loadingUebersicht">Lade Synthese-Daten...</p>
             </div>
         </div>
     </div>
@@ -618,25 +621,11 @@
     <script>
         // ═══════════════════════════════════════════════════════════════════════════
         // TIAGE SYNTHESE ÜBERSICHT - Score & R-Faktoren
+        // (Shared code in synthesePageShared.js)
         // ═══════════════════════════════════════════════════════════════════════════
 
-        // Archetypen-Liste für Navigation (SSOT Keys verwenden duo_flex)
-        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
-        const archetypeNames = {
-            'single': 'Single',
-            'duo': 'Duo',
-            'duo_flex': 'Duo-Flex',
-            'duoflex': 'Duo-Flex',  // Legacy-Alias
-            'solopoly': 'Solopoly',
-            'polyamor': 'Polyamor',
-            'ra': 'RA',
-            'lat': 'LAT',
-            'aromantisch': 'Aromantisch'
-        };
-
-        let currentIchArchetype = 'duo';
-        let currentPartnerArchetype = null;
-        let hasPartner = false;
+        // Shortcut
+        const t = SynthesePageShared.t;
 
         // R-Faktoren Definitionen mit AGOD-Zuordnung
         const rFaktorenDefs = [
@@ -779,7 +768,8 @@
          * @param {string} dimension - 'R1', 'R2', 'R3' oder 'R4'
          */
         function navigateToSettings(person, dimension) {
-            const archetype = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
+            const state = SynthesePageShared.getCurrentState();
+            const archetype = person === 'ich' ? state.ichArchetype : state.partnerArchetype;
             const url = `needs-editor.html?person=${encodeURIComponent(person)}&archetype=${encodeURIComponent(archetype)}&dimension=${encodeURIComponent(dimension)}`;
             window.location.href = url;
         }
@@ -806,7 +796,7 @@
                                     </td>
                                     <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
-                                        ${r.modifiedIch ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
+                                        ${r.modifiedIch ? '<span class="matrix-modified" title="' + t('synthese.manuallyAdjusted', 'Bedürfnis(se) manuell angepasst') + '">*</span>' : ''}
                                     </td>
                                 </tr>
                             `).join('')}
@@ -816,7 +806,7 @@
                         <span class="high">&bull; >1.0</span>
                         <span class="neutral">&bull; 1.0</span>
                         <span class="low">&bull; <1.0</span>
-                        <span class="modified-info" title="* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst">*</span>
+                        <span class="modified-info" title="${t('synthese.manuallyAdjustedNote', '* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst')}">*</span>
                     </div>
                 </div>
             `;
@@ -846,11 +836,11 @@
                                     </td>
                                     <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
-                                        ${r.modifiedIch ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
+                                        ${r.modifiedIch ? '<span class="matrix-modified" title="' + t('synthese.manuallyAdjusted', 'Bedürfnis(se) manuell angepasst') + '">*</span>' : ''}
                                     </td>
                                     <td>
                                         <span class="matrix-value ${getValueClass(r.partner)}">${r.partner.toFixed(2)}</span>
-                                        ${r.modifiedPartner ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
+                                        ${r.modifiedPartner ? '<span class="matrix-modified" title="' + t('synthese.manuallyAdjusted', 'Bedürfnis(se) manuell angepasst') + '">*</span>' : ''}
                                     </td>
                                     <td class="col-kombi">
                                         <span class="matrix-value ${getValueClass(r.kombi)}">${r.kombi.toFixed(2)}</span>
@@ -863,201 +853,49 @@
                         <span class="high">● >1.0</span>
                         <span class="neutral">● 1.0</span>
                         <span class="low">● <1.0</span>
-                        <span class="modified-info" title="* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst">*</span>
+                        <span class="modified-info" title="${t('synthese.manuallyAdjustedNote', '* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst')}">*</span>
                     </div>
                 </div>
             `;
         }
 
         /**
-         * Initialisierung
+         * Initialisierung via Shared Module
          */
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Validiere ob ein Archetyp-Key gültig ist
-            function isValidArchetype(key) {
-                return archetypeOrder.includes(key) || key === 'duo_flex';
-            }
-
-            // Normalisiere Archetyp-Key (duoflex -> duo_flex)
-            function normalizeArchetype(key) {
-                if (!key) return null;
-                const normalized = key.toLowerCase().trim();
-                if (normalized === 'duoflex' || normalized === 'duo-flex') return 'duo_flex';
-                return normalized;
-            }
-
-            // Archetypen aus TiageState laden
-            if (typeof TiageState !== 'undefined') {
-                await TiageState.init();
-                let ichFromState = TiageState.get('archetypes.ich.primary');
-                let partnerFromState = TiageState.get('archetypes.partner.primary');
-
-                // Validiere und normalisiere die Werte
-                ichFromState = normalizeArchetype(ichFromState);
-                partnerFromState = normalizeArchetype(partnerFromState);
-
-                if (isValidArchetype(ichFromState)) {
-                    currentIchArchetype = ichFromState;
-                }
-                hasPartner = partnerFromState != null && isValidArchetype(partnerFromState);
-                if (hasPartner) {
-                    currentPartnerArchetype = partnerFromState;
-                }
-
-                // SSOT v4.3: flatNeeds und resonanzFaktoren werden von der Hauptseite berechnet
-                // und über TiageState/localStorage persistiert. Synthese-Seiten LESEN nur.
-                // ProfileCalculator.initFromState() wurde entfernt, da es die korrekten Werte
-                // mit Neuberechnung (ohne vollständige Script-Deps) überschreiben würde.
-
-                // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
-                TiageState.subscribe('flatNeeds.ich', function() {
-                    updateArchetypeDisplay();
-                    renderContent();
-                });
-                TiageState.subscribe('flatNeeds.partner', function() {
-                    updateArchetypeDisplay();
-                    renderContent();
-                });
-                // Auch auf resonanzFaktoren-Änderungen reagieren
-                TiageState.subscribe('resonanzFaktoren.ich', function() {
-                    renderContent();
-                });
-                TiageState.subscribe('resonanzFaktoren.partner', function() {
-                    renderContent();
-                });
-                // Reagiere auf Partner-Auswahl von anderer Seite
-                TiageState.subscribe('archetypes.partner', function() {
-                    const raw = normalizeArchetype(TiageState.get('archetypes.partner.primary'));
-                    hasPartner = raw != null && isValidArchetype(raw);
-                    if (hasPartner) currentPartnerArchetype = raw;
-                    updatePartnerNavVisibility();
-                    updateArchetypeDisplay();
-                    renderContent();
-                });
-
-                console.log('[tiagesyntheseUebersicht] Archetypen geladen:', {
-                    ichFromState, partnerFromState,
-                    currentIchArchetype, currentPartnerArchetype
-                });
-            }
-
-            // Aus sessionStorage laden (nur als Fallback, wenn TiageState keine Daten hat)
-            // TiageState ist SSOT - sessionStorage darf TiageState-Werte NICHT überschreiben
-            const tiageStateHasIch = typeof TiageState !== 'undefined' &&
-                TiageState.get('archetypes.ich.primary');
-
-            if (!tiageStateHasIch) {
-                const stored = sessionStorage.getItem('tiageSyntheseData');
-                if (stored) {
-                    try {
-                        const data = JSON.parse(stored);
-                        if (data.ichName) {
-                            const key = findArchetypeKey(data.ichName);
-                            if (isValidArchetype(key)) currentIchArchetype = key;
-                        }
-                        if (data.partnerName) {
-                            const key = findArchetypeKey(data.partnerName);
-                            if (isValidArchetype(key)) {
-                                currentPartnerArchetype = key;
-                                hasPartner = true;
-                            }
-                        }
-                    } catch (e) {}
-                }
-            }
-
-            updateArchetypeDisplay();
-            updatePartnerNavVisibility();
-            renderContent();
+        document.addEventListener('DOMContentLoaded', function() {
+            SynthesePageShared.init({
+                renderContent: renderContent,
+                pageTitle: 'synthese.pageTitleUebersicht',
+                extraSubscriptions: ['resonanzFaktoren.ich', 'resonanzFaktoren.partner']
+            });
         });
-
-        /**
-         * Findet den Archetyp-Key anhand des Namens
-         */
-        function findArchetypeKey(name) {
-            for (const [key, val] of Object.entries(archetypeNames)) {
-                if (val.toLowerCase() === name.toLowerCase()) return key;
-            }
-            return name.toLowerCase().replace(/[^a-z]/g, '');
-        }
-
-        /**
-         * Aktualisiert die Archetyp-Anzeige
-         */
-        function updateArchetypeDisplay() {
-            document.getElementById('ichArchetypeName').textContent =
-                archetypeNames[currentIchArchetype] || currentIchArchetype;
-            document.getElementById('partnerArchetypeName').textContent =
-                hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
-        }
-
-        /**
-         * Blendet Partner-Nav ein/aus je nach hasPartner
-         */
-        function updatePartnerNavVisibility() {
-            const selectors = document.querySelectorAll('.synthese-archetype-nav .archetype-selector');
-            const separator = document.querySelector('.synthese-archetype-nav .archetype-separator');
-            if (selectors[1]) selectors[1].style.display = hasPartner ? '' : 'none';
-            if (separator) separator.style.display = hasPartner ? '' : 'none';
-        }
-
-        /**
-         * Navigation zwischen Archetypen
-         */
-        function navigateArchetype(person, direction) {
-            if (person === 'partner' && !hasPartner) return;
-            const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
-            const currentIndex = archetypeOrder.indexOf(current);
-            let newIndex = currentIndex + direction;
-
-            if (newIndex < 0) newIndex = archetypeOrder.length - 1;
-            if (newIndex >= archetypeOrder.length) newIndex = 0;
-
-            if (person === 'ich') {
-                currentIchArchetype = archetypeOrder[newIndex];
-                if (typeof TiageState !== 'undefined') {
-                    TiageState.setArchetype('ich', currentIchArchetype);
-                }
-            } else {
-                currentPartnerArchetype = archetypeOrder[newIndex];
-                if (typeof TiageState !== 'undefined') {
-                    TiageState.setArchetype('partner', currentPartnerArchetype);
-                }
-            }
-
-            // Persist changes to localStorage for cross-page consistency
-            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
-                TiageState.saveToStorage();
-            }
-
-            updateArchetypeDisplay();
-            renderContent();
-        }
 
         /**
          * Rendert den Hauptinhalt
          */
         function renderContent() {
             const container = document.getElementById('syntheseContent');
+            const state = SynthesePageShared.getCurrentState();
+            const names = SynthesePageShared.archetypeNames;
 
             // R-Faktoren berechnen für Matrix
             const rFaktoren = calculateRFaktoren();
 
             // Kein Partner ausgewählt → ICH-only Ansicht
-            if (!hasPartner) {
+            if (!state.hasPartner) {
                 container.innerHTML = `
                     <div class="synthese-section">
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">🎯</span>
                             <div>
-                                <div class="synthese-section-title">Kompatibilitäts-Score</div>
-                                <div class="synthese-section-subtitle">Statistische Archetypen-Übereinstimmung</div>
+                                <div class="synthese-section-title">${t('synthese.scoreTitle', 'Kompatibilitäts-Score')}</div>
+                                <div class="synthese-section-subtitle">${t('synthese.scoreSubtitle', 'Statistische Archetypen-Übereinstimmung')}</div>
                             </div>
                         </div>
                         <div style="text-align:center; padding: 24px; color: var(--text-muted);">
                             <div style="font-size:36px; margin-bottom:12px;">👤</div>
-                            <p style="font-size:14px; margin-bottom:8px;">${TiageI18n.t('synthese.noPartnerSelected', 'Kein Partner ausgewählt')}</p>
-                            <p style="font-size:12px;">${TiageI18n.t('synthese.selectPartnerHint', 'Wähle einen Partner-Archetypen auf der Hauptseite.')}</p>
+                            <p style="font-size:14px; margin-bottom:8px;">${t('synthese.noPartnerSelected', 'Kein Partner ausgewählt')}</p>
+                            <p style="font-size:12px;">${t('synthese.selectPartnerHint', 'Wähle einen Partner-Archetypen auf der Hauptseite.')}</p>
                         </div>
                         ${generateIchOnlyMatrixHTML(rFaktoren)}
                     </div>
@@ -1077,8 +915,8 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🎯</span>
                         <div>
-                            <div class="synthese-section-title">Kompatibilitäts-Score</div>
-                            <div class="synthese-section-subtitle">Statistische Archetypen-Übereinstimmung</div>
+                            <div class="synthese-section-title">${t('synthese.scoreTitle', 'Kompatibilitäts-Score')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.scoreSubtitle', 'Statistische Archetypen-Übereinstimmung')}</div>
                         </div>
                     </div>
                     <div class="score-display">
@@ -1092,7 +930,7 @@
                             </svg>
                             <div class="score-value">${score}%</div>
                         </div>
-                        <div class="score-label">${archetypeNames[currentIchArchetype]} × ${archetypeNames[currentPartnerArchetype]}</div>
+                        <div class="score-label">${names[state.ichArchetype]} × ${names[state.partnerArchetype]}</div>
                     </div>
 
                     <!-- Matrix-Tabelle: ICH × PARTNER -->
@@ -1107,13 +945,14 @@
          * Berechnet den Score aus SSOT (ArchetypeMatrixCalculator)
          */
         function calculateScore() {
+            const state = SynthesePageShared.getCurrentState();
             // SSOT: Use ArchetypeMatrixCalculator.getScore()
             if (typeof TiageSynthesis !== 'undefined' &&
                 TiageSynthesis.ArchetypeMatrixCalculator &&
                 typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
                 const score = TiageSynthesis.ArchetypeMatrixCalculator.getScore(
-                    currentIchArchetype,
-                    currentPartnerArchetype
+                    state.ichArchetype,
+                    state.partnerArchetype
                 );
                 if (score !== null && score !== undefined) {
                     return Math.round(score);

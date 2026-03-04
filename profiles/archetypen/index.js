@@ -740,7 +740,11 @@
         getDefaultResonanzFaktoren: getDefaultResonanzFaktoren,
 
         // Helper
-        createEmptyProfile: createEmptyProfile
+        createEmptyProfile: createEmptyProfile,
+
+        // Reaktive Neuberechnung (für Reset im NeedsEditor)
+        recalculateFlatNeedsForPerson: recalculateFlatNeedsForPerson,
+        recalculateResonanzForPerson: recalculateResonanzForPerson
     };
 
     console.log('ProfileCalculator bereit');

@@ -210,109 +210,105 @@ const DuoFlexProfil = {
         '#B123': 70,  // zorba_das_kind - Hoch - Lebensfreude
         '#B124': 50,  // nicht_anhaften_an_familie - Mittel - Balance
         '#B125': 75,  // bewusste_elternschaft - Hoch - reflektiert
-        '#B126': 40,  // commune_statt_kernfamilie - Niedrig-mittel
 
-        // ─────────────────────────────────────────────────────────────────────────
-        // FINANZEN & KARRIERE (#B127-#B148) - Geteilte und individuelle Finanzen
-        // ─────────────────────────────────────────────────────────────────────────
-        '#B127': 70,  // finanzielle_unabhaengigkeit - Hoch - eigenes Einkommen wichtig
-        '#B128': 60,  // gemeinsame_finanzen - Mittel - teilweise gemeinsam
-        '#B129': 75,  // finanzielle_transparenz - Hoch
-        '#B130': 70,  // finanzielle_sicherheit - Hoch - materielle Sicherheit
-        '#B131': 55,  // sparsamkeit - Mittel
-        '#B132': 65,  // grosszuegigkeit - Mittel-hoch
-        '#B133': 75,  // berufliche_erfuellung - Hoch - beide können Karriere machen
-        '#B134': 70,  // karriereambition - Hoch
-        '#B135': 80,  // work_life_balance - Hoch - wichtig
-        '#B136': 70,  // berufliche_anerkennung - Hoch
-        '#B137': 75,  // zeit_fuer_beziehung - Hoch
-        '#B138': 70,  // berufliche_flexibilitaet - Hoch
-        // Pirsig & Osho - Finanzen & Karriere
-        '#B139': 75,  // gumption - Hoch - motiviert
-        '#B140': 75,  // qualitaet_der_arbeit - Hoch
-        '#B141': 65,  // intellektuelles_muster - Mittel-hoch
-        '#B142': 70,  // dynamische_evolution - Hoch - Wachstum
-        '#B143': 65,  // klassisches_verstehen - Mittel-hoch
-        '#B144': 55,  // arbeit_als_meditation - Mittel
-        '#B145': 40,  // nicht_karriere - Niedrig-mittel
-        '#B146': 60,  // zorba_der_unternehmer - Mittel
-        '#B147': 45,  // nicht_anhaften_an_geld - Mittel
-        '#B148': 70,  // kreative_selbstverwirklichung - Hoch
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // KOMMUNIKATIONSSTIL (#B149-#B176) - Offene, tiefe Kommunikation
-        // ─────────────────────────────────────────────────────────────────────────
-        '#B149': 80,  // taeglicher_austausch - Hoch
-        '#B150': 85,  // tiefgehende_gespraeche - Sehr hoch - regelmäßig
-        '#B151': 60,  // small_talk - Mittel - auch ok
-        '#B152': 70,  // stille_gemeinsam - Hoch - kann auch still sein
-        '#B153': 80,  // verbale_verbindung - Hoch
-        '#B154': 85,  // zuhoeren - Sehr hoch - aktives Zuhören
-        '#B155': 85,  // emotionale_offenheit - Sehr hoch - Kern der Flexibilität
-        '#B156': 80,  // gefuehle_zeigen - Hoch
-        '#B157': 75,  // verletzlichkeit - Hoch
-        '#B158': 35,  // emotionale_zurueckhaltung - Niedrig
-        '#B159': 80,  // emotionale_sicherheit - Hoch
-        '#B160': 85,  // gefuehle_teilen - Sehr hoch
-        '#B161': 80,  // konfliktklaerung - Hoch - Konflikte ansprechen
-        '#B162': 80,  // aussprache - Hoch
-        '#B163': 40,  // konflikt_vermeiden - Niedrig-mittel - offen
-        '#B164': 75,  // streitkultur - Hoch - konstruktiv
-        '#B165': 80,  // versoehnlichkeit - Hoch
-        // Pirsig & Osho - Kommunikation
-        '#B166': 70,  // romantisches_verstehen - Hoch - intuitiv
-        '#B167': 75,  // klassische_klarheit - Hoch - klar
-        '#B168': 65,  // dialektik - Mittel-hoch
-        '#B169': 70,  // qualitaets_ausdruck - Hoch
-        '#B170': 80,  // care_im_gespraech - Hoch - achtsam
-        '#B171': 65,  // schweigen_statt_worte - Mittel-hoch
-        '#B172': 75,  // radikale_ehrlichkeit - Hoch - offen
-        '#B173': 75,  // humorvolle_leichtigkeit - Hoch
-        '#B174': 45,  // paradoxe_weisheit - Mittel
-        '#B175': 60,  // herz_statt_kopf - Mittel - Balance
-        '#B176': 80,  // authentischer_ausdruck - Hoch
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // SOZIALES LEBEN (#B177-#B203) - Eigene und gemeinsame Freunde
-        // ─────────────────────────────────────────────────────────────────────────
-        '#B177': 70,  // soziale_energie - Hoch
-        '#B178': 70,  // geselligkeit - Hoch
-        '#B179': 60,  // ruhe_von_menschen - Mittel
-        '#B180': 65,  // allein_aufladen - Mittel-hoch
-        '#B181': 70,  // menschen_treffen - Hoch
-        '#B182': 70,  // kleine_gruppen - Hoch
-        '#B183': 80,  // zeit_fuer_sich - Hoch - ebenso wichtig
-        '#B184': 80,  // eigene_hobbys - Hoch - wichtig für Identität
-        '#B185': 75,  // gemeinsame_zeit - Hoch - qualitativ
-        '#B186': 75,  // partnerzeit - Hoch
-        '#B187': 80,  // eigene_interessen - Hoch
-        '#B188': 80,  // eigene_freunde - Hoch - Freundeskreis pflege
-        '#B189': 70,  // gemeinsame_freunde - Hoch - schön aber nicht exklusiv
-        '#B190': 70,  // freundeskreis_teilen - Hoch
-        '#B191': 75,  // soziales_netz - Hoch
-        '#B192': 80,  // freunde_pflegen - Hoch
-        '#B193': 65,  // neue_freundschaften - Mittel-hoch
-        // Pirsig & Osho - Soziales Leben
-        '#B194': 80,  // soziale_qualitaet - Hoch - tiefe Verbindungen
-        '#B195': 60,  // tribe_muster - Mittel - flexibel
-        '#B196': 65,  // intellektuelle_gemeinschaft - Mittel-hoch
-        '#B197': 45,  // statische_sozialstrukturen - Mittel - flexibel
-        '#B198': 30,  // sannyas_gemeinschaft - Niedrig
-        '#B199': 35,  // rebellion_gegen_gesellschaft - Niedrig-mittel
-        '#B200': 50,  // einsamkeit_in_menge - Mittel
-        '#B201': 75,  // celebration_mit_anderen - Hoch
-        '#B202': 45,  // keine_freundschaft_besitz - Mittel
-        '#B203': 30,  // tantra_gruppe - Niedrig
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // INTIMITÄT & ROMANTIK (#B204-#B208) - Tiefe Intimität
-        // ─────────────────────────────────────────────────────────────────────────
-        '#B204': 80,  // koerpernaehe - Hoch - wichtig
-        '#B205': 80,  // kuscheln - Hoch
-        '#B206': 35,  // physische_distanz - Niedrig - will Nähe
-        '#B207': 80,  // koerperkontakt - Hoch
-        '#B208': 80,  // umarmungen - Hoch
-        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        // ═══════════════════════════════════════════════════════════════════
+        // KOMMUNIKATIONSSTIL (#B126-#B142) - K14
+        // ═══════════════════════════════════════════════════════════════════
+        '#B126': 90, // Gesprächstiefe
+        '#B127': 85, // Tiefgehende-Gespräche
+        '#B128': 55, // Small-Talk
+        '#B129': 75, // Stille-gemeinsam
+        '#B130': 85, // Verbale-Verbindung
+        '#B131': 90, // Zuhören
+        '#B132': 80, // Emotionaler-Ausdruck
+        '#B133': 80, // Gefühle-zeigen
+        '#B134': 80, // Verletzlichkeit
+        '#B135': 40, // Emotionale-Zurückhaltung
+        '#B136': 85, // Emotionale-Sicherheit
+        '#B137': 85, // Gefühle-teilen
+        '#B138': 90, // Konfliktverhalten
+        '#B139': 90, // Aussprache
+        '#B140': 30, // Konflikt-vermeiden
+        '#B141': 85, // Streitkultur
+        '#B142': 85, // Versöhnlichkeit
+        // ═══════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (#B143-#B159) - K15
+        // ═══════════════════════════════════════════════════════════════════
+        '#B143': 70, // Soziale-Energie
+        '#B144': 75, // Geselligkeit
+        '#B145': 55, // Ruhe-von-Menschen
+        '#B146': 65, // Allein-aufladen
+        '#B147': 75, // Menschen-treffen
+        '#B148': 70, // Kleine-Gruppen
+        '#B149': 70, // Zeit-für-sich
+        '#B150': 75, // Eigene-Hobbys
+        '#B151': 75, // Zeit-mit-Anderen
+        '#B152': 80, // Partnerzeit
+        '#B153': 75, // Eigene-Interessen
+        '#B154': 80, // Freundeskreis
+        '#B155': 75, // Gemeinsame-Freunde
+        '#B156': 70, // Freundeskreis-teilen
+        '#B157': 80, // Soziales-Netz
+        '#B158': 80, // Freunde-pflegen
+        '#B159': 75, // Neue-Freundschaften
+        // ═══════════════════════════════════════════════════════════════════
+        // INTIMITÄT & ROMANTIK (#B160-#B177) - K16
+        // ═══════════════════════════════════════════════════════════════════
+        '#B160': 85, // Körperliche-Nähe
+        '#B161': 85, // Kuscheln
+        '#B162': 40, // Physische-Distanz
+        '#B163': 85, // Körperkontakt
+        '#B164': 85, // Umarmungen
+        '#B165': 75, // Hand-halten
+        '#B166': 75, // Romantik
+        '#B167': 70, // Überraschungen
+        '#B168': 80, // Dates
+        '#B169': 70, // Alltags-Romantik
+        '#B170': 75, // Aufmerksamkeiten
+        '#B171': 75, // Liebesbekundungen
+        '#B172': 90, // Sexualität
+        '#B173': 85, // Sexuelle-Intimität
+        '#B174': 85, // Körperliche-Lust
+        '#B175': 90, // Sexuelle-Experimentierfreude
+        '#B176': 85, // Sexuelle-Verbindung
+        '#B177': 90, // Sexuelle-Zufriedenheit
+        // ═══════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNGEN (#B178-#B195) - K17
+        // ═══════════════════════════════════════════════════════════════════
+        '#B178': 60, // Spiritualität
+        '#B179': 45, // Glaubenspraxis
+        '#B180': 45, // Religiöse-Gemeinschaft
+        '#B181': 65, // Säkularität
+        '#B182': 75, // Sinnsuche
+        '#B183': 60, // Transzendenz
+        '#B184': 55, // Tradition-&-Moderne
+        '#B185': 75, // Moderne-Lebensweise
+        '#B186': 35, // Konservative-Werte
+        '#B187': 80, // Progressive-Werte
+        '#B188': 50, // Kulturelle-Tradition
+        '#B189': 85, // Offenheit-für-Neues
+        '#B190': 70, // Umweltbewusstsein
+        '#B191': 70, // Nachhaltigkeit
+        '#B192': 70, // Ökologisches-Bewusstsein
+        '#B193': 60, // Pragmatismus
+        '#B194': 70, // Klimaschutz
+        '#B195': 65, // Ressourcenschonung
+        // ═══════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (#B196-#B208) - K18
+        // ═══════════════════════════════════════════════════════════════════
+        '#B196': 60, // Ordnung-&-Struktur
+        '#B197': 65, // Sauberkeit
+        '#B198': 55, // Struktur
+        '#B199': 60, // Chaos-Toleranz
+        '#B200': 60, // Organisiert-sein
+        '#B201': 75, // Flexibilität-Haushalt
+        '#B202': 80, // Reisen-&-Abenteuer
+        '#B203': 80, // Abenteuer
+        '#B204': 80, // Neue-Orte-entdecken
+        '#B205': 55, // Heimatverbundenheit
+        '#B206': 80, // Urlaub
+        '#B207': 75, // Fernweh
+        '#B208': 55, // Heimatverbundenheit-2
         '#B221': 70,  // sexuelle_experimentierfreude - Hoch - offen
         '#B222': 75,  // sexuelle_verbindung - Hoch - mit Flexibilität
         '#B223': 40,  // bondage_erleben - Niedrig-mittel
@@ -334,7 +330,46 @@ const DuoFlexProfil = {
         '#B219': 50,  // service_geben - Mittel
         '#B220': 50,  // service_empfangen - Mittel
         '#B225': 55,  // beschuetzt_werden - Mittel
-        '#B226': 60   // vertrauen_empfangen - Mittel-hoch
+        '#B226': 60, // vertrauen_empfangen - Mittel-hoch
+
+        // ═══════════════════════════════════════════════════════════════════
+        // KÖRPERLICHE RESONANZ (#B227) - K16
+        // ═══════════════════════════════════════════════════════════════════
+        '#B227': 85, // Körperliche-Resonanz
+
+        // ═══════════════════════════════════════════════════════════════════
+        // BEZIEHUNGSFORM & LEBENSPLANUNG (#B228-#B240) - K12
+        // ═══════════════════════════════════════════════════════════════════
+        '#B228': 85, // Beziehungsmodell
+        '#B229': 40, // Exklusivität
+        '#B230': 60, // Beziehungs-Hierarchie
+        '#B231': 50, // Kinderwunsch
+        '#B232': 45, // Kinderzeitpunkt
+        '#B233': 60, // Erziehungsstil
+        '#B234': 70, // Zusammenleben
+        '#B235': 70, // Wohnform
+        '#B236': 75, // Verbindlichkeit
+        '#B237': 45, // Ehe-Wunsch
+        '#B238': 70, // Langfristplanung
+        '#B239': 50, // Familiengründung
+        '#B240': 80, // Patchwork-Offenheit
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SPIRITUALITÄT & WELTANSCHAUUNG (#B241-#B253) - K13
+        // ═══════════════════════════════════════════════════════════════════
+        '#B241': 55, // Spirituelle-Praxis
+        '#B242': 65, // Meditation-&-Achtsamkeit
+        '#B243': 45, // Religiöse-Übereinstimmung
+        '#B244': 80, // Ethische-Grundhaltung
+        '#B245': 70, // Moralische-Werte
+        '#B246': 75, // Verantwortungsbewusstsein
+        '#B247': 60, // Politische-Ausrichtung
+        '#B248': 65, // Gesellschaftliches-Engagement
+        '#B249': 75, // Lebensphilosophie
+        '#B250': 70, // Existenzielle-Fragen
+        '#B251': 85, // Wachstums-Orientierung
+        '#B252': 70, // Naturverbundenheit
+        '#B253': 70 // Nachhaltigkeit-2
     },
 
     kernwerte: ["Kommunikation", "Vertrauen", "Balance", "Authentizität", "Flexibilität"],

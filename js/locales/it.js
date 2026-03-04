@@ -1665,6 +1665,67 @@ var TiageLocale_IT = {
     },
 
     synthese: {
+        // Tooltip delle schede (Pagine autonome)
+        tabScore: 'Score & Panoramica',
+        tabResonanz: 'Ti-Age Bisogni condivisi',
+        tabNuancen: 'Ti-Age Sfumature',
+        tabProContra: 'Fattori di risonanza',
+        tabRTI: 'Pilastri RTI (Petzold)',
+        tabMenu: 'Menu relazionale Anti-scala-mobile',
+
+        // Navigazione archetipo
+        labelIch: 'IO',
+        labelPartner: 'PARTNER',
+
+        // Messaggi di caricamento
+        loadingUebersicht: 'Caricamento dati di sintesi...',
+        loadingResonanz: 'Caricamento risonanza Osho Zen...',
+        loadingNuancen: 'Caricamento sfumature Ti-Age...',
+        loadingProContra: 'Caricamento fattori di risonanza...',
+        loadingRTI: 'Caricamento dati RTI...',
+        loadingOshoTexte: 'Caricamento testi Osho Zen...',
+
+        // Messaggi di errore
+        errorOshoLoad: 'Errore nel caricamento dei dati Osho Zen.',
+        errorBeduerfnisseNichtGeladen: 'Bisogni non caricati',
+        errorTarotNichtGeladen: 'Carte dei Tarocchi non caricate',
+        errorDEBeduerfnisse: 'Bisogni DE non caricati',
+        errorDETarot: 'Carte dei Tarocchi DE non caricate',
+
+        // Pagina panoramica
+        scoreTitle: 'Score di compatibilità',
+        scoreSubtitle: 'Corrispondenza statistica degli archetipi',
+        manuallyAdjusted: 'Bisogno/i regolato/i manualmente',
+        manuallyAdjustedNote: '* = Bisogno/i in questa dimensione regolato/i manualmente',
+
+        // Pagina statistiche/sfumature
+        hauptfragen: 'Ti-Age Domande chiave',
+        hauptfragenSubtitle: 'Risonanza → Categorie → Sfumature',
+        deineBeduerfnisse: 'I tuoi bisogni (IO)',
+        beduerfnisMatch: 'Corrispondenza dei bisogni',
+        differenz: 'Differenza',
+        keineBeduerfnisse: 'Nessun bisogno trovato.',
+
+        // Pagina risonanza
+        resonanzTitle: 'Ti-Age Bisogni condivisi',
+        resonanzSubtitle: 'Risonanza & corrispondenza',
+
+        // Pulsanti ponderazione (ProContra + RTI)
+        gewichtungEgal: 'Ignora',
+        gewichtungNormal: 'Normale',
+        gewichtungWichtig: 'Importante / Doppio',
+
+        // RTI
+        mehrErfahren: 'Scopri di più',
+        prioritaetLabel: 'Priorità per te:',
+
+        // Titoli pagina
+        pageTitleUebersicht: 'Ti-Age Sintesi | Panoramica',
+        pageTitleResonanz: 'Ti-Age Sintesi | Risonanza Osho Zen',
+        pageTitleNuancen: 'Ti-Age Sintesi | Analisi dei bisogni',
+        pageTitleProContra: 'Ti-Age Sintesi | Fattori di risonanza',
+        pageTitleRTI: 'Ti-Age Sintesi | Pilastri RTI',
+
         // Nessun partner
         noPartnerSelected: 'Nessun partner selezionato',
         selectPartnerHint: 'Seleziona un archetipo partner nella pagina principale.',
@@ -1753,6 +1814,27 @@ var TiageLocale_IT = {
         dynamikBoth: 'La vostra dinamica vive di {dynamik} – il potenziale di crescita è in {wachstum}.',
         dynamikOnly: 'La vostra dinamica si sviluppa attraverso {dynamik}.',
         growthOnly: 'Il potenziale di crescita si manifesta in {wachstum}.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FILTRO STILE DI VITA
+    // ═══════════════════════════════════════════════════════════════════════
+
+    lifestyle: {
+        koKinder: 'Desiderio di figli incompatibile',
+        koWohnen: 'Preferenze abitative incompatibili',
+        warnKinder: 'Desiderio di figli diverso',
+        warnEhe: 'Desiderio di matrimonio diverso',
+        warnFinanzen: 'Aspettative finanziarie diverse',
+        warnReligion: 'Atteggiamento religioso diverso',
+        warnTradition: 'Atteggiamento tradizione/modernit\u00e0 diverso',
+        warnEifersucht: 'Livelli di gelosia diversi',
+        warnAlleinzeit: 'Bisogno di tempo da soli diverso',
+        warnNaehe: 'Bisogno di vicinanza fisica diverso',
+        warnIntimitaet: 'Aspettative di intimit\u00e0 diverse',
+        statusKO: 'Non compatibile',
+        statusWarnung: 'Discussione necessaria',
+        statusOK: 'Compatibile'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
