@@ -1026,8 +1026,8 @@ TiageSynthesis.Calculator = {
         // FIX v4.3: Korrekter Pfad — resonanzFaktoren.ich statt archetypes.ich.resonanzFaktoren
         if (!r1_ich && typeof TiageState !== 'undefined') {
             try {
-                var storedIch = TiageState.get('resonanzFaktoren.ich');
-                var storedPartner = TiageState.get('resonanzFaktoren.partner');
+                var storedIch = TiageState.getResonanzFaktoren('ich');
+                var storedPartner = TiageState.getResonanzFaktoren('partner');
                 if (storedIch) {
                     // Konvertiere { R1: { value, locked } } → { R1: value }
                     r1_ich = {

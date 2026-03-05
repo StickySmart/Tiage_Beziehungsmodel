@@ -650,8 +650,8 @@
             // Nicht unabhängig berechnen — BeduerfnisIds._katalog ist async und
             // möglicherweise noch nicht geladen wenn diese Funktion aufgerufen wird.
             if (typeof TiageState !== 'undefined') {
-                const ichData = TiageState.get('resonanzFaktoren.ich');
-                const partnerData = TiageState.get('resonanzFaktoren.partner');
+                const ichData = TiageState.getResonanzFaktoren('ich');
+                const partnerData = TiageState.getResonanzFaktoren('partner');
 
                 if (ichData) {
                     resonanzIch = {

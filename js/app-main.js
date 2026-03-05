@@ -1125,7 +1125,7 @@
                     if (subtitle) subtitle.textContent = 'ICH';
                     if (typeof TiageState !== 'undefined') {
                         // FIX: Per-Archetyp-Pfad lesen (resonanzFaktoren.ich.{archetyp})
-                        const rfIch = TiageState.get('resonanzFaktoren.ich.' + ichArchetype) || TiageState.get('resonanzFaktoren.ich');
+                        const rfIch = TiageState.getResonanzFaktoren('ich');
                         if (rfIch) {
                             rFactors = {
                                 R1: extractR(rfIch, 'R1'),
@@ -1144,9 +1144,9 @@
                     }
 
                     if (rFactors.R1 === null && typeof TiageState !== 'undefined') {
-                        // FIX: Per-Archetyp-Pfad lesen (resonanzFaktoren.{person}.{archetyp})
-                        const rfIch = TiageState.get('resonanzFaktoren.ich.' + ichArchetype) || TiageState.get('resonanzFaktoren.ich');
-                        const rfPartner = TiageState.get('resonanzFaktoren.partner.' + partnerArchetype) || TiageState.get('resonanzFaktoren.partner');
+                        // FIX v1.8.1001: getResonanzFaktoren löst per-Archetyp-Pfad korrekt auf
+                        const rfIch = TiageState.getResonanzFaktoren('ich');
+                        const rfPartner = TiageState.getResonanzFaktoren('partner');
 
                         if (rfIch && rfPartner) {
                             // FIX v4.3: combineRFactors statt einfacher Multiplikation
@@ -8176,7 +8176,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         ProfileCalculator.loadProfile('ich', profileData);
                         console.log('[SSOT] Profil für ICH neu berechnet:', e.target.value);
                         // Debug: Was steht jetzt in TiageState?
-                        const resonanzNachBerechnung = TiageState.get('resonanzFaktoren.ich');
+                        const resonanzNachBerechnung = TiageState.getResonanzFaktoren('ich');
                         console.log('[SSOT] resonanzFaktoren nach Berechnung:', JSON.stringify(resonanzNachBerechnung));
                     }
 
@@ -12707,7 +12707,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                 if (typeof TiageState !== 'undefined') {
                     // FIX: Per-Archetyp-Pfad lesen
                     const ichArch = currentArchetype || TiageState.get('archetypes.ich.primary');
-                    const stateIch = (ichArch ? TiageState.get('resonanzFaktoren.ich.' + ichArch) : null) || TiageState.get('resonanzFaktoren.ich');
+                    const stateIch = TiageState.getResonanzFaktoren('ich');
                     if (stateIch) {
                         const extractR = (rf, key) => {
                             if (!rf || rf[key] === undefined) return 1.0;
@@ -12754,7 +12754,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             if (resonanzPartner.R1 === 1.0 && resonanzPartner.R2 === 1.0 && resonanzPartner.R3 === 1.0 && resonanzPartner.R4 === 1.0) {
                 // v1.8.908: Erst TiageState prüfen (SSOT), dann ResonanzCard als Fallback
                 if (typeof TiageState !== 'undefined') {
-                    const statePartner = TiageState.get('resonanzFaktoren.partner');
+                    const statePartner = TiageState.getResonanzFaktoren('partner');
                     if (statePartner) {
                         const extractR = (rf, key) => {
                             if (!rf || rf[key] === undefined) return 1.0;
