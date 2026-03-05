@@ -676,14 +676,14 @@
 
             // Hilfsfunktion: R-Faktoren kombinieren (v3.7: Summe × Similarity / 2)
             // SSOT: Gleiche Formel wie in app-main.js und synthesisCalculator.js
+            // SSOT: Gleiche Formel wie combineRFactors() in synthesisCalculator.js
+            // Keine Zwischen-Rundung — Display-Rundung per toFixed(2)
             function combineRFactors(R_ich, R_partner) {
                 const a = R_ich || 1.0;
                 const b = R_partner || 1.0;
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                // v3.7: Division durch 2 für korrekte Normalisierung
-                const combined = (summe * similarity) / 2;
-                return Math.round(combined * 1000) / 1000;
+                return (summe * similarity) / 2;
             }
 
             return rFaktorenDefs.map(def => {

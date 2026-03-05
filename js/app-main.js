@@ -1152,11 +1152,13 @@
                             // FIX v4.3: combineRFactors statt einfacher Multiplikation
                             // Vorher: R_ich * R_partner → 3.02 * 3.02 = 9.12 (falsch!)
                             // Jetzt:  (summe * similarity) / 2 → (6.04 * 1.0) / 2 = 3.02
+                            // SSOT: Gleiche Formel wie combineRFactors() in synthesisCalculator.js
+                            // Keine Zwischen-Rundung — Display-Rundung per toFixed(2)
                             const combine = (a, b) => {
                                 const va = a || 1.0, vb = b || 1.0;
                                 const summe = va + vb;
                                 const similarity = Math.min(va, vb) / Math.max(va, vb);
-                                return Math.round((summe * similarity) / 2 * 1000) / 1000;
+                                return (summe * similarity) / 2;
                             };
                             rFactors = {
                                 R1: combine(extractR(rfIch, 'R1'), extractR(rfPartner, 'R1')),
@@ -6969,14 +6971,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // v3.6: R-FAKTOREN AUS ECHTEN NEEDS (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════════
             // Hilfsfunktion: Summe × Similarity Kombination
+            // SSOT: Gleiche Formel wie combineRFactors() in synthesisCalculator.js
+            // Keine Zwischen-Rundung — Display-Rundung per toFixed(2)
             function combineRFactors(R_ich, R_partner) {
                 const a = R_ich || 1.0;
                 const b = R_partner || 1.0;
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                // v3.7: Keine Obergrenze - R kann über 1.0 gehen für Score > 100
-                const combined = (summe * similarity) / 2;
-                return Math.round(combined * 1000) / 1000;
+                return (summe * similarity) / 2;
             }
 
             // Wenn echte Needs vorhanden sind, berechne R-Faktoren daraus
@@ -12802,11 +12804,12 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // PAARUNGS-Resonanz berechnen: R_PAARUNG = Summe × Similarity (v3.6)
             // Formel: (R_ich + R_partner) × (min/max) - belohnt Ähnlichkeit
             // ═══════════════════════════════════════════════════════════════════════════
-            // FIX v4.3: Gleiche Formel wie combineRFactors — (summe × similarity) / 2
+            // SSOT: Gleiche Formel wie combineRFactors() in synthesisCalculator.js
+            // Keine Zwischen-Rundung — Display-Rundung per toFixed(2)
             const combineR = (a, b) => {
                 const summe = a + b;
                 const similarity = Math.min(a, b) / Math.max(a, b);
-                return Math.round((summe * similarity) / 2 * 1000) / 1000;
+                return (summe * similarity) / 2;
             };
 
             const resonanzWerte = {
