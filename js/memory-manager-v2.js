@@ -1333,16 +1333,18 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             const stringKey = getStringKey(needId);
             const baseValue = baseNeeds[needId] ?? 50;
             const bd = allBreakdowns[stringKey] || { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, total: 0 };
+            // DU = manuelle User-Anpassung (Differenz zwischen Final und berechneter Summe)
+            const duMod = finalValue - baseValue - bd.total;
             return {
                 needId, stringKey, baseValue, finalValue,
                 gMod: bd.g, dMod: bd.d, oMod: bd.o,
                 fMod: bd.f, fuMod: bd.fu, hMod: bd.h,
-                totalMod: bd.total
+                totalMod: bd.total,
+                duMod: Math.round(duMod)
             };
         })
-        .filter(n => n.totalMod !== 0)
-        .sort((a, b) => Math.abs(b.totalMod) - Math.abs(a.totalMod))
-        .slice(0, 30);
+        .filter(n => n.totalMod !== 0 || n.duMod !== 0)
+        .sort((a, b) => Math.abs(b.totalMod) + Math.abs(b.duMod) - Math.abs(a.totalMod) - Math.abs(a.duMod));
 
     if (needsWithMods.length === 0) {
         return `
@@ -1372,7 +1374,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         color: #888;
         border-radius: 0 4px 4px 0;">
         <strong style="color: #2A9D8F;">ℹ️ GOD+FFH Modifikatoren</strong><br>
-        ${needsWithMods.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''} angepasst
+        ${needsWithMods.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}/DU angepasst
     </div>
     <table class="memory-breakdown-entries" style="width: 100%; font-size: 11px; border-collapse: collapse;">
         <thead><tr style="background: rgba(0,0,0,0.2);">
@@ -1384,6 +1386,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             <th>F</th>
             <th>FU</th>
             <th>H</th>
+            <th style="color: #60A5FA;">DU</th>
             <th>=</th>
             <th>Final</th>
         </tr></thead>
@@ -1402,6 +1405,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
             <td style="text-align: center;" ${modClass(n.fMod)}>${formatMod(n.fMod)}</td>
             <td style="text-align: center;" ${modClass(n.fuMod)}>${formatMod(n.fuMod)}</td>
             <td style="text-align: center;" ${modClass(n.hMod)}>${formatMod(n.hMod)}</td>
+            <td style="text-align: center;" ${modClass(n.duMod)}>${formatMod(n.duMod)}</td>
             <td style="text-align: center;">=</td>
             <td style="text-align: center; font-weight: bold;">${n.finalValue}</td>
         </tr>`;

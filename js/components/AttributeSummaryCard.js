@@ -1427,15 +1427,17 @@ const AttributeSummaryCard = (function() {
                 currentPerson = window.currentProfileReviewContext.person;
             }
 
-            // Hole aktuellen Archetyp
-            const archetyp = TiageState.get('archetypes.ich.primary') || 'single';
+            // FIX v1.8.1009: Person-aware Archetyp (nicht hardcoded 'ich')
+            const archetyp = TiageState.get(`archetypes.${currentPerson}.primary`) || 'single';
 
             // Hole RAM-Wert
             const ramValue = need.value;
             const ramLocked = need.locked;
 
-            // Hole TiageState-Wert
-            const stateNeeds = TiageState.get(`flatNeeds.ich.${archetyp}`) || {};
+            // FIX v1.8.1009: Partner nutzt flachen Pfad
+            const stateNeeds = (currentPerson === 'ich')
+                ? (TiageState.get(`flatNeeds.ich.${archetyp}`) || {})
+                : (TiageState.get(`flatNeeds.partner`) || {});
             const stateValue = stateNeeds[need.id];
             const stateLocked = TiageState.isNeedLocked(currentPerson, need.id);
 
@@ -1466,17 +1468,38 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
+        // FIX v1.8.1009: Auto-Lock — berechne erwartete Werte um manuelle Änderungen zu erkennen
+        // Needs deren Wert vom berechneten Profil abweicht werden automatisch gelockt (Persistenz)
+        let calculatedNeeds = {};
+        if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
+            const archetyp = TiageState.get(`archetypes.${currentPerson}.primary`) || 'single';
+            const geschlecht = TiageState.get(`personDimensions.${currentPerson}.geschlecht`) || null;
+            const dominanz = TiageState.get(`personDimensions.${currentPerson}.dominanz`) || null;
+            const orientierung = TiageState.get(`personDimensions.${currentPerson}.orientierung`) || null;
+            const geschlecht_extras = TiageState.get(`personDimensions.${currentPerson}.geschlecht_extras`) || {};
+            calculatedNeeds = ProfileCalculator.calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung, geschlecht_extras) || {};
+        }
+
         console.log(`[SSOT] Sync RAM → TiageState für ${currentPerson} (${flatNeeds.length} needs)`);
+
+        let autoLockedCount = 0;
 
         // Alle Needs durchgehen und in TiageState schreiben
         flatNeeds.forEach(need => {
-            if (need.locked) {
-                // Need ist gelockt → lockNeed() mit aktuellem Wert
+            const calculatedValue = calculatedNeeds[need.id];
+            const isManuallyChanged = calculatedValue !== undefined && need.value !== calculatedValue;
+
+            if (need.locked || isManuallyChanged) {
+                // Auto-Lock: Wert weicht vom berechneten Profil ab → sperren für Persistenz
+                if (!need.locked && isManuallyChanged) {
+                    need.locked = true; // RAM aktualisieren (UI zeigt 🔒)
+                    autoLockedCount++;
+                }
                 if (TiageState.lockNeed) {
                     TiageState.lockNeed(currentPerson, need.id, need.value);
                 }
             } else {
-                // Need ist NICHT gelockt → entsperren falls es vorher gelockt war
+                // Need ist NICHT gelockt und nicht manuell geändert → entsperren falls es vorher gelockt war
                 if (TiageState.isNeedLocked && TiageState.isNeedLocked(currentPerson, need.id)) {
                     if (TiageState.unlockNeed) {
                         TiageState.unlockNeed(currentPerson, need.id);
@@ -1489,6 +1512,9 @@ const AttributeSummaryCard = (function() {
             }
         });
 
+        if (autoLockedCount > 0) {
+            console.log(`[SSOT] Auto-Lock: ${autoLockedCount} manuell geänderte Bedürfnisse gesperrt`);
+        }
         console.log('[SSOT] ✅ Sync abgeschlossen - RAM → TiageState');
     }
 
@@ -1522,6 +1548,13 @@ const AttributeSummaryCard = (function() {
 
             // FIX v1.8.977: Aktualisiere nur Save-Status-Badges (🔴 → 🟢), kein komplettes Re-Rendering
             updateAllSaveStatusBadges();
+
+            // FIX v1.8.1009: Dirty-Flag zurücksetzen + R-Faktoren triggern
+            document.dispatchEvent(new CustomEvent('tiage:needsSaved'));
+
+            // Re-render falls Auto-Lock neue Locks erzeugt hat (🔓 → 🔒 Icons)
+            const arch = TiageState.get('archetypes.ich.primary') || 'single';
+            reRenderFlatNeeds(arch);
         } else {
             console.warn('[AttributeSummaryCard] TiageState.saveToStorage nicht verfügbar');
             if (btn) {
@@ -2842,11 +2875,14 @@ const AttributeSummaryCard = (function() {
             if (window.currentProfileReviewContext?.person) {
                 currentPerson = window.currentProfileReviewContext.person;
             }
-            const archetyp = TiageState.get('archetypes.ich.primary') || 'single';
+            // FIX v1.8.1009: Person-aware Archetyp (nicht hardcoded 'ich')
+            const archetyp = TiageState.get(`archetypes.${currentPerson}.primary`) || 'single';
 
             // REFACTORING v1.8.982: Vereinfachte Logik - alle Needs (inkl. Hauptfragen) in flatNeeds
-            // Einheitliche Speicherstruktur - keine Sonderbehandlung mehr nötig!
-            const stateNeeds = TiageState.get(`flatNeeds.${currentPerson}.${archetyp}`) || {};
+            // FIX v1.8.1009: Partner nutzt flachen Pfad (kein per-Archetyp)
+            const stateNeeds = (currentPerson === 'ich')
+                ? (TiageState.get(`flatNeeds.ich.${archetyp}`) || {})
+                : (TiageState.get(`flatNeeds.partner`) || {});
             const stateValue = stateNeeds[needId];
             const stateLocked = TiageState.isNeedLocked(currentPerson, needId);
 

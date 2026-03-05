@@ -961,15 +961,11 @@
                 }
             }
 
-            // Dirty-Flag zurücksetzen wenn manuell gespeichert wird
-            setTimeout(function() {
-                const saveBtn = document.querySelector('.bulk-save-btn');
-                if (saveBtn) {
-                    saveBtn.addEventListener('click', function() {
-                        needsEditorDirty = false;
-                    });
-                }
-            }, 500);
+            // FIX v1.8.1009: Dirty-Flag per Event zurücksetzen (robust bei Button-Re-Render)
+            document.addEventListener('tiage:needsSaved', function() {
+                needsEditorDirty = false;
+                console.log('[NeedsEditor] Dirty-Flag zurückgesetzt (tiage:needsSaved Event)');
+            });
         }
 
         /**
