@@ -1294,7 +1294,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         `;
     }
 
-    // Basis-Werte aus Archetyp-Profil holen
+    // Basis-Werte aus Archetyp-Profil holen (SSOT: BaseArchetypProfile)
     let baseNeeds = {};
     if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
         const profil = GfkBeduerfnisse.archetypProfile[archetyp];
@@ -1303,83 +1303,16 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         }
     }
 
-    // Helper: Extract string value from different formats
-    const extractValue = (val) => {
-        if (!val) return null;
-        if (typeof val === 'string') return val;
-        if (typeof val === 'object' && val.primary) return val.primary;
-        return null;
+    // SSOT: Alle Modifier-Breakdowns über zentrale ProfileModifiers-Funktion
+    const profile = {
+        geschlecht: data.geschlecht,
+        dominanz: data.dominanz,
+        orientierung: data.orientierung,
+        geschlecht_extras: data.geschlecht_extras || {}
     };
-
-    // Modifikatoren holen
-    let genderDeltas = {}, dominanzDeltas = {}, orientierungDeltas = {};
-    let fitDeltas = {}, fuckedupDeltas = {}, hornyDeltas = {};
-
-    if (typeof ProfileModifiers !== 'undefined') {
-        // Gender - handle both string and { primary, secondary } formats
-        if (data.geschlecht) {
-            let genderMod = null;
-            if (typeof data.geschlecht === 'string') {
-                genderMod = ProfileModifiers.getGenderModifier(data.geschlecht);
-            } else if (typeof data.geschlecht === 'object' && data.geschlecht.primary) {
-                // Legacy format with primary/secondary
-                genderMod = ProfileModifiers.getGenderModifier(
-                    data.geschlecht.primary,
-                    data.geschlecht.secondary
-                );
-            }
-            if (genderMod && genderMod.deltas) genderDeltas = genderMod.deltas;
-        }
-        // Dominanz
-        if (data.dominanz) {
-            const domVal = extractValue(data.dominanz);
-            const domMod = ProfileModifiers.getDominanzModifier(domVal);
-            if (domMod && domMod.deltas) dominanzDeltas = domMod.deltas;
-        }
-        // Orientierung - handle both string, { primary, secondary }, and array formats
-        if (data.orientierung) {
-            let oriVal = null;
-            if (typeof data.orientierung === 'string') {
-                oriVal = data.orientierung;
-            } else if (Array.isArray(data.orientierung) && data.orientierung.length > 0) {
-                oriVal = data.orientierung[0];
-            } else if (typeof data.orientierung === 'object' && data.orientierung.primary) {
-                oriVal = data.orientierung.primary;
-            }
-            if (oriVal) {
-                const oriMod = ProfileModifiers.getOrientierungModifier(oriVal);
-                if (oriMod && oriMod.deltas) orientierungDeltas = oriMod.deltas;
-            }
-        }
-        // FFH
-        const extras = data.geschlecht_extras || {};
-        if (extras.fit) {
-            const fitMod = ProfileModifiers.getFFHModifier('fit');
-            if (fitMod && fitMod.deltas) fitDeltas = fitMod.deltas;
-        }
-        if (extras.fuckedup) {
-            const fuMod = ProfileModifiers.getFFHModifier('fuckedup');
-            if (fuMod && fuMod.deltas) fuckedupDeltas = fuMod.deltas;
-        }
-        if (extras.horny) {
-            const hMod = ProfileModifiers.getFFHModifier('horny');
-            if (hMod && hMod.deltas) hornyDeltas = hMod.deltas;
-        }
-
-        // Debug: Log found modifiers
-        console.log('[MemoryManagerV2] Breakdown Modifiers:', {
-            geschlecht: data.geschlecht,
-            genderDeltaCount: Object.keys(genderDeltas).length,
-            dominanz: extractValue(data.dominanz),
-            dominanzDeltaCount: Object.keys(dominanzDeltas).length,
-            orientierung: data.orientierung,
-            orientierungDeltaCount: Object.keys(orientierungDeltas).length,
-            extras: extras,
-            fitDeltaCount: Object.keys(fitDeltas).length,
-            fuckedupDeltaCount: Object.keys(fuckedupDeltas).length,
-            hornyDeltaCount: Object.keys(hornyDeltas).length
-        });
-    }
+    const allBreakdowns = (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getAllModifierBreakdowns)
+        ? ProfileModifiers.getAllModifierBreakdowns(profile)
+        : {};
 
     // ID zu stringKey Mapping
     const getStringKey = (needId) => {
@@ -1389,39 +1322,25 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         return needId;
     };
 
-    // Nur Bedürfnisse mit Modifikatoren sammeln
     const formatMod = (val) => {
         if (val === 0 || val === undefined) return '';
         return val > 0 ? `+${val}` : `${val}`;
     };
 
-    // RTI-Multiplikatoren für korrekte Skalierung (wie in calculateProfileDeltas)
-    const hasRtiMultiplier = typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getRtiMultiplier;
-    const gMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('gender') : 1;
-    const dMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('dominanz') : 1;
-    const oMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('orientierung') : 1;
-    const fMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('fit') : 1;
-    const fuMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('fuckedup') : 1;
-    const hMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('horny') : 1;
-
     const needsWithMods = Object.entries(flatNeeds)
         .filter(([needId]) => needId.startsWith('#B'))
         .map(([needId, finalValue]) => {
             const stringKey = getStringKey(needId);
-            // FIX: baseNeeds hat #B-Keys, nicht stringKeys
-            const baseValue = baseNeeds[needId] ?? baseNeeds[stringKey] ?? 50;
-            // FIX: Deltas × RTI-Multiplikator (wie calculateProfileDeltas)
-            const gMod = Math.round((genderDeltas[stringKey] || 0) * gMulti);
-            const dMod = Math.round((dominanzDeltas[stringKey] || 0) * dMulti);
-            const oMod = Math.round((orientierungDeltas[stringKey] || 0) * oMulti);
-            const fMod = Math.round((fitDeltas[stringKey] || 0) * fMulti);
-            const fuMod = Math.round((fuckedupDeltas[stringKey] || 0) * fuMulti);
-            const hMod = Math.round((hornyDeltas[stringKey] || 0) * hMulti);
-            const totalMod = gMod + dMod + oMod + fMod + fuMod + hMod;
-
-            return { needId, stringKey, baseValue, finalValue, gMod, dMod, oMod, fMod, fuMod, hMod, totalMod };
+            const baseValue = baseNeeds[needId] ?? 50;
+            const bd = allBreakdowns[stringKey] || { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, total: 0 };
+            return {
+                needId, stringKey, baseValue, finalValue,
+                gMod: bd.g, dMod: bd.d, oMod: bd.o,
+                fMod: bd.f, fuMod: bd.fu, hMod: bd.h,
+                totalMod: bd.total
+            };
         })
-        .filter(n => n.totalMod !== 0) // Nur modifizierte
+        .filter(n => n.totalMod !== 0)
         .sort((a, b) => Math.abs(b.totalMod) - Math.abs(a.totalMod))
         .slice(0, 30);
 

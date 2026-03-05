@@ -388,6 +388,158 @@
     }
 
     /**
+     * SSOT: Per-Modifier-Breakdown für ein einzelnes Need (v1.8.1003)
+     * Liefert die aufgeschlüsselten Deltas (mit RTI) für jede Modifier-Kategorie.
+     *
+     * @param {string} stringKey - Bedürfnis-Key (z.B. 'selbstbestimmung_und_unabhaengigkeit')
+     * @param {Object} profile - { geschlecht, dominanz, orientierung, geschlecht_extras }
+     * @returns {Object} { g, d, o, f, fu, h, total } — jeder Wert ist gerundet
+     */
+    function getModifierBreakdown(stringKey, profile) {
+        const bd = { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, total: 0 };
+        if (!stringKey || !profile) return bd;
+
+        // Gender
+        if (profile.geschlecht) {
+            const gVal = typeof profile.geschlecht === 'string' ? profile.geschlecht : profile.geschlecht?.primary;
+            const gSec = typeof profile.geschlecht === 'object' ? profile.geschlecht?.secondary : undefined;
+            const gMod = getGenderModifier(gVal, gSec);
+            if (gMod?.deltas?.[stringKey]) {
+                bd.g = Math.round(gMod.deltas[stringKey] * getRtiMultiplier('gender'));
+            }
+        }
+
+        // Dominanz
+        if (profile.dominanz) {
+            const dVal = typeof profile.dominanz === 'object' ? profile.dominanz.primary : profile.dominanz;
+            const dMod = getDominanzModifier(dVal);
+            if (dMod?.deltas?.[stringKey]) {
+                bd.d = Math.round(dMod.deltas[stringKey] * getRtiMultiplier('dominanz'));
+            }
+        }
+
+        // Orientierung (kann Array, String oder Objekt sein)
+        if (profile.orientierung) {
+            let orientierungen = [];
+            if (Array.isArray(profile.orientierung)) orientierungen = profile.orientierung;
+            else if (typeof profile.orientierung === 'string') orientierungen = [profile.orientierung];
+            else if (profile.orientierung?.primary) {
+                orientierungen.push(profile.orientierung.primary);
+                if (profile.orientierung.secondary) orientierungen.push(profile.orientierung.secondary);
+            }
+            const oMulti = getRtiMultiplier('orientierung');
+            orientierungen.forEach(ori => {
+                const oMod = getOrientierungModifier(ori);
+                if (oMod?.deltas?.[stringKey]) {
+                    bd.o += Math.round(oMod.deltas[stringKey] * oMulti);
+                }
+            });
+        }
+
+        // FFH
+        const extras = profile.geschlecht_extras || profile.extras || {};
+        if (extras.fit) {
+            const fMod = getFFHModifier('fit');
+            if (fMod?.deltas?.[stringKey]) {
+                bd.f = Math.round(fMod.deltas[stringKey] * getRtiMultiplier('fit'));
+            }
+        }
+        if (extras.fuckedup) {
+            const fuMod = getFFHModifier('fuckedup');
+            if (fuMod?.deltas?.[stringKey]) {
+                bd.fu = Math.round(fuMod.deltas[stringKey] * getRtiMultiplier('fuckedup'));
+            }
+        }
+        if (extras.horny) {
+            const hMod = getFFHModifier('horny');
+            if (hMod?.deltas?.[stringKey]) {
+                bd.h = Math.round(hMod.deltas[stringKey] * getRtiMultiplier('horny'));
+            }
+        }
+
+        bd.total = bd.g + bd.d + bd.o + bd.f + bd.fu + bd.h;
+        return bd;
+    }
+
+    /**
+     * SSOT: Per-Modifier-Breakdown für ALLE Needs (Batch) (v1.8.1003)
+     * Holt Modifier-Objekte und RTI-Multiplier einmal, iteriert dann über alle Keys.
+     *
+     * @param {Object} profile - { geschlecht, dominanz, orientierung, geschlecht_extras }
+     * @returns {Object} { [stringKey]: { g, d, o, f, fu, h, total } }
+     */
+    function getAllModifierBreakdowns(profile) {
+        const result = {};
+        if (!profile) return result;
+
+        // Modifier-Objekte einmal holen
+        let genderDeltas = null, dominanzDeltas = null;
+        const orientierungDeltasList = [];
+        let fitDeltas = null, fuckedupDeltas = null, hornyDeltas = null;
+
+        if (profile.geschlecht) {
+            const gVal = typeof profile.geschlecht === 'string' ? profile.geschlecht : profile.geschlecht?.primary;
+            const gSec = typeof profile.geschlecht === 'object' ? profile.geschlecht?.secondary : undefined;
+            const gMod = getGenderModifier(gVal, gSec);
+            if (gMod?.deltas) genderDeltas = gMod.deltas;
+        }
+        if (profile.dominanz) {
+            const dVal = typeof profile.dominanz === 'object' ? profile.dominanz.primary : profile.dominanz;
+            const dMod = getDominanzModifier(dVal);
+            if (dMod?.deltas) dominanzDeltas = dMod.deltas;
+        }
+        if (profile.orientierung) {
+            let orientierungen = [];
+            if (Array.isArray(profile.orientierung)) orientierungen = profile.orientierung;
+            else if (typeof profile.orientierung === 'string') orientierungen = [profile.orientierung];
+            else if (profile.orientierung?.primary) {
+                orientierungen.push(profile.orientierung.primary);
+                if (profile.orientierung.secondary) orientierungen.push(profile.orientierung.secondary);
+            }
+            orientierungen.forEach(ori => {
+                const oMod = getOrientierungModifier(ori);
+                if (oMod?.deltas) orientierungDeltasList.push(oMod.deltas);
+            });
+        }
+        const extras = profile.geschlecht_extras || profile.extras || {};
+        if (extras.fit) { const m = getFFHModifier('fit'); if (m?.deltas) fitDeltas = m.deltas; }
+        if (extras.fuckedup) { const m = getFFHModifier('fuckedup'); if (m?.deltas) fuckedupDeltas = m.deltas; }
+        if (extras.horny) { const m = getFFHModifier('horny'); if (m?.deltas) hornyDeltas = m.deltas; }
+
+        // RTI-Multiplier einmal berechnen
+        const gMulti = getRtiMultiplier('gender');
+        const dMulti = getRtiMultiplier('dominanz');
+        const oMulti = getRtiMultiplier('orientierung');
+        const fMulti = getRtiMultiplier('fit');
+        const fuMulti = getRtiMultiplier('fuckedup');
+        const hMulti = getRtiMultiplier('horny');
+
+        // Alle betroffenen stringKeys sammeln
+        const allKeys = new Set();
+        [genderDeltas, dominanzDeltas, fitDeltas, fuckedupDeltas, hornyDeltas, ...orientierungDeltasList]
+            .filter(Boolean).forEach(d => Object.keys(d).forEach(k => allKeys.add(k)));
+
+        // Breakdown pro Key berechnen
+        allKeys.forEach(key => {
+            const g = genderDeltas?.[key] ? Math.round(genderDeltas[key] * gMulti) : 0;
+            const d = dominanzDeltas?.[key] ? Math.round(dominanzDeltas[key] * dMulti) : 0;
+            let o = 0;
+            orientierungDeltasList.forEach(od => {
+                if (od[key]) o += Math.round(od[key] * oMulti);
+            });
+            const f = fitDeltas?.[key] ? Math.round(fitDeltas[key] * fMulti) : 0;
+            const fu = fuckedupDeltas?.[key] ? Math.round(fuckedupDeltas[key] * fuMulti) : 0;
+            const h = hornyDeltas?.[key] ? Math.round(hornyDeltas[key] * hMulti) : 0;
+            const total = g + d + o + f + fu + h;
+            if (total !== 0) {
+                result[key] = { g, d, o, f, fu, h, total };
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * Prüft ob alle Modifier geladen sind
      * @returns {Object} Status-Objekt mit Lade-Infos
      */
@@ -412,6 +564,8 @@
         getFFHModifier: getFFHModifier,           // v4.2
         calculateProfileDeltas: calculateProfileDeltas,
         applyDeltas: applyDeltas,
+        getModifierBreakdown: getModifierBreakdown,
+        getAllModifierBreakdowns: getAllModifierBreakdowns,
         getLoadStatus: getLoadStatus,
         // v4.1: RTI-Skalierung
         getRtiPriorities: getRtiPriorities,

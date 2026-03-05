@@ -154,79 +154,31 @@ const AttributeSummaryCard = (function() {
      * @returns {string} HTML-String mit Modifier-Badges oder leer
      */
     function renderModifierBadges(needId) {
-        if (typeof ProfileModifiers === 'undefined' || typeof TiageState === 'undefined') return '';
+        if (typeof ProfileModifiers === 'undefined' || !ProfileModifiers.getModifierBreakdown) return '';
         if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.toKey) return '';
 
         const stringKey = BeduerfnisIds.toKey(needId);
         if (!stringKey) return '';
 
         const person = currentFlatPerson || 'ich';
-        const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
-        const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
-        const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
-        const extras = TiageState.get(`personDimensions.${person}.geschlecht_extras`) || {};
+        const profile = {
+            geschlecht: TiageState?.get(`personDimensions.${person}.geschlecht`) || null,
+            dominanz: TiageState?.get(`personDimensions.${person}.dominanz`) || null,
+            orientierung: TiageState?.get(`personDimensions.${person}.orientierung`) || null,
+            geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {}
+        };
+
+        // SSOT: Breakdown aus ProfileModifiers (mit RTI-Skalierung)
+        const bd = ProfileModifiers.getModifierBreakdown(stringKey, profile);
+        if (!bd || bd.total === 0) return '';
 
         const badges = [];
-
-        // Hilfsfunktion: Delta für einen Modifier berechnen
-        function getDelta(mod, category) {
-            if (!mod || !mod.deltas || mod.deltas[stringKey] === undefined) return 0;
-            const multiplier = ProfileModifiers.getRtiMultiplier(category);
-            return mod.deltas[stringKey] * multiplier;
-        }
-
-        // Gender
-        if (geschlecht) {
-            const gMod = ProfileModifiers.getGenderModifier(
-                typeof geschlecht === 'string' ? geschlecht : geschlecht?.primary,
-                typeof geschlecht === 'object' ? geschlecht?.secondary : undefined
-            );
-            const delta = getDelta(gMod, 'gender');
-            if (delta !== 0) badges.push({ label: 'G', delta, color: '#F4A261' });
-        }
-
-        // Orientierung
-        if (orientierung) {
-            let orientierungen = [];
-            if (Array.isArray(orientierung)) orientierungen = orientierung;
-            else if (typeof orientierung === 'string') orientierungen = [orientierung];
-            else if (orientierung?.primary) {
-                orientierungen.push(orientierung.primary);
-                if (orientierung.secondary) orientierungen.push(orientierung.secondary);
-            }
-
-            let totalDelta = 0;
-            orientierungen.forEach(ori => {
-                const oMod = ProfileModifiers.getOrientierungModifier(ori);
-                totalDelta += getDelta(oMod, 'orientierung');
-            });
-            if (totalDelta !== 0) badges.push({ label: 'O', delta: totalDelta, color: '#E63946' });
-        }
-
-        // Dominanz
-        if (dominanz) {
-            const dVal = typeof dominanz === 'object' ? dominanz.primary : dominanz;
-            const dMod = ProfileModifiers.getDominanzModifier(dVal);
-            const delta = getDelta(dMod, 'dominanz');
-            if (delta !== 0) badges.push({ label: 'D', delta, color: '#8B5CF6' });
-        }
-
-        // FFH: Fit, Fuckedup, Horny
-        if (extras.fit) {
-            const fMod = ProfileModifiers.getFFHModifier('fit');
-            const delta = getDelta(fMod, 'fit');
-            if (delta !== 0) badges.push({ label: 'Fi', delta, color: '#2ECC71' });
-        }
-        if (extras.fuckedup) {
-            const fuMod = ProfileModifiers.getFFHModifier('fuckedup');
-            const delta = getDelta(fuMod, 'fuckedup');
-            if (delta !== 0) badges.push({ label: 'Fu', delta, color: '#E74C3C' });
-        }
-        if (extras.horny) {
-            const hMod = ProfileModifiers.getFFHModifier('horny');
-            const delta = getDelta(hMod, 'horny');
-            if (delta !== 0) badges.push({ label: 'H', delta, color: '#EC4899' });
-        }
+        if (bd.g !== 0) badges.push({ label: 'G', delta: bd.g, color: '#F4A261' });
+        if (bd.o !== 0) badges.push({ label: 'O', delta: bd.o, color: '#E63946' });
+        if (bd.d !== 0) badges.push({ label: 'D', delta: bd.d, color: '#8B5CF6' });
+        if (bd.f !== 0) badges.push({ label: 'Fi', delta: bd.f, color: '#2ECC71' });
+        if (bd.fu !== 0) badges.push({ label: 'Fu', delta: bd.fu, color: '#E74C3C' });
+        if (bd.h !== 0) badges.push({ label: 'H', delta: bd.h, color: '#EC4899' });
 
         if (badges.length === 0) return '';
 
@@ -2869,93 +2821,6 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Holt die GOD-Modifikatoren für ein Bedürfnis
-     * @param {string} needId - #B-ID (z.B. '#B74')
-     * @returns {Object|null} { gender: number, dominance: number, orientation: number, total: number } oder null
-     */
-    function getGodModifiersForNeed(needId) {
-        // Ermittle aktuelle Person aus Kontext
-        let currentPerson = 'ich';
-        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
-            currentPerson = window.currentProfileReviewContext.person;
-        }
-
-        // Konvertiere #B-ID zu stringKey
-        let stringKey = needId;
-        if (needId.startsWith('#') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey) {
-            stringKey = BeduerfnisIds.getKey(needId) || needId;
-        }
-
-        // Hole aktuelle GOD-Einstellungen aus TiageState
-        if (typeof TiageState === 'undefined') return null;
-        const geschlecht = TiageState.get(`personDimensions.${currentPerson}.geschlecht`);
-        const dominanz = TiageState.get(`personDimensions.${currentPerson}.dominanz`);
-        const orientierung = TiageState.get(`personDimensions.${currentPerson}.orientierung`);
-
-        // Hole Modifikatoren von TiageProfileStore
-        if (typeof TiageProfileStore === 'undefined' || !TiageProfileStore.getNeedsModifiers) return null;
-        const allMods = TiageProfileStore.getNeedsModifiers();
-        if (!allMods) return null;
-
-        // Baue Keys für Lookup
-        let geschlechtKey = null;
-        if (geschlecht?.primary && geschlecht?.secondary) {
-            geschlechtKey = `${geschlecht.primary}-${geschlecht.secondary}`;
-        } else if (geschlecht?.primary) {
-            geschlechtKey = geschlecht.primary;
-        }
-        const dominanzKey = dominanz?.primary || null;
-        const orientierungKey = orientierung?.primary || null;
-
-        // Hole Modifikatoren für dieses Bedürfnis
-        const genderMod = geschlechtKey && allMods.gender?.[geschlechtKey]?.[stringKey] || 0;
-        const dominanceMod = dominanzKey && allMods.dominance?.[dominanzKey]?.[stringKey] || 0;
-        const orientationMod = orientierungKey && allMods.orientation?.[orientierungKey]?.[stringKey] || 0;
-
-        const total = genderMod + dominanceMod + orientationMod;
-        if (total === 0) return null;
-
-        return {
-            gender: genderMod,
-            dominance: dominanceMod,
-            orientation: orientationMod,
-            total: total
-        };
-    }
-
-    /**
-     * Rendert das GOD-Modifikator Badge für ein Bedürfnis
-     * Zeigt die einzelnen Modifikatoren direkt auf der Card an (G:+5 D:+10 O:-5)
-     * @param {string} needId - #B-ID
-     * @returns {string} HTML für das Badge oder leerer String
-     */
-    function renderGodModifierBadge(needId) {
-        const mods = getGodModifiersForNeed(needId);
-        if (!mods) return '';
-
-        // Baue die einzelnen Modifikator-Teile für direkte Anzeige
-        const parts = [];
-        if (mods.gender !== 0) {
-            const val = mods.gender > 0 ? `+${mods.gender}` : `${mods.gender}`;
-            const cls = mods.gender > 0 ? 'positive' : 'negative';
-            parts.push(`<span class="god-mod-part god-mod-g ${cls}" title="Geschlecht">G:${val}</span>`);
-        }
-        if (mods.dominance !== 0) {
-            const val = mods.dominance > 0 ? `+${mods.dominance}` : `${mods.dominance}`;
-            const cls = mods.dominance > 0 ? 'positive' : 'negative';
-            parts.push(`<span class="god-mod-part god-mod-d ${cls}" title="Dominanz">D:${val}</span>`);
-        }
-        if (mods.orientation !== 0) {
-            const val = mods.orientation > 0 ? `+${mods.orientation}` : `${mods.orientation}`;
-            const cls = mods.orientation > 0 ? 'positive' : 'negative';
-            parts.push(`<span class="god-mod-part god-mod-o ${cls}" title="Orientierung">O:${val}</span>`);
-        }
-
-        if (parts.length === 0) return '';
-
-        return `<span class="god-modifier-badge">${parts.join(' ')}</span>`;
-    }
-
     /**
      * Rendert den Speicher-Status-Badge (🟢 gespeichert / 🔴 nicht gespeichert)
      * FIX v1.8.975: Explicit Save Workflow - zeigt ob RAM-Werte mit TiageState übereinstimmen
