@@ -1395,17 +1395,28 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         return val > 0 ? `+${val}` : `${val}`;
     };
 
+    // RTI-Multiplikatoren für korrekte Skalierung (wie in calculateProfileDeltas)
+    const hasRtiMultiplier = typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getRtiMultiplier;
+    const gMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('gender') : 1;
+    const dMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('dominanz') : 1;
+    const oMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('orientierung') : 1;
+    const fMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('fit') : 1;
+    const fuMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('fuckedup') : 1;
+    const hMulti = hasRtiMultiplier ? ProfileModifiers.getRtiMultiplier('horny') : 1;
+
     const needsWithMods = Object.entries(flatNeeds)
         .filter(([needId]) => needId.startsWith('#B'))
         .map(([needId, finalValue]) => {
             const stringKey = getStringKey(needId);
-            const baseValue = baseNeeds[stringKey] ?? 50;
-            const gMod = genderDeltas[stringKey] || 0;
-            const dMod = dominanzDeltas[stringKey] || 0;
-            const oMod = orientierungDeltas[stringKey] || 0;
-            const fMod = fitDeltas[stringKey] || 0;
-            const fuMod = fuckedupDeltas[stringKey] || 0;
-            const hMod = hornyDeltas[stringKey] || 0;
+            // FIX: baseNeeds hat #B-Keys, nicht stringKeys
+            const baseValue = baseNeeds[needId] ?? baseNeeds[stringKey] ?? 50;
+            // FIX: Deltas × RTI-Multiplikator (wie calculateProfileDeltas)
+            const gMod = Math.round((genderDeltas[stringKey] || 0) * gMulti);
+            const dMod = Math.round((dominanzDeltas[stringKey] || 0) * dMulti);
+            const oMod = Math.round((orientierungDeltas[stringKey] || 0) * oMulti);
+            const fMod = Math.round((fitDeltas[stringKey] || 0) * fMulti);
+            const fuMod = Math.round((fuckedupDeltas[stringKey] || 0) * fuMulti);
+            const hMod = Math.round((hornyDeltas[stringKey] || 0) * hMulti);
             const totalMod = gMod + dMod + oMod + fMod + fuMod + hMod;
 
             return { needId, stringKey, baseValue, finalValue, gMod, dMod, oMod, fMod, fuMod, hMod, totalMod };
