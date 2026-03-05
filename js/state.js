@@ -1430,9 +1430,8 @@ const TiageState = (function() {
          */
         getLockedNeeds(person, archetyp = null) {
             if (person === 'ich') {
-                // FIX v1.8.964: Direkt aus Archetyp-Slot lesen
-                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-                return this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
+                // FIX v1.8.1011: Global-Slot lesen (Migration konvertiert per-Archetyp → global)
+                return this.get('profileReview.ich.global.lockedNeeds') || {};
             }
             // Partner: Keine manuellen Overrides
             return {};
@@ -1454,13 +1453,8 @@ const TiageState = (function() {
             }
             const clampedValue = Math.max(0, value);
 
-            // FIX v1.8.964: Schreibt in ALLE Archetyp-Slots
-            const archetypes = ['single', 'verheiratet', 'beziehung', 'affaere', 'bekanntschaft'];
-            archetypes.forEach(arch => {
-                this.set(`profileReview.ich.${arch}.lockedNeeds.${needId}`, clampedValue);
-            });
-
-            console.log(`[TiageState] lockNeed in ALLE Archetypen: ${needId} = ${clampedValue}`);
+            // FIX v1.8.1011: Schreibt in GLOBAL-Slot (konsistent mit _migrateProfileReview)
+            this.set(`profileReview.ich.global.lockedNeeds.${needId}`, clampedValue);
         },
 
         /**
@@ -1476,13 +1470,12 @@ const TiageState = (function() {
                 return;
             }
 
-            // FIX v1.8.964: Löscht nur aus aktuellem Archetyp-Slot
-            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            const current = this.get(`profileReview.ich.${arch}.lockedNeeds`) || {};
+            // FIX v1.8.1011: Löscht aus GLOBAL-Slot (konsistent mit _migrateProfileReview)
+            const current = this.get('profileReview.ich.global.lockedNeeds') || {};
             delete current[needId];
-            this.set(`profileReview.ich.${arch}.lockedNeeds`, current);
+            this.set('profileReview.ich.global.lockedNeeds', current);
 
-            console.log(`[TiageState] unlockNeed [${arch}]: ${needId} aus Archetyp-Slot entfernt`);
+            console.log(`[TiageState] unlockNeed [global]: ${needId} entfernt`);
 
             // Trigger Neuberechnung damit berechneter Archetyp-Wert genutzt wird
             if (typeof document !== 'undefined') {
@@ -1506,9 +1499,8 @@ const TiageState = (function() {
                 return false;
             }
 
-            // FIX v1.8.964: Prüft direkt im Archetyp-Slot
-            const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
-            const locked = this.get(`profileReview.ich.${arch}.lockedNeeds.${needId}`);
+            // FIX v1.8.1011: Prüft in GLOBAL-Slot (konsistent mit _migrateProfileReview)
+            const locked = this.get(`profileReview.ich.global.lockedNeeds.${needId}`);
             return locked !== undefined && locked !== null;
         },
 
