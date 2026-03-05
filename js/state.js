@@ -1294,17 +1294,26 @@ const TiageState = (function() {
                 // ICH: per-Archetyp { single: { R1, ... }, duo: { R1, ... } }
                 if (faktoren.ich) {
                     const ichData = faktoren.ich;
-                    // Prüfe ob ICH direkte R-Faktoren hat (Legacy-Format)
-                    if (ichData.R1 !== undefined || ichData.R2 !== undefined) {
-                        result.ich = normalizeFlat(ichData);
-                    } else {
-                        // Per-Archetyp-Format: { single: { R1, ... }, duo: { R1, ... } }
+                    // Per-Archetyp-Keys identifizieren (alles außer R1-R4)
+                    const archKeys = Object.keys(ichData).filter(k => !['R1','R2','R3','R4'].includes(k));
+                    const hasLegacyFlat = ichData.R1 !== undefined || ichData.R2 !== undefined;
+
+                    if (archKeys.length > 0) {
+                        // Per-Archetyp-Format vorhanden → NUR diese verwenden (stale flat R-Keys ignorieren)
                         result.ich = {};
-                        for (const [archKey, archData] of Object.entries(ichData)) {
+                        for (const archKey of archKeys) {
+                            const archData = ichData[archKey];
                             if (archData && typeof archData === 'object') {
                                 result.ich[archKey] = normalizeFlat(archData);
                             }
                         }
+                    } else if (hasLegacyFlat) {
+                        // Reines Legacy-Format: flat R-Keys unter aktuellen Archetyp wrappen
+                        const arch = this.get?.('archetypes.ich.primary') || 'single';
+                        result.ich = {};
+                        result.ich[arch] = normalizeFlat(ichData);
+                    } else {
+                        result.ich = {};
                     }
                 }
                 return result;
@@ -1549,13 +1558,10 @@ const TiageState = (function() {
                     G: 1
                 }
             });
+            // ICH: Leer — per-Archetyp gespeichert (z.B. ich.single.R1)
+            // Defaults (1.0) kommen automatisch von getResonanzFaktoren()
             this.set('resonanzFaktoren', {
-                ich: {
-                    R1: { value: 1.0, locked: false },
-                    R2: { value: 1.0, locked: false },
-                    R3: { value: 1.0, locked: false },
-                    R4: { value: 1.0, locked: false }
-                },
+                ich: {},
                 partner: {
                     R1: { value: 1.0, locked: false },
                     R2: { value: 1.0, locked: false },

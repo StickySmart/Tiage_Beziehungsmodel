@@ -652,14 +652,6 @@
             if (typeof TiageState !== 'undefined') {
                 const ichData = TiageState.getResonanzFaktoren('ich');
                 const partnerData = TiageState.getResonanzFaktoren('partner');
-                // DEBUG: Was kommt aus TiageState?
-                const rawIch = TiageState.get('resonanzFaktoren.ich');
-                const archIch = TiageState.get('archetypes.ich.primary');
-                console.log('[Synthese DEBUG] archetypes.ich.primary:', archIch);
-                console.log('[Synthese DEBUG] resonanzFaktoren.ich (raw):', JSON.stringify(rawIch));
-                console.log('[Synthese DEBUG] getResonanzFaktoren("ich"):', JSON.stringify(ichData));
-                console.log('[Synthese DEBUG] getResonanzFaktoren("partner"):', JSON.stringify(partnerData));
-
                 if (ichData) {
                     resonanzIch = {
                         R1: ichData.R1?.value ?? ichData.R1 ?? 1.0,
