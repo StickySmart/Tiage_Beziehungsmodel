@@ -1498,6 +1498,10 @@ const AttributeSummaryCard = (function() {
                 if (TiageState.lockNeed) {
                     TiageState.lockNeed(currentPerson, need.id, need.value);
                 }
+                // FIX v1.8.1009: AUCH flatNeeds aktualisieren (lockNeed schreibt nur profileReview)
+                if (TiageState.setNeed) {
+                    TiageState.setNeed(currentPerson, need.id, need.value);
+                }
             } else {
                 // Need ist NICHT gelockt und nicht manuell geändert → entsperren falls es vorher gelockt war
                 if (TiageState.isNeedLocked && TiageState.isNeedLocked(currentPerson, need.id)) {
@@ -2347,24 +2351,15 @@ const AttributeSummaryCard = (function() {
         // FIX v1.8.701: TiageState.flatNeeds hat PRIORITÄT über LoadedArchetypProfile
         // TiageState enthält die aktuellen User-Änderungen (inkl. Reset-Werte)
         // LoadedArchetypProfile ist nur ein Cache und wird nicht bei Reset aktualisiert
-        if (typeof TiageState !== 'undefined') {
-            const tiageStateFlatNeeds = TiageState.get('flatNeeds.' + currentPerson);
+        // FIX v1.8.1009: getFlatNeeds() statt get('flatNeeds.ich') — letzteres gibt
+        // verschachtelte per-Archetyp Struktur { single: { '#B1': 58 } } zurück,
+        // getFlatNeeds() gibt die korrekte flache Struktur { '#B1': 58 }
+        if (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds) {
+            const tiageStateFlatNeeds = TiageState.getFlatNeeds(currentPerson);
 
-            // FIX v1.8.705: TiageState kann ARRAY oder OBJECT sein
-            // saveCurrentState() in needs-editor.html speichert ARRAY
-            // Aber umfrageWerte muss ein OBJECT { '#B1': value } sein
-            if (Array.isArray(tiageStateFlatNeeds) && tiageStateFlatNeeds.length > 0) {
-                // Konvertiere Array zu Object
-                tiageStateFlatNeeds.forEach(need => {
-                    if (need.id && need.value !== undefined) {
-                        umfrageWerte[need.id] = need.value;
-                    }
-                });
-                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (ARRAY→OBJECT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
-            } else if (tiageStateFlatNeeds && typeof tiageStateFlatNeeds === 'object' && Object.keys(tiageStateFlatNeeds).length > 0) {
-                // Bereits Object-Format
+            if (tiageStateFlatNeeds && typeof tiageStateFlatNeeds === 'object' && Object.keys(tiageStateFlatNeeds).length > 0) {
                 umfrageWerte = tiageStateFlatNeeds;
-                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.flatNeeds (OBJECT) für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+                console.log('[AttributeSummaryCard] Verwende Werte aus TiageState.getFlatNeeds() für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
             }
         }
 
