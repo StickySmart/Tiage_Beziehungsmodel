@@ -1441,8 +1441,10 @@ const AttributeSummaryCard = (function() {
             const stateValue = stateNeeds[need.id];
             const stateLocked = TiageState.isNeedLocked(currentPerson, need.id);
 
-            // Vergleiche: Synchron wenn Wert UND Lock-Status gleich
-            const isSaved = (ramValue === stateValue) && (ramLocked === stateLocked);
+            // FIX v1.8.1012: Toleranter Vergleich — undefined in State = noch nicht geschrieben
+            const valueMatch = (stateValue !== undefined) ? (ramValue === stateValue) : true;
+            const lockMatch = (ramLocked === stateLocked);
+            const isSaved = valueMatch && lockMatch;
 
             // Erstelle Status-Indikator
             const indicator = document.createElement('span');
@@ -2881,8 +2883,11 @@ const AttributeSummaryCard = (function() {
             const stateValue = stateNeeds[needId];
             const stateLocked = TiageState.isNeedLocked(currentPerson, needId);
 
-            // Vergleiche: Synchron wenn Wert UND Lock-Status gleich
-            const isSaved = (ramValue === stateValue) && (ramLocked === stateLocked);
+            // FIX v1.8.1012: Toleranter Vergleich — undefined in State behandeln wie RAM-Wert
+            // Needs die nie explizit in flatNeeds geschrieben wurden haben stateValue=undefined
+            const valueMatch = (stateValue !== undefined) ? (ramValue === stateValue) : true;
+            const lockMatch = (ramLocked === stateLocked);
+            const isSaved = valueMatch && lockMatch;
 
             const icon = isSaved ? '🟢' : '🔴';
             const title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert (nur RAM) ✗';
