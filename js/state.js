@@ -1262,19 +1262,47 @@ const TiageState = (function() {
         _normalizeResonanzFaktoren(faktoren) {
             if (!faktoren) return faktoren;
 
+            // Hilfsfunktion: Normalisiere ein flaches R-Faktor-Objekt { R1, R2, R3, R4 }
+            const normalizeFlat = (obj) => {
+                const result = {};
+                for (const key of ['R1', 'R2', 'R3', 'R4']) {
+                    if (obj[key] !== undefined) {
+                        const entry = obj[key];
+                        if (typeof entry === 'object' && entry !== null) {
+                            result[key] = {
+                                value: entry.value ?? 1.0,
+                                locked: entry.locked ?? false
+                            };
+                        } else {
+                            result[key] = {
+                                value: entry ?? 1.0,
+                                locked: false
+                            };
+                        }
+                    }
+                }
+                return result;
+            };
+
             // Prüfe ob es ein verschachteltes Objekt ist (ich/partner)
             if (faktoren.ich || faktoren.partner) {
                 const result = {};
-                for (const person of ['ich', 'partner']) {
-                    if (faktoren[person]) {
-                        result[person] = {};
-                        for (const key of ['R1', 'R2', 'R3', 'R4']) {
-                            if (faktoren[person][key]) {
-                                const entry = faktoren[person][key];
-                                result[person][key] = {
-                                    value: entry.value ?? entry ?? 1.0,
-                                    locked: entry.locked ?? false
-                                };
+                // Partner: flach { R1, R2, R3, R4 }
+                if (faktoren.partner) {
+                    result.partner = normalizeFlat(faktoren.partner);
+                }
+                // ICH: per-Archetyp { single: { R1, ... }, duo: { R1, ... } }
+                if (faktoren.ich) {
+                    const ichData = faktoren.ich;
+                    // Prüfe ob ICH direkte R-Faktoren hat (Legacy-Format)
+                    if (ichData.R1 !== undefined || ichData.R2 !== undefined) {
+                        result.ich = normalizeFlat(ichData);
+                    } else {
+                        // Per-Archetyp-Format: { single: { R1, ... }, duo: { R1, ... } }
+                        result.ich = {};
+                        for (const [archKey, archData] of Object.entries(ichData)) {
+                            if (archData && typeof archData === 'object') {
+                                result.ich[archKey] = normalizeFlat(archData);
                             }
                         }
                     }
@@ -1283,24 +1311,7 @@ const TiageState = (function() {
             }
 
             // Einfaches Objekt { R1, R2, R3, R4 }
-            const result = {};
-            for (const key of ['R1', 'R2', 'R3', 'R4']) {
-                if (faktoren[key] !== undefined) {
-                    const entry = faktoren[key];
-                    if (typeof entry === 'object' && entry !== null) {
-                        result[key] = {
-                            value: entry.value ?? 1.0,
-                            locked: entry.locked ?? false
-                        };
-                    } else {
-                        result[key] = {
-                            value: entry ?? 1.0,
-                            locked: false
-                        };
-                    }
-                }
-            }
-            return result;
+            return normalizeFlat(faktoren);
         },
 
         /**
