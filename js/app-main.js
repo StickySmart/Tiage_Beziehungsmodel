@@ -183,6 +183,17 @@
                 }
             });
 
+            // v4.5: R-Faktor-Display aktualisieren wenn BeduerfnisIds (async) fertig geladen hat
+            // Die Subscriber-Kette ProfileCalculator→flatNeeds→Resonanz→UI aktualisiert zwar,
+            // aber ein expliziter Refresh stellt sicher dass die R-Boxen den finalen Wert zeigen.
+            document.addEventListener('beduerfnisIdsLoaded', function() {
+                setTimeout(function() {
+                    if (typeof updateRFactorDisplay === 'function') {
+                        updateRFactorDisplay();
+                    }
+                }, 300);
+            });
+
             console.log('[app-main] Archetyp-Wrapper initialisiert (Phase 1 State Refactoring)');
         }
 

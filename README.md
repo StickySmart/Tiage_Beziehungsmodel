@@ -1,6 +1,6 @@
 # Tiage-Beziehungsmodell
 
-**Version 1.8.1007** | [Changelog](CHANGELOG.md) | [English Docs](docs/en/README.md)
+**Version 1.8.1008** | [Changelog](CHANGELOG.md) | [English Docs](docs/en/README.md)
 
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
