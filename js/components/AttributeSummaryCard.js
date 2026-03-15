@@ -1852,7 +1852,7 @@ const AttributeSummaryCard = (function() {
      * Multi-Sort Stack: Array von Sort-Modi für additive Sortierung
      * z.B. ['changed', 'status'] = erst nach Geändert, dann nach Status
      */
-    let sortStack = ['changed'];
+    let sortStack = ['id'];
 
     /**
      * Additiver Sort-Modus: Wenn true, werden Klicks zur Sortierung hinzugefügt
@@ -1865,8 +1865,8 @@ const AttributeSummaryCard = (function() {
      * (FIX: Sortierung und Filter pro ICH/PARTNER speichern)
      */
     const savedStatePerPerson = {
-        ich: { sortMode: 'changed', sortStack: ['changed'], sortDirections: {...sortDirections}, showOnlyChanged: false },
-        partner: { sortMode: 'changed', sortStack: ['changed'], sortDirections: {...sortDirections}, showOnlyChanged: false }
+        ich: { sortMode: 'id', sortStack: ['id'], sortDirections: {...sortDirections}, showOnlyChanged: false },
+        partner: { sortMode: 'id', sortStack: ['id'], sortDirections: {...sortDirections}, showOnlyChanged: false }
     };
     let currentSortPerson = 'ich';  // Aktuelle Person für Sort-Kontext
 
@@ -2326,8 +2326,8 @@ const AttributeSummaryCard = (function() {
         if ((isNewArchetyp || isNewPerson) && typeof TiageState !== 'undefined') {
             const savedSorting = TiageState.get(`ui.needsSorting.${currentPerson}`);
             if (savedSorting) {
-                currentFlatSortMode = savedSorting.sortMode || 'changed';
-                sortStack = savedSorting.sortStack || ['changed'];
+                currentFlatSortMode = savedSorting.sortMode || 'id';
+                sortStack = savedSorting.sortStack || ['id'];
                 Object.assign(sortDirections, savedSorting.sortDirections || {});
                 additiveSortMode = savedSorting.additiveSortMode || false;
                 currentSortPerson = currentPerson;
@@ -2537,7 +2537,7 @@ const AttributeSummaryCard = (function() {
                         onclick="AttributeSummaryCard.setSortMode('status')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Status ${sortDirections.status ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('changed') ? ' active' : ''}${sortStack.indexOf('changed') >= 0 ? ' sort-' + (sortStack.indexOf('changed') + 1) : ''}"
                         onclick="AttributeSummaryCard.setSortMode('changed')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Geändert ${sortDirections.changed ? '↓' : '↑'}</button>
-                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'changed' && sortDirections.changed && !additiveSortMode ? ' hidden' : ''}"
+                <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'id' && sortDirections.id && !additiveSortMode ? ' hidden' : ''}"
                         onclick="AttributeSummaryCard.resetSort()" title="Sortierung zurücksetzen">✕</button>
             </div>
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
@@ -2652,8 +2652,8 @@ const AttributeSummaryCard = (function() {
      * Setzt Sortierung auf Standard zurück (nur 'changed', absteigend, nicht-additiv)
      */
     function resetSort() {
-        sortStack = ['changed'];
-        currentFlatSortMode = 'changed';
+        sortStack = ['id'];
+        currentFlatSortMode = 'id';
         additiveSortMode = false;
         // Alle Richtungen auf Standard zurücksetzen
         sortDirections.value = true;
@@ -2661,8 +2661,8 @@ const AttributeSummaryCard = (function() {
         sortDirections.id = true;
         sortDirections.status = true;
         sortDirections.changed = true;
-        savedStatePerPerson[currentSortPerson].sortMode = 'changed';
-        savedStatePerPerson[currentSortPerson].sortStack = ['changed'];
+        savedStatePerPerson[currentSortPerson].sortMode = 'id';
+        savedStatePerPerson[currentSortPerson].sortStack = ['id'];
         savedStatePerPerson[currentSortPerson].sortDirections = {...sortDirections};
         console.log('[AttributeSummaryCard] Sortierung zurückgesetzt');
         reRenderFlatNeeds();
