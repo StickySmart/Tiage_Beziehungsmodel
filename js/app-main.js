@@ -6879,7 +6879,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // ═══════════════════════════════════════════════════════════════════════
         // Philosophische Grundlage: Tiage-Modell + MOQ (Pirsig) + OSHO
         //
-        // GEWICHTUNG LOGOS vs. PATHOS (40:60)
+        // GEWICHTUNG LOGOS vs. PATHOS (25:75)
         // ────────────────────────────────────
         // Pirsig (MOQ): "Qualität ist die Quelle von Subjekt und Objekt."
         //               Statische Qualität (Logos) = Fundament, bewahrt Muster
@@ -14239,7 +14239,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
                     </div>
 
                     <div style="text-align: center; padding-top: 10px; border-top: 1px solid var(--border);">
-                        <p style="font-size: 12px; color: var(--text-muted);">Tiage's Beitrag: Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit eigener Gewichtung (40:60 Logos:Pathos) und 6 Archetypen.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Tiage's Beitrag: Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit eigener Gewichtung (25:75 Logos:Pathos) und 6 Archetypen.</p>
                     </div>
                 </div>
             `;

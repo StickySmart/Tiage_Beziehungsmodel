@@ -1028,7 +1028,7 @@ var TiageLocale_DE = {
         oshoPhilosophie: 'OSHO-Philosophie',
         oshoDesc: '- Bewusstsein und Beziehung',
         pathosLogos: 'Pathos/Logos',
-        pathosLogosDesc: '- Die 40:60 Gewichtung',
+        pathosLogosDesc: '- Die 25:75 Gewichtung',
         resonanzTheorie: 'Resonanz-Theorie',
         resonanzDesc: '- Der Meta-Faktor',
         beziehungsmenu: 'Beziehungsmenü',

@@ -785,7 +785,7 @@ var TiageLocale_FR = {
         oshoPhilosophie: 'Philosophie OSHO',
         oshoDesc: '- Conscience et relation',
         pathosLogos: 'Pathos/Logos',
-        pathosLogosDesc: '- La pond\u00e9ration 40:60',
+        pathosLogosDesc: '- La pond\u00e9ration 25:75',
         resonanzTheorie: 'Th\u00e9orie de la r\u00e9sonance',
         resonanzDesc: '- Le m\u00e9ta-facteur',
         beziehungsmenu: 'Menu relationnel',

@@ -1006,7 +1006,7 @@ var TiageLocale_IT = {
         oshoPhilosophie: 'Filosofia OSHO',
         oshoDesc: '- Coscienza e relazione',
         pathosLogos: 'Pathos/Logos',
-        pathosLogosDesc: '- La ponderazione 40:60',
+        pathosLogosDesc: '- La ponderazione 25:75',
         resonanzTheorie: 'Teoria della risonanza',
         resonanzDesc: '- Il meta-fattore',
         beziehungsmenu: 'Menù relazionale',
