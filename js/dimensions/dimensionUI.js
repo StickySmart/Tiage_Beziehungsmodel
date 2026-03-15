@@ -193,11 +193,13 @@ var TiageDimensionUI = (function() {
 
         if (index > -1) {
             orientierungen.splice(index, 1);
+            if (typeof TiageToast !== 'undefined') TiageToast.info(orientierungValue + ' entfernt');
         } else {
             var exclusionRules = (typeof TiageConfig !== 'undefined' && TiageConfig.ORIENTIERUNG_EXCLUSION_RULES) || {};
 
             if (orientierungen.length === 0) {
                 orientierungen.push(orientierungValue);
+                if (typeof TiageToast !== 'undefined') TiageToast.info(orientierungValue + ' gesetzt');
             } else {
                 var primaryOrientation = orientierungen[0];
                 var excludedByPrimary = exclusionRules[primaryOrientation] || [];
@@ -232,6 +234,7 @@ var TiageDimensionUI = (function() {
                 }
 
                 orientierungen.push(orientierungValue);
+                if (typeof TiageToast !== 'undefined') TiageToast.info(orientierungValue + ' (sekundär) hinzugefügt');
             }
         }
 

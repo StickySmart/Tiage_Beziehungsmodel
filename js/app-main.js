@@ -935,6 +935,7 @@
                 updateRFactorDisplay();
             }
 
+            TiageToast.info('Partner zurückgesetzt 🔄');
             console.log('[Partner FREE] Reset complete - G, O, D, A, GFK und R-Faktoren zurückgesetzt');
         }
 
@@ -2857,9 +2858,11 @@
             if (value === currentGeschlecht) {
                 // Click on same: Deselect
                 personDimensions[person].geschlecht = null;
+                TiageToast.info(TiageI18n.t('geschlecht.' + value, value) + ' deselektiert');
             } else {
                 // Click on different: Set new value
                 personDimensions[person].geschlecht = value;
+                TiageToast.info(TiageI18n.t('geschlecht.' + value, value) + ' gesetzt');
             }
 
             // v4.0: Kein S-Grid mehr nötig - verstecken falls noch sichtbar
@@ -3025,6 +3028,19 @@
 
             // Toggle the clicked value (multi-select)
             currentExtras[value] = !currentExtras[value];
+
+            // Toast
+            const ffhLabels = { fit: 'Fit 💪', fuckedup: 'Fucked up 🔥', horny: 'Horny 😈' };
+            const ffhDescs = {
+                fit: TiageI18n.t('ffh.fitDesc', 'Sport und körperliche Fitness fließen in die Berechnung ein.'),
+                fuckedup: TiageI18n.t('ffh.fuckedupDesc', 'Unkonventioneller Lebensstil fließt in die Berechnung ein.'),
+                horny: TiageI18n.t('ffh.hornyDesc', 'Sexualität als Faktor fließt in die Berechnung ein.')
+            };
+            if (currentExtras[value]) {
+                TiageToast.info(ffhLabels[value] + ' aktiviert — ' + ffhDescs[value]);
+            } else {
+                TiageToast.info(ffhLabels[value] + ' deaktiviert');
+            }
 
             console.log('[TIAGE] geschlecht_extras updated:', person, JSON.stringify(currentExtras));
 
@@ -3678,15 +3694,19 @@
                 // Click on Primary: Clear both
                 personDimensions[person].dominanz.primary = null;
                 personDimensions[person].dominanz.secondary = null;
+                TiageToast.info('Dominanz deselektiert');
             } else if (dominanzValue === currentSecondary) {
                 // Click on Secondary: Clear only secondary
                 personDimensions[person].dominanz.secondary = null;
+                TiageToast.info(dominanzValue + ' (sekundär) entfernt');
             } else if (!currentPrimary) {
                 // No primary yet: Set as primary (handles both null and undefined)
                 personDimensions[person].dominanz.primary = dominanzValue;
+                TiageToast.info(dominanzValue + ' als Primär-Dominanz gesetzt');
             } else {
                 // Primary exists, different value clicked: Set as secondary
                 personDimensions[person].dominanz.secondary = dominanzValue;
+                TiageToast.info(dominanzValue + ' als Sekundär-Dominanz gesetzt');
             }
 
             // Sync with mobilePersonDimensions for mobile view consistency
@@ -7460,6 +7480,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 updateGfkFromArchetypes();
             }
 
+            // Toast
+            const archetypeEmojis = { duo: '🤝', solo: '⚡', lat: '🌙', solopoly: '🌟', duo_flex: '🔄', aromantisch: '🧊' };
+            const personLabel = person === 'ich' ? 'ICH' : 'PARTNER';
+            if (effectiveArchetype) {
+                const emoji = archetypeEmojis[effectiveArchetype] || '';
+                TiageToast.success(personLabel + ': ' + effectiveArchetype.charAt(0).toUpperCase() + effectiveArchetype.slice(1) + ' ' + emoji);
+            } else {
+                TiageToast.info(personLabel + ' deselektiert');
+            }
+
             console.log('[selectArchetypeFromGrid] Abgeschlossen für:', person, 'archetype:', effectiveArchetype);
         }
 
@@ -10854,20 +10884,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Hilfsfunktion: Kurze Toast-Meldung für Lock-Speicherung
                 // ═══════════════════════════════════════════════════════════════════════════
                 function showLockSavedToast(message) {
-                    var existing = document.getElementById('lockSavedToast');
-                    if (existing) existing.remove();
-
-                    var toast = document.createElement('div');
-                    toast.id = 'lockSavedToast';
-                    toast.textContent = message;
-                    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:10000;opacity:0;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.3);';
-                    document.body.appendChild(toast);
-
-                    requestAnimationFrame(function() { toast.style.opacity = '1'; });
-                    setTimeout(function() {
-                        toast.style.opacity = '0';
-                        setTimeout(function() { toast.remove(); }, 200);
-                    }, 1500);
+                    TiageToast.success(message);
                 }
 
                 // ═══════════════════════════════════════════════════════════════════════════
@@ -14895,6 +14912,7 @@ var FLAT_NEED_SAVE_DEBOUNCE_MS = 500;
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof TiageState !== 'undefined' && TiageState.reset) {
                 TiageState.reset();
+                TiageToast.info('Alles zurückgesetzt 🔄');
                 console.log('[resetAll] TiageState reset durchgeführt');
 
                 // Legacy-Variablen synchronisieren (TiageState.reset() setzt auf null)
