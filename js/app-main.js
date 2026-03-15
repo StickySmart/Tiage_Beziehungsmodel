@@ -3489,9 +3489,9 @@
 
             // Geschlecht Extras Optionen (Fit / Fucked up / Horny) - Multi-Select
             const geschlechtExtrasOptions = [
-                { value: 'fit', label: 'Fit 💪', stateKey: 'geschlecht_fit' },
-                { value: 'fuckedup', label: 'Fucked up 🔥', stateKey: 'geschlecht_fuckedup' },
-                { value: 'horny', label: 'Horny 😈', stateKey: 'geschlecht_horny' }
+                { value: 'fit', label: 'Fit 💪', stateKey: 'geschlecht_fit', descKey: 'ffh.fitDesc', desc: TiageI18n.t('ffh.fitDesc', 'Sport und körperliche Fitness sind dir wichtig.') },
+                { value: 'fuckedup', label: 'Fucked up 🔥', stateKey: 'geschlecht_fuckedup', descKey: 'ffh.fuckedupDesc', desc: TiageI18n.t('ffh.fuckedupDesc', 'Du hast einen unkonventionellen oder intensiven Lebensstil.') },
+                { value: 'horny', label: 'Horny 😈', stateKey: 'geschlecht_horny', descKey: 'ffh.hornyDesc', desc: TiageI18n.t('ffh.hornyDesc', 'Sexualität spielt eine wichtige Rolle in deinem Leben.') }
             ];
 
             // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
@@ -3541,7 +3541,7 @@
                         return;
                     }
                     const buttonsHTML = geschlechtExtrasOptions.map(opt =>
-                        `<button type="button" class="geschlecht-btn geschlecht-extras-btn" data-value="${opt.value}" data-state-key="${opt.stateKey}" data-person="${person}">${opt.label}</button>`
+                        `<button type="button" class="geschlecht-btn geschlecht-extras-btn" data-value="${opt.value}" data-state-key="${opt.stateKey}" data-person="${person}" title="${opt.desc}" data-i18n-title="${opt.descKey}">${opt.label}</button>`
                     ).join('');
                     grid.innerHTML = buttonsHTML;
                     // console.log('[TIAGE DEBUG] Generated extras buttons HTML for', person, ':', buttonsHTML.substring(0, 100) + '...');
