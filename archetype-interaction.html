@@ -6,6 +6,14 @@
 <!DOCTYPE html>
 <html lang="de" translate="no" class="notranslate">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ0GEG4W7B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ0GEG4W7B');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="google" content="notranslate">
@@ -132,6 +140,7 @@
     <script src="js/core/tooltips.js?v=20260128"></script>
     <script src="js/core/archetypeDescriptions.js?v=20260128"></script>
     <script src="js/core/tagTooltips.js?v=20260128"></script>
+    <script defer src="js/data/tagTooltipHandler.js"></script>
     <script src="js/core/statementHelpers.js?v=20260128"></script>
     <script src="js/utils/fuzzySearch.js?v=20260128"></script>
     <script src="js/ui/chartUtils.js?v=20260128"></script>
@@ -2751,12 +2760,36 @@
     <script defer src="js/modals/profileReviewModal.js"></script>
     <script defer src="js/modals/syntheseModal.js"></script>
     <script defer src="js/modals/categoryModal.js"></script>
+    <script defer src="js/modals/factorModal.js"></script>
+    <script defer src="js/modals/categoryDetailsModal.js"></script>
     <!-- slotMachineModal.js moved to line ~145 to load before actions -->
 
     <!-- Synthesis/Calculation Modules -->
+    <script defer src="js/synthesis/scoringEngine.js"></script>
     <script defer src="js/synthesis/calculationEngine.js"></script>
+    <script defer src="js/synthesis/pathosLogosGenerator.js"></script>
+
+    <!-- UI Modules -->
+    <script defer src="js/ui/geschlechtUI.js"></script>
+    <script defer src="js/ui/mobileNavigation.js"></script>
+    <script defer src="js/ui/mobileUI.js"></script>
+    <script defer src="js/ui/comparisonView.js"></script>
+    <script defer src="js/ui/comparisonLayout.js"></script>
+    <script defer src="js/ui/archetypeGrid.js"></script>
+    <script defer src="js/ui/ageVerification.js"></script>
+    <script defer src="js/ui/bestMatch.js"></script>
+    <script defer src="js/ui/updateRendering.js"></script>
+    <script defer src="js/ui/scoreDisplay.js"></script>
+    <script defer src="js/ui/cardNavigation.js"></script>
+    <script defer src="js/ui/dimensionHelpers.js"></script>
+    <script defer src="js/ui/dimensionInit.js"></script>
+
+    <!-- Feedback Modules -->
+    <script defer src="js/feedback/feedbackSystem.js"></script>
 
     <!-- Persistence Modules -->
+    <script defer src="js/persistence/persistenceManager.js"></script>
+    <script defer src="js/persistence/dimensionLoader.js"></script>
     <script defer src="js/persistence/visitorTracking.js?v=20260202"></script>
 
     <!-- UI Utilities -->
@@ -2775,6 +2808,10 @@
     <script defer src="js/dimensions/gfkMatching.js?v=20260301a"></script>
 
     <script defer src="js/app-main.js?v=20260301a"></script>
+    <script defer src="js/core/appInit.js"></script>
+    <script defer src="js/core/initialization.js"></script>
+    <script defer src="js/core/debugInspector.js"></script>
+    <script defer src="js/core/analytics.js"></script>
 
     <!-- Resonanz Profile Modal Card Update Script -->
     <script>
