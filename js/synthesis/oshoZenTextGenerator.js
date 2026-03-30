@@ -811,19 +811,18 @@ const OshoZenTextGenerator = (function() {
             .osho-zen-lightbox-content {
                 position: relative;
                 z-index: 1;
-                max-width: 90vw;
-                max-height: 90vh;
+                width: 100vw;
+                height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .osho-zen-lightbox-image {
-                max-width: 90vw;
-                max-height: 85vh;
+                max-width: 100vw;
+                max-height: 100vh;
                 object-fit: contain;
-                border-radius: 12px;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+                border-radius: 0;
                 animation: osho-zen-lightbox-zoom 0.3s ease-out;
             }
 
