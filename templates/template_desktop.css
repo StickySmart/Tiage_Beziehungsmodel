@@ -1750,6 +1750,31 @@
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
+            /* Sichtbare Scrollbar für OBS Browser Source + eingebettete Browser */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.05);
+        }
+
+        .modal::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .modal::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 20px 20px 0;
+        }
+
+        .modal::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 5px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .modal::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.8);
+            border: 2px solid transparent;
+            background-clip: padding-box;
         }
 
         .modal-header {
