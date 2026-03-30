@@ -373,36 +373,11 @@
         renderCategoryBars('expandCategoryBars', categories);
     }
 
-    function showArchetypeInfo(person) {
-        console.log('showArchetypeInfo called with:', person);
-        const archetype = person === 'ich' ? window.getIchArchetype() : window.getPartnerArchetype();
-        console.log('archetype:', archetype, 'window.tiageData:', window.tiageData);
-        if (!window.tiageData || !window.tiageData.archetypes || !window.tiageData.archetypes[archetype]) {
-            console.error('Data not available for archetype:', archetype);
-            return;
-        }
-
-        // Set current index for swipe navigation
-        currentDefinitionIndex = archetypeOrder.indexOf(archetype);
-        if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
-        currentDefinitionPerson = person;
-
-        // Use the shared function to render content
-        window.showArchetypeInfoByType(archetype);
-
-        document.getElementById('definitionModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        // Add touch swipe support
-        const modal = document.querySelector('#definitionModal .modal');
-        modal.ontouchstart = handleDefinitionTouchStart;
-        modal.ontouchend = handleDefinitionTouchEnd;
-    }
+    // showArchetypeInfo is now in definitionModal.js (has access to swipe navigation variables)
 
     // ── Exports ─────────────────────────────────────────────────────────────
     window.updateComparisonView = updateComparisonView;
     window.updateExpandableCategoryBars = updateExpandableCategoryBars;
     window.renderCategoryBars = renderCategoryBars;
-    window.showArchetypeInfo = showArchetypeInfo;
 
 })();

@@ -5063,7 +5063,7 @@
 
         /* GFK Bedürfnis-Anzeige - VERSTECKT */
         .gfk-beduerfnis-display {
-            display: none !important; /* Übereinstimmungsblock auf Hauptseite versteckt */
+            display: none; /* Initial versteckt, wird via JS eingeblendet */
             background: rgba(30, 30, 35, 0.8);
             border: 1px solid var(--border);
             border-radius: 12px;

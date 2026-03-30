@@ -646,11 +646,9 @@ function clearAllStorage() {
         localStorage.removeItem('tiageSyntheseType');
         localStorage.removeItem('pathosLogosType');
 
-        // TiageState UI-Settings zurücksetzen
-        if (typeof TiageState !== 'undefined') {
-            TiageState.set('ui.selection', null);
-            TiageState.set('ui.matchModalView', 'pathos');
-            TiageState.set('ui.syntheseType', 'score');
+        // TiageState komplett zurücksetzen (RAM + Storage, ohne Subscriber-Cascade)
+        if (typeof TiageState !== 'undefined' && TiageState.clearAll) {
+            TiageState.clearAll();
         }
 
         // Kurze Bestätigung anzeigen

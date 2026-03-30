@@ -184,7 +184,7 @@
             });
 
             // Add active class to selected item
-            const selectedItem = grid.querySelector(`.archetype-symbol-item[window.tiageData-archetype="${archetype}"]`);
+            const selectedItem = grid.querySelector(`.archetype-symbol-item[data-archetype="${archetype}"]`);
             if (selectedItem) {
                 selectedItem.classList.add('active');
             }

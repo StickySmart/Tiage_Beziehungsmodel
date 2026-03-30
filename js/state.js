@@ -1569,6 +1569,57 @@ const TiageState = (function() {
         },
 
         /**
+         * Hard-Reset: Setzt ALLES zurück (inkl. personDimensions) OHNE Subscriber-Cascade.
+         * Wird von clearAllStorage() verwendet. Danach muss die Seite neu laden.
+         *
+         * Unterschied zu reset():
+         * - reset() spart personDimensions aus und triggert Subscriber
+         * - clearAll() löscht ALLES und unterdrückt Subscriber (weil Reload folgt)
+         */
+        clearAll() {
+            // Subscriber unterdrücken - Reload folgt sowieso
+            const savedSubscribers = { ...subscribers };
+            Object.keys(subscribers).forEach(k => { subscribers[k] = []; });
+
+            // Kompletten State auf Defaults setzen
+            state.personDimensions = {
+                ich: { geschlecht: null, dominanz: { primary: null, secondary: null }, orientierung: [] },
+                partner: { geschlecht: null, dominanz: { primary: null, secondary: null }, orientierung: [] }
+            };
+            state.archetypes = {
+                ich: { primary: null, secondary: null },
+                partner: { primary: null, secondary: null }
+            };
+            state.ui = {
+                currentView: 'desktop', currentMobilePage: 1, activeModal: null,
+                selectedCategory: null, matchModalView: 'pathos', syntheseType: 'score',
+                selection: null, language: state.ui?.language || 'de'
+            };
+            state.profileStatus = {
+                ich: { loadedSlot: null, isDirty: false },
+                partner: { loadedSlot: null, isDirty: false }
+            };
+            state.gewichtungen = {
+                ich: { O: 1, A: 1, D: 1, G: 1 },
+                partner: { O: 1, A: 1, D: 1, G: 1 }
+            };
+            state.resonanzFaktoren = {
+                ich: {},
+                partner: { R1: { value: 1.0, locked: false }, R2: { value: 1.0, locked: false }, R3: { value: 1.0, locked: false }, R4: { value: 1.0, locked: false } }
+            };
+            state.flatNeeds = { ich: {}, partner: {} };
+            state.profileReview = { ich: { global: {} }, partner: { lockedNeeds: {} } };
+            if (state.bindungsmuster) state.bindungsmuster = null;
+            if (state.rtiPriorities) state.rtiPriorities = null;
+
+            // localStorage leeren (tiage_state)
+            try { localStorage.removeItem('tiage_state'); } catch(e) {}
+
+            // Subscriber wiederherstellen (für den Reload)
+            Object.keys(savedSubscribers).forEach(k => { subscribers[k] = savedSubscribers[k]; });
+        },
+
+        /**
          * Initialize TiageState - loads from storage
          * FIX v1.8.691: Idempotent - kann mehrfach aufgerufen werden, lädt nur einmal
          * Returns a Promise for async compatibility

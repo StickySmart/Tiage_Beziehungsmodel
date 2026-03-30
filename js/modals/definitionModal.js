@@ -1,0 +1,359 @@
+/**
+ * DefinitionModal — Archetyp-Info & Definition Modal
+ * ====================================================
+ * Extracted from categoryModal.js
+ *
+ * Contains:
+ * - openDefinitionModal, closeDefinitionModal
+ * - showArchetypeInfo, showArchetypeInfoByType
+ * - navigateDefinition, navigateDefinitionModal, navigateDefinitionToIndex
+ * - confirmDefinitionSelection
+ * - handleDefinitionTouchStart/End (swipe navigation)
+ * - getShortDef
+ *
+ * Dependencies (all globally available):
+ * - window.tiageData, window.archetypeOrder, window.archetypeDescriptions
+ * - window.icons, TiageI18n
+ * - window.getIchArchetype(), window.getPartnerArchetype()
+ * - window.updateAll(), window.selectPartner()
+ */
+
+(function() {
+'use strict';
+
+// ========================================
+// State
+// ========================================
+let currentDefinitionIndex = 0;
+let currentDefinitionPerson = 'ich';
+let definitionTouchStartX = 0;
+
+// ========================================
+// Open / Close
+// ========================================
+function openDefinitionModal(archetypeId) {
+    const def = window.archetypeDescriptions[archetypeId];
+    if (!def) return;
+
+    const arch = window.tiageData.archetypes[archetypeId];
+    const color = arch?.color || 'var(--primary)';
+    const icon = window.icons[archetypeId] || '?';
+
+    document.getElementById('definitionModalTitle').innerHTML = `
+        <span style="color: ${color}">${icon}</span> ${def.name}
+    `;
+
+    document.getElementById('definitionModalBody').innerHTML = `
+        <div class="definition-long">${def.longDef}</div>
+
+        <div class="definition-section">
+            <div class="definition-section-title">Kernprinzipien</div>
+            <ul class="definition-list principles">
+                ${def.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+        </div>
+
+        <div class="definition-section">
+            <div class="definition-section-title">Das ist NICHT dasselbe wie</div>
+            <ul class="definition-list not-same">
+                ${def.notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+            </ul>
+        </div>
+
+        <div class="definition-section">
+            <div class="definition-section-title">Varianten</div>
+            <ul class="definition-list variants">
+                ${def.variants.map(v => `<li>${v}</li>`).join('')}
+            </ul>
+        </div>
+    `;
+
+    document.getElementById('definitionModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDefinitionModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('definitionModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ========================================
+// Swipe Navigation
+// ========================================
+function handleDefinitionTouchStart(e) {
+    definitionTouchStartX = e.touches[0].clientX;
+}
+
+function handleDefinitionTouchEnd(e) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = definitionTouchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+        navigateDefinition(diff > 0 ? 1 : -1);
+    }
+}
+
+function navigateDefinition(direction) {
+    currentDefinitionIndex += direction;
+    if (currentDefinitionIndex < 0) currentDefinitionIndex = window.archetypeOrder.length - 1;
+    if (currentDefinitionIndex >= window.archetypeOrder.length) currentDefinitionIndex = 0;
+
+    const newArchetype = window.archetypeOrder[currentDefinitionIndex];
+    showArchetypeInfoByType(newArchetype);
+
+    if (currentDefinitionPerson === 'ich') {
+        const ichSelect = document.getElementById('ichSelect');
+        if (ichSelect) {
+            ichSelect.value = newArchetype;
+            ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    } else if (currentDefinitionPerson === 'partner') {
+        const partnerSelect = document.getElementById('partnerSelect');
+        if (partnerSelect) {
+            partnerSelect.value = newArchetype;
+            partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+}
+
+function navigateDefinitionModal(direction) {
+    navigateDefinition(direction);
+}
+
+// ========================================
+// Show Archetype Info (INFO button entry point)
+// ========================================
+function showArchetypeInfo(person) {
+    const archetype = person === 'ich' ? window.getIchArchetype() : window.getPartnerArchetype();
+    if (!window.tiageData || !window.tiageData.archetypes || !window.tiageData.archetypes[archetype]) {
+        console.error('Data not available for archetype:', archetype);
+        return;
+    }
+
+    currentDefinitionIndex = window.archetypeOrder.indexOf(archetype);
+    if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
+    currentDefinitionPerson = person;
+
+    showArchetypeInfoByType(archetype);
+
+    document.getElementById('definitionModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    const modal = document.querySelector('#definitionModal .modal');
+    modal.ontouchstart = handleDefinitionTouchStart;
+    modal.ontouchend = handleDefinitionTouchEnd;
+}
+
+// ========================================
+// Render Archetype Info Content
+// ========================================
+function showArchetypeInfoByType(archetypeId) {
+    if (!window.tiageData || !window.tiageData.archetypes || !window.tiageData.archetypes[archetypeId]) {
+        console.error('Data not available for archetype:', archetypeId);
+        return;
+    }
+
+    const arch = window.tiageData.archetypes[archetypeId];
+    const def = window.archetypeDescriptions[archetypeId];
+
+    const localizedArch = {
+        name: TiageI18n.t(`archetypes.${archetypeId}.name`, arch.name),
+        shortDef: TiageI18n.t(`archetypes.${archetypeId}.shortDef`, def?.shortDef || ''),
+        longDef: TiageI18n.t(`archetypes.${archetypeId}.longDef`, def?.longDef || ''),
+        keyPrinciples: TiageI18n.t(`archetypes.${archetypeId}.keyPrinciples`, def?.keyPrinciples || []),
+        notTheSameAs: TiageI18n.t(`archetypes.${archetypeId}.notTheSameAs`, def?.notTheSameAs || []),
+        variants: TiageI18n.t(`archetypes.${archetypeId}.variants`, def?.variants || [])
+    };
+
+    const swipeHint = TiageI18n.t('archetypeModal.swipeHint', '← Wischen zum Navigieren →');
+    let topNav = `
+        <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+            ${window.archetypeOrder.map((id, index) => `
+                <span class="definition-dot${index === currentDefinitionIndex ? ' active' : ''}"
+                      onclick="navigateDefinitionToIndex(${index})"
+                      style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
+            `).join('')}
+        </div>
+        <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">${swipeHint}</div>
+    `;
+
+    let modalContent = topNav + `
+        <div class="modal-category">
+            <div class="modal-category-header">
+                <div class="modal-category-letter" style="background: ${arch.color}; width: 40px; height: 40px; font-size: 20px;">${window.icons[archetypeId]}</div>
+                <div class="modal-category-name">${localizedArch.name}</div>
+            </div>
+            <div class="modal-category-desc">${localizedArch.shortDef || ''}</div>
+    `;
+
+    if (def || localizedArch.longDef) {
+        modalContent += `
+            <div class="definition-long" style="margin-top: 15px;">${localizedArch.longDef || ''}</div>
+        `;
+
+        const keyPrinciples = localizedArch.keyPrinciples;
+        if (keyPrinciples && keyPrinciples.length > 0) {
+            modalContent += `
+                <div class="definition-section">
+                    <div class="definition-section-title">${TiageI18n.t('archetypeModal.keyPrinciples', 'Kernprinzipien')}</div>
+                    <ul class="definition-list principles">
+                        ${keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        const notTheSameAs = localizedArch.notTheSameAs;
+        if (notTheSameAs && notTheSameAs.length > 0) {
+            modalContent += `
+                <div class="definition-section">
+                    <div class="definition-section-title">${TiageI18n.t('archetypeModal.notTheSameAs', 'Das ist NICHT')}</div>
+                    <ul class="definition-list not-same">
+                        ${notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        const variants = localizedArch.variants;
+        if (variants && variants.length > 0) {
+            modalContent += `
+                <div class="definition-section">
+                    <div class="definition-section-title">${TiageI18n.t('archetypeModal.variants', 'Varianten')}</div>
+                    <ul class="definition-list variants">
+                        ${variants.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+    }
+
+    // Pathos & Logos section
+    const pathos = arch.pathos || '';
+    const logos = arch.logos || '';
+
+    if (pathos || logos) {
+        modalContent += `
+            <div class="definition-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                <div class="definition-section-title" style="margin-bottom: 15px;">${TiageI18n.t('archetypeModal.pathosLogos', 'Pathos & Logos')}</div>
+        `;
+
+        if (pathos) {
+            modalContent += `
+                <div style="margin-bottom: 15px; padding: 12px; background: rgba(231,76,60,0.1); border-radius: 10px; border-left: 3px solid #e74c3c;">
+                    <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.pathosLabel', 'Pathos (Emotionale Ebene)')}</div>
+                    <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${pathos}</p>
+                </div>
+            `;
+        }
+
+        if (logos) {
+            modalContent += `
+                <div style="padding: 12px; background: rgba(52,152,219,0.1); border-radius: 10px; border-left: 3px solid #3498db;">
+                    <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.logosLabel', 'Logos (Rationale Ebene)')}</div>
+                    <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${logos}</p>
+                </div>
+            `;
+        }
+
+        modalContent += `</div>`;
+    }
+
+    modalContent += '</div>';
+
+    // Bottom navigation dots and confirm button
+    modalContent += `
+        <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            ${window.archetypeOrder.map((id, index) => `
+                <span class="definition-dot${index === currentDefinitionIndex ? ' active' : ''}"
+                      onclick="navigateDefinitionToIndex(${index})"
+                      style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
+            `).join('')}
+        </div>
+        <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">${swipeHint}</div>
+        <button onclick="confirmDefinitionSelection()" style="
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+            ${TiageI18n.t('archetypeModal.confirmSelection', 'Auswahl übernehmen')}
+        </button>
+    `;
+
+    const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
+    document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
+    document.getElementById('definitionModalBody').innerHTML = modalContent;
+    document.getElementById('definitionModalBody').scrollTop = 0;
+}
+
+// ========================================
+// Index Navigation & Selection
+// ========================================
+function navigateDefinitionToIndex(index) {
+    currentDefinitionIndex = index;
+    const newArchetype = window.archetypeOrder[index];
+    showArchetypeInfoByType(newArchetype);
+
+    if (currentDefinitionPerson === 'ich') {
+        const ichSelect = document.getElementById('ichSelect');
+        if (ichSelect) {
+            ichSelect.value = newArchetype;
+            ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    } else if (currentDefinitionPerson === 'partner') {
+        const partnerSelect = document.getElementById('partnerSelect');
+        if (partnerSelect) {
+            partnerSelect.value = newArchetype;
+            partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+}
+
+function confirmDefinitionSelection() {
+    const selectedArchetype = window.archetypeOrder[currentDefinitionIndex];
+
+    if (currentDefinitionPerson === 'ich') {
+        const selectElement = document.getElementById('archetypeSelect');
+        if (selectElement) {
+            selectElement.value = selectedArchetype;
+            selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        updateAll();
+    } else {
+        selectPartner(selectedArchetype);
+    }
+
+    document.getElementById('definitionModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ========================================
+// Utility
+// ========================================
+function getShortDef(archetypeId) {
+    return window.archetypeDescriptions[archetypeId]?.shortDef || '';
+}
+
+// ========================================
+// Exports
+// ========================================
+window.openDefinitionModal         = openDefinitionModal;
+window.closeDefinitionModal        = closeDefinitionModal;
+window.navigateDefinition          = navigateDefinition;
+window.navigateDefinitionModal     = navigateDefinitionModal;
+window.navigateDefinitionToIndex   = navigateDefinitionToIndex;
+window.confirmDefinitionSelection  = confirmDefinitionSelection;
+window.showArchetypeInfoByType     = showArchetypeInfoByType;
+window.showArchetypeInfo           = showArchetypeInfo;
+window.getShortDef                 = getShortDef;
+
+})();
