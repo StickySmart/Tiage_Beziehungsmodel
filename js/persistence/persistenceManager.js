@@ -601,7 +601,9 @@ function clearAllStorage() {
         ? 'Reset current selection and UI?\n\nThis will remove:\n• Current archetype selections\n• Current dimension settings\n• Current preferences\n\nSaved profiles (memory slots) will be PRESERVED!'
         : 'Aktuelle Auswahl und UI zurücksetzen?\n\nDies entfernt:\n• Aktuelle Archetyp-Auswahlen\n• Aktuelle Dimensions-Einstellungen\n• Aktuelle Präferenzen\n\nGespeicherte Profile (Speicherplätze) bleiben ERHALTEN!';
 
-    if (!confirm(confirmMsg)) {
+    // OBS Browser Source blockiert confirm() → Fallback ohne Bestätigung
+    const isEmbedded = !window.menubar?.visible;
+    if (!isEmbedded && !confirm(confirmMsg)) {
         return;
     }
 
@@ -649,6 +651,10 @@ function clearAllStorage() {
         // TiageState komplett zurücksetzen (RAM + Storage, ohne Subscriber-Cascade)
         if (typeof TiageState !== 'undefined' && TiageState.clearAll) {
             TiageState.clearAll();
+            console.log('[clearAllStorage] TiageState.clearAll() aufgerufen');
+            console.log('[clearAllStorage] tiage_state nach clearAll:', localStorage.getItem('tiage_state'));
+        } else {
+            console.warn('[clearAllStorage] TiageState.clearAll NICHT verfügbar!');
         }
 
         // Kurze Bestätigung anzeigen

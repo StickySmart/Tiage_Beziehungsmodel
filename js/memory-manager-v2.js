@@ -510,58 +510,64 @@ const MemoryManagerV2 = (function() {
             const key = getIchStorageKey(archetyp);
             try {
                 const raw = localStorage.getItem(key);
-                if (!raw) {
-                    console.warn('[MemoryManagerV2] Keine Daten für:', archetyp);
-                    return false;
-                }
+                const data = raw ? JSON.parse(raw) : null;
 
-                const data = JSON.parse(raw);
-
-                // Daten in TiageState laden
+                // Archetyp IMMER wechseln (auch ohne gespeicherte GOD-Daten)
                 if (typeof TiageState !== 'undefined') {
-                    // WICHTIG: Archetyp ZUERST setzen!
-                    // Der archetypes.ich Subscriber sichert automatisch GODFUFH des alten
-                    // Archetyps und restored aus localStorage für den neuen.
-                    // Danach setzen wir die Werte nochmal explizit (gleiche Daten, kein Konflikt).
                     TiageState.setArchetype('ich', archetyp);
 
-                    // GOD+FFH+AGOD explizit setzen (verstärkt den Subscriber-Restore)
-                    if (data.geschlecht) {
-                        TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
-                    }
-                    if (data.dominanz) {
-                        TiageState.set('personDimensions.ich.dominanz', data.dominanz);
-                    }
-                    if (data.orientierung) {
-                        TiageState.set('personDimensions.ich.orientierung', data.orientierung);
-                    }
-                    if (data.geschlecht_extras) {
-                        TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
-                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                            window.geschlechtExtrasCache.ich = {
-                                fit: !!data.geschlecht_extras.fit,
-                                fuckedup: !!data.geschlecht_extras.fuckedup,
-                                horny: !!data.geschlecht_extras.horny
-                            };
+                    // GOD+FFH+AGOD nur setzen wenn Daten vorhanden
+                    if (data) {
+                        if (data.geschlecht) {
+                            TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
                         }
-                    } else {
-                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
-                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
-                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                            window.geschlechtExtrasCache.ich = defaultExtras;
+                        if (data.dominanz) {
+                            TiageState.set('personDimensions.ich.dominanz', data.dominanz);
                         }
-                    }
-                    if (data.agodGewichtung) {
-                        TiageState.set('gewichtungen.ich', data.agodGewichtung);
-                    }
-                    if (data.rtiPrioritaeten) {
-                        TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
+                        if (data.orientierung) {
+                            TiageState.set('personDimensions.ich.orientierung', data.orientierung);
+                        }
+                        if (data.geschlecht_extras) {
+                            TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
+                            if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                                window.geschlechtExtrasCache.ich = {
+                                    fit: !!data.geschlecht_extras.fit,
+                                    fuckedup: !!data.geschlecht_extras.fuckedup,
+                                    horny: !!data.geschlecht_extras.horny
+                                };
+                            }
+                        } else {
+                            var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                            TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                            if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                                window.geschlechtExtrasCache.ich = defaultExtras;
+                            }
+                        }
+                        if (data.agodGewichtung) {
+                            TiageState.set('gewichtungen.ich', data.agodGewichtung);
+                        }
+                        if (data.rtiPrioritaeten) {
+                            TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
+                        }
                     }
 
                     TiageState.saveToStorage();
                 }
 
-                // UI aktualisieren
+                // Dropdowns synchronisieren
+                const ichSelect = document.getElementById('ichSelect');
+                const mobileIchSelect = document.getElementById('mobileIchSelect');
+                const archetypeSelect = document.getElementById('archetypeSelect');
+                if (ichSelect) ichSelect.value = archetyp;
+                if (mobileIchSelect) mobileIchSelect.value = archetyp;
+                if (archetypeSelect) archetypeSelect.value = archetyp;
+
+                // Archetyp-Grid Highlight aktualisieren
+                if (typeof window.updateArchetypeGrid === 'function') {
+                    window.updateArchetypeGrid('ich', archetyp);
+                }
+
+                // UI komplett aktualisieren
                 if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
                 if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
                 if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
@@ -573,7 +579,7 @@ const MemoryManagerV2 = (function() {
                     TiageWeights.AGOD.init();
                 }
 
-                console.log(`[MemoryManagerV2] ICH geladen für ${archetyp}`);
+                console.log(`[MemoryManagerV2] ICH geladen für ${archetyp}${data ? ' (mit GOD-Daten)' : ' (nur Archetyp)'}`);
                 return true;
             } catch (e) {
                 console.error('[MemoryManagerV2] Fehler beim Laden:', e);
@@ -935,7 +941,7 @@ function updateMemoryModalV2Content() {
     for (const slot of ichSlots) {
         const isActive = slot.archetyp === currentIchArchetyp;
         ichHtml += `
-        <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}">
+        <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}" onclick="handleLoadIchV2('${slot.archetyp}')" style="cursor: pointer;" title="Klicken zum Laden">
             <div class="memory-slot-icon">${slot.icon}</div>
             <div class="memory-slot-label">${slot.label}</div>
             <div class="memory-slot-god">${slot.formattedGOD} ${slot.formattedFFH}</div>
@@ -943,9 +949,9 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-agod">${slot.formattedAGOD}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
-                    <button class="memory-display-btn" onclick="handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
-                    <button class="memory-load-btn" onclick="handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
-                    <button class="memory-delete-btn" onclick="handleDeleteIchV2('${slot.archetyp}')" title="ICH-Slot löschen"${isActive ? ' disabled style="opacity:0.3"' : ''}>🗑️</button>
+                    <button class="memory-display-btn" onclick="event.stopPropagation(); handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
+                    <button class="memory-load-btn" onclick="event.stopPropagation(); handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
+                    <button class="memory-delete-btn" onclick="event.stopPropagation(); handleDeleteIchV2('${slot.archetyp}')" title="ICH-Slot löschen"${isActive ? ' disabled style="opacity:0.3"' : ''}>🗑️</button>
                 </div>
             ` : '<div class="memory-slot-empty">-</div>'}
         </div>

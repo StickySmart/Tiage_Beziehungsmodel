@@ -2061,8 +2061,15 @@ const TiageBeduerfnisse = {
      */
     getLabel: function(idOrKey) {
         const def = this.getDefinition(idOrKey);
-        if (def && def.label) {
-            return def.label;
+        if (def) {
+            // i18n: Übersetzte Labels verwenden wenn verfügbar
+            if (typeof TiageI18n !== 'undefined' && def.key) {
+                const translated = TiageI18n.t('needs.items.' + def.key);
+                if (translated && translated !== 'needs.items.' + def.key) {
+                    return translated;
+                }
+            }
+            if (def.label) return def.label;
         }
         // Fallback: ID formatieren
         return idOrKey.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
