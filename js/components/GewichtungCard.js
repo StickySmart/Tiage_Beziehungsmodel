@@ -111,7 +111,7 @@ const GewichtungCard = (function() {
     function getLocksByPerson(person) {
         // Lese Lock-Status aus TiageState (SSOT)
         if (typeof TiageState !== 'undefined') {
-            const gew = TiageState.get(`gewichtungen.${person}`);
+            const gew = TiageState.getGewichtungen(person);
             if (gew && gew.O) {
                 return {
                     orientierung: gew.O.locked || false,
@@ -128,13 +128,13 @@ const GewichtungCard = (function() {
         locksStore[person === 'partner' ? 'partner' : 'ich'] = locks;
         // Sync zu TiageState (SSOT)
         if (typeof TiageState !== 'undefined') {
-            const gew = TiageState.get(`gewichtungen.${person}`);
+            const gew = TiageState.getGewichtungen(person);
             if (gew) {
                 gew.O.locked = locks.orientierung || false;
                 gew.A.locked = locks.archetyp || false;
                 gew.D.locked = locks.dominanz || false;
                 gew.G.locked = locks.geschlecht || false;
-                TiageState.set(`gewichtungen.${person}`, gew);
+                TiageState.setGewichtungen(person, gew);
             }
         }
     }
@@ -271,7 +271,7 @@ const GewichtungCard = (function() {
 
         // PHILOSOPHIE B: TiageState ist Single Source of Truth
         if (typeof TiageState !== 'undefined') {
-            const fromState = TiageState.get(`gewichtungen.${person}`);
+            const fromState = TiageState.getGewichtungen(person);
             console.log('[GewichtungCard] load() - TiageState.get:', person, JSON.stringify(fromState));
 
             // Neues 3-Wege-Format: { O: 1, A: 2, D: 0, G: 1 }
@@ -386,7 +386,7 @@ const GewichtungCard = (function() {
         try {
             // SSOT: TiageState speichern + persistieren
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`gewichtungen.${person}`, combined);
+                TiageState.setGewichtungen(person, combined);
                 TiageState.saveToStorage();
                 console.log('[GewichtungCard] Saved to TiageState:', person, JSON.stringify(combined));
             }
@@ -414,7 +414,7 @@ const GewichtungCard = (function() {
 
         try {
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`gewichtungen.${person}`, combined);
+                TiageState.setGewichtungen(person, combined);
                 // Persist to localStorage for temp local save
                 TiageState.saveToStorage();
             }

@@ -192,7 +192,7 @@ const MemoryManagerV2 = (function() {
                        !obj.summeLock;  // Old format always has summeLock
             };
 
-            const storedGewichtung = TiageState.get('gewichtungen.ich');
+            const storedGewichtung = TiageState.getGewichtungen('ich');
 
             // Primary: TiageState (persistiert, übersteht tempReset)
             if (isNew3WayFormat(storedGewichtung)) {
@@ -544,7 +544,7 @@ const MemoryManagerV2 = (function() {
                             }
                         }
                         if (data.agodGewichtung) {
-                            TiageState.set('gewichtungen.ich', data.agodGewichtung);
+                            TiageState.setGewichtungen('ich', data.agodGewichtung, archetyp);
                         }
                         if (data.rtiPrioritaeten) {
                             TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
@@ -830,9 +830,9 @@ const MemoryManagerV2 = (function() {
                         }
                     }
 
-                    // AGOD-Gewichtung (3-Wege: 0/1/2)
+                    // AGOD-Gewichtung (3-Wege: 0/1/2) - per Archetyp
                     if (data.agodGewichtung) {
-                        TiageState.set('gewichtungen.ich', data.agodGewichtung);
+                        TiageState.setGewichtungen('ich', data.agodGewichtung, archetyp);
                     }
 
                     // RTI-Prioritäten

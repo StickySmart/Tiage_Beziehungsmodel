@@ -106,19 +106,20 @@ const TiageState = (function() {
         // ═══════════════════════════════════════════════════════════════════════
         // v4.5: NEW 3-way format: 0 = Egal, 1 = Normal, 2 = Wichtig
         // Diese beeinflussen wie stark die 4 Dimensionen ins Matching einfließen.
+        // v4.6: Per-Archetyp für ICH (wie resonanzFaktoren/flatNeeds)
         gewichtungen: {
             ich: {
-                O: 1,  // Orientierung: 0=Egal, 1=Normal, 2=Wichtig
-                A: 1,  // Archetyp: 0=Egal, 1=Normal, 2=Wichtig
-                D: 1,  // Dominanz: 0=Egal, 1=Normal, 2=Wichtig
-                G: 1   // Geschlecht: 0=Egal, 1=Normal, 2=Wichtig
+                // 8 Archetyp-Slots - Pro Archetyp gespeichert
+                single: { O: 1, A: 1, D: 1, G: 1 },
+                duo: { O: 1, A: 1, D: 1, G: 1 },
+                duo_flex: { O: 1, A: 1, D: 1, G: 1 },
+                solopoly: { O: 1, A: 1, D: 1, G: 1 },
+                polyamor: { O: 1, A: 1, D: 1, G: 1 },
+                ra: { O: 1, A: 1, D: 1, G: 1 },
+                lat: { O: 1, A: 1, D: 1, G: 1 },
+                aromantisch: { O: 1, A: 1, D: 1, G: 1 }
             },
-            partner: {
-                O: 1,
-                A: 1,
-                D: 1,
-                G: 1
-            }
+            partner: { O: 1, A: 1, D: 1, G: 1 }
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -947,31 +948,61 @@ const TiageState = (function() {
 
         /**
          * Get all Gewichtungen for a person
+         * ICH: Per-Archetyp gespeichert (wie resonanzFaktoren/flatNeeds)
+         * PARTNER: Global
          * @param {string} person - 'ich' or 'partner'
-         * @returns {Object} { O, A, D, G } mit value und locked
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
+         * @returns {Object} { O, A, D, G } (values 0-2)
          */
-        getGewichtungen(person) {
-            return this.get(`gewichtungen.${person}`);
+        getGewichtungen(person, archetyp = null) {
+            const defaults = { O: 1, A: 1, D: 1, G: 1 };
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                // Per-Archetyp Pfad versuchen
+                const perArch = this.get(`gewichtungen.ich.${arch}`);
+                if (perArch && typeof perArch.O === 'number') return perArch;
+                // Fallback: Globaler Pfad (Migration von altem Format)
+                const global = this.get('gewichtungen.ich');
+                if (global && typeof global.O === 'number' && !global.single) return global;
+                return defaults;
+            }
+            return this.get('gewichtungen.partner') || defaults;
         },
 
         /**
          * Set a single Gewichtung
+         * ICH: Per-Archetyp gespeichert
+         * PARTNER: Global
          * @param {string} person - 'ich' or 'partner'
          * @param {string} key - 'O', 'A', 'D', or 'G'
-         * @param {number} value - 0-100
-         * @param {boolean} locked - Whether the value is locked
+         * @param {number} value - 0, 1, or 2
+         * @param {boolean} locked - unused (kept for API compat)
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setGewichtung(person, key, value, locked = false) {
-            this.set(`gewichtungen.${person}.${key}`, { value, locked });
+        setGewichtung(person, key, value, locked = false, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`gewichtungen.ich.${arch}.${key}`, value);
+            } else {
+                this.set(`gewichtungen.${person}.${key}`, value);
+            }
         },
 
         /**
          * Set all Gewichtungen at once
+         * ICH: Per-Archetyp gespeichert
+         * PARTNER: Global
          * @param {string} person - 'ich' or 'partner'
          * @param {Object} gewichtungen - { O, A, D, G }
+         * @param {string} [archetyp] - Optional: Spezifischer Archetyp (nur für 'ich')
          */
-        setGewichtungen(person, gewichtungen) {
-            this.set(`gewichtungen.${person}`, gewichtungen);
+        setGewichtungen(person, gewichtungen, archetyp = null) {
+            if (person === 'ich') {
+                const arch = archetyp || this.get('archetypes.ich.primary') || 'single';
+                this.set(`gewichtungen.ich.${arch}`, gewichtungen);
+            } else {
+                this.set('gewichtungen.partner', gewichtungen);
+            }
         },
 
         /**
@@ -1046,8 +1077,27 @@ const TiageState = (function() {
             };
 
             const result = {};
+            const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
             if (gewichtungen.ich) {
-                result.ich = normalizePerson(gewichtungen.ich);
+                // v4.6: Per-Archetyp Format - ich.single, ich.duo, etc.
+                const ichKeys = Object.keys(gewichtungen.ich);
+                const hasArchetypeKeys = ichKeys.some(key => archetypes.includes(key));
+                if (hasArchetypeKeys) {
+                    result.ich = {};
+                    archetypes.forEach(arch => {
+                        result.ich[arch] = gewichtungen.ich[arch]
+                            ? normalizePerson(gewichtungen.ich[arch])
+                            : { O: 1, A: 1, D: 1, G: 1 };
+                    });
+                } else {
+                    // Altes globales Format → auf aktuellen Archetyp migrieren
+                    const migrated = normalizePerson(gewichtungen.ich);
+                    result.ich = {};
+                    archetypes.forEach(arch => {
+                        result.ich[arch] = { ...migrated };
+                    });
+                    console.log('[TiageState] Gewichtungen: globales Format → per-Archetyp migriert');
+                }
             }
             if (gewichtungen.partner) {
                 result.partner = normalizePerson(gewichtungen.partner);
@@ -1535,20 +1585,15 @@ const TiageState = (function() {
                 ich: { loadedSlot: null, isDirty: false },
                 partner: { loadedSlot: null, isDirty: false }
             });
-            // Reset neue Felder - v4.5: NEW 3-way format
+            // Reset neue Felder - v4.6: Per-Archetyp für ICH
+            const defaultGew = { O: 1, A: 1, D: 1, G: 1 };
             this.set('gewichtungen', {
                 ich: {
-                    O: 1,  // 0=Egal, 1=Normal, 2=Wichtig
-                    A: 1,
-                    D: 1,
-                    G: 1
+                    single: { ...defaultGew }, duo: { ...defaultGew }, duo_flex: { ...defaultGew },
+                    solopoly: { ...defaultGew }, polyamor: { ...defaultGew }, ra: { ...defaultGew },
+                    lat: { ...defaultGew }, aromantisch: { ...defaultGew }
                 },
-                partner: {
-                    O: 1,
-                    A: 1,
-                    D: 1,
-                    G: 1
-                }
+                partner: { ...defaultGew }
             });
             // ICH: Leer — per-Archetyp gespeichert (z.B. ich.single.R1)
             // Defaults (1.0) kommen automatisch von getResonanzFaktoren()
@@ -1600,7 +1645,7 @@ const TiageState = (function() {
                 partner: { loadedSlot: null, isDirty: false }
             };
             state.gewichtungen = {
-                ich: { O: 1, A: 1, D: 1, G: 1 },
+                ich: {},
                 partner: { O: 1, A: 1, D: 1, G: 1 }
             };
             state.resonanzFaktoren = {

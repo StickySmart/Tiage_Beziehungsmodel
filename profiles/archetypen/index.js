@@ -276,7 +276,7 @@
                 if (value.dominanz) TiageState.set('personDimensions.ich.dominanz', value.dominanz);
                 if (value.orientierung) TiageState.set('personDimensions.ich.orientierung', value.orientierung);
                 if (value.profileReview?.flatNeeds) TiageState.set('flatNeeds.ich', value.profileReview.flatNeeds);
-                if (value.gewichtungen) TiageState.set('gewichtungen.ich', value.gewichtungen);
+                if (value.gewichtungen) TiageState.setGewichtungen('ich', value.gewichtungen);
                 if (value.resonanzFaktoren) TiageState.setResonanzFaktoren('ich', value.resonanzFaktoren);
             }
         },

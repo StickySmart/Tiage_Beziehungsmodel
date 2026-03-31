@@ -59,18 +59,9 @@ var TiageWeights = TiageWeights || {};
             return;
         }
 
-        // Primary: Load from gewichtungen.ich (this IS persisted in saveToStorage)
-        let stored = TiageState.get('gewichtungen.ich');
-        let source = 'gewichtungen.ich';
-
-        console.log('[AGOD] gewichtungen.ich raw:', JSON.stringify(stored));
-
-        // Fallback: Load from paarung.gewichtungen (session only, not persisted)
-        if (!stored || stored.O === undefined) {
-            stored = TiageState.get('paarung.gewichtungen');
-            source = 'paarung.gewichtungen (fallback)';
-            console.log('[AGOD] Fallback to paarung.gewichtungen:', JSON.stringify(stored));
-        }
+        // v4.6: Per-Archetyp laden via getGewichtungen()
+        let stored = TiageState.getGewichtungen('ich');
+        let source = 'getGewichtungen(ich) [per-archetyp]';
 
         console.log('[AGOD] Loading from TiageState:', source, JSON.stringify(stored));
 
@@ -250,14 +241,11 @@ var TiageWeights = TiageWeights || {};
                     G: agodWeights.G
                 };
 
-                // Primary: Save to gewichtungen.ich (this IS persisted in saveToStorage)
-                TiageState.set('gewichtungen.ich', gewData);
-
-                // Session backup: Save to paarung.gewichtungen (for backwards compat)
-                TiageState.set('paarung.gewichtungen', gewData);
+                // v4.6: Per-Archetyp speichern via setGewichtungen()
+                TiageState.setGewichtungen('ich', gewData);
 
                 TiageState.saveToStorage();
-                console.log('[AGOD] Saved to TiageState (gewichtungen.ich):', gewData);
+                console.log('[AGOD] Saved per-archetyp via setGewichtungen(ich):', gewData);
             }
         } catch (e) {
             console.warn('[AGOD] Could not save to TiageState:', e);
