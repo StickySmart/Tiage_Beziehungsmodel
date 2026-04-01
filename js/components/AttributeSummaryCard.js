@@ -2977,14 +2977,14 @@ const AttributeSummaryCard = (function() {
             </div>
             <div class="flat-need-slider-row">
                 <input type="range" class="need-slider"
-                       min="0" max="100" step="10" value="${value}"
+                       min="0" max="100" step="1" value="${value}"
+                       oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.parentElement.querySelector('.flat-need-input'); if(inp) inp.value=this.value;"
                        onclick="event.stopPropagation()"
                        ${sliderStyle}
-                       disabled
-                       style="pointer-events:none;opacity:0.6;">
+                       ${isLocked ? 'disabled' : ''}>
                 <input type="number" class="flat-need-input" value="${value}" min="0" max="100" step="1"
                        onclick="event.stopPropagation(); this.select();"
-                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value)"
+                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.parentElement.querySelector('.need-slider'); if(sl) sl.value=this.value;"
                        onkeydown="if(event.key==='Enter'){this.blur();}"
                        style="width:48px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
                        ${isLocked ? 'disabled' : ''}>
