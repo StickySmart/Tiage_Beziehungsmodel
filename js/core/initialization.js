@@ -11,6 +11,10 @@ async function runAppInitialization() {
         // Load archetype data first - this is critical for all other functions
         // console.log('[TIAGE DEBUG] Before loadData');
         await window.loadData();
+        // Eigenschaften-Daten für Toggles vorladen
+        if (typeof window.loadEigenschaftenData === 'function') {
+            await window.loadEigenschaftenData();
+        }
         // console.log('[TIAGE DEBUG] After loadData, data loaded:', data !== null);
 
         window.checkAgeVerification();

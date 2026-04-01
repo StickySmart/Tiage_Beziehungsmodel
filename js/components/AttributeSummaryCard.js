@@ -2542,7 +2542,7 @@ const AttributeSummaryCard = (function() {
             </div>
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
 
-            ${typeof getEigenschaftenHtml === 'function' ? (() => {
+            ${typeof window.getEigenschaftenHtml === 'function' ? (() => {
                 const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : (archetyp ? [archetyp] : []);
                 let eHtml = '';
                 slots.forEach(slotArch => {
@@ -2551,7 +2551,7 @@ const AttributeSummaryCard = (function() {
                     if (slots.length > 1) {
                         eHtml += '<div style="margin-top:8px;padding:4px 8px;font-size:11px;font-weight:600;color:' + (ad?.color || 'var(--primary)') + ';border-left:3px solid ' + (ad?.color || 'var(--primary)') + ';border-radius:2px;">' + (window.icons?.[slotArch] || '') + ' ' + (ad?.name || slotArch) + '</div>';
                     }
-                    eHtml += getEigenschaftenHtml(slotArch);
+                    eHtml += window.getEigenschaftenHtml(slotArch);
                 });
                 return eHtml;
             })() : ''}
