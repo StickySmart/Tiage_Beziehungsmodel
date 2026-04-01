@@ -1011,19 +1011,18 @@
                     <div class="column-title">DU <span id="ich-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
-                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
-                    <select class="column-select" id="ichSelect">
-                        <option value="" title="Kein Archetyp gewählt">– Bitte wählen –</option>
-                        <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
-                        <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
-                        <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
-                        <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
-                        <option value="ra" title="RA - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
-                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
-                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
+                    <!-- Dropdown + Pfeile versteckt: Multi-Select via Grid -->
+                    <select class="column-select" id="ichSelect" style="display:none;">
+                        <option value="">–</option>
+                        <option value="single">Single</option>
+                        <option value="duo">Duo</option>
+                        <option value="duo_flex">Duo-Flex</option>
+                        <option value="solopoly">Solopoly</option>
+                        <option value="polyamor">Polyamor</option>
+                        <option value="ra">RA</option>
+                        <option value="lat">LAT</option>
+                        <option value="aromantisch">Aromantisch</option>
                     </select>
-                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" data-action="show-archetype-info" data-person="ich" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
