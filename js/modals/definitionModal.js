@@ -122,13 +122,8 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
         TiageState.saveToStorage();
     }
 
-    // UI aktualisieren
+    // Nur Toggle-UI aktualisieren (Liste bleibt statisch)
     updateEigenschaftenUI(archetypeId);
-
-    // Needs-Liste neu rendern wenn im Needs-Modal
-    if (typeof renderNeedsFullModal === 'function') {
-        renderNeedsFullModal();
-    }
 }
 
 function updateEigenschaftenUI(archetypeId) {

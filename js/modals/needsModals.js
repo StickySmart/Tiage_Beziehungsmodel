@@ -420,8 +420,9 @@ function renderNeedsFullModal() {
 
     if (!modal || !body) return;
 
-    var ichArchetyp = window.currentArchetype || '';
-    var partnerArchetyp = window.selectedPartner || '';
+    // Robuster Archetyp-Zugriff mit TiageState-Fallback
+    var ichArchetyp = window.currentArchetype || (typeof TiageState !== 'undefined' && TiageState.get('archetypes.ich.primary')) || '';
+    var partnerArchetyp = window.selectedPartner || (typeof TiageState !== 'undefined' && TiageState.get('archetypes.partner.primary')) || '';
     var archetypeDescs = window.archetypeDescriptions || {};
 
     if (!ichArchetyp || !partnerArchetyp) {
