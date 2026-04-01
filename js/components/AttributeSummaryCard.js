@@ -2982,10 +2982,12 @@ const AttributeSummaryCard = (function() {
                        ${sliderStyle}
                        disabled
                        style="pointer-events:none;opacity:0.6;">
-                <input type="text" class="flat-need-input" value="${value}" maxlength="3"
-                       onclick="event.stopPropagation()"
-                       readonly>
-                <span class="need-edit-btn" onclick="event.stopPropagation(); AttributeSummaryCard.editNeedValue('${needId}')" title="Wert bearbeiten" style="cursor:pointer;font-size:14px;padding:2px 6px;margin-left:4px;${isLocked ? 'opacity:0.3;pointer-events:none;' : ''}">✏️</span>
+                <input type="number" class="flat-need-input" value="${value}" min="0" max="100" step="1"
+                       onclick="event.stopPropagation(); this.select();"
+                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value)"
+                       onkeydown="if(event.key==='Enter'){this.blur();}"
+                       style="width:48px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
+                       ${isLocked ? 'disabled' : ''}>
             </div>
         </div>`;
     }
@@ -4174,17 +4176,9 @@ const AttributeSummaryCard = (function() {
      * Edit-Button Handler: Öffnet Inline-Input für Bedürfniswert.
      * Änderung gilt GLOBAL für alle Archetypen + Auto-Save.
      */
-    function editNeedValue(needId) {
-        const currentValue = (() => {
-            const needObj = findNeedById(needId);
-            return needObj ? needObj.value : 50;
-        })();
-
-        const neuerWert = prompt(`Neuer Wert für ${needId} (0-100):`, currentValue);
-        if (neuerWert === null) return;
-
-        const parsed = parseInt(neuerWert, 10);
-        if (isNaN(parsed) || parsed < 0 || parsed > 100) return;
+    function editNeedValue(needId, newValue) {
+        const parsed = Math.max(0, Math.min(100, parseInt(newValue, 10)));
+        if (isNaN(parsed)) return;
 
         // GLOBAL: Für alle 8 Archetypen setzen
         if (typeof TiageState !== 'undefined') {
