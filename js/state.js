@@ -931,33 +931,46 @@ const TiageState = (function() {
 
         /**
          * Kombiniert die flatNeeds aller aktiven ICH-Archetypen.
-         * Additiv: Basis-Profil + Summe aller Toggle-Deltas.
+         * Abstufend gewichtet: 1.=40%, 2.=30%, 3.=20%, 4.=10%
+         * Bei weniger Slots werden die Gewichte proportional verteilt.
          * @returns {Object} { '#B1': 65, '#B2': 42, ... }
          */
         getCombinedFlatNeeds() {
             const slots = this.getIchSlots();
             if (slots.length === 0) return {};
+            if (slots.length === 1) return this.get(`flatNeeds.ich.${slots[0]}`) || {};
 
-            // Alle Needs aus allen Slots sammeln
-            const combined = {};
-            const counts = {};
+            // Abstufende Gewichte
+            const weightTemplates = {
+                2: [0.60, 0.40],
+                3: [0.50, 0.30, 0.20],
+                4: [0.40, 0.30, 0.20, 0.10]
+            };
+            const weights = weightTemplates[slots.length] || weightTemplates[4];
 
-            slots.forEach(arch => {
+            // Alle Need-IDs sammeln
+            const allNeedIds = new Set();
+            const slotNeeds = slots.map(arch => {
                 const needs = this.get(`flatNeeds.ich.${arch}`) || {};
-                Object.entries(needs).forEach(([needId, value]) => {
-                    if (!combined[needId]) {
-                        combined[needId] = 0;
-                        counts[needId] = 0;
-                    }
-                    combined[needId] += (typeof value === 'number' ? value : 0);
-                    counts[needId]++;
-                });
+                Object.keys(needs).forEach(id => allNeedIds.add(id));
+                return needs;
             });
 
-            // Durchschnitt bilden und auf 0-100 cappen
+            // Gewichteten Mix berechnen
             const result = {};
-            Object.entries(combined).forEach(([needId, sum]) => {
-                result[needId] = Math.max(0, Math.min(100, Math.round(sum / counts[needId])));
+            allNeedIds.forEach(needId => {
+                let weightedSum = 0;
+                let totalWeight = 0;
+                slots.forEach((arch, i) => {
+                    const value = slotNeeds[i][needId];
+                    if (typeof value === 'number') {
+                        weightedSum += value * weights[i];
+                        totalWeight += weights[i];
+                    }
+                });
+                if (totalWeight > 0) {
+                    result[needId] = Math.max(0, Math.min(100, Math.round(weightedSum / totalWeight)));
+                }
             });
             return result;
         },
