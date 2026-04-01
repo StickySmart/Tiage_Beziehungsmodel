@@ -102,19 +102,29 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
     states[eigenschaftId] = neuerStatus;
 
     // Bedürfnisse anpassen (mit Lock-Schutz)
+    // Schreibt in den Archetyp-Slot der getoggelt wurde
     if (typeof TiageState !== 'undefined') {
-        const arch = TiageState.get('archetypes.ich.primary') || 'single';
         eigenschaft.beduerfnisse.forEach(needId => {
             // Lock-Check
             const lockPath = `profileReview.ich.global.${needId}`;
             const lockData = TiageState.get(lockPath);
             if (lockData && lockData.locked) return;
 
-            const needPath = `flatNeeds.ich.${arch}.${needId}`;
+            const needPath = `flatNeeds.ich.${archetypeId}.${needId}`;
             const current = TiageState.get(needPath) || 50;
             const delta = neuerStatus ? eigenschaft.delta : -eigenschaft.delta;
             const newVal = Math.max(0, Math.min(100, current + delta));
             TiageState.set(needPath, newVal);
+            console.log(`[Eigenschaften] ${needId}: ${current} → ${newVal} (${neuerStatus ? '+' : ''}${neuerStatus ? eigenschaft.delta : -eigenschaft.delta})`);
+
+            // Slider-UI sofort aktualisieren
+            const container = document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
+            if (container) {
+                const slider = container.querySelector('.need-slider');
+                const input = container.querySelector('.flat-need-input');
+                if (slider) { slider.value = newVal; slider.style.setProperty('--value', newVal + '%'); }
+                if (input) input.value = newVal;
+            }
         });
 
         // Eigenschafts-State persistieren
@@ -122,7 +132,7 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
         TiageState.saveToStorage();
     }
 
-    // Nur Toggle-UI aktualisieren (Liste bleibt statisch)
+    // Toggle-UI aktualisieren
     updateEigenschaftenUI(archetypeId);
 }
 
