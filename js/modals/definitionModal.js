@@ -101,9 +101,20 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
     const neuerStatus = !states[eigenschaftId];
     states[eigenschaftId] = neuerStatus;
 
-    // Bedürfnisse anpassen (mit Lock-Schutz)
+    // Bedürfnisse anpassen (mit Lock-Schutz + AGOD-Skalierung)
     // Schreibt in den Archetyp-Slot der getoggelt wurde
     if (typeof TiageState !== 'undefined') {
+        // AGOD-Gesamtfaktor berechnen: Durchschnitt aller 4 Gewichtungen
+        // 0=Egal→0.5, 1=Normal→1.0, 2=Wichtig→1.5
+        const agodMap = { 0: 0.5, 1: 1.0, 2: 1.5 };
+        const gew = TiageState.getGewichtungen ? TiageState.getGewichtungen('ich', archetypeId) : { O: 1, A: 1, D: 1, G: 1 };
+        const agodFaktor = (
+            (agodMap[gew.A] || 1.0) +
+            (agodMap[gew.G] || 1.0) +
+            (agodMap[gew.O] || 1.0) +
+            (agodMap[gew.D] || 1.0)
+        ) / 4;
+
         eigenschaft.beduerfnisse.forEach(needId => {
             // Lock-Check
             const lockPath = `profileReview.ich.global.${needId}`;
@@ -112,10 +123,12 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
 
             const needPath = `flatNeeds.ich.${archetypeId}.${needId}`;
             const current = TiageState.get(needPath) || 50;
-            const delta = neuerStatus ? eigenschaft.delta : -eigenschaft.delta;
+            // Option C: Faktor-basiert mit AGOD-Skalierung
+            const scaledDelta = Math.round(eigenschaft.delta * agodFaktor);
+            const delta = neuerStatus ? scaledDelta : -scaledDelta;
             const newVal = Math.max(0, Math.min(100, current + delta));
             TiageState.set(needPath, newVal);
-            console.log(`[Eigenschaften] ${needId}: ${current} → ${newVal} (${neuerStatus ? '+' : ''}${neuerStatus ? eigenschaft.delta : -eigenschaft.delta})`);
+            console.log(`[Eigenschaften] ${needId}: ${current} → ${newVal} (${delta > 0 ? '+' : ''}${delta}) [AGOD-Faktor: ${agodFaktor.toFixed(2)}]`);
 
             // Slider-UI sofort aktualisieren
             const container = document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
