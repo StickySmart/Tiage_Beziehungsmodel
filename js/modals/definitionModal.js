@@ -29,6 +29,146 @@ let currentDefinitionPerson = 'ich';
 let definitionTouchStartX = 0;
 
 // ========================================
+// Eigenschaften-Toggle System
+// ========================================
+let eigenschaftenData = null;
+let eigenschaftenStates = {}; // { archetyp: { eigenschaftId: true/false } }
+
+// CSS für Toggle-Switches (einmalig injizieren)
+(function injectToggleCSS() {
+    if (document.getElementById('eigenschaften-toggle-css')) return;
+    const style = document.createElement('style');
+    style.id = 'eigenschaften-toggle-css';
+    style.textContent = `
+        .eigenschaften-section { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border); }
+        .eigenschaften-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+        .eigenschaften-liste { display: flex; flex-direction: column; gap: 3px; }
+        .eigenschaft-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .eigenschaft-row:hover { background: rgba(255,255,255,0.05); }
+        .eigenschaft-row.aktiv .eigenschaft-label { color: var(--text-primary, #e0e0e0); }
+        .eigenschaft-row.inaktiv .eigenschaft-label { color: var(--text-muted, #666); opacity: 0.6; }
+        .eigenschaft-label { font-size: 12px; flex: 1; }
+        .toggle-switch { width: 36px; height: 20px; background: rgba(255,255,255,0.15); border-radius: 10px; position: relative; transition: background 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .toggle-switch.aktiv { background: #8b5cf6; }
+        .toggle-switch::after { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
+        .toggle-switch.aktiv::after { transform: translateX(16px); }
+    `;
+    document.head.appendChild(style);
+})();
+
+async function loadEigenschaftenData() {
+    if (eigenschaftenData) return eigenschaftenData;
+    try {
+        const resp = await fetch('profiles/data/archetyp-eigenschaften.json');
+        if (resp.ok) {
+            const json = await resp.json();
+            eigenschaftenData = json.archetypen || {};
+        }
+    } catch (e) {
+        console.warn('[DefinitionModal] Eigenschaften-Daten nicht geladen:', e);
+    }
+    return eigenschaftenData || {};
+}
+
+function getEigenschaftenState(archetypeId) {
+    if (!eigenschaftenStates[archetypeId]) {
+        eigenschaftenStates[archetypeId] = {};
+        const archData = eigenschaftenData?.[archetypeId];
+        if (archData?.eigenschaften) {
+            archData.eigenschaften.forEach(e => {
+                eigenschaftenStates[archetypeId][e.id] = e.default;
+            });
+        }
+        // Aus TiageState laden (persistiert)
+        if (typeof TiageState !== 'undefined') {
+            const saved = TiageState.get(`eigenschaften.ich.${archetypeId}`);
+            if (saved && typeof saved === 'object') {
+                Object.assign(eigenschaftenStates[archetypeId], saved);
+            }
+        }
+    }
+    return eigenschaftenStates[archetypeId];
+}
+
+function toggleEigenschaft(archetypeId, eigenschaftId) {
+    const archData = eigenschaftenData?.[archetypeId];
+    if (!archData) return;
+
+    const eigenschaft = archData.eigenschaften.find(e => e.id === eigenschaftId);
+    if (!eigenschaft) return;
+
+    const states = getEigenschaftenState(archetypeId);
+    const neuerStatus = !states[eigenschaftId];
+    states[eigenschaftId] = neuerStatus;
+
+    // Bedürfnisse anpassen (mit Lock-Schutz)
+    if (typeof TiageState !== 'undefined') {
+        const arch = TiageState.get('archetypes.ich.primary') || 'single';
+        eigenschaft.beduerfnisse.forEach(needId => {
+            // Lock-Check
+            const lockPath = `profileReview.ich.global.${needId}`;
+            const lockData = TiageState.get(lockPath);
+            if (lockData && lockData.locked) return;
+
+            const needPath = `flatNeeds.ich.${arch}.${needId}`;
+            const current = TiageState.get(needPath) || 50;
+            const delta = neuerStatus ? eigenschaft.delta : -eigenschaft.delta;
+            const newVal = Math.max(0, Math.min(100, current + delta));
+            TiageState.set(needPath, newVal);
+        });
+
+        // Eigenschafts-State persistieren
+        TiageState.set(`eigenschaften.ich.${archetypeId}`, { ...states });
+        TiageState.saveToStorage();
+    }
+
+    // UI aktualisieren
+    updateEigenschaftenUI(archetypeId);
+}
+
+function updateEigenschaftenUI(archetypeId) {
+    const states = getEigenschaftenState(archetypeId);
+    const container = document.getElementById('eigenschaften-liste-' + archetypeId);
+    if (!container) return;
+
+    container.querySelectorAll('.eigenschaft-row').forEach(row => {
+        const id = row.dataset.id;
+        const aktiv = states[id];
+        row.className = 'eigenschaft-row ' + (aktiv ? 'aktiv' : 'inaktiv');
+        const toggle = row.querySelector('.toggle-switch');
+        if (toggle) toggle.className = 'toggle-switch' + (aktiv ? ' aktiv' : '');
+    });
+}
+
+function getEigenschaftenHtml(archetypeId) {
+    const archData = eigenschaftenData?.[archetypeId];
+    if (!archData?.eigenschaften) return '';
+
+    const states = getEigenschaftenState(archetypeId);
+    const lang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
+    const title = lang === 'de' ? 'EIGENSCHAFTEN' : 'PROPERTIES';
+
+    const rows = archData.eigenschaften.map(e => {
+        const aktiv = states[e.id] ?? e.default;
+        const label = (lang !== 'de' && e.label_en) ? e.label_en : e.label;
+        return `
+            <div class="eigenschaft-row ${aktiv ? 'aktiv' : 'inaktiv'}" data-id="${e.id}" onclick="window._toggleEigenschaft('${archetypeId}', '${e.id}')">
+                <span class="eigenschaft-label">${label}</span>
+                <div class="toggle-switch${aktiv ? ' aktiv' : ''}"></div>
+            </div>`;
+    }).join('');
+
+    return `
+        <div class="eigenschaften-section">
+            <div class="eigenschaften-title">${title}</div>
+            <div class="eigenschaften-liste" id="eigenschaften-liste-${archetypeId}">${rows}</div>
+        </div>`;
+}
+
+// Global handler für onclick in HTML
+window._toggleEigenschaft = toggleEigenschaft;
+
+// ========================================
 // Open / Close
 // ========================================
 function openDefinitionModal(archetypeId) {
@@ -123,12 +263,15 @@ function navigateDefinitionModal(direction) {
 // ========================================
 // Show Archetype Info (INFO button entry point)
 // ========================================
-function showArchetypeInfo(person) {
+async function showArchetypeInfo(person) {
     const archetype = person === 'ich' ? window.getIchArchetype() : window.getPartnerArchetype();
     if (!window.tiageData || !window.tiageData.archetypes || !window.tiageData.archetypes[archetype]) {
         console.error('Data not available for archetype:', archetype);
         return;
     }
+
+    // Eigenschaften-Daten laden (einmalig)
+    await loadEigenschaftenData();
 
     currentDefinitionIndex = window.archetypeOrder.indexOf(archetype);
     if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
@@ -215,6 +358,11 @@ function showArchetypeInfoByType(archetypeId) {
             </div>
             <div class="modal-category-desc">${localizedArch.shortDef || ''}</div>
     `;
+
+    // Eigenschaften-Toggles (nur wenn Daten geladen)
+    if (currentDefinitionPerson === 'ich') {
+        modalContent += getEigenschaftenHtml(archetypeId);
+    }
 
     if (def || localizedArch.longDef) {
         modalContent += `

@@ -1,0 +1,94 @@
+{
+  "version": "1.0.0",
+  "description": "Eigenschaften pro Archetyp mit Bedürfnis-Kopplung. Toggle AN/AUS ändert verknüpfte Bedürfniswerte.",
+  "archetypen": {
+    "single": {
+      "eigenschaften": [
+        { "id": "autonomie", "label": "Hohe Autonomie", "label_en": "High Autonomy", "default": true, "beduerfnisse": ["#B36", "#B37", "#B35"], "delta": 25 },
+        { "id": "selbstentfaltung", "label": "Selbstentfaltung", "label_en": "Self-Development", "default": true, "beduerfnisse": ["#B34", "#B46", "#B47"], "delta": 25 },
+        { "id": "eigene_wohnung", "label": "Eigene Wohnung", "label_en": "Own Living Space", "default": true, "beduerfnisse": ["#B37", "#B180"], "delta": 20 },
+        { "id": "eigene_finanzen", "label": "Eigene Finanzen", "label_en": "Own Finances", "default": true, "beduerfnisse": ["#B36", "#B34"], "delta": 20 },
+        { "id": "romantische_beziehung", "label": "Romantische Beziehung", "label_en": "Romantic Relationship", "default": false, "beduerfnisse": ["#B21", "#B20", "#B18"], "delta": 25 },
+        { "id": "sexuelle_partnerschaft", "label": "Sexuelle Partnerschaft", "label_en": "Sexual Partnership", "default": false, "beduerfnisse": ["#B7", "#B222"], "delta": 20 },
+        { "id": "freundschaften_prioritaet", "label": "Freundschaften als Priorität", "label_en": "Friendships as Priority", "default": true, "beduerfnisse": ["#B192", "#B191", "#B19"], "delta": 20 }
+      ]
+    },
+    "duo": {
+      "eigenschaften": [
+        { "id": "exklusivitaet", "label": "Exklusivität", "label_en": "Exclusivity", "default": true, "beduerfnisse": ["#B29", "#B13"], "delta": 25 },
+        { "id": "zusammenwohnen", "label": "Zusammenwohnen", "label_en": "Living Together", "default": true, "beduerfnisse": ["#B18", "#B15", "#B24"], "delta": 25 },
+        { "id": "langfristig", "label": "Langfristige Planung", "label_en": "Long-term Planning", "default": true, "beduerfnisse": ["#B13", "#B10"], "delta": 20 },
+        { "id": "emotionale_naehe", "label": "Emotionale Nähe", "label_en": "Emotional Closeness", "default": true, "beduerfnisse": ["#B15", "#B20", "#B21"], "delta": 25 },
+        { "id": "gemeinsame_finanzen", "label": "Gemeinsame Finanzen", "label_en": "Shared Finances", "default": true, "beduerfnisse": ["#B23", "#B29"], "delta": 15 },
+        { "id": "offenheit_andere", "label": "Offenheit für Andere", "label_en": "Openness to Others", "default": false, "beduerfnisse": ["#B38", "#B35"], "delta": 20 },
+        { "id": "eigene_freunde", "label": "Eigene Freundeskreise", "label_en": "Separate Friend Groups", "default": false, "beduerfnisse": ["#B36", "#B192"], "delta": 15 }
+      ]
+    },
+    "duo_flex": {
+      "eigenschaften": [
+        { "id": "primaerpartner", "label": "Primärpartnerschaft", "label_en": "Primary Partnership", "default": true, "beduerfnisse": ["#B21", "#B15", "#B13"], "delta": 25 },
+        { "id": "sexuelle_offenheit", "label": "Sexuelle Offenheit", "label_en": "Sexual Openness", "default": true, "beduerfnisse": ["#B7", "#B221", "#B35"], "delta": 25 },
+        { "id": "emotionale_exklusivitaet", "label": "Emotionale Exklusivität", "label_en": "Emotional Exclusivity", "default": true, "beduerfnisse": ["#B20", "#B29"], "delta": 20 },
+        { "id": "transparenz", "label": "Transparenz & Regeln", "label_en": "Transparency & Rules", "default": true, "beduerfnisse": ["#B29", "#B155"], "delta": 20 },
+        { "id": "zusammenwohnen", "label": "Zusammenwohnen", "label_en": "Living Together", "default": true, "beduerfnisse": ["#B18", "#B15"], "delta": 20 },
+        { "id": "romantik_mit_dritten", "label": "Romantik mit Dritten", "label_en": "Romance with Others", "default": false, "beduerfnisse": ["#B21", "#B193"], "delta": 20 },
+        { "id": "unabhaengige_abende", "label": "Unabhängige Abende", "label_en": "Independent Evenings", "default": true, "beduerfnisse": ["#B36", "#B37"], "delta": 15 }
+      ]
+    },
+    "solopoly": {
+      "eigenschaften": [
+        { "id": "autonomie", "label": "Hohe Autonomie", "label_en": "High Autonomy", "default": true, "beduerfnisse": ["#B36", "#B37", "#B35"], "delta": 30 },
+        { "id": "keine_hierarchie", "label": "Keine Beziehungs-Hierarchie", "label_en": "No Relationship Hierarchy", "default": true, "beduerfnisse": ["#B34", "#B25"], "delta": 25 },
+        { "id": "eigene_wohnung", "label": "Eigene Wohnung", "label_en": "Own Living Space", "default": true, "beduerfnisse": ["#B37", "#B180"], "delta": 25 },
+        { "id": "mehrere_partner", "label": "Mehrere Partner", "label_en": "Multiple Partners", "default": true, "beduerfnisse": ["#B193", "#B38", "#B35"], "delta": 20 },
+        { "id": "emotionale_tiefe", "label": "Emotionale Tiefe", "label_en": "Emotional Depth", "default": true, "beduerfnisse": ["#B20", "#B155", "#B150"], "delta": 20 },
+        { "id": "gemeinsamer_haushalt", "label": "Gemeinsamer Haushalt", "label_en": "Shared Household", "default": false, "beduerfnisse": ["#B18", "#B15"], "delta": 20 },
+        { "id": "langfristige_plaene", "label": "Langfristige Pläne", "label_en": "Long-term Plans", "default": false, "beduerfnisse": ["#B13", "#B10"], "delta": 15 }
+      ]
+    },
+    "polyamor": {
+      "eigenschaften": [
+        { "id": "mehrere_liebesbeziehungen", "label": "Mehrere Liebesbeziehungen", "label_en": "Multiple Love Relationships", "default": true, "beduerfnisse": ["#B21", "#B20", "#B193"], "delta": 25 },
+        { "id": "transparenz", "label": "Volle Transparenz", "label_en": "Full Transparency", "default": true, "beduerfnisse": ["#B29", "#B155", "#B160"], "delta": 25 },
+        { "id": "compersion", "label": "Compersion (Mitfreude)", "label_en": "Compersion", "default": true, "beduerfnisse": ["#B26", "#B25"], "delta": 20 },
+        { "id": "zeitmanagement", "label": "Bewusstes Zeitmanagement", "label_en": "Conscious Time Management", "default": true, "beduerfnisse": ["#B27", "#B34"], "delta": 15 },
+        { "id": "hierarchie", "label": "Hierarchie (Primär/Sekundär)", "label_en": "Hierarchy (Primary/Secondary)", "default": false, "beduerfnisse": ["#B13", "#B11"], "delta": 20 },
+        { "id": "gemeinsam_wohnen", "label": "Zusammenwohnen (Polycule)", "label_en": "Living Together (Polycule)", "default": false, "beduerfnisse": ["#B18", "#B15", "#B191"], "delta": 20 },
+        { "id": "kitchen_table", "label": "Kitchen Table Poly", "label_en": "Kitchen Table Poly", "default": true, "beduerfnisse": ["#B190", "#B191", "#B19"], "delta": 15 }
+      ]
+    },
+    "ra": {
+      "eigenschaften": [
+        { "id": "keine_normen", "label": "Keine gesellschaftlichen Normen", "label_en": "No Social Norms", "default": true, "beduerfnisse": ["#B34", "#B35", "#B199"], "delta": 30 },
+        { "id": "keine_hierarchie", "label": "Keine Beziehungs-Hierarchie", "label_en": "No Relationship Hierarchy", "default": true, "beduerfnisse": ["#B25", "#B36"], "delta": 25 },
+        { "id": "individuelle_abmachungen", "label": "Individuelle Abmachungen", "label_en": "Individual Agreements", "default": true, "beduerfnisse": ["#B34", "#B155"], "delta": 20 },
+        { "id": "freundschaft_gleichwertig", "label": "Freundschaft = Partnerschaft", "label_en": "Friendship = Partnership", "default": true, "beduerfnisse": ["#B192", "#B191", "#B25"], "delta": 20 },
+        { "id": "volle_autonomie", "label": "Volle Autonomie", "label_en": "Full Autonomy", "default": true, "beduerfnisse": ["#B36", "#B37", "#B35"], "delta": 25 },
+        { "id": "commitment", "label": "Festes Commitment", "label_en": "Fixed Commitment", "default": false, "beduerfnisse": ["#B13", "#B10", "#B29"], "delta": 20 },
+        { "id": "labels", "label": "Labels verwenden", "label_en": "Using Labels", "default": false, "beduerfnisse": ["#B11", "#B13"], "delta": 15 }
+      ]
+    },
+    "lat": {
+      "eigenschaften": [
+        { "id": "getrennte_wohnungen", "label": "Getrennte Wohnungen", "label_en": "Separate Homes", "default": true, "beduerfnisse": ["#B37", "#B36", "#B180"], "delta": 30 },
+        { "id": "feste_partnerschaft", "label": "Feste Partnerschaft", "label_en": "Committed Partnership", "default": true, "beduerfnisse": ["#B21", "#B29", "#B13"], "delta": 25 },
+        { "id": "bewusste_besuche", "label": "Bewusste Besuche", "label_en": "Intentional Visits", "default": true, "beduerfnisse": ["#B18", "#B20"], "delta": 20 },
+        { "id": "eigener_alltag", "label": "Eigener Alltag", "label_en": "Own Daily Life", "default": true, "beduerfnisse": ["#B34", "#B36"], "delta": 20 },
+        { "id": "getrennte_finanzen", "label": "Getrennte Finanzen", "label_en": "Separate Finances", "default": true, "beduerfnisse": ["#B36", "#B34"], "delta": 15 },
+        { "id": "zusammenziehen", "label": "Zusammenziehen möglich", "label_en": "Moving In Possible", "default": false, "beduerfnisse": ["#B15", "#B18", "#B24"], "delta": 25 },
+        { "id": "gemeinsame_urlaube", "label": "Gemeinsame Urlaube", "label_en": "Shared Holidays", "default": true, "beduerfnisse": ["#B19", "#B201"], "delta": 15 }
+      ]
+    },
+    "aromantisch": {
+      "eigenschaften": [
+        { "id": "keine_romantik", "label": "Keine Romantik", "label_en": "No Romance", "default": true, "beduerfnisse": ["#B36", "#B34"], "delta": 25 },
+        { "id": "tiefe_freundschaften", "label": "Tiefe Freundschaften", "label_en": "Deep Friendships", "default": true, "beduerfnisse": ["#B192", "#B191", "#B19"], "delta": 25 },
+        { "id": "eigenstaendigkeit", "label": "Eigenständigkeit", "label_en": "Independence", "default": true, "beduerfnisse": ["#B36", "#B37", "#B35"], "delta": 25 },
+        { "id": "queerplatonisch", "label": "Queerplatonische Bindung", "label_en": "Queerplatonic Bond", "default": false, "beduerfnisse": ["#B24", "#B18", "#B32"], "delta": 20 },
+        { "id": "sexuelles_interesse", "label": "Sexuelles Interesse", "label_en": "Sexual Interest", "default": false, "beduerfnisse": ["#B7", "#B222"], "delta": 20 },
+        { "id": "wohngemeinschaft", "label": "Wohngemeinschaft", "label_en": "Shared Housing", "default": false, "beduerfnisse": ["#B18", "#B191"], "delta": 15 },
+        { "id": "gesellschaftliche_anerkennung", "label": "Gesellschaftliche Anerkennung", "label_en": "Social Recognition", "default": false, "beduerfnisse": ["#B25", "#B31"], "delta": 15 }
+      ]
+    }
+  }
+}

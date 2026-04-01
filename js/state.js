@@ -1845,6 +1845,10 @@ const TiageState = (function() {
                         this.set('flatNeeds', migratedFlatNeeds);
                         console.log('[TiageState] loadFromStorage - flatNeeds geladen/migriert');
                     }
+                    // Eigenschaften-Toggles laden
+                    if (parsed.eigenschaften) {
+                        this.set('eigenschaften', parsed.eigenschaften);
+                    }
                     // UI Settings laden
                     if (parsed.ui) {
                         if (parsed.ui.matchModalView) {
@@ -1982,6 +1986,8 @@ _ensureFlatNeedsInitialized: function() {
                     // flatNeeds - die 220 Bedürfniswerte MÜSSEN gespeichert werden!
                     // Früher: "werden aus Inputs berechnet" - aber sie wurden NICHT neu berechnet beim Laden
                     flatNeeds: this.get('flatNeeds'),
+                    // Eigenschaften-Toggles per Archetyp
+                    eigenschaften: this.get('eigenschaften'),
                     // UI Settings - persistente Einstellungen
                     ui: {
                         matchModalView: this.get('ui.matchModalView'),
