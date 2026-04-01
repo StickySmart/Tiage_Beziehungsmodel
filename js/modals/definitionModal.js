@@ -145,6 +145,36 @@ function showArchetypeInfo(person) {
 }
 
 // ========================================
+// Archetype Sources & Wikipedia Links
+// ========================================
+const archetypeSources = {
+    single:      { quelle: "Bella DePaulo, 'Singled Out' (2006)", kurz: "DePaulo 2006", wiki_de: null, wiki_en: "https://en.wikipedia.org/wiki/Single_person" },
+    duo:         { quelle: "Gottman & Silver, 'The Seven Principles for Making Marriage Work' (1999)", kurz: "Gottman 1999", wiki_de: "https://de.wikipedia.org/wiki/Monogamie", wiki_en: null },
+    duo_flex:    { quelle: "Easton & Hardy, 'The Ethical Slut' (1997/2017)", kurz: "Easton & Hardy 1997", wiki_de: "https://de.wikipedia.org/wiki/Offene_Beziehung", wiki_en: null },
+    solopoly:    { quelle: "Amy Gahran, 'Stepping Off the Relationship Escalator' (2017)", kurz: "Gahran 2017", wiki_de: null, wiki_en: "https://en.wikipedia.org/wiki/Solo_polyamory" },
+    polyamor:    { quelle: "Morning Glory Zell-Ravenheart, 'A Bouquet of Lovers' (1990)", kurz: "Zell-Ravenheart 1990", wiki_de: "https://de.wikipedia.org/wiki/Polyamorie", wiki_en: null },
+    ra:          { quelle: "Andie Nordgren, 'Relationsanarki i 8 punkter' (2006)", kurz: "Nordgren 2006", wiki_de: "https://de.wikipedia.org/wiki/Beziehungsanarchie", wiki_en: null },
+    lat:         { quelle: "Irene Levin, 'Living Apart Together: A New Family Form' (2004)", kurz: "Levin 2004", wiki_de: "https://de.wikipedia.org/wiki/Fernbeziehung", wiki_en: "https://en.wikipedia.org/wiki/Living_apart_together" },
+    aromantisch: { quelle: "AVEN/AUREA Community (2005-2006)", kurz: "AVEN 2005", wiki_de: "https://de.wikipedia.org/wiki/Aromantik", wiki_en: null }
+};
+
+function getSourceHtml(archetypeId) {
+    const src = archetypeSources[archetypeId];
+    if (!src) return '';
+
+    const lang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
+    const wikiUrl = (lang === 'de' ? src.wiki_de : src.wiki_en) || src.wiki_de || src.wiki_en;
+    const wikiLabel = wikiUrl && wikiUrl.includes('de.wikipedia') ? 'Wikipedia (DE)' : 'Wikipedia (EN)';
+
+    return `
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted);">
+            <div title="${src.quelle}">📚 ${src.kurz}</div>
+            ${wikiUrl ? `<a href="${wikiUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 4px; color: #8b5cf6; text-decoration: none; font-size: 11px;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">🔗 ${wikiLabel}</a>` : ''}
+        </div>
+    `;
+}
+
+// ========================================
 // Render Archetype Info Content
 // ========================================
 function showArchetypeInfoByType(archetypeId) {
@@ -258,6 +288,9 @@ function showArchetypeInfoByType(archetypeId) {
 
         modalContent += `</div>`;
     }
+
+    // Quellenangabe + Wikipedia-Link
+    modalContent += getSourceHtml(archetypeId);
 
     modalContent += '</div>';
 
