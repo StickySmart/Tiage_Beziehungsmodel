@@ -541,6 +541,8 @@
     <script src="js/core/actions/needsEditorActions.js"></script>
     <!-- Resonanz Tree View -->
     <script src="js/components/ResonanzTreeView.js"></script>
+    <!-- Eigenschaften-Toggles für Bedürfnisse -->
+    <script src="js/modals/definitionModal.js"></script>
     <script src="js/components/AttributeSummaryCard.js"></script>
     <script src="js/components/profile-components.js"></script>
     <!-- PerspektivenModal für Need-Details -->
@@ -880,6 +882,11 @@
                     console.warn('[NeedsEditor] BeduerfnisIds konnte nicht geladen werden:', e);
                 }
             }
+            // Eigenschaften-Daten vorladen
+            if (typeof window.loadEigenschaftenData === 'function') {
+                await window.loadEigenschaftenData();
+            }
+
             initializeNeedsEditor();
 
             // Workflow Guide initialisieren
