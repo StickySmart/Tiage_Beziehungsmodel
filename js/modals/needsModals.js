@@ -351,10 +351,14 @@ function openGfkExplanationModal(event) {
     if (modal) modal.classList.add('active');
 }
 
-function openNeedsFullModal() {
+async function openNeedsFullModal() {
     needsFullModalCurrentTab = 'gemeinsam';
     needsFullModalSortBy = null;
     needsFullModalSortDir = 'desc';
+    // Eigenschaften-Daten laden (einmalig)
+    if (typeof loadEigenschaftenData === 'function') {
+        await loadEigenschaftenData();
+    }
     renderNeedsFullModal();
 }
 
@@ -512,6 +516,12 @@ function renderNeedsFullModal() {
         '<button onclick="switchNeedsFullModalTab(\'unterschiedlich\')" style="flex:1;padding:10px 16px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;' + (type === 'unterschiedlich' ? 'background:#ef4444;color:white;' : 'background:transparent;color:var(--text-muted);') + '">Unterschiedliche Prioritäten</button>' +
         '</div>';
 
+    // Eigenschaften-Toggles für aktuellen ICH-Archetyp
+    var eigenschaftenHtml = '';
+    if (typeof getEigenschaftenHtml === 'function' && ichArchetyp) {
+        eigenschaftenHtml = getEigenschaftenHtml(ichArchetyp);
+    }
+
     var headerHtml = '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1);">' +
         '<button onclick="sortNeedsFullModal(\'duo\')" style="display:flex;align-items:center;justify-content:center;gap:6px;background:' + (duoActive ? 'rgba(34,197,94,0.15)' : 'transparent') + ';border:1px solid ' + (duoActive ? 'rgba(34,197,94,0.4)' : 'transparent') + ';border-radius:6px;padding:6px 8px;cursor:pointer;">' +
         '<span style="font-weight:600;color:var(--success);font-size:11px;text-transform:uppercase;letter-spacing:1px;">' + ichName + '</span><span style="font-size:10px;">' + duoSortIcon + '</span></button>' +
@@ -555,7 +565,7 @@ function renderNeedsFullModal() {
             '</div></div>';
     }
 
-    body.innerHTML = explanationHtml + toggleHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
+    body.innerHTML = explanationHtml + toggleHtml + eigenschaftenHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }

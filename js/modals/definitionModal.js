@@ -124,6 +124,11 @@ function toggleEigenschaft(archetypeId, eigenschaftId) {
 
     // UI aktualisieren
     updateEigenschaftenUI(archetypeId);
+
+    // Needs-Liste neu rendern wenn im Needs-Modal
+    if (typeof renderNeedsFullModal === 'function') {
+        renderNeedsFullModal();
+    }
 }
 
 function updateEigenschaftenUI(archetypeId) {
@@ -359,10 +364,7 @@ function showArchetypeInfoByType(archetypeId) {
             <div class="modal-category-desc">${localizedArch.shortDef || ''}</div>
     `;
 
-    // Eigenschaften-Toggles (nur wenn Daten geladen)
-    if (currentDefinitionPerson === 'ich') {
-        modalContent += getEigenschaftenHtml(archetypeId);
-    }
+    // Eigenschaften-Toggles → verschoben in "Alle Bedürfnisse" Modal (needsModals.js)
 
     if (def || localizedArch.longDef) {
         modalContent += `
@@ -536,5 +538,8 @@ window.confirmDefinitionSelection  = confirmDefinitionSelection;
 window.showArchetypeInfoByType     = showArchetypeInfoByType;
 window.showArchetypeInfo           = showArchetypeInfo;
 window.getShortDef                 = getShortDef;
+window.getEigenschaftenHtml        = getEigenschaftenHtml;
+window.loadEigenschaftenData       = loadEigenschaftenData;
+window.toggleEigenschaft           = toggleEigenschaft;
 
 })();
