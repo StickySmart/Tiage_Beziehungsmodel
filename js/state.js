@@ -1902,6 +1902,14 @@ const TiageState = (function() {
                         if (parsed.archetypes.partner?.secondary) {
                             this.set('archetypes.partner.secondary', parsed.archetypes.partner.secondary);
                         }
+                        // Slots-Migration: Wenn slots vorhanden, laden. Sonst aus primary/secondary konstruieren.
+                        if (parsed.archetypes.ich?.slots && Array.isArray(parsed.archetypes.ich.slots)) {
+                            this.set('archetypes.ich.slots', parsed.archetypes.ich.slots);
+                        } else if (parsed.archetypes.ich?.primary) {
+                            const migratedSlots = [parsed.archetypes.ich.primary, parsed.archetypes.ich.secondary || null, null, null];
+                            this.set('archetypes.ich.slots', migratedSlots);
+                            console.log('[TiageState] Slots migriert aus primary/secondary:', migratedSlots);
+                        }
                     }
                     // Neue Felder laden
                     if (parsed.gewichtungen) {
