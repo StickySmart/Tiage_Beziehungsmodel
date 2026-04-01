@@ -2566,8 +2566,9 @@
 
     <!-- Footer with Documentation Links -->
     <footer class="app-footer" style="text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.5);">
-        <!-- Partner Logos -->
-        <div style="margin-bottom: 25px; display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+        <!-- Meine Links (persoenliche Interessen) -->
+        <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 8px;" data-i18n="footer.meineLinks">Meine Links</div>
+        <div style="margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
             <a href="https://www.joyclub.de/" target="_blank" rel="noopener" title="JOYclub">
                 <img src="//cfnimg.joyclub.de/partner/joyclub_backlink_mitglied_120x120.png" width="100" height="100" alt="Lebe deine Lust!" style="border-radius: 50%;" />
             </a>
@@ -2591,6 +2592,7 @@
                 </button>
             </form>
         </div>
+        <div style="font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 25px;" data-i18n="footer.linksDisclaimer">Persoenliche Interessen – keine Sponsoren oder Partner</div>
 
         <!-- Footer Links Grid -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto 25px auto; text-align: left;">
@@ -2611,6 +2613,7 @@
             <div>
                 <h4 id="footer-legal-title" style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;" data-i18n="footer.rechtliches">Rechtliches</h4>
                 <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin: 8px 0;"><a href="#" style="color: #e57373; text-decoration: none;" data-action="open-impressum-modal" data-i18n="footer.impressum">Impressum</a></li>
                     <li style="margin: 8px 0;"><a href="datenschutz.html" style="color: #e57373; text-decoration: none;" data-i18n="footer.datenschutz">Datenschutz</a></li>
                     <li style="margin: 8px 0;"><a href="nutzungsbedingungen.html" style="color: #e57373; text-decoration: none;" data-i18n="footer.nutzungsbedingungen">Nutzungsbedingungen</a></li>
                 </ul>
@@ -2627,10 +2630,8 @@
 
         <!-- Copyright & Version -->
         <div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <div style="margin-bottom: 8px;">&copy; 2025 Ti-Age - <span data-i18n="footer.copyright">Alle Rechte vorbehalten</span></div>
+            <div style="margin-bottom: 8px;">&copy; 2026 Ti-Age - <span data-i18n="footer.copyright">Alle Rechte vorbehalten</span></div>
             <div id="footerVersion" style="margin-bottom: 12px; font-size: 11px; opacity: 0.7;"></div>
-            <a href="#" style="color: #eab308; text-decoration: none; margin: 0 10px;" data-action="open-impressum-modal" data-i18n="footer.impressum">Impressum</a>
-            <span style="color: #eab308;">|</span>
             <a href="docs.html?doc=docs/help-guide.md" style="color: #eab308; text-decoration: none; margin: 0 10px;" data-i18n="footer.hilfe">Hilfe</a>
         </div>
     </footer>
