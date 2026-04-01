@@ -2986,7 +2986,7 @@ const AttributeSummaryCard = (function() {
                        onclick="event.stopPropagation(); this.select();"
                        onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.closest('.flat-need-slider-row').querySelector('.need-slider'); if(sl) sl.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                        onkeydown="if(event.key==='Enter'){this.blur();}"
-                       style="width:48px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
+                       style="width:56px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
                        ${isLocked ? 'disabled' : ''}>
             </div>
         </div>`;
