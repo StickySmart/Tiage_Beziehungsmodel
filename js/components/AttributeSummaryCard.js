@@ -2976,15 +2976,15 @@ const AttributeSummaryCard = (function() {
                 </div>
             </div>
             <div class="flat-need-slider-row">
-                <input type="range" class="need-slider"
+                ${renderSegmentBar(needId, value)}
+                <input type="range" class="need-slider" style="opacity:0;position:absolute;width:100%;height:100%;top:0;left:0;cursor:pointer;margin:0;${isLocked ? 'pointer-events:none;' : ''}"
                        min="0" max="100" step="1" value="${value}"
-                       oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.parentElement.querySelector('.flat-need-input'); if(inp) inp.value=this.value;"
+                       oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.closest('.flat-need-slider-row').querySelector('.flat-need-input'); if(inp) inp.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                        onclick="event.stopPropagation()"
-                       ${sliderStyle}
                        ${isLocked ? 'disabled' : ''}>
                 <input type="number" class="flat-need-input" value="${value}" min="0" max="100" step="1"
                        onclick="event.stopPropagation(); this.select();"
-                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.parentElement.querySelector('.need-slider'); if(sl) sl.value=this.value;"
+                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.closest('.flat-need-slider-row').querySelector('.need-slider'); if(sl) sl.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                        onkeydown="if(event.key==='Enter'){this.blur();}"
                        style="width:48px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
                        ${isLocked ? 'disabled' : ''}>
@@ -4173,6 +4173,75 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Rendert einen farbigen Segment-Balken der die Einfluss-Quellen zeigt.
+     * Farben: Basis=grau, G=orange, O=rot, D=lila, F=grün, Fu=rot, H=pink, Toggle=cyan
+     */
+    function renderSegmentBar(needId, totalValue) {
+        // Basis-Wert aus Archetyp-Profil
+        let basisWert = 50;
+        const arch = currentFlatArchetyp || 'single';
+        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[arch]?.umfrageWerte) {
+            const stringKey = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) ? BeduerfnisIds.toKey(needId) : null;
+            if (stringKey && GfkBeduerfnisse.archetypProfile[arch].umfrageWerte[stringKey] !== undefined) {
+                basisWert = GfkBeduerfnisse.archetypProfile[arch].umfrageWerte[stringKey];
+            } else if (GfkBeduerfnisse.archetypProfile[arch].umfrageWerte[needId] !== undefined) {
+                basisWert = GfkBeduerfnisse.archetypProfile[arch].umfrageWerte[needId];
+            }
+        }
+
+        // Modifier-Breakdown
+        let gDelta = 0, oDelta = 0, dDelta = 0, fDelta = 0, fuDelta = 0, hDelta = 0;
+        if (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getModifierBreakdown && typeof BeduerfnisIds !== 'undefined') {
+            const stringKey = BeduerfnisIds.toKey ? BeduerfnisIds.toKey(needId) : null;
+            if (stringKey) {
+                const person = currentFlatPerson || 'ich';
+                const profile = {
+                    geschlecht: TiageState?.get(`personDimensions.${person}.geschlecht`),
+                    dominanz: TiageState?.get(`personDimensions.${person}.dominanz`),
+                    orientierung: TiageState?.get(`personDimensions.${person}.orientierung`),
+                    geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {}
+                };
+                const bd = ProfileModifiers.getModifierBreakdown(stringKey, profile);
+                if (bd) { gDelta = bd.g; oDelta = bd.o; dDelta = bd.d; fDelta = bd.f; fuDelta = bd.fu; hDelta = bd.h; }
+            }
+        }
+
+        // Toggle-Delta = Total - Basis - GOD-Deltas
+        const godTotal = gDelta + oDelta + dDelta + fDelta + fuDelta + hDelta;
+        const toggleDelta = totalValue - basisWert - godTotal;
+
+        // Segmente aufbauen (nur positive Anteile als Balken, negative als Markierung)
+        const segments = [];
+        if (basisWert > 0) segments.push({ w: basisWert, c: 'rgba(255,255,255,0.15)', t: 'Basis: ' + basisWert });
+        if (gDelta !== 0) segments.push({ w: Math.abs(gDelta), c: gDelta > 0 ? '#F4A261' : '#F4A26166', t: 'G: ' + (gDelta > 0 ? '+' : '') + gDelta });
+        if (oDelta !== 0) segments.push({ w: Math.abs(oDelta), c: oDelta > 0 ? '#E63946' : '#E6394666', t: 'O: ' + (oDelta > 0 ? '+' : '') + oDelta });
+        if (dDelta !== 0) segments.push({ w: Math.abs(dDelta), c: dDelta > 0 ? '#8B5CF6' : '#8B5CF666', t: 'D: ' + (dDelta > 0 ? '+' : '') + dDelta });
+        if (fDelta !== 0) segments.push({ w: Math.abs(fDelta), c: '#2ECC71', t: 'Fi: ' + (fDelta > 0 ? '+' : '') + fDelta });
+        if (fuDelta !== 0) segments.push({ w: Math.abs(fuDelta), c: '#E74C3C', t: 'Fu: ' + (fuDelta > 0 ? '+' : '') + fuDelta });
+        if (hDelta !== 0) segments.push({ w: Math.abs(hDelta), c: '#EC4899', t: 'H: ' + (hDelta > 0 ? '+' : '') + hDelta });
+        if (toggleDelta !== 0) segments.push({ w: Math.abs(toggleDelta), c: toggleDelta > 0 ? '#06B6D4' : '#06B6D466', t: 'T: ' + (toggleDelta > 0 ? '+' : '') + Math.round(toggleDelta) });
+
+        // Normalisieren auf totalValue Breite
+        const totalW = segments.reduce((s, seg) => s + seg.w, 0);
+        const scale = totalW > 0 ? Math.min(totalValue, 100) / totalW : 0;
+
+        const segHtml = segments.map(seg => {
+            const width = Math.max(1, Math.round(seg.w * scale));
+            return `<div style="width:${width}%;height:100%;background:${seg.c};flex-shrink:0;" title="${seg.t}"></div>`;
+        }).join('');
+
+        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.05);">${segHtml}</div>`;
+    }
+
+    function updateSegmentBar(needId, newValue) {
+        // Lightweight: Nur Gesamtbreite anpassen (volle Neuberechnung wäre zu teuer bei Slider-Drag)
+        const bar = document.querySelector(`.segment-bar[data-need="${needId}"]`);
+        if (bar) {
+            bar.style.width = newValue + '%';
+        }
+    }
+
+    /**
      * Edit-Button Handler: Öffnet Inline-Input für Bedürfniswert.
      * Änderung gilt GLOBAL für alle Archetypen + Auto-Save.
      */
@@ -4279,8 +4348,9 @@ const AttributeSummaryCard = (function() {
         syncLocksFromState: syncLocksFromTiageState,
         // v4.3: No-Op (Baseline entfernt, beibehalten für Rückwärtskompatibilität)
         syncBaselineWithFlatNeeds,
-        // v1.8.1037: Edit-Button für Bedürfniswert (Slider deaktiviert)
-        editNeedValue
+        // v1.8.1037: Edit + Segment-Balken
+        editNeedValue,
+        updateSegmentBar
     };
 })();
 

@@ -1917,6 +1917,7 @@ input.resonanz-input:focus {
     display: flex;
     align-items: center;
     gap: 10px;
+    position: relative;
 }
 
 .flat-need-slider-row .need-slider {
