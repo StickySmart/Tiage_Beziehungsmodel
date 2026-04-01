@@ -2976,17 +2976,19 @@ const AttributeSummaryCard = (function() {
                 </div>
             </div>
             <div class="flat-need-slider-row">
-                ${renderSegmentBar(needId, value)}
-                <input type="range" class="need-slider" style="opacity:0;position:absolute;width:100%;height:100%;top:0;left:0;cursor:pointer;margin:0;${isLocked ? 'pointer-events:none;' : ''}"
-                       min="0" max="100" step="1" value="${value}"
-                       oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.closest('.flat-need-slider-row').querySelector('.flat-need-input'); if(inp) inp.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
-                       onclick="event.stopPropagation()"
-                       ${isLocked ? 'disabled' : ''}>
+                <div style="flex:1;position:relative;height:24px;">
+                    <div style="position:absolute;top:8px;left:0;right:0;">${renderSegmentBar(needId, value)}</div>
+                    <input type="range" class="need-slider" style="position:absolute;top:0;left:0;width:100%;height:24px;opacity:0.01;cursor:pointer;margin:0;z-index:1;${isLocked ? 'pointer-events:none;' : ''}"
+                           min="0" max="100" step="1" value="${value}"
+                           oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.closest('.flat-need-slider-row').querySelector('.flat-need-input'); if(inp) inp.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
+                           onclick="event.stopPropagation()"
+                           ${isLocked ? 'disabled' : ''}>
+                </div>
                 <input type="number" class="flat-need-input" value="${value}" min="0" max="100" step="1"
                        onclick="event.stopPropagation(); this.select();"
                        onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.closest('.flat-need-slider-row').querySelector('.need-slider'); if(sl) sl.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                        onkeydown="if(event.key==='Enter'){this.blur();}"
-                       style="width:56px;text-align:center;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
+                       style="width:56px;text-align:center;flex-shrink:0;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
                        ${isLocked ? 'disabled' : ''}>
             </div>
         </div>`;
