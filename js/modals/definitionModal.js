@@ -141,8 +141,12 @@ function updateEigenschaftenUI(archetypeId) {
 }
 
 function getEigenschaftenHtml(archetypeId) {
+    console.log('[Eigenschaften] getEigenschaftenHtml called for:', archetypeId, 'eigenschaftenData loaded:', !!eigenschaftenData, 'keys:', eigenschaftenData ? Object.keys(eigenschaftenData) : 'null');
     const archData = eigenschaftenData?.[archetypeId];
-    if (!archData?.eigenschaften) return '';
+    if (!archData?.eigenschaften) {
+        console.warn('[Eigenschaften] Keine Daten für:', archetypeId);
+        return '';
+    }
 
     const states = getEigenschaftenState(archetypeId);
     const lang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
