@@ -2542,6 +2542,20 @@ const AttributeSummaryCard = (function() {
             </div>
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
 
+            ${typeof getEigenschaftenHtml === 'function' ? (() => {
+                const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : (archetyp ? [archetyp] : []);
+                let eHtml = '';
+                slots.forEach(slotArch => {
+                    if (!slotArch) return;
+                    const ad = window.tiageData?.archetypes?.[slotArch];
+                    if (slots.length > 1) {
+                        eHtml += '<div style="margin-top:8px;padding:4px 8px;font-size:11px;font-weight:600;color:' + (ad?.color || 'var(--primary)') + ';border-left:3px solid ' + (ad?.color || 'var(--primary)') + ';border-radius:2px;">' + (window.icons?.[slotArch] || '') + ' ' + (ad?.name || slotArch) + '</div>';
+                    }
+                    eHtml += getEigenschaftenHtml(slotArch);
+                });
+                return eHtml;
+            })() : ''}
+
             <div class="flat-needs-selection-bar">
                 <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : 'Klick = markieren, CTRL+Klick = mehrere'}</span>
                 <div class="selection-quick-btns">
@@ -2555,10 +2569,7 @@ const AttributeSummaryCard = (function() {
                         <span class="bulk-btn-label">Reset</span>
                     </button>
                 </div>
-                <button class="bulk-save-btn" data-action="bulk-save-needs" title="Alle Änderungen jetzt speichern">
-                    <span class="bulk-btn-icon">💾</span>
-                    <span class="bulk-btn-label">Speichern</span>
-                </button>
+                <!-- Speichern-Button entfernt: Auto-Save bei jeder Änderung -->
             </div>
         </div>`;
 
@@ -2962,14 +2973,14 @@ const AttributeSummaryCard = (function() {
             <div class="flat-need-slider-row">
                 <input type="range" class="need-slider"
                        min="0" max="100" step="10" value="${value}"
-                       oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
                        onclick="event.stopPropagation()"
                        ${sliderStyle}
-                       ${isLocked ? 'disabled' : ''}>
+                       disabled
+                       style="pointer-events:none;opacity:0.6;">
                 <input type="text" class="flat-need-input" value="${value}" maxlength="3"
-                       onchange="AttributeSummaryCard.updateFlatNeedValue('${needId}', this.value)"
                        onclick="event.stopPropagation()"
-                       ${isLocked ? 'readonly' : ''}>
+                       readonly>
+                <span class="need-edit-btn" onclick="event.stopPropagation(); AttributeSummaryCard.editNeedValue('${needId}')" title="Wert bearbeiten" style="cursor:pointer;font-size:14px;padding:2px 6px;margin-left:4px;${isLocked ? 'opacity:0.3;pointer-events:none;' : ''}">✏️</span>
             </div>
         </div>`;
     }
@@ -4154,6 +4165,45 @@ const AttributeSummaryCard = (function() {
         }
     }
 
+    /**
+     * Edit-Button Handler: Öffnet Inline-Input für Bedürfniswert.
+     * Änderung gilt GLOBAL für alle Archetypen + Auto-Save.
+     */
+    function editNeedValue(needId) {
+        const currentValue = (() => {
+            const needObj = findNeedById(needId);
+            return needObj ? needObj.value : 50;
+        })();
+
+        const neuerWert = prompt(`Neuer Wert für ${needId} (0-100):`, currentValue);
+        if (neuerWert === null) return;
+
+        const parsed = parseInt(neuerWert, 10);
+        if (isNaN(parsed) || parsed < 0 || parsed > 100) return;
+
+        // GLOBAL: Für alle 8 Archetypen setzen
+        if (typeof TiageState !== 'undefined') {
+            const archetypen = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            archetypen.forEach(arch => {
+                TiageState.set(`flatNeeds.ich.${arch}.${needId}`, parsed);
+            });
+            TiageState.saveToStorage();
+        }
+
+        // UI aktualisieren
+        const needObj = findNeedById(needId);
+        if (needObj) needObj.value = parsed;
+
+        // Slider + Input aktualisieren
+        const container = document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
+        if (container) {
+            const slider = container.querySelector('.need-slider');
+            const input = container.querySelector('.flat-need-input');
+            if (slider) slider.value = parsed;
+            if (input) input.value = parsed;
+        }
+    }
+
     return {
         render,
         renderMany,
@@ -4229,7 +4279,9 @@ const AttributeSummaryCard = (function() {
         // NEU: Person-spezifische Lock-Synchronisierung
         syncLocksFromState: syncLocksFromTiageState,
         // v4.3: No-Op (Baseline entfernt, beibehalten für Rückwärtskompatibilität)
-        syncBaselineWithFlatNeeds
+        syncBaselineWithFlatNeeds,
+        // v1.8.1037: Edit-Button für Bedürfniswert (Slider deaktiviert)
+        editNeedValue
     };
 })();
 
