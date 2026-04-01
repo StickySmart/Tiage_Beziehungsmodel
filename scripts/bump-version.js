@@ -6,7 +6,7 @@
  * Wird automatisch vom pre-commit Hook bei jedem Commit ausgeführt.
  * Kann auch manuell mit: npm run version:bump
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const fs = require('fs');
@@ -62,7 +62,7 @@ const versionJsContent = `/**
  * Automatisch generiert von scripts/bump-version.js via pre-commit Hook.
  * NICHT manuell bearbeiten!
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const TiageVersion = {

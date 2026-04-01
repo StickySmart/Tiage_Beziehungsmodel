@@ -11,7 +11,7 @@
  * Spezifikation: docs/BEDUERFNIS_DETAIL_VIEW_SPEC.md v1.0.0
  * Status: ✅ Finalisiert - In Stein gemeißelt
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const BeduerfnisDetailView = (function() {

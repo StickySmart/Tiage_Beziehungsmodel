@@ -7,21 +7,21 @@
  * Automatisch generiert von scripts/bump-version.js via pre-commit Hook.
  * NICHT manuell bearbeiten!
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
     minor: 8,
-    patch: 1030,
+    patch: 1031,
 
     // Letztes Commit-Datum und -Uhrzeit
-    mergeDate: '2026-03-31',
-    mergeTime: '20:08',
+    mergeDate: '2026-04-01',
+    mergeTime: '04:14',
 
     // Git Commit-Anzahl
-    commitCount: 3071,
+    commitCount: 3072,
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {

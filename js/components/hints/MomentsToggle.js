@@ -4,7 +4,7 @@
  * Globaler Toggle-Button zum Ein-/Ausschalten der Philosophie-Momente.
  * Kann im Header oder an anderer Stelle platziert werden.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const MomentsToggle = (function() {

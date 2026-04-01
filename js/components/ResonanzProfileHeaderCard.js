@@ -8,7 +8,7 @@
  * - Dynamik (R3)
  * - Identität (R4)
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ResonanzProfileHeaderCard = (function() {

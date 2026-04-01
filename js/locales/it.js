@@ -3,7 +3,7 @@
  *
  * Tutti i testi dell'interfaccia per la versione in lingua italiana.
  *
- * © 2025 Ti-age.de Tutti i diritti riservati.
+ * © 2025-2026 Ti-age.de Tutti i diritti riservati.
  */
 
 var TiageLocale_IT = {

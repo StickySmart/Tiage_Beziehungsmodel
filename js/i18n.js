@@ -4,7 +4,7 @@
  * Handles language switching between German, English, French and Italian.
  * Uses TiageState (SSOT) for persistence and provides reactive updates.
  *
- * © 2025 Ti-age.de All rights reserved.
+ * © 2025-2026 Ti-age.de All rights reserved.
  */
 
 const TiageI18n = (function() {

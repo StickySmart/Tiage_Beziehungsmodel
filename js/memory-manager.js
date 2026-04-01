@@ -10,7 +10,7 @@
  * - tiage_memory_ME001 bis tiage_memory_ME004
  * - tiage_memory_PART001 bis tiage_memory_PART004
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const MemoryManager = (function() {

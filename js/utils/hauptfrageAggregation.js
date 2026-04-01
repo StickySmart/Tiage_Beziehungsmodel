@@ -12,7 +12,7 @@
  *   const simple = HauptfrageAggregation.getAggregatedNeedsSimple(profile.needs);
  *   const comparison = HauptfrageAggregation.compareHauptfragen(needs1, needs2);
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const HauptfrageAggregation = (function() {

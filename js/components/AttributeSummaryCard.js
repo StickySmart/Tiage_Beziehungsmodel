@@ -5,7 +5,7 @@
  * Klick zum Erweitern und Bearbeiten der einzelnen Bedürfnisse.
  * Mit Eingabewert und Schloss wie bei Gewichtungen.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 // Fallback für Seiten ohne app-main.js (z.B. needs-editor.html)

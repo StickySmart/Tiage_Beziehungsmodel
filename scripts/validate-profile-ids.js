@@ -11,7 +11,7 @@
  *   node scripts/validate-profile-ids.js --fix        # Validieren und korrigieren
  *   node scripts/validate-profile-ids.js --report     # Detaillierten Report erstellen
  *
- * © 2025 Ti-age.de
+ * © 2025-2026 Ti-age.de
  */
 
 const fs = require('fs');

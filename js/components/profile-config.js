@@ -4,7 +4,7 @@
  * Zentrale Konfiguration für alle Profile-Review-Attribute.
  * Data-driven Approach für dynamisches UI-Rendering.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ProfileReviewConfig = (function() {

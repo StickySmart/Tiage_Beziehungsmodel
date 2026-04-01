@@ -2037,7 +2037,7 @@ if (typeof window !== 'undefined') {
 //   window.personDimensions.ich.geschlecht.primary = 'mann'
 //   → TiageState.set('personDimensions.ich.geschlecht.primary', 'mann')
 //
-// © 2025 Ti-age.de - Phase 1: Proxy-Layer Migration
+// © 2025-2026 Ti-age.de - Phase 1: Proxy-Layer Migration
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
@@ -2140,7 +2140,7 @@ if (typeof window !== 'undefined') {
 // Bei Server-Fehler: Toast "Kein Kontakt zum Server"
 // Last-Write-Wins: Neuerer Timestamp gewinnt
 //
-// © 2025 Ti-age.de Alle Rechte vorbehalten.
+// © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
 // ═══════════════════════════════════════════════════════════════════════════
 
 const TiageAutoSync = (function() {

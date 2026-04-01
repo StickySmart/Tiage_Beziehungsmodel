@@ -17,7 +17,7 @@
  *
  * Range: 0-100% (Summe kann fixiert werden)
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const GewichtungCard = (function() {

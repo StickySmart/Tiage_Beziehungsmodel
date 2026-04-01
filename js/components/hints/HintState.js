@@ -7,7 +7,7 @@
  * - Conflict Detection: Prüft ob gelockte Werte von Erwartungswerten abweichen
  * - Analytics Tracking: Optional
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const HintState = (function() {

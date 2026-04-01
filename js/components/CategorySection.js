@@ -4,7 +4,7 @@
  * Container-Komponente für Kategorien im Profile-Review.
  * Gruppiert mehrere ProfileCards unter einem gemeinsamen Header.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const CategorySection = (function() {

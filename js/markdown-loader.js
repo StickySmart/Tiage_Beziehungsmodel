@@ -2,7 +2,7 @@
  * Markdown Loader Utility
  * Lädt und rendert Markdown-Dateien für das Tiage-Beziehungsmodell
  *
- * © 2025 Ti-age.de - Alle Rechte vorbehalten
+ * © 2025-2026 Ti-age.de - Alle Rechte vorbehalten
  */
 
 const MarkdownLoader = {

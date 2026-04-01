@@ -17,7 +17,7 @@
  * - Farbcodierung nach Resonanz-Bereich
  * - Such/Filter-Integration
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ResonanzTreeView = (function() {

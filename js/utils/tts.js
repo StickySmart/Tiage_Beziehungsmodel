@@ -4,7 +4,7 @@
  * Provides text-to-speech functionality using the Web Speech API.
  * Automatically detects the current language from TiageI18n.
  *
- * © 2025 Ti-age.de All rights reserved.
+ * © 2025-2026 Ti-age.de All rights reserved.
  */
 
 const TiageTTS = (function() {

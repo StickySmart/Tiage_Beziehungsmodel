@@ -3,7 +3,7 @@
  *
  * Alle UI-Texte für die deutsche Sprachversion.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 var TiageLocale_DE = {

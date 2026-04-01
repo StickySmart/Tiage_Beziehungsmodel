@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  * @since 2026-02-24
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 var CategoryBars = (function() {
     'use strict';

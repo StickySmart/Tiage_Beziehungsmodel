@@ -9,7 +9,7 @@
  *
  * Ton: Mischung aus direkt/konfrontierend und sanft/einladend.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const PhilosophyHint = (function() {

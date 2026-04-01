@@ -8,7 +8,7 @@
  * - Einzelne Filter entfernbar
  * - Zurücksetzen löscht alle
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ActiveFilterCard = (function() {

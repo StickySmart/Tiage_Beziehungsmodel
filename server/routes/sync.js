@@ -6,7 +6,7 @@
  *
  * Strategie: Last-Write-Wins (neuerer Timestamp gewinnt)
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 import { Router } from 'express';

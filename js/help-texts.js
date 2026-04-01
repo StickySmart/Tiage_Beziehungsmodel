@@ -7,7 +7,7 @@
  * WICHTIG: Diese Datei LIEST aus constants.js, statt Werte zu duplizieren.
  * Änderungen an Formeln müssen nur in constants.js gemacht werden.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 var TiageHelpTexts = (function() {

@@ -12,7 +12,7 @@
  *
  * Range: 0 - 1 (v3.2: 0 = eliminiert, 1 = neutral, R = similarity²)
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ResonanzCard = (function() {

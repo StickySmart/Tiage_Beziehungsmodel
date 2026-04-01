@@ -5,7 +5,7 @@
  * Unterstützt 3 oder 5 Optionen mit automatischem Layout.
  * Ersetzt repetitive HTML-Strukturen mit data-driven Rendering.
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const TripleButtonGroup = (function() {

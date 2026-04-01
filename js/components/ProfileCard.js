@@ -4,7 +4,7 @@
  * Wrapper-Komponente für einzelne Attribut-Karten im Profile-Review.
  * Unterstützt verschiedene Content-Typen (triple, toggle, custom).
  *
- * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
  */
 
 const ProfileCard = (function() {
