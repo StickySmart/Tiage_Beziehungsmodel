@@ -54,18 +54,40 @@
     function selectArchetypeFromGrid(person, archetype) {
         console.log('[selectArchetypeFromGrid] Aufgerufen für:', person, 'archetype:', archetype);
 
-        // ═══════════════════════════════════════════════════════════════
-        // v1.8.908: Partner-Archetyp ist abwählbar (wie GOD)
-        // Klick auf bereits ausgewählten Archetyp = Deselect (null)
-        // ICH-Archetyp ist NICHT abwählbar (muss immer gesetzt sein)
-        // ═══════════════════════════════════════════════════════════════
         let effectiveArchetype = archetype;
-        if (person === 'partner') {
+
+        // ═══════════════════════════════════════════════════════════════
+        // ICH: Multi-Select (bis zu 4 Archetypen)
+        // Toggle-Verhalten: Klick fügt hinzu oder entfernt
+        // ═══════════════════════════════════════════════════════════════
+        if (person === 'ich' && typeof TiageState !== 'undefined') {
+            const currentSlots = TiageState.getIchSlots();
+
+            if (currentSlots.includes(archetype)) {
+                // Bereits aktiv → entfernen (außer letzter)
+                if (currentSlots.length <= 1) {
+                    TiageToast.info('Mindestens 1 Archetyp nötig');
+                    return;
+                }
+                TiageState.removeIchSlot(archetype);
+                effectiveArchetype = TiageState.getIchSlots()[0]; // Neuer Primary
+                console.log('[selectArchetypeFromGrid] ICH-Slot entfernt:', archetype, '→ Slots:', TiageState.getIchSlots());
+            } else {
+                // Noch nicht aktiv → hinzufügen
+                if (currentSlots.length >= 4) {
+                    TiageToast.info('Maximum 4 Archetypen');
+                    return;
+                }
+                TiageState.addIchSlot(archetype);
+                effectiveArchetype = TiageState.getIchSlots()[0]; // Primary bleibt
+                console.log('[selectArchetypeFromGrid] ICH-Slot hinzugefügt:', archetype, '→ Slots:', TiageState.getIchSlots());
+            }
+        }
+        // Partner: Toggle (an/aus)
+        else if (person === 'partner') {
             const currentPartnerArchetype = window.getPartnerArchetype();
             if (archetype === currentPartnerArchetype) {
-                // Klick auf gleichen Archetyp: Deselect
                 effectiveArchetype = null;
-                console.log('[selectArchetypeFromGrid] Partner-Archetyp deselektiert');
             }
         }
 
@@ -74,35 +96,20 @@
         const select = document.getElementById(selectId);
         const mobileSelect = document.getElementById(mobileSelectId);
 
-        // Update select elements
+        // Dropdown zeigt immer Primary
         if (effectiveArchetype) {
-            if (select) {
-                for (let i = 0; i < select.options.length; i++) {
-                    if (select.options[i].value === effectiveArchetype) {
-                        select.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-            if (mobileSelect) {
-                for (let i = 0; i < mobileSelect.options.length; i++) {
-                    if (mobileSelect.options[i].value === effectiveArchetype) {
-                        mobileSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
+            if (select) select.value = effectiveArchetype;
+            if (mobileSelect) mobileSelect.value = effectiveArchetype;
         } else {
-            // Deselected: Reset select to first option or empty
             if (select) select.selectedIndex = 0;
             if (mobileSelect) mobileSelect.selectedIndex = 0;
         }
 
-        // Update all archetype state via SSOT setters
+        // SSOT setters (primary)
         if (person === 'ich') {
-            window.setIchArchetype(effectiveArchetype || 'duo'); // ICH muss immer gesetzt sein
+            window.setIchArchetype(effectiveArchetype || 'single');
         } else {
-            window.setPartnerArchetype(effectiveArchetype); // Partner kann null sein
+            window.setPartnerArchetype(effectiveArchetype);
         }
 
         // ═══════════════════════════════════════════════════════════════
@@ -168,26 +175,38 @@
 
     // Function to update archetype grid highlighting
     function updateArchetypeGrid(person, archetype) {
-        // Desktop grid IDs
         const gridId = person === 'ich' ? 'ich-archetype-grid' : 'partner-archetype-grid';
-        // Mobile grid IDs
         const mobileGridId = person === 'ich' ? 'mobile-ich-archetype-grid' : 'mobile-partner-archetype-grid';
 
-        // Update all grids (desktop and mobile)
+        // ICH: Multi-Select Highlighting
+        const activeSlots = (person === 'ich' && typeof TiageState !== 'undefined')
+            ? TiageState.getIchSlots()
+            : (archetype ? [archetype] : []);
+
         [gridId, mobileGridId].forEach(id => {
             const grid = document.getElementById(id);
             if (!grid) return;
 
-            // Remove active class from all items
             grid.querySelectorAll('.archetype-symbol-item').forEach(item => {
-                item.classList.remove('active');
-            });
+                const itemArch = item.dataset.archetype;
+                const slotIdx = activeSlots.indexOf(itemArch);
+                item.classList.toggle('active', slotIdx >= 0);
 
-            // Add active class to selected item
-            const selectedItem = grid.querySelector(`.archetype-symbol-item[data-archetype="${archetype}"]`);
-            if (selectedItem) {
-                selectedItem.classList.add('active');
-            }
+                // Slot-Nummer Badge
+                let badge = item.querySelector('.slot-badge');
+                if (slotIdx >= 0 && activeSlots.length > 1) {
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'slot-badge';
+                        badge.style.cssText = 'position:absolute;top:2px;right:2px;background:var(--primary);color:white;font-size:9px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;';
+                        item.style.position = 'relative';
+                        item.appendChild(badge);
+                    }
+                    badge.textContent = slotIdx + 1;
+                } else if (badge) {
+                    badge.remove();
+                }
+            });
         });
     }
 

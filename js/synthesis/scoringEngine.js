@@ -1266,8 +1266,9 @@ function calculateNeedsMatchFromFlatNeeds() {
         return null;
     }
 
-    // flatNeeds aus TiageState holen (Archetyp + D/G/O Modifikatoren)
-    const ichFlatNeeds = TiageState.getFlatNeeds('ich') || {};
+    // flatNeeds aus TiageState holen
+    // ICH: Kombiniert aus allen aktiven Archetyp-Slots (Multi-Archetyp)
+    const ichFlatNeeds = (TiageState.getCombinedFlatNeeds ? TiageState.getCombinedFlatNeeds() : TiageState.getFlatNeeds('ich')) || {};
     const partnerFlatNeeds = TiageState.getFlatNeeds('partner') || {};
 
     // Prüfen ob Daten vorhanden

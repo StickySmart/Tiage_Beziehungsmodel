@@ -62,15 +62,16 @@ const TiageState = (function() {
             }
         },
 
-        // Archetype Selection - Primary/Secondary System
+        // Archetype Selection - Multi-Slot System (bis zu 4 für ICH)
         archetypes: {
             ich: {
                 primary: null,
-                secondary: null  // Optional secondary archetype
+                secondary: null,  // Alias für slots[1] (Backward Compat)
+                slots: [null, null, null, null]  // Bis zu 4 Archetypen
             },
             partner: {
                 primary: null,
-                secondary: null  // Optional secondary archetype
+                secondary: null
             }
         },
 
@@ -813,6 +814,12 @@ const TiageState = (function() {
          */
         setArchetype(person, archetype) {
             this.set(`archetypes.${person}.primary`, archetype);
+            // Sync slots[0] für ICH
+            if (person === 'ich') {
+                const slots = this.get('archetypes.ich.slots') || [null, null, null, null];
+                slots[0] = archetype;
+                this.set('archetypes.ich.slots', slots);
+            }
         },
 
         /**
@@ -863,6 +870,96 @@ const TiageState = (function() {
          */
         clearSecondaryArchetype(person) {
             this.set(`archetypes.${person}.secondary`, null);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // MULTI-SLOT METHODS (bis zu 4 ICH-Archetypen)
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Gibt alle aktiven ICH-Slots zurück (ohne null)
+         * @returns {string[]} Array von Archetyp-IDs, max 4
+         */
+        getIchSlots() {
+            const slots = this.get('archetypes.ich.slots') || [null, null, null, null];
+            return slots.filter(s => s !== null);
+        },
+
+        /**
+         * Setzt alle ICH-Slots. slots[0] wird automatisch primary.
+         * @param {string[]} slotsArray - Array von Archetyp-IDs (max 4)
+         */
+        setIchSlots(slotsArray) {
+            const padded = [null, null, null, null];
+            slotsArray.forEach((s, i) => { if (i < 4) padded[i] = s; });
+            this.set('archetypes.ich.slots', padded);
+            this.set('archetypes.ich.primary', padded[0]);
+            this.set('archetypes.ich.secondary', padded[1] || null);
+        },
+
+        /**
+         * Fügt einen Archetyp zum nächsten freien Slot hinzu.
+         * @param {string} archetype - Archetyp-ID
+         * @returns {boolean} true wenn erfolgreich
+         */
+        addIchSlot(archetype) {
+            const slots = this.get('archetypes.ich.slots') || [null, null, null, null];
+            // Schon vorhanden?
+            if (slots.includes(archetype)) return false;
+            // Freien Slot finden
+            const freeIdx = slots.indexOf(null);
+            if (freeIdx === -1) return false; // Voll (4/4)
+            slots[freeIdx] = archetype;
+            this.setIchSlots(slots.filter(s => s !== null));
+            return true;
+        },
+
+        /**
+         * Entfernt einen Archetyp aus den Slots.
+         * @param {string} archetype - Archetyp-ID
+         * @returns {boolean} true wenn erfolgreich
+         */
+        removeIchSlot(archetype) {
+            const slots = this.get('archetypes.ich.slots') || [null, null, null, null];
+            const active = slots.filter(s => s !== null);
+            if (active.length <= 1) return false; // Mindestens 1 muss bleiben
+            const filtered = active.filter(s => s !== archetype);
+            if (filtered.length === active.length) return false; // War nicht drin
+            this.setIchSlots(filtered);
+            return true;
+        },
+
+        /**
+         * Kombiniert die flatNeeds aller aktiven ICH-Archetypen.
+         * Additiv: Basis-Profil + Summe aller Toggle-Deltas.
+         * @returns {Object} { '#B1': 65, '#B2': 42, ... }
+         */
+        getCombinedFlatNeeds() {
+            const slots = this.getIchSlots();
+            if (slots.length === 0) return {};
+
+            // Alle Needs aus allen Slots sammeln
+            const combined = {};
+            const counts = {};
+
+            slots.forEach(arch => {
+                const needs = this.get(`flatNeeds.ich.${arch}`) || {};
+                Object.entries(needs).forEach(([needId, value]) => {
+                    if (!combined[needId]) {
+                        combined[needId] = 0;
+                        counts[needId] = 0;
+                    }
+                    combined[needId] += (typeof value === 'number' ? value : 0);
+                    counts[needId]++;
+                });
+            });
+
+            // Durchschnitt bilden und auf 0-100 cappen
+            const result = {};
+            Object.entries(combined).forEach(([needId, sum]) => {
+                result[needId] = Math.max(0, Math.min(100, Math.round(sum / counts[needId])));
+            });
+            return result;
         },
 
         // ═══════════════════════════════════════════════════════════════════

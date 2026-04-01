@@ -517,10 +517,21 @@ function renderNeedsFullModal() {
         '<button onclick="switchNeedsFullModalTab(\'unterschiedlich\')" style="flex:1;padding:10px 16px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;' + (type === 'unterschiedlich' ? 'background:#ef4444;color:white;' : 'background:transparent;color:var(--text-muted);') + '">Unterschiedliche Prioritäten</button>' +
         '</div>';
 
-    // Eigenschaften-Toggles für aktuellen ICH-Archetyp
+    // Eigenschaften-Toggles für ALLE aktiven ICH-Archetypen
     var eigenschaftenHtml = '';
-    if (typeof getEigenschaftenHtml === 'function' && ichArchetyp) {
-        eigenschaftenHtml = getEigenschaftenHtml(ichArchetyp);
+    if (typeof getEigenschaftenHtml === 'function') {
+        var ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : (ichArchetyp ? [ichArchetyp] : []);
+        ichSlots.forEach(function(slotArch) {
+            if (!slotArch) return;
+            var archData = window.tiageData && window.tiageData.archetypes && window.tiageData.archetypes[slotArch];
+            var archName = archData ? archData.name : slotArch;
+            var archColor = archData ? archData.color : 'var(--primary)';
+            var archIcon = (window.icons && window.icons[slotArch]) || '';
+            if (ichSlots.length > 1) {
+                eigenschaftenHtml += '<div style="margin-top:8px;padding:4px 8px;font-size:11px;font-weight:600;color:' + archColor + ';border-left:3px solid ' + archColor + ';border-radius:2px;">' + archIcon + ' ' + archName + '</div>';
+            }
+            eigenschaftenHtml += getEigenschaftenHtml(slotArch);
+        });
     }
 
     var headerHtml = '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1);">' +
