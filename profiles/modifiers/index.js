@@ -253,16 +253,21 @@
     function calculateProfileDeltas(profile) {
         const deltas = {};
 
+        // v4.6: AGOD-Skalierung (0=Egal→0.5, 1=Normal→1.0, 2=Wichtig→1.5)
+        const agodMap = { 0: 0.5, 1: 1.0, 2: 1.5 };
+        const agod = profile.agod || { O: 1, A: 1, D: 1, G: 1 };
+        const agodG = agodMap[agod.G] || 1.0;
+        const agodO = agodMap[agod.O] || 1.0;
+        const agodD = agodMap[agod.D] || 1.0;
+
         // Gender-Modifier (v4.0: String, LEGACY: { primary, secondary })
         if (profile.geschlecht) {
             let genderMod;
-            const genderMultiplier = getRtiMultiplier('gender');
+            const genderMultiplier = getRtiMultiplier('gender') * agodG;
 
             if (typeof profile.geschlecht === 'string') {
-                // v4.0: Einfacher String
                 genderMod = getGenderModifier(profile.geschlecht);
             } else if (typeof profile.geschlecht === 'object') {
-                // LEGACY: { primary, secondary } Format
                 const primary = profile.geschlecht.primary;
                 const secondary = profile.geschlecht.secondary || 'cis';
                 genderMod = getGenderModifier(primary, secondary);
@@ -270,7 +275,6 @@
 
             if (genderMod && genderMod.deltas) {
                 Object.keys(genderMod.deltas).forEach(key => {
-                    // v4.1: Delta × RTI-Multiplikator
                     deltas[key] = (deltas[key] || 0) + (genderMod.deltas[key] * genderMultiplier);
                 });
             }
@@ -278,7 +282,7 @@
 
         // Dominanz-Modifier
         if (profile.dominanz) {
-            const dominanzMultiplier = getRtiMultiplier('dominanz');
+            const dominanzMultiplier = getRtiMultiplier('dominanz') * agodD;
             const dominanzVal = typeof profile.dominanz === 'object'
                 ? profile.dominanz.primary
                 : profile.dominanz;
@@ -294,7 +298,7 @@
         // Orientierungs-Modifier (v4.0: Array, LEGACY: String oder Object)
         if (profile.orientierung) {
             let orientierungen = [];
-            const orientierungMultiplier = getRtiMultiplier('orientierung');
+            const orientierungMultiplier = getRtiMultiplier('orientierung') * agodO;
 
             if (Array.isArray(profile.orientierung)) {
                 // v4.0: Array
@@ -399,13 +403,20 @@
         const bd = { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, total: 0 };
         if (!stringKey || !profile) return bd;
 
+        // v4.6: AGOD-Skalierung
+        const agodMap = { 0: 0.5, 1: 1.0, 2: 1.5 };
+        const agod = profile.agod || { O: 1, A: 1, D: 1, G: 1 };
+        const agodG = agodMap[agod.G] || 1.0;
+        const agodO = agodMap[agod.O] || 1.0;
+        const agodD = agodMap[agod.D] || 1.0;
+
         // Gender
         if (profile.geschlecht) {
             const gVal = typeof profile.geschlecht === 'string' ? profile.geschlecht : profile.geschlecht?.primary;
             const gSec = typeof profile.geschlecht === 'object' ? profile.geschlecht?.secondary : undefined;
             const gMod = getGenderModifier(gVal, gSec);
             if (gMod?.deltas?.[stringKey]) {
-                bd.g = Math.round(gMod.deltas[stringKey] * getRtiMultiplier('gender'));
+                bd.g = Math.round(gMod.deltas[stringKey] * getRtiMultiplier('gender') * agodG);
             }
         }
 
@@ -414,11 +425,11 @@
             const dVal = typeof profile.dominanz === 'object' ? profile.dominanz.primary : profile.dominanz;
             const dMod = getDominanzModifier(dVal);
             if (dMod?.deltas?.[stringKey]) {
-                bd.d = Math.round(dMod.deltas[stringKey] * getRtiMultiplier('dominanz'));
+                bd.d = Math.round(dMod.deltas[stringKey] * getRtiMultiplier('dominanz') * agodD);
             }
         }
 
-        // Orientierung (kann Array, String oder Objekt sein)
+        // Orientierung
         if (profile.orientierung) {
             let orientierungen = [];
             if (Array.isArray(profile.orientierung)) orientierungen = profile.orientierung;
@@ -427,7 +438,7 @@
                 orientierungen.push(profile.orientierung.primary);
                 if (profile.orientierung.secondary) orientierungen.push(profile.orientierung.secondary);
             }
-            const oMulti = getRtiMultiplier('orientierung');
+            const oMulti = getRtiMultiplier('orientierung') * agodO;
             orientierungen.forEach(ori => {
                 const oMod = getOrientierungModifier(ori);
                 if (oMod?.deltas?.[stringKey]) {

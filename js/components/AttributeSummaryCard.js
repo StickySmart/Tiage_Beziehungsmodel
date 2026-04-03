@@ -165,10 +165,11 @@ const AttributeSummaryCard = (function() {
             geschlecht: TiageState?.get(`personDimensions.${person}.geschlecht`) || null,
             dominanz: TiageState?.get(`personDimensions.${person}.dominanz`) || null,
             orientierung: TiageState?.get(`personDimensions.${person}.orientierung`) || null,
-            geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {}
+            geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {},
+            agod: TiageState?.getGewichtungen ? TiageState.getGewichtungen(person) : { O: 1, A: 1, D: 1, G: 1 }
         };
 
-        // SSOT: Breakdown aus ProfileModifiers (mit RTI-Skalierung)
+        // SSOT: Breakdown aus ProfileModifiers (mit RTI + AGOD Skalierung)
         const bd = ProfileModifiers.getModifierBreakdown(stringKey, profile);
         if (!bd || bd.total === 0) return '';
 
@@ -4201,7 +4202,8 @@ const AttributeSummaryCard = (function() {
                     geschlecht: TiageState?.get(`personDimensions.${person}.geschlecht`),
                     dominanz: TiageState?.get(`personDimensions.${person}.dominanz`),
                     orientierung: TiageState?.get(`personDimensions.${person}.orientierung`),
-                    geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {}
+                    geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {},
+                    agod: TiageState?.getGewichtungen ? TiageState.getGewichtungen(person) : { O: 1, A: 1, D: 1, G: 1 }
                 };
                 const bd = ProfileModifiers.getModifierBreakdown(stringKey, profile);
                 if (bd) { gDelta = bd.g; oDelta = bd.o; dDelta = bd.d; fDelta = bd.f; fuDelta = bd.fu; hDelta = bd.h; }

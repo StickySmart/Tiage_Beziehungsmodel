@@ -381,11 +381,16 @@
             // SSOT v3.10: Vollständige Orientierung übergeben (P+S)
             // ProfileModifiers.calculateProfileDeltas() verarbeitet P/S mit Gewichtung
             // v4.2: FFH (Fit, Fucked up, Horny) hinzugefügt
+            // v4.6: AGOD-Gewichtung für Modifier-Skalierung übergeben
+            const agodGew = TiageState.getGewichtungen
+                ? TiageState.getGewichtungen(person, archetyp)
+                : { O: 1, A: 1, D: 1, G: 1 };
             const profileContext = {
                 geschlecht: geschlecht,
                 dominanz: dominanz?.primary || dominanz,
-                orientierung: orientierung,  // Vollständiges Objekt: { primary, secondary }
-                geschlecht_extras: geschlecht_extras || {}  // v4.2: FFH Modifier
+                orientierung: orientierung,
+                geschlecht_extras: geschlecht_extras || {},
+                agod: agodGew  // { O: 0-2, A: 0-2, D: 0-2, G: 0-2 }
             };
 
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
@@ -634,16 +639,20 @@
             }
 
             // gewichtungen: NUR setzen wenn noch keine vorhanden (NEW 3-way format)
-            // AGOD-Modul verwaltet gewichtungen.ich - ProfileCalculator setzt nur Defaults
-            const currentGewichtungen = TiageState.get(`gewichtungen.${person}`);
+            // AGOD-Modul verwaltet gewichtungen - ProfileCalculator setzt nur Defaults
+            // v4.6: Per-Archetyp für ICH - prüfe via getGewichtungen()
+            const currentGewichtungen = TiageState.getGewichtungen
+                ? TiageState.getGewichtungen(person)
+                : TiageState.get(`gewichtungen.${person}`);
             const isNewFormat = currentGewichtungen &&
                 typeof currentGewichtungen.O === 'number' &&
                 currentGewichtungen.O >= 0 && currentGewichtungen.O <= 2;
 
             if (!isNewFormat) {
-                // Keine gültigen gewichtungen vorhanden - setze Defaults
                 const defaults = getDefaultGewichtungen();
-                TiageState.set(`gewichtungen.${person}`, defaults);
+                TiageState.setGewichtungen
+                    ? TiageState.setGewichtungen(person, defaults)
+                    : TiageState.set(`gewichtungen.${person}`, defaults);
                 console.log(`[ProfileCalculator] gewichtungen.${person} auf Defaults gesetzt:`, defaults);
             }
             // Wenn bereits im NEW format: NICHT überschreiben!
