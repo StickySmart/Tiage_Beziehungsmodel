@@ -2129,8 +2129,21 @@ function getOshoZenContent() {
         `;
     }
 
+    // Sprach-Toggle für Osho-Texte
+    const currentLang = TiageI18n.getLanguage();
+    const langs = [
+        { code: 'de', flag: '🇩🇪', label: 'DE' },
+        { code: 'en', flag: '🇬🇧', label: 'EN' },
+        { code: 'fr', flag: '🇫🇷', label: 'FR' },
+        { code: 'it', flag: '🇮🇹', label: 'IT' }
+    ];
+    const langButtons = langs.map(l =>
+        `<button onclick="TiageI18n.setLanguage('${l.code}'); setTimeout(function(){ var el=document.getElementById('tiageSyntheseModalContent'); if(el) el.innerHTML=getOshoZenContent(); }, 300);" style="padding:4px 10px;border:1px solid ${l.code === currentLang ? 'var(--primary)' : 'rgba(255,255,255,0.15)'};border-radius:6px;background:${l.code === currentLang ? 'var(--primary)' : 'transparent'};color:${l.code === currentLang ? 'white' : 'var(--text-muted)'};cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;">${l.flag} ${l.label}</button>`
+    ).join('');
+    const langToggleHtml = `<div style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;">${langButtons}</div>`;
+
     // Generiere den Content
-    return OshoZenTextGenerator.generateSync({
+    return langToggleHtml + OshoZenTextGenerator.generateSync({
         profile1: profile1,
         profile2: profile2,
         name1: ichName,
