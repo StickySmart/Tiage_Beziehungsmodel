@@ -383,7 +383,7 @@
             // v4.2: FFH (Fit, Fucked up, Horny) hinzugefügt
             // v4.6: AGOD-Gewichtung für Modifier-Skalierung übergeben
             const agodGew = TiageState.getGewichtungen
-                ? TiageState.getGewichtungen(person, archetyp)
+                ? TiageState.getGewichtungen('ich', archetyp)
                 : { O: 1, A: 1, D: 1, G: 1 };
             const profileContext = {
                 geschlecht: geschlecht,
