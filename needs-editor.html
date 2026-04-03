@@ -1955,6 +1955,15 @@
         // Lausche auf ActiveFilterCard Änderungen
         document.addEventListener('activeFilterChange', function(event) {
             applyActiveFilters();
+            // Eigenschaften-Section ein/ausklappen je nach Filter
+            var sections = document.querySelectorAll('.eigenschaften-section');
+            var hasFilter = event.detail && (
+                (event.detail.kategorien && event.detail.kategorien.length > 0) ||
+                event.detail.quickFilter
+            );
+            sections.forEach(function(s) {
+                s.style.display = hasFilter ? 'none' : '';
+            });
         });
 
         // Lausche auf Re-Render Events um Filter erneut anzuwenden
@@ -1968,6 +1977,11 @@
             // Die Filterung passiert über ActiveFilterCard
             var suggestions = generateSearchSuggestions(query);
             displaySearchSuggestions(suggestions);
+            // Eigenschaften einklappen wenn Suchtext vorhanden
+            var sections = document.querySelectorAll('.eigenschaften-section');
+            sections.forEach(function(s) {
+                s.style.display = query && query.trim().length > 0 ? 'none' : '';
+            });
         }
         window.handleIntelligentSearch = handleIntelligentSearch;
 
