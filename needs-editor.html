@@ -467,16 +467,13 @@
 
         <!-- Main Content -->
         <main class="needs-editor-content">
-            <!-- Person/Archetype Selector with Navigation -->
-            <div class="needs-editor-person-toggle">
-                <!-- ICH Section -->
+            <!-- Archetyp-Switcher versteckt: Auswahl erfolgt auf Hauptseite via Multi-Select Grid -->
+            <div class="needs-editor-person-toggle" style="display:none;">
                 <div class="needs-editor-person-section" id="sectionIch">
-                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
                     <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
                         <span class="person-label">ICH</span>
                         <span class="archetype-name" id="ichArchetypeDisplay">Profil</span>
                     </button>
-                    <button class="needs-editor-nav-btn" onclick="navigateArchetypeInEditor('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                 </div>
             </div>
 
