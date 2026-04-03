@@ -4214,27 +4214,51 @@ const AttributeSummaryCard = (function() {
         const godTotal = gDelta + oDelta + dDelta + fDelta + fuDelta + hDelta;
         const toggleDelta = totalValue - basisWert - godTotal;
 
-        // Segmente aufbauen (nur positive Anteile als Balken, negative als Markierung)
+        // Segmente aufbauen: Jedes Segment hat absolute Breite (% von 100)
+        // Positive Deltas werden addiert, negative subtrahiert
         const segments = [];
-        if (basisWert > 0) segments.push({ w: basisWert, c: 'rgba(255,255,255,0.15)', t: 'Basis: ' + basisWert });
-        if (gDelta !== 0) segments.push({ w: Math.abs(gDelta), c: gDelta > 0 ? '#F4A261' : '#F4A26166', t: 'G: ' + (gDelta > 0 ? '+' : '') + gDelta });
-        if (oDelta !== 0) segments.push({ w: Math.abs(oDelta), c: oDelta > 0 ? '#E63946' : '#E6394666', t: 'O: ' + (oDelta > 0 ? '+' : '') + oDelta });
-        if (dDelta !== 0) segments.push({ w: Math.abs(dDelta), c: dDelta > 0 ? '#8B5CF6' : '#8B5CF666', t: 'D: ' + (dDelta > 0 ? '+' : '') + dDelta });
-        if (fDelta !== 0) segments.push({ w: Math.abs(fDelta), c: '#2ECC71', t: 'Fi: ' + (fDelta > 0 ? '+' : '') + fDelta });
-        if (fuDelta !== 0) segments.push({ w: Math.abs(fuDelta), c: '#E74C3C', t: 'Fu: ' + (fuDelta > 0 ? '+' : '') + fuDelta });
-        if (hDelta !== 0) segments.push({ w: Math.abs(hDelta), c: '#EC4899', t: 'H: ' + (hDelta > 0 ? '+' : '') + hDelta });
-        if (toggleDelta !== 0) segments.push({ w: Math.abs(toggleDelta), c: toggleDelta > 0 ? '#06B6D4' : '#06B6D466', t: 'T: ' + (toggleDelta > 0 ? '+' : '') + Math.round(toggleDelta) });
+        let cursor = 0;
 
-        // Normalisieren auf totalValue Breite
-        const totalW = segments.reduce((s, seg) => s + seg.w, 0);
-        const scale = totalW > 0 ? Math.min(totalValue, 100) / totalW : 0;
+        // Basis-Segment
+        if (basisWert > 0) {
+            segments.push({ w: basisWert, c: '#4a5568', t: 'Basis: ' + basisWert });
+            cursor = basisWert;
+        }
 
+        // Modifier-Segmente (nur wenn != 0)
+        const mods = [
+            { d: gDelta, cp: '#F4A261', cn: '#F4A261', l: 'G' },
+            { d: oDelta, cp: '#E63946', cn: '#E63946', l: 'O' },
+            { d: dDelta, cp: '#8B5CF6', cn: '#8B5CF6', l: 'D' },
+            { d: fDelta, cp: '#2ECC71', cn: '#2ECC71', l: 'Fi' },
+            { d: fuDelta, cp: '#E74C3C', cn: '#E74C3C', l: 'Fu' },
+            { d: hDelta, cp: '#EC4899', cn: '#EC4899', l: 'H' }
+        ];
+        mods.forEach(m => {
+            if (m.d > 0) {
+                segments.push({ w: m.d, c: m.cp, t: m.l + ': +' + m.d });
+                cursor += m.d;
+            } else if (m.d < 0) {
+                // Negative: Segment wird vom Basis abgezogen (dunklere Farbe)
+                segments.push({ w: Math.abs(m.d), c: m.cn + '66', t: m.l + ': ' + m.d });
+            }
+        });
+
+        // Toggle-Segment
+        if (toggleDelta > 0) {
+            segments.push({ w: toggleDelta, c: '#06B6D4', t: 'T: +' + Math.round(toggleDelta) });
+        } else if (toggleDelta < 0) {
+            segments.push({ w: Math.abs(toggleDelta), c: '#06B6D466', t: 'T: ' + Math.round(toggleDelta) });
+        }
+
+        // Gesamtbreite des gefüllten Bereichs = totalValue%
         const segHtml = segments.map(seg => {
-            const width = Math.max(1, Math.round(seg.w * scale));
-            return `<div style="width:${width}%;height:100%;background:${seg.c};flex-shrink:0;" title="${seg.t}"></div>`;
+            return `<div style="width:${seg.w}px;flex:${seg.w} 0 0;height:100%;background:${seg.c};min-width:2px;" title="${seg.t}"></div>`;
         }).join('');
 
-        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.05);">${segHtml}</div>`;
+        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.05);">` +
+            `<div style="display:flex;width:${totalValue}%;height:100%;transition:width 0.2s;">${segHtml}</div>` +
+            `</div>`;
     }
 
     function updateSegmentBar(needId, newValue) {
