@@ -311,41 +311,67 @@ const OshoZenTextGenerator = (function() {
                 <div class="osho-zen-list">
         `;
 
-        topMatches.forEach((match, index) => {
-            const { firstSentence, rest } = extractFirstSentence(match.text);
-            const hasExpandableContent = rest.length > 0 || match.bild || match.osho;
+        // Gruppiere Bedürfnisse mit gleicher Karte zusammen
+        const kartenGroups = [];
+        const kartenMap = {};
+        topMatches.forEach(match => {
+            const key = match.karte || 'Unknown';
+            if (!kartenMap[key]) {
+                kartenMap[key] = { karte: key, karteName_de: match.karteName_de, bild: match.bild, osho: match.osho, quelle: match.quelle, needs: [] };
+                kartenGroups.push(kartenMap[key]);
+            }
+            kartenMap[key].needs.push(match);
+        });
+
+        kartenGroups.forEach((group, groupIndex) => {
+            // Header: Karte mit allen Bedürfnissen
+            const needLabels = group.needs.map((m, i) =>
+                `<span class="osho-zen-label">${m.label}</span> <span class="osho-zen-id">${m.id}</span>`
+            ).join('<span style="opacity:0.4;margin:0 6px;">+</span>');
+
+            const hasExpandableContent = group.bild || group.osho || group.needs.some(m => extractFirstSentence(m.text).rest.length > 0);
 
             html += `
-                <div class="osho-zen-item ${hasExpandableContent ? 'expanded' : ''}" data-index="${index}">
-                    <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${index})">
+                <div class="osho-zen-item ${hasExpandableContent ? 'expanded' : ''}" data-index="${groupIndex}">
+                    <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})">
                         <div class="osho-zen-item-left">
-                            <span class="osho-zen-rank">${index + 1}</span>
-                            <span class="osho-zen-label">${match.label}</span>
-                            <span class="osho-zen-id">${match.id}</span>
-                            <span class="osho-zen-karte">— ${match.karte}${match.karteName_de && match.karteName_de !== match.karte ? ` (${match.karteName_de})` : ''}</span>
+                            <span class="osho-zen-rank">${groupIndex + 1}</span>
+                            ${needLabels}
+                            <span class="osho-zen-karte">— ${group.karte}${group.karteName_de && group.karteName_de !== group.karte ? ` (${group.karteName_de})` : ''}</span>
                         </div>
                         <div class="osho-zen-item-right">
                             <span class="osho-zen-toggle">${hasExpandableContent ? '▼' : ''}</span>
                         </div>
                     </div>
+            `;
+
+            // Individuelle Texte pro Bedürfnis
+            group.needs.forEach(match => {
+                const { firstSentence, rest } = extractFirstSentence(match.text);
+                html += `
                     <div class="osho-zen-text-preview">
                         <span class="osho-zen-karte-icon">🃏</span>
-                        <strong>${match.karte}:</strong> ${firstSentence}
-                    </div>
-                    ${match.bild ? `
-                    <div class="osho-zen-bild-text">
-                        ${match.bild}
-                    </div>
-                    ` : ''}
-                    ${match.osho ? `
-                    <div class="osho-zen-osho-quote">
-                        <blockquote class="osho-zen-statement">${match.osho}</blockquote>
-                        ${match.quelle ? `<cite>— ${match.quelle}</cite>` : ''}
-                    </div>
-                    ` : ''}
-                    ${hasExpandableContent ? `
-                    <div class="osho-zen-item-content" style="display: block;">
+                        <strong>${match.label}:</strong> ${firstSentence}
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            // Geteilte Karten-Inhalte (einmalig)
+            html += `
+                    ${group.bild ? `<div class="osho-zen-bild-text">${group.bild}</div>` : ''}
+                    ${group.osho ? `
+                    <div class="osho-zen-osho-quote">
+                        <blockquote class="osho-zen-statement">${group.osho}</blockquote>
+                        ${group.quelle ? `<cite>— ${group.quelle}</cite>` : ''}
+                    </div>` : ''}
+            `;
+
+            // Bilder + Footer pro Bedürfnis
+            if (hasExpandableContent) {
+                html += `<div class="osho-zen-item-content" style="display: block;">`;
+                group.needs.forEach(match => {
+                    html += `
                         <div class="osho-zen-image-container">
                             <img src="${getNeedImagePath(match.id)}"
                                  alt="${t('synthese.oshoNeedAlt', 'Bedürfnis {label}').replace('{label}', match.label)}"
@@ -355,15 +381,17 @@ const OshoZenTextGenerator = (function() {
                                  onclick="OshoZenTextGenerator.openLightbox(this.src, this.alt)"
                                  style="cursor: pointer;">
                         </div>
-                    </div>
-                    ` : ''}
-                    <div class="osho-zen-item-footer">
-                        <span class="osho-zen-footer-stat">${name1}: ${match.score1}%</span>
-                        <span class="osho-zen-footer-stat">${name2}: ${match.score2}%</span>
-                        <span class="osho-zen-footer-stat">Match: ${match.matchScore}%</span>
-                    </div>
-                </div>
-            `;
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            // Footer mit Scores aller Bedürfnisse
+            html += `<div class="osho-zen-item-footer">`;
+            group.needs.forEach(match => {
+                html += `<span class="osho-zen-footer-stat">${match.label}: ${name1} ${match.score1}% / ${name2} ${match.score2}% (Match: ${match.matchScore}%)</span>`;
+            });
+            html += `</div></div>`;
         });
 
         html += `
