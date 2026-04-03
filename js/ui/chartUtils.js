@@ -119,4 +119,8 @@ const TiageChartUtils = (function() {
 // Export for other modules
 if (typeof window !== 'undefined') {
     window.TiageChartUtils = TiageChartUtils;
+    // Legacy globals für comparisonView.js etc.
+    window.drawRadarChart = TiageChartUtils.drawRadarChart;
+    window.getScoreColor = TiageChartUtils.getScoreColor;
+    window.getBarClass = TiageChartUtils.getBarClass;
 }
