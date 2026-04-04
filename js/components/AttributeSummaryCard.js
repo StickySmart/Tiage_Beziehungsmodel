@@ -2936,8 +2936,8 @@ const AttributeSummaryCard = (function() {
      * @param {boolean} shouldHide - Ob durch Filter versteckt
      */
     function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
-        // v1.8.998: Vereinfacht — keine hfOptions, keine Hauptfrage/Nuancen-Unterscheidung
-        value = roundTo25(value);
+        // v1.8.1060: Keine Rundung mehr - exakte Werte für Segment-Balken
+        value = Math.round(parseFloat(value) || 0);
 
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -4214,50 +4214,70 @@ const AttributeSummaryCard = (function() {
         const godTotal = gDelta + oDelta + dDelta + fDelta + fuDelta + hDelta;
         const toggleDelta = totalValue - basisWert - godTotal;
 
-        // Segmente aufbauen: Jedes Segment hat absolute Breite (% von 100)
-        // Positive Deltas werden addiert, negative subtrahiert
+        // Segmente aufbauen - Grüntöne positiv, Rottöne negativ, schraffiert bei negativ
+        const MIN_SEG = 4;
         const segments = [];
-        let cursor = 0;
 
-        // Basis-Segment
+        // Schraffur-Pattern für negative Werte (CSS repeating-linear-gradient)
+        const hatch = (color) => `repeating-linear-gradient(45deg, ${color}, ${color} 2px, transparent 2px, transparent 5px)`;
+
+        // Basis-Segment - gedämpftes Grün
         if (basisWert > 0) {
-            segments.push({ w: basisWert, c: '#4a5568', t: 'Basis: ' + basisWert });
-            cursor = basisWert;
+            segments.push({ w: basisWert, c: '#2d6a4f', bg: null, t: 'Basis: ' + basisWert });
         }
 
-        // Modifier-Segmente (nur wenn != 0)
+        // GOD-Modifier-Segmente
         const mods = [
-            { d: gDelta, cp: '#F4A261', cn: '#F4A261', l: 'G' },
-            { d: oDelta, cp: '#E63946', cn: '#E63946', l: 'O' },
-            { d: dDelta, cp: '#8B5CF6', cn: '#8B5CF6', l: 'D' },
-            { d: fDelta, cp: '#2ECC71', cn: '#2ECC71', l: 'Fi' },
-            { d: fuDelta, cp: '#E74C3C', cn: '#E74C3C', l: 'Fu' },
-            { d: hDelta, cp: '#EC4899', cn: '#EC4899', l: 'H' }
+            { d: gDelta, cp: '#F4A261', cn: '#c0392b', l: 'G' },
+            { d: oDelta, cp: '#e07b53', cn: '#a93226', l: 'O' },
+            { d: dDelta, cp: '#8B5CF6', cn: '#6c3483', l: 'D' },
+            { d: fDelta, cp: '#27ae60', cn: '#c0392b', l: 'Fi' },
+            { d: fuDelta, cp: '#e74c3c', cn: '#922b21', l: 'Fu' },
+            { d: hDelta, cp: '#EC4899', cn: '#b03060', l: 'H' }
         ];
         mods.forEach(m => {
-            if (m.d > 0) {
-                segments.push({ w: m.d, c: m.cp, t: m.l + ': +' + m.d });
-                cursor += m.d;
-            } else if (m.d < 0) {
-                // Negative: Segment wird vom Basis abgezogen (dunklere Farbe)
-                segments.push({ w: Math.abs(m.d), c: m.cn + '66', t: m.l + ': ' + m.d });
+            if (m.d !== 0) {
+                const visW = Math.max(MIN_SEG, Math.abs(m.d));
+                if (m.d > 0) {
+                    segments.push({ w: visW, c: m.cp, bg: null, t: m.l + ': +' + m.d });
+                } else {
+                    segments.push({ w: visW, c: null, bg: hatch(m.cn), t: m.l + ': ' + m.d });
+                }
             }
         });
 
         // Toggle-Segment
-        if (toggleDelta > 0) {
-            segments.push({ w: toggleDelta, c: '#06B6D4', t: 'T: +' + Math.round(toggleDelta) });
-        } else if (toggleDelta < 0) {
-            segments.push({ w: Math.abs(toggleDelta), c: '#06B6D466', t: 'T: ' + Math.round(toggleDelta) });
+        if (toggleDelta !== 0) {
+            const visW = Math.max(MIN_SEG, Math.abs(toggleDelta));
+            if (toggleDelta > 0) {
+                segments.push({ w: visW, c: '#06B6D4', bg: null, t: 'T: +' + Math.round(toggleDelta) });
+            } else {
+                segments.push({ w: visW, c: null, bg: hatch('#0891b2'), t: 'T: ' + Math.round(toggleDelta) });
+            }
         }
 
-        // Gesamtbreite des gefüllten Bereichs = totalValue%
+        // User-Edit
+        const calcSum = basisWert + godTotal + (toggleDelta > 0 ? toggleDelta : 0);
+        const userEdit = totalValue - Math.max(0, Math.min(100, calcSum));
+        if (Math.abs(userEdit) >= 1) {
+            const visW = Math.max(MIN_SEG, Math.abs(userEdit));
+            if (userEdit > 0) {
+                segments.push({ w: visW, c: '#fbbf24', bg: null, t: 'Manuell: +' + Math.round(userEdit) });
+            } else {
+                segments.push({ w: visW, c: null, bg: hatch('#b45309'), t: 'Manuell: ' + Math.round(userEdit) });
+            }
+        }
+
+        // Rendern
         const segHtml = segments.map(seg => {
-            return `<div style="width:${seg.w}px;flex:${seg.w} 0 0;height:100%;background:${seg.c};min-width:2px;" title="${seg.t}"></div>`;
+            const style = seg.bg
+                ? `background:${seg.bg};`
+                : `background:${seg.c};`;
+            return `<div style="flex:${seg.w};height:100%;${style}min-width:2px;" title="${seg.t}"></div>`;
         }).join('');
 
-        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.05);">` +
-            `<div style="display:flex;width:${totalValue}%;height:100%;transition:width 0.2s;">${segHtml}</div>` +
+        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);">` +
+            `<div style="display:flex;width:${totalValue}%;height:100%;transition:width 0.15s;">${segHtml}</div>` +
             `</div>`;
     }
 
