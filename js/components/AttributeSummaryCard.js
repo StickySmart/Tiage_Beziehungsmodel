@@ -4296,11 +4296,10 @@ const AttributeSummaryCard = (function() {
     }
 
     function updateSegmentBar(needId, newValue) {
-        // Lightweight: Nur Gesamtbreite anpassen (volle Neuberechnung wäre zu teuer bei Slider-Drag)
+        // Lightweight: Nur innere Füllung anpassen (äußere graue Bar bleibt 100% = Skala)
         const bar = document.querySelector(`.segment-bar[data-need="${needId}"]`);
-        if (bar) {
-            bar.style.width = newValue + '%';
-        }
+        const fill = bar && bar.firstElementChild;
+        if (fill) fill.style.width = newValue + '%';
     }
 
     /**
