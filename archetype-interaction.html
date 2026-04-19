@@ -1553,15 +1553,11 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="3" data-i18n="mobile.nextToPartner">Weiter zum Partner →</button>
-
-            <button class="btn-secondary-mobile" data-action="mobile-go-to-page" data-page="3" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;" data-i18n="mobile.selectManually">
-                Partner manuell auswählen →
-            </button>
+            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Weiter zur Synthese →</button>
         </div>
 
-        <!-- PAGE 3: Partner-Auswahl (vorher PAGE 2) -->
-        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER">
+        <!-- PAGE 3: Partner-Auswahl — AUSGEBLENDET auf Mobil (Slot Machine wählt Partner automatisch) -->
+        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER" style="display:none">
             <div class="page-header">
                 <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
                 <span class="page-title" data-i18n="mobile.pageTitlePartner">Dein Partner</span>
@@ -1739,10 +1735,10 @@
             <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Analysieren →</button>
         </div>
 
-        <!-- PAGE 4: Ergebnis/Synthese (vorher PAGE 3) -->
+        <!-- PAGE 4: Ergebnis/Synthese -->
         <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: ERGEBNIS">
             <div class="page-header">
-                <button class="btn-back" data-action="mobile-go-to-page" data-page="3">←</button>
+                <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
                 <span class="page-title">Synthese</span>
             </div>
 
