@@ -207,6 +207,15 @@ body {
         display: block !important;
     }
 
+    /* Navigations-Buttons zwischen Seiten ausblenden - User scrollt durch */
+    .mobile-multipage .btn-primary-mobile,
+    .mobile-multipage .btn-secondary-mobile,
+    .mobile-multipage .btn-back,
+    .mobile-multipage .page-header,
+    .mobile-multipage .page-indicator {
+        display: none !important;
+    }
+
     /* Alle Seiten untereinander anzeigen (kein Swipe) */
     .mobile-page {
         display: block;
