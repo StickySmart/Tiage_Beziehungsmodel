@@ -1232,9 +1232,24 @@
             };
             const archetypeLabel = archetypeLabels[archetype] || archetype;
 
+            // Filter- und Search-Elemente temporär rausziehen, damit innerHTML=... sie nicht zerstört
+            const mainEl = document.querySelector('main.needs-editor-content');
+            const filterCard = document.getElementById('activeFilterCardContainer');
+            const searchContainer = document.querySelector('.profile-review-search-container');
+            if (mainEl && filterCard && filterCard.parentNode !== mainEl) mainEl.appendChild(filterCard);
+            if (mainEl && searchContainer && searchContainer.parentNode !== mainEl) mainEl.appendChild(searchContainer);
+
             // Render using AttributeSummaryCard with both archetype and label
             const html = AttributeSummaryCard.renderAllNeedsFlat(archetype, archetypeLabel);
             container.innerHTML = html;
+
+            // Filter- und Search-Elemente zwischen Eigenschaften und Selection-Bar einfügen
+            const header = container.querySelector('.flat-needs-header');
+            const selectionBar = header && header.querySelector('.flat-needs-selection-bar');
+            if (header && selectionBar) {
+                if (filterCard) header.insertBefore(filterCard, selectionBar);
+                if (searchContainer) header.insertBefore(searchContainer, selectionBar);
+            }
 
             // Initialize multi-select controls if available
             if (typeof AttributeSummaryCard.initDimensionFilter === 'function') {
