@@ -193,11 +193,18 @@ body {
         box-sizing: border-box;
     }
 
-    /* Desktop-Layout auf Mobil ausblenden (Mobile-Layout bleibt sichtbar) */
+    /* Desktop-Layout auf Mobil strikt ausblenden */
     .comparison-container.desktop-mode,
+    #comparisonView,
     .main-container,
-    .top-bar-container {
+    .top-bar-container,
+    .selection-info-message {
         display: none !important;
+    }
+
+    /* Mobile-Layout auf Mobil strikt zeigen (überschreibt inline style="display:none") */
+    #mobileMultipage.mobile-multipage {
+        display: block !important;
     }
 
     /* Alle Seiten untereinander anzeigen (kein Swipe) */
