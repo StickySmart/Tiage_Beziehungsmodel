@@ -2062,16 +2062,19 @@ const TiageBeduerfnisse = {
     getLabel: function(idOrKey) {
         const def = this.getDefinition(idOrKey);
         if (def) {
-            // i18n: Übersetzte Labels verwenden wenn verfügbar
-            if (typeof TiageI18n !== 'undefined' && def.key) {
-                const translated = TiageI18n.t('needs.items.' + def.key);
-                if (translated && translated !== 'needs.items.' + def.key) {
-                    return translated;
-                }
+            // i18n nur für nicht-deutsche Sprachen (def.label ist DE)
+            if (typeof TiageI18n !== 'undefined' && def.key &&
+                typeof TiageI18n.getLanguage === 'function' &&
+                TiageI18n.getLanguage() !== 'de') {
+                const path = 'needs.items.' + def.key;
+                const locale = TiageI18n.getLocale && TiageI18n.getLocale();
+                const translated = locale
+                    ? path.split('.').reduce((o, k) => (o && o[k] != null ? o[k] : undefined), locale)
+                    : undefined;
+                if (translated) return translated;
             }
             if (def.label) return def.label;
         }
-        // Fallback: ID formatieren
         return idOrKey.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     }
 };

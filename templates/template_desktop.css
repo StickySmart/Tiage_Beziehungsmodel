@@ -3635,9 +3635,9 @@
             display: block;
         }
 
-        .geschlecht-extras-grid {
-            display: flex;
-            flex-wrap: wrap;
+        .geschlecht-grid.geschlecht-extras-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
             max-height: none !important;
             overflow: visible !important;
