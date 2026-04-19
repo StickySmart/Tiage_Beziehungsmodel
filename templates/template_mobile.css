@@ -176,7 +176,7 @@ body {
        MOBILE BLOCKER: App ist nur für Desktop
        Zeigt Vollbild-Hinweis auf Smartphones
        ═══════════════════════════════════════════════════════════════ */
-    .mobile-wip-blocker {
+    .mobile-wip-blocker:not(.dismissed) {
         display: flex !important;
         position: fixed;
         top: 0;
@@ -193,13 +193,10 @@ body {
         box-sizing: border-box;
     }
 
-    /* Verstecke ALLES hinter dem Blocker */
+    /* Desktop-Layout auf Mobil ausblenden (Mobile-Layout bleibt sichtbar) */
     .comparison-container.desktop-mode,
-    .mobile-multipage,
     .main-container,
-    .app-loading-overlay,
-    .top-bar-container,
-    .visitor-info-bar {
+    .top-bar-container {
         display: none !important;
     }
 
