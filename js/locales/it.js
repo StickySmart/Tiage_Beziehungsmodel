@@ -1630,7 +1630,7 @@ var TiageLocale_IT = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // FFH (Fit, Fucked up, Horny)
+    // FFH (Fit, Fucked up, Horny, Fresh)
     // ═══════════════════════════════════════════════════════════════════════
 
     ffh: {
@@ -1639,7 +1639,9 @@ var TiageLocale_IT = {
         fuckedup: 'Fucked up',
         fuckedupDesc: 'Hai uno stile di vita non convenzionale o intenso.',
         horny: 'Horny',
-        hornyDesc: 'La sessualità ha un ruolo importante nella tua vita.'
+        hornyDesc: 'La sessualità ha un ruolo importante nella tua vita.',
+        fresh: 'Fresh',
+        freshDesc: 'Fresco, libero da pesi, riposato — nuova energia senza zavorra.'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

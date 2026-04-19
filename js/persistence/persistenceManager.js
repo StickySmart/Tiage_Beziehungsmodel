@@ -557,10 +557,10 @@ function resetAll() {
     // Reset Geschlecht-Extras (Fit/Fucked up/Horny)
     ['ich', 'partner'].forEach(person => {
         // Reset local cache
-        window.geschlechtExtrasCache[person] = { fit: false, fuckedup: false, horny: false };
+        window.geschlechtExtrasCache[person] = { fit: false, fuckedup: false, horny: false, fresh: false };
         // Reset TiageState
         if (typeof TiageState !== 'undefined') {
-            TiageState.set(`personDimensions.${person}.geschlecht_extras`, { fit: false, fuckedup: false, horny: false });
+            TiageState.set(`personDimensions.${person}.geschlecht_extras`, { fit: false, fuckedup: false, horny: false, fresh: false });
         }
         // Update UI
         window.syncGeschlechtExtrasUI(person);

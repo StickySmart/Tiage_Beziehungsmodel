@@ -692,7 +692,7 @@ TiageSynthesis.Constants = {
         PRIMARY: ['mann', 'frau', 'nonbinaer'],
 
         // Extras (Multi-Select, optional)
-        EXTRAS: ['fit', 'fuckedup', 'horny'],
+        EXTRAS: ['fit', 'fuckedup', 'horny', 'fresh'],
 
         // Labels für UI-Anzeige
         LABELS: {
@@ -704,7 +704,8 @@ TiageSynthesis.Constants = {
             EXTRAS: {
                 'fit': 'Fit 💪',
                 'fuckedup': 'Fucked up 🔥',
-                'horny': 'Horny 😈'
+                'horny': 'Horny 😈',
+                'fresh': 'Fresh 🌱'
             }
         },
 

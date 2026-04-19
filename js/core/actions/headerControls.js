@@ -229,7 +229,7 @@
                 TiageState.set('personDimensions.ich.dominanz', null);
 
                 // 2. FFH zurücksetzen
-                var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
                 TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
                 if (typeof window.geschlechtExtrasCache !== 'undefined') {
                     window.geschlechtExtrasCache.ich = defaultExtras;

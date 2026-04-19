@@ -71,12 +71,13 @@
         'pansexuell': 'Bisexuell'         // Legacy: Pansexuell → Bisexuell
     };
 
-    // v4.2: FFH-Map (Fit, Fucked up, Horny)
+    // v4.2: FFH-Map (Fit, Fucked up, Horny, Fresh)
     const FFH_MAP = {
         'fit': 'Fit',
         'fuckedup': 'Fuckedup',
         'fucked_up': 'Fuckedup',
-        'horny': 'Horny'
+        'horny': 'Horny',
+        'fresh': 'Fresh'
     };
 
     /**
@@ -182,10 +183,11 @@
         gender: ['S1'],            // Geschlecht → S1 Leiblichkeit
         dominanz: ['S3'],          // Dominanz → S3 Autonomie & Leistung
         orientierung: ['S1', 'S2'], // Orientierung → S1 Leiblichkeit + S2 Soziales Netzwerk
-        // v4.2: FFH (Fit, Fucked up, Horny)
+        // v4.2: FFH (Fit, Fucked up, Horny, Fresh)
         fit: ['S1', 'S4'],         // Fit → S1 Leiblichkeit + S4 Sicherheit (Gesundheit)
         fuckedup: ['S5'],          // Fucked up → S5 Werte & Sinn (emotionale Tiefe)
-        horny: ['S1']              // Horny → S1 Leiblichkeit (Sexualität)
+        horny: ['S1'],             // Horny → S1 Leiblichkeit (Sexualität)
+        fresh: ['S1', 'S2']        // Fresh → S1 Leiblichkeit (körperliche Frische) + S2 Soziales Netzwerk
     };
 
     /**
@@ -369,6 +371,16 @@
             }
         }
 
+        if (extras.fresh) {
+            const freshMultiplier = getRtiMultiplier('fresh');
+            const freshMod = getFFHModifier('fresh');
+            if (freshMod && freshMod.deltas) {
+                Object.keys(freshMod.deltas).forEach(key => {
+                    deltas[key] = (deltas[key] || 0) + (freshMod.deltas[key] * freshMultiplier);
+                });
+            }
+        }
+
         return deltas;
     }
 
@@ -397,10 +409,10 @@
      *
      * @param {string} stringKey - Bedürfnis-Key (z.B. 'selbstbestimmung_und_unabhaengigkeit')
      * @param {Object} profile - { geschlecht, dominanz, orientierung, geschlecht_extras }
-     * @returns {Object} { g, d, o, f, fu, h, total } — jeder Wert ist gerundet
+     * @returns {Object} { g, d, o, f, fu, h, fr, total } — jeder Wert ist gerundet
      */
     function getModifierBreakdown(stringKey, profile) {
-        const bd = { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, total: 0 };
+        const bd = { g: 0, d: 0, o: 0, f: 0, fu: 0, h: 0, fr: 0, total: 0 };
         if (!stringKey || !profile) return bd;
 
         // v4.6: AGOD-Skalierung
@@ -467,8 +479,14 @@
                 bd.h = Math.round(hMod.deltas[stringKey] * getRtiMultiplier('horny'));
             }
         }
+        if (extras.fresh) {
+            const frMod = getFFHModifier('fresh');
+            if (frMod?.deltas?.[stringKey]) {
+                bd.fr = Math.round(frMod.deltas[stringKey] * getRtiMultiplier('fresh'));
+            }
+        }
 
-        bd.total = bd.g + bd.d + bd.o + bd.f + bd.fu + bd.h;
+        bd.total = bd.g + bd.d + bd.o + bd.f + bd.fu + bd.h + bd.fr;
         return bd;
     }
 
@@ -477,7 +495,7 @@
      * Holt Modifier-Objekte und RTI-Multiplier einmal, iteriert dann über alle Keys.
      *
      * @param {Object} profile - { geschlecht, dominanz, orientierung, geschlecht_extras }
-     * @returns {Object} { [stringKey]: { g, d, o, f, fu, h, total } }
+     * @returns {Object} { [stringKey]: { g, d, o, f, fu, h, fr, total } }
      */
     function getAllModifierBreakdowns(profile) {
         const result = {};
@@ -486,7 +504,7 @@
         // Modifier-Objekte einmal holen
         let genderDeltas = null, dominanzDeltas = null;
         const orientierungDeltasList = [];
-        let fitDeltas = null, fuckedupDeltas = null, hornyDeltas = null;
+        let fitDeltas = null, fuckedupDeltas = null, hornyDeltas = null, freshDeltas = null;
 
         if (profile.geschlecht) {
             const gVal = typeof profile.geschlecht === 'string' ? profile.geschlecht : profile.geschlecht?.primary;
@@ -516,6 +534,7 @@
         if (extras.fit) { const m = getFFHModifier('fit'); if (m?.deltas) fitDeltas = m.deltas; }
         if (extras.fuckedup) { const m = getFFHModifier('fuckedup'); if (m?.deltas) fuckedupDeltas = m.deltas; }
         if (extras.horny) { const m = getFFHModifier('horny'); if (m?.deltas) hornyDeltas = m.deltas; }
+        if (extras.fresh) { const m = getFFHModifier('fresh'); if (m?.deltas) freshDeltas = m.deltas; }
 
         // RTI-Multiplier einmal berechnen
         const gMulti = getRtiMultiplier('gender');
@@ -524,10 +543,11 @@
         const fMulti = getRtiMultiplier('fit');
         const fuMulti = getRtiMultiplier('fuckedup');
         const hMulti = getRtiMultiplier('horny');
+        const frMulti = getRtiMultiplier('fresh');
 
         // Alle betroffenen stringKeys sammeln
         const allKeys = new Set();
-        [genderDeltas, dominanzDeltas, fitDeltas, fuckedupDeltas, hornyDeltas, ...orientierungDeltasList]
+        [genderDeltas, dominanzDeltas, fitDeltas, fuckedupDeltas, hornyDeltas, freshDeltas, ...orientierungDeltasList]
             .filter(Boolean).forEach(d => Object.keys(d).forEach(k => allKeys.add(k)));
 
         // Breakdown pro Key berechnen
@@ -541,9 +561,10 @@
             const f = fitDeltas?.[key] ? Math.round(fitDeltas[key] * fMulti) : 0;
             const fu = fuckedupDeltas?.[key] ? Math.round(fuckedupDeltas[key] * fuMulti) : 0;
             const h = hornyDeltas?.[key] ? Math.round(hornyDeltas[key] * hMulti) : 0;
-            const total = g + d + o + f + fu + h;
+            const fr = freshDeltas?.[key] ? Math.round(freshDeltas[key] * frMulti) : 0;
+            const total = g + d + o + f + fu + h + fr;
             if (total !== 0) {
-                result[key] = { g, d, o, f, fu, h, total };
+                result[key] = { g, d, o, f, fu, h, fr, total };
             }
         });
 
@@ -559,7 +580,7 @@
             gender: Object.keys(TiageModifiers.Gender).length,
             dominanz: Object.keys(TiageModifiers.Dominanz).length,
             orientierung: Object.keys(TiageModifiers.Orientierung).length,
-            ffh: Object.keys(TiageModifiers.FFH).length,
+            ffh: Object.keys(TiageModifiers.FFH).length,  // Fit, Fuckedup, Horny, Fresh
             total: Object.keys(TiageModifiers.Gender).length +
                    Object.keys(TiageModifiers.Dominanz).length +
                    Object.keys(TiageModifiers.Orientierung).length +

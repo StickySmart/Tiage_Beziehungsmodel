@@ -87,13 +87,14 @@ var TiageSlotMachine = (function() {
         'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Switch', 'ausgeglichen': 'Ausg.'
     };
 
-    // v4.3: FFH (Fit/Fucked up/Horny) Label Helper
+    // v4.3: FFH (Fit/Fucked up/Horny/Fresh) Label Helper
     function getFFHLabel(ffh) {
         if (!ffh) return '-';
         const parts = [];
         if (ffh.fit) parts.push('\u{1F4AA}');
         if (ffh.fuckedup) parts.push('\u{1F525}');
         if (ffh.horny) parts.push('\u{1F608}');
+        if (ffh.fresh) parts.push('\u{1F331}');
         return parts.length > 0 ? parts.join('') : '-';
     }
 
@@ -543,19 +544,20 @@ var TiageSlotMachine = (function() {
             ];
         }
 
-        // v4.3: FFH-Optionen (Fit/Fucked up/Horny)
+        // v4.3: FFH-Optionen (Fit/Fucked up/Horny/Fresh)
         let ffhOptions = [];
         const partnerHasFFH = partnerDims.geschlecht_extras &&
-            (partnerDims.geschlecht_extras.fit || partnerDims.geschlecht_extras.fuckedup || partnerDims.geschlecht_extras.horny);
+            (partnerDims.geschlecht_extras.fit || partnerDims.geschlecht_extras.fuckedup || partnerDims.geschlecht_extras.horny || partnerDims.geschlecht_extras.fresh);
         if (partnerHasFFH) {
             ffhOptions = [partnerDims.geschlecht_extras];
         } else {
             ffhOptions = [
-                { fit: false, fuckedup: false, horny: false },
-                { fit: true, fuckedup: false, horny: false },
-                { fit: false, fuckedup: true, horny: false },
-                { fit: false, fuckedup: false, horny: true },
-                { fit: true, fuckedup: true, horny: true }
+                { fit: false, fuckedup: false, horny: false, fresh: false },
+                { fit: true, fuckedup: false, horny: false, fresh: false },
+                { fit: false, fuckedup: true, horny: false, fresh: false },
+                { fit: false, fuckedup: false, horny: true, fresh: false },
+                { fit: false, fuckedup: false, horny: false, fresh: true },
+                { fit: true, fuckedup: true, horny: true, fresh: true }
             ];
         }
 
@@ -630,7 +632,7 @@ var TiageSlotMachine = (function() {
 
                                     // FIX v4.3: Übergebe FFH der aktuellen Iteration als extras
                                     // damit der Extras-Modifier korrekt berechnet wird (nicht aus globalem Cache)
-                                    const ichExtrasForCalc = window.geschlechtExtrasCache ? window.geschlechtExtrasCache.ich : { fit: false, fuckedup: false, horny: false };
+                                    const ichExtrasForCalc = window.geschlechtExtrasCache ? window.geschlechtExtrasCache.ich : { fit: false, fuckedup: false, horny: false, fresh: false };
                                     const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
                                         rFaktoren: {
                                             ich: ichRFaktoren,
@@ -862,7 +864,7 @@ var TiageSlotMachine = (function() {
 
         // FFH (geschlecht_extras)
         const partnerFFH = partnerDims.geschlecht_extras;
-        const hasFFH = partnerFFH && (partnerFFH.fit || partnerFFH.fuckedup || partnerFFH.horny);
+        const hasFFH = partnerFFH && (partnerFFH.fit || partnerFFH.fuckedup || partnerFFH.horny || partnerFFH.fresh);
         if (!hasFFH && result.ffh && personDimensions) {
             personDimensions.partner.geschlecht_extras = result.ffh;
             if (mobilePersonDimensions) {

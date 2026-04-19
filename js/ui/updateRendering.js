@@ -329,21 +329,21 @@ function resetPartnerGOD() {
 
     // Reset geschlechtExtrasCache für Partner
     if (typeof window.geschlechtExtrasCache !== 'undefined' && window.geschlechtExtrasCache.partner) {
-        window.geschlechtExtrasCache.partner = { fit: false, fuckedup: false, horny: false };
+        window.geschlechtExtrasCache.partner = { fit: false, fuckedup: false, horny: false, fresh: false };
     }
 
     // Reset TiageState geschlecht extras für Partner
     // FIX v4.3: geschlecht_extras als Objekt setzen (nicht einzelne Felder)
     if (typeof TiageState !== 'undefined') {
-        TiageState.set('personDimensions.partner.geschlecht_extras', { fit: false, fuckedup: false, horny: false });
+        TiageState.set('personDimensions.partner.geschlecht_extras', { fit: false, fuckedup: false, horny: false, fresh: false });
     }
 
     // Reset in-memory personDimensions
     if (typeof window.personDimensions !== 'undefined' && window.personDimensions.partner) {
-        window.personDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false };
+        window.personDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false, fresh: false };
     }
     if (typeof window.mobilePersonDimensions !== 'undefined' && window.mobilePersonDimensions.partner) {
-        window.mobilePersonDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false };
+        window.mobilePersonDimensions.partner.geschlecht_extras = { fit: false, fuckedup: false, horny: false, fresh: false };
     }
     document.querySelectorAll('#partner-geschlecht-s-grid .geschlecht-btn, #mobile-partner-geschlecht-s-grid .geschlecht-btn').forEach(btn => {
         btn.classList.remove(...allClasses);

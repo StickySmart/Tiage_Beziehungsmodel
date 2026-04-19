@@ -255,8 +255,8 @@ function handleGeschlechtSClick(person, value, btn) {
  */
 // Local cache for geschlecht_extras (avoids TiageState subscriber race conditions)
 const geschlechtExtrasCache = {
-    ich: { fit: false, fuckedup: false, horny: false },
-    partner: { fit: false, fuckedup: false, horny: false }
+    ich: { fit: false, fuckedup: false, horny: false, fresh: false },
+    partner: { fit: false, fuckedup: false, horny: false, fresh: false }
 };
 // Expose on window so other modules (persistenceManager, etc.) can access it
 window.geschlechtExtrasCache = geschlechtExtrasCache;
@@ -271,11 +271,12 @@ function handleGeschlechtExtrasClick(person, value, stateKey, btn) {
     currentExtras[value] = !currentExtras[value];
 
     // Toast
-    const ffhLabels = { fit: 'Fit 💪', fuckedup: 'Fucked up 🔥', horny: 'Horny 😈' };
+    const ffhLabels = { fit: 'Fit 💪', fuckedup: 'Fucked up 🔥', horny: 'Horny 😈', fresh: 'Fresh 🌱' };
     const ffhDescs = {
         fit: TiageI18n.t('ffh.fitDesc', 'Sport und körperliche Fitness fließen in die Berechnung ein.'),
         fuckedup: TiageI18n.t('ffh.fuckedupDesc', 'Unkonventioneller Lebensstil fließt in die Berechnung ein.'),
-        horny: TiageI18n.t('ffh.hornyDesc', 'Sexualität als Faktor fließt in die Berechnung ein.')
+        horny: TiageI18n.t('ffh.hornyDesc', 'Sexualität als Faktor fließt in die Berechnung ein.'),
+        fresh: TiageI18n.t('ffh.freshDesc', 'Frische, unverbraucht, ausgeruht — neue Energie fließt in die Berechnung ein.')
     };
     if (currentExtras[value]) {
         TiageToast.info(ffhLabels[value] + ' aktiviert — ' + ffhDescs[value]);
@@ -317,10 +318,11 @@ function syncGeschlechtExtrasUI(person) {
         geschlechtExtrasCache[person] = {
             fit: !!stateExtras.fit,
             fuckedup: !!stateExtras.fuckedup,
-            horny: !!stateExtras.horny
+            horny: !!stateExtras.horny,
+            fresh: !!stateExtras.fresh
         };
     }
-    const extras = geschlechtExtrasCache[person] || { fit: false, fuckedup: false, horny: false };
+    const extras = geschlechtExtrasCache[person] || { fit: false, fuckedup: false, horny: false, fresh: false };
 
     // console.log('[TIAGE] syncGeschlechtExtrasUI:', person, extras);
 

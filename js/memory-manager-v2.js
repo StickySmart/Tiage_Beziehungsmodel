@@ -537,7 +537,7 @@ const MemoryManagerV2 = (function() {
                                 };
                             }
                         } else {
-                            var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                            var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
                             TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
                             if (typeof window.geschlechtExtrasCache !== 'undefined') {
                                 window.geschlechtExtrasCache.ich = defaultExtras;
@@ -652,7 +652,7 @@ const MemoryManagerV2 = (function() {
                             };
                         }
                     } else {
-                        var partnerDefault = { fit: false, fuckedup: false, horny: false };
+                        var partnerDefault = { fit: false, fuckedup: false, horny: false, fresh: false };
                         TiageState.set('personDimensions.partner.geschlecht_extras', partnerDefault);
                         if (typeof window.geschlechtExtrasCache !== 'undefined') {
                             window.geschlechtExtrasCache.partner = partnerDefault;
@@ -783,7 +783,7 @@ const MemoryManagerV2 = (function() {
                         TiageState.set('personDimensions.ich.geschlecht', null);
                         TiageState.set('personDimensions.ich.orientierung', null);
                         TiageState.set('personDimensions.ich.dominanz', null);
-                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
                         TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
                         if (typeof window.geschlechtExtrasCache !== 'undefined') {
                             window.geschlechtExtrasCache.ich = defaultExtras;
@@ -823,7 +823,7 @@ const MemoryManagerV2 = (function() {
                         }
                     } else {
                         // Kein gespeicherter FFH-Zustand → zurücksetzen
-                        var defaultExtras = { fit: false, fuckedup: false, horny: false };
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
                         TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
                         if (typeof window.geschlechtExtrasCache !== 'undefined') {
                             window.geschlechtExtrasCache.ich = defaultExtras;

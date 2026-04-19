@@ -13,6 +13,7 @@ var BeduerfnisIds = require('../profiles/definitions/beduerfnis-katalog.js');
 var horny = require('../profiles/modifiers/ffh/horny.js');
 var fit = require('../profiles/modifiers/ffh/fit.js');
 var fuckedup = require('../profiles/modifiers/ffh/fuckedup.js');
+var fresh = require('../profiles/modifiers/ffh/fresh.js');
 var hetero = require('../profiles/modifiers/orientierung/heterosexuell.js');
 var homo = require('../profiles/modifiers/orientierung/homosexuell.js');
 var bi = require('../profiles/modifiers/orientierung/bisexuell.js');
@@ -60,6 +61,7 @@ var modifiers = [
     { name: 'FFH Horny', mod: horny },
     { name: 'FFH Fit', mod: fit },
     { name: 'FFH Fuckedup', mod: fuckedup },
+    { name: 'FFH Fresh', mod: fresh },
     { name: 'Orientierung Hetero', mod: hetero },
     { name: 'Orientierung Homo', mod: homo },
     { name: 'Orientierung Bi', mod: bi },

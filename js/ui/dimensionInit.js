@@ -52,11 +52,12 @@ function initDimensionButtons() {
         { value: 'hoch', label: TiageI18n.t('dimensions.gfkLevels.hoch', 'hoch') }
     ];
 
-    // Geschlecht Extras Optionen (Fit / Fucked up / Horny) - Multi-Select
+    // Geschlecht Extras Optionen (Fit / Fucked up / Horny / Fresh) - Multi-Select
     const geschlechtExtrasOptions = [
         { value: 'fit', label: 'Fit 💪', stateKey: 'geschlecht_fit', descKey: 'ffh.fitDesc', desc: TiageI18n.t('ffh.fitDesc', 'Sport und körperliche Fitness sind dir wichtig.') },
         { value: 'fuckedup', label: 'Fucked up 🔥', stateKey: 'geschlecht_fuckedup', descKey: 'ffh.fuckedupDesc', desc: TiageI18n.t('ffh.fuckedupDesc', 'Du hast einen unkonventionellen oder intensiven Lebensstil.') },
-        { value: 'horny', label: 'Horny 😈', stateKey: 'geschlecht_horny', descKey: 'ffh.hornyDesc', desc: TiageI18n.t('ffh.hornyDesc', 'Sexualität spielt eine wichtige Rolle in deinem Leben.') }
+        { value: 'horny', label: 'Horny 😈', stateKey: 'geschlecht_horny', descKey: 'ffh.hornyDesc', desc: TiageI18n.t('ffh.hornyDesc', 'Sexualität spielt eine wichtige Rolle in deinem Leben.') },
+        { value: 'fresh', label: 'Fresh 🌱', stateKey: 'geschlecht_fresh', descKey: 'ffh.freshDesc', desc: TiageI18n.t('ffh.freshDesc', 'Frisch, unverbraucht, ausgeruht — neue Energie ohne Ballast.') }
     ];
 
     // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
