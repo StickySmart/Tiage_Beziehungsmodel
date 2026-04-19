@@ -488,14 +488,18 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Blocker: App nur auf Desktop -->
-    <div class="mobile-wip-blocker" style="display:none">
-        <div class="emoji">🖥️</div>
-        <h1>Desktop Only</h1>
-        <p>Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
-        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Bitte &ouml;ffne die Seite an einem<br>PC oder Laptop.</p>
-        <div style="margin-top: 40px; padding: 12px 24px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.9rem;">ti-age.de</div>
+    <!-- Mobile Warnung -->
+    <div class="mobile-wip-blocker" id="mobileWipBlocker" style="display:none">
+        <div class="emoji" style="font-size:4rem;margin-bottom:30px;line-height:1;">🖥️</div>
+        <h1 style="color:#A855F7;font-size:2.5rem;margin:0 0 20px 0;text-transform:uppercase;letter-spacing:3px;font-weight:300;line-height:1.2;">PC empfohlen</h1>
+        <p style="color:#ffffff;font-size:1.5rem;font-weight:bold;line-height:1.6;margin:0 0 16px 0;">Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
+        <p style="font-size:1rem;color:#94a3b8;margin:20px 0 0 0;font-weight:normal;line-height:1.5;">Auf dem Handy funktioniert nicht<br>jede Ansicht einwandfrei.</p>
+        <button type="button" class="continue-btn" style="margin-top:24px;padding:12px 28px;background:#A855F7;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-transform:none;letter-spacing:0;" onclick="(function(){try{localStorage.setItem('tiage_mobile_warned','1');}catch(e){}document.getElementById('mobileWipBlocker').classList.add('dismissed');document.getElementById('mobileWipBlocker').style.display='none';})()">Trotzdem fortfahren</button>
+        <div style="margin-top:28px;padding:10px 20px;border:1px solid #A855F7;border-radius:8px;color:#A855F7;font-size:0.85rem;">ti-age.de</div>
     </div>
+    <script>
+        (function(){try{if(localStorage.getItem('tiage_mobile_warned')==='1'){var el=document.getElementById('mobileWipBlocker');if(el){el.classList.add('dismissed');el.style.display='none';}}}catch(e){}})();
+    </script>
     <!-- Modal-Style Container wie needs-editor.html -->
     <div class="need-modal-overlay active" id="syntheseModal">
         <div class="need-modal" onclick="event.stopPropagation()">
