@@ -755,6 +755,66 @@
 
             // Aktueller Wert (wird automatisch aktualisiert wenn Slider außerhalb geändert wird)
             const displayValue = currentValue !== null && currentValue !== undefined ? currentValue : 50;
+
+            // Werte-Breakdown: Basis + GOD-Modifikatoren + Toggle + Manuell
+            let breakdownHtml = '';
+            try {
+                let basisWert = 50;
+                if (archetypForStats && typeof window.BaseArchetypProfile !== 'undefined') {
+                    const bp = window.BaseArchetypProfile[archetypForStats];
+                    if (bp && bp.umfrageWerte) {
+                        if (needKey && bp.umfrageWerte[needKey] !== undefined) basisWert = bp.umfrageWerte[needKey];
+                        else if (bp.umfrageWerte[bId] !== undefined) basisWert = bp.umfrageWerte[bId];
+                    }
+                }
+                let bd = null;
+                if (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getModifierBreakdown && needKey) {
+                    const person = 'ich';
+                    const profile = {
+                        geschlecht: TiageState?.get(`personDimensions.${person}.geschlecht`),
+                        dominanz: TiageState?.get(`personDimensions.${person}.dominanz`),
+                        orientierung: TiageState?.get(`personDimensions.${person}.orientierung`),
+                        geschlecht_extras: TiageState?.get(`personDimensions.${person}.geschlecht_extras`) || {},
+                        agod: TiageState?.getGewichtungen ? TiageState.getGewichtungen(person) : { O: 1, A: 1, D: 1, G: 1 }
+                    };
+                    bd = ProfileModifiers.getModifierBreakdown(needKey, profile);
+                }
+                const g = bd?.g || 0, o = bd?.o || 0, d = bd?.d || 0, fi = bd?.f || 0, fu = bd?.fu || 0, h = bd?.h || 0;
+                const godTotal = g + o + d + fi + fu + h;
+                const rest = displayValue - basisWert - godTotal; // Toggle + Manuell
+
+                const rows = [];
+                rows.push({ label: `Basis (${archetypForStats || 'Profil'})`, val: basisWert, sign: false, color: '#2d6a4f' });
+                if (g) rows.push({ label: 'G — Geschlecht', val: g, sign: true, color: '#F4A261' });
+                if (o) rows.push({ label: 'O — Orientierung', val: o, sign: true, color: '#E63946' });
+                if (d) rows.push({ label: 'D — Dominanz', val: d, sign: true, color: '#8B5CF6' });
+                if (fi) rows.push({ label: 'Fi — Fit', val: fi, sign: true, color: '#2ECC71' });
+                if (fu) rows.push({ label: 'Fu — Fucked up', val: fu, sign: true, color: '#E74C3C' });
+                if (h) rows.push({ label: 'H — Horny', val: h, sign: true, color: '#EC4899' });
+                if (Math.abs(rest) >= 1) rows.push({ label: 'Toggle + Manuell', val: Math.round(rest), sign: true, color: '#06B6D4' });
+
+                const fmt = (v, s) => s ? (v > 0 ? '+' + v : String(v)) : String(v);
+                const rowsHtml = rows.map(r =>
+                    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <span style="color:${r.color};font-weight:500;">${r.label}</span>
+                        <span style="font-variant-numeric:tabular-nums;">${fmt(r.val, r.sign)}</span>
+                    </div>`
+                ).join('');
+                breakdownHtml = `
+                    <div class="need-modal-breakdown" style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;">
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-weight:600;color:var(--text-primary,#e5e7eb);">
+                            <span>🧮</span><span>Werte-Breakdown</span>
+                        </div>
+                        <div>${rowsHtml}</div>
+                        <div style="display:flex;justify-content:space-between;padding:8px 0 2px;margin-top:4px;border-top:1px solid rgba(255,255,255,0.15);font-weight:700;">
+                            <span>Gesamt</span><span style="font-variant-numeric:tabular-nums;">${displayValue}</span>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                console.warn('[NeedsEditor] Breakdown fehlgeschlagen:', e);
+            }
+
             html += `
                 <div class="need-modal-value" data-need-id="${bId}" data-need-key="${needKey}">
                     <div class="need-modal-value-header">
@@ -765,6 +825,7 @@
                         <div class="need-modal-value-fill" id="needModalValueFill" style="width: ${displayValue}%"></div>
                     </div>
                 </div>
+                ${breakdownHtml}
                 ${statisticsHtml}
             `;
 
