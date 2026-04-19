@@ -119,15 +119,25 @@
             margin-bottom: 30px;
         }
         @media (max-width: 768px) {
-            .mobile-wip-blocker {
+            .mobile-wip-blocker:not(.dismissed) {
                 display: flex !important;
             }
-            .mobile-multipage,
-            .main-container,
-            .app-loading-overlay {
-                display: none !important;
-            }
         }
+        .mobile-wip-blocker .continue-btn {
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: #A855F7;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .mobile-wip-blocker .continue-btn:hover { background: #9333EA; }
+        .mobile-wip-blocker .continue-btn:active { transform: scale(0.97); }
     </style>
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
@@ -265,14 +275,26 @@
     <script defer src="profiles/profile-store.js"></script>
 </head>
 <body>
-    <!-- Mobile Blocker: App nur auf Desktop -->
-    <div class="mobile-wip-blocker" style="display:none">
+    <!-- Mobile Warnung: App ist für Desktop optimiert -->
+    <div class="mobile-wip-blocker" id="mobileWipBlocker" style="display:none">
         <div class="emoji">🖥️</div>
-        <h1>Desktop Only</h1>
+        <h1>PC empfohlen</h1>
         <p>Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
-        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Bitte &ouml;ffne die Seite an einem<br>PC oder Laptop.</p>
-        <div style="margin-top: 40px; padding: 12px 24px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.9rem;">ti-age.de</div>
+        <p style="font-size: 1rem; color: #94a3b8; margin-top: 20px;">Auf dem Handy funktioniert nicht<br>jede Ansicht einwandfrei.</p>
+        <button type="button" class="continue-btn" onclick="(function(){try{localStorage.setItem('tiage_mobile_warned','1');}catch(e){}document.getElementById('mobileWipBlocker').classList.add('dismissed');document.getElementById('mobileWipBlocker').style.display='none';})()">Trotzdem fortfahren</button>
+        <div style="margin-top: 28px; padding: 10px 20px; border: 1px solid #A855F7; border-radius: 8px; color: #A855F7; font-size: 0.85rem;">ti-age.de</div>
     </div>
+    <script>
+        // Warnung auf Mobil nicht mehr zeigen wenn schon bestätigt
+        (function() {
+            try {
+                if (localStorage.getItem('tiage_mobile_warned') === '1') {
+                    var el = document.getElementById('mobileWipBlocker');
+                    if (el) { el.classList.add('dismissed'); el.style.display = 'none'; }
+                }
+            } catch(e) {}
+        })();
+    </script>
 
     <!-- Loading Overlay - sofort sichtbar während JS lädt -->
     <div id="appLoadingOverlay" class="app-loading-overlay">
