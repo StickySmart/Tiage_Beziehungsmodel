@@ -4276,7 +4276,21 @@ const AttributeSummaryCard = (function() {
             return `<div style="flex:${seg.w};height:100%;${style}min-width:2px;" title="${seg.t}"></div>`;
         }).join('');
 
-        return `<div class="segment-bar" data-need="${needId}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);">` +
+        // Summary-Tooltip für den gesamten Balken
+        const sign = (n) => (n > 0 ? '+' : '') + Math.round(n);
+        const parts = [`Gesamt: ${totalValue}/100`, `Basis (${arch}): ${basisWert}`];
+        if (gDelta) parts.push(`G: ${sign(gDelta)}`);
+        if (oDelta) parts.push(`O: ${sign(oDelta)}`);
+        if (dDelta) parts.push(`D: ${sign(dDelta)}`);
+        if (fDelta) parts.push(`Fi: ${sign(fDelta)}`);
+        if (fuDelta) parts.push(`Fu: ${sign(fuDelta)}`);
+        if (hDelta) parts.push(`H: ${sign(hDelta)}`);
+        if (toggleDelta !== 0) parts.push(`Toggle: ${sign(toggleDelta)}`);
+        const userEditVal = totalValue - Math.max(0, Math.min(100, basisWert + godTotal + (toggleDelta > 0 ? toggleDelta : 0)));
+        if (Math.abs(userEditVal) >= 1) parts.push(`Manuell: ${sign(userEditVal)}`);
+        const barTitle = parts.join(' | ') + '\nSegmente einzeln hovern für Details. 0–100 Skala.';
+
+        return `<div class="segment-bar" data-need="${needId}" title="${barTitle.replace(/"/g, '&quot;')}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);cursor:help;">` +
             `<div style="display:flex;width:${totalValue}%;height:100%;transition:width 0.15s;">${segHtml}</div>` +
             `</div>`;
     }
