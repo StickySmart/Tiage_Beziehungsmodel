@@ -646,10 +646,38 @@
             font-size: 13px;
             line-height: 1.7;
         }
+        .td-name-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: inherit;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            width: 100%;
+        }
+        .td-name-btn:hover { color: #60A5FA; text-decoration: underline; }
+        .breakdown-detail-row td {
+            background: rgba(37,99,235,0.08) !important;
+            color: var(--text-muted);
+            font-size: 10px;
+            line-height: 1.5;
+            padding: 6px 8px !important;
+            border-bottom: 1px solid rgba(37,99,235,0.2) !important;
+        }
+        .breakdown-detail-row .detail-label { color: #60A5FA; font-weight: 600; }
+        .breakdown-detail-row .detail-frage { font-style: italic; }
         @media (max-width: 600px) {
-            .breakdown-table { font-size: 10px; min-width: 340px; }
+            .breakdown-table { font-size: 10px; min-width: 360px; }
             .breakdown-table th, .breakdown-table td { padding: 3px 2px; }
-            .breakdown-table td.td-name { max-width: 90px; }
+            .breakdown-table td.td-name { max-width: 80px; }
+            .td-name-btn { max-width: 80px; }
         }
     </style>
 </head>
@@ -966,6 +994,34 @@
         });
 
         /**
+         * Klappt die Detail-Zeile eines Bedürfnisses auf/zu
+         */
+        function toggleNeedDetail(id) {
+            const detailId = 'detail-' + id.replace('#', '');
+            const existing = document.getElementById(detailId);
+            if (existing) { existing.remove(); return; }
+
+            const need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(id) : null;
+            if (!need) return;
+
+            const btn = document.querySelector(`[data-need-id="${id}"]`);
+            if (!btn) return;
+            const row = btn.closest('tr');
+            if (!row) return;
+
+            const colCount = row.cells.length;
+            const detailRow = document.createElement('tr');
+            detailRow.id = detailId;
+            detailRow.className = 'breakdown-detail-row';
+            detailRow.innerHTML = `<td colspan="${colCount}">
+                <span class="detail-label">${need.label || id}</span>
+                ${need.kontext ? ` · <span>${need.kontext}</span>` : ''}
+                ${need.frage  ? `<br><span class="detail-frage">${need.frage}</span>` : ''}
+            </td>`;
+            row.after(detailRow);
+        }
+
+        /**
          * Basis-Bedürfniswerte aus den geladenen Archetyp-Profilen
          */
         function getBaseNeeds(archetyp) {
@@ -984,13 +1040,12 @@
         }
 
         /**
-         * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle für ICH
+         * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle (nach BeduerfnisIds-Load)
          */
         function generateNeedsBreakdownHTML(ichArchetype) {
-            const flatNeeds = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
+            const flatNeeds  = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
             const personDims = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.ich') || {}) : {};
-            const baseNeeds = getBaseNeeds(ichArchetype);
-            const names = SynthesePageShared.archetypeNames;
+            const baseNeeds  = getBaseNeeds(ichArchetype);
 
             if (Object.keys(flatNeeds).length === 0) {
                 return `<div class="breakdown-empty">Keine Bedürfnisse gespeichert.<br>Bitte auf der Hauptseite Bedürfnisse einstellen.</div>`;
@@ -1004,23 +1059,25 @@
             };
 
             const allBreakdowns = (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getAllModifierBreakdowns)
-                ? ProfileModifiers.getAllModifierBreakdowns(profile)
-                : {};
+                ? ProfileModifiers.getAllModifierBreakdowns(profile) : {};
 
-            const getKey = (id) => (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey)
-                ? (BeduerfnisIds.getKey(id) || id) : id;
-
-            const fmt = (v) => (!v || v === 0) ? '' : (v > 0 ? `+${v}` : `${v}`);
+            // Nach BeduerfnisIds.load() sind _idToKey und getKey verfügbar
+            const getKey   = (id) => BeduerfnisIds.getKey(id) || id;
+            const getLabel = (id) => BeduerfnisIds.getLabel(id) || id;
+            const fmt      = (v)  => (!v || v === 0) ? '' : (v > 0 ? `+${v}` : `${v}`);
 
             const rows = Object.entries(flatNeeds)
                 .filter(([id]) => id.startsWith('#B'))
                 .map(([id, final]) => {
                     const key   = getKey(id);
-                    const base  = (baseNeeds[id] ?? 50);
-                    const bd    = allBreakdowns[key] || { g:0, d:0, o:0, f:0, fu:0, h:0, total:0 };
+                    const label = getLabel(id);
+                    const base  = baseNeeds[id] ?? 50;
+                    const bd    = allBreakdowns[key] || { g:0, d:0, o:0, f:0, fu:0, h:0, fr:0, total:0 };
                     const du    = Math.round(final - base - bd.total);
-                    return { key, base, final, du,
-                             g:bd.g, d:bd.d, o:bd.o, f:bd.f, fu:bd.fu, h:bd.h, total:bd.total };
+                    return { id, key, label, base, final, du,
+                             g:bd.g||0, d:bd.d||0, o:bd.o||0,
+                             f:bd.f||0, fu:bd.fu||0, h:bd.h||0, fr:bd.fr||0,
+                             total:bd.total||0 };
                 })
                 .filter(r => r.total !== 0 || r.du !== 0)
                 .sort((a, b) => (Math.abs(b.total)+Math.abs(b.du)) - (Math.abs(a.total)+Math.abs(a.du)));
@@ -1029,15 +1086,18 @@
                 return `<div class="breakdown-empty">Keine Modifikatoren aktiv.<br>Geschlecht / Dominanz / Orientierung auf der Hauptseite einstellen.</div>`;
             }
 
-            const extras  = personDims.geschlecht_extras || {};
-            const hasFFH  = extras.fit || extras.fuckedup || extras.horny;
-            const label   = names[ichArchetype] || ichArchetype;
+            const extras = personDims.geschlecht_extras || {};
+            const hasFFH = extras.fit || extras.fuckedup || extras.horny || extras.fresh;
 
             const c = (v) => v > 0 ? 'color:#10B981' : v < 0 ? 'color:#EF4444' : '';
 
             const tableRows = rows.map(r => `
                 <tr>
-                    <td class="td-name">${r.key}</td>
+                    <td class="td-name">
+                        <button class="td-name-btn" data-need-id="${r.id}"
+                                onclick="toggleNeedDetail('${r.id}')"
+                                title="Details zu: ${r.label}">${r.label}</button>
+                    </td>
                     <td>${r.base}</td>
                     <td style="${c(r.g)}">${fmt(r.g)}</td>
                     <td style="${c(r.d)}">${fmt(r.d)}</td>
@@ -1045,6 +1105,7 @@
                     <td style="${c(r.f)}">${fmt(r.f)}</td>
                     <td style="${c(r.fu)}">${fmt(r.fu)}</td>
                     <td style="${c(r.h)}">${fmt(r.h)}</td>
+                    <td style="${c(r.fr)}">${fmt(r.fr)}</td>
                     <td style="${c(r.du)}">${fmt(r.du)}</td>
                     <td>=</td>
                     <td class="td-final">${r.final}</td>
@@ -1053,14 +1114,14 @@
             return `
                 <div class="breakdown-info">
                     <strong>ℹ️ GOD+FFH Modifikatoren</strong><br>
-                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}/DU angepasst
+                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}/DU angepasst · Klick auf Name für Details
                 </div>
                 <div class="breakdown-table-wrap">
                     <table class="breakdown-table">
                         <thead><tr>
                             <th class="th-left">Bedürfnis</th>
                             <th>Basis</th><th>G</th><th>D</th><th>O</th>
-                            <th>F</th><th>FU</th><th>H</th>
+                            <th>F</th><th>FU</th><th>H</th><th>FR</th>
                             <th class="th-du">DU</th><th>=</th><th>Final</th>
                         </tr></thead>
                         <tbody>${tableRows}</tbody>
@@ -1069,26 +1130,54 @@
         }
 
         /**
-         * Rendert den Hauptinhalt
+         * Rendert den Hauptinhalt — wartet auf async BeduerfnisIds.load()
          */
         function renderContent() {
             const container = document.getElementById('syntheseContent');
-            const state = SynthesePageShared.getCurrentState();
-            const names = SynthesePageShared.archetypeNames;
-            const label = names[state.ichArchetype] || state.ichArchetype;
 
-            container.innerHTML = `
-                <div class="synthese-section">
-                    <div class="synthese-section-header">
-                        <span class="synthese-section-icon">🎯</span>
-                        <div>
-                            <div class="synthese-section-title">ICH: ${label}</div>
-                            <div class="synthese-section-subtitle breakdown-header">Bedürfnis-Aufschlüsselung</div>
+            // Archetype-Nav ausblenden (nicht benötigt auf dieser Seite)
+            const nav = document.querySelector('.synthese-archetype-nav');
+            if (nav) nav.style.display = 'none';
+
+            // Ladeindikator
+            container.innerHTML = `<div class="synthese-loading">
+                <div class="synthese-loading-spinner"></div>
+                <p>Lade Bedürfnis-Katalog...</p>
+            </div>`;
+
+            // Warten bis BeduerfnisIds async geladen hat
+            const loadCatalog = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.load)
+                ? BeduerfnisIds.load() : Promise.resolve();
+
+            loadCatalog.then(() => {
+                const state = SynthesePageShared.getCurrentState();
+                const names = SynthesePageShared.archetypeNames;
+                const label = names[state.ichArchetype] || state.ichArchetype;
+
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">🎯</span>
+                            <div>
+                                <div class="synthese-section-title">ICH: ${label}</div>
+                                <div class="synthese-section-subtitle breakdown-header">Bedürfnis-Aufschlüsselung</div>
+                            </div>
                         </div>
-                    </div>
-                    ${generateNeedsBreakdownHTML(state.ichArchetype)}
-                </div>
-            `;
+                        ${generateNeedsBreakdownHTML(state.ichArchetype)}
+                    </div>`;
+            }).catch(() => {
+                // Fallback ohne Katalog
+                const state = SynthesePageShared.getCurrentState();
+                const names = SynthesePageShared.archetypeNames;
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div class="synthese-section-header">
+                            <span class="synthese-section-icon">🎯</span>
+                            <div><div class="synthese-section-title">ICH: ${names[state.ichArchetype] || state.ichArchetype}</div></div>
+                        </div>
+                        ${generateNeedsBreakdownHTML(state.ichArchetype)}
+                    </div>`;
+            });
         }
 
         /**
