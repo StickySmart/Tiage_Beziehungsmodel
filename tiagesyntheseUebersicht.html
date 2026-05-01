@@ -60,6 +60,36 @@
     <!-- Shared Synthese-Seiten Module -->
     <script src="js/synthesis/synthesePageShared.js"></script>
 
+    <!-- Modifier Scripts für Bedürfnis-Aufschlüsselung -->
+    <script src="profiles/modifiers/gender/mann.js"></script>
+    <script src="profiles/modifiers/gender/frau.js"></script>
+    <script src="profiles/modifiers/gender/nonbinaer.js"></script>
+    <script src="profiles/modifiers/gender/mann-cis.js"></script>
+    <script src="profiles/modifiers/gender/mann-trans.js"></script>
+    <script src="profiles/modifiers/gender/mann-nonbinaer.js"></script>
+    <script src="profiles/modifiers/gender/frau-cis.js"></script>
+    <script src="profiles/modifiers/gender/frau-trans.js"></script>
+    <script src="profiles/modifiers/gender/frau-nonbinaer.js"></script>
+    <script src="profiles/modifiers/gender/inter-fluid.js"></script>
+    <script src="profiles/modifiers/gender/inter-nonbinaer.js"></script>
+    <script src="profiles/modifiers/gender/inter-suchend.js"></script>
+    <script src="profiles/modifiers/dominanz/dominant.js"></script>
+    <script src="profiles/modifiers/dominanz/submissiv.js"></script>
+    <script src="profiles/modifiers/dominanz/switch.js"></script>
+    <script src="profiles/modifiers/dominanz/ausgeglichen.js"></script>
+    <script src="profiles/modifiers/orientierung/heterosexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/homosexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/bisexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/pansexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/queer.js"></script>
+    <script src="profiles/modifiers/ffh/fit.js"></script>
+    <script src="profiles/modifiers/ffh/fuckedup.js"></script>
+    <script src="profiles/modifiers/ffh/horny.js"></script>
+    <script src="profiles/modifiers/ffh/fresh.js"></script>
+    <script src="profiles/modifiers/extras/extras-modifier.js"></script>
+    <script src="profiles/modifiers/rti/rti-modifier.js"></script>
+    <script src="profiles/modifiers/index.js"></script>
+
     <style>
         .synthese-page {
             min-height: 100vh;
@@ -555,6 +585,72 @@
                 display: none;
             }
         }
+
+        /* Bedürfnis-Aufschlüsselung */
+        .breakdown-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .breakdown-info {
+            background: rgba(42, 157, 143, 0.15);
+            border-left: 3px solid #2A9D8F;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #888;
+            border-radius: 0 4px 4px 0;
+        }
+        .breakdown-info strong { color: #2A9D8F; }
+        .breakdown-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .breakdown-table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            min-width: 380px;
+        }
+        .breakdown-table thead tr { background: rgba(0,0,0,0.25); }
+        .breakdown-table th {
+            padding: 5px 4px;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            text-align: center;
+        }
+        .breakdown-table th.th-left { text-align: left; padding-left: 8px; }
+        .breakdown-table th.th-du { color: #60A5FA; }
+        .breakdown-table td {
+            text-align: center;
+            padding: 4px 3px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .breakdown-table td.td-name {
+            text-align: left;
+            padding-left: 8px;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--text-secondary);
+        }
+        .breakdown-table td.td-final { font-weight: 700; color: #fff; }
+        .breakdown-table tr:hover td { background: rgba(255,255,255,0.04); }
+        .breakdown-empty {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        @media (max-width: 600px) {
+            .breakdown-table { font-size: 10px; min-width: 340px; }
+            .breakdown-table th, .breakdown-table td { padding: 3px 2px; }
+            .breakdown-table td.td-name { max-width: 90px; }
+        }
     </style>
 </head>
 <body>
@@ -582,12 +678,8 @@
                 <span class="synthese-title" data-i18n="synthese.title">Ti-Age Synthese</span>
             </div>
             <div class="synthese-tabs">
-                <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht" data-i18n-title="synthese.tabScore">🎯</a>
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
-                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen" data-i18n-title="synthese.tabNuancen">💚</a>
-                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren" data-i18n-title="synthese.tabProContra">⚖️</a>
-                <a href="tiagesyntheseRTI.html" class="synthese-tab" title="RTI Säulen (Petzold)" data-i18n-title="synthese.tabRTI">⚡</a>
-                <a href="relationship-menu.html" class="synthese-tab" title="Anti-Rolltreppen Beziehungsmenü" data-i18n-title="synthese.tabMenu">💝</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
@@ -874,74 +966,129 @@
         });
 
         /**
+         * Basis-Bedürfniswerte aus den geladenen Archetyp-Profilen
+         */
+        function getBaseNeeds(archetyp) {
+            const map = {
+                'single':      typeof SingleProfil      !== 'undefined' ? SingleProfil.beduerfnisse      : null,
+                'duo':         typeof DuoProfil         !== 'undefined' ? DuoProfil.beduerfnisse         : null,
+                'duo_flex':    typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil.beduerfnisse     : null,
+                'duoflex':     typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil.beduerfnisse     : null,
+                'solopoly':    typeof SolopolyProfil    !== 'undefined' ? SolopolyProfil.beduerfnisse    : null,
+                'polyamor':    typeof PolyamorProfil    !== 'undefined' ? PolyamorProfil.beduerfnisse    : null,
+                'ra':          typeof RAProfil          !== 'undefined' ? RAProfil.beduerfnisse          : null,
+                'lat':         typeof LATProfil         !== 'undefined' ? LATProfil.beduerfnisse         : null,
+                'aromantisch': typeof AromantischProfil !== 'undefined' ? AromantischProfil.beduerfnisse : null,
+            };
+            return map[archetyp] || {};
+        }
+
+        /**
+         * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle für ICH
+         */
+        function generateNeedsBreakdownHTML(ichArchetype) {
+            const flatNeeds = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
+            const personDims = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.ich') || {}) : {};
+            const baseNeeds = getBaseNeeds(ichArchetype);
+            const names = SynthesePageShared.archetypeNames;
+
+            if (Object.keys(flatNeeds).length === 0) {
+                return `<div class="breakdown-empty">Keine Bedürfnisse gespeichert.<br>Bitte auf der Hauptseite Bedürfnisse einstellen.</div>`;
+            }
+
+            const profile = {
+                geschlecht:        personDims.geschlecht,
+                dominanz:          personDims.dominanz,
+                orientierung:      personDims.orientierung,
+                geschlecht_extras: personDims.geschlecht_extras || {}
+            };
+
+            const allBreakdowns = (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getAllModifierBreakdowns)
+                ? ProfileModifiers.getAllModifierBreakdowns(profile)
+                : {};
+
+            const getKey = (id) => (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey)
+                ? (BeduerfnisIds.getKey(id) || id) : id;
+
+            const fmt = (v) => (!v || v === 0) ? '' : (v > 0 ? `+${v}` : `${v}`);
+
+            const rows = Object.entries(flatNeeds)
+                .filter(([id]) => id.startsWith('#B'))
+                .map(([id, final]) => {
+                    const key   = getKey(id);
+                    const base  = (baseNeeds[id] ?? 50);
+                    const bd    = allBreakdowns[key] || { g:0, d:0, o:0, f:0, fu:0, h:0, total:0 };
+                    const du    = Math.round(final - base - bd.total);
+                    return { key, base, final, du,
+                             g:bd.g, d:bd.d, o:bd.o, f:bd.f, fu:bd.fu, h:bd.h, total:bd.total };
+                })
+                .filter(r => r.total !== 0 || r.du !== 0)
+                .sort((a, b) => (Math.abs(b.total)+Math.abs(b.du)) - (Math.abs(a.total)+Math.abs(a.du)));
+
+            if (rows.length === 0) {
+                return `<div class="breakdown-empty">Keine Modifikatoren aktiv.<br>Geschlecht / Dominanz / Orientierung auf der Hauptseite einstellen.</div>`;
+            }
+
+            const extras  = personDims.geschlecht_extras || {};
+            const hasFFH  = extras.fit || extras.fuckedup || extras.horny;
+            const label   = names[ichArchetype] || ichArchetype;
+
+            const c = (v) => v > 0 ? 'color:#10B981' : v < 0 ? 'color:#EF4444' : '';
+
+            const tableRows = rows.map(r => `
+                <tr>
+                    <td class="td-name">${r.key}</td>
+                    <td>${r.base}</td>
+                    <td style="${c(r.g)}">${fmt(r.g)}</td>
+                    <td style="${c(r.d)}">${fmt(r.d)}</td>
+                    <td style="${c(r.o)}">${fmt(r.o)}</td>
+                    <td style="${c(r.f)}">${fmt(r.f)}</td>
+                    <td style="${c(r.fu)}">${fmt(r.fu)}</td>
+                    <td style="${c(r.h)}">${fmt(r.h)}</td>
+                    <td style="${c(r.du)}">${fmt(r.du)}</td>
+                    <td>=</td>
+                    <td class="td-final">${r.final}</td>
+                </tr>`).join('');
+
+            return `
+                <div class="breakdown-info">
+                    <strong>ℹ️ GOD+FFH Modifikatoren</strong><br>
+                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}/DU angepasst
+                </div>
+                <div class="breakdown-table-wrap">
+                    <table class="breakdown-table">
+                        <thead><tr>
+                            <th class="th-left">Bedürfnis</th>
+                            <th>Basis</th><th>G</th><th>D</th><th>O</th>
+                            <th>F</th><th>FU</th><th>H</th>
+                            <th class="th-du">DU</th><th>=</th><th>Final</th>
+                        </tr></thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                </div>`;
+        }
+
+        /**
          * Rendert den Hauptinhalt
          */
         function renderContent() {
             const container = document.getElementById('syntheseContent');
             const state = SynthesePageShared.getCurrentState();
             const names = SynthesePageShared.archetypeNames;
+            const label = names[state.ichArchetype] || state.ichArchetype;
 
-            // R-Faktoren berechnen für Matrix
-            const rFaktoren = calculateRFaktoren();
-
-            // Kein Partner ausgewählt → ICH-only Ansicht
-            if (!state.hasPartner) {
-                container.innerHTML = `
-                    <div class="synthese-section">
-                        <div class="synthese-section-header">
-                            <span class="synthese-section-icon">🎯</span>
-                            <div>
-                                <div class="synthese-section-title">${t('synthese.scoreTitle', 'Kompatibilitäts-Score')}</div>
-                                <div class="synthese-section-subtitle">${t('synthese.scoreSubtitle', 'Statistische Archetypen-Übereinstimmung')}</div>
-                            </div>
-                        </div>
-                        <div style="text-align:center; padding: 24px; color: var(--text-muted);">
-                            <div style="font-size:36px; margin-bottom:12px;">👤</div>
-                            <p style="font-size:14px; margin-bottom:8px;">${t('synthese.noPartnerSelected', 'Kein Partner ausgewählt')}</p>
-                            <p style="font-size:12px;">${t('synthese.selectPartnerHint', 'Wähle einen Partner-Archetypen auf der Hauptseite.')}</p>
-                        </div>
-                        ${generateIchOnlyMatrixHTML(rFaktoren)}
-                    </div>
-                `;
-                return;
-            }
-
-            // Score berechnen (vereinfacht - sollte aus SSOT kommen)
-            const score = calculateScore();
-            const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
-
-            let html = '';
-
-            // Score Section mit Matrix-Tabelle
-            html += `
+            container.innerHTML = `
                 <div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🎯</span>
                         <div>
-                            <div class="synthese-section-title">${t('synthese.scoreTitle', 'Kompatibilitäts-Score')}</div>
-                            <div class="synthese-section-subtitle">${t('synthese.scoreSubtitle', 'Statistische Archetypen-Übereinstimmung')}</div>
+                            <div class="synthese-section-title">ICH: ${label}</div>
+                            <div class="synthese-section-subtitle breakdown-header">Bedürfnis-Aufschlüsselung</div>
                         </div>
                     </div>
-                    <div class="score-display">
-                        <div class="score-circle-large">
-                            <svg viewBox="0 0 100 100">
-                                <circle class="score-bg" cx="50" cy="50" r="42"></circle>
-                                <circle class="score-progress" cx="50" cy="50" r="42"
-                                        stroke="${scoreColor}"
-                                        stroke-dasharray="264"
-                                        stroke-dashoffset="${264 - (264 * score / 100)}"></circle>
-                            </svg>
-                            <div class="score-value">${score}%</div>
-                        </div>
-                        <div class="score-label">${names[state.ichArchetype]} × ${names[state.partnerArchetype]}</div>
-                    </div>
-
-                    <!-- Matrix-Tabelle: ICH × PARTNER -->
-                    ${generateMatrixHTML(rFaktoren)}
+                    ${generateNeedsBreakdownHTML(state.ichArchetype)}
                 </div>
             `;
-
-            container.innerHTML = html;
         }
 
         /**
