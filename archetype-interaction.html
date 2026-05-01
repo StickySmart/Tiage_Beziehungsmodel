@@ -2705,11 +2705,11 @@
     </div>
 
     <!-- Memory Management Modal V2 (8 Slots - ICH per Archetyp + 8 Partner) -->
-    <div class="modal-overlay" id="memoryModalV2" onclick="closeMemoryModalV2(event)" style="z-index: 2600;">
-        <div class="modal memory-modal-v2" onclick="event.stopPropagation()" style="max-width: 95%; width: 850px;">
+    <div class="modal-overlay" id="memoryModalV2" data-action="close-memory-modal-v2" style="z-index: 2600;">
+        <div class="modal memory-modal-v2" data-stop-propagation style="max-width: 95%; width: 850px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(59, 130, 246, 0.3);">
                 <span class="modal-title" style="color: #3B82F6;">💾 Speichermanagement V2</span>
-                <button class="modal-close" onclick="closeMemoryModalV2()">&times;</button>
+                <button class="modal-close" data-action="close-memory-modal-v2">&times;</button>
             </div>
             <div class="modal-body" style="padding: 16px;">
                 <div class="memory-info-box">
@@ -2737,6 +2737,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- Export/Import Footer -->
+                <div id="memoryModalV2Footer" style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;justify-content:flex-end;"></div>
             </div>
         </div>
     </div>

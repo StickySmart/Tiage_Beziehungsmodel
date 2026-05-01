@@ -914,6 +914,7 @@ function closeMemoryModalV2(event) {
     const modal = document.getElementById('memoryModalV2');
     if (modal) {
         modal.classList.remove('active');
+        modal.style.display = 'none';
         document.body.style.overflow = '';
     }
 }
@@ -941,7 +942,7 @@ function updateMemoryModalV2Content() {
     for (const slot of ichSlots) {
         const isActive = slot.archetyp === currentIchArchetyp;
         ichHtml += `
-        <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}" onclick="handleLoadIchV2('${slot.archetyp}')" style="cursor: pointer;" title="Klicken zum Laden">
+        <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}" data-action-load-ich="${slot.archetyp}" style="cursor: pointer;" title="Klicken zum Laden">
             <div class="memory-slot-icon">${slot.icon}</div>
             <div class="memory-slot-label">${slot.label}</div>
             <div class="memory-slot-god">${slot.formattedGOD} ${slot.formattedFFH}</div>
@@ -949,15 +950,25 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-agod">${slot.formattedAGOD}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
-                    <button class="memory-display-btn" onclick="event.stopPropagation(); handleDisplayIchV2('${slot.archetyp}')" title="Anzeigen">👁️</button>
-                    <button class="memory-load-btn" onclick="event.stopPropagation(); handleLoadIchV2('${slot.archetyp}')" title="Laden">📥</button>
-                    <button class="memory-delete-btn" onclick="event.stopPropagation(); handleDeleteIchV2('${slot.archetyp}')" title="ICH-Slot löschen"${isActive ? ' disabled style="opacity:0.3"' : ''}>🗑️</button>
+                    <button class="memory-display-btn" data-action-display-ich="${slot.archetyp}" title="Anzeigen">👁️</button>
+                    <button class="memory-load-btn" data-action-load-ich="${slot.archetyp}" title="Laden">📥</button>
+                    <button class="memory-delete-btn" data-action-delete-ich="${slot.archetyp}"${isActive ? ' disabled style="opacity:0.3"' : ''} title="ICH-Slot löschen">🗑️</button>
                 </div>
             ` : '<div class="memory-slot-empty">-</div>'}
         </div>
         `;
     }
     ichContainer.innerHTML = ichHtml;
+
+    // Event-Delegation für ICH-Slots (zuverlässiger als inline onclick in Discord)
+    ichContainer.addEventListener('click', function ichSlotClick(e) {
+        const deleteBtn = e.target.closest('[data-action-delete-ich]');
+        const displayBtn = e.target.closest('[data-action-display-ich]');
+        const loadBtn = e.target.closest('[data-action-load-ich]');
+        if (deleteBtn) { e.stopPropagation(); handleDeleteIchV2(deleteBtn.dataset.actionDeleteIch); return; }
+        if (displayBtn) { e.stopPropagation(); handleDisplayIchV2(displayBtn.dataset.actionDisplayIch); return; }
+        if (loadBtn) { handleLoadIchV2(loadBtn.dataset.actionLoadIch); }
+    }, { once: true });
 
     // Partner-Slots (8 unabhängige)
     const partnerSlots = MemoryManagerV2.getPartnerSlots();
@@ -969,7 +980,7 @@ function updateMemoryModalV2Content() {
             <div class="memory-slot-number">${slot.slot}</div>
             ${slot.isEmpty ? `
                 <div class="memory-slot-empty">Leer</div>
-                <button class="memory-save-btn" onclick="handleSavePartnerV2(${slot.slot})" title="Partner hier speichern">
+                <button class="memory-save-btn" data-action-save-partner="${slot.slot}" title="Partner hier speichern">
                     💾
                 </button>
             ` : `
@@ -977,15 +988,27 @@ function updateMemoryModalV2Content() {
                 <div class="memory-slot-god">${slot.formattedGOD}${slot.formattedFFH ? ' ' + slot.formattedFFH : ''}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
-                    <button class="memory-display-btn" onclick="handleDisplayPartnerV2(${slot.slot})" title="Anzeigen">👁️</button>
-                    <button class="memory-load-btn" onclick="handleLoadPartnerV2(${slot.slot})" title="Laden">📥</button>
-                    <button class="memory-delete-btn" onclick="handleDeletePartnerV2(${slot.slot})" title="Löschen">🗑️</button>
+                    <button class="memory-display-btn" data-action-display-partner="${slot.slot}" title="Anzeigen">👁️</button>
+                    <button class="memory-load-btn" data-action-load-partner="${slot.slot}" title="Laden">📥</button>
+                    <button class="memory-delete-btn" data-action-delete-partner="${slot.slot}" title="Löschen">🗑️</button>
                 </div>
             `}
         </div>
         `;
     }
     partnerContainer.innerHTML = partnerHtml;
+
+    // Event-Delegation für Partner-Slots
+    partnerContainer.addEventListener('click', function partnerSlotClick(e) {
+        const saveBtn   = e.target.closest('[data-action-save-partner]');
+        const displayBtn= e.target.closest('[data-action-display-partner]');
+        const loadBtn   = e.target.closest('[data-action-load-partner]');
+        const deleteBtn = e.target.closest('[data-action-delete-partner]');
+        if (saveBtn)    { handleSavePartnerV2(parseInt(saveBtn.dataset.actionSavePartner)); return; }
+        if (displayBtn) { handleDisplayPartnerV2(parseInt(displayBtn.dataset.actionDisplayPartner)); return; }
+        if (loadBtn)    { handleLoadPartnerV2(parseInt(loadBtn.dataset.actionLoadPartner)); return; }
+        if (deleteBtn)  { handleDeletePartnerV2(parseInt(deleteBtn.dataset.actionDeletePartner)); }
+    }, { once: true });
 
     // Update Slot-Counts
     const ichCountEl = document.getElementById('memoryIchSlotCount');
@@ -996,6 +1019,24 @@ function updateMemoryModalV2Content() {
     }
     if (partnerCountEl) {
         partnerCountEl.textContent = `${MemoryManagerV2.getUsedPartnerSlotCount()}/8`;
+    }
+
+    // Export/Import-Footer
+    const footer = document.getElementById('memoryModalV2Footer');
+    if (footer) {
+        footer.innerHTML = '';
+        const exportBtn = document.createElement('button');
+        exportBtn.textContent = '📤 Export';
+        exportBtn.title = 'Alle Daten als JSON-Datei herunterladen (z.B. für Transfer nach Discord)';
+        exportBtn.style.cssText = 'padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#94a3b8;cursor:pointer;font-size:12px;';
+        exportBtn.addEventListener('click', exportMemoryData);
+        const importBtn = document.createElement('button');
+        importBtn.textContent = '📥 Import';
+        importBtn.title = 'JSON-Backup importieren';
+        importBtn.style.cssText = exportBtn.style.cssText;
+        importBtn.addEventListener('click', importMemoryData);
+        footer.appendChild(importBtn);
+        footer.appendChild(exportBtn);
     }
 }
 
@@ -1493,6 +1534,66 @@ function showMemoryToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 3000);
 }
 
+/**
+ * Exportiert alle tiage-*  localStorage-Einträge als JSON-Datei (für Cross-Context Transfer)
+ */
+function exportMemoryData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('tiage')) {
+            data[key] = localStorage.getItem(key);
+        }
+    }
+    const count = Object.keys(data).length;
+    if (count === 0) {
+        showMemoryToast('Keine Daten vorhanden', 'error');
+        return;
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tiage-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showMemoryToast(`${count} Einträge exportiert`);
+}
+
+/**
+ * Importiert tiage-* Einträge aus einer JSON-Datei in localStorage
+ */
+function importMemoryData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
+    input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.addEventListener('load', function(ev) {
+            try {
+                const data = JSON.parse(ev.target.result);
+                let count = 0;
+                for (const [key, value] of Object.entries(data)) {
+                    if (typeof key === 'string' && key.startsWith('tiage') && typeof value === 'string') {
+                        localStorage.setItem(key, value);
+                        count++;
+                    }
+                }
+                showMemoryToast(`${count} Einträge importiert — Seite wird neu geladen`);
+                setTimeout(() => window.location.reload(), 1200);
+            } catch (err) {
+                showMemoryToast('Import-Fehler: ungültige Datei', 'error');
+            }
+        });
+        reader.readAsText(file);
+    });
+    input.click();
+}
+
 // Global exportieren
 window.MemoryManagerV2 = MemoryManagerV2;
 window.openMemoryModalV2 = openMemoryModalV2;
@@ -1504,6 +1605,8 @@ window.handleDeletePartnerV2 = handleDeletePartnerV2;
 window.handleDeleteIchV2 = handleDeleteIchV2;
 window.handleDisplayIchV2 = handleDisplayIchV2;
 window.handleDisplayPartnerV2 = handleDisplayPartnerV2;
+window.exportMemoryData = exportMemoryData;
+window.importMemoryData = importMemoryData;
 
 // Auto-Save initialisieren wenn DOM bereit
 if (document.readyState === 'loading') {

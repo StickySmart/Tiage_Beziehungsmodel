@@ -114,6 +114,15 @@
                 }
             },
 
+            'close-memory-modal-v2': function(el, event) {
+                var modal = document.getElementById('memoryModalV2');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            },
+
             /**
              * Close Memory Detail Modal
              * Ersetzt: onclick="closeMemoryDetailModal(event)"

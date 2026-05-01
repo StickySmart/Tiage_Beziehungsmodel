@@ -69,25 +69,38 @@ function initDimensionButtons() {
             if (processedPGrids.has(grid.id)) return;
             processedPGrids.add(grid.id);
             const person = grid.dataset.person;
-            // console.log('[TIAGE DEBUG] Processing p-grid for person:', person, 'id:', grid.id);
             if (!person) return;
             grid.innerHTML = geschlechtPOptions.map(opt =>
-                `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" data-person="${person}">${opt.label}</button>`
             ).join('');
+            // addEventListener statt onclick — zuverlässiger in Discord/Iframe-Kontext
+            grid.querySelectorAll('.geschlecht-p-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof handleGeschlechtPClick === 'function') {
+                        handleGeschlechtPClick(btn.dataset.person, btn.dataset.value, btn);
+                    }
+                });
+            });
         });
     });
-    // console.log('[TIAGE DEBUG] Processed geschlecht-p-grids:', processedPGrids.size);
 
     // Mobile und Modal Geschlecht-Grids befüllen (kombiniertes P/S Grid)
     const mobileModalGrids = document.querySelectorAll('#mobile-ich-geschlecht-grid, #mobile-partner-geschlecht-grid, #modal-ich-geschlecht-grid, #modal-partner-geschlecht-grid');
-    // console.log('[TIAGE DEBUG] Found mobile/modal geschlecht-grids:', mobileModalGrids.length);
     mobileModalGrids.forEach(grid => {
         const person = grid.dataset.person;
         if (!person) return;
-        // Mobile/Modal uses combined P options with handleGeschlechtClick
         grid.innerHTML = geschlechtPOptions.map(opt =>
-            `<button type="button" class="geschlecht-btn" data-value="${opt.value}" onclick="handleGeschlechtClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+            `<button type="button" class="geschlecht-btn" data-value="${opt.value}" data-person="${person}">${opt.label}</button>`
         ).join('');
+        grid.querySelectorAll('.geschlecht-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (typeof handleGeschlechtClick === 'function') {
+                    handleGeschlechtClick(btn.dataset.person, btn.dataset.value, btn);
+                }
+            });
+        });
     });
 
     // Geschlecht S-Grids werden dynamisch in handleGeschlechtPClick befüllt
