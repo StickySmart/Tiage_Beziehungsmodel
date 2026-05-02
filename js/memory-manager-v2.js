@@ -960,15 +960,18 @@ function updateMemoryModalV2Content() {
     }
     ichContainer.innerHTML = ichHtml;
 
-    // Event-Delegation für ICH-Slots (zuverlässiger als inline onclick in Discord)
-    ichContainer.addEventListener('click', function ichSlotClick(e) {
-        const deleteBtn = e.target.closest('[data-action-delete-ich]');
-        const displayBtn = e.target.closest('[data-action-display-ich]');
-        const loadBtn = e.target.closest('[data-action-load-ich]');
-        if (deleteBtn) { e.stopPropagation(); handleDeleteIchV2(deleteBtn.dataset.actionDeleteIch); return; }
-        if (displayBtn) { e.stopPropagation(); handleDisplayIchV2(displayBtn.dataset.actionDisplayIch); return; }
-        if (loadBtn) { handleLoadIchV2(loadBtn.dataset.actionLoadIch); }
-    }, { once: true });
+    // Event-Delegation für ICH-Slots — einmalig setzen (Container ist statisch)
+    if (!ichContainer._delegationActive) {
+        ichContainer._delegationActive = true;
+        ichContainer.addEventListener('click', function(e) {
+            const deleteBtn  = e.target.closest('[data-action-delete-ich]');
+            const displayBtn = e.target.closest('[data-action-display-ich]');
+            const loadBtn    = e.target.closest('[data-action-load-ich]');
+            if (deleteBtn)  { e.stopPropagation(); handleDeleteIchV2(deleteBtn.dataset.actionDeleteIch); return; }
+            if (displayBtn) { e.stopPropagation(); handleDisplayIchV2(displayBtn.dataset.actionDisplayIch); return; }
+            if (loadBtn)    { handleLoadIchV2(loadBtn.dataset.actionLoadIch); }
+        });
+    }
 
     // Partner-Slots (8 unabhängige)
     const partnerSlots = MemoryManagerV2.getPartnerSlots();
@@ -998,17 +1001,20 @@ function updateMemoryModalV2Content() {
     }
     partnerContainer.innerHTML = partnerHtml;
 
-    // Event-Delegation für Partner-Slots
-    partnerContainer.addEventListener('click', function partnerSlotClick(e) {
-        const saveBtn   = e.target.closest('[data-action-save-partner]');
-        const displayBtn= e.target.closest('[data-action-display-partner]');
-        const loadBtn   = e.target.closest('[data-action-load-partner]');
-        const deleteBtn = e.target.closest('[data-action-delete-partner]');
-        if (saveBtn)    { handleSavePartnerV2(parseInt(saveBtn.dataset.actionSavePartner)); return; }
-        if (displayBtn) { handleDisplayPartnerV2(parseInt(displayBtn.dataset.actionDisplayPartner)); return; }
-        if (loadBtn)    { handleLoadPartnerV2(parseInt(loadBtn.dataset.actionLoadPartner)); return; }
-        if (deleteBtn)  { handleDeletePartnerV2(parseInt(deleteBtn.dataset.actionDeletePartner)); }
-    }, { once: true });
+    // Event-Delegation für Partner-Slots — einmalig setzen (Container ist statisch)
+    if (!partnerContainer._delegationActive) {
+        partnerContainer._delegationActive = true;
+        partnerContainer.addEventListener('click', function(e) {
+            const saveBtn    = e.target.closest('[data-action-save-partner]');
+            const displayBtn = e.target.closest('[data-action-display-partner]');
+            const loadBtn    = e.target.closest('[data-action-load-partner]');
+            const deleteBtn  = e.target.closest('[data-action-delete-partner]');
+            if (saveBtn)    { handleSavePartnerV2(parseInt(saveBtn.dataset.actionSavePartner)); return; }
+            if (displayBtn) { handleDisplayPartnerV2(parseInt(displayBtn.dataset.actionDisplayPartner)); return; }
+            if (loadBtn)    { handleLoadPartnerV2(parseInt(loadBtn.dataset.actionLoadPartner)); return; }
+            if (deleteBtn)  { handleDeletePartnerV2(parseInt(deleteBtn.dataset.actionDeletePartner)); }
+        });
+    }
 
     // Update Slot-Counts
     const ichCountEl = document.getElementById('memoryIchSlotCount');
