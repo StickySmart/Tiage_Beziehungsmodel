@@ -392,6 +392,27 @@ function resetPartnerGOD() {
         el.classList.add('needs-selection');
     });
 
+    // Reset new multi-select status toggle buttons (mobile partner UI)
+    document.querySelectorAll('.status-toggle-btn[data-person="partner"]').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    // Reset orientierung/dominanz row active states
+    document.querySelectorAll('#mobilePartnerDimensions .orientierung-option-row, #mobilePartnerDimensions .dominanz-option-row').forEach(function(row) {
+        row.classList.remove('active');
+    });
+
+    // Reset orientierungStatus + dominanzStatus in all state objects
+    ['personDimensions', 'mobilePersonDimensions'].forEach(function(key) {
+        if (typeof window[key] !== 'undefined' && window[key].partner) {
+            window[key].partner.orientierungStatus = null;
+            window[key].partner.dominanzStatus = null;
+        }
+    });
+    if (typeof TiageState !== 'undefined') {
+        TiageState.set('personDimensions.partner.orientierungStatus', null);
+        TiageState.set('personDimensions.partner.dominanzStatus', null);
+    }
+
     // v4.4: GFK-UI sofort zurücksetzen (BEIDE Seiten)
     if (typeof window.syncGfkUI === 'function') {
         window.syncGfkUI('ich');
