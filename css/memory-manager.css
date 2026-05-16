@@ -1172,3 +1172,118 @@
     font-style: italic;
     margin-top: 4px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ICH WIZARD — Schrittweise Profil-Einrichtung (Mobile only)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#ichWizardUI {
+    margin: 4px 0 10px;
+}
+
+/* Progress dots row */
+.wz-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 10px;
+}
+
+.wz-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.wz-dot.pending {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.wz-dot.active {
+    background: #6366F1;
+    color: white;
+    box-shadow: 0 0 14px rgba(99,102,241,0.55);
+    transform: scale(1.12);
+}
+
+.wz-dot.done {
+    background: #22C55E;
+    color: white;
+    font-size: 14px;
+}
+
+.wz-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.12);
+    min-width: 16px;
+    max-width: 36px;
+}
+
+/* Step prompt box */
+.wz-prompt {
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.28);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.wz-num {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #818CF8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+}
+
+.wz-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #e8e8f0;
+    margin-bottom: 2px;
+}
+
+.wz-sublabel {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+}
+
+/* Dimensions in wizard mode */
+#mobilePage1.wizard-mode .compact-dimension.wizard-hidden {
+    display: none !important;
+}
+
+#mobilePage1.wizard-mode .compact-dimension.wizard-active {
+    border: 1.5px solid rgba(99,102,241,0.6) !important;
+    border-radius: 12px;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+#mobilePage1.wizard-mode .compact-dimension.wizard-done {
+    opacity: 0.65;
+}
+
+@keyframes wzSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+#mobilePage1.wizard-mode .compact-dimension.wizard-active {
+    animation: wzSlideIn 0.25s ease;
+}
