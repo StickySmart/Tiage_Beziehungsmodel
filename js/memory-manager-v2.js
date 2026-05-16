@@ -399,7 +399,8 @@ const MemoryManagerV2 = (function() {
             geschlecht_extras = { ...window.geschlechtExtrasCache.ich };
         }
 
-        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras };
+        const lockedNeeds = (typeof TiageState !== 'undefined') ? (TiageState.getLockedNeeds('ich') || {}) : {};
+        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds };
         return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     }
 
@@ -458,6 +459,20 @@ const MemoryManagerV2 = (function() {
                     horny: !!extras.horny
                 };
             }
+            // Apply imported need overrides to partner's flatNeeds
+            if (payload.n && Object.keys(payload.n).length > 0) {
+                if (typeof ProfileCalculator !== 'undefined') {
+                    ProfileCalculator.loadProfile('partner', {
+                        archetyp: payload.a,
+                        geschlecht: payload.g,
+                        dominanz: payload.d,
+                        orientierung: payload.o
+                    });
+                }
+                const baseNeeds = TiageState.get('flatNeeds.partner') || {};
+                TiageState.set('flatNeeds.partner', Object.assign({}, baseNeeds, payload.n));
+            }
+
             TiageState.saveToStorage();
         }
 
