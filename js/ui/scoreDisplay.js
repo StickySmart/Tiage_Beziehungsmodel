@@ -77,6 +77,8 @@ function updateSyntheseScoreCycle() {
         stopLightbulbBlink();
     }
 
+    updateMobileReadinessUI();
+
     // Update Score Summary Line in Synthese Modal
     const scoreSummaryValueEl = document.getElementById('syntheseScoreSummaryValue');
     const needsSummaryValueEl = document.getElementById('syntheseNeedsSummaryValue');
@@ -103,6 +105,33 @@ function updateSyntheseScoreCycle() {
     }
 }
 window.updateSyntheseScoreCycle = updateSyntheseScoreCycle;
+
+// Show/hide mobile score, lightbulb and best match based on readiness
+function updateMobileReadinessUI() {
+    const hasPartner = !!(window.getPartnerArchetype && window.getPartnerArchetype());
+
+    // ICH profile ready: archetyp + GOD dimensions set
+    var ichReady = false;
+    try {
+        var ichArch = window.getIchArchetype ? window.getIchArchetype() : null;
+        var dims = window.personDimensions;
+        ichReady = !!(ichArch && dims && dims.ich &&
+            dims.ich.geschlecht && (typeof dims.ich.geschlecht === 'string'
+                ? dims.ich.geschlecht
+                : dims.ich.geschlecht.primary) &&
+            dims.ich.dominanz !== null && dims.ich.dominanz !== undefined &&
+            dims.ich.orientierung !== null && dims.ich.orientierung !== undefined);
+    } catch (e) {}
+
+    // Score + Lightbulb: only when partner selected
+    var scoreContainer = document.querySelector('.mobile-synthese-section .score-circle-container');
+    if (scoreContainer) scoreContainer.style.display = hasPartner ? '' : 'none';
+
+    // Best Match: only when ICH profile is set
+    var bestMatchSection = document.querySelector('.mobile-bestmatch-section');
+    if (bestMatchSection) bestMatchSection.style.display = ichReady ? '' : 'none';
+}
+window.updateMobileReadinessUI = updateMobileReadinessUI;
 
 // Trigger lightbulb blink animation to encourage clicking
 function triggerLightbulbBlink() {
@@ -290,5 +319,13 @@ function updateRFactorDisplay() {
     window.stopLightbulbBlink = stopLightbulbBlink;
     window.updateDesktopFactorContent = updateDesktopFactorContent;
     window.updateRFactorDisplay = updateRFactorDisplay;
+    window.updateMobileReadinessUI = updateMobileReadinessUI;
+
+    // Initial run after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() { setTimeout(updateMobileReadinessUI, 400); });
+    } else {
+        setTimeout(updateMobileReadinessUI, 400);
+    }
 
 })();
