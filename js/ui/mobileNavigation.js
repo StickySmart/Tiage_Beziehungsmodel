@@ -160,7 +160,7 @@
         }
 
         // Scroll to top
-        window.scrollTo(0, 0);
+        // auto-scroll disabled
     }
 
     // DEAKTIVIERT: Swipe-Navigation entfernt - alle Seiten sind jetzt untereinander angeordnet

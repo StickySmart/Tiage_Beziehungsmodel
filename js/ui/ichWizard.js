@@ -133,9 +133,6 @@ var IchWizard = (function() {
                 el.classList.add('wizard-done');
             } else if (i === currentStep) {
                 el.classList.add('wizard-active');
-                setTimeout(function() {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
             }
             // future steps: no class — all dimensions always visible
         });
