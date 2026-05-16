@@ -13,9 +13,9 @@ var IchWizard = (function() {
     // ── State helpers ────────────────────────────────────────────────────────
 
     function getArchetyp() {
-        return typeof TiageState !== 'undefined'
-            ? TiageState.get('archetypes.ich.primary')
-            : null;
+        // DOM ist Wahrheit: nur wenn das Grid einen aktiven Button zeigt gilt der Schritt als getan
+        var activeItem = document.querySelector('#mobile-ich-archetype-grid .archetype-symbol-item.active');
+        return activeItem ? activeItem.dataset.archetype : null;
     }
 
     function getGeschlecht() {
@@ -175,9 +175,15 @@ var IchWizard = (function() {
 
         dims.parentNode.insertBefore(ui, dims);
 
-        // Subscribe to relevant state changes
+        // MutationObserver auf dem Archetype-Grid: reagiert auf .active-Klassen-Änderungen
+        var grid = document.getElementById('mobile-ich-archetype-grid');
+        if (grid) {
+            var observer = new MutationObserver(update);
+            observer.observe(grid, { attributes: true, subtree: true, attributeFilter: ['class'] });
+        }
+
+        // Subscribe to GOD-Dimensionen (Schritt 2-4)
         if (typeof TiageState !== 'undefined' && TiageState.subscribe) {
-            TiageState.subscribe('archetypes.ich.primary', update);
             TiageState.subscribe('personDimensions.ich.geschlecht', update);
             TiageState.subscribe('personDimensions.ich.orientierung', update);
             TiageState.subscribe('personDimensions.ich.dominanz', update);
