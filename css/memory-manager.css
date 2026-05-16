@@ -1264,22 +1264,19 @@
     color: rgba(255,255,255,0.45);
 }
 
-/* General wizard-hidden utility (works for any element, not just compact-dimension) */
+/* wizard-hidden: used for RESET button and GFK section in wizard mode */
 .wizard-hidden {
     display: none !important;
 }
 
-/* Dimensions in wizard mode */
-#mobilePage1.wizard-mode .compact-dimension.wizard-hidden {
-    display: none !important;
-}
-
+/* Highlight current wizard step */
 #mobilePage1.wizard-mode .compact-dimension.wizard-active {
     border: 1.5px solid rgba(99,102,241,0.6) !important;
     border-radius: 12px;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
 }
 
+/* Dim completed wizard steps */
 #mobilePage1.wizard-mode .compact-dimension.wizard-done {
     opacity: 0.65;
 }
@@ -1353,17 +1350,11 @@
         padding: 0 15px 15px;
     }
 
-    /* 2-column grid for dimensions */
+    /* Single-column dimension list — consistent for both DU and PARTNER */
     .mobile-dims-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 8px;
-    }
-
-    /* Orientierung + GFK span full width */
-    .mobile-dims-grid [data-dimension*="orientierung"],
-    .mobile-dims-grid [data-dimension*="gfk"] {
-        grid-column: 1 / -1;
     }
 
     /* Synthese card */

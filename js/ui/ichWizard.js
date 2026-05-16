@@ -133,13 +133,11 @@ var IchWizard = (function() {
                 el.classList.add('wizard-done');
             } else if (i === currentStep) {
                 el.classList.add('wizard-active');
-                // Auto-scroll so the new step is visible
                 setTimeout(function() {
                     el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
-            } else {
-                el.classList.add('wizard-hidden');
             }
+            // future steps: no class — all dimensions always visible
         });
 
         // GFK und RESET-Button in wizard mode verstecken
