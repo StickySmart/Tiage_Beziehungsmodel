@@ -377,6 +377,98 @@ const MemoryManagerV2 = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
+    // DU-PROFIL TEILEN (WhatsApp-Export + URL-Import)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    function buildShareToken() {
+        let archetyp = null;
+        let geschlecht = null;
+        let dominanz = null;
+        let orientierung = null;
+        let geschlecht_extras = null;
+
+        if (typeof TiageState !== 'undefined') {
+            const archetypes = TiageState.getArchetypes('ich');
+            archetyp = archetypes?.primary || archetypes;
+            geschlecht = TiageState.get('personDimensions.ich.geschlecht');
+            dominanz = TiageState.get('personDimensions.ich.dominanz');
+            orientierung = TiageState.get('personDimensions.ich.orientierung');
+            geschlecht_extras = TiageState.get('personDimensions.ich.geschlecht_extras');
+        }
+        if (!geschlecht_extras && typeof window.geschlechtExtrasCache !== 'undefined') {
+            geschlecht_extras = { ...window.geschlechtExtrasCache.ich };
+        }
+
+        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras };
+        return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function shareViaWhatsApp() {
+        const token = buildShareToken();
+        const base = window.location.origin + window.location.pathname;
+        const shareUrl = base + '?du=' + encodeURIComponent(token);
+        const message = encodeURIComponent('Mein Ti-Age Profil: ' + shareUrl);
+        window.open('https://wa.me/?text=' + message, '_blank');
+    }
+
+    function checkImportFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('du');
+        if (!token) return false;
+
+        let payload;
+        try {
+            payload = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(token)))));
+        } catch (e) {
+            console.warn('[MemoryManagerV2] Ungültiger Import-Token:', e);
+            return false;
+        }
+
+        if (!payload || !payload.a) return false;
+
+        if (typeof TiageState !== 'undefined') {
+            TiageState.setArchetype('partner', payload.a);
+            if (payload.g) TiageState.set('personDimensions.partner.geschlecht', payload.g);
+            if (payload.d) TiageState.set('personDimensions.partner.dominanz', payload.d);
+            if (payload.o) TiageState.set('personDimensions.partner.orientierung', payload.o);
+
+            const extras = payload.f || { fit: false, fuckedup: false, horny: false, fresh: false };
+            TiageState.set('personDimensions.partner.geschlecht_extras', extras);
+            if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                window.geschlechtExtrasCache.partner = {
+                    fit: !!extras.fit,
+                    fuckedup: !!extras.fuckedup,
+                    horny: !!extras.horny
+                };
+            }
+            TiageState.saveToStorage();
+        }
+
+        // Dropdowns
+        const partnerSelect = document.getElementById('partnerSelect');
+        const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+        if (partnerSelect) partnerSelect.value = payload.a;
+        if (mobilePartnerSelect) mobilePartnerSelect.value = payload.a;
+
+        if (typeof window.updateArchetypeGrid === 'function') window.updateArchetypeGrid('partner', payload.a);
+        if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('partner');
+        if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('partner');
+        if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('partner');
+        if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('partner');
+        if (typeof window.updateComparisonView === 'function') window.updateComparisonView();
+
+        window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+
+        const label = ARCHETYPE_LABELS[payload.a] || payload.a;
+        if (typeof TiageToast !== 'undefined') {
+            TiageToast.success('Partner-Profil importiert: ' + label + ' ✓');
+        }
+
+        console.log('[MemoryManagerV2] URL-Import Partner:', payload.a);
+        return true;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -878,9 +970,20 @@ const MemoryManagerV2 = (function() {
         formatDateTime: formatDateTime,
         formatGOD: formatGOD,
         formatFFH: formatFFH,
-        formatAGOD: formatAGOD
+        formatAGOD: formatAGOD,
+
+        // Du-Profil Teilen
+        shareViaWhatsApp: shareViaWhatsApp,
+        checkImportFromURL: checkImportFromURL
     };
 })();
+
+// URL-Import bei Seitenstart prüfen (nach App-Initialisierung, 600ms Versatz)
+setTimeout(function() {
+    if (typeof MemoryManagerV2 !== 'undefined') {
+        MemoryManagerV2.checkImportFromURL();
+    }
+}, 600);
 
 // ═══════════════════════════════════════════════════════════════════════════
 // MODAL UI FUNCTIONS V2
@@ -889,6 +992,15 @@ const MemoryManagerV2 = (function() {
 /**
  * Öffnet das neue Memory Modal V2
  */
+function _closeMemoryModalV2() {
+    const modal = document.getElementById('memoryModalV2');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
 function openMemoryModalV2() {
     const modal = document.getElementById('memoryModalV2');
     if (!modal) {
@@ -896,10 +1008,27 @@ function openMemoryModalV2() {
         return;
     }
 
-    // Force save current state before showing modal
-    // This ensures the displayed data is always current
-    MemoryManagerV2.saveCurrentIchNow();
+    // Direct listeners — gesetzt nur einmal, unabhängig von ActionHandler/CSP
+    if (!modal._closeListenersAdded) {
+        modal._closeListenersAdded = true;
+        // Overlay-Klick (außerhalb des Modal-Cards)
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) _closeMemoryModalV2();
+        });
+        // X-Button
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                _closeMemoryModalV2();
+            });
+        }
+    }
 
+    // Inline-Style zurücksetzen damit CSS-Klasse greift
+    modal.style.display = '';
+
+    MemoryManagerV2.saveCurrentIchNow();
     updateMemoryModalV2Content();
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -910,13 +1039,7 @@ function openMemoryModalV2() {
  */
 function closeMemoryModalV2(event) {
     if (event && event.target !== event.currentTarget) return;
-
-    const modal = document.getElementById('memoryModalV2');
-    if (modal) {
-        modal.classList.remove('active');
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
+    _closeMemoryModalV2();
 }
 
 /**
@@ -1193,7 +1316,7 @@ function handleDisplayIchV2(archetyp) {
             </div>
         </div>
         <div class="memory-detail-section">
-            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+            <div class="memory-detail-section-title" style="cursor: pointer;" data-toggle-raw="${uniqueId}">
                 ROHDATEN (JSON) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
             </div>
             <div id="rawJson_${uniqueId}" class="memory-detail-raw-json" style="display: none;">
@@ -1269,7 +1392,7 @@ function handleDisplayPartnerV2(slotNumber) {
             </div>
         </div>
         <div class="memory-detail-section">
-            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+            <div class="memory-detail-section-title" style="cursor: pointer;" data-toggle-raw="${uniqueId}">
                 ROHDATEN (JSON) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
             </div>
             <div id="rawJson_${uniqueId}" class="memory-detail-raw-json" style="display: none;">
@@ -1402,7 +1525,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
     if (needsWithMods.length === 0) {
         return `
         <div class="memory-detail-section">
-            <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+            <div class="memory-detail-section-title" style="cursor: pointer;" data-toggle-raw="${uniqueId}">
                 Bedürfnis-Aufschlüsselung <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
             </div>
             <div id="rawJson_${uniqueId}" style="display: none; padding: 8px;">
@@ -1468,7 +1591,7 @@ function generateNeedsBreakdownV2(data, uniqueId) {
 
     return `
     <div class="memory-detail-section">
-        <div class="memory-detail-section-title" style="cursor: pointer;" onclick="toggleRawJson('${uniqueId}')">
+        <div class="memory-detail-section-title" style="cursor: pointer;" data-toggle-raw="${uniqueId}">
             Bedürfnis-Aufschlüsselung (${needsWithMods.length} modifiziert) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
         </div>
         <div id="rawJson_${uniqueId}" style="display: none; padding: 8px; overflow-x: auto;">
@@ -1501,6 +1624,13 @@ function showDetailModal(title, contentHtml) {
     if (modal && contentEl) {
         if (titleEl) titleEl.textContent = title;
         contentEl.innerHTML = contentHtml;
+        if (!contentEl._toggleRawDelegated) {
+            contentEl._toggleRawDelegated = true;
+            contentEl.addEventListener('click', function(e) {
+                const el = e.target.closest('[data-toggle-raw]');
+                if (el) toggleRawJson(el.dataset.toggleRaw);
+            });
+        }
         // FIX v4.3: display zurücksetzen (close-Handler setzt display:none)
         modal.style.display = '';
         modal.classList.add('active');

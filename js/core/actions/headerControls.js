@@ -333,6 +333,15 @@
             },
 
             /**
+             * Du-Profil via WhatsApp teilen
+             */
+            'share-du-profile': function(el, event) {
+                if (typeof MemoryManagerV2 !== 'undefined') {
+                    MemoryManagerV2.shareViaWhatsApp();
+                }
+            },
+
+            /**
              * Reset Partner GOD (Geschlecht, Orientierung, Dominanz)
              * Setzt alle Partner-Attribute auf "frei" zurück
              */

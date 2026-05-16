@@ -49,6 +49,49 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   SHARE BUTTON (WhatsApp)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.share-btn:hover {
+    background: linear-gradient(135deg, #4ADE80, #25D366);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.share-btn:active {
+    transform: translateY(0);
+}
+
+.share-icon {
+    font-size: 16px;
+}
+
+.share-text {
+    display: none;
+}
+
+@media (min-width: 600px) {
+    .share-text {
+        display: inline;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    CLEAR STORAGE BUTTON
    ═══════════════════════════════════════════════════════════════════════════ */
 

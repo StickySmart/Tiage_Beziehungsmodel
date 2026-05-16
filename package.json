@@ -1,6 +1,6 @@
 {
   "name": "tiage-beziehungsmodell",
-  "version": "1.8.1084",
+  "version": "1.8.1085",
   "description": "Ti-Age Beziehungsmodell - Interaktive Web-App",
   "private": true,
   "scripts": {
@@ -21,5 +21,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "sharp": "^0.34.5"
+  },
+  "dependencies": {
+    "@discord/embedded-app-sdk": "^2.4.1"
   }
 }
