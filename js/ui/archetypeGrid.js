@@ -202,7 +202,7 @@
                     if (!badge) {
                         badge = document.createElement('span');
                         badge.className = 'slot-badge';
-                        badge.style.cssText = 'position:absolute;top:2px;right:2px;background:var(--primary);color:white;font-size:9px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;';
+                        badge.style.cssText = 'position:absolute;top:2px;left:2px;background:var(--primary);color:white;font-size:9px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;';
                         item.style.position = 'relative';
                         item.appendChild(badge);
                     }
