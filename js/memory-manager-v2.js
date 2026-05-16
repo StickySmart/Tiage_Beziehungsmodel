@@ -399,13 +399,11 @@ const MemoryManagerV2 = (function() {
             geschlecht_extras = { ...window.geschlechtExtrasCache.ich };
         }
 
-        // Full flatNeeds for primary archetype (includes eigenschaft toggle effects + manual overrides)
-        const primaryArch = archetyp || 'single';
-        const flatNeeds = (typeof TiageState !== 'undefined')
-            ? (TiageState.get(`flatNeeds.ich.${primaryArch}`) || {})
-            : {};
+        // lockedNeeds: manually pinned values (small payload)
+        const lockedNeeds = (typeof TiageState !== 'undefined') ? (TiageState.getLockedNeeds('ich') || {}) : {};
 
-        // Eigenschaft toggle states for all active ICH slots
+        // Eigenschaft toggle states for the primary ICH slot (compact — a few booleans)
+        const primaryArch = archetyp || 'single';
         const eigenschaftenStates = {};
         if (typeof TiageState !== 'undefined') {
             const slots = (TiageState.getIchSlots ? TiageState.getIchSlots() : null) || [primaryArch];
@@ -417,7 +415,7 @@ const MemoryManagerV2 = (function() {
             });
         }
 
-        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: flatNeeds, e: eigenschaftenStates };
+        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds, e: eigenschaftenStates };
         return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     }
 
@@ -476,27 +474,23 @@ const MemoryManagerV2 = (function() {
                     horny: !!extras.horny
                 };
             }
-            // Apply imported flatNeeds to partner (includes eigenschaft toggle effects)
-            if (payload.n && Object.keys(payload.n).length > 0) {
-                // Load base profile first to initialize all need IDs
-                if (typeof ProfileCalculator !== 'undefined') {
-                    ProfileCalculator.loadProfile('partner', {
-                        archetyp: payload.a,
-                        geschlecht: payload.g,
-                        dominanz: payload.d,
-                        orientierung: payload.o
-                    });
-                }
-                // Override with exported values (fully replaces computed base)
-                TiageState.set('flatNeeds.partner', Object.assign({}, payload.n));
-            } else if (typeof ProfileCalculator !== 'undefined') {
-                // No needs exported — compute base profile normally
+            // Load base profile for partner
+            if (typeof ProfileCalculator !== 'undefined') {
                 ProfileCalculator.loadProfile('partner', {
                     archetyp: payload.a,
                     geschlecht: payload.g,
                     dominanz: payload.d,
                     orientierung: payload.o
                 });
+            }
+            // Apply eigenschaft toggle states (small payload: a few booleans per archetype)
+            if (payload.e && payload.e[payload.a] && typeof window.applyEigenschaftenToPartner === 'function') {
+                window.applyEigenschaftenToPartner(payload.a, payload.e[payload.a]);
+            }
+            // Apply manually locked need overrides on top
+            if (payload.n && Object.keys(payload.n).length > 0) {
+                const baseNeeds = TiageState.get('flatNeeds.partner') || {};
+                TiageState.set('flatNeeds.partner', Object.assign({}, baseNeeds, payload.n));
             }
 
             TiageState.saveToStorage();

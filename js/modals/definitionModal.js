@@ -564,4 +564,21 @@ window.getEigenschaftenHtml        = getEigenschaftenHtml;
 window.loadEigenschaftenData       = loadEigenschaftenData;
 window.toggleEigenschaft           = toggleEigenschaft;
 
+// Apply imported eigenschaft states to partner's flatNeeds (used by share-link import)
+// Uses unscaled delta (AGOD=1.0) since sender's AGOD is unknown
+window.applyEigenschaftenToPartner = async function(archetypeId, states) {
+    await loadEigenschaftenData();
+    const archData = eigenschaftenData?.[archetypeId];
+    if (!archData?.eigenschaften || !states) return;
+    archData.eigenschaften.forEach(function(e) {
+        const targetState = states[e.id];
+        if (targetState === undefined || targetState === e.default) return; // no change from default
+        const delta = targetState ? e.delta : -e.delta;
+        e.beduerfnisse.forEach(function(needId) {
+            const current = (typeof TiageState !== 'undefined' && TiageState.get(`flatNeeds.partner.${needId}`)) || 50;
+            TiageState.set(`flatNeeds.partner.${needId}`, Math.max(0, Math.min(100, current + delta)));
+        });
+    });
+};
+
 })();
