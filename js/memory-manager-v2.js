@@ -483,17 +483,21 @@ const MemoryManagerV2 = (function() {
                     orientierung: payload.o
                 });
             }
-            // Apply eigenschaft toggle states (small payload: a few booleans per archetype)
-            if (payload.e && payload.e[payload.a] && typeof window.applyEigenschaftenToPartner === 'function') {
-                window.applyEigenschaftenToPartner(payload.a, payload.e[payload.a]);
-            }
-            // Apply manually locked need overrides on top
+            // Apply manually locked need overrides on top of base profile
             if (payload.n && Object.keys(payload.n).length > 0) {
                 const baseNeeds = TiageState.get('flatNeeds.partner') || {};
                 TiageState.set('flatNeeds.partner', Object.assign({}, baseNeeds, payload.n));
             }
 
             TiageState.saveToStorage();
+
+            // Apply eigenschaft toggle states async (requires fetching JSON)
+            // Runs after saveToStorage and saves again once applied
+            if (payload.e && payload.e[payload.a] && typeof window.applyEigenschaftenToPartner === 'function') {
+                window.applyEigenschaftenToPartner(payload.a, payload.e[payload.a]).then(function() {
+                    TiageState.saveToStorage();
+                });
+            }
         }
 
         // Dropdowns

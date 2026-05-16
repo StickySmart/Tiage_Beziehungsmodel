@@ -73,18 +73,20 @@ async function loadEigenschaftenData() {
 function getEigenschaftenState(archetypeId) {
     if (!eigenschaftenStates[archetypeId]) {
         eigenschaftenStates[archetypeId] = {};
+        // Initialize with defaults
         const archData = eigenschaftenData?.[archetypeId];
         if (archData?.eigenschaften) {
             archData.eigenschaften.forEach(e => {
                 eigenschaftenStates[archetypeId][e.id] = e.default;
             });
         }
-        // Aus TiageState laden (persistiert)
-        if (typeof TiageState !== 'undefined') {
-            const saved = TiageState.get(`eigenschaften.ich.${archetypeId}`);
-            if (saved && typeof saved === 'object') {
-                Object.assign(eigenschaftenStates[archetypeId], saved);
-            }
+    }
+    // Always sync from TiageState — ensures values survive page reload
+    // (cache may have been initialized before TiageState finished loading)
+    if (typeof TiageState !== 'undefined') {
+        const saved = TiageState.get(`eigenschaften.ich.${archetypeId}`);
+        if (saved && typeof saved === 'object') {
+            Object.assign(eigenschaftenStates[archetypeId], saved);
         }
     }
     return eigenschaftenStates[archetypeId];
