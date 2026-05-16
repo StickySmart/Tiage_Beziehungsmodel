@@ -148,6 +148,14 @@ var IchWizard = (function() {
 
         var resetBtn = page1.querySelector('.free-reset-btn');
         if (resetBtn) resetBtn.closest('div').classList.toggle('wizard-hidden', wizardActive);
+
+        // In wizard mode force ICH card open so dimensions are accessible
+        var ichCard = document.getElementById('mobileIchCard');
+        var ichBody = document.getElementById('mobileIchBody');
+        if (ichCard && ichBody && wizardActive) {
+            ichCard.classList.remove('is-collapsed');
+            ichBody.style.display = 'block';
+        }
     }
 
     // ── Init ─────────────────────────────────────────────────────────────────
@@ -156,7 +164,11 @@ var IchWizard = (function() {
         var dims = document.getElementById('mobileIchDimensions');
         if (!dims || document.getElementById('ichWizardUI')) return;
 
-        // Build the wizard UI and insert above the dimension list
+        // Insert wizard UI above the ICH card (not inside its body)
+        var ichCard = document.getElementById('mobileIchCard');
+        var insertBefore = ichCard || dims;
+        var insertParent = insertBefore.parentNode;
+
         var ui = document.createElement('div');
         ui.id = 'ichWizardUI';
 
@@ -173,7 +185,7 @@ var IchWizard = (function() {
                 '<span class="wz-sublabel"></span>' +
             '</div>';
 
-        dims.parentNode.insertBefore(ui, dims);
+        insertParent.insertBefore(ui, insertBefore);
 
         // MutationObserver auf dem Archetype-Grid: reagiert auf .active-Klassen-Änderungen
         var grid = document.getElementById('mobile-ich-archetype-grid');

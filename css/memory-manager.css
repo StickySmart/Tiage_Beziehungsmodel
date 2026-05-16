@@ -1264,6 +1264,11 @@
     color: rgba(255,255,255,0.45);
 }
 
+/* General wizard-hidden utility (works for any element, not just compact-dimension) */
+.wizard-hidden {
+    display: none !important;
+}
+
 /* Dimensions in wizard mode */
 #mobilePage1.wizard-mode .compact-dimension.wizard-hidden {
     display: none !important;
