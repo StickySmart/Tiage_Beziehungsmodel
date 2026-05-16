@@ -11,7 +11,7 @@ const CLIENT_ID = '1499668041544368178';
     }
 
     try {
-        const { DiscordSDK } = await import('https://esm.sh/@discord/embedded-app-sdk@latest');
+        const { DiscordSDK } = await import('/js/vendor/discord-sdk/index.mjs');
         const sdk = new DiscordSDK(CLIENT_ID);
 
         await sdk.ready();
