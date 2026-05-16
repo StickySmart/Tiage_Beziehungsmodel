@@ -153,8 +153,16 @@ function initDimensionButtons() {
             // console.log('[TIAGE DEBUG] Processing dominanz-grid for person:', person, 'id:', grid.id);
             if (!person) return;
             grid.innerHTML = dominanzOptions.map(opt =>
-                `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                `<button type="button" class="dominanz-btn" data-value="${opt.value}" data-person="${person}">${opt.label}</button>`
             ).join('');
+            grid.querySelectorAll('.dominanz-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof handleDominanzClick === 'function') {
+                        handleDominanzClick(btn.dataset.person, btn.dataset.value, btn);
+                    }
+                });
+            });
         });
     });
     // console.log('[TIAGE DEBUG] Processed dominanz-grids:', processedDGrids.size);
@@ -171,8 +179,16 @@ function initDimensionButtons() {
             // console.log('[TIAGE DEBUG] Processing orientierung-grid for person:', person, 'id:', grid.id);
             if (!person) return;
             grid.innerHTML = orientierungOptions.map(opt =>
-                `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                `<button type="button" class="orientierung-btn" data-value="${opt.value}" data-person="${person}">${opt.label}</button>`
             ).join('');
+            grid.querySelectorAll('.orientierung-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof handleOrientierungClick === 'function') {
+                        handleOrientierungClick(btn.dataset.person, btn.dataset.value, btn);
+                    }
+                });
+            });
         });
     });
     // console.log('[TIAGE DEBUG] Processed orientierung-grids:', processedOGrids.size);
@@ -189,8 +205,16 @@ function initDimensionButtons() {
             // console.log('[TIAGE DEBUG] Processing gfk-grid for person:', person, 'id:', grid.id);
             if (!person) return;
             grid.innerHTML = gfkOptions.map(opt =>
-                `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                `<button type="button" class="gfk-btn" data-value="${opt.value}" data-person="${person}">${opt.label}</button>`
             ).join('');
+            grid.querySelectorAll('.gfk-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof handleGfkClick === 'function') {
+                        handleGfkClick(btn.dataset.person, btn.dataset.value, btn);
+                    }
+                });
+            });
         });
     });
     // console.log('[TIAGE DEBUG] Processed gfk-grids:', processedGfkGrids.size);

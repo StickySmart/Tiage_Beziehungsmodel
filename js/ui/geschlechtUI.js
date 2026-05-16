@@ -404,12 +404,20 @@ function updateGeschlechtSGrid(person) {
 
         // Populate S grid (include secondary-selected class if already selected)
         const currentSecondary = window.personDimensions[person].geschlecht?.secondary;
+        const secTitle = TiageI18n.t('ui.identitySecondary', 'Identität (Sekundär)');
         grid.innerHTML = sOptions.map(opt => {
             const isSelected = opt.value === currentSecondary;
             const selectedClass = isSelected ? ' secondary-selected' : '';
-            const secTitle = TiageI18n.t('ui.identitySecondary', 'Identität (Sekundär)');
-            return `<button type="button" class="geschlecht-btn geschlecht-s-btn${selectedClass}" data-value="${opt.value}" onclick="handleGeschlechtSClick('${person}', '${opt.value}', this)">${opt.label}${isSelected ? `<span class="geschlecht-indicator indicator-secondary" title="${secTitle}">S</span>` : ''}</button>`;
+            return `<button type="button" class="geschlecht-btn geschlecht-s-btn${selectedClass}" data-value="${opt.value}" data-person="${person}">${opt.label}${isSelected ? `<span class="geschlecht-indicator indicator-secondary" title="${secTitle}">S</span>` : ''}</button>`;
         }).join('');
+        grid.querySelectorAll('.geschlecht-s-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (typeof handleGeschlechtSClick === 'function') {
+                    handleGeschlechtSClick(btn.dataset.person, btn.dataset.value, btn);
+                }
+            });
+        });
     }
 
     // Update Desktop S-Grid
