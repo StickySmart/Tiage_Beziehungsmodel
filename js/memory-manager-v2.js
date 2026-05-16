@@ -407,7 +407,7 @@ const MemoryManagerV2 = (function() {
         const token = buildShareToken();
         const base = window.location.origin + window.location.pathname;
         const shareUrl = base + '?du=' + encodeURIComponent(token);
-        const message = encodeURIComponent('Mein Ti-Age Profil: ' + shareUrl);
+        const message = encodeURIComponent('Ti-Age Pairing\n' + shareUrl);
         window.open('https://wa.me/?text=' + message, '_blank');
     }
 
