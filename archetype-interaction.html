@@ -1705,19 +1705,9 @@
 
             <!-- ── Synthese Section ─────────────────────────────────── -->
             <div class="mobile-synthese-section">
-                <div class="types-display" style="flex-direction: column; gap: 8px;">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                        <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
-                        <span class="type-name" id="mobileResultIch" style="min-width: 80px; text-align: center;">Single</span>
-                    </div>
-                    <span style="font-size: 14px; color: var(--text-muted);">×</span>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                        <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
-                        <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="-1" title="Vorheriger">&#9664;</button>
-                        <span class="type-name" id="mobileResultPartner" style="min-width: 80px; text-align: center;">Duo</span>
-                        <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="1" title="Nächster">&#9654;</button>
-                    </div>
-                </div>
+                <!-- hidden stubs kept for JS compatibility -->
+                <span id="mobileResultIch" style="display:none"></span>
+                <span id="mobileResultPartner" style="display:none"></span>
 
                 <div class="score-circle-container">
                     <div class="score-label">SCORE</div>
