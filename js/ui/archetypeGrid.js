@@ -160,12 +160,16 @@
             window.updateGfkFromArchetypes()
         }
 
-        // Toast
+        // Toast — for ICH multi-select show the clicked archetype, not just the primary
         const archetypeEmojis = { duo: '🤝', solo: '⚡', lat: '🌙', solopoly: '🌟', duo_flex: '🔄', aromantisch: '🧊' };
         const personLabel = person === 'ich' ? 'ICH' : 'PARTNER';
-        if (effectiveArchetype) {
-            const emoji = archetypeEmojis[effectiveArchetype] || '';
-            TiageToast.success(personLabel + ': ' + effectiveArchetype.charAt(0).toUpperCase() + effectiveArchetype.slice(1) + ' ' + emoji);
+        if (effectiveArchetype || (person === 'ich' && archetype)) {
+            const toastArch = (person === 'ich') ? archetype : effectiveArchetype;
+            const emoji = archetypeEmojis[toastArch] || '';
+            const displayName = (window.tiageData && window.tiageData.archetypes && window.tiageData.archetypes[toastArch])
+                ? window.tiageData.archetypes[toastArch].name
+                : toastArch.charAt(0).toUpperCase() + toastArch.slice(1).replace('_', '-');
+            TiageToast.success(personLabel + ': ' + displayName + ' ' + emoji);
         } else {
             TiageToast.info(personLabel + ' deselektiert');
         }
