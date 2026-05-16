@@ -403,14 +403,28 @@ const MemoryManagerV2 = (function() {
         return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     }
 
-    function shareViaWhatsApp() {
+    async function shareViaWhatsApp() {
         const token = buildShareToken();
         const base = window.location.origin + window.location.pathname;
         const shareUrl = base + '?du=' + encodeURIComponent(token);
-        const message = encodeURIComponent('Ti-Age Pairing\n' + shareUrl);
+
+        // Try to shorten via is.gd (CORS-enabled, no API key needed)
+        let finalUrl = shareUrl;
+        try {
+            const resp = await Promise.race([
+                fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(shareUrl)),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
+            ]);
+            if (resp.ok) {
+                const short = (await resp.text()).trim();
+                if (short.startsWith('http')) finalUrl = short;
+            }
+        } catch (e) { /* use full URL as fallback */ }
+
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(shareUrl).catch(function() {});
+            navigator.clipboard.writeText(finalUrl).catch(function() {});
         }
+        const message = encodeURIComponent('Ti-Age Pairing\n' + finalUrl);
         window.open('https://wa.me/?text=' + message, '_blank');
     }
 
