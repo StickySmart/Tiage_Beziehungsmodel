@@ -1359,10 +1359,16 @@
             <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
 
             <!-- ICH Auswahl -->
-            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👤</span> DU <span id="mobile-ich-profile-status" class="profile-status-badge"></span>
+            <div class="mobile-profile-card ich-card" id="mobileIchCard">
+                <div class="mobile-profile-header" data-action="toggle-mobile-card" data-target="mobileIchBody">
+                    <div class="mobile-profile-header-left">
+                        <span>👤</span>
+                        <strong>DU</strong>
+                        <span id="mobile-ich-profile-status" class="profile-status-badge"></span>
+                    </div>
+                    <span class="card-toggle-arrow">▼</span>
                 </div>
+                <div class="mobile-profile-body" id="mobileIchBody">
                 <div id="mobile-ich-select-row" style="display:none;">
                     <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobileIchSelect">
@@ -1431,7 +1437,7 @@
                 <div style="display: flex; justify-content: center; margin: 8px 0;">
                     <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD zurücksetzen und speichern">RESET</button>
                 </div>
-                <div class="column-dimensions" id="mobileIchDimensions">
+                <div class="column-dimensions mobile-dims-grid" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht-multi">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
@@ -1533,274 +1539,244 @@
                         <div class="gfk-grid" id="mobile-ich-gfk-grid" data-person="ich"></div>
                     </div>
                 </div>
+                </div><!-- /mobile-profile-body -->
+            </div><!-- /mobile-profile-card ich-card -->
+
+            <!-- ── PARTNER Collapsible Card ────────────────────────────── -->
+            <div class="mobile-profile-card partner-card is-collapsed" id="mobilePartnerCard">
+                <div class="mobile-profile-header" data-action="toggle-mobile-card" data-target="mobilePartnerBody">
+                    <div class="mobile-profile-header-left">
+                        <span>👥</span>
+                        <strong>PARTNER</strong>
+                        <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
+                    </div>
+                    <span class="card-toggle-arrow">▼</span>
+                </div>
+                <div class="mobile-profile-body" id="mobilePartnerBody" style="display:none">
+                    <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
+                    <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
+                        <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">★</span>
+                            <span class="archetype-symbol-name">Single</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">♡</span>
+                            <span class="archetype-symbol-name">Duo</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">⚡</span>
+                            <span class="archetype-symbol-name">Duo-Flex</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">◆</span>
+                            <span class="archetype-symbol-name">Solopoly</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">♥</span>
+                            <span class="archetype-symbol-name">Polyamor</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">∞</span>
+                            <span class="archetype-symbol-name">RA</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">⌂</span>
+                            <span class="archetype-symbol-name">LAT</span>
+                        </div>
+                        <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
+                            <span class="archetype-symbol-icon">◇</span>
+                            <span class="archetype-symbol-name">Aromantisch</span>
+                        </div>
+                    </div>
+                    <div class="mobile-header-info-container">
+                        <div class="header-geschlecht-info" id="mobile-partner-header-geschlecht"></div>
+                        <div class="header-geschlecht-info" id="mobile-partner-header-dominanz"></div>
+                        <div class="header-geschlecht-info" id="mobile-partner-header-orientierung"></div>
+                    </div>
+                    <!-- FREE Button (Mobile) -->
+                    <div style="display: flex; justify-content: center; margin: 8px 0;">
+                        <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD zurücksetzen">FREE</button>
+                    </div>
+                    <!-- Dimensions (2-column grid) -->
+                    <div class="column-dimensions mobile-dims-grid" id="mobilePartnerDimensions">
+                        <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">
+                            <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
+                            <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
+                            <div class="geschlecht-primary-row">
+                                <div class="geschlecht-grid geschlecht-p-grid" id="mobile-partner-geschlecht-p-grid" data-person="partner"></div>
+                            </div>
+                            <div class="geschlecht-secondary-row" id="mobile-partner-geschlecht-s-row" style="display: none;">
+                                <div class="geschlecht-grid geschlecht-s-grid" id="mobile-partner-geschlecht-s-grid" data-person="partner"></div>
+                            </div>
+                            <div class="geschlecht-extras-row">
+                                <div class="geschlecht-grid geschlecht-extras-grid" id="mobile-partner-geschlecht-extras-grid" data-person="partner"></div>
+                            </div>
+                        </div>
+                        <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
+                            <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                                <span><span class="dominanz-info-link" data-stop-propagation>Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip-stop" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span></span>
+                                <span class="collapse-toggle">▼</span>
+                            </div>
+                            <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
+                            <div class="dominanz-multi-select">
+                                <div class="dominanz-option-row" id="m-partner-d-dom-row">
+                                    <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="dominant" style="cursor: pointer;">dominant</span>
+                                    <div id="m-partner-d-dom-status" class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Gelebt</button>
+                                        <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Interessiert</button>
+                                    </div>
+                                </div>
+                                <div class="dominanz-option-row" id="m-partner-d-sub-row">
+                                    <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</span>
+                                    <div id="m-partner-d-sub-status" class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Gelebt</button>
+                                        <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Interessiert</button>
+                                    </div>
+                                </div>
+                                <div class="dominanz-option-row" id="m-partner-d-sw-row">
+                                    <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="switch" style="cursor: pointer;">switch</span>
+                                    <div id="m-partner-d-sw-status" class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Gelebt</button>
+                                        <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Interessiert</button>
+                                    </div>
+                                </div>
+                                <div class="dominanz-option-row" id="m-partner-d-aus-row">
+                                    <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</span>
+                                    <div id="m-partner-d-aus-status" class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Gelebt</button>
+                                        <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Interessiert</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
+                            <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
+                                <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
+                                <span class="collapse-toggle">▼</span>
+                            </div>
+                            <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
+                            <div class="orientierung-multi-select" id="mobile-partner-orientierung-grid" data-person="partner">
+                                <div class="orientierung-option-row" id="m-partner-o-hetero-row" data-value="heterosexuell">
+                                    <span class="orientierung-label">Hetero</span>
+                                    <div class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Primär</button>
+                                        <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Sekundär</button>
+                                    </div>
+                                </div>
+                                <div class="orientierung-option-row" id="m-partner-o-gay-row" data-value="gay_lesbisch">
+                                    <span class="orientierung-label">Gay/Lesbisch</span>
+                                    <div class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Primär</button>
+                                        <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Sekundär</button>
+                                    </div>
+                                </div>
+                                <div class="orientierung-option-row" id="m-partner-o-bi-row" data-value="bisexuell">
+                                    <span class="orientierung-label">Bisexuell</span>
+                                    <div class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Primär</button>
+                                        <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Sekundär</button>
+                                    </div>
+                                </div>
+                                <div class="orientierung-option-row" id="m-partner-o-pan-row" data-value="pansexuell">
+                                    <span class="orientierung-label">Pansexuell</span>
+                                    <div class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Primär</button>
+                                        <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Sekundär</button>
+                                    </div>
+                                </div>
+                                <div class="orientierung-option-row" id="m-partner-o-queer-row" data-value="queer">
+                                    <span class="orientierung-label">Queer</span>
+                                    <div class="status-toggle-group">
+                                        <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Primär</button>
+                                        <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Sekundär</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- GFK-Kompetenz Grid für PARTNER (Mobile) -->
+                        <div class="compact-dimension collapsible-dimension" data-dimension="mobile-partner-gfk">
+                            <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
+                            <div class="collapsed-summary" id="mobile-partner-gfk-summary"></div>
+                            <div class="gfk-grid" id="mobile-partner-gfk-grid" data-person="partner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /mobile-profile-card partner-card -->
+
+            <!-- ── Synthese Section ─────────────────────────────────── -->
+            <div class="mobile-synthese-section">
+                <div class="types-display" style="flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
+                        <span class="type-name" id="mobileResultIch" style="min-width: 80px; text-align: center;">Single</span>
+                    </div>
+                    <span style="font-size: 14px; color: var(--text-muted);">×</span>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
+                        <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="-1" title="Vorheriger">&#9664;</button>
+                        <span class="type-name" id="mobileResultPartner" style="min-width: 80px; text-align: center;">Duo</span>
+                        <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="1" title="Nächster">&#9654;</button>
+                    </div>
+                </div>
+
+                <div class="score-circle-container">
+                    <div class="score-label">SCORE</div>
+                    <div class="score-circle-display mobile-score-circle-display" id="mobileScoreCircleDisplay" title="Ti-Age Synthese Score">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                            <circle class="score-progress" id="mobileScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+                        </svg>
+                        <div class="score-circle-value" id="mobileScoreCircle">0</div>
+                    </div>
+                    <div class="lightbulb-button mobile-lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
+                        <span class="lightbulb-icon">💡</span>
+                        <span class="lightbulb-text">Ti-Age Synthese</span>
+                    </div>
+                    <div id="mobileScoreNote" class="score-note" style="display: none;"></div>
+                    <div id="mobileKoTextDisplay" class="mobile-ko-text-display" style="display: none;"></div>
+                </div>
+
+                <div id="mobile-gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;"></div>
             </div>
 
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="2" data-i18n="mobile.next">Weiter →</button>
+            <!-- ── Best Match Section ─────────────────────────────── -->
+            <div class="mobile-bestmatch-section">
+                <div style="color: #F4A261; font-weight: 700; font-size: var(--font-base); margin-bottom: 10px; text-align: center;">
+                    🎰 <span data-i18n="mobile.bestMatchTitle">Best Match Finder</span>
+                </div>
+                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 16px; min-height: 60px;">
+                    <span class="match-icon" style="font-size: 28px;">🎰</span>
+                    <span class="match-text" style="font-size: 14px;" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
+                </button>
+                <div style="text-align: center; margin-top: 8px; color: var(--text-muted); font-size: 11px;" data-i18n="mobile.testsAllCombinations">
+                    Testet alle 864 Archetyp-Kombinationen
+                </div>
+            </div>
 
-            <!-- Reset Button -->
             <button data-action="reset-all" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;" data-i18n="mobile.resetSelection">
                 🔄 Auswahl zurücksetzen
             </button>
         </div>
 
-        <!-- PAGE 2: Best Match Karte (NEU) -->
-        <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: BEST MATCH">
-            <div class="page-header">
-                <button class="btn-back" data-action="mobile-go-to-page" data-page="1">←</button>
-                <span class="page-title" data-i18n="mobile.pageTitleBestMatch">Partner finden</span>
-            </div>
+        <!-- PAGE 2: hidden stub (content moved to page 1) -->
+        <div class="mobile-page" id="mobilePage2" data-page="2" style="display:none"></div>
 
-            <!-- Best Match Card -->
-            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F4A261; padding: 20px; margin-bottom: 15px;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="color: #F4A261; font-weight: 700; font-size: var(--font-lg); margin-bottom: 8px;">
-                        🎰 <span data-i18n="mobile.bestMatchTitle">Best Match Finder</span>
-                    </div>
-                    <div style="color: var(--text-secondary); font-size: var(--font-sm);" data-i18n="mobile.bestMatchDesc">
-                        Finde den besten Partner basierend auf deinem Profil
-                    </div>
-                </div>
-
-                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 20px; min-height: 80px;">
-                    <span class="match-icon" style="font-size: 32px;">🎰</span>
-                    <span class="match-text" style="font-size: 14px;" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
-                </button>
-
-                <div style="text-align: center; margin-top: 15px; color: var(--text-muted); font-size: 11px;" data-i18n="mobile.testsAllCombinations">
-                    Testet alle 864 Archetyp-Kombinationen
-                </div>
-            </div>
-
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Weiter zur Synthese →</button>
+        <!-- PAGE 3: hidden stub (mobilePartnerSelect kept for JS compatibility) -->
+        <div class="mobile-page" id="mobilePage3" data-page="3" style="display:none">
+            <select class="column-select" id="mobilePartnerSelect">
+                <option value="" title="Kein Archetyp gewählt">– Bitte wählen –</option>
+                <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
+                <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
+                <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
+                <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
+                <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                <option value="ra" title="RA - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
+            </select>
         </div>
-
-        <!-- PAGE 3: Partner-Auswahl — AUSGEBLENDET auf Mobil (Slot Machine wählt Partner automatisch) -->
-        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: PARTNER" style="display:none">
-            <div class="page-header">
-                <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
-                <span class="page-title" data-i18n="mobile.pageTitlePartner">Dein Partner</span>
-            </div>
-
-            <!-- PARTNER Auswahl -->
-            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👥</span> <span data-i18n="mobile.yourPartner">DEIN PARTNER</span> <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp">&#9664;</button>
-                    <select class="column-select" id="mobilePartnerSelect">
-                        <option value="" title="Kein Archetyp gewählt">– Bitte wählen –</option>
-                        <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
-                        <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
-                        <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
-                        <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
-                        <option value="ra" title="RA - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
-                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
-                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
-                    </select>
-                    <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp">&#9654;</button>
-                    <button data-action="open-archetype-info" data-person="partner" data-select-id="mobilePartnerSelect" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
-                </div>
-                <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
-                <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
-                    <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">★</span>
-                        <span class="archetype-symbol-name">Single</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">♡</span>
-                        <span class="archetype-symbol-name">Duo</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">⚡</span>
-                        <span class="archetype-symbol-name">Duo-Flex</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">◆</span>
-                        <span class="archetype-symbol-name">Solopoly</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">♥</span>
-                        <span class="archetype-symbol-name">Polyamor</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">∞</span>
-                        <span class="archetype-symbol-name">RA</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">⌂</span>
-                        <span class="archetype-symbol-name">LAT</span>
-                    </div>
-                    <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="partner">
-                        <span class="archetype-symbol-icon">◇</span>
-                        <span class="archetype-symbol-name">Aromantisch</span>
-                    </div>
-                </div>
-                <div class="mobile-header-info-container">
-                    <div class="header-geschlecht-info" id="mobile-partner-header-geschlecht"></div>
-                    <div class="header-geschlecht-info" id="mobile-partner-header-dominanz"></div>
-                    <div class="header-geschlecht-info" id="mobile-partner-header-orientierung"></div>
-                </div>
-                <!-- FREE Button - Reset Partner GOD (Mobile) -->
-                <div style="display: flex; justify-content: center; margin: 8px 0;">
-                    <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
-                </div>
-                <div class="column-dimensions" id="mobilePartnerDimensions">
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-body-soul-modal"></span></div>
-                        <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
-                        <div class="geschlecht-primary-row">
-                            <div class="geschlecht-grid geschlecht-p-grid" id="mobile-partner-geschlecht-p-grid" data-person="partner"></div>
-                        </div>
-                        <div class="geschlecht-secondary-row" id="mobile-partner-geschlecht-s-row" style="display: none;">
-                            <div class="geschlecht-grid geschlecht-s-grid" id="mobile-partner-geschlecht-s-grid" data-person="partner"></div>
-                        </div>
-                        <div class="geschlecht-extras-row">
-                            <div class="geschlecht-grid geschlecht-extras-grid" id="mobile-partner-geschlecht-extras-grid" data-person="partner"></div>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
-                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
-                            <span><span class="dominanz-info-link" data-stop-propagation>Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip-stop" data-tooltip-key="dominanzStatus">(P=Primär, S=Sekundär)</span></span>
-                            <span class="collapse-toggle">▼</span>
-                        </div>
-                        <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
-                        <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row" id="m-partner-d-dom-row">
-                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="dominant" style="cursor: pointer;">dominant</span>
-                                <div id="m-partner-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="dominant">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-d-sub-row">
-                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="submissiv" style="cursor: pointer;">submissiv</span>
-                                <div id="m-partner-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="submissiv">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-d-sw-row">
-                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="switch" style="cursor: pointer;">switch</span>
-                                <div id="m-partner-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="switch">Interessiert</button>
-                                </div>
-                            </div>
-                            <div class="dominanz-option-row" id="m-partner-d-aus-row">
-                                <span class="dominanz-label" data-action="show-dimension-tooltip" data-tooltip-key="ausgeglichen" style="cursor: pointer;">ausgeglichen</span>
-                                <div id="m-partner-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="gelebt" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Gelebt</button>
-                                    <button type="button" class="status-toggle-btn" data-status="interessiert" data-action="dominanz-status-toggle" data-person="partner" data-type="ausgeglichen">Interessiert</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
-                        <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
-                            <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
-                            <span class="collapse-toggle">▼</span>
-                        </div>
-                        <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
-                        <div class="orientierung-multi-select" id="mobile-partner-orientierung-grid" data-person="partner">
-                            <div class="orientierung-option-row" id="m-partner-o-hetero-row" data-value="heterosexuell">
-                                <span class="orientierung-label">Hetero</span>
-                                <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="heterosexuell">Sekundär</button>
-                                </div>
-                            </div>
-                            <div class="orientierung-option-row" id="m-partner-o-gay-row" data-value="gay_lesbisch">
-                                <span class="orientierung-label">Gay/Lesbisch</span>
-                                <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="gay_lesbisch">Sekundär</button>
-                                </div>
-                            </div>
-                            <div class="orientierung-option-row" id="m-partner-o-bi-row" data-value="bisexuell">
-                                <span class="orientierung-label">Bisexuell</span>
-                                <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="bisexuell">Sekundär</button>
-                                </div>
-                            </div>
-                            <div class="orientierung-option-row" id="m-partner-o-pan-row" data-value="pansexuell">
-                                <span class="orientierung-label">Pansexuell</span>
-                                <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="pansexuell">Sekundär</button>
-                                </div>
-                            </div>
-                            <div class="orientierung-option-row" id="m-partner-o-queer-row" data-value="queer">
-                                <span class="orientierung-label">Queer</span>
-                                <div class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn" data-status="primaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Primär</button>
-                                    <button type="button" class="status-toggle-btn" data-status="sekundaer" data-action="orientierung-status-toggle" data-person="partner" data-type="queer">Sekundär</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- GFK-Kompetenz Grid für PARTNER (Mobile) -->
-                    <div class="compact-dimension collapsible-dimension" data-dimension="mobile-partner-gfk">
-                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
-                        <div class="collapsed-summary" id="mobile-partner-gfk-summary"></div>
-                        <div class="gfk-grid" id="mobile-partner-gfk-grid" data-person="partner"></div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn-primary-mobile" data-action="mobile-go-to-page" data-page="4">Analysieren →</button>
-        </div>
-
-        <!-- PAGE 4: Ergebnis/Synthese -->
-        <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: ERGEBNIS">
-            <div class="page-header">
-                <button class="btn-back" data-action="mobile-go-to-page" data-page="2">←</button>
-                <span class="page-title">Synthese</span>
-            </div>
-
-            <div class="types-display" style="flex-direction: column; gap: 8px;">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
-                    <span class="type-name" id="mobileResultIch" style="min-width: 80px; text-align: center;">Single</span>
-                </div>
-                <span style="font-size: 14px; color: var(--text-muted);">×</span>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
-                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="-1" title="Vorheriger">&#9664;</button>
-                    <span class="type-name" id="mobileResultPartner" style="min-width: 80px; text-align: center;">Duo</span>
-                    <button class="archetype-nav-btn" data-action="navigate-archetype-page2" data-person="partner" data-direction="1" title="Nächster">&#9654;</button>
-                </div>
-            </div>
-
-            <div class="score-circle-container">
-                <!-- Score Label -->
-                <div class="score-label">SCORE</div>
-                <!-- Mobile Score Circle -->
-                <div class="score-circle-display mobile-score-circle-display" id="mobileScoreCircleDisplay" title="Ti-Age Synthese Score">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
-                        <circle class="score-progress" id="mobileScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
-                    </svg>
-                    <div class="score-circle-value" id="mobileScoreCircle">0</div>
-                </div>
-                <!-- Mobile Lightbulb Button -->
-                <div class="lightbulb-button mobile-lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
-                    <span class="lightbulb-icon">💡</span>
-                    <span class="lightbulb-text">Ti-Age Synthese</span>
-                </div>
-                <!-- Synthese-Text wurde in das CREATIVITY-Modal verschoben -->
-                <div id="mobileScoreNote" class="score-note" style="display: none;"></div>
-                <!-- KO-Text Display (Mobile) - zeigt KO-Kriterien an -->
-                <div id="mobileKoTextDisplay" class="mobile-ko-text-display" style="display: none;"></div>
-            </div>
-
-            <!-- GFK Bedürfnis-Matching Anzeige (Mobile) -->
-            <div id="mobile-gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;">
-                <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
-            </div>
-        </div>
+        <!-- PAGE 4: hidden stub (content moved to page 1) -->
+        <div class="mobile-page" id="mobilePage4" data-page="4" style="display:none"></div>
 
         <!-- MOBILE: Gewichtung Section (am Ende, nach Synthese) -->
         <div class="mobile-settings-section" id="mobileSettingsSection" style="display:none">

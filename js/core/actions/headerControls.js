@@ -353,6 +353,20 @@
                 } else {
                     console.error('[FREE Button] ✗ window.resetPartnerGOD not found!');
                 }
+            },
+
+            /**
+             * Toggle collapsible mobile profile card (ICH / PARTNER)
+             * data-target: ID of the .mobile-profile-body element
+             */
+            'toggle-mobile-card': function(el, event) {
+                var targetId = el.dataset.target;
+                var body = targetId ? document.getElementById(targetId) : null;
+                var card = el.closest('.mobile-profile-card');
+                if (!body || !card) return;
+
+                var isCollapsed = card.classList.toggle('is-collapsed');
+                body.style.display = isCollapsed ? 'none' : 'block';
             }
         });
 

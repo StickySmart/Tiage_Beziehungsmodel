@@ -1287,3 +1287,97 @@
 #mobilePage1.wizard-mode .compact-dimension.wizard-active {
     animation: wzSlideIn 0.25s ease;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE PROFILE CARDS — Collapsible ICH / PARTNER sections
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .mobile-profile-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .mobile-profile-card.ich-card {
+        border-top: 3px solid var(--success);
+    }
+
+    .mobile-profile-card.partner-card {
+        border-top: 3px solid var(--danger);
+    }
+
+    .mobile-profile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 15px;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s;
+    }
+
+    .mobile-profile-header:active {
+        background: rgba(255,255,255,0.04);
+    }
+
+    .mobile-profile-header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: var(--font-lg);
+    }
+
+    .ich-card .mobile-profile-header-left { color: var(--success); }
+    .partner-card .mobile-profile-header-left { color: var(--danger); }
+
+    .card-toggle-arrow {
+        font-size: 11px;
+        color: var(--text-muted);
+        transition: transform 0.25s;
+    }
+
+    .mobile-profile-card.is-collapsed .card-toggle-arrow {
+        transform: rotate(-90deg);
+    }
+
+    .mobile-profile-body {
+        padding: 0 15px 15px;
+    }
+
+    /* 2-column grid for dimensions */
+    .mobile-dims-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    /* Orientierung + GFK span full width */
+    .mobile-dims-grid [data-dimension*="orientierung"],
+    .mobile-dims-grid [data-dimension*="gfk"] {
+        grid-column: 1 / -1;
+    }
+
+    /* Synthese card */
+    .mobile-synthese-section {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        border-top: 3px solid #6366f1;
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+
+    /* Best Match card */
+    .mobile-bestmatch-section {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        border-top: 3px solid #F4A261;
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+}
