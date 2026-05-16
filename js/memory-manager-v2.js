@@ -408,6 +408,9 @@ const MemoryManagerV2 = (function() {
         const base = window.location.origin + window.location.pathname;
         const shareUrl = base + '?du=' + encodeURIComponent(token);
         const message = encodeURIComponent('Ti-Age Pairing\n' + shareUrl);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareUrl).catch(function() {});
+        }
         window.open('https://wa.me/?text=' + message, '_blank');
     }
 
