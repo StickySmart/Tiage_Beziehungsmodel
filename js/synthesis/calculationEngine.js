@@ -776,10 +776,10 @@ function calculateRelationshipQuality(person1, person2, options) {
             B: Math.round(B * 100) / 100
         },
         scoreDetails: {
-            O: Math.round(scoreO * 10) / 10,
-            A: Math.round(scoreA * 10) / 10,
-            D: Math.round(scoreD * 10) / 10,
-            G: Math.round(scoreG * 10) / 10
+            O: Math.round(orientationScore * wO * 10) / 10,
+            A: Math.round(archetypeScore * wA * 10) / 10,
+            D: Math.round(dominanceScore * wD * 10) / 10,
+            G: Math.round(genderScore * wG * 10) / 10
         },
         gewichtungen: {
             O: gew.O,
