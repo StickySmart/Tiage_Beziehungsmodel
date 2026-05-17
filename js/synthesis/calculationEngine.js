@@ -654,13 +654,13 @@ function calculateRelationshipQuality(person1, person2, options) {
     // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
     // wobei wX die normalisierte Gewichtung ist
 
-    // Gewichte aus TiageState laden (SSOT) - neues Format: 0/1/2
+    // Gewichte aus TiageState laden (SSOT) - Format: 0/1/2/3
     let gew = { O: 1, A: 1, D: 1, G: 1 };
     try {
         if (typeof TiageState !== 'undefined') {
             const stored = TiageState.get('paarung.gewichtungen');
-            // Neues Format: { O: 1, A: 2, D: 0, G: 1 }
-            if (stored && typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
+            // Format: { O: 1, A: 3, D: 0, G: 1 }
+            if (stored && typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 3) {
                 gew = {
                     O: stored.O ?? 1,
                     A: stored.A ?? 1,
@@ -686,14 +686,18 @@ function calculateRelationshipQuality(person1, person2, options) {
         console.warn('[calculateRelationshipQuality] Fehler beim Laden der Gewichte:', e);
     }
 
-    // Normalisiere Gewichte: Summe der aktiven Gewichte = 1.0
-    // 0 = ignoriert, 1 = normal, 2 = doppelt
-    const gewSum = gew.O + gew.A + gew.D + gew.G;
-    const gewDivisor = gewSum > 0 ? gewSum : 4; // Fallback: alle gleich
-    const wO = gew.O / gewDivisor;
-    const wA = gew.A / gewDivisor;
-    const wD = gew.D / gewDivisor;
-    const wG = gew.G / gewDivisor;
+    // Quadratische Gewichtung: w² damit 0→0, 1→1, 2→4, 3→9
+    // Bewirkt echte Spreizung: Faktor 3 dominiert 75% des Scores (statt 50% bei linear)
+    const eO = gew.O * gew.O;
+    const eA = gew.A * gew.A;
+    const eD = gew.D * gew.D;
+    const eG = gew.G * gew.G;
+    const gewSum = eO + eA + eD + eG;
+    const gewDivisor = gewSum > 0 ? gewSum : 4;
+    const wO = eO / gewDivisor;
+    const wA = eA / gewDivisor;
+    const wD = eD / gewDivisor;
+    const wG = eG / gewDivisor;
 
     const scoreO = orientationScore * wO * R1;
     const scoreA = archetypeScore * wA * R2;

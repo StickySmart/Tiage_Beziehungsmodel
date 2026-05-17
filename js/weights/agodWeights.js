@@ -67,7 +67,7 @@ var TiageWeights = TiageWeights || {};
 
         if (stored) {
             // New format: { O: 1, A: 2, D: 0, G: 1 }
-            if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 2) {
+            if (typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 3) {
                 agodWeights = {
                     O: stored.O ?? 1,
                     A: stored.A ?? 1,
@@ -125,7 +125,7 @@ var TiageWeights = TiageWeights || {};
     function set(factor, value) {
         // Validate value (0, 1, or 2) - use isNaN check to allow 0
         const parsed = parseInt(value);
-        const numValue = Math.max(0, Math.min(2, isNaN(parsed) ? 1 : parsed));
+        const numValue = Math.max(0, Math.min(3, isNaN(parsed) ? 1 : parsed));
 
         // Update state
         agodWeights[factor] = numValue;

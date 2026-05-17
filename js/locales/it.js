@@ -1504,7 +1504,7 @@ var TiageLocale_IT = {
     center: {
         resonanzHeading: 'Fattori di risonanza',
         gewichtungHeading: 'Ponderazione',
-        gewichtungDesc: '0 = Ignora · 1 = Normale · 2 = Importante',
+        gewichtungDesc: '0 = Ignora · 1 = Normale · 2 = Importante · 3 = Dominante',
         agodLabels: {
             A: 'ARCHETIPO',
             G: 'GENERE',

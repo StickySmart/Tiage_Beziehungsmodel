@@ -1179,7 +1179,7 @@
                 <!-- AGOD Weight Toggles (3-Wege-Schalter) - Sortierung: A, G, O, D -->
                 <div class="agod-heading" style="text-align: center; margin-bottom: 8px;">
                     <div style="color: #F59E0B; font-size: 14px; font-weight: 600;" data-i18n="center.gewichtungHeading">Gewichtung</div>
-                    <div style="color: var(--text-muted); font-size: 10px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig</div>
+                    <div style="color: var(--text-muted); font-size: 10px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig · 3 = Dominant</div>
                 </div>
                 <div class="agod-weight-toggles" id="agodWeightToggles">
                     <div class="agod-toggle-row" data-factor="A" data-i18n-title="center.agodTitles.A" title="Archetyp - Gewichtung">
@@ -1188,6 +1188,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="A" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="agod-toggle-row" data-factor="G" data-i18n-title="center.agodTitles.G" title="Geschlecht - Gewichtung">
@@ -1196,6 +1197,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="G" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="agod-toggle-row" data-factor="O" data-i18n-title="center.agodTitles.O" title="Orientierung - Gewichtung">
@@ -1204,6 +1206,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="O" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="agod-toggle-row" data-factor="D" data-i18n-title="center.agodTitles.D" title="Dominanz - Gewichtung">
@@ -1212,6 +1215,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="D" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="3">3</button>
                         </div>
                     </div>
                 </div>
@@ -1775,9 +1779,9 @@
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid #F59E0B; padding: 15px; margin: 15px 0;">
                 <div class="mobile-gewichtung-heading" style="text-align: center; margin-bottom: 12px;">
                     <div style="color: #F59E0B; font-size: 16px; font-weight: 600;" data-i18n="center.gewichtungHeading">Gewichtung</div>
-                    <div style="color: var(--text-muted); font-size: 11px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig</div>
+                    <div style="color: var(--text-muted); font-size: 11px;" data-i18n="center.gewichtungDesc">0 = Egal · 1 = Normal · 2 = Wichtig · 3 = Dominant</div>
                 </div>
-                <!-- AGOD Gewichtung 3-Wege-Schalter für Mobile -->
+                <!-- AGOD Gewichtung 4-Wege-Schalter für Mobile -->
                 <div class="mobile-gewichtung-container" id="mobileGewichtungContainer">
                     <div class="mobile-gewichtung-row" data-factor="A">
                         <span class="mobile-gewichtung-label" data-i18n="center.agodLabels.A">Archetyp</span>
@@ -1785,6 +1789,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="A" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="A" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="G">
@@ -1793,6 +1798,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="G" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="G" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="O">
@@ -1801,6 +1807,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="O" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="O" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="mobile-gewichtung-row" data-factor="D">
@@ -1809,6 +1816,7 @@
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="0">0</button>
                             <button type="button" class="agod-toggle-btn active" data-action="set-agod-weight" data-dimension="D" data-value="1">1</button>
                             <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="2">2</button>
+                            <button type="button" class="agod-toggle-btn" data-action="set-agod-weight" data-dimension="D" data-value="3">3</button>
                         </div>
                     </div>
                 </div>

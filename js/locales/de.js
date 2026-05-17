@@ -1526,7 +1526,7 @@ var TiageLocale_DE = {
     center: {
         resonanzHeading: 'Resonanzfaktoren',
         gewichtungHeading: 'Gewichtung',
-        gewichtungDesc: '0 = Egal · 1 = Normal · 2 = Wichtig',
+        gewichtungDesc: '0 = Egal · 1 = Normal · 2 = Wichtig · 3 = Dominant',
         agodLabels: {
             A: 'ARCHETYP',
             G: 'GESCHLECHT',

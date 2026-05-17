@@ -1283,7 +1283,7 @@ var TiageLocale_FR = {
     center: {
         resonanzHeading: 'Facteurs de résonance',
         gewichtungHeading: 'Pondération',
-        gewichtungDesc: '0 = Ignorer · 1 = Normal · 2 = Important',
+        gewichtungDesc: '0 = Ignorer · 1 = Normal · 2 = Important · 3 = Dominant',
         agodLabels: {
             A: 'ARCHÉTYPE',
             G: 'GENRE',
