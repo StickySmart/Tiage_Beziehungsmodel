@@ -104,7 +104,18 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
     }
 
     /**
+     * Streckt einen Rohwert auf die Zielspanne 10-100.
+     * min→10, max→100 — bewahrt die Rangfolge, vergrößert aber die Spreizung.
+     */
+    function _normalizeScore(raw, min, max) {
+        if (max <= min) return 75;
+        var normalized = Math.round((raw - min) / (max - min) * 90 + 10);
+        return Math.max(0, Math.min(100, normalized));
+    }
+
+    /**
      * Generiert die vollständige 8x8 Archetyp-Kompatibilitätsmatrix
+     * Zwei-Phasen: (1) Rohwerte, (2) Normalisierung auf 10-100 Spanne
      *
      * @returns {Object} Matrix { 'single': { 'duo': 72, ... }, 'duo': { ... }, ... }
      */
@@ -116,12 +127,9 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         }
 
         var archetypes = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-        var matrix = {};
+        var rawMatrix = {};
 
-        // DEBUG DISABLED v1.8.871: Matrix-Generierung einmalig, aber verbose
-        // console.log('[ArchetypeMatrixCalculator] Starte Matrix-Generierung für 8 Archetypen...');
-
-        // Iteriere durch alle Archetyp-Paare
+        // Phase 1: Rohwerte berechnen
         for (var i = 0; i < archetypes.length; i++) {
             var archetype1 = archetypes[i];
             var profile1 = window.BaseArchetypProfile[archetype1];
@@ -131,7 +139,7 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
                 continue;
             }
 
-            matrix[archetype1] = {};
+            rawMatrix[archetype1] = {};
 
             for (var j = 0; j < archetypes.length; j++) {
                 var archetype2 = archetypes[j];
@@ -142,18 +150,32 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
                     continue;
                 }
 
-                // Berechne Kompatibilität zwischen den beiden Profilen
-                var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
-                matrix[archetype1][archetype2] = score;
-
-                // DEBUG DISABLED v1.8.871: 64 Kombinationen bei Matrix-Generierung
-                // console.log('[ArchetypeMatrixCalculator] ' + archetype1 + ' + ' + archetype2 + ' = ' + score);
+                rawMatrix[archetype1][archetype2] = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
             }
         }
 
-        // DEBUG DISABLED v1.8.871: Matrix-Generierung einmalig, aber verbose
-        // console.log('[ArchetypeMatrixCalculator] Matrix-Generierung abgeschlossen!');
-        // console.log('[ArchetypeMatrixCalculator] Generierte Matrix:', JSON.stringify(matrix, null, 2));
+        // Phase 2: Gesamtspanne bestimmen und normalisieren
+        var minRaw = Infinity, maxRaw = -Infinity;
+        for (var a in rawMatrix) {
+            for (var b in rawMatrix[a]) {
+                var s = rawMatrix[a][b];
+                if (s < minRaw) minRaw = s;
+                if (s > maxRaw) maxRaw = s;
+            }
+        }
+
+        // Grenzen für Live-Berechnungen speichern
+        TiageSynthesis.ArchetypeMatrixCalculator._scoreBounds = { min: minRaw, max: maxRaw };
+
+        var matrix = {};
+        for (var a2 in rawMatrix) {
+            matrix[a2] = {};
+            for (var b2 in rawMatrix[a2]) {
+                matrix[a2][b2] = _normalizeScore(rawMatrix[a2][b2], minRaw, maxRaw);
+            }
+        }
+
+        console.log('[ArchetypeMatrixCalculator] Matrix normalisiert: Rohspanne', minRaw, '-', maxRaw, '→ 10-100');
 
         return matrix;
     }
@@ -223,9 +245,13 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         var profile2 = findProfile(type2);
 
         if (profile1 && profile1.umfrageWerte && profile2 && profile2.umfrageWerte) {
-            var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
-            // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
-            // console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '→', normalizedType1, '+', type2, '→', normalizedType2, '=', score);
+            var rawScore = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
+
+            // Normalisiere auf gleiche Spanne wie die gecachte Matrix
+            var bounds = TiageSynthesis.ArchetypeMatrixCalculator._scoreBounds;
+            var score = (bounds && bounds.max > bounds.min)
+                ? _normalizeScore(rawScore, bounds.min, bounds.max)
+                : rawScore;
 
             // Cache das Ergebnis für spätere Aufrufe
             if (!cachedMatrix) {
@@ -422,7 +448,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         generateArchetypeMatrix: generateArchetypeMatrix,
 
         // Cache (wird intern verwaltet)
-        _cachedMatrix: null
+        _cachedMatrix: null,
+        _scoreBounds: null
     };
 
 })();
