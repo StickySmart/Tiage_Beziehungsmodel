@@ -1376,4 +1376,9 @@
         padding: 15px;
         margin-bottom: 12px;
     }
+
+    /* Synthese modal: hide archetype navigation on mobile (archetypes are set in main scroll) */
+    #tiageSyntheseArchetypeContext {
+        display: none !important;
+    }
 }
