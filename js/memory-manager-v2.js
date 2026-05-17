@@ -437,9 +437,27 @@ const MemoryManagerV2 = (function() {
             }
         } catch (e) { /* use full URL as fallback */ }
 
+        // Always copy to clipboard
         if (navigator.clipboard) {
             navigator.clipboard.writeText(finalUrl).catch(function() {});
         }
+
+        // Use native share dialog if available (mobile OS share sheet)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Ti-Age Pairing',
+                    text: 'Mein Ti-Age Profil',
+                    url: finalUrl
+                });
+                return;
+            } catch (e) {
+                if (e.name === 'AbortError') return; // user cancelled
+                // other error → fall through to WhatsApp
+            }
+        }
+
+        // Fallback: open WhatsApp directly
         const message = encodeURIComponent('Ti-Age Pairing\n' + finalUrl);
         window.open('https://wa.me/?text=' + message, '_blank');
     }
