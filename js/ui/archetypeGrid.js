@@ -182,9 +182,9 @@
         const gridId = person === 'ich' ? 'ich-archetype-grid' : 'partner-archetype-grid';
         const mobileGridId = person === 'ich' ? 'mobile-ich-archetype-grid' : 'mobile-partner-archetype-grid';
 
-        // ICH: Multi-Select Highlighting
-        const activeSlots = (person === 'ich' && typeof TiageState !== 'undefined')
-            ? TiageState.getIchSlots()
+        // Multi-Select Highlighting (ICH und PARTNER via TiageState.slots)
+        const activeSlots = (typeof TiageState !== 'undefined')
+            ? (person === 'ich' ? TiageState.getIchSlots() : TiageState.getPartnerSlots())
             : (archetype ? [archetype] : []);
 
         [gridId, mobileGridId].forEach(id => {
