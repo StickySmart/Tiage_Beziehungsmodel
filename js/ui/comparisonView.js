@@ -164,6 +164,7 @@
 
             // Update Score-Circle auch bei unvollständigen Dimensionen
             window.updateSyntheseScoreCycle();
+            if (typeof window.updateReadinessUI === 'function') window.updateReadinessUI();
             return;
         }
 
@@ -176,8 +177,10 @@
 
         if (!isIncompatible) {
             try {
-                // SSOT v3.10: R-Faktoren aus person.needs (TiageState)
-                const result = window.calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+                // Multi-Slot: Durchschnitt über alle aktiven ICH-Archetypen
+                const result = window.calculateMultiSlotOverall
+                    ? window.calculateMultiSlotOverall(person1, person2, pathosCheck)
+                    : window.calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                 overallScore = result.overall;
                 qualityBreakdown = result.breakdown || qualityBreakdown;
                 // console.log('[TIAGE] Score calculated:', overallScore, 'breakdown:', qualityBreakdown); // DISABLED: verursacht Message-Overflow
@@ -327,6 +330,8 @@
 
         // Update Score-Circle auf der Hauptseite
         window.updateSyntheseScoreCycle();
+        // Update Readiness-UI (Lightbulb / Best Match Sichtbarkeit)
+        if (typeof window.updateReadinessUI === 'function') window.updateReadinessUI();
     }
 
     // Universelle Funktion für Kategorien-Balken (Mobile & Desktop)

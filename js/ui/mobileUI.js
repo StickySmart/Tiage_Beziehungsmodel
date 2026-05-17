@@ -531,9 +531,12 @@ function initBrowserHistoryNavigation() {
 }
 
     // ── Subscriber: Eigenschaften-Änderungen lösen Neu-Berechnung aus ────────
+    // Nur im mobilen Layout aktiv — auf Desktop läuft die Score-Berechnung
+    // über updatePartnerView() / updateSyntheseScoreCycle() in updateRendering.js
     if (typeof TiageState !== 'undefined') {
         var _mobileRecalcTimer = null;
         TiageState.subscribe('flatNeeds.ich', function() {
+            if (window.innerWidth > 768) return;
             clearTimeout(_mobileRecalcTimer);
             _mobileRecalcTimer = setTimeout(function() {
                 if (typeof window.updateMobileResultPage === 'function') window.updateMobileResultPage();

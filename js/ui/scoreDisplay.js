@@ -106,31 +106,101 @@ function updateSyntheseScoreCycle() {
 }
 window.updateSyntheseScoreCycle = updateSyntheseScoreCycle;
 
-// Show/hide mobile score, lightbulb and best match based on readiness
-function updateMobileReadinessUI() {
-    const hasPartner = !!(window.getPartnerArchetype && window.getPartnerArchetype());
-
-    // ICH profile ready: archetyp + GOD dimensions set
-    var ichReady = false;
-    try {
-        var ichArch = window.getIchArchetype ? window.getIchArchetype() : null;
-        var dims = window.personDimensions;
-        ichReady = !!(ichArch && dims && dims.ich &&
-            dims.ich.geschlecht && (typeof dims.ich.geschlecht === 'string'
-                ? dims.ich.geschlecht
-                : dims.ich.geschlecht.primary) &&
-            dims.ich.dominanz !== null && dims.ich.dominanz !== undefined &&
-            dims.ich.orientierung !== null && dims.ich.orientierung !== undefined);
-    } catch (e) {}
-
-    // Score + Lightbulb: only when partner selected
-    var scoreContainer = document.querySelector('.mobile-synthese-section .score-circle-container');
-    if (scoreContainer) scoreContainer.style.display = hasPartner ? '' : 'none';
-
-    // Best Match: only when ICH profile is set
-    var bestMatchSection = document.querySelector('.mobile-bestmatch-section');
-    if (bestMatchSection) bestMatchSection.style.display = ichReady ? '' : 'none';
+// Helper: prüft ob eine Person vollständig konfiguriert ist (Archetyp + GOD)
+function _isPersonComplete(arch, dims) {
+    if (!arch || !dims) return false;
+    var g = dims.geschlecht;
+    var gOk = !!(g && (typeof g === 'string' ? g : g.primary));
+    var dOk = !!(dims.dominanz && (dims.dominanz.primary || typeof dims.dominanz === 'string'));
+    var oOk = !!(dims.orientierung && (dims.orientierung.primary || typeof dims.orientierung === 'string'));
+    return gOk && dOk && oOk;
 }
+
+// Readiness-UI für mobile UND desktop — Lightbulb / Score / Best Match
+function updateReadinessUI() {
+    var dims = window.personDimensions || {};
+    var ichArch = window.getIchArchetype ? window.getIchArchetype() : null;
+    var partnerArch = window.getPartnerArchetype ? window.getPartnerArchetype() : null;
+
+    var ichComplete    = _isPersonComplete(ichArch, dims.ich);
+    var partnerComplete = _isPersonComplete(partnerArch, dims.partner);
+
+    // ── MOBILE ───────────────────────────────────────────────────────────────
+    // Score-Kreis + Lightbulb: nur wenn PARTNER vollständig
+    var scoreContainer = document.querySelector('.mobile-synthese-section .score-circle-container');
+    if (scoreContainer) scoreContainer.style.display = partnerComplete ? '' : 'none';
+
+    // Hint unter Score-Bereich wenn Partner unvollständig
+    var mobileScoreHint = document.getElementById('mobileScoreReadinessHint');
+    if (!mobileScoreHint) {
+        mobileScoreHint = document.createElement('div');
+        mobileScoreHint.id = 'mobileScoreReadinessHint';
+        mobileScoreHint.style.cssText = 'font-size:11px;color:var(--text-muted);text-align:center;padding:6px 12px;';
+        var syntheseSection = document.querySelector('.mobile-synthese-section');
+        if (syntheseSection) syntheseSection.appendChild(mobileScoreHint);
+    }
+    if (mobileScoreHint) {
+        if (!partnerArch) {
+            mobileScoreHint.textContent = 'Wähle einen Partner-Archetyp für den Score';
+            mobileScoreHint.style.display = '';
+        } else if (!partnerComplete) {
+            mobileScoreHint.textContent = 'Vervollständige das Partner-Profil (Geschlecht, Orientierung, Dominanz)';
+            mobileScoreHint.style.display = '';
+        } else {
+            mobileScoreHint.style.display = 'none';
+        }
+    }
+
+    // Best Match: nur wenn ICH vollständig
+    var bestMatchSection = document.querySelector('.mobile-bestmatch-section');
+    if (bestMatchSection) bestMatchSection.style.display = ichComplete ? '' : 'none';
+
+    // Hint für Best Match wenn ICH unvollständig
+    var mobileBestMatchHint = document.getElementById('mobileBestMatchReadinessHint');
+    if (!mobileBestMatchHint) {
+        mobileBestMatchHint = document.createElement('div');
+        mobileBestMatchHint.id = 'mobileBestMatchReadinessHint';
+        mobileBestMatchHint.style.cssText = 'font-size:11px;color:var(--text-muted);text-align:center;padding:6px 12px;';
+        var bestSection = document.querySelector('.mobile-bestmatch-section');
+        if (bestSection && bestSection.parentNode) bestSection.parentNode.insertBefore(mobileBestMatchHint, bestSection.nextSibling);
+    }
+    if (mobileBestMatchHint) {
+        if (!ichArch) {
+            mobileBestMatchHint.textContent = 'Wähle deinen Archetyp für den Best-Match-Finder';
+            mobileBestMatchHint.style.display = '';
+        } else if (!ichComplete) {
+            mobileBestMatchHint.textContent = 'Vervollständige dein Profil (Geschlecht, Orientierung, Dominanz) für den Best-Match-Finder';
+            mobileBestMatchHint.style.display = '';
+        } else {
+            mobileBestMatchHint.style.display = 'none';
+        }
+    }
+
+    // ── DESKTOP ──────────────────────────────────────────────────────────────
+    // Lightbulb: nur wenn PARTNER vollständig
+    var desktopLightbulb = document.querySelector('.lightbulb-button:not(.mobile-lightbulb-button)');
+    if (desktopLightbulb) {
+        desktopLightbulb.style.opacity = partnerComplete ? '1' : '0.35';
+        desktopLightbulb.style.pointerEvents = partnerComplete ? '' : 'none';
+        desktopLightbulb.title = partnerComplete
+            ? 'Ti-Age Synthese öffnen'
+            : 'Partner-Profil muss vollständig sein (Geschlecht, Orientierung, Dominanz)';
+    }
+
+    // Best Match Btn (Desktop): nur wenn ICH vollständig
+    var desktopBestMatch = document.querySelector('.best-match-btn.slot-machine-center-btn');
+    if (desktopBestMatch) {
+        desktopBestMatch.style.opacity = ichComplete ? '1' : '0.35';
+        desktopBestMatch.style.pointerEvents = ichComplete ? '' : 'none';
+        desktopBestMatch.title = ichComplete
+            ? 'Finde den besten Partner – testet alle 864 Kombinationen'
+            : 'Dein Profil muss vollständig sein (Geschlecht, Orientierung, Dominanz)';
+    }
+}
+window.updateReadinessUI = updateReadinessUI;
+
+// Legacy-Alias (wird von updateSyntheseScoreCycle aufgerufen)
+function updateMobileReadinessUI() { updateReadinessUI(); }
 window.updateMobileReadinessUI = updateMobileReadinessUI;
 
 // Trigger lightbulb blink animation to encourage clicking
