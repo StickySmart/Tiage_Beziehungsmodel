@@ -56,9 +56,17 @@
             console.warn('[TIAGE] updateGfkFromArchetypes error:', e);
         }
 
-        // Update type names
-        document.getElementById('resultIchType').textContent = ichArch?.name || window.getIchArchetype();
-        document.getElementById('resultPartnerType').textContent = partnerArch?.name || window.getPartnerArchetype();
+        // Update type names — show all active ICH slots if multi-slot
+        const _ichSlotsDesk = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : null;
+        const _ichLabelDesk = (_ichSlotsDesk && _ichSlotsDesk.length > 1)
+            ? _ichSlotsDesk.map(function(s) { return window.tiageData?.archetypes?.[s]?.name || s; }).join(' · ')
+            : (ichArch?.name || window.getIchArchetype());
+        document.getElementById('resultIchType').textContent = _ichLabelDesk;
+        const _partnerSlotsDesk = (typeof TiageState !== 'undefined' && TiageState.getPartnerSlots) ? TiageState.getPartnerSlots() : null;
+        const _partnerLabelDesk = (_partnerSlotsDesk && _partnerSlotsDesk.length > 1)
+            ? _partnerSlotsDesk.map(function(s) { return window.tiageData?.archetypes?.[s]?.name || s; }).join(' · ')
+            : (partnerArch?.name || window.getPartnerArchetype());
+        document.getElementById('resultPartnerType').textContent = _partnerLabelDesk;
 
         // Calculate compatibility
         // SSOT v3.10: Needs aus TiageState laden für R-Faktor-Berechnung

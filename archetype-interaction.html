@@ -938,14 +938,12 @@
                         </div>
                     </div>
                     <div style="font-size: 18px; color: var(--text-muted);">×</div>
-                    <!-- PARTNER Navigation (rechts) -->
+                    <!-- PARTNER Anzeige (nur Label, keine Navigation) -->
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="partner" data-direction="-1" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">‹</button>
                         <div style="text-align: center; min-width: 90px;">
                             <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
                             <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;" id="tiageSyntheseModalPartner">Poly Hedo</div>
                         </div>
-                        <button class="archetype-nav-btn" data-action="navigate-synthese-archetype" data-person="partner" data-direction="1" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem;">›</button>
                     </div>
                 </div>
                 <!-- Type indicator (hidden for Score view) -->
@@ -2994,5 +2992,17 @@
         }
     </script>
     <script type="module" src="/discord-activity.js"></script>
+
+    <!-- Floating Action Bar (Desktop only, controlled by updateReadinessUI) -->
+    <div id="desktopFloatingBar" aria-label="Schnellzugriff" style="position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:300;pointer-events:none;">
+        <button id="floatBestMatch" class="fab-btn fab-match" data-action="open-slot-machine-modal" title="Besten Partner finden – testet alle Kombinationen">
+            <span class="fab-icon">🎰</span>
+            <span class="fab-label">Best Match</span>
+        </button>
+        <button id="floatSynthese" class="fab-btn fab-synthese" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
+            <span class="fab-icon">💡</span>
+            <span class="fab-label">Synthese</span>
+        </button>
+    </div>
 </body>
 </html>

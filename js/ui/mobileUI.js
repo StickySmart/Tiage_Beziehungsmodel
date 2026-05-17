@@ -31,8 +31,12 @@ function updateMobileResultPage() {
     const ichArch = window.tiageData.archetypes[window.getIchArchetype()];
     const partnerArch = window.tiageData.archetypes[window.getPartnerArchetype()];
 
-    // Update type names
-    document.getElementById('mobileResultIch').textContent = ichArch?.name || window.getIchArchetype();
+    // Update type names — show all active ICH slots if multi-slot
+    const _ichSlotsMob = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : null;
+    const _ichLabelMob = (_ichSlotsMob && _ichSlotsMob.length > 1)
+        ? _ichSlotsMob.map(function(s) { return window.tiageData?.archetypes?.[s]?.name || s; }).join(' · ')
+        : (ichArch?.name || window.getIchArchetype());
+    document.getElementById('mobileResultIch').textContent = _ichLabelMob;
     document.getElementById('mobileResultPartner').textContent = partnerArch?.name || window.getPartnerArchetype();
 
     // Calculate scores - use window.mobilePersonDimensions for consistency with tooltips

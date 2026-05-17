@@ -877,43 +877,77 @@ function calculateMultiSlotQuality(person1, person2, options) {
     });
 }
 
-function calculateMultiSlotOverall(person1, person2, pathosCheck, options) {
-    const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
-        ? TiageState.getIchSlots() : null;
+// Guard against re-entry: calculateRelationshipQuality writes R-factors → notifyChange →
+// resonanzfaktoren-changed event → updateComparisonView() → infinite loop.
+var _multiSlotCalculating = false;
 
-    if (!slots || slots.length <= 1) {
+function calculateMultiSlotOverall(person1, person2, pathosCheck, options) {
+    const ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+        ? TiageState.getIchSlots() : null;
+    const partnerSlots = (typeof TiageState !== 'undefined' && TiageState.getPartnerSlots)
+        ? TiageState.getPartnerSlots() : null;
+
+    const hasMultiIch = ichSlots && ichSlots.length > 1;
+    const hasMultiPartner = partnerSlots && partnerSlots.length > 1;
+
+    if ((!hasMultiIch && !hasMultiPartner) || _multiSlotCalculating) {
         const logosCheck = window.calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
         return calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck, options);
     }
 
-    const results = slots.map(function(slot) {
-        const slotNeeds = TiageState.get('flatNeeds.ich.' + slot) || {};
-        const slotPerson1 = Object.assign({}, person1, { archetyp: slot, needs: slotNeeds });
-        const logosCheck = window.calculatePhilosophyCompatibility(slot, person2.archetyp);
-        return calculateOverallWithModifiers(slotPerson1, person2, pathosCheck, logosCheck, options);
-    });
-
-    const avgOverall = Math.round(
-        results.reduce(function(sum, r) { return sum + (r.overall || 0); }, 0) / results.length * 10
-    ) / 10;
-
-    const avgCategories = {};
-    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(function(cat) {
-        const scores = results.map(function(r) {
-            return (r.categories && r.categories[cat]) ? r.categories[cat].score : 0;
+    _multiSlotCalculating = true;
+    try {
+        // Suppress R-factor TiageState writes during iteration (prevents resonanzfaktoren-changed
+        // from firing updateComparisonView while _updateComparisonViewScheduled is still true).
+        // R-factors are kept current via the flatNeeds.ich subscriber in ResonanzCard.js.
+        const suppressOptions = Object.assign({}, options || {}, {
+            rFaktoren: (options && options.rFaktoren) || { _multiSlot: true }
         });
-        const avg = Math.round(scores.reduce(function(a, b) { return a + b; }, 0) / results.length);
-        avgCategories[cat] = Object.assign({}, results[0].categories[cat], { score: avg });
-    });
 
-    return {
-        overall: avgOverall,
-        categories: avgCategories,
-        breakdown: results[0].breakdown,
-        multiSlot: true,
-        slotCount: slots.length,
-        slotScores: results.map(function(r, i) { return { slot: slots[i], score: r.overall || 0 }; })
-    };
+        const ichSlotList = hasMultiIch ? ichSlots : [person1.archetyp];
+        const partnerSlotList = hasMultiPartner ? partnerSlots : [person2.archetyp];
+
+        // Secondary ICH slots fall back to primary needs to silence "Keine Bedürfnisse" warnings
+        const primaryIchNeeds = TiageState.get('flatNeeds.ich.' + ichSlotList[0]) || {};
+        const partnerBaseNeeds = typeof TiageState.getFlatNeeds === 'function'
+            ? TiageState.getFlatNeeds('partner') : null;
+
+        // Cartesian product: all (ICH slot × Partner slot) combinations, averaged
+        const results = [];
+        ichSlotList.forEach(function(ichSlot) {
+            const ichNeeds = TiageState.get('flatNeeds.ich.' + ichSlot) || primaryIchNeeds;
+            const slotPerson1 = Object.assign({}, person1, { archetyp: ichSlot, needs: ichNeeds });
+            partnerSlotList.forEach(function(partnerSlot) {
+                const slotPerson2 = Object.assign({}, person2, { archetyp: partnerSlot, needs: partnerBaseNeeds });
+                const logosCheck = window.calculatePhilosophyCompatibility(ichSlot, partnerSlot);
+                results.push(calculateOverallWithModifiers(slotPerson1, slotPerson2, pathosCheck, logosCheck, suppressOptions));
+            });
+        });
+
+        const avgOverall = Math.round(
+            results.reduce(function(sum, r) { return sum + (r.overall || 0); }, 0) / results.length * 10
+        ) / 10;
+
+        const avgCategories = {};
+        ['A', 'B', 'C', 'D', 'E', 'F'].forEach(function(cat) {
+            const scores = results.map(function(r) {
+                return (r.categories && r.categories[cat]) ? r.categories[cat].score : 0;
+            });
+            const avg = Math.round(scores.reduce(function(a, b) { return a + b; }, 0) / results.length);
+            avgCategories[cat] = Object.assign({}, results[0].categories[cat], { score: avg });
+        });
+
+        return {
+            overall: avgOverall,
+            categories: avgCategories,
+            breakdown: results[0].breakdown,
+            multiSlot: true,
+            slotCount: results.length,
+            slotScores: results.map(function(r) { return { score: r.overall || 0 }; })
+        };
+    } finally {
+        _multiSlotCalculating = false;
+    }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

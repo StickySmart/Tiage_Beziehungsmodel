@@ -404,12 +404,13 @@ function resetPartnerGOD() {
     });
 
     // Reset new multi-select status toggle buttons (mobile partner UI)
+    // active-gelebt / active-interessiert are the real classes used — not just 'active'
     document.querySelectorAll('.status-toggle-btn[data-person="partner"]').forEach(function(btn) {
-        btn.classList.remove('active');
+        btn.classList.remove('active', 'active-gelebt', 'active-interessiert', 'active-primaer', 'active-sekundaer');
     });
-    // Reset orientierung/dominanz row active states
+    // Reset orientierung/dominanz row active states — rows use has-primary/has-secondary
     document.querySelectorAll('#mobilePartnerDimensions .orientierung-option-row, #mobilePartnerDimensions .dominanz-option-row').forEach(function(row) {
-        row.classList.remove('active');
+        row.classList.remove('active', 'has-primary', 'has-secondary');
     });
 
     // Reset orientierungStatus + dominanzStatus in all state objects

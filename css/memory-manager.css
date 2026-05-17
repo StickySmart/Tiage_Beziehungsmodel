@@ -1381,4 +1381,82 @@
     #tiageSyntheseArchetypeContext {
         display: none !important;
     }
+
+    /* Floating action bar: desktop only */
+    #desktopFloatingBar {
+        display: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOATING ACTION BAR (Desktop only, right side)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.fab-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 68px;
+    height: 68px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--card-bg, #1e2a3a);
+    color: var(--text-primary, #eee);
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateX(40px);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.15s ease;
+}
+
+.fab-btn.fab-active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.fab-btn:hover {
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+    transform: translateX(-3px);
+}
+
+.fab-btn.fab-active:hover {
+    transform: translateX(-3px) scale(1.06);
+}
+
+.fab-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.fab-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-secondary, #aaa);
+    line-height: 1;
+}
+
+.fab-match {
+    border-color: rgba(69, 123, 157, 0.35);
+}
+
+.fab-match.fab-active {
+    border-color: rgba(69, 123, 157, 0.6);
+    background: linear-gradient(135deg, var(--card-bg, #1e2a3a), rgba(69, 123, 157, 0.15));
+}
+
+.fab-synthese {
+    border-color: rgba(255, 200, 0, 0.25);
+}
+
+.fab-synthese.fab-active {
+    border-color: rgba(255, 200, 0, 0.5);
+    background: linear-gradient(135deg, var(--card-bg, #1e2a3a), rgba(255, 200, 0, 0.08));
 }

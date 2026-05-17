@@ -112,7 +112,9 @@ function _isPersonComplete(arch, dims) {
     var g = dims.geschlecht;
     var gOk = !!(g && (typeof g === 'string' ? g : g.primary));
     var dOk = !!(dims.dominanz && (dims.dominanz.primary || typeof dims.dominanz === 'string'));
-    var oOk = !!(dims.orientierung && (dims.orientierung.primary || typeof dims.orientierung === 'string'));
+    var ori = dims.orientierung;
+    // orientierung can be array (v4.0 multi-select) or {primary} object or string
+    var oOk = !!(ori && (Array.isArray(ori) ? ori.length > 0 : (ori.primary || typeof ori === 'string')));
     return gOk && dOk && oOk;
 }
 
@@ -177,7 +179,7 @@ function updateReadinessUI() {
     }
 
     // ── DESKTOP ──────────────────────────────────────────────────────────────
-    // Lightbulb: nur wenn PARTNER vollständig
+    // Center-column lightbulb: keep dimmed/enabled as secondary access
     var desktopLightbulb = document.querySelector('.lightbulb-button:not(.mobile-lightbulb-button)');
     if (desktopLightbulb) {
         desktopLightbulb.style.opacity = partnerComplete ? '1' : '0.35';
@@ -187,7 +189,7 @@ function updateReadinessUI() {
             : 'Partner-Profil muss vollständig sein (Geschlecht, Orientierung, Dominanz)';
     }
 
-    // Best Match Btn (Desktop): nur wenn ICH vollständig
+    // Center-column Best Match: keep dimmed/enabled as secondary access
     var desktopBestMatch = document.querySelector('.best-match-btn.slot-machine-center-btn');
     if (desktopBestMatch) {
         desktopBestMatch.style.opacity = ichComplete ? '1' : '0.35';
@@ -195,6 +197,23 @@ function updateReadinessUI() {
         desktopBestMatch.title = ichComplete
             ? 'Finde den besten Partner – testet alle 864 Kombinationen'
             : 'Dein Profil muss vollständig sein (Geschlecht, Orientierung, Dominanz)';
+    }
+
+    // ── FLOATING ACTION BAR (Desktop only) ──────────────────────────────────
+    // Best Match FAB: erscheint wenn ICH vollständig
+    // Synthese FAB: erscheint wenn PARTNER vollständig
+    var fabBestMatch = document.getElementById('floatBestMatch');
+    var fabSynthese  = document.getElementById('floatSynthese');
+    var fabBar       = document.getElementById('desktopFloatingBar');
+
+    if (fabBestMatch) {
+        fabBestMatch.classList.toggle('fab-active', ichComplete);
+    }
+    if (fabSynthese) {
+        fabSynthese.classList.toggle('fab-active', partnerComplete);
+    }
+    if (fabBar) {
+        fabBar.style.pointerEvents = (ichComplete || partnerComplete) ? 'auto' : 'none';
     }
 }
 window.updateReadinessUI = updateReadinessUI;

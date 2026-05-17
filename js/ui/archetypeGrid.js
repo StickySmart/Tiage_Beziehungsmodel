@@ -237,7 +237,12 @@
         const ichEl = document.getElementById('mobileResultIch3');
         const partnerEl = document.getElementById('mobileResultPartner3');
 
-        if (ichEl) ichEl.textContent = ichArch?.name || window.getIchArchetype();
+        if (ichEl) {
+            const _slots3 = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : null;
+            ichEl.textContent = (_slots3 && _slots3.length > 1)
+                ? _slots3.map(function(s) { return window.tiageData?.archetypes?.[s]?.name || s; }).join(' · ')
+                : (ichArch?.name || window.getIchArchetype());
+        }
         if (partnerEl) partnerEl.textContent = partnerArch?.name || window.getPartnerArchetype();
     }
 

@@ -404,10 +404,12 @@ const MemoryManagerV2 = (function() {
 
         // Eigenschaft toggle states for the primary ICH slot (compact — a few booleans)
         const primaryArch = archetyp || 'single';
+        const ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+            ? TiageState.getIchSlots() : null;
+        const allSlots = ichSlots && ichSlots.length > 0 ? ichSlots : [primaryArch];
         const eigenschaftenStates = {};
         if (typeof TiageState !== 'undefined') {
-            const slots = (TiageState.getIchSlots ? TiageState.getIchSlots() : null) || [primaryArch];
-            slots.forEach(function(slot) {
+            allSlots.forEach(function(slot) {
                 const states = TiageState.get(`eigenschaften.ich.${slot}`);
                 if (states && Object.keys(states).length > 0) {
                     eigenschaftenStates[slot] = states;
@@ -415,7 +417,8 @@ const MemoryManagerV2 = (function() {
             });
         }
 
-        const payload = { a: archetyp, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds, e: eigenschaftenStates };
+        // s = all active ICH slots (multi-slot support); a = primary for backward compat
+        const payload = { a: archetyp, s: allSlots.length > 1 ? allSlots : undefined, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds, e: eigenschaftenStates };
         return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     }
 
@@ -424,18 +427,7 @@ const MemoryManagerV2 = (function() {
         const base = window.location.origin + window.location.pathname;
         const shareUrl = base + '?du=' + encodeURIComponent(token);
 
-        // Try to shorten via is.gd (CORS-enabled, no API key needed)
-        let finalUrl = shareUrl;
-        try {
-            const resp = await Promise.race([
-                fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(shareUrl)),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
-            ]);
-            if (resp.ok) {
-                const short = (await resp.text()).trim();
-                if (short.startsWith('http')) finalUrl = short;
-            }
-        } catch (e) { /* use full URL as fallback */ }
+        const finalUrl = shareUrl;
 
         // Always copy to clipboard
         if (navigator.clipboard) {
@@ -479,6 +471,12 @@ const MemoryManagerV2 = (function() {
 
         if (typeof TiageState !== 'undefined') {
             TiageState.setArchetype('partner', payload.a);
+            // Multi-slot: wenn Sender mehrere ICH-Archetypen hatte, als Partner-Slots speichern
+            if (payload.s && payload.s.length > 1 && TiageState.setPartnerSlots) {
+                TiageState.setPartnerSlots(payload.s);
+            } else if (TiageState.setPartnerSlots) {
+                TiageState.setPartnerSlots([payload.a]);
+            }
             if (payload.g) TiageState.set('personDimensions.partner.geschlecht', payload.g);
             if (payload.d) TiageState.set('personDimensions.partner.dominanz', payload.d);
             if (payload.o) TiageState.set('personDimensions.partner.orientierung', payload.o);
@@ -533,7 +531,9 @@ const MemoryManagerV2 = (function() {
 
         window.history.replaceState(null, '', window.location.pathname + window.location.hash);
 
-        const label = ARCHETYPE_LABELS[payload.a] || payload.a;
+        const label = (payload.s && payload.s.length > 1)
+            ? payload.s.map(function(s) { return ARCHETYPE_LABELS[s] || s; }).join(' · ')
+            : (ARCHETYPE_LABELS[payload.a] || payload.a);
         if (typeof TiageToast !== 'undefined') {
             TiageToast.success('Partner-Profil importiert: ' + label + ' ✓');
         }

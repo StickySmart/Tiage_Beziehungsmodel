@@ -820,6 +820,10 @@ const TiageState = (function() {
                 slots[0] = archetype;
                 this.set('archetypes.ich.slots', slots);
             }
+            // Manual partner change resets multi-slots to single (clears share-imported slots)
+            if (person === 'partner') {
+                this.set('archetypes.partner.slots', [archetype, null, null, null]);
+            }
         },
 
         /**
@@ -883,6 +887,21 @@ const TiageState = (function() {
         getIchSlots() {
             const slots = this.get('archetypes.ich.slots') || [null, null, null, null];
             return slots.filter(s => s !== null);
+        },
+
+        /** Gibt alle aktiven PARTNER-Slots zurück (ohne null). Nur via Share-Import befüllbar. */
+        getPartnerSlots() {
+            const slots = this.get('archetypes.partner.slots') || [null, null, null, null];
+            return slots.filter(s => s !== null);
+        },
+
+        /** Setzt PARTNER-Slots (nur via Share-Import). slots[0] wird automatisch primary. */
+        setPartnerSlots(slotsArray) {
+            const padded = [null, null, null, null];
+            slotsArray.forEach((s, i) => { if (i < 4) padded[i] = s; });
+            this.set('archetypes.partner.slots', padded);
+            this.set('archetypes.partner.primary', padded[0]);
+            this.set('archetypes.partner.secondary', padded[1] || null);
         },
 
         /**
