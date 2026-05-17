@@ -5093,7 +5093,9 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
-            margin: 16px 0;
+            margin: 16px auto;
+            max-width: 600px;
+            text-align: center;
         }
 
         .gfk-matching-header {
@@ -5134,6 +5136,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+            justify-content: center;
         }
 
         .gfk-tag {
