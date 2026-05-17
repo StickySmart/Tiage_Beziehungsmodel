@@ -654,13 +654,12 @@ function calculateRelationshipQuality(person1, person2, options) {
     // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
     // wobei wX die normalisierte Gewichtung ist
 
-    // Gewichte aus TiageState laden (SSOT) - Format: 0/1/2/3
+    // Gewichte laden — SSOT: TiageState.getGewichtungen('ich') Format: 0/1/2/3
     let gew = { O: 1, A: 1, D: 1, G: 1 };
     try {
-        if (typeof TiageState !== 'undefined') {
-            const stored = TiageState.get('paarung.gewichtungen');
-            // Format: { O: 1, A: 3, D: 0, G: 1 }
-            if (stored && typeof stored.O === 'number' && stored.O >= 0 && stored.O <= 3) {
+        if (typeof TiageState !== 'undefined' && TiageState.getGewichtungen) {
+            const stored = TiageState.getGewichtungen('ich');
+            if (stored && typeof stored.O === 'number' && stored.O >= 0) {
                 gew = {
                     O: stored.O ?? 1,
                     A: stored.A ?? 1,
@@ -668,19 +667,14 @@ function calculateRelationshipQuality(person1, person2, options) {
                     G: stored.G ?? 1
                 };
             }
-            // Legacy Format Migration: { O: { value: 25, locked: false }, ... }
-            else if (stored && stored.O && typeof stored.O === 'object' && 'value' in stored.O) {
-                gew = {
-                    O: stored.O.value <= 10 ? 0 : (stored.O.value >= 40 ? 2 : 1),
-                    A: stored.A.value <= 10 ? 0 : (stored.A.value >= 40 ? 2 : 1),
-                    D: stored.D.value <= 10 ? 0 : (stored.D.value >= 40 ? 2 : 1),
-                    G: stored.G.value <= 10 ? 0 : (stored.G.value >= 40 ? 2 : 1)
-                };
-            }
         }
-        // Fallback: agodWeights global
-        if (typeof agodWeights !== 'undefined') {
-            gew = { ...agodWeights };
+        // Fallback: live module state (window.getAgodWeights)
+        if (gew.O === 1 && gew.A === 1 && gew.D === 1 && gew.G === 1 &&
+            typeof window.getAgodWeights === 'function') {
+            const fromModule = window.getAgodWeights();
+            if (fromModule && typeof fromModule.O === 'number') {
+                gew = fromModule;
+            }
         }
     } catch (e) {
         console.warn('[calculateRelationshipQuality] Fehler beim Laden der Gewichte:', e);

@@ -1148,15 +1148,14 @@ const TiageState = (function() {
         _normalizeGewichtungen(gewichtungen) {
             if (!gewichtungen) return gewichtungen;
 
-            // Check if person data is in NEW 3-way format (values are 0, 1, or 2)
+            // Check if person data is in modern format (values are 0-3, no summeLock)
             const isNew3WayFormat = (person) => {
                 if (!person) return false;
-                // If O is a number between 0-2 AND no 'value' property, it's the new format
-                if (typeof person.O === 'number' && person.O >= 0 && person.O <= 2 &&
-                    typeof person.A === 'number' && person.A >= 0 && person.A <= 2 &&
-                    typeof person.D === 'number' && person.D >= 0 && person.D <= 2 &&
-                    typeof person.G === 'number' && person.G >= 0 && person.G <= 2 &&
-                    !person.summeLock) {  // Old format always has summeLock
+                if (typeof person.O === 'number' && person.O >= 0 && person.O <= 3 &&
+                    typeof person.A === 'number' && person.A >= 0 && person.A <= 3 &&
+                    typeof person.D === 'number' && person.D >= 0 && person.D <= 3 &&
+                    typeof person.G === 'number' && person.G >= 0 && person.G <= 3 &&
+                    !person.summeLock) {
                     return true;
                 }
                 return false;
