@@ -848,6 +848,75 @@ function getModifierSummary(person1, person2) {
 
 
 // ═══════════════════════════════════════════════════════════════════════════
+// MULTI-SLOT BERECHNUNG: Durchschnitt über alle aktiven ICH-Archetypen
+// ═══════════════════════════════════════════════════════════════════════════
+
+function calculateMultiSlotQuality(person1, person2, options) {
+    const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+        ? TiageState.getIchSlots() : null;
+
+    if (!slots || slots.length <= 1) {
+        return calculateRelationshipQuality(person1, person2, options);
+    }
+
+    const results = slots.map(function(slot) {
+        const slotNeeds = TiageState.get('flatNeeds.ich.' + slot) || {};
+        const slotPerson1 = Object.assign({}, person1, { archetyp: slot, needs: slotNeeds });
+        return calculateRelationshipQuality(slotPerson1, person2, options);
+    });
+
+    const valid = results.filter(function(r) { return !r.incomplete && !r.blocked; });
+    if (valid.length === 0) return results[0];
+
+    const avgScore = valid.reduce(function(sum, r) { return sum + (r.score || 0); }, 0) / valid.length;
+
+    return Object.assign({}, results[0], {
+        score: Math.round(avgScore * 10) / 10,
+        multiSlot: true,
+        slotScores: results.map(function(r, i) { return { slot: slots[i], score: r.score || 0 }; })
+    });
+}
+
+function calculateMultiSlotOverall(person1, person2, pathosCheck, options) {
+    const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+        ? TiageState.getIchSlots() : null;
+
+    if (!slots || slots.length <= 1) {
+        const logosCheck = window.calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
+        return calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck, options);
+    }
+
+    const results = slots.map(function(slot) {
+        const slotNeeds = TiageState.get('flatNeeds.ich.' + slot) || {};
+        const slotPerson1 = Object.assign({}, person1, { archetyp: slot, needs: slotNeeds });
+        const logosCheck = window.calculatePhilosophyCompatibility(slot, person2.archetyp);
+        return calculateOverallWithModifiers(slotPerson1, person2, pathosCheck, logosCheck, options);
+    });
+
+    const avgOverall = Math.round(
+        results.reduce(function(sum, r) { return sum + (r.overall || 0); }, 0) / results.length * 10
+    ) / 10;
+
+    const avgCategories = {};
+    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(function(cat) {
+        const scores = results.map(function(r) {
+            return (r.categories && r.categories[cat]) ? r.categories[cat].score : 0;
+        });
+        const avg = Math.round(scores.reduce(function(a, b) { return a + b; }, 0) / results.length);
+        avgCategories[cat] = Object.assign({}, results[0].categories[cat], { score: avg });
+    });
+
+    return {
+        overall: avgOverall,
+        categories: avgCategories,
+        breakdown: results[0].breakdown,
+        multiSlot: true,
+        slotCount: slots.length,
+        slotScores: results.map(function(r, i) { return { slot: slots[i], score: r.overall || 0 }; })
+    };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // EXPORTS
 // ═══════════════════════════════════════════════════════════════════════════
 window.getProfileFromStore            = getProfileFromStore;
@@ -860,6 +929,8 @@ window.calculateGfkFactor             = calculateGfkFactor;
 window.calculateRFactorsFromNeeds     = calculateRFactorsFromNeeds;
 window.calculateRelationshipQuality   = calculateRelationshipQuality;
 window.calculateOverallWithModifiers  = calculateOverallWithModifiers;
+window.calculateMultiSlotQuality      = calculateMultiSlotQuality;
+window.calculateMultiSlotOverall      = calculateMultiSlotOverall;
 window.getModifierSummary             = getModifierSummary;
 
 })(); // end CalculationEngine IIFE

@@ -59,7 +59,7 @@ function updateMobileResultPage() {
 
     const qualityResult = isIncomplete ?
         { score: 0, blocked: false, incomplete: true, breakdown: { archetyp: 0, dominanz: 0, orientierung: 0, geschlecht: 0 } } :
-        window.calculateRelationshipQuality(person1, person2);
+        window.calculateMultiSlotQuality(person1, person2);
 
     // Update score circle
     const scoreCircle = document.getElementById('mobileScoreCircle');
@@ -225,9 +225,7 @@ function updateMobileCategoriesPage() {
     const person2 = { archetyp: window.getPartnerArchetype(), ...window.personDimensions.partner, needs: partnerNeeds };
 
     const pathosCheck = window.checkPhysicalCompatibility(person1, person2);
-    const logosCheck = window.calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
-    // SSOT v3.10: R-Faktoren aus person.needs
-    const result = window.calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+    const result = window.calculateMultiSlotOverall(person1, person2, pathosCheck);
 
     const categoryNamesMap = {
         A: 'Beziehungsphilosophie',
@@ -531,6 +529,19 @@ function initBrowserHistoryNavigation() {
         }
     }
 }
+
+    // ── Subscriber: Eigenschaften-Änderungen lösen Neu-Berechnung aus ────────
+    if (typeof TiageState !== 'undefined') {
+        var _mobileRecalcTimer = null;
+        TiageState.subscribe('flatNeeds.ich', function() {
+            clearTimeout(_mobileRecalcTimer);
+            _mobileRecalcTimer = setTimeout(function() {
+                if (typeof window.updateMobileResultPage === 'function') window.updateMobileResultPage();
+                if (typeof window.updateMobileCategoriesPage === 'function') window.updateMobileCategoriesPage();
+                if (typeof window.updateSyntheseScoreCycle === 'function') window.updateSyntheseScoreCycle();
+            }, 150);
+        });
+    }
 
     // ── Exports ─────────────────────────────────────────────────────────────
     window.updateMobileResultPage = updateMobileResultPage;
