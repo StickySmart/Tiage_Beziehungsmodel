@@ -373,9 +373,10 @@ function resetPartnerGOD() {
     if (partnerSelect) partnerSelect.selectedIndex = 0;
     if (mobilePartnerSelect) mobilePartnerSelect.selectedIndex = 0;
 
-    // Clear summaries
+    // Clear summaries (incl. GFK)
     ['partner-geschlecht-summary', 'partner-orientierung-summary', 'partner-dominanz-summary',
-     'mobile-partner-geschlecht-summary', 'mobile-partner-orientierung-summary', 'mobile-partner-dominanz-summary'].forEach(id => {
+     'mobile-partner-geschlecht-summary', 'mobile-partner-orientierung-summary', 'mobile-partner-dominanz-summary',
+     'mobile-partner-gfk-summary', 'partner-gfk-summary'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.innerHTML = '';
     });
@@ -387,8 +388,18 @@ function resetPartnerGOD() {
         if (el) el.innerHTML = '';
     });
 
-    // Add needs-selection class back
-    document.querySelectorAll('[data-dimension*="partner-geschlecht"], [data-dimension*="partner-orientierung"], [data-dimension*="partner-dominanz"]').forEach(el => {
+    // Hide secondary Geschlecht rows (shown only after primary gender selected)
+    ['partner-geschlecht-s-row', 'mobile-partner-geschlecht-s-row'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // Clear profile status badge
+    const partnerStatusBadge = document.getElementById('mobile-partner-profile-status');
+    if (partnerStatusBadge) partnerStatusBadge.textContent = '';
+
+    // Add needs-selection class back (incl. GFK)
+    document.querySelectorAll('[data-dimension*="partner-geschlecht"], [data-dimension*="partner-orientierung"], [data-dimension*="partner-dominanz"], [data-dimension*="partner-gfk"]').forEach(el => {
         el.classList.add('needs-selection');
     });
 
