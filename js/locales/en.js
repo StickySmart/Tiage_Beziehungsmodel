@@ -1525,7 +1525,7 @@ var TiageLocale_EN = {
     center: {
         resonanzHeading: 'Resonance Factors',
         gewichtungHeading: 'Weighting',
-        gewichtungDesc: '0 = Ignore · 1 = Normal · 2 = Important · 3 = Dominant',
+        gewichtungDesc: '0 = Ignore · 1 = Relevant · 2 = Important · 3 = Decisive',
         agodLabels: {
             A: 'ARCHETYPE',
             G: 'GENDER',

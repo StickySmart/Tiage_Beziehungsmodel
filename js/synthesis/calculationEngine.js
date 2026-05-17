@@ -693,15 +693,16 @@ function calculateRelationshipQuality(person1, person2, options) {
     const wD = eD / gewDivisor;
     const wG = eG / gewDivisor;
 
-    const scoreO = orientationScore * wO * R1;
-    const scoreA = archetypeScore * wA * R2;
-    const scoreD = dominanceScore * wD * R3;
-    const scoreG = genderScore * wG * R4;
+    // AGOD-Gewichte bestimmen den Kompatibilitäts-Mix (reine Zahlenperspektive)
+    // R-Faktoren wirken als globaler Qualitätsmultiplikator (nicht per Dimension)
+    // → D=3 bei dominanz+submissiv=100 ergibt gleiches/höheres Ergebnis als D=1
+    const rawCompatibility = orientationScore * wO + archetypeScore * wA + dominanceScore * wD + genderScore * wG;
+    const meanR = (R1 + R2 + R3 + R4) / 4;
 
-    let totalScore = scoreO + scoreA + scoreD + scoreG;
+    let totalScore = rawCompatibility * meanR;
 
     // GFK-Kompetenz = Durchschnitt R1-R4
-    const GFK = (R1 + R2 + R3 + R4) / 4;
+    const GFK = meanR;
 
     // ═══════════════════════════════════════
     // RESONANZ-VERSTÄRKUNG (v1.8.836)
