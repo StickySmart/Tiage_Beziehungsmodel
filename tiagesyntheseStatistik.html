@@ -593,7 +593,7 @@
             <div class="archetype-selector">
                 <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
                 <div class="archetype-info">
-                    <div class="archetype-label ich" data-i18n="synthese.labelIch">ICH</div>
+                    <div class="archetype-label ich" data-i18n="synthese.labelDu">DU</div>
                     <div class="archetype-name" id="ichArchetypeName">-</div>
                 </div>
                 <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
@@ -872,7 +872,7 @@
                     <!-- Sort Buttons -->
                     <div class="sort-buttons">
                         <button class="sort-btn ${currentSortBy === 'ich' ? 'active' : ''}" onclick="sortBy('ich')">
-                            ${t('synthese.labelIch', 'ICH')} ${currentSortBy === 'ich' ? (currentSortDir === 'desc' ? '↓' : '↑') : ''}
+                            ${t('synthese.labelDu', 'DU')} ${currentSortBy === 'ich' ? (currentSortDir === 'desc' ? '↓' : '↑') : ''}
                         </button>
                         <button class="sort-btn ${currentSortBy === 'diff' ? 'active' : ''}" onclick="sortBy('diff')">
                             ${t('synthese.differenz', 'Differenz')} ${currentSortBy === 'diff' ? (currentSortDir === 'desc' ? '↓' : '↑') : ''}

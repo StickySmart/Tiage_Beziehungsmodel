@@ -76,8 +76,28 @@ var SynthesePageShared = (function() {
     function updateArchetypeDisplay() {
         var ichEl = document.getElementById('ichArchetypeName');
         var partnerEl = document.getElementById('partnerArchetypeName');
-        if (ichEl) ichEl.textContent = archetypeNames[currentIchArchetype] || currentIchArchetype;
-        if (partnerEl) partnerEl.textContent = hasPartner ? (archetypeNames[currentPartnerArchetype] || currentPartnerArchetype) : '-';
+
+        if (ichEl) {
+            var ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : null;
+            if (ichSlots && ichSlots.length > 1) {
+                ichEl.textContent = ichSlots.map(function(s) { return archetypeNames[s] || s; }).join(' · ');
+            } else {
+                ichEl.textContent = archetypeNames[currentIchArchetype] || currentIchArchetype;
+            }
+        }
+
+        if (partnerEl) {
+            if (!hasPartner) {
+                partnerEl.textContent = '-';
+            } else {
+                var partnerSlots = (typeof TiageState !== 'undefined' && TiageState.getPartnerSlots) ? TiageState.getPartnerSlots() : null;
+                if (partnerSlots && partnerSlots.length > 1) {
+                    partnerEl.textContent = partnerSlots.map(function(s) { return archetypeNames[s] || s; }).join(' · ');
+                } else {
+                    partnerEl.textContent = archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+                }
+            }
+        }
     }
 
     function updatePartnerNavVisibility() {
@@ -158,8 +178,8 @@ var SynthesePageShared = (function() {
         var ichLabel = document.querySelector('.archetype-label.ich');
         var partnerLabel = document.querySelector('.archetype-label.partner');
         if (ichLabel) {
-            ichLabel.textContent = t('synthese.labelIch', 'ICH');
-            ichLabel.setAttribute('data-i18n', 'synthese.labelIch');
+            ichLabel.textContent = t('synthese.labelDu', 'DU');
+            ichLabel.setAttribute('data-i18n', 'synthese.labelDu');
         }
         if (partnerLabel) {
             partnerLabel.textContent = t('synthese.labelPartner', 'PARTNER');
