@@ -281,35 +281,6 @@
 </head>
 <body>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         FLOATING BUY ME A COFFEE BANNER
-         Erscheint oben, wegklickbar, nach 4.2 Min. wieder sichtbar
-    ══════════════════════════════════════════════════════════════════ -->
-    <div id="bmcFloating" style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(10,10,20,0.88);backdrop-filter:blur(8px);padding:6px 16px;gap:12px;transform:translateY(0);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:0 2px 16px rgba(0,0,0,0.4);">
-        <a href="https://buymeacoffee.com/cwzfykm89b" target="_blank" rel="noopener" style="display:flex;align-items:center;text-decoration:none;opacity:0.92;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.92'">
-            <img src="assets/images/buymeacoffee.png" alt="Buy Me a Coffee" height="34" style="display:block;">
-        </a>
-        <button onclick="window._bmcHide()" aria-label="Schließen" style="background:none;border:none;color:rgba(255,255,255,0.45);font-size:18px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:4px;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">✕</button>
-    </div>
-
-    <script>
-    (function() {
-        var REAPPEAR_MS = (4 * 60 + 20) * 1000; // 4 Minuten 20 Sekunden
-        var el = document.getElementById('bmcFloating');
-        var timer = null;
-
-        window._bmcHide = function() {
-            el.style.transform = 'translateY(-110%)';
-            clearTimeout(timer);
-            timer = setTimeout(window._bmcShow, REAPPEAR_MS);
-        };
-
-        window._bmcShow = function() {
-            el.style.transform = 'translateY(0)';
-        };
-    })();
-    </script>
-
     <!-- Mobile Warnung: App ist für Desktop optimiert (Inline-Styles — resistent gegen CSS-Overrides) -->
     <div class="mobile-wip-blocker" id="mobileWipBlocker" style="display:none">
         <div class="emoji" style="font-size:4rem;margin-bottom:30px;line-height:1;">🖥️</div>
@@ -3045,5 +3016,40 @@
             <span class="fab-label">Synthese</span>
         </button>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FLOATING BUY ME A COFFEE — rechts, unter den FAB-Buttons
+         Wegklickbar, erscheint nach 4 Min. 20 Sek. wieder
+    ══════════════════════════════════════════════════════════════════ -->
+    <div id="bmcFab" style="position:fixed;right:20px;top:calc(50% + 90px);z-index:300;opacity:1;transform:translateX(0);transition:opacity 0.35s ease,transform 0.35s cubic-bezier(0.4,0,0.2,1);">
+        <div style="position:relative;display:inline-block;">
+            <a href="https://buymeacoffee.com/cwzfykm89b" target="_blank" rel="noopener" style="display:block;text-decoration:none;opacity:0.9;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
+                <img src="assets/images/buymeacoffee.png" alt="Buy Me a Coffee" width="90" style="display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
+            </a>
+            <button onclick="window._bmcHide()" aria-label="Schließen" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:rgba(30,30,40,0.95);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:10px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(80,40,40,0.95)'" onmouseout="this.style.color='rgba(255,255,255,0.6)';this.style.background='rgba(30,30,40,0.95)'">✕</button>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var REAPPEAR_MS = (4 * 60 + 20) * 1000; // 4 Minuten 20 Sekunden
+        var el = document.getElementById('bmcFab');
+        var timer = null;
+
+        window._bmcHide = function() {
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(60px)';
+            el.style.pointerEvents = 'none';
+            clearTimeout(timer);
+            timer = setTimeout(window._bmcShow, REAPPEAR_MS);
+        };
+
+        window._bmcShow = function() {
+            el.style.opacity = '1';
+            el.style.transform = 'translateX(0)';
+            el.style.pointerEvents = 'auto';
+        };
+    })();
+    </script>
 </body>
 </html>
