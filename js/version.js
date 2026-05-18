@@ -14,14 +14,14 @@ const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
     minor: 8,
-    patch: 1122,
+    patch: 1123,
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-05-18',
-    mergeTime: '06:35',
+    mergeTime: '06:38',
 
     // Git Commit-Anzahl
-    commitCount: 3162,
+    commitCount: 3163,
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
