@@ -280,6 +280,36 @@
     <script defer src="profiles/profile-store.js"></script>
 </head>
 <body>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FLOATING BUY ME A COFFEE BANNER
+         Erscheint oben, wegklickbar, nach 4.2 Min. wieder sichtbar
+    ══════════════════════════════════════════════════════════════════ -->
+    <div id="bmcFloating" style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(10,10,20,0.88);backdrop-filter:blur(8px);padding:6px 16px;gap:12px;transform:translateY(0);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:0 2px 16px rgba(0,0,0,0.4);">
+        <a href="https://buymeacoffee.com/cwzfykm89b" target="_blank" rel="noopener" style="display:flex;align-items:center;text-decoration:none;opacity:0.92;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.92'">
+            <img src="assets/images/buymeacoffee.png" alt="Buy Me a Coffee" height="34" style="display:block;">
+        </a>
+        <button onclick="window._bmcHide()" aria-label="Schließen" style="background:none;border:none;color:rgba(255,255,255,0.45);font-size:18px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:4px;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">✕</button>
+    </div>
+
+    <script>
+    (function() {
+        var REAPPEAR_MS = 4.2 * 60 * 1000; // 4 Minuten 12 Sekunden
+        var el = document.getElementById('bmcFloating');
+        var timer = null;
+
+        window._bmcHide = function() {
+            el.style.transform = 'translateY(-110%)';
+            clearTimeout(timer);
+            timer = setTimeout(window._bmcShow, REAPPEAR_MS);
+        };
+
+        window._bmcShow = function() {
+            el.style.transform = 'translateY(0)';
+        };
+    })();
+    </script>
+
     <!-- Mobile Warnung: App ist für Desktop optimiert (Inline-Styles — resistent gegen CSS-Overrides) -->
     <div class="mobile-wip-blocker" id="mobileWipBlocker" style="display:none">
         <div class="emoji" style="font-size:4rem;margin-bottom:30px;line-height:1;">🖥️</div>
