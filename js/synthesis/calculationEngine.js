@@ -687,11 +687,12 @@ function calculateRelationshipQuality(person1, person2, options) {
     const eD = gew.D * gew.D;
     const eG = gew.G * gew.G;
     const gewSum = eO + eA + eD + eG;
-    const gewDivisor = gewSum > 0 ? gewSum : 4;
-    const wO = eO / gewDivisor;
-    const wA = eA / gewDivisor;
-    const wD = eD / gewDivisor;
-    const wG = eG / gewDivisor;
+    // Wenn alle Gewichte 0 (alle auf Egal): Gleichgewichtung → selbes Ergebnis wie alle=1
+    const allZero = gewSum === 0;
+    const wO = allZero ? 0.25 : eO / gewSum;
+    const wA = allZero ? 0.25 : eA / gewSum;
+    const wD = allZero ? 0.25 : eD / gewSum;
+    const wG = allZero ? 0.25 : eG / gewSum;
 
     // AGOD-Gewichte bestimmen den Kompatibilitäts-Mix (reine Zahlenperspektive)
     // R-Faktoren wirken als globaler Qualitätsmultiplikator (nicht per Dimension)
