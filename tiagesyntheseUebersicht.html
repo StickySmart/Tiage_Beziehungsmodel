@@ -1130,6 +1130,72 @@
         }
 
         /**
+         * Berechnet Evolutionsstufen-HTML für die Übersicht
+         */
+        function generateStufenHTML(ichArchetype, partnerArchetype) {
+            if (typeof TiageSynthesis === 'undefined' ||
+                !TiageSynthesis.NeedsIntegration ||
+                !TiageSynthesis.NeedsIntegration._calculateStufeBreakdown) return '';
+
+            const ichNeeds = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
+            if (Object.keys(ichNeeds).length === 0) return '';
+
+            const ni = TiageSynthesis.NeedsIntegration;
+            const ichStufen = ni._calculateStufeBreakdown(ichNeeds, ichArchetype);
+            if (!ichStufen.enabled) return '';
+
+            let partnerStufen = null;
+            if (partnerArchetype) {
+                const partnerNeeds = (typeof TiageState !== 'undefined')
+                    ? (TiageState.get('flatNeeds.partner.' + partnerArchetype) || TiageState.get('flatNeeds.partner') || {})
+                    : {};
+                if (Object.keys(partnerNeeds).length > 0) {
+                    partnerStufen = ni._calculateStufeBreakdown(partnerNeeds, partnerArchetype);
+                    if (!partnerStufen.enabled) partnerStufen = null;
+                }
+            }
+
+            const stufenDefs = [
+                { key: 'S1', label: 'Fundament',    desc: 'Existenz · Sicherheit · Ruhe · Alltag',                   color: '#10B981' },
+                { key: 'S2', label: 'Entfaltung',   desc: 'Freiheit · Ausdruck · Kink · Kommunikation',              color: '#3B82F6' },
+                { key: 'S3', label: 'Verbundenheit',desc: 'Zuneigung · Intimität · Werte · Soziales',                 color: '#8B5CF6' },
+                { key: 'S4', label: 'Sinn',         desc: 'Verständnis · Identität · Lebensplanung · Spiritualität',  color: '#F59E0B' }
+            ];
+
+            const items = stufenDefs.map(s => {
+                const ichVal = ichStufen[s.key] || 1.0;
+                const val = partnerStufen ? combineRFactors(ichVal, partnerStufen[s.key] || 1.0) : ichVal;
+                const pct = Math.round(val * 100);
+                const barWidth = Math.min(100, Math.max(0, pct));
+                return `<div style="padding:8px 10px;background:rgba(20,20,30,0.5);border-radius:7px;border-left:3px solid ${s.color};">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                        <span style="font-size:12px;font-weight:600;color:${s.color};">${s.label}</span>
+                        <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">${pct}%</span>
+                    </div>
+                    <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px;">
+                        <div style="height:100%;width:${barWidth}%;background:${s.color};border-radius:2px;opacity:0.8;"></div>
+                    </div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:3px;">${s.desc}</div>
+                </div>`;
+            }).join('');
+
+            const subtitle = partnerStufen ? 'ICH × PARTNER — Resonanz nach Entwicklungsstufen' : 'ICH — Resonanz nach Entwicklungsstufen';
+            return `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">🧬</span>
+                        <div>
+                            <div class="synthese-section-title">Evolutionäre Bedürfnisstärke</div>
+                            <div class="synthese-section-subtitle">${subtitle}</div>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+                        ${items}
+                    </div>
+                </div>`;
+        }
+
+        /**
          * Rendert den Hauptinhalt — wartet auf async BeduerfnisIds.load()
          */
         function renderContent() {
@@ -1154,8 +1220,9 @@
                 const names = SynthesePageShared.archetypeNames;
                 const label = names[state.ichArchetype] || state.ichArchetype;
 
-                container.innerHTML = `
-                    <div class="synthese-section">
+                container.innerHTML =
+                    generateStufenHTML(state.ichArchetype, state.partnerArchetype) +
+                    `<div class="synthese-section">
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">🎯</span>
                             <div>
