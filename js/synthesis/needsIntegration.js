@@ -697,6 +697,7 @@ TiageSynthesis.NeedsIntegration = {
             philosophie: this._calculateSingleResonanceV35(needs, 'R2', archetyp),
             dynamik: this._calculateSingleResonanceV35(needs, 'R3', archetyp),
             identitaet: this._calculateSingleResonanceV35(needs, 'R4', archetyp),
+            stufen: this._calculateStufeBreakdown(needs, archetyp),
             enabled: true,
             archetyp: archetyp
         };
@@ -751,7 +752,9 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0; // Neutral wenn keine Daten
         }
 
+        var katalog = this.getBeduerfnisKatalog();
         var totalMatch = 0;
+        var totalWeight = 0;
         var count = 0;
         var debugMatches = [];
 
@@ -769,7 +772,13 @@ TiageSynthesis.NeedsIntegration = {
                     // War /100, jetzt /50 für doppelte Sensitivität
                     var abweichung = (actualValue - expectedValue) / 50;
                     var match = 1 + abweichung;
-                    totalMatch += match;
+                    // Stage weighting: foundational needs (Stufe 1) carry more weight
+                    var bedEntry = katalog && katalog.beduerfnisse ? katalog.beduerfnisse[needId] : null;
+                    var kategorie = bedEntry ? bedEntry.kategorie : null;
+                    var stage = kategorie ? (self.STUFEN_MAP[kategorie] || 2) : 2;
+                    var stageWeight = self.STUFEN_WEIGHTS[stage] || 1.0;
+                    totalMatch += match * stageWeight;
+                    totalWeight += stageWeight;
                     count++;
 
                     // Richtung bestimmen
@@ -796,7 +805,7 @@ TiageSynthesis.NeedsIntegration = {
 
         // v4.0: R = avgMatch^2.5 (erhöhte Potenz für stärkere Variation)
         // War avgMatch², jetzt avgMatch^2.5 für mehr Einfluss
-        var avgMatch = totalMatch / count;
+        var avgMatch = totalMatch / totalWeight;
         var rValue = Math.pow(avgMatch, 2.5);
 
         // DEBUG disabled - was causing infinite console messages
@@ -810,6 +819,57 @@ TiageSynthesis.NeedsIntegration = {
         // });
 
         return Math.round(rValue * 1000) / 1000;
+    },
+
+    /**
+     * Berechnet Resonanz-Qualität pro Evolutionsstufe (S1-S4)
+     *
+     * Iteriert alle Katalog-Bedürfnisse, mappt jedes via STUFEN_MAP auf eine Stufe,
+     * und berechnet wie gut die tatsächlichen Werte mit den Archetyp-Erwartungen
+     * für diese Stufe übereinstimmen.
+     *
+     * @param {Object} needs - Tatsächliche Bedürfniswerte der Person
+     * @param {string} archetyp - Archetyp-Key (z.B. "single", "duo")
+     * @returns {Object} { S1, S2, S3, S4, enabled } — Werte 0-1
+     * @private
+     */
+    _calculateStufeBreakdown: function(needs, archetyp) {
+        var katalog = this.getBeduerfnisKatalog();
+        if (!katalog || !katalog.beduerfnisse) {
+            return { S1: 1.0, S2: 1.0, S3: 1.0, S4: 1.0, enabled: false };
+        }
+
+        var stufeSums = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        var stufeCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        var beduerfnisse = katalog.beduerfnisse;
+
+        for (var needId in beduerfnisse) {
+            if (!beduerfnisse.hasOwnProperty(needId)) continue;
+            var bed = beduerfnisse[needId];
+            if (!bed.kohaerenz || !bed.kohaerenz.typischeWerte) continue;
+
+            var expectedValue = bed.kohaerenz.typischeWerte[archetyp];
+            if (expectedValue === undefined) continue;
+
+            var actualValue = this._getNeedValue(needs, needId, bed.label);
+            if (actualValue === undefined) continue;
+
+            var stage = this.STUFEN_MAP[bed.kategorie] || 2;
+            var abweichung = (actualValue - expectedValue) / 50;
+            stufeSums[stage] += 1 + abweichung;
+            stufeCounts[stage]++;
+        }
+
+        var result = { enabled: true };
+        for (var s = 1; s <= 4; s++) {
+            if (stufeCounts[s] > 0) {
+                var avgMatch = stufeSums[s] / stufeCounts[s];
+                result['S' + s] = Math.round(Math.pow(avgMatch, 2.5) * 1000) / 1000;
+            } else {
+                result['S' + s] = 1.0;
+            }
+        }
+        return result;
     },
 
     /**
@@ -1281,6 +1341,18 @@ TiageSynthesis.NeedsIntegration = {
      * 0.3 = 30% des Wertes fließt auch in sekundäre Kategorien
      */
     SECONDARY_WEIGHT: 0.3,
+
+    // Evolutionary stage model: maps #K categories to psychological development stages
+    // Stage 1 = Basis (existence/safety), 2 = Autonomy, 3 = Belonging, 4 = Meaning
+    STUFEN_MAP: {
+        '#K1': 1, '#K2': 1, '#K7': 1, '#K18': 1,
+        '#K5': 2, '#K9': 2, '#K11': 2, '#K14': 2,
+        '#K3': 3, '#K6': 3, '#K10': 3, '#K15': 3, '#K16': 3, '#K17': 3,
+        '#K4': 4, '#K8': 4, '#K12': 4, '#K13': 4
+    },
+
+    // Relative weights: foundational stages count more in the R-factor calculation
+    STUFEN_WEIGHTS: { 1: 3.0, 2: 2.0, 3: 1.5, 4: 1.0 },
 
     /**
      * Mapping: Kategorie-Keys → Resonanzfaktoren

@@ -522,6 +522,7 @@ function calculateRelationshipQuality(person1, person2, options) {
     const partnerArchetyp = getPartnerArchetype() || '';
 
     let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
+    let combinedStufen = null;
     let matching = null;
     let rFactorSource = 'default';
 
@@ -562,6 +563,22 @@ function calculateRelationshipQuality(person1, person2, options) {
                 R2 = combineRFactors(resonanzIch.philosophie || resonanzIch.R2, resonanzPartner.philosophie || resonanzPartner.R2);
                 R3 = combineRFactors(resonanzIch.dynamik || resonanzIch.R3, resonanzPartner.dynamik || resonanzPartner.R3);
                 // R4 wird weiterhin via calculateR4Hybrid berechnet
+
+                // Evolutionsstufen: kombiniere per-stage scores für beide Personen
+                const ichS = resonanzIch.stufen;
+                const partnerS = resonanzPartner.stufen;
+                if (ichS && partnerS && ichS.enabled && partnerS.enabled) {
+                    combinedStufen = {
+                        S1: combineRFactors(ichS.S1, partnerS.S1),
+                        S2: combineRFactors(ichS.S2, partnerS.S2),
+                        S3: combineRFactors(ichS.S3, partnerS.S3),
+                        S4: combineRFactors(ichS.S4, partnerS.S4)
+                    };
+                    // Cache for synthesis modal access (only for real pair, not batch)
+                    if (!explicitRFaktoren) {
+                        window._lastStufen = combinedStufen;
+                    }
+                }
 
                 rFactorSource = 'realNeeds';
                 // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
@@ -774,7 +791,13 @@ function calculateRelationshipQuality(person1, person2, options) {
             R4: Math.round(R4 * 100) / 100,
             GFK: Math.round(GFK * 100) / 100,
             M: M,
-            B: Math.round(B * 100) / 100
+            B: Math.round(B * 100) / 100,
+            stufen: combinedStufen ? {
+                S1: Math.round(combinedStufen.S1 * 100) / 100,
+                S2: Math.round(combinedStufen.S2 * 100) / 100,
+                S3: Math.round(combinedStufen.S3 * 100) / 100,
+                S4: Math.round(combinedStufen.S4 * 100) / 100
+            } : null
         },
         scoreDetails: {
             O: Math.round(orientationScore * wO * 10) / 10,

@@ -293,6 +293,36 @@ function getScoreContent() {
         scoreLabel = 'Theoretischer Wert';
     }
 
+    // Evolutionsstufen
+    const stufen = window._lastStufen;
+    const stufenDefs = [
+        { key: 'S1', label: 'Fundament', desc: 'Existenz · Sicherheit · Ruhe · Alltag', color: '#10B981' },
+        { key: 'S2', label: 'Entfaltung', desc: 'Freiheit · Ausdruck · Kink · Kommunikation', color: '#3B82F6' },
+        { key: 'S3', label: 'Verbundenheit', desc: 'Zuneigung · Intimität · Werte · Soziales', color: '#8B5CF6' },
+        { key: 'S4', label: 'Sinn', desc: 'Verständnis · Identität · Lebensplanung · Spiritualität', color: '#F59E0B' }
+    ];
+    const stufenHtml = stufen ? `
+        <div style="margin-bottom: 20px; padding: 14px; background: rgba(30,30,40,0.6); border-radius: 10px; border: 1px solid rgba(255,255,255,0.07);">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">Evolutionäre Bedürfnisstärke</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                ${stufenDefs.map(s => {
+                    const val = stufen[s.key] || 1.0;
+                    const pct = Math.round(val * 100);
+                    const barWidth = Math.min(100, Math.max(0, pct));
+                    return `<div style="padding: 8px 10px; background: rgba(20,20,30,0.5); border-radius: 7px; border-left: 3px solid ${s.color};">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-size: 12px; font-weight: 600; color: ${s.color};">${s.label}</span>
+                            <span style="font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8);">${pct}%</span>
+                        </div>
+                        <div style="height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                            <div style="height: 100%; width: ${barWidth}%; background: ${s.color}; border-radius: 2px; opacity: 0.8;"></div>
+                        </div>
+                        <div style="font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 3px;">${s.desc}</div>
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>` : '';
+
     return `
         <!-- Score Display -->
         <div style="text-align: center; margin-bottom: 20px;">
@@ -320,6 +350,7 @@ function getScoreContent() {
                 </div>
             </div>
         </div>
+        ${stufenHtml}
         <!-- Pro/Contra Lists -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
