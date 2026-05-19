@@ -178,6 +178,52 @@ const OshoZenTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
     // TOP 5 BEDÜRFNIS-MATCH BERECHNUNG
     // ═══════════════════════════════════════════════════════════════════════════
+    // VOLKER STRATEGIEN — Quelle: augenhöhe.de / pua-coaching.de
+    // Mappt #K-Kategorien auf Fähigkeit + mögliche Erfüllungsstrategien
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    const VOLKER_STRATEGIEN = {
+        // Stufe 1: Passive Basisbedürfnisse
+        '#K1':  { stufe: 1, faehigkeit: 'Selbstversorgung',     strategie: 'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.' },
+        '#K2':  { stufe: 1, faehigkeit: 'Selbstschutz',         strategie: 'Ein Haus, Kleidung, Verträge, Absprachen...' },
+        '#K7':  { stufe: 1, faehigkeit: 'Energieeinsparung',    strategie: 'Ordnung, Gewohnheiten, Urlaub, Medienkonsum...' },
+        '#K18': { stufe: 1, faehigkeit: 'Wahrnehmung',          strategie: 'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch...' },
+        // Stufe 2: Handlungs-Bedürfnisse
+        '#K5':  { stufe: 2, faehigkeit: 'Entscheidungsfähigkeit', strategie: 'Jede selbstbestimmte Entscheidung nährt die Freiheit.' },
+        '#K9':  { stufe: 2, faehigkeit: 'Handlungsfähigkeit',   strategie: 'Jede aktive Einflussnahme nährt die Wirksamkeit.' },
+        '#K11': { stufe: 2, faehigkeit: 'Empfinden',            strategie: 'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.' },
+        '#K14': { stufe: 2, faehigkeit: 'Lernen',               strategie: 'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.' },
+        // Stufe 3: Soziale Bedürfnisse
+        '#K3':  { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
+        '#K6':  { stufe: 3, faehigkeit: 'Soziale Interaktion',  strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
+        '#K10': { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
+        '#K15': { stufe: 3, faehigkeit: 'Soziale Interaktion',  strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
+        '#K16': { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
+        '#K17': { stufe: 3, faehigkeit: 'Wertebewusstsein',     strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
+        // Stufe 4: Identitäts-Bedürfnisse
+        '#K4':  { stufe: 4, faehigkeit: 'Selbstreflexion',      strategie: 'Meditation, Coaching und Therapie, ehrliche Freundschaft...' },
+        '#K8':  { stufe: 4, faehigkeit: 'Selbstliebe',          strategie: 'Vervollkommnung eigener Gaben und Talente zum Wohle der Welt.' },
+        '#K12': { stufe: 4, faehigkeit: 'Selbstverantwortung',  strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
+        '#K13': { stufe: 4, faehigkeit: 'Intentionalität',      strategie: 'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.' }
+    };
+
+    // Stufen-Farben (passend zu STUFEN_MAP in needsIntegration.js)
+    const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+
+    /**
+     * Gibt die Volker-Strategie für ein Bedürfnis zurück
+     * Lookup: needId → BeduerfnisKatalog.kategorie → VOLKER_STRATEGIEN
+     */
+    function getStrategieForNeed(needId) {
+        var katalog = (typeof window !== 'undefined' && window.BeduerfnisKatalog)
+            ? window.BeduerfnisKatalog : null;
+        if (!katalog || !katalog.beduerfnisse) return null;
+        var bed = katalog.beduerfnisse[needId];
+        if (!bed || !bed.kategorie) return null;
+        return VOLKER_STRATEGIEN[bed.kategorie] || null;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
 
     /**
      * Berechnet die Top 5 Bedürfnisse mit der besten Übereinstimmung
@@ -348,11 +394,18 @@ const OshoZenTextGenerator = (function() {
             // Individuelle Texte pro Bedürfnis
             group.needs.forEach(match => {
                 const { firstSentence, rest } = extractFirstSentence(match.text);
+                const strategie = getStrategieForNeed(match.id);
+                const strategieHtml = strategie ? `
+                    <div style="margin-top:6px;padding-left:14px;border-left:2px solid ${STUFEN_FARBEN[strategie.stufe]};opacity:0.7;">
+                        <span style="font-size:10px;font-weight:600;color:${STUFEN_FARBEN[strategie.stufe]};text-transform:uppercase;letter-spacing:0.05em;">${strategie.faehigkeit}</span>
+                        <span style="font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;display:block;margin-top:1px;">${strategie.strategie}</span>
+                    </div>` : '';
                 html += `
                     <div class="osho-zen-text-preview">
                         <span class="osho-zen-karte-icon">🃏</span>
                         <strong>${match.label}:</strong> ${firstSentence}
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
+                        ${strategieHtml}
                     </div>
                 `;
             });
