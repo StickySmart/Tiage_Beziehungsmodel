@@ -178,11 +178,10 @@ const OshoZenTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
     // TOP 5 BEDÜRFNIS-MATCH BERECHNUNG
     // ═══════════════════════════════════════════════════════════════════════════
-    // VOLKER STRATEGIEN — Quelle: augenhöhe.de / pua-coaching.de
-    // Mappt #K-Kategorien auf Fähigkeit + mögliche Erfüllungsstrategien
+    // Stufen-Strategien: Mappt #K-Kategorien auf Fähigkeit + Erfüllungsstrategien
     // ═══════════════════════════════════════════════════════════════════════════
 
-    const VOLKER_STRATEGIEN = {
+    const STUFEN_STRATEGIEN = {
         // Stufe 1: Passive Basisbedürfnisse
         '#K1':  { stufe: 1, faehigkeit: 'Selbstversorgung',     strategie: 'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.' },
         '#K2':  { stufe: 1, faehigkeit: 'Selbstschutz',         strategie: 'Ein Haus, Kleidung, Verträge, Absprachen...' },
@@ -211,8 +210,8 @@ const OshoZenTextGenerator = (function() {
     const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
 
     /**
-     * Gibt die Volker-Strategie für ein Bedürfnis zurück
-     * Lookup: needId → BeduerfnisKatalog.kategorie → VOLKER_STRATEGIEN
+     * Gibt die Stufen-Strategie für ein Bedürfnis zurück
+     * Lookup: needId → BeduerfnisKatalog.kategorie → STUFEN_STRATEGIEN
      */
     function getStrategieForNeed(needId) {
         var katalog = (typeof window !== 'undefined' && window.BeduerfnisKatalog)
@@ -220,7 +219,7 @@ const OshoZenTextGenerator = (function() {
         if (!katalog || !katalog.beduerfnisse) return null;
         var bed = katalog.beduerfnisse[needId];
         if (!bed || !bed.kategorie) return null;
-        return VOLKER_STRATEGIEN[bed.kategorie] || null;
+        return STUFEN_STRATEGIEN[bed.kategorie] || null;
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -235,6 +234,23 @@ const OshoZenTextGenerator = (function() {
      * @param {number} topN - Anzahl der Top-Matches (default: 5)
      * @returns {Array} Array von { id, label, score1, score2, match, karte, text }
      */
+    // RTI → Stufen Multiplikator für Top-Match-Gewichtung
+    // 0=Egal→0.1, 1=Normal→1.0, 2=Wichtig→4.0 (starke Wirkung gewünscht)
+    function getRtiMultiplierForNeed(needId) {
+        var strategie = getStrategieForNeed(needId);
+        if (!strategie) return 1.0;
+        var stufe = strategie.stufe;
+        var rti = (typeof TiageWeights !== 'undefined' && TiageWeights.RTI)
+            ? TiageWeights.RTI.get() : null;
+        if (!rti) return 1.0;
+        function toMult(v) { return v === 0 ? 0.1 : v === 2 ? 4.0 : 1.0; }
+        if (stufe === 1) return toMult(rti.S4);
+        if (stufe === 2) return (toMult(rti.S1) + toMult(rti.S3)) / 2;
+        if (stufe === 3) return toMult(rti.S2);
+        if (stufe === 4) return toMult(rti.S5) * 0.7 + toMult(rti.S3) * 0.3;
+        return 1.0;
+    }
+
     function calculateTopMatches(needs1, needs2, topN = 5) {
         if (!needs1 || !needs2 || !oshoZenData) {
             return [];
@@ -251,14 +267,13 @@ const OshoZenTextGenerator = (function() {
 
                 // Nur Bedürfnisse berücksichtigen, die beiden wichtig sind (> 30)
                 if (score1 > 30 && score2 > 30) {
-                    // Match-Score: Durchschnitt der beiden Werte * Ähnlichkeitsfaktor
                     const average = (score1 + score2) / 2;
                     const difference = Math.abs(score1 - score2);
-                    const similarity = 1 - (difference / 100); // 0-1, höher = ähnlicher
+                    const similarity = 1 - (difference / 100);
 
-                    // Gewichteter Match-Score
-                    // Hohe Durchschnittswerte + hohe Ähnlichkeit = beste Matches
-                    const matchScore = average * similarity;
+                    // RTI-gewichteter Match-Score: starke Wirkung bei 0 oder 2
+                    const rtiMultiplier = getRtiMultiplierForNeed(needId);
+                    const matchScore = average * similarity * rtiMultiplier;
 
                     const zenData = beduerfnisse[needId];
                     const kartenDetails = getKartenDetails(zenData.karte);
@@ -378,7 +393,7 @@ const OshoZenTextGenerator = (function() {
             const hasExpandableContent = group.bild || group.osho || group.needs.some(m => extractFirstSentence(m.text).rest.length > 0);
 
             html += `
-                <div class="osho-zen-item ${hasExpandableContent ? 'expanded' : ''}" data-index="${groupIndex}">
+                <div class="osho-zen-item" data-index="${groupIndex}">
                     <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})">
                         <div class="osho-zen-item-left">
                             <span class="osho-zen-rank">${groupIndex + 1}</span>
@@ -386,12 +401,33 @@ const OshoZenTextGenerator = (function() {
                             <span class="osho-zen-karte">— ${group.karte}${group.karteName_de && group.karteName_de !== group.karte ? ` (${group.karteName_de})` : ''}</span>
                         </div>
                         <div class="osho-zen-item-right">
-                            <span class="osho-zen-toggle">${hasExpandableContent ? '▼' : ''}</span>
+                            <span class="osho-zen-toggle">▶</span>
                         </div>
                     </div>
             `;
 
-            // Individuelle Texte pro Bedürfnis
+            // Alles nach dem Header — standardmäßig eingeklappt
+            html += `<div class="osho-zen-item-content" style="display: none;">`;
+
+            // 1. Bilder pro Bedürfnis
+            group.needs.forEach(match => {
+                const imgPath = getNeedImagePath(match.id);
+                if (imgPath) {
+                    html += `
+                        <div class="osho-zen-image-container">
+                            <img src="${imgPath}"
+                                 alt="${t('synthese.oshoNeedAlt', 'Bedürfnis {label}').replace('{label}', match.label)}"
+                                 class="osho-zen-need-image"
+                                 loading="lazy"
+                                 onerror="this.style.display='none'"
+                                 onclick="OshoZenTextGenerator.openLightbox(this.src, this.alt)"
+                                 style="cursor: pointer;">
+                        </div>
+                    `;
+                }
+            });
+
+            // 2. Individuelle Texte pro Bedürfnis
             group.needs.forEach(match => {
                 const { firstSentence, rest } = extractFirstSentence(match.text);
                 const strategie = getStrategieForNeed(match.id);
@@ -410,7 +446,7 @@ const OshoZenTextGenerator = (function() {
                 `;
             });
 
-            // Geteilte Karten-Inhalte (einmalig)
+            // 3. Geteilte Karten-Inhalte
             html += `
                     ${group.bild ? `<div class="osho-zen-bild-text">${group.bild}</div>` : ''}
                     ${group.osho ? `
@@ -420,30 +456,13 @@ const OshoZenTextGenerator = (function() {
                     </div>` : ''}
             `;
 
-            // Bilder + Footer pro Bedürfnis
-            if (hasExpandableContent) {
-                html += `<div class="osho-zen-item-content" style="display: block;">`;
-                group.needs.forEach(match => {
-                    html += `
-                        <div class="osho-zen-image-container">
-                            <img src="${getNeedImagePath(match.id)}"
-                                 alt="${t('synthese.oshoNeedAlt', 'Bedürfnis {label}').replace('{label}', match.label)}"
-                                 class="osho-zen-need-image"
-                                 loading="lazy"
-                                 onerror="this.style.display='none'"
-                                 onclick="OshoZenTextGenerator.openLightbox(this.src, this.alt)"
-                                 style="cursor: pointer;">
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            }
-
-            // Footer mit Scores aller Bedürfnisse
+            // 4. Footer mit Scores
             html += `<div class="osho-zen-item-footer">`;
             group.needs.forEach(match => {
                 html += `<span class="osho-zen-footer-stat">${match.label}: ${name1} ${match.score1}% / ${name2} ${match.score2}% (Match: ${match.matchScore}%)</span>`;
             });
+            html += `</div>`;
+
             html += `</div></div>`;
         });
 

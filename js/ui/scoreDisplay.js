@@ -297,104 +297,102 @@ function updateDesktopFactorContent() {
     });
 }
 
-// Update R-Factor Display (Resonanz der Paarung R1-R4)
+// Update Entwicklungsstufen Display (ersetzt R-Faktoren, zeigt absolute Ø-Bedürfniswerte)
 function updateRFactorDisplay() {
     const rDisplay = document.getElementById('rFactorDisplay');
     if (!rDisplay) return;
 
-    // Extrahiere R-Wert (Format kann { R1: value } oder { R1: { value, locked } } sein)
-    const extractR = (rf, key) => {
-        if (!rf || rf[key] === undefined) return 1.0;
-        if (typeof rf[key] === 'object' && rf[key].value !== undefined) return rf[key].value;
-        return rf[key];
+    // Stufen-Zuordnung: Bedürfnis-Kategorie → Stufen-Nr (1-4)
+    const STUFEN_MAP = {
+        '#K1':1,'#K2':1,'#K7':1,'#K18':1,
+        '#K5':2,'#K9':2,'#K11':2,'#K14':2,
+        '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
+        '#K4':4,'#K8':4,'#K12':4,'#K13':4
     };
 
-    // FIX v4.3: Nur selectedPartner verwenden, nicht auf TiageState zurückfallen
-    // (TiageState kann alte Werte aus localStorage haben obwohl kein Partner aktiv ist)
+    // Berechne Ø-Wert (0-100) pro Stufe — fällt auf Archetyp-Baseline zurück wenn keine manuellen Werte
+    function calcStufeAverages(flatNeeds, archetype) {
+        var beduerfnisse = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) || {};
+        if (Object.keys(beduerfnisse).length === 0) return null;
+        var sums = {1:0,2:0,3:0,4:0};
+        var counts = {1:0,2:0,3:0,4:0};
+        for (var needId in beduerfnisse) {
+            if (!Object.prototype.hasOwnProperty.call(beduerfnisse, needId)) continue;
+            var bed = beduerfnisse[needId];
+            if (!bed || !bed.kategorie) continue;
+            var stufe = STUFEN_MAP[bed.kategorie];
+            if (!stufe) continue;
+            var val = (flatNeeds && flatNeeds[needId] !== undefined) ? flatNeeds[needId]
+                    : (archetype && window.BaseArchetypProfile && window.BaseArchetypProfile[archetype]
+                       ? window.BaseArchetypProfile[archetype].umfrageWerte[needId] : undefined);
+            if (val !== undefined) {
+                sums[stufe] += val;
+                counts[stufe]++;
+            }
+        }
+        if (counts[1] + counts[2] + counts[3] + counts[4] === 0) return null;
+        return {
+            R1: counts[1] > 0 ? Math.round(sums[1]/counts[1]) : null,
+            R2: counts[2] > 0 ? Math.round(sums[2]/counts[2]) : null,
+            R3: counts[3] > 0 ? Math.round(sums[3]/counts[3]) : null,
+            R4: counts[4] > 0 ? Math.round(sums[4]/counts[4]) : null
+        };
+    }
+
     const partnerArchetype = window.getPartnerArchetype() || null;
-    const ichArchetype = window.getIchArchetype() || (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null);
+    const ichArchetype = window.getIchArchetype
+        ? window.getIchArchetype()
+        : (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null);
     const subtitle = document.getElementById('rFactorSubtitle');
 
-    let rFactors = { R1: null, R2: null, R3: null, R4: null };
+    let stufen = { R1: null, R2: null, R3: null, R4: null };
 
     try {
-        if (!ichArchetype) {
-            // Kein ICH-Archetyp → zeige "-"
-            if (subtitle) subtitle.textContent = 'ICH × PARTNER';
-        } else if (!partnerArchetype) {
-            // v4.3: Kein Partner gewählt → zeige ICH-R-Faktoren (statt "-")
+        const ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+            ? TiageState.getFlatNeeds('ich') : null;
+
+        if (!partnerArchetype) {
             if (subtitle) subtitle.textContent = 'ICH';
-            if (typeof TiageState !== 'undefined') {
-                // FIX: Per-Archetyp-Pfad lesen (resonanzFaktoren.ich.{archetyp})
-                const rfIch = TiageState.getResonanzFaktoren('ich');
-                if (rfIch) {
-                    rFactors = {
-                        R1: extractR(rfIch, 'R1'),
-                        R2: extractR(rfIch, 'R2'),
-                        R3: extractR(rfIch, 'R3'),
-                        R4: extractR(rfIch, 'R4')
-                    };
-                }
-            }
+            const ichStufen = calcStufeAverages(ichNeeds, ichArchetype);
+            if (ichStufen) stufen = ichStufen;
         } else {
-            // Partner gewählt → kombinierte R-Faktoren (ICH × PARTNER)
             if (subtitle) subtitle.textContent = 'ICH × PARTNER';
-
-            if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && TiageSynthesis.Calculator.getLastRFactors) {
-                rFactors = TiageSynthesis.Calculator.getLastRFactors() || rFactors;
-            }
-
-            if (rFactors.R1 === null && typeof TiageState !== 'undefined') {
-                // FIX v1.8.1001: getResonanzFaktoren löst per-Archetyp-Pfad korrekt auf
-                const rfIch = TiageState.getResonanzFaktoren('ich');
-                const rfPartner = TiageState.getResonanzFaktoren('partner');
-
-                if (rfIch && rfPartner) {
-                    // FIX v4.3: combineRFactors statt einfacher Multiplikation
-                    // Vorher: R_ich * R_partner → 3.02 * 3.02 = 9.12 (falsch!)
-                    // Jetzt:  (summe * similarity) / 2 → (6.04 * 1.0) / 2 = 3.02
-                    // SSOT: Gleiche Formel wie combineRFactors() in synthesisCalculator.js
-                    // Keine Zwischen-Rundung — Display-Rundung per toFixed(2)
-                    const combine = (a, b) => {
-                        const va = a || 1.0, vb = b || 1.0;
-                        const summe = va + vb;
-                        const similarity = Math.min(va, vb) / Math.max(va, vb);
-                        return (summe * similarity) / 2;
-                    };
-                    rFactors = {
-                        R1: combine(extractR(rfIch, 'R1'), extractR(rfPartner, 'R1')),
-                        R2: combine(extractR(rfIch, 'R2'), extractR(rfPartner, 'R2')),
-                        R3: combine(extractR(rfIch, 'R3'), extractR(rfPartner, 'R3')),
-                        R4: combine(extractR(rfIch, 'R4'), extractR(rfPartner, 'R4'))
-                    };
-                }
+            const partnerNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                ? TiageState.getFlatNeeds('partner') : null;
+            const ichStufen = calcStufeAverages(ichNeeds, ichArchetype);
+            const partnerStufen = calcStufeAverages(partnerNeeds, partnerArchetype);
+            if (ichStufen && partnerStufen) {
+                ['R1','R2','R3','R4'].forEach(function(k) {
+                    const a = ichStufen[k], b = partnerStufen[k];
+                    stufen[k] = (a !== null && b !== null) ? Math.round((a + b) / 2)
+                               : (a !== null ? a : b);
+                });
+            } else if (ichStufen) {
+                stufen = ichStufen;
             }
         }
     } catch (e) {
         console.warn('[TIAGE] updateRFactorDisplay error:', e);
     }
 
-    // Update UI
+    // Update UI — Werte 0-100
     ['R1', 'R2', 'R3', 'R4'].forEach(key => {
         const valueEl = document.getElementById('rValue' + key);
         const boxEl = document.getElementById('rFactor' + key);
         if (!valueEl || !boxEl) return;
 
-        const val = rFactors[key];
+        const val = stufen[key];
         if (val === null || val === undefined) {
             valueEl.textContent = '-';
             boxEl.classList.remove('high', 'medium', 'low');
         } else {
-            // FIX v4.3: R-Faktoren können mit v4.0 Sensitivität > 1.0 sein
-            valueEl.textContent = val.toFixed(2);
-
-            // Farb-Klasse: v4.0 Skala (R=1.0 = Neutral, >1.2 = Gut, >1.8 = Stark)
+            valueEl.textContent = val;
             boxEl.classList.remove('high', 'medium', 'low');
-            if (val >= 1.8) {
+            if (val >= 70) {
                 boxEl.classList.add('high');
-            } else if (val >= 1.2) {
+            } else if (val >= 45) {
                 boxEl.classList.add('medium');
-            } else if (val < 0.6) {
+            } else {
                 boxEl.classList.add('low');
             }
         }

@@ -753,6 +753,7 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         var katalog = this.getBeduerfnisKatalog();
+        var rtiWeights = this._getRtiStufeWeights();
         var totalMatch = 0;
         var totalWeight = 0;
         var count = 0;
@@ -769,14 +770,14 @@ TiageSynthesis.NeedsIntegration = {
 
                 if (actualValue !== undefined && expectedValue !== undefined) {
                     // v4.0: Erhöhte Sensitivität für stärkere R-Faktor-Variation
-                    // War /100, jetzt /50 für doppelte Sensitivität
                     var abweichung = (actualValue - expectedValue) / 50;
                     var match = 1 + abweichung;
-                    // Stage weighting: foundational needs (Stufe 1) carry more weight
+
+                    // RTI → Stufen-Gewichtung: jedes Bedürfnis wird nach seiner Stufe gewichtet
                     var bedEntry = katalog && katalog.beduerfnisse ? katalog.beduerfnisse[needId] : null;
-                    var kategorie = bedEntry ? bedEntry.kategorie : null;
-                    var stage = kategorie ? (self.STUFEN_MAP[kategorie] || 2) : 2;
-                    var stageWeight = self.STUFEN_WEIGHTS[stage] || 1.0;
+                    var stage = bedEntry ? (self.STUFEN_MAP[bedEntry.kategorie] || 2) : 2;
+                    var stageWeight = rtiWeights[stage] || 1.0;
+
                     totalMatch += match * stageWeight;
                     totalWeight += stageWeight;
                     count++;
@@ -803,9 +804,8 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0;
         }
 
-        // v4.0: R = avgMatch^2.5 (erhöhte Potenz für stärkere Variation)
-        // War avgMatch², jetzt avgMatch^2.5 für mehr Einfluss
-        var avgMatch = totalMatch / totalWeight;
+        // v4.0: R = avgMatch^2.5 — RTI-gewichteter Schnitt
+        var avgMatch = totalWeight > 0 ? totalMatch / totalWeight : totalMatch / count;
         var rValue = Math.pow(avgMatch, 2.5);
 
         // DEBUG disabled - was causing infinite console messages
@@ -833,6 +833,22 @@ TiageSynthesis.NeedsIntegration = {
      * @returns {Object} { S1, S2, S3, S4, enabled } — Werte 0-1
      * @private
      */
+    _getRtiStufeWeights: function() {
+        function toMult(v) { return v === 0 ? 0.5 : v === 2 ? 2.0 : 1.0; }
+        if (typeof TiageWeights !== 'undefined' && TiageWeights.RTI) {
+            var rti = TiageWeights.RTI.get();
+            var s1 = toMult(rti.S1), s2 = toMult(rti.S2);
+            var s3 = toMult(rti.S3), s4 = toMult(rti.S4), s5 = toMult(rti.S5);
+            return {
+                1: s4,                   // Fundament ← Sicherheit
+                2: (s1 + s3) / 2,        // Entfaltung ← Leiblichkeit + Autonomie
+                3: s2,                   // Verbundenheit ← Soziales
+                4: (s5 * 0.7 + s3 * 0.3) // Sinn ← Werte (70%) + Autonomie (30%)
+            };
+        }
+        return { 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0 };
+    },
+
     _calculateStufeBreakdown: function(needs, archetyp) {
         var katalog = this.getBeduerfnisKatalog();
         if (!katalog || !katalog.beduerfnisse) {

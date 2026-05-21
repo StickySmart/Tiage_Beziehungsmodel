@@ -67,6 +67,11 @@
                     });
                     el.classList.add('active');
                 }
+
+                // Score neu berechnen da RTI die Stufen-Gewichtung beeinflusst
+                if (typeof window.updateComparisonView === 'function') {
+                    window.updateComparisonView();
+                }
             }
         });
 

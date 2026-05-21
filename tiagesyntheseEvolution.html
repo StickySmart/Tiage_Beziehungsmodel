@@ -1,0 +1,569 @@
+<!--
+ * © 2025-2026 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ti-Age Synthese | Evolutionäre Bedürfnisstärke</title>
+    <link rel="canonical" href="https://ti-age.de/tiagesyntheseEvolution.html">
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+    <script src="js/version.js"></script>
+    <script src="js/utils/statistics.js"></script>
+    <script src="js/utils/hauptfrageAggregation.js"></script>
+    <script src="js/state.js"></script>
+
+    <script src="js/locales/de.js"></script>
+    <script src="js/locales/en.js"></script>
+    <script src="js/locales/it.js"></script>
+    <script src="js/locales/fr.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/locales/loader.js"></script>
+
+    <script src="profiles/archetypen/single.js"></script>
+    <script src="profiles/archetypen/duo.js"></script>
+    <script src="profiles/archetypen/duo-flex.js"></script>
+    <script src="profiles/archetypen/solopoly.js"></script>
+    <script src="profiles/archetypen/polyamor.js"></script>
+    <script src="profiles/archetypen/ra.js"></script>
+    <script src="profiles/archetypen/lat.js"></script>
+    <script src="profiles/archetypen/aromantisch.js"></script>
+
+    <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
+    <script src="profiles/definitions/beduerfnis-katalog.js"></script>
+
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/synthesis/needsIntegration.js"></script>
+
+    <script src="js/weights/rtiPriorities.js"></script>
+    <script src="js/synthesis/synthesePageShared.js"></script>
+
+    <style>
+        .synthese-page { min-height: 100vh; background: var(--bg-dark); padding: 0; }
+
+        .synthese-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; background: rgba(30,30,45,0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
+        }
+        .synthese-header-left { display: flex; align-items: center; gap: 12px; }
+        .synthese-back {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-primary); cursor: pointer; text-decoration: none; transition: all 0.2s;
+        }
+        .synthese-back:hover { background: rgba(255,255,255,0.1); }
+        .synthese-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
+        .synthese-tabs { display: flex; align-items: center; gap: 8px; }
+        .synthese-tab {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-muted); cursor: pointer; text-decoration: none;
+            font-size: 18px; transition: all 0.2s;
+        }
+        .synthese-tab:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .synthese-tab.active { background: rgba(34,197,94,0.25); border-color: #22C55E; color: var(--text-primary); }
+        .synthese-close {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; background: transparent; border: none;
+            color: var(--text-muted); cursor: pointer; font-size: 24px; transition: color 0.2s;
+        }
+        .synthese-close:hover { color: var(--text-primary); }
+
+        .synthese-archetype-nav {
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            padding: 16px 20px; background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+        }
+        .archetype-selector { display: flex; align-items: center; gap: 8px; }
+        .archetype-nav-btn {
+            width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05); color: var(--text-muted);
+            cursor: pointer; font-size: 16px; transition: all 0.2s;
+        }
+        .archetype-nav-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .archetype-info { text-align: center; min-width: 100px; }
+        .archetype-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 4px; }
+        .archetype-label.ich { color: var(--success); }
+        .archetype-label.partner { color: var(--danger); }
+        .archetype-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .archetype-separator { font-size: 18px; color: var(--text-muted); }
+
+        .synthese-content { padding: 20px; max-width: 700px; margin: 0 auto; }
+        .synthese-section {
+            background: var(--bg-card); border-radius: 12px; padding: 20px;
+            margin-bottom: 16px; border: 1px solid var(--border);
+        }
+        .synthese-section-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+        }
+        .synthese-section-icon { font-size: 24px; }
+        .synthese-section-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+        .synthese-section-subtitle { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        .synthese-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); }
+        .synthese-loading-spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #8B5CF6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Stufen Cards ── */
+        .stufen-card {
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(20,20,30,0.6);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .stufen-card.open { border-color: rgba(255,255,255,0.18); }
+
+        .stufen-card-header {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; cursor: pointer;
+            user-select: none;
+        }
+        .stufen-card-header:hover { background: rgba(255,255,255,0.03); }
+
+        .stufen-card-label {
+            font-size: 13px; font-weight: 700; min-width: 100px;
+        }
+        .stufen-card-bar-wrap {
+            flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
+        }
+        .stufen-card-bar-fill { height: 100%; border-radius: 3px; opacity: 0.85; transition: width 0.6s ease; }
+        .stufen-card-pct {
+            font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); min-width: 48px; text-align: right;
+        }
+        .stufen-card-toggle {
+            font-size: 11px; color: rgba(255,255,255,0.35); min-width: 14px; text-align: center; transition: transform 0.2s;
+        }
+        .stufen-card.open .stufen-card-toggle { transform: rotate(90deg); }
+
+        .stufen-card-detail {
+            display: none; padding: 0 16px 16px 16px;
+        }
+        .stufen-card.open .stufen-card-detail { display: block; }
+
+        .stufen-card-desc {
+            font-size: 11px; color: rgba(255,255,255,0.35);
+            padding: 0 0 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 12px;
+        }
+
+        .stufen-rti-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 12px;
+            font-size: 10px; font-weight: 600; margin: 2px 3px 2px 0;
+            border: 1px solid currentColor; opacity: 0.8;
+        }
+
+        .stufen-needs-list { margin-top: 12px; }
+        .stufen-need-row {
+            display: flex; align-items: center; gap: 8px; padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .stufen-need-row:last-child { border-bottom: none; }
+        .stufen-need-label { font-size: 11px; color: rgba(255,255,255,0.6); flex: 1; }
+        .stufen-need-bar-wrap { width: 80px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .stufen-need-bar-fill { height: 100%; border-radius: 2px; }
+        .stufen-need-val { font-size: 11px; color: rgba(255,255,255,0.5); min-width: 32px; text-align: right; line-height: 1.3; }
+        .stufen-need-delta { font-size: 10px; min-width: 30px; text-align: right; }
+
+        .stufen-section-rti { margin-bottom: 10px; }
+        .stufen-section-rti-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+
+        /* ── Delta-Tooltip ── */
+        .stufen-need-delta { position: relative; cursor: help; }
+        .stufen-need-delta[data-tip]:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 7px);
+            right: 0;
+            background: rgba(12,12,24,0.97);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.88);
+            font-size: 10.5px;
+            font-weight: 400;
+            line-height: 1.65;
+            padding: 8px 11px;
+            border-radius: 7px;
+            white-space: pre;
+            z-index: 200;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+            pointer-events: none;
+            min-width: 155px;
+            text-align: left;
+        }
+        .stufen-need-delta[data-tip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 3px);
+            right: 10px;
+            border: 5px solid transparent;
+            border-top-color: rgba(255,255,255,0.14);
+            z-index: 201;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="synthese-page">
+        <div class="synthese-header">
+            <div class="synthese-header-left">
+                <a href="javascript:history.back()" class="synthese-back" onclick="event.preventDefault(); window.location.href='archetype-interaction.html'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <span class="synthese-title" data-i18n="synthese.title">Ti-Age Synthese</span>
+            </div>
+            <div class="synthese-tabs">
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
+                <a href="tiagesyntheseEvolution.html" class="synthese-tab active" title="Evolutionäre Bedürfnisstärke">🧬</a>
+            </div>
+            <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
+        </div>
+
+        <div class="synthese-content" id="syntheseContent">
+            <div class="synthese-loading">
+                <div class="synthese-loading-spinner"></div>
+                <p>Lade Evolutionsdaten...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const t = SynthesePageShared.t;
+
+        // RTI Pillar Definitionen
+        const RTI_PILLARS = {
+            S1: { label: 'Leiblichkeit',     color: '#E63946' },
+            S2: { label: 'Soziales Netz',    color: '#3B82F6' },
+            S3: { label: 'Autonomie',        color: '#8B5CF6' },
+            S4: { label: 'Sicherheit',       color: '#10B981' },
+            S5: { label: 'Werte & Sinn',     color: '#F59E0B' }
+        };
+
+        // Stufen Definitionen mit RTI-Verbindungen
+        const STUFEN_DEFS = [
+            {
+                key: 'S1', stufeNr: 1,
+                label: 'Fundament',
+                desc: 'Existenz · Sicherheit · Ruhe · Alltag',
+                color: '#10B981',
+                rtiPillars: ['S4'],
+                rtiDesc: 'Basiert auf Sicherheit & Struktur (S4)'
+            },
+            {
+                key: 'S2', stufeNr: 2,
+                label: 'Entfaltung',
+                desc: 'Freiheit · Ausdruck · Kink · Kommunikation',
+                color: '#3B82F6',
+                rtiPillars: ['S1', 'S3'],
+                rtiDesc: 'Gespeist von Leiblichkeit (S1) und Autonomie (S3)'
+            },
+            {
+                key: 'S3', stufeNr: 3,
+                label: 'Verbundenheit',
+                desc: 'Zuneigung · Intimität · Werte · Soziales',
+                color: '#8B5CF6',
+                rtiPillars: ['S2'],
+                rtiDesc: 'Geprägt durch das Soziale Netz (S2)'
+            },
+            {
+                key: 'S4', stufeNr: 4,
+                label: 'Sinn',
+                desc: 'Verständnis · Identität · Lebensplanung · Spiritualität',
+                color: '#F59E0B',
+                rtiPillars: ['S5', 'S3'],
+                rtiDesc: 'Getragen von Werte & Sinn (S5) und Autonomie (S3)'
+            }
+        ];
+
+        // Stufen Map: Kategorie → Stufen-Nr (aus needsIntegration.js STUFEN_MAP)
+        // Dieselbe Quelle wie die GOD+FFH-Tabelle auf der 🎯-Seite:
+        // window.SingleProfil.beduerfnisse, window.DuoProfil.beduerfnisse, etc.
+        var ARCHETYPE_PROFIL_NAMES = {
+            'single':      'SingleProfil',
+            'duo':         'DuoProfil',
+            'duo_flex':    'DuoFlexProfil',
+            'solopoly':    'SolopolyProfil',
+            'polyamor':    'PolyamorProfil',
+            'ra':          'RAProfil',
+            'lat':         'LATProfil',
+            'aromantisch': 'AromantischProfil'
+        };
+
+        function getArchetypeBaseNeeds(archetype) {
+            var name = ARCHETYPE_PROFIL_NAMES[archetype];
+            if (!name) return null;
+            var profil = window[name];
+            return (profil && profil.beduerfnisse) ? profil.beduerfnisse : null;
+        }
+
+        var STUFEN_MAP = null;
+
+        function getStufenMap() {
+            if (STUFEN_MAP) return STUFEN_MAP;
+            if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.STUFEN_MAP) {
+                STUFEN_MAP = TiageSynthesis.NeedsIntegration.STUFEN_MAP;
+            } else {
+                STUFEN_MAP = {
+                    '#K1':1,'#K2':1,'#K7':1,'#K18':1,
+                    '#K5':2,'#K9':2,'#K11':2,'#K14':2,
+                    '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
+                    '#K4':4,'#K8':4,'#K12':4,'#K13':4
+                };
+            }
+            return STUFEN_MAP;
+        }
+
+        function toggleCard(stufeKey) {
+            var card = document.getElementById('stufen-card-' + stufeKey);
+            if (card) card.classList.toggle('open');
+        }
+
+        function getRtiValues() {
+            if (typeof TiageWeights !== 'undefined' && TiageWeights.RTI) {
+                return TiageWeights.RTI.get();
+            }
+            return { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
+        }
+
+        function rtiValueLabel(v) {
+            return v === 0 ? 'Egal' : v === 2 ? 'Wichtig' : 'Normal';
+        }
+
+        /**
+         * Collect top-N needs for a given Stufe number from the catalog
+         */
+        function getNeedsForStufe(stufeNr, ichArchetype, ichNeeds, topN) {
+            var katalog = window.BeduerfnisKatalog;
+            if (!katalog || !katalog.beduerfnisse) return [];
+
+            var stufenMap = getStufenMap();
+            var baseNeeds = getArchetypeBaseNeeds(ichArchetype);
+            var results = [];
+
+            var lockedNeeds = (typeof TiageState !== 'undefined' && TiageState.get)
+                ? (TiageState.get('profileReview.ich.global.lockedNeeds') || {}) : {};
+
+            var beduerfnisse = katalog.beduerfnisse;
+            for (var needId in beduerfnisse) {
+                if (!beduerfnisse.hasOwnProperty(needId)) continue;
+                var bed = beduerfnisse[needId];
+                if (!bed.kategorie || stufenMap[bed.kategorie] !== stufeNr) continue;
+
+                var expectedValue = baseNeeds ? baseNeeds[needId] : undefined;
+                if (expectedValue === undefined) continue;
+
+                var actualValue = ichNeeds[needId];
+                var delta = (actualValue !== undefined) ? (actualValue - expectedValue) : null;
+
+                results.push({
+                    id: needId,
+                    label: bed.label || needId,
+                    expected: expectedValue,
+                    actual: actualValue,
+                    delta: delta,
+                    isLocked: Object.prototype.hasOwnProperty.call(lockedNeeds, needId)
+                });
+            }
+
+            // Sort by |delta| desc (most deviated first), then by actualValue desc
+            results.sort(function(a, b) {
+                var da = a.delta !== null ? Math.abs(a.delta) : 0;
+                var db = b.delta !== null ? Math.abs(b.delta) : 0;
+                if (da !== db) return db - da;
+                return (b.actual || b.expected || 0) - (a.actual || a.expected || 0);
+            });
+
+            return results.slice(0, topN || 8);
+        }
+
+        function renderNeedsRows(needs, color, archetypeName) {
+            if (!needs || needs.length === 0) {
+                return '<div style="font-size:11px;color:rgba(255,255,255,0.3);padding:8px 0;">Keine Bedürfnisse in dieser Stufe gefunden</div>';
+            }
+            return needs.map(function(n) {
+                var val = n.actual !== undefined ? n.actual : n.expected;
+                var barWidth = Math.min(100, Math.max(0, val));
+                var deltaHtml = '';
+                if (n.delta !== null) {
+                    var d = Math.round(n.delta);
+                    var sign = d > 0 ? '+' : '';
+                    var dColor = d > 5 ? '#22C55E' : d < -5 ? '#EF4444' : 'rgba(255,255,255,0.3)';
+                    var quality = d > 15 ? 'stark überdurchschnittlich'
+                                : d > 5  ? 'überdurchschnittlich'
+                                : d < -15 ? 'stark unterdurchschnittlich'
+                                : d < -5  ? 'unterdurchschnittlich'
+                                : 'entspricht Archetyp-Norm';
+                    var arcLabel = archetypeName || 'Archetyp';
+                    var sourceLine = n.isLocked
+                        ? '🔒 Von dir manuell gesetzt'
+                        : '📐 Aus Profil berechnet&#10;   (' + arcLabel + ' + G · D · O · FFH · RTI)';
+                    var tip = 'Du: ' + Math.round(val) + '  ·  ' + arcLabel + '-Ø: ' + Math.round(n.expected)
+                            + '&#10;' + sign + d + ' → ' + quality
+                            + '&#10;&#10;' + sourceLine;
+                    deltaHtml = '<span class="stufen-need-delta" style="color:' + dColor + ';" data-tip="' + tip + '">'
+                              + sign + d + '</span>';
+                } else {
+                    deltaHtml = '<span class="stufen-need-delta" style="color:rgba(255,255,255,0.2);">–</span>';
+                }
+                return '<div class="stufen-need-row">'
+                    + '<span class="stufen-need-label">' + n.label + '</span>'
+                    + '<div class="stufen-need-bar-wrap"><div class="stufen-need-bar-fill" style="width:' + barWidth + '%;background:' + color + ';opacity:0.6;"></div></div>'
+                    + '<span class="stufen-need-val">' + Math.round(val) + (n.actual !== undefined && n.expected !== undefined ? '<br><span style="font-size:9px;color:rgba(255,255,255,0.22);">Ø ' + Math.round(n.expected) + '</span>' : '') + '</span>'
+                    + deltaHtml
+                    + '</div>';
+            }).join('');
+        }
+
+        /**
+         * Berechnet den Ø-Bedürfniswert (0-100) für eine Stufe.
+         * Nutzt manuelle flatNeeds-Werte, fällt auf Archetyp-Baseline zurück wenn keine gesetzt.
+         */
+        function calculateStufeAverage(stufeNr, needs, archetype) {
+            var stufenMap = getStufenMap();
+            var beduerfnisse = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) || {};
+            if (Object.keys(beduerfnisse).length === 0) return null;
+            var baseNeeds = getArchetypeBaseNeeds(archetype);
+            var sum = 0, count = 0;
+            for (var needId in beduerfnisse) {
+                if (!beduerfnisse.hasOwnProperty(needId)) continue;
+                var bed = beduerfnisse[needId];
+                if (!bed.kategorie || stufenMap[bed.kategorie] !== stufeNr) continue;
+                var value = (needs && needs[needId] !== undefined) ? needs[needId]
+                          : (baseNeeds ? baseNeeds[needId] : undefined);
+                if (value !== undefined) { sum += value; count++; }
+            }
+            return count > 0 ? Math.round(sum / count) : null;
+        }
+
+        function renderContent() {
+            var container = document.getElementById('syntheseContent');
+            container.innerHTML = '<div class="synthese-loading"><div class="synthese-loading-spinner"></div><p>Lade Katalog...</p></div>';
+
+            var loadCatalog = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.load)
+                ? BeduerfnisIds.load() : Promise.resolve();
+
+            if (typeof window.loadRtiPriorities === 'function') {
+                window.loadRtiPriorities();
+            }
+
+            loadCatalog.then(function() {
+                var state = SynthesePageShared.getCurrentState();
+                var ichArchetype = state.ichArchetype;
+                var partnerArchetype = state.partnerArchetype;
+                var hasPartner = state.hasPartner;
+
+                var ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                    ? TiageState.getFlatNeeds('ich') : {};
+
+                var partnerNeeds = {};
+                if (hasPartner && partnerArchetype) {
+                    partnerNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                        ? TiageState.getFlatNeeds('partner') : {};
+                }
+
+                var rti = getRtiValues();
+                var archetypeNames = SynthesePageShared.archetypeNames;
+                var ichLabel = archetypeNames[ichArchetype] || ichArchetype;
+
+                // Build cards HTML
+                var cardsHtml = STUFEN_DEFS.map(function(def) {
+                    var ichVal = calculateStufeAverage(def.stufeNr, ichNeeds, ichArchetype);
+                    var partnerVal = (hasPartner && Object.keys(partnerNeeds).length > 0)
+                        ? calculateStufeAverage(def.stufeNr, partnerNeeds, partnerArchetype) : null;
+                    var displayVal = (ichVal !== null && partnerVal !== null)
+                        ? Math.round((ichVal + partnerVal) / 2)
+                        : (ichVal !== null ? ichVal : 0);
+                    var barWidth = Math.min(100, Math.max(0, displayVal));
+
+                    // RTI badges
+                    var rtiHtml = def.rtiPillars.map(function(pk) {
+                        var pillar = RTI_PILLARS[pk];
+                        var rtiVal = rti[pk];
+                        var valLabel = rtiValueLabel(rtiVal);
+                        return '<span class="stufen-rti-badge" style="color:' + pillar.color + ';border-color:' + pillar.color + ';">'
+                            + pk + ' ' + pillar.label + ' · ' + valLabel
+                            + '</span>';
+                    }).join('');
+
+                    // Top needs for this Stufe
+                    var topNeeds = getNeedsForStufe(def.stufeNr, ichArchetype, ichNeeds, 8);
+                    var needsHtml = renderNeedsRows(topNeeds, def.color, ichLabel);
+
+                    // Partner comparison row (if available)
+                    var partnerRow = '';
+                    if (partnerVal !== null) {
+                        var pBar = Math.min(100, Math.max(0, partnerVal));
+                        partnerRow = '<div style="display:flex;align-items:center;gap:10px;margin:8px 0 4px 0;">'
+                            + '<span style="font-size:10px;color:var(--danger);font-weight:600;min-width:60px;">PARTNER</span>'
+                            + '<div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">'
+                            + '<div style="height:100%;width:' + pBar + '%;background:' + def.color + ';border-radius:2px;opacity:0.5;"></div></div>'
+                            + '<span style="font-size:11px;color:rgba(255,255,255,0.5);min-width:40px;text-align:right;">' + partnerVal + '</span>'
+                            + '</div>';
+                    }
+
+                    return '<div class="stufen-card" id="stufen-card-' + def.key + '">'
+                        + '<div class="stufen-card-header" onclick="toggleCard(\'' + def.key + '\')">'
+                        +   '<span class="stufen-card-label" style="color:' + def.color + ';">' + def.label + '</span>'
+                        +   '<div class="stufen-card-bar-wrap"><div class="stufen-card-bar-fill" style="width:' + barWidth + '%;background:' + def.color + ';"></div></div>'
+                        +   '<span class="stufen-card-pct" style="color:' + def.color + ';">' + displayVal + '</span>'
+                        +   '<span class="stufen-card-toggle">▶</span>'
+                        + '</div>'
+                        + '<div class="stufen-card-detail">'
+                        +   '<div class="stufen-card-desc">' + def.desc + '</div>'
+                        +   (partnerVal !== null ? partnerRow : '')
+                        +   '<div class="stufen-section-rti">'
+                        +     '<div class="stufen-section-rti-label">RTI-Verbindung</div>'
+                        +     rtiHtml
+                        +   '</div>'
+                        +   '<div style="font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:8px;">' + def.rtiDesc + '</div>'
+                        +   '<div class="stufen-needs-list">'
+                        +     '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Stärkste Bedürfnisse · ' + ichLabel + '</div>'
+                        +     needsHtml
+                        +   '</div>'
+                        + '</div>'
+                        + '</div>';
+                }).join('');
+
+                var subtitle = hasPartner
+                    ? 'ICH × PARTNER — Ø-Bedürfnisstärke je Stufe (0–100)'
+                    : 'DU — Bedürfnisstärke je Stufe (0–100)';
+
+                container.innerHTML = '<div class="synthese-section">'
+                    + '<div class="synthese-section-header">'
+                    +   '<span class="synthese-section-icon">🧬</span>'
+                    +   '<div>'
+                    +     '<div class="synthese-section-title">Evolutionäre Bedürfnisstärke</div>'
+                    +     '<div class="synthese-section-subtitle">' + subtitle + '</div>'
+                    +   '</div>'
+                    + '</div>'
+                    + cardsHtml
+                    + '</div>';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            SynthesePageShared.init({
+                renderContent: renderContent,
+                pageTitle: 'synthese.pageTitleEvolution'
+            });
+        });
+    </script>
+</body>
+</html>

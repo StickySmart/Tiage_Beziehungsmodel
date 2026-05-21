@@ -42,20 +42,31 @@ var TiageToast = (function() {
 
         var toast = document.createElement('div');
         toast.className = 'memory-toast tiage-toast ' + type;
-        toast.textContent = message;
+
+        var textSpan = document.createElement('span');
+        textSpan.className = 'memory-toast-text';
+        textSpan.textContent = message;
+
+        // Scrollgeschwindigkeit: ~220 px/s → Dauer aus Textlänge + Viewport berechnen
+        var speed = 220;
+        var textWidth = message.length * 9 + 60;
+        var viewWidth = window.innerWidth || 360;
+        var scrollSec = ((viewWidth + textWidth) / speed).toFixed(2);
+        textSpan.style.animationDuration = scrollSec + 's';
+
+        textSpan.addEventListener('animationend', function() {
+            toast.classList.remove('show');
+            setTimeout(function() { toast.remove(); _next(); }, 200);
+        }, { once: true });
+
+        toast.appendChild(textSpan);
         document.body.appendChild(toast);
 
         requestAnimationFrame(function() {
-            toast.classList.add('show');
+            requestAnimationFrame(function() {
+                toast.classList.add('show');
+            });
         });
-
-        setTimeout(function() {
-            toast.classList.remove('show');
-            setTimeout(function() {
-                toast.remove();
-                _next();
-            }, 300);
-        }, duration);
     }
 
     return {

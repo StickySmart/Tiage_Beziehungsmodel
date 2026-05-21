@@ -56,6 +56,9 @@
     <script src="js/synthesis/constants.js"></script>
     <script src="js/synthesis/needsIntegration.js"></script>
 
+    <!-- RTI Prioritäten (für Stufen-Gewichtung im Osho Zen Generator) -->
+    <script src="js/weights/rtiPriorities.js"></script>
+
     <!-- Osho Zen Text Generator -->
     <script src="js/synthesis/oshoZenTextGenerator.js"></script>
 
@@ -390,6 +393,7 @@
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab active fire-blink" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
+                <a href="tiagesyntheseEvolution.html" class="synthese-tab" title="Evolutionäre Bedürfnisstärke">🧬</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
@@ -432,6 +436,10 @@
          * Initialisierung via Shared Module
          */
         document.addEventListener('DOMContentLoaded', function() {
+            // RTI aus TiageState laden (für Stufen-Gewichtung der gemeinsamen Bedürfnisse)
+            if (typeof window.loadRtiPriorities === 'function') {
+                window.loadRtiPriorities();
+            }
             SynthesePageShared.init({
                 renderContent: renderContent,
                 pageTitle: 'synthese.pageTitleResonanz'
@@ -552,6 +560,11 @@
                 needs: needs2,
                 beduerfnisse: needs2
             };
+
+            // Katalog abwarten damit Stufen-Strategien geladen sind
+            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.load) {
+                await BeduerfnisIds.load();
+            }
 
             // Content generieren
             const oshoContent = OshoZenTextGenerator.generateSync({

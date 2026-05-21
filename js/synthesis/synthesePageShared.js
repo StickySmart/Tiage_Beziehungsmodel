@@ -147,6 +147,7 @@ var SynthesePageShared = (function() {
     var tabI18nKeys = {
         'tiagesyntheseUebersicht.html': 'synthese.tabScore',
         'tiagesyntheseResonanz.html': 'synthese.tabResonanz',
+        'tiagesyntheseEvolution.html': 'synthese.tabEvolution',
         'tiagesyntheseStatistik.html': 'synthese.tabNuancen',
         'tiagesyntheseProContra.html': 'synthese.tabProContra',
         'tiagesyntheseRTI.html': 'synthese.tabRTI',

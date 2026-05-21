@@ -708,6 +708,7 @@
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab fire-blink" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
+                <a href="tiagesyntheseEvolution.html" class="synthese-tab" title="Evolutionäre Bedürfnisstärke">🧬</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
@@ -1042,6 +1043,19 @@
         /**
          * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle (nach BeduerfnisIds-Load)
          */
+        const STUFEN_MAP_UEBERSICHT = {
+            '#K1':1,'#K2':1,'#K7':1,'#K18':1,
+            '#K5':2,'#K9':2,'#K11':2,'#K14':2,
+            '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
+            '#K4':4,'#K8':4,'#K12':4,'#K13':4
+        };
+        const STUFEN_LABELS_UEBERSICHT = {
+            1: { label: 'Fund.', color: '#10B981' },
+            2: { label: 'Entf.', color: '#3B82F6' },
+            3: { label: 'Verb.', color: '#8B5CF6' },
+            4: { label: 'Sinn',  color: '#F59E0B' }
+        };
+
         function generateNeedsBreakdownHTML(ichArchetype) {
             const flatNeeds  = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
             const personDims = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.ich') || {}) : {};
@@ -1074,7 +1088,10 @@
                     const base  = baseNeeds[id] ?? 50;
                     const bd    = allBreakdowns[key] || { g:0, d:0, o:0, f:0, fu:0, h:0, fr:0, total:0 };
                     const du    = Math.round(final - base - bd.total);
-                    return { id, key, label, base, final, du,
+                    const kat   = window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[id]
+                                  ? window.BeduerfnisKatalog.beduerfnisse[id].kategorie : null;
+                    const stufeNr = kat ? STUFEN_MAP_UEBERSICHT[kat] : null;
+                    return { id, key, label, base, final, du, stufeNr,
                              g:bd.g||0, d:bd.d||0, o:bd.o||0,
                              f:bd.f||0, fu:bd.fu||0, h:bd.h||0, fr:bd.fr||0,
                              total:bd.total||0 };
@@ -1091,13 +1108,19 @@
 
             const c = (v) => v > 0 ? 'color:#10B981' : v < 0 ? 'color:#EF4444' : '';
 
-            const tableRows = rows.map(r => `
+            const tableRows = rows.map(r => {
+                const stufeDef = r.stufeNr ? STUFEN_LABELS_UEBERSICHT[r.stufeNr] : null;
+                const stufeCell = stufeDef
+                    ? `<td style="color:${stufeDef.color};font-size:10px;font-weight:600;white-space:nowrap;">${stufeDef.label}</td>`
+                    : `<td style="color:rgba(255,255,255,0.2);">–</td>`;
+                return `
                 <tr>
                     <td class="td-name">
                         <button class="td-name-btn" data-need-id="${r.id}"
                                 onclick="toggleNeedDetail('${r.id}')"
                                 title="Details zu: ${r.label}">${r.label}</button>
                     </td>
+                    ${stufeCell}
                     <td>${r.base}</td>
                     <td style="${c(r.g)}">${fmt(r.g)}</td>
                     <td style="${c(r.d)}">${fmt(r.d)}</td>
@@ -1109,7 +1132,8 @@
                     <td style="${c(r.du)}">${fmt(r.du)}</td>
                     <td>=</td>
                     <td class="td-final">${r.final}</td>
-                </tr>`).join('');
+                </tr>`;
+            }).join('');
 
             return `
                 <div class="breakdown-info">
@@ -1120,6 +1144,7 @@
                     <table class="breakdown-table">
                         <thead><tr>
                             <th class="th-left">Bedürfnis</th>
+                            <th>Stufe</th>
                             <th>Basis</th><th>G</th><th>D</th><th>O</th>
                             <th>F</th><th>FU</th><th>H</th><th>FR</th>
                             <th class="th-du">DU</th><th>=</th><th>Final</th>
@@ -1137,8 +1162,15 @@
                 !TiageSynthesis.NeedsIntegration ||
                 !TiageSynthesis.NeedsIntegration._calculateStufeBreakdown) return '';
 
-            const ichNeeds = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
-            if (Object.keys(ichNeeds).length === 0) return '';
+            function combineRF(a, b) {
+                const sum = (a || 1.0) + (b || 1.0);
+                const sim = Math.min(a || 1.0, b || 1.0) / Math.max(a || 1.0, b || 1.0);
+                return (sum * sim) / 2;
+            }
+
+            const ichNeeds = (typeof TiageState !== 'undefined')
+                ? (TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : TiageState.get('flatNeeds.ich') || {})
+                : {};
 
             const ni = TiageSynthesis.NeedsIntegration;
             const ichStufen = ni._calculateStufeBreakdown(ichNeeds, ichArchetype);
@@ -1147,7 +1179,7 @@
             let partnerStufen = null;
             if (partnerArchetype) {
                 const partnerNeeds = (typeof TiageState !== 'undefined')
-                    ? (TiageState.get('flatNeeds.partner.' + partnerArchetype) || TiageState.get('flatNeeds.partner') || {})
+                    ? (TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : TiageState.get('flatNeeds.partner') || {})
                     : {};
                 if (Object.keys(partnerNeeds).length > 0) {
                     partnerStufen = ni._calculateStufeBreakdown(partnerNeeds, partnerArchetype);
@@ -1164,7 +1196,7 @@
 
             const items = stufenDefs.map(s => {
                 const ichVal = ichStufen[s.key] || 1.0;
-                const val = partnerStufen ? combineRFactors(ichVal, partnerStufen[s.key] || 1.0) : ichVal;
+                const val = partnerStufen ? combineRF(ichVal, partnerStufen[s.key] || 1.0) : ichVal;
                 const pct = Math.round(val * 100);
                 const barWidth = Math.min(100, Math.max(0, pct));
                 return `<div style="padding:8px 10px;background:rgba(20,20,30,0.5);border-radius:7px;border-left:3px solid ${s.color};">
@@ -1221,7 +1253,6 @@
                 const label = names[state.ichArchetype] || state.ichArchetype;
 
                 container.innerHTML =
-                    generateStufenHTML(state.ichArchetype, state.partnerArchetype) +
                     `<div class="synthese-section">
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">🎯</span>

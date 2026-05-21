@@ -410,6 +410,21 @@
             font-weight: 600;
         }
 
+        /* Eigenschaften-Modus: nur Eigenschaften-Toggles sichtbar */
+        /* .flat-needs-header wird NICHT versteckt, da .eigenschaften-section darin lebt */
+        body.eigenschaften-modus .flat-needs-list,
+        body.eigenschaften-modus .flat-needs-subtitle,
+        body.eigenschaften-modus .flat-needs-sort-info,
+        body.eigenschaften-modus .flat-needs-selection-bar,
+        body.eigenschaften-modus #activeFilterCardContainer,
+        body.eigenschaften-modus .profile-review-search-container,
+        body.eigenschaften-modus .resonanz-profile-header-card {
+            display: none !important;
+        }
+        body.eigenschaften-modus .eigenschaften-section {
+            display: block !important;
+        }
+
         /* Person Section with Navigation */
         .needs-editor-person-section {
             display: flex;
@@ -1034,6 +1049,40 @@
                         console.log('[NeedsEditor] Dimension-Filter aus URL:', normalizedDimension);
                     }
                 }
+            }
+
+            // Stufen-Filter aus URL (1=Fundament, 2=Entfaltung, 3=Verbundenheit, 4=Sinn)
+            var stufeParam = urlParams.get('stufe');
+            if (stufeParam && STUFEN_LABELS_EDITOR[parseInt(stufeParam)]) {
+                var stufeLabel = STUFEN_LABELS_EDITOR[parseInt(stufeParam)];
+                setTimeout(function() {
+                    if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                        ActiveFilterCard.addFilter(stufeLabel);
+                    }
+                }, 300);
+            }
+
+            // RTI-Säulen-Filter aus URL (S1-S5)
+            var rtiParam = urlParams.get('rti');
+            if (rtiParam && RTI_LABELS_EDITOR[rtiParam.toUpperCase()]) {
+                var rtiLabel = RTI_LABELS_EDITOR[rtiParam.toUpperCase()];
+                setTimeout(function() {
+                    if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                        ActiveFilterCard.addFilter(rtiLabel);
+                    }
+                }, 300);
+            }
+
+            // Eigenschaften-Modus: nur Eigenschaften-Toggles zeigen
+            var eigenschaftenParam = urlParams.get('eigenschaften');
+            if (eigenschaftenParam === '1') {
+                window._eigenschaftenModeActive = true;
+                document.body.classList.add('eigenschaften-modus');
+                document.addEventListener('flatNeedsRendered', function() {
+                    document.body.classList.add('eigenschaften-modus');
+                    var firstProp = document.querySelector('.eigenschaften-section');
+                    if (firstProp) firstProp.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
             }
 
             // FIX v1.8.1009: Dirty-Flag per Event zurücksetzen (robust bei Button-Re-Render)
@@ -1773,6 +1822,25 @@
             return category ? category.dimension : null;
         }
 
+        // Stufen-Mapping für Suchfilter (Kategorie → Stufe → Label)
+        var STUFEN_MAP_EDITOR = {
+            '#K1':1,'#K2':1,'#K7':1,'#K18':1,
+            '#K5':2,'#K9':2,'#K11':2,'#K14':2,
+            '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
+            '#K4':4,'#K8':4,'#K12':4,'#K13':4
+        };
+        var STUFEN_LABELS_EDITOR = { 1:'Fundament', 2:'Entfaltung', 3:'Verbundenheit', 4:'Sinn' };
+        // RTI-Säulen-Mapping: Kategorie → primäre Säule (abgeleitet aus Taxonomie-Dimensionen)
+        // D3→S1, D1→S2, D4→S3, D6→S4, D2+D5→S5
+        var RTI_K_MAP_EDITOR = {
+            '#K1':'S1','#K2':'S1','#K3':'S1','#K10':'S1','#K16':'S1',
+            '#K12':'S2',
+            '#K5':'S3','#K8':'S3','#K9':'S3','#K11':'S3',
+            '#K6':'S4','#K7':'S4','#K15':'S4','#K18':'S4',
+            '#K4':'S5','#K13':'S5','#K14':'S5','#K17':'S5'
+        };
+        var RTI_LABELS_EDITOR = { 'S1':'Leiblichkeit','S2':'Soziales','S3':'Autonomie','S4':'Sicherheit','S5':'Werte' };
+
         /**
          * Hilfsfunktion: Alle durchsuchbaren Texte für ein Bedürfnis sammeln
          */
@@ -1860,6 +1928,16 @@
                         }
                     }
                 });
+            }
+
+            // Stufen- und RTI-Säulen-Token aus Bedürfnis-Kategorie
+            var needKatId = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[needId])
+                ? window.BeduerfnisKatalog.beduerfnisse[needId].kategorie : null;
+            if (needKatId) {
+                var stufeNr = STUFEN_MAP_EDITOR[needKatId];
+                if (stufeNr && STUFEN_LABELS_EDITOR[stufeNr]) texts.push(STUFEN_LABELS_EDITOR[stufeNr]);
+                var rtiKey = RTI_K_MAP_EDITOR[needKatId];
+                if (rtiKey && RTI_LABELS_EDITOR[rtiKey]) texts.push(RTI_LABELS_EDITOR[rtiKey]);
             }
 
             return texts.join(' ').toLowerCase();
@@ -1993,6 +2071,13 @@
             // Aktualisiere Subtitle mit Filter-Ergebnis
             updateFilteredCountDisplay(totalMatches, allNeedItems.length, filters.length > 0);
 
+            // Eigenschaften-Section ausblenden wenn Filter aktiv (gilt auch nach Re-Render)
+            if (!window._eigenschaftenModeActive) {
+                document.querySelectorAll('.eigenschaften-section').forEach(function(s) {
+                    s.style.display = filters.length > 0 ? 'none' : '';
+                });
+            }
+
             console.log('[ActiveFilter] Mode:', mode,
                 '- Filter:', filters.map(function(f) { return f.label; }).join(', '),
                 '- Matches:', totalMatches, 'von', allNeedItems.length);
@@ -2028,16 +2113,7 @@
 
         // Lausche auf ActiveFilterCard Änderungen
         document.addEventListener('activeFilterChange', function(event) {
-            applyActiveFilters();
-            // Eigenschaften-Section ein/ausklappen je nach Filter
-            var sections = document.querySelectorAll('.eigenschaften-section');
-            var hasFilter = event.detail && (
-                (event.detail.kategorien && event.detail.kategorien.length > 0) ||
-                event.detail.quickFilter
-            );
-            sections.forEach(function(s) {
-                s.style.display = hasFilter ? 'none' : '';
-            });
+            applyActiveFilters(); // enthält jetzt die Eigenschaften-Logik
         });
 
         // Lausche auf Re-Render Events um Filter erneut anzuwenden
