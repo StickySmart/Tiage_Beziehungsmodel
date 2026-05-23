@@ -80,8 +80,8 @@ const ResonanzProfileHeaderCard = (function() {
         for (const needId in beduerfnisse) {
             if (!Object.prototype.hasOwnProperty.call(beduerfnisse, needId)) continue;
             const bed = beduerfnisse[needId];
-            if (!bed || !bed.kategorie) continue;
-            const stufe = STUFEN_MAP[bed.kategorie];
+            if (!bed) continue;
+            const stufe = bed.stufe || STUFEN_MAP[bed.kategorie];
             if (!stufe) continue;
             const val = (flatNeeds && flatNeeds[needId] !== undefined)
                 ? flatNeeds[needId]

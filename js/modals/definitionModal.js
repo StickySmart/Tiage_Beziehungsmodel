@@ -565,6 +565,7 @@ window.getShortDef                 = getShortDef;
 window.getEigenschaftenHtml        = getEigenschaftenHtml;
 window.loadEigenschaftenData       = loadEigenschaftenData;
 window.toggleEigenschaft           = toggleEigenschaft;
+window.getEigenschaftenDefForArchetyp = function(archetypeId) { return eigenschaftenData?.[archetypeId] || null; };
 
 // Apply imported eigenschaft states to partner's flatNeeds (used by share-link import)
 // Uses unscaled delta (AGOD=1.0) since sender's AGOD is unknown

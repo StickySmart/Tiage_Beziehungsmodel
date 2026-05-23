@@ -26,6 +26,7 @@ const OshoZenTextGenerator = (function() {
     // Cache für die geladenen Osho Zen Daten
     let oshoZenData = null;
     let tarotKartenData = null;
+    let imageMappingData = null;
     let isLoading = false;
     let loadPromise = null;
 
@@ -88,11 +89,15 @@ const OshoZenTextGenerator = (function() {
                         return fetch('profiles/data/osho-zen-tarot-karten.json').then(function(r) { return r.json(); });
                     }
                     throw new Error(t('synthese.errorDETarot', 'DE Tarot-Karten nicht geladen'));
-                })
+                }),
+            fetch('assets/images/beduerfnisse-v2/image-mapping.json')
+                .then(function(r) { return r.ok ? r.json() : null; })
+                .catch(function() { return null; })
         ])
-            .then(([beduerfnisseData, kartenData]) => {
+            .then(([beduerfnisseData, kartenData, imgMapping]) => {
                 oshoZenData = beduerfnisseData;
                 tarotKartenData = kartenData;
+                imageMappingData = imgMapping;
                 loadedLanguage = currentLang;
                 buildKartenLookup();
                 isLoading = false;
@@ -115,6 +120,7 @@ const OshoZenTextGenerator = (function() {
         // Cache invalidieren
         oshoZenData = null;
         tarotKartenData = null;
+        imageMappingData = null;
         kartenLookup = null;
         loadedLanguage = null;
         loadPromise = null;
@@ -218,8 +224,14 @@ const OshoZenTextGenerator = (function() {
             ? window.BeduerfnisKatalog : null;
         if (!katalog || !katalog.beduerfnisse) return null;
         var bed = katalog.beduerfnisse[needId];
-        if (!bed || !bed.kategorie) return null;
-        return STUFEN_STRATEGIEN[bed.kategorie] || null;
+        if (!bed) return null;
+        // v4.0: direkte Felder aus 16er-Katalog
+        if (bed.stufe) {
+            return { stufe: bed.stufe, faehigkeit: bed.faehigkeit || '', strategie: bed.strategie || '' };
+        }
+        // Legacy: #K-Kategorie-Lookup
+        var katId = bed.kategorie || (bed.altKategorien && bed.altKategorien[0]);
+        return katId ? (STUFEN_STRATEGIEN[katId] || null) : null;
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -276,17 +288,19 @@ const OshoZenTextGenerator = (function() {
                     const matchScore = average * similarity * rtiMultiplier;
 
                     const zenData = beduerfnisse[needId];
-                    const kartenDetails = getKartenDetails(zenData.karte);
+                    const v1 = (zenData.varianten && zenData.varianten.V1) ? zenData.varianten.V1 : {};
+                    const karteName = v1.karte || '';
+                    const kartenDetails = getKartenDetails(karteName);
                     matches.push({
                         id: needId,
                         label: zenData.label || needId,
-                        frage: zenData.frage || '',
+                        frage: v1.reflexion || '',
                         score1: Math.round(score1),
                         score2: Math.round(score2),
                         matchScore: Math.round(matchScore),
-                        karte: zenData.karte || 'Unknown',
-                        karteName_de: kartenDetails?.name_de || zenData.karte,
-                        text: zenData.text || '',
+                        karte: karteName || 'Unknown',
+                        karteName_de: v1.karte_de || kartenDetails?.name_de || karteName,
+                        text: v1.tiage || '',
                         bild: kartenDetails?.bild || '',
                         osho: kartenDetails?.osho || '',
                         quelle: kartenDetails?.quelle || ''
@@ -313,11 +327,16 @@ const OshoZenTextGenerator = (function() {
      */
     function getNeedImagePath(needId) {
         if (!needId) return '';
+        // v4.0: Lookup aus image-mapping.json (primäre Variante)
+        if (imageMappingData && imageMappingData.images && imageMappingData.images[needId]) {
+            const entry = imageMappingData.images[needId];
+            const file = entry.varianten && entry.varianten[0] && entry.varianten[0].file;
+            if (file) return `/assets/images/beduerfnisse-v2/${file}`;
+        }
+        // Legacy: sequenzieller Pfad für alte #B-IDs
         const id = needId.replace('#', '').replace('B', '');
         const num = parseInt(id, 10);
-        if (isNaN(num) || num < 1 || num > 226) {
-            return '';
-        }
+        if (isNaN(num) || num < 1 || num > 226) return '';
         return `/assets/images/beduerfnisse-v2/B${num.toString().padStart(3, '0')}.webp`;
     }
 
@@ -363,12 +382,81 @@ const OshoZenTextGenerator = (function() {
             `;
         }
 
+        // Visuelle Karten-Leiste (alle Needs als Image-Karten)
+        const cardStripHtml = topMatches.map(match => {
+            const imgSrc = getNeedImagePath(match.id);
+            const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            const stufe = (imageMappingData && imageMappingData.images && imageMappingData.images[match.id])
+                ? null : null; // stufe aus BeduerfnisKatalog wenn verfügbar
+            const bedEntry = (typeof window !== 'undefined' && window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse)
+                ? window.BeduerfnisKatalog.beduerfnisse[match.id] : null;
+            const color = bedEntry && bedEntry.stufe ? (STUFEN_FARBEN[bedEntry.stufe] || '#888') : '#888';
+            const imgBlock = imgSrc
+                ? `<img src="${imgSrc}" alt="${match.label}" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;" onerror="this.parentElement.style.display='none'">`
+                : `<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">🃏</div>`;
+            return `<div style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;" onclick="OshoZenTextGenerator.toggleItem(${topMatches.indexOf(match)})" title="${match.label} · ${match.karte}">
+                ${imgBlock}
+                <div style="padding:5px 7px;">
+                    <div style="font-size:10px;font-weight:700;color:${color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${match.label}</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${match.karte}</div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // 4 Stufen breakdown below card strip
+        const STUFEN_LABELS_LOC = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+        const stufeGroups = {};
+        topMatches.forEach(match => {
+            const bedEntry = (typeof window !== 'undefined' && window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse)
+                ? window.BeduerfnisKatalog.beduerfnisse[match.id] : null;
+            const stufe = (bedEntry && bedEntry.stufe) ? bedEntry.stufe : 0;
+            if (!stufeGroups[stufe]) stufeGroups[stufe] = [];
+            stufeGroups[stufe].push(match);
+        });
+
+        const stufenSectionHtml = [1, 2, 3, 4].map(stufeNr => {
+            const needs = stufeGroups[stufeNr] || [];
+            const color = STUFEN_FARBEN[stufeNr];
+            const label = STUFEN_LABELS_LOC[stufeNr];
+            if (needs.length === 0) {
+                return `<div style="flex:1;border-radius:8px;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;opacity:0.35;background:rgba(255,255,255,0.02);">
+                    <div style="font-size:9px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.05em;">Stufe ${stufeNr}</div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-top:3px;">${label}</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:6px;">—</div>
+                </div>`;
+            }
+            const avgScore = Math.round(needs.reduce((s, n) => s + (n.score1 + n.score2) / 2, 0) / needs.length);
+            const needsHtml = needs.map(n => {
+                const avg = Math.round((n.score1 + n.score2) / 2);
+                return `<div style="display:flex;align-items:center;gap:5px;margin-top:5px;">
+                    <div style="font-size:10px;color:rgba(255,255,255,0.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;">${n.label}</div>
+                    <div style="width:36px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;flex-shrink:0;">
+                        <div style="width:${avg}%;height:100%;background:${color};border-radius:2px;"></div>
+                    </div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.4);width:20px;text-align:right;flex-shrink:0;">${avg}%</div>
+                </div>`;
+            }).join('');
+            return `<div style="flex:1;min-width:0;border-radius:8px;border:1px solid ${color}40;padding:8px 10px;background:${color}12;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+                    <div style="font-size:9px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.05em;">Stufe ${stufeNr}</div>
+                    <div style="font-size:11px;font-weight:700;color:${color};">${avgScore}%</div>
+                </div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:5px;">${label}</div>
+                <div style="height:3px;background:rgba(255,255,255,0.08);border-radius:1.5px;margin-bottom:7px;">
+                    <div style="width:${avgScore}%;height:100%;background:${color};border-radius:1.5px;"></div>
+                </div>
+                ${needsHtml}
+            </div>`;
+        }).join('');
+
         let html = `
             <div class="osho-zen-container">
                 <div class="osho-zen-header">
                     <h3>${t('synthese.oshoTopNeeds', '🔥 Eure Top {count} gemeinsamen Bedürfnisse').replace('{count}', topMatches.length)}</h3>
                     <p class="osho-zen-subtitle">${t('synthese.oshoBasedOn', 'Basierend auf der Übereinstimmung eurer Bedürfnis-Profile')}</p>
                 </div>
+                <div style="display:flex;gap:8px;margin-bottom:10px;">${cardStripHtml}</div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;">${stufenSectionHtml}</div>
                 <div class="osho-zen-list">
         `;
 
@@ -392,10 +480,17 @@ const OshoZenTextGenerator = (function() {
 
             const hasExpandableContent = group.bild || group.osho || group.needs.some(m => extractFirstSentence(m.text).rest.length > 0);
 
+            // Thumbnail für den Header (erstes Bedürfnis der Gruppe)
+            const thumbSrc = getNeedImagePath(group.needs[0].id);
+            const thumbHtml = thumbSrc
+                ? `<img src="${thumbSrc}" alt="${group.needs[0].label}" style="width:38px;height:38px;object-fit:cover;border-radius:6px;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'">`
+                : '';
+
             html += `
                 <div class="osho-zen-item" data-index="${groupIndex}">
                     <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})">
                         <div class="osho-zen-item-left">
+                            ${thumbHtml}
                             <span class="osho-zen-rank">${groupIndex + 1}</span>
                             ${needLabels}
                             <span class="osho-zen-karte">— ${group.karte}${group.karteName_de && group.karteName_de !== group.karte ? ` (${group.karteName_de})` : ''}</span>
@@ -470,7 +565,7 @@ const OshoZenTextGenerator = (function() {
                 </div>
                 <div class="osho-zen-footer">
                     <small>
-                        <em>${t('synthese.oshoFooter', 'Inhalte inspiriert durch das Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho. Alle Rechte bei den jeweiligen Inhabern.')}</em>
+                        <em>${t('synthese.oshoFooter', 'Diese Synthese verbindet Konzepte aus dem RTI-Modell, dem 4-Stufen-Modell nach Volker Schmidt, den Lehren von Osho sowie der Qualitätsphilosophie von Robert M. Pirsig. Alle Rechte bei den jeweiligen Inhabern.')}</em>
                     </small>
                 </div>
             </div>

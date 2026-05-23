@@ -71,9 +71,9 @@ var TiageSearch = TiageSearch || {};
         if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
 
         var need = window.BeduerfnisKatalog.beduerfnisse[needId];
-        if (!need || !need.kategorie) return null;
-
-        var categoryId = need.kategorie;
+        if (!need) return null;
+        var categoryId = need.kategorie || (need.altKategorien && need.altKategorien[0]);
+        if (!categoryId) return null;
         if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
 
         var category = window.TiageTaxonomie.kategorien[categoryId];

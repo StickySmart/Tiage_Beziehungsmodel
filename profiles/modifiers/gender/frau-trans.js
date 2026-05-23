@@ -68,20 +68,11 @@ TiageModifiers.Gender.FrauTrans = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        rollenausdruck: 5,                  // #B87 Genderzentralität
-        authentizitaet: 5,                  // #B50 Durch Transition erreicht
-        wachstum_und_sinn: 4,               // #B61 Resilienz
-        empathie: 4,                        // #B28 Durch eigene Erfahrungen entwickelt
-        emotionale_tiefe: 4,                // #B71 Kommunikationstiefe
-        langfristige_bindung: 4,            // #B95 Beziehungscommitment
-
-        // Herausforderungen
-        gesellschaft: -3,                   // #B19 Gesellschaftlicher Druck
-        stabilitaet_und_sicherheit: -2,     // #B11 Mentale Gesundheitsrisiken
-
-        // Support
-        akzeptanz_und_empathie: 5           // #B25 Partner-Unterstützung kritisch
+        '#B15': +10,  // Integrität — Authentizität
+        '#B2':  +8,   // Sicherheit — erhöhte Vulnerabilität
+        '#B13': +8,   // Selbsterkenntnis — Identitätsprozess
+        '#B11': +8,   // Gerechtigkeit — Respekt
+        '#B12': +5    // Verbundenheit — Wärme und Zugehörigkeit
     },
 
     // ═══════════════════════════════════════════════════════════════════════

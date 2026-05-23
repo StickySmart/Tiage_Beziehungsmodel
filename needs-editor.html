@@ -477,7 +477,7 @@
                     <span>Zurück</span>
                 </button>
                 <h1 class="needs-editor-title" data-i18n="needsEditor.allNeeds">Alle Bedürfnisse</h1>
-                <span class="needs-editor-badge" id="needsEditorBadge">Profil</span>
+                <span class="needs-editor-badge" id="needsEditorBadge" style="display:none;">Profil</span>
             </div>
         </header>
 
@@ -526,7 +526,7 @@
                 <div class="needs-loading-container" id="needsLoadingIndicator">
                     <div class="needs-loading-spinner"></div>
                     <div class="needs-loading-text">Daten werden geladen und berechnet</div>
-                    <div class="needs-loading-subtext" data-i18n="needsEditor.analyzing">219 Bedürfnisse werden analysiert...</div>
+                    <div class="needs-loading-subtext" data-i18n="needsEditor.analyzing">16 Bedürfnisse werden analysiert...</div>
                 </div>
             </div>
         </main>
@@ -605,10 +605,16 @@
             // Titel setzen
             title.textContent = need.label;
 
-            // Kategorie, Dimension, Perspektive aus Katalog holen
-            const kategorie = katalog.kategorien[need.kategorie];
-            const dimension = katalog.dimensionen[need.dimension];
-            const perspektive = kategorie ? katalog.perspektiven[getPerspektiveForKategorie(need.kategorie)] : null;
+            // Stufen-Farben für 16-Bedürfnis-Modell
+            const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            const STUFEN_LABELS = {
+                1: 'Passive Basisbedürfnisse', 2: 'Handlungs-Bedürfnisse',
+                3: 'Soziale Bedürfnisse',      4: 'Identitäts-Bedürfnisse'
+            };
+            // Legacy-Felder (leer im neuen 16er-Katalog)
+            const kategorie = null;
+            const dimension  = null;
+            const perspektive = null;
 
             // Aktuellen Wert aus TiageState holen
             let currentValue = null;
@@ -635,45 +641,51 @@
                 </div>
             `;
 
-            // Kategorie & Dimension
+            // Stufe & Fähigkeit (16er-Katalog)
             html += `<div class="need-modal-meta-grid">`;
 
-            if (kategorie) {
+            if (need.stufe) {
+                const stufeColor = STUFEN_FARBEN[need.stufe] || '#888';
+                const stufeLabel = STUFEN_LABELS[need.stufe] || `Stufe ${need.stufe}`;
                 html += `
                     <div class="need-modal-meta-item">
-                        <span class="need-modal-meta-label">Kategorie</span>
-                        <span class="need-modal-meta-value" style="color: ${kategorie.color}">
-                            <span class="need-modal-dot" style="background: ${kategorie.color}"></span>
-                            ${kategorie.label}
+                        <span class="need-modal-meta-label">Stufe</span>
+                        <span class="need-modal-meta-value" style="color: ${stufeColor}">
+                            <span class="need-modal-dot" style="background: ${stufeColor}"></span>
+                            ${need.stufe} — ${stufeLabel}
                         </span>
                     </div>
                 `;
             }
 
-            if (dimension) {
+            if (need.faehigkeit) {
                 html += `
                     <div class="need-modal-meta-item">
-                        <span class="need-modal-meta-label">Dimension</span>
-                        <span class="need-modal-meta-value" style="color: ${dimension.color}">
-                            <span class="need-modal-badge" style="background: ${dimension.color}">${dimension.kurzform}</span>
-                            ${dimension.label}
-                        </span>
+                        <span class="need-modal-meta-label">Fähigkeit</span>
+                        <span class="need-modal-meta-value">${need.faehigkeit}</span>
                     </div>
                 `;
             }
 
-            if (perspektive) {
+            if (need.synonyme && need.synonyme.length > 0) {
                 html += `
-                    <div class="need-modal-meta-item">
-                        <span class="need-modal-meta-label">Perspektive</span>
-                        <span class="need-modal-meta-value">
-                            ${perspektive.id} ${perspektive.label}
-                        </span>
+                    <div class="need-modal-meta-item" style="grid-column: 1/-1">
+                        <span class="need-modal-meta-label">Synonyme</span>
+                        <span class="need-modal-meta-value">${need.synonyme.join(' · ')}</span>
                     </div>
                 `;
             }
 
             html += `</div>`;
+
+            if (need.strategie) {
+                html += `
+                    <div class="need-modal-question">
+                        <span class="need-modal-question-icon">💡</span>
+                        <span class="need-modal-question-text">${need.strategie}</span>
+                    </div>
+                `;
+            }
 
             // Frage (wenn vorhanden)
             if (need.frage) {
@@ -1310,7 +1322,7 @@
                     <div class="needs-loading-container">
                         <div class="needs-loading-spinner"></div>
                         <div class="needs-loading-text">Daten werden geladen und berechnet</div>
-                        <div class="needs-loading-subtext">219 Bedürfnisse werden analysiert...</div>
+                        <div class="needs-loading-subtext">16 Bedürfnisse werden analysiert...</div>
                     </div>
                 `;
             }
@@ -1930,15 +1942,10 @@
                 });
             }
 
-            // Stufen- und RTI-Säulen-Token aus Bedürfnis-Kategorie
-            var needKatId = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[needId])
-                ? window.BeduerfnisKatalog.beduerfnisse[needId].kategorie : null;
-            if (needKatId) {
-                var stufeNr = STUFEN_MAP_EDITOR[needKatId];
-                if (stufeNr && STUFEN_LABELS_EDITOR[stufeNr]) texts.push(STUFEN_LABELS_EDITOR[stufeNr]);
-                var rtiKey = RTI_K_MAP_EDITOR[needKatId];
-                if (rtiKey && RTI_LABELS_EDITOR[rtiKey]) texts.push(RTI_LABELS_EDITOR[rtiKey]);
-            }
+            // Stufen-Token aus Bedürfnis (v4.0: direkt über need.stufe)
+            var needRaw = window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[needId];
+            var stufeNr = needRaw ? (needRaw.stufe || STUFEN_MAP_EDITOR[needRaw.kategorie || (needRaw.altKategorien && needRaw.altKategorien[0])]) : null;
+            if (stufeNr && STUFEN_LABELS_EDITOR[stufeNr]) texts.push(STUFEN_LABELS_EDITOR[stufeNr]);
 
             return texts.join(' ').toLowerCase();
         }

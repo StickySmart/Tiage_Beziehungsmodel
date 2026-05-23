@@ -9,6 +9,7 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { createRequire } from 'module';
 
 // Routes
 import calculateRoutes from './routes/calculate.js';
@@ -19,11 +20,45 @@ import profileRoutes from './routes/profile.js';
 import syncRoutes from './routes/sync.js';
 import dataRoutes from './routes/data.js';
 
+// Logic (für Profile-Injection)
+import * as MatrixCalculator from './logic/archetypeMatrixCalculator.js';
+import * as NeedsIntegration from './logic/needsIntegration.js';
+
 // Database
 import { initDatabase } from './db/init.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
+
+const ARCHETYPE_FILES = {
+    'single':      'single',
+    'duo':         'duo',
+    'duo_flex':    'duo-flex',
+    'lat':         'lat',
+    'solopoly':    'solopoly',
+    'polyamor':    'polyamor',
+    'ra':          'ra',
+    'aromantisch': 'aromantisch'
+};
+
+function loadArchetypeProfiles() {
+    const profiles = {};
+    const profilesPath = join(__dirname, '..', 'profiles', 'archetypen');
+
+    for (const [key, filename] of Object.entries(ARCHETYPE_FILES)) {
+        try {
+            const profil = require(join(profilesPath, `${filename}.js`));
+            profiles[key] = profil;
+        } catch (e) {
+            console.warn(`[Profiles] Konnte nicht laden: ${filename}.js —`, e.message);
+        }
+    }
+
+    const loaded = Object.keys(profiles).length;
+    console.log(`[Profiles] ${loaded}/${Object.keys(ARCHETYPE_FILES).length} Archetyp-Profile geladen`);
+    return profiles;
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -96,6 +131,13 @@ async function start() {
         // Datenbank initialisieren
         await initDatabase();
         console.log('[DB] SQLite initialisiert');
+
+        // Archetyp-Profile laden und in Berechnungs-Module injizieren
+        const archetypeProfiles = loadArchetypeProfiles();
+        MatrixCalculator.setProfiles(archetypeProfiles);
+        NeedsIntegration.setBaseArchetypProfile(archetypeProfiles);
+        MatrixCalculator.generateArchetypeMatrix(archetypeProfiles);
+        console.log('[Matrix] 8×8 Archetyp-Matrix vorberechnet');
 
         // Server starten
         app.listen(PORT, () => {

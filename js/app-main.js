@@ -11,6 +11,32 @@
  */
 
         // ========================================
+        // QUELLEN & CREDITS
+        // ========================================
+
+        const TIAGE_CREDITS = {
+            stufen_modell: {
+                titel: "4-Stufen-Bedürfnis-Modell",
+                autor: "Volker Schmidt",
+                werk: "Liebe auf Augenhöhe",
+                url: "https://liebe-auf-augenhoehe.de",
+                beschreibung: "Entwicklungspsychologisches Modell für Bedürfnisse in Beziehungen (Stufe 1: Passiv/Basal → Stufe 4: Identität/Existenziell)"
+            },
+            osho_zen_tarot: {
+                titel: "Osho Zen Tarot",
+                autor: "Ma Deva Padma",
+                verlag: "St. Martin's Press",
+                rechte: "© Osho International Foundation"
+            },
+            gfk: {
+                titel: "Gewaltfreie Kommunikation",
+                autor: "Marshall B. Rosenberg",
+                beschreibung: "Universelle menschliche Bedürfnisse als Grundlage"
+            }
+        };
+        window.TIAGE_CREDITS = TIAGE_CREDITS;
+
+        // ========================================
         // MAIN APPLICATION
         // ========================================
 

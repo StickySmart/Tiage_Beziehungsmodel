@@ -66,16 +66,14 @@ TiageModifiers.Dominanz.Submissiv = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        hingabe: 5,                         // #B75 Kernmerkmal
-        vertrauen: 5,                       // #B29 Notwendig für Submission
-        leichtigkeit: 5,                    // #B14 Loslassen können
-        service_geben: 4,                    // #B219 Service-geben (Wunsch zu gefallen)
-        offenheit_fuer_neues: 4,            // #B189 Anpassungsfähigkeit
-
-        // Herausforderungen
-        selbst_ausdruck: -2,                // #B67 Selbstbehauptung schwieriger
-        wirksamkeit: -2                     // #B60 Initiative ergreifen seltener
+        '#B2':  +15,  // Sicherheit — Kern der Submission
+        '#B12': +15,  // Verbundenheit — emotionale Nähe zentral
+        '#B7':  +10,  // Intensität — intensive Erfahrungen erleben
+        '#B10': +8,   // Anerkennung — Wertschätzung empfangen
+        '#B3':  +8,   // Leichtigkeit — sich fallen lassen können
+        '#B4':  +8,   // Orientierung — Führung annehmen und folgen
+        '#B6':  -15,  // Freiheit — gibt Autonomie bewusst ab
+        '#B5':  -10   // Wirksamkeit — übergibt Kontrolle
     },
 
     // ═══════════════════════════════════════════════════════════════════════

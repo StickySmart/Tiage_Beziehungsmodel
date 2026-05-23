@@ -91,30 +91,30 @@ const AttributeSummaryCard = (function() {
      * @returns {object|null} { factor: 'R1'|'R2'|'R3'|'R4', color: '#...', label: '...' } oder null
      */
     function getRFactorForNeed(needId) {
-        // Primäre Quelle: DimensionKategorieFilter (Kategorie-basiert, deckt ALLE 216 Needs ab)
-        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
-            const dims = DimensionKategorieFilter.DIMENSIONEN;
+        if (typeof DimensionKategorieFilter === 'undefined' || !DimensionKategorieFilter.DIMENSIONEN) return null;
+        const dims = DimensionKategorieFilter.DIMENSIONEN;
 
-            // Hole die Kategorie des Needs
-            let categoryKey = null;
-            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse && BeduerfnisIds.beduerfnisse[needId]) {
-                const need = BeduerfnisIds.beduerfnisse[needId];
-                const catId = need.kategorie;
-                if (catId && typeof window.TiageTaxonomie !== 'undefined' && window.TiageTaxonomie.kategorien) {
-                    const cat = window.TiageTaxonomie.kategorien[catId];
-                    if (cat && cat.key) categoryKey = cat.key;
-                }
+        // v4.0: Direktes Lookup über needIds (16-Bedürfnis-System, SSOT)
+        for (const [factor, config] of Object.entries(dims)) {
+            if (config.needIds && config.needIds.includes(needId)) {
+                return { factor, color: config.color, label: config.label };
             }
+        }
 
-            if (categoryKey) {
-                for (const [factor, config] of Object.entries(dims)) {
-                    if (config.kategorienKeys && config.kategorienKeys.includes(categoryKey)) {
-                        return {
-                            factor: factor,
-                            color: config.color,
-                            label: config.label
-                        };
-                    }
+        // Legacy-Fallback: Kategorie-basiert (alte 224-Need-IDs)
+        let categoryKey = null;
+        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse && BeduerfnisIds.beduerfnisse[needId]) {
+            const need = BeduerfnisIds.beduerfnisse[needId];
+            const catId = need.kategorie;
+            if (catId && typeof window.TiageTaxonomie !== 'undefined' && window.TiageTaxonomie.kategorien) {
+                const cat = window.TiageTaxonomie.kategorien[catId];
+                if (cat && cat.key) categoryKey = cat.key;
+            }
+        }
+        if (categoryKey) {
+            for (const [factor, config] of Object.entries(dims)) {
+                if (config.kategorienKeys && config.kategorienKeys.includes(categoryKey)) {
+                    return { factor, color: config.color, label: config.label };
                 }
             }
         }
@@ -243,154 +243,131 @@ const AttributeSummaryCard = (function() {
     const ATTRIBUTE_NEEDS_MAPPING = {
         // GESCHLECHTSIDENTITÄT
         'pr-geschlecht-sekundaer': {
-            needs: ['akzeptanz', 'verstanden_werden', 'gesehen_werden', 'authentizitaet',
-                    'selbstbestimmung', 'identitaet', 'selbst_ausdruck'],
+            needs: ['#B13', '#B15', '#B6', '#B16', '#B11'],
             label: 'Geschlechtsidentität',
             category: 'geschlechtsidentitaet'
         },
 
         // LEBENSPLANUNG
         'pr-kinder': {
-            needs: ['kinderwunsch', 'elternschaft', 'fortpflanzung', 'fuersorge',
-                    'familie_gruenden', 'generativitaet', 'verantwortung_uebernehmen'],
+            needs: ['#B9', '#B14', '#B12', '#B8'],
             label: 'Kinder',
             category: 'lebensplanung'
         },
         'pr-ehe': {
-            needs: ['verbindlichkeit', 'langfristige_bindung', 'rechtliche_sicherheit',
-                    'gesellschaftliche_anerkennung', 'tradition', 'treueversprechen'],
+            needs: ['#B2', '#B9', '#B12', '#B15', '#B4'],
             label: 'Ehe',
             category: 'lebensplanung'
         },
         'pr-zusammen': {
-            needs: ['gemeinsamer_wohnraum', 'haeuslichkeit', 'nest_bauen', 'alltag_teilen',
-                    'naehe', 'eigener_raum', 'rueckzugsort'],
+            needs: ['#B2', '#B3', '#B9', '#B12'],
             label: 'Zusammen wohnen',
             category: 'lebensplanung'
         },
         'pr-haustiere': {
-            needs: ['tierliebe', 'fuersorge_tiere', 'begleiter', 'verantwortung_tier',
-                    'natur_verbundenheit', 'ungebundenheit'],
+            needs: ['#B9', '#B12', '#B1', '#B6'],
             label: 'Haustiere',
             category: 'lebensplanung'
         },
         'pr-umzug': {
-            needs: ['sesshaftigkeit', 'verwurzelung', 'mobilitaet', 'flexibilitaet',
-                    'heimat', 'neue_orte', 'stabiler_lebensmittelpunkt'],
+            needs: ['#B2', '#B6', '#B8', '#B4'],
             label: 'Umzugsbereitschaft',
             category: 'lebensplanung'
         },
         'pr-familie': {
-            needs: ['familienbindung', 'herkunftsfamilie', 'familientreffen',
-                    'generationenverbund', 'familienpflichten', 'eigenstaendigkeit_von_familie'],
+            needs: ['#B9', '#B12', '#B2', '#B14'],
             label: 'Familie-Wichtigkeit',
             category: 'lebensplanung'
         },
 
         // FINANZEN & KARRIERE
         'pr-finanzen': {
-            needs: ['finanzielle_unabhaengigkeit', 'gemeinsame_finanzen', 'finanzielle_transparenz',
-                    'finanzielle_sicherheit', 'sparsamkeit', 'grosszuegigkeit'],
+            needs: ['#B2', '#B4', '#B6', '#B11'],
             label: 'Finanzen',
             category: 'finanzen'
         },
         'pr-karriere': {
-            needs: ['berufliche_erfuellung', 'karriereambition', 'work_life_balance',
-                    'berufliche_anerkennung', 'zeit_fuer_beziehung', 'berufliche_flexibilitaet'],
+            needs: ['#B5', '#B14', '#B8', '#B10'],
             label: 'Karriere-Priorität',
             category: 'finanzen'
         },
 
         // KOMMUNIKATION
         'pr-gespraech': {
-            needs: ['taeglicher_austausch', 'tiefgehende_gespraeche', 'small_talk',
-                    'stille_gemeinsam', 'verbale_verbindung', 'zuhoeren'],
+            needs: ['#B9', '#B12', '#B10'],
             label: 'Gesprächsbedürfnis',
             category: 'kommunikation'
         },
         'pr-emotional': {
-            needs: ['emotionale_offenheit', 'gefuehle_zeigen', 'verletzlichkeit',
-                    'emotionale_zurueckhaltung', 'emotionale_sicherheit', 'gefuehle_teilen'],
+            needs: ['#B12', '#B13', '#B15'],
             label: 'Emotionale Offenheit',
             category: 'kommunikation'
         },
         'pr-konflikt': {
-            needs: ['konfliktklaerung', 'harmonie', 'aussprache', 'konflikt_vermeiden',
-                    'streitkultur', 'versoehnlichkeit'],
+            needs: ['#B11', '#B3', '#B15'],
             label: 'Konfliktverhalten',
             category: 'kommunikation'
         },
 
         // SOZIALES
         'pr-introextro': {
-            needs: ['soziale_energie', 'geselligkeit', 'ruhe_von_menschen',
-                    'allein_aufladen', 'menschen_treffen', 'kleine_gruppen'],
+            needs: ['#B9', '#B6', '#B3'],
             label: 'Intro/Extrovertiert',
             category: 'soziales'
         },
         'pr-alleinzeit': {
-            needs: ['zeit_fuer_sich', 'eigene_hobbys', 'gemeinsame_zeit',
-                    'unabhaengigkeit', 'partnerzeit', 'eigene_interessen'],
+            needs: ['#B6', '#B13', '#B3'],
             label: 'Alleinzeit-Bedürfnis',
             category: 'soziales'
         },
         'pr-freunde': {
-            needs: ['eigene_freunde', 'gemeinsame_freunde', 'freundeskreis_teilen',
-                    'soziales_netz', 'freunde_pflegen', 'neue_freundschaften'],
+            needs: ['#B9', '#B12', '#B10'],
             label: 'Freundeskreis',
             category: 'soziales'
         },
 
         // INTIMITÄT
         'pr-naehe': {
-            needs: ['koerpernaehe', 'beruehrung', 'kuscheln', 'physische_distanz',
-                    'koerperkontakt', 'umarmungen', 'hand_halten'],
+            needs: ['#B12', '#B7', '#B1'],
             label: 'Körperliche Nähe',
             category: 'intimitaet'
         },
         'pr-romantik': {
-            needs: ['romantische_gesten', 'ueberraschungen', 'dates', 'alltags_romantik',
-                    'aufmerksamkeiten', 'liebesbekundungen'],
+            needs: ['#B12', '#B7', '#B10'],
             label: 'Romantik-Bedürfnis',
             category: 'intimitaet'
         },
         'pr-sex': {
-            needs: ['sexuelle_haeufigkeit', 'sexuelle_intimiaet', 'koerperliche_lust',
-                    'sexuelle_experimentierfreude', 'sexuelle_verbindung', 'sexuelle_zufriedenheit'],
+            needs: ['#B7', '#B12', '#B1'],
             label: 'Sexuelle Frequenz',
             category: 'intimitaet'
         },
 
         // WERTE
         'pr-religion': {
-            needs: ['spiritualitaet', 'glaubenspraxis', 'religioese_gemeinschaft',
-                    'saekularitaet', 'sinnsuche', 'transzendenz'],
+            needs: ['#B14', '#B15', '#B4', '#B9'],
             label: 'Religiosität',
             category: 'werte'
         },
         'pr-tradition': {
-            needs: ['traditionelle_werte', 'moderne_lebensweise', 'konservative_werte',
-                    'progressive_werte', 'kulturelle_tradition', 'offenheit_fuer_neues'],
+            needs: ['#B4', '#B8', '#B15'],
             label: 'Tradition vs. Modern',
             category: 'werte'
         },
         'pr-umwelt': {
-            needs: ['umweltverantwortung', 'nachhaltigkeit', 'oekologisches_bewusstsein',
-                    'pragmatismus', 'klimaschutz', 'ressourcenschonung'],
+            needs: ['#B14', '#B11', '#B15'],
             label: 'Umweltbewusstsein',
             category: 'werte'
         },
 
         // PRAKTISCHES
         'pr-ordnung': {
-            needs: ['ordnungssinn', 'sauberkeit', 'struktur', 'chaos_toleranz',
-                    'organisiert_sein', 'flexibilitaet_haushalt'],
+            needs: ['#B4', '#B3', '#B2'],
             label: 'Ordnung',
             category: 'praktisches'
         },
         'pr-reise': {
-            needs: ['reisen', 'abenteuer', 'neue_orte_entdecken', 'zuhause_bleiben',
-                    'urlaub', 'fernweh', 'heimatverbundenheit'],
+            needs: ['#B8', '#B6', '#B7'],
             label: 'Reise-Frequenz',
             category: 'praktisches'
         }
@@ -1960,48 +1937,29 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Holt die Dimension-Farbe für ein Bedürfnis basierend auf seiner Kategorie
-     * Unterstützt sowohl #B-IDs als auch String-Keys
+     * Holt die Stufen-Farbe für ein Bedürfnis (#B1–#B16).
+     * Stufe 1 (#B1–#B4) → #10B981, Stufe 2 (#B5–#B8) → #3B82F6,
+     * Stufe 3 (#B9–#B12) → #8B5CF6, Stufe 4 (#B13–#B16) → #F59E0B
      *
-     * @param {string} needIdOrKey - z.B. '#B21' oder 'selbstbestimmung' (Key)
+     * @param {string} needIdOrKey - z.B. '#B7' oder 'intensitaet'
      * @returns {string} CSS-Farbwert oder null
      */
     function getDimensionColor(needIdOrKey) {
-        // Versuche TiageTaxonomie zu finden (global oder window)
-        const taxonomie = (typeof TiageTaxonomie !== 'undefined') ? TiageTaxonomie :
-                          (typeof window !== 'undefined' && window.TiageTaxonomie) ? window.TiageTaxonomie : null;
+        const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
 
-        // Versuche BeduerfnisIds zu finden
         const beduerfnisIds = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds :
                               (typeof window !== 'undefined' && window.BeduerfnisIds) ? window.BeduerfnisIds : null;
+        if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) return null;
 
-        if (!taxonomie || !taxonomie.kategorien) {
-            return null;
-        }
-        if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) {
-            return null;
-        }
-
-        // Konvertiere Key zu ID falls nötig (z.B. 'selbstbestimmung' -> '#B34')
         let needId = needIdOrKey;
-        if (!needIdOrKey.startsWith('#')) {
-            if (beduerfnisIds.toId) {
-                needId = beduerfnisIds.toId(needIdOrKey);
-            }
+        if (!needIdOrKey.startsWith('#') && beduerfnisIds.toId) {
+            needId = beduerfnisIds.toId(needIdOrKey);
         }
 
         const need = beduerfnisIds.beduerfnisse[needId];
-        if (!need || !need.kategorie) {
-            return null;
-        }
+        if (!need || !need.stufe) return null;
 
-        const kategorie = taxonomie.kategorien[need.kategorie];
-        if (!kategorie || !kategorie.dimension) {
-            return null;
-        }
-
-        const dimension = taxonomie.dimensionen?.[kategorie.dimension];
-        return dimension?.color || null;
+        return STUFEN_FARBEN[need.stufe] || null;
     }
 
     /**
@@ -2401,7 +2359,7 @@ const AttributeSummaryCard = (function() {
         }
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // SSOT: Initialisiere ALLE 219 Bedürfnisse aus BeduerfnisIds (Single Source of Truth)
+        // SSOT: Initialisiere ALLE 16 Bedürfnisse aus BeduerfnisIds (Single Source of Truth)
         // BeduerfnisIds ist die einzige Quelle für die Bedürfnis-Definition
         // Werte kommen aus LoadedArchetypProfile (SSOT für berechnete Werte)
         // ═══════════════════════════════════════════════════════════════════════════
@@ -2475,7 +2433,7 @@ const AttributeSummaryCard = (function() {
         const totalNeedsCount = allNeeds.length;
 
         // HAUPTFRAGEN-FILTER ENTFERNT (showOnlyHauptfragen immer false)
-        // Zeige IMMER alle 219 Bedürfnisse
+        // Zeige IMMER alle 16 Bedürfnisse
 
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);

@@ -193,17 +193,40 @@ function openNeedDefinitionModal(needId, context, resonanceData) {
 
     title.textContent = need.label;
 
-    var kategorie = katalog.kategorien[need.kategorie];
-    var dimension = katalog.dimensionen[need.dimension];
-    var perspektive = kategorie ? katalog.perspektiven[getPerspektiveForKategorieModal(need.kategorie)] : null;
+    // v4.0: neue Felder aus 16-Bedürfnis-Katalog
+    var STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+    var STUFEN_LABELS = {
+        1: 'Passive Basisbedürfnisse', 2: 'Handlungs-Bedürfnisse',
+        3: 'Soziale Bedürfnisse',      4: 'Identitäts-Bedürfnisse'
+    };
+    // Legacy-Felder: nur verfügbar wenn altes #K-Katalog geladen ist
+    var katalogKategorien = (katalog.kategorien && typeof katalog.kategorien === 'object') ? katalog.kategorien : {};
+    var katalogDimensionen = (katalog.dimensionen && typeof katalog.dimensionen === 'object') ? katalog.dimensionen : {};
+    var kategorie = need.kategorie ? katalogKategorien[need.kategorie] : null;
+    var dimension = need.dimension ? katalogDimensionen[need.dimension] : null;
+    var perspektive = kategorie ? (katalog.perspektiven ? katalog.perspektiven[getPerspektiveForKategorieModal(need.kategorie)] : null) : null;
 
     var html = '<div class="need-modal-content">';
 
     html += '<div class="need-modal-id-row"><span class="need-modal-id">' + need.id + '</span>' +
         (need.frageTyp ? '<span class="need-modal-type need-modal-type-' + need.frageTyp + '">' + (need.frageTyp === 'haupt' ? '📋 Hauptfrage' : '📑 Nuance') + '</span>' : '') +
+        (need.icon ? '<span style="font-size:20px;margin-left:8px;">' + need.icon + '</span>' : '') +
         '</div>';
 
     html += '<div class="need-modal-meta-grid">';
+    // v4.0: Stufe
+    if (need.stufe) {
+        var stufeColor = STUFEN_FARBEN[need.stufe] || '#888';
+        var stufeLabel = STUFEN_LABELS[need.stufe] || ('Stufe ' + need.stufe);
+        html += '<div class="need-modal-meta-item"><span class="need-modal-meta-label">Stufe</span>' +
+            '<span class="need-modal-meta-value" style="color:' + stufeColor + '"><span class="need-modal-dot" style="background:' + stufeColor + '"></span>' + need.stufe + ' — ' + stufeLabel + '</span></div>';
+    }
+    // v4.0: Fähigkeit
+    if (need.faehigkeit) {
+        html += '<div class="need-modal-meta-item"><span class="need-modal-meta-label">Fähigkeit</span>' +
+            '<span class="need-modal-meta-value">' + need.faehigkeit + '</span></div>';
+    }
+    // Legacy: Kategorie / Dimension / Perspektive (wenn vorhanden)
     if (kategorie) {
         html += '<div class="need-modal-meta-item"><span class="need-modal-meta-label">Kategorie</span>' +
             '<span class="need-modal-meta-value" style="color:' + kategorie.color + '"><span class="need-modal-dot" style="background:' + kategorie.color + '"></span>' + kategorie.label + '</span></div>';
@@ -216,8 +239,17 @@ function openNeedDefinitionModal(needId, context, resonanceData) {
         html += '<div class="need-modal-meta-item"><span class="need-modal-meta-label">Perspektive</span>' +
             '<span class="need-modal-meta-value">' + perspektive.id + ' ' + perspektive.label + '</span></div>';
     }
+    // v4.0: Synonyme
+    if (need.synonyme && need.synonyme.length > 0) {
+        html += '<div class="need-modal-meta-item" style="grid-column:1/-1"><span class="need-modal-meta-label">Synonyme</span>' +
+            '<span class="need-modal-meta-value">' + need.synonyme.join(' · ') + '</span></div>';
+    }
     html += '</div>';
 
+    // v4.0: Strategie
+    if (need.strategie) {
+        html += '<div class="need-modal-question"><span class="need-modal-question-icon">💡</span><span class="need-modal-question-text">' + need.strategie + '</span></div>';
+    }
     if (need.frage) {
         html += '<div class="need-modal-question"><span class="need-modal-question-icon">❓</span><span class="need-modal-question-text">' + need.frage + '</span></div>';
     }
@@ -507,8 +539,8 @@ function renderNeedsFullModal() {
 
     var explanationHtml = '<div style="background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;border-radius:4px;padding:10px 12px;margin-bottom:16px;font-size:12px;line-height:1.6;">' +
         '<div style="display:flex;align-items:start;gap:8px;"><div style="flex:1;">' +
-        '<div style="font-weight:600;margin-bottom:4px;color:#22c55e;">Berechnung über alle 224 Bedürfnisse</div>' +
-        '<div style="color:var(--text-secondary);font-size:11px;">Gewichtete Übereinstimmung basierend auf euren tatsächlichen Profilen. ' +
+        '<div style="font-weight:600;margin-bottom:4px;color:#22c55e;">Berechnung über alle 16 Grundbedürfnisse</div>' +
+        '<div style="color:var(--text-secondary);font-size:11px;">Gewichtete Übereinstimmung nach Volker Kiels 4-Stufen-Modell basierend auf euren Profilen. ' +
         '<span onclick="openNeedsScoreExplanation();" style="color:#22c55e;cursor:pointer;text-decoration:underline;margin-left:4px;">Mehr erfahren ⓘ</span></div>' +
         '</div></div></div>';
 
@@ -517,22 +549,11 @@ function renderNeedsFullModal() {
         '<button onclick="switchNeedsFullModalTab(\'unterschiedlich\')" style="flex:1;padding:10px 16px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;' + (type === 'unterschiedlich' ? 'background:#ef4444;color:white;' : 'background:transparent;color:var(--text-muted);') + '">Unterschiedliche Prioritäten</button>' +
         '</div>';
 
-    // Eigenschaften-Toggles für ALLE aktiven ICH-Archetypen
-    var eigenschaftenHtml = '';
-    if (typeof getEigenschaftenHtml === 'function') {
-        var ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : (ichArchetyp ? [ichArchetyp] : []);
-        ichSlots.forEach(function(slotArch) {
-            if (!slotArch) return;
-            var archData = window.tiageData && window.tiageData.archetypes && window.tiageData.archetypes[slotArch];
-            var archName = archData ? archData.name : slotArch;
-            var archColor = archData ? archData.color : 'var(--primary)';
-            var archIcon = (window.icons && window.icons[slotArch]) || '';
-            if (ichSlots.length > 1) {
-                eigenschaftenHtml += '<div style="margin-top:8px;padding:4px 8px;font-size:11px;font-weight:600;color:' + archColor + ';border-left:3px solid ' + archColor + ';border-radius:2px;">' + archIcon + ' ' + archName + '</div>';
-            }
-            eigenschaftenHtml += getEigenschaftenHtml(slotArch);
-        });
-    }
+    var eigenschaftenHtml = '<div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:start;gap:10px;">' +
+        '<span style="font-size:16px;line-height:1.4;">ℹ️</span>' +
+        '<div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">' +
+        'Dieser Vergleich zeigt ausschließlich die <strong style="color:var(--text-primary);">Archetyp-Basiswerte</strong> — individuelle Eigenschaften (GOD, Lifestyle) fließen hier nicht ein.' +
+        '</div></div>';
 
     var headerHtml = '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1);">' +
         '<button onclick="sortNeedsFullModal(\'duo\')" style="display:flex;align-items:center;justify-content:center;gap:6px;background:' + (duoActive ? 'rgba(34,197,94,0.15)' : 'transparent') + ';border:1px solid ' + (duoActive ? 'rgba(34,197,94,0.4)' : 'transparent') + ';border-radius:6px;padding:6px 8px;cursor:pointer;">' +

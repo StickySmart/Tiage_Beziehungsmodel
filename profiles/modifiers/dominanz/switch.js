@@ -68,14 +68,11 @@ TiageModifiers.Dominanz.Switch = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        offenheit_fuer_neues: 5,            // #B189 Vielseitigkeit & Situationsanpassung
-        rollenausdruck: 5,                  // #B87 Rollenflexibilität
-        empathie: 4,                        // #B28 Versteht beide Seiten
-        authentizitaet: 4,                  // #B50 Selbstkenntnis
-
-        // Herausforderungen
-        stabilitaet: -1                     // #B13 Konsistenz - Wechsel erfordert Kommunikation
+        '#B7':  +15,  // Intensität — erlebt beide Seiten intensiv
+        '#B6':  +5,   // Freiheit — braucht Flexibilität
+        '#B2':  +5,   // Sicherheit — kann beide Rollen sicher halten
+        '#B5':  +5,   // Wirksamkeit — kann führen UND folgen
+        '#B16': +8    // Selbstentfaltung — kreative Rollenerkundung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

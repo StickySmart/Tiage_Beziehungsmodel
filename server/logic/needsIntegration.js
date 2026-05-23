@@ -29,36 +29,33 @@ function combineRFactors(R_ich, R_partner) {
 // Dies ist die EINZIGE Stelle wo dieses Mapping definiert ist (SSOT)
 
 const DIMENSION_NEED_IDS = {
-    // R1: Leben (Orientierung) - Intimität & Körperlichkeit
-    leben: ['#B221', '#B222', '#B204', '#B20'],
-    // #B221 = sexuelle_experimentierfreude
-    // #B222 = sexuelle_verbindung
-    // #B204 = koerpernaehe
-    // #B20  = intimitaet
+    // R1: Leben (Körperlichkeit, Intimität, Sinnlichkeit)
+    leben: ['#B1', '#B3', '#B7', '#B12'],
+    // #B1  = Wohlbefinden (körperliche Gesundheit)
+    // #B3  = Leichtigkeit (Entspannung, Harmonie)
+    // #B7  = Intensität (Sinnlichkeit, Leidenschaft, Genuss)
+    // #B12 = Verbundenheit (Intimität, Nähe, Liebe, Sex)
 
-    // R2: Philosophie (Archetyp) - Lebensplanung & Bindung
-    philosophie: ['#B89', '#B96', '#B95', '#B36', '#B34'],
-    // #B89  = kinderwunsch / kinder_und_elternschaft
-    // #B96  = langfristige_bindung
-    // #B95  = verbindlichkeit
-    // #B36  = unabhaengigkeit
-    // #B34  = selbstbestimmung
+    // R2: Philosophie (Archetyp, Bindung, Sinn, Gemeinschaft)
+    philosophie: ['#B2', '#B8', '#B9', '#B14'],
+    // #B2  = Sicherheit (Stabilität, Loyalität, Treue)
+    // #B8  = Entwicklung (Wachstum, Lernen)
+    // #B9  = Gemeinschaft (Zugehörigkeit, Familie, Clan)
+    // #B14 = Sinn (Berufung, Vision, Mission)
 
-    // R3: Dynamik (Dominanz) - Machtdynamik
-    dynamik: ['#B74', '#B75', '#B76', '#B77', '#B86', '#B85'],
-    // #B74 = kontrolle_ausueben
-    // #B75 = hingabe
-    // #B76 = fuehrung_geben
-    // #B77 = gefuehrt_werden
-    // #B86 = machtaustausch
-    // #B85 = sich_fallenlassen
+    // R3: Dynamik (Wirksamkeit, Freiheit, Kontrolle)
+    dynamik: ['#B4', '#B5', '#B6', '#B11'],
+    // #B4  = Orientierung (Führung, Kontrolle, Struktur)
+    // #B5  = Wirksamkeit (Einfluss, Macht, Souveränität)
+    // #B6  = Freiheit (Autonomie, Unabhängigkeit)
+    // #B11 = Gerechtigkeit (Fairness, Gleichwertigkeit)
 
-    // R4: Identität (Geschlecht) - Selbstausdruck
-    identitaet: ['#B50', '#B67', '#B25', '#B31']
-    // #B50 = authentizitaet
-    // #B67 = selbst_ausdruck
-    // #B25 = akzeptanz
-    // #B31 = gesehen_werden
+    // R4: Identität (Selbsterkenntnis, Authentizität, Anerkennung)
+    identitaet: ['#B10', '#B13', '#B15', '#B16']
+    // #B10 = Anerkennung (Wertschätzung, Respekt)
+    // #B13 = Selbsterkenntnis (Bewusstheit, Reflexion)
+    // #B15 = Integrität (Authentizität, Wahrhaftigkeit)
+    // #B16 = Selbstentfaltung (Selbstverwirklichung, Flow)
 };
 
 // Cache für BaseArchetypProfile (wird beim ersten Zugriff gesetzt)
@@ -97,17 +94,18 @@ function getExpectedNeedsFromProfile(archetyp, dimension) {
         baseProfile = _baseArchetypProfileCache[archetyp];
     }
 
-    if (!baseProfile || !baseProfile.beduerfnisse) {
-        // Fallback auf ARCHETYP_KOHAERENZ (Legacy)
-        console.warn(`[NeedsIntegration] SSOT-Fallback: BaseArchetypProfile nicht verfügbar für ${archetyp}`);
-        const kohaerenz = Constants.ARCHETYP_KOHAERENZ;
-        return kohaerenz?.[dimension]?.[archetyp] || {};
+    // v4.0: Profile haben umfrageWerte (#B1-#B16), nicht mehr beduerfnisse
+    const profileNeeds = baseProfile.umfrageWerte || baseProfile.beduerfnisse;
+
+    if (!profileNeeds) {
+        console.warn(`[NeedsIntegration] SSOT-Fallback: Keine Bedürfniswerte für ${archetyp}`);
+        return {};
     }
 
     // SSOT: Extrahiere Werte direkt aus dem Basis-Profil
     const result = {};
     for (const needId of needIds) {
-        const value = baseProfile.beduerfnisse[needId];
+        const value = profileNeeds[needId];
         if (value !== undefined) {
             result[needId] = value;
         }

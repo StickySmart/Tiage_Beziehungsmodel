@@ -60,18 +60,10 @@ TiageModifiers.Gender.InterFluid = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        rollenausdruck: 5,                  // #B87 Gender-Flexibilität & Rollenwechsel
-        offenheit_fuer_neues: 5,            // #B189 Anpassungsfähigkeit
-        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 Aktive Identitätsgestaltung
-        stabilitaet_und_sicherheit: 3,      // #B11 Wohlbefinden durch Fluidität
-        authentizitaet: 5,                  // #B50 Maximale Selbstbestimmung
-
-        // Herausforderungen
-        gesellschaft: -4,                   // #B19 Gesellschaftliche Komplexität
-
-        // Support
-        kommunikation: 5                    // #B40 Kommunikationsbedarf sehr hoch
+        '#B16': +10,  // Selbstentfaltung — maximale Kreativität
+        '#B6':  +12,  // Freiheit — maximale Autonomie
+        '#B8':  +8,   // Entwicklung — ständige Veränderung
+        '#B7':  +5    // Intensität — reiche innere Erfahrungen
     },
 
     // ═══════════════════════════════════════════════════════════════════════

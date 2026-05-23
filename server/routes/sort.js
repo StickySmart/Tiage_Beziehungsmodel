@@ -6,8 +6,23 @@
  */
 
 import { Router } from 'express';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const router = Router();
+
+let _catalogCache = null;
+function getCatalog() {
+    if (!_catalogCache) {
+        const path = join(__dirname, '..', '..', 'profiles', 'data', 'beduerfnis-katalog.json');
+        _catalogCache = JSON.parse(readFileSync(path, 'utf-8'));
+    }
+    return _catalogCache;
+}
 
 /**
  * POST /api/sort/needs
@@ -80,27 +95,91 @@ router.post('/needs', async (req, res, next) => {
 
 /**
  * POST /api/sort/categories
- * Sortiert 18 Kategorien nach Durchschnittswert
+ * Gruppiert Bedürfnisse nach Stufe (4 Stufen nach Volker Kiel) und berechnet Durchschnitte
+ *
+ * Body: { ichNeeds, partnerNeeds?, sortBy? }
  */
 router.post('/categories', async (req, res, next) => {
     try {
-        const { needs, taxonomy, sortBy = 'average' } = req.body;
+        const { ichNeeds, partnerNeeds, sortBy = 'stufe' } = req.body;
 
-        if (!needs) {
+        if (!ichNeeds) {
             return res.status(400).json({
-                error: 'Missing required field: needs'
+                error: 'Missing required field: ichNeeds'
             });
         }
 
-        // TODO: Implementierung mit Taxonomie
-        // Gruppiere Bedürfnisse nach Kategorie und berechne Durchschnitte
+        const catalog = getCatalog();
+        const katalog = catalog.beduerfnisse || {};
+        const stufen = catalog.stufen || {};
+
+        // Gruppieren nach Stufe
+        const stufenMap = {};
+
+        for (const [needId, ichValue] of Object.entries(ichNeeds)) {
+            const meta = katalog[needId];
+            const stufe = meta?.stufe ?? 0;
+            const partnerValue = partnerNeeds?.[needId] ?? null;
+
+            if (!stufenMap[stufe]) {
+                stufenMap[stufe] = {
+                    stufe,
+                    label: stufen[String(stufe)]?.label || `Stufe ${stufe}`,
+                    color: stufen[String(stufe)]?.color || '#888888',
+                    needs: []
+                };
+            }
+
+            stufenMap[stufe].needs.push({
+                id: needId,
+                label: meta?.label || needId,
+                icon: meta?.icon || '',
+                ichValue,
+                partnerValue,
+                difference: partnerValue !== null ? Math.abs(ichValue - partnerValue) : null,
+                average: partnerValue !== null ? (ichValue + partnerValue) / 2 : ichValue
+            });
+        }
+
+        // Durchschnitte pro Stufe berechnen
+        const categories = Object.values(stufenMap).map(cat => {
+            const ichVals = cat.needs.map(n => n.ichValue);
+            const ichAvg = ichVals.reduce((s, v) => s + v, 0) / ichVals.length;
+
+            let partnerAvg = null;
+            let diffAvg = null;
+            if (partnerNeeds) {
+                const partVals = cat.needs.filter(n => n.partnerValue !== null).map(n => n.partnerValue);
+                partnerAvg = partVals.length > 0
+                    ? Math.round(partVals.reduce((s, v) => s + v, 0) / partVals.length)
+                    : null;
+                const diffs = cat.needs.filter(n => n.difference !== null).map(n => n.difference);
+                diffAvg = diffs.length > 0
+                    ? Math.round(diffs.reduce((s, v) => s + v, 0) / diffs.length)
+                    : null;
+            }
+
+            return {
+                stufe: cat.stufe,
+                label: cat.label,
+                color: cat.color,
+                count: cat.needs.length,
+                ichAverage: Math.round(ichAvg),
+                partnerAverage: partnerAvg,
+                differenceAverage: diffAvg,
+                needs: cat.needs
+            };
+        });
+
+        categories.sort((a, b) => {
+            if (sortBy === 'ichAverage') return b.ichAverage - a.ichAverage;
+            if (sortBy === 'difference' && a.differenceAverage !== null) return b.differenceAverage - a.differenceAverage;
+            return a.stufe - b.stufe;
+        });
 
         res.json({
             success: true,
-            result: {
-                sorted: [],
-                message: 'Kategorie-Sortierung wird implementiert'
-            }
+            result: { categories, count: categories.length }
         });
     } catch (error) {
         next(error);

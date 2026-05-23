@@ -305,22 +305,11 @@ export const NEEDS_INTEGRATION = {
         dominanz:     { matrix: 0.50, needs: 0.50 },
         geschlecht:   { matrix: 0.60, needs: 0.40 }
     },
-    ARCHETYP_NEEDS: [
-        "kinderwunsch", "langfristige_bindung", "verbindlichkeit",
-        "gemeinsamer_wohnraum", "eigener_raum", "alltag_teilen",
-        "unabhaengigkeit", "selbstbestimmung", "zugehoerigkeit", "gemeinschaft"
-    ],
-    ORIENTIERUNG_NEEDS: [
-        "sexuelle_haeufigkeit", "sexuelle_experimentierfreude", "sexuelle_verbindung",
-        "koerpernaehe", "intimitaet", "koerperliche_lust"
-    ],
-    DOMINANZ_NEEDS: [
-        "kontrolle_ausueben", "hingabe", "fuehrung_geben", "gefuehrt_werden",
-        "machtaustausch", "sich_fallenlassen"
-    ],
-    GESCHLECHT_NEEDS: [
-        "authentizitaet", "selbst_ausdruck", "akzeptanz", "gesehen_werden"
-    ]
+    // v4.0: Neue #B-IDs (16 Grundbedürfnisse nach Volker Kiel)
+    ARCHETYP_NEEDS:     ['#B2', '#B8', '#B9', '#B14'],  // Philosophie: Sicherheit, Entwicklung, Gemeinschaft, Sinn
+    ORIENTIERUNG_NEEDS: ['#B1', '#B3', '#B7', '#B12'],  // Leben: Wohlbefinden, Leichtigkeit, Intensität, Verbundenheit
+    DOMINANZ_NEEDS:     ['#B4', '#B5', '#B6', '#B11'],  // Dynamik: Orientierung, Wirksamkeit, Freiheit, Gerechtigkeit
+    GESCHLECHT_NEEDS:   ['#B10', '#B13', '#B15', '#B16'] // Identität: Anerkennung, Selbsterkenntnis, Integrität, Selbstentfaltung
 };
 
 // ═══════════════════════════════════════════════════════════════════════════

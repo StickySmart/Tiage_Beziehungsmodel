@@ -60,16 +60,11 @@ TiageModifiers.Gender.FrauCis = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        emotionale_naehe: 3,                // #B18 Emotionale Intelligenz
-        kommunikation: 3,                   // #B40 Höhere verbale Fähigkeiten
-        langfristige_bindung: 3,            // #B95 Beziehungsorientierung
-        empathie: 3,                        // #B28 Gesellschaftlich entwickelt
-        sexualitaet: 2,                     // #B172 Sexuelle Flexibilität
-        offenheit_fuer_neues: 3,            // #B189 Anpassungsfähigkeit
-
-        // Herausforderungen
-        gesellschaft: -2                    // #B19 Gesellschaftlicher Druck
+        '#B12': +6,   // Verbundenheit — emotionale Nähe
+        '#B9':  +5,   // Gemeinschaft — soziale Einbindung
+        '#B10': +5,   // Anerkennung — Wertschätzung
+        '#B13': +4,   // Selbsterkenntnis — Selbstreflexion
+        '#B6':  -2    // Freiheit — tendenziell geringere Autonomieorientierung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

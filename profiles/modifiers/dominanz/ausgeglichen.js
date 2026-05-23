@@ -57,13 +57,9 @@ TiageModifiers.Dominanz.Ausgeglichen = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        gegenseitigkeit: 5,                 // #B43 Egalität & Partnerschaftlichkeit
-        akzeptanz_und_empathie: 4,          // #B25 Respekt & gegenseitige Wertschätzung
-        stabilitaet: 4,                     // #B13 Keine extremen Schwankungen
-
-        // Herausforderungen
-        wirksamkeit: -1                     // #B60 Entscheidungsgeschwindigkeit - Konsens braucht Zeit
+        '#B11': +5,   // Gerechtigkeit — Fairness und Gegenseitigkeit
+        '#B9':  +5,   // Gemeinschaft — soziale Integration
+        '#B13': +5    // Selbsterkenntnis — Reflexionsfähigkeit
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -141,4 +141,42 @@ Alle Entitäten verwenden eindeutige IDs für konsistente Referenzierung:
 
 ---
 
-*© 2025 Ti-Age – Alle Rechte vorbehalten*
+## Quellen & Credits
+
+### 4-Stufen-Bedürfnis-Modell
+
+Basierend auf der Arbeit von **Volker Schmidt**  
+„Liebe auf Augenhöhe"  
+https://liebe-auf-augenhoehe.de
+
+Das Modell unterscheidet vier entwicklungspsychologische Stufen:
+
+| Stufe | Thema | Bedürfnisse |
+|-------|-------|-------------|
+| **1 – Passiv/Basal** | Empfangen, Sein, Grundbedürfnisse | #B1 Wohlbefinden, #B2 Sicherheit, #B3 Leichtigkeit, #B4 Orientierung |
+| **2 – Handlung/Aktiv** | Tun, Gestalten, Wirken, Autonomie | #B5 Wirksamkeit, #B6 Freiheit, #B7 Intensität, #B8 Entwicklung |
+| **3 – Sozial/Relational** | Beziehung, Wir, Zwischen-Sein | #B9 Gemeinschaft, #B10 Anerkennung, #B11 Gerechtigkeit, #B12 Verbundenheit |
+| **4 – Identität/Existenziell** | Werden, Transzendenz, Selbst-Verwirklichung | #B13 Selbsterkenntnis, #B14 Sinn, #B15 Integrität, #B16 Selbstentfaltung |
+
+Die Stufenlogik ist entwicklungspsychologisch: passiv → aktiv → sozial → existenziell.  
+Alle Stufen bleiben lebenslang relevant – kein „höher = besser".
+
+### Osho Zen Tarot
+
+Ma Deva Padma (Illustrationen & Konzept)  
+© Osho International Foundation  
+Verlag: St. Martin's Press
+
+### Gewaltfreie Kommunikation (GFK)
+
+Marshall B. Rosenberg  
+Universelle menschliche Bedürfnisse als Grundlage des Bedürfnis-Katalogs.
+
+### Pirsig / Qualitätstheorie
+
+Robert M. Pirsig, „Zen und die Kunst ein Motorrad zu warten" –  
+Metaphysik der Qualität (Static Quality / Dynamic Quality) als Tiage-Logos-Anteil.
+
+---
+
+*© 2025–2026 Ti-Age – Alle Rechte vorbehalten*

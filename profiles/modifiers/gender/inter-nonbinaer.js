@@ -68,20 +68,11 @@ TiageModifiers.Gender.InterNonbinaer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        integritaet: 4,                     // #B52 Identitätsintegration
-        wachstum_und_sinn: 4,               // #B61 Resilienz
-        authentizitaet: 5,                  // #B50 Eigener Weg jenseits binärer Normen
-        gemeinschaft: 4,                    // #B41 Wichtigkeit von Community
-
-        // Herausforderungen
-        gesellschaft: -3,                   // #B19 Gesellschaftliche Unsichtbarkeit
-        stabilitaet_und_sicherheit: -3,     // #B11 Psychische Belastung
-        langfristige_bindung: -2,           // #B95 Partnerschaftliche Herausforderungen
-
-        // Support
-        kommunikation: 5,                   // #B40 Kommunikationsbedarf
-        akzeptanz_und_empathie: 5           // #B25 Unterstützung kritisch wichtig
+        '#B16': +8,   // Selbstentfaltung — kreativer Ausdruck
+        '#B6':  +10,  // Freiheit — Freiheit von Kategorien
+        '#B11': +10,  // Gerechtigkeit — Sichtbarkeit und Akzeptanz
+        '#B15': +8,   // Integrität — Authentizität
+        '#B2':  +5    // Sicherheit — erhöhter Schutzbedarf
     },
 
     // ═══════════════════════════════════════════════════════════════════════

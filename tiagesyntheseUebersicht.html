@@ -42,6 +42,7 @@
     <script src="profiles/archetypen/ra.js"></script>
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
+    <script src="profiles/archetypen/base-profiles.js"></script>
 
     <!-- NOTE: index.js (ProfileCalculator) bewusst NICHT geladen.
          Synthese-Seiten LESEN R-Faktoren und flatNeeds aus TiageState (SSOT),
@@ -1010,15 +1011,24 @@
             const row = btn.closest('tr');
             if (!row) return;
 
+            const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            const STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+            const stufeColor = STUFEN_FARBEN[need.stufe] || '#888';
+
+            let detailHtml = `<span style="font-weight:600;color:${stufeColor};">${need.label || id}</span>`;
+            if (need.stufe) detailHtml += ` <span style="font-size:10px;color:${stufeColor};background:${stufeColor}22;padding:1px 6px;border-radius:4px;">${STUFEN_LABELS[need.stufe] || ('Stufe ' + need.stufe)}</span>`;
+            if (need.faehigkeit) detailHtml += ` · <span style="font-size:11px;color:rgba(255,255,255,0.5);">${need.faehigkeit}</span>`;
+            if (need.synonyme && need.synonyme.length) detailHtml += `<br><span style="font-size:11px;color:rgba(255,255,255,0.35);">${need.synonyme.join(' · ')}</span>`;
+            if (need.strategie) detailHtml += `<br><span style="font-size:11px;color:rgba(255,255,255,0.45);font-style:italic;">${need.strategie}</span>`;
+            // Legacy fields
+            if (need.kontext) detailHtml += ` · <span>${need.kontext}</span>`;
+            if (need.frage)   detailHtml += `<br><span class="detail-frage">${need.frage}</span>`;
+
             const colCount = row.cells.length;
             const detailRow = document.createElement('tr');
             detailRow.id = detailId;
             detailRow.className = 'breakdown-detail-row';
-            detailRow.innerHTML = `<td colspan="${colCount}">
-                <span class="detail-label">${need.label || id}</span>
-                ${need.kontext ? ` · <span>${need.kontext}</span>` : ''}
-                ${need.frage  ? `<br><span class="detail-frage">${need.frage}</span>` : ''}
-            </td>`;
+            detailRow.innerHTML = `<td colspan="${colCount}" style="padding:8px 12px 10px 12px;">${detailHtml}</td>`;
             row.after(detailRow);
         }
 
@@ -1026,16 +1036,17 @@
          * Basis-Bedürfniswerte aus den geladenen Archetyp-Profilen
          */
         function getBaseNeeds(archetyp) {
+            function uw(p) { return p ? (p.umfrageWerte || p.beduerfnisse || null) : null; }
             const map = {
-                'single':      typeof SingleProfil      !== 'undefined' ? SingleProfil.beduerfnisse      : null,
-                'duo':         typeof DuoProfil         !== 'undefined' ? DuoProfil.beduerfnisse         : null,
-                'duo_flex':    typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil.beduerfnisse     : null,
-                'duoflex':     typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil.beduerfnisse     : null,
-                'solopoly':    typeof SolopolyProfil    !== 'undefined' ? SolopolyProfil.beduerfnisse    : null,
-                'polyamor':    typeof PolyamorProfil    !== 'undefined' ? PolyamorProfil.beduerfnisse    : null,
-                'ra':          typeof RAProfil          !== 'undefined' ? RAProfil.beduerfnisse          : null,
-                'lat':         typeof LATProfil         !== 'undefined' ? LATProfil.beduerfnisse         : null,
-                'aromantisch': typeof AromantischProfil !== 'undefined' ? AromantischProfil.beduerfnisse : null,
+                'single':      uw(typeof SingleProfil      !== 'undefined' ? SingleProfil      : null),
+                'duo':         uw(typeof DuoProfil         !== 'undefined' ? DuoProfil         : null),
+                'duo_flex':    uw(typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil     : null),
+                'duoflex':     uw(typeof DuoFlexProfil     !== 'undefined' ? DuoFlexProfil     : null),
+                'solopoly':    uw(typeof SolopolyProfil    !== 'undefined' ? SolopolyProfil    : null),
+                'polyamor':    uw(typeof PolyamorProfil    !== 'undefined' ? PolyamorProfil    : null),
+                'ra':          uw(typeof RAProfil          !== 'undefined' ? RAProfil          : null),
+                'lat':         uw(typeof LATProfil         !== 'undefined' ? LATProfil         : null),
+                'aromantisch': uw(typeof AromantischProfil !== 'undefined' ? AromantischProfil : null),
             };
             return map[archetyp] || {};
         }
@@ -1043,12 +1054,6 @@
         /**
          * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle (nach BeduerfnisIds-Load)
          */
-        const STUFEN_MAP_UEBERSICHT = {
-            '#K1':1,'#K2':1,'#K7':1,'#K18':1,
-            '#K5':2,'#K9':2,'#K11':2,'#K14':2,
-            '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
-            '#K4':4,'#K8':4,'#K12':4,'#K13':4
-        };
         const STUFEN_LABELS_UEBERSICHT = {
             1: { label: 'Fund.', color: '#10B981' },
             2: { label: 'Entf.', color: '#3B82F6' },
@@ -1056,10 +1061,11 @@
             4: { label: 'Sinn',  color: '#F59E0B' }
         };
 
-        function generateNeedsBreakdownHTML(ichArchetype) {
-            const flatNeeds  = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.ich') || {}) : {};
-            const personDims = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.ich') || {}) : {};
-            const baseNeeds  = getBaseNeeds(ichArchetype);
+        function generateNeedsBreakdownHTML(archetyp, person) {
+            person = person || 'ich';
+            const flatNeeds  = (typeof TiageState !== 'undefined') ? (TiageState.get('flatNeeds.' + person) || {}) : {};
+            const personDims = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.' + person) || {}) : {};
+            const baseNeeds  = getBaseNeeds(archetyp);
 
             if (Object.keys(flatNeeds).length === 0) {
                 return `<div class="breakdown-empty">Keine Bedürfnisse gespeichert.<br>Bitte auf der Hauptseite Bedürfnisse einstellen.</div>`;
@@ -1086,11 +1092,10 @@
                     const key   = getKey(id);
                     const label = getLabel(id);
                     const base  = baseNeeds[id] ?? 50;
-                    const bd    = allBreakdowns[key] || { g:0, d:0, o:0, f:0, fu:0, h:0, fr:0, total:0 };
+                    const bd    = allBreakdowns[id] || { g:0, d:0, o:0, f:0, fu:0, h:0, fr:0, total:0 };
                     const du    = Math.round(final - base - bd.total);
-                    const kat   = window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[id]
-                                  ? window.BeduerfnisKatalog.beduerfnisse[id].kategorie : null;
-                    const stufeNr = kat ? STUFEN_MAP_UEBERSICHT[kat] : null;
+                    const bedEntry = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse[id];
+                    const stufeNr = bedEntry ? bedEntry.stufe : null;
                     return { id, key, label, base, final, du, stufeNr,
                              g:bd.g||0, d:bd.d||0, o:bd.o||0,
                              f:bd.f||0, fu:bd.fu||0, h:bd.h||0, fr:bd.fr||0,
@@ -1138,7 +1143,7 @@
             return `
                 <div class="breakdown-info">
                     <strong>ℹ️ GOD+FFH Modifikatoren</strong><br>
-                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}/DU angepasst · Klick auf Name für Details
+                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}${rows.some(r => r.du !== 0) ? '/Manuell' : ''} angepasst · Klick auf Name für Details
                 </div>
                 <div class="breakdown-table-wrap">
                     <table class="breakdown-table">
@@ -1147,7 +1152,7 @@
                             <th>Stufe</th>
                             <th>Basis</th><th>G</th><th>D</th><th>O</th>
                             <th>F</th><th>FU</th><th>H</th><th>FR</th>
-                            <th class="th-du">DU</th><th>=</th><th>Final</th>
+                            <th class="th-du" title="Manuelle Slider-Abweichung von der automatischen Berechnung">±</th><th>=</th><th>Final</th>
                         </tr></thead>
                         <tbody>${tableRows}</tbody>
                     </table>
@@ -1251,8 +1256,11 @@
                 const state = SynthesePageShared.getCurrentState();
                 const names = SynthesePageShared.archetypeNames;
                 const label = names[state.ichArchetype] || state.ichArchetype;
+                const ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                    ? TiageState.getFlatNeeds('ich') : {};
+                const top5Html = renderTop5SectionUebersicht(ichNeeds, state.ichArchetype);
 
-                container.innerHTML =
+                container.innerHTML = top5Html +
                     `<div class="synthese-section">
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">🎯</span>
@@ -1261,7 +1269,7 @@
                                 <div class="synthese-section-subtitle breakdown-header">Bedürfnis-Aufschlüsselung</div>
                             </div>
                         </div>
-                        ${generateNeedsBreakdownHTML(state.ichArchetype)}
+                        ${generateNeedsBreakdownHTML(state.ichArchetype, 'ich')}
                     </div>`;
             }).catch(() => {
                 // Fallback ohne Katalog
@@ -1273,9 +1281,83 @@
                             <span class="synthese-section-icon">🎯</span>
                             <div><div class="synthese-section-title">ICH: ${names[state.ichArchetype] || state.ichArchetype}</div></div>
                         </div>
-                        ${generateNeedsBreakdownHTML(state.ichArchetype)}
+                        ${generateNeedsBreakdownHTML(state.ichArchetype, 'ich')}
                     </div>`;
             });
+        }
+
+        // Image mapping for Top-5 section: needId → filenames per variant
+        var TOP5_IMAGE_MAP = {
+            '#B1':  ['B002.webp','B005.webp'],
+            '#B2':  ['B011.webp','B012.webp'],
+            '#B3':  ['B014.webp','B006.webp','B047.webp'],
+            '#B4':  ['B057.webp','B055.webp','B054.webp'],
+            '#B5':  ['B060.webp','B058.webp','B056.webp'],
+            '#B6':  ['B034.webp','B036.webp','B035.webp'],
+            '#B7':  ['B082.webp','B048.webp','B007.webp'],
+            '#B8':  ['B061.webp','B065.webp'],
+            '#B9':  ['B041.webp','B042.webp','B039.webp'],
+            '#B10': ['B017.webp','B044.webp','B045.webp'],
+            '#B11': ['B119.webp','B120.webp'],
+            '#B12': ['B021.webp','B020.webp','B028.webp'],
+            '#B13': ['B072.webp','B175.webp'],
+            '#B14': ['B062.webp','B070.webp','B063.webp'],
+            '#B15': ['B052.webp','B050.webp','B051.webp'],
+            '#B16': ['B064.webp','B067.webp','B069.webp']
+        };
+        var IMG_BASE_UEBERSICHT = 'assets/images/beduerfnisse-v2/';
+
+        function renderTop5SectionUebersicht(ichNeeds, ichArchetype) {
+            var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
+            if (!catalog) return '';
+            var STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+
+            var ARCHETYPE_NAMES_MAP = {
+                'single':'SingleProfil','duo':'DuoProfil','duo_flex':'DuoFlexProfil',
+                'solopoly':'SolopolyProfil','polyamor':'PolyamorProfil',
+                'ra':'RAProfil','lat':'LATProfil','aromantisch':'AromantischProfil'
+            };
+            var profName = ARCHETYPE_NAMES_MAP[ichArchetype];
+            var baseProfil = profName && window[profName] ? (window[profName].umfrageWerte || window[profName].beduerfnisse) : null;
+
+            var needsList = Object.keys(catalog).map(function(needId) {
+                var val = ichNeeds && ichNeeds[needId] !== undefined ? ichNeeds[needId]
+                        : baseProfil ? baseProfil[needId] : 50;
+                if (val === undefined) val = 50;
+                return { id: needId, label: catalog[needId].label, value: val,
+                         stufe: catalog[needId].stufe, icon: catalog[needId].icon };
+            });
+            needsList.sort(function(a, b) { return b.value - a.value; });
+            var top5 = needsList.slice(0, 5);
+
+            var cardsHtml = top5.map(function(n) {
+                var variants = TOP5_IMAGE_MAP[n.id];
+                var idx = n.value <= 33 ? 0 : n.value <= 66 ? 1 : 2;
+                var imgFile = variants ? variants[Math.min(idx, variants.length - 1)] : null;
+                var imgSrc = imgFile ? IMG_BASE_UEBERSICHT + imgFile : null;
+                var color = STUFEN_FARBEN[n.stufe] || '#888';
+                var imgHtml = imgSrc
+                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" onclick="openLightbox(\'' + imgSrc + '\',\'' + n.label.replace(/'/g,"&#39;") + '\')" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;cursor:pointer;">'
+                    : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
+                return '<div style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;">'
+                    + imgHtml
+                    + '<div style="padding:6px 8px;">'
+                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
+                    +   '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">' + Math.round(n.value) + '</div>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+
+            return '<div style="background:var(--bg-card);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--border);">'
+                + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">'
+                +   '<span style="font-size:20px;">⭐</span>'
+                +   '<div>'
+                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">Top-5 Bedürfnisse</div>'
+                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Deine stärksten Antriebe</div>'
+                +   '</div>'
+                + '</div>'
+                + '<div style="display:flex;gap:8px;">' + cardsHtml + '</div>'
+                + '</div>';
         }
 
         /**
@@ -1298,6 +1380,29 @@
             // Fallback: Neutral default wenn SSOT nicht verfügbar
             return 50;
         }
+    </script>
+
+    <!-- Lightbox Overlay -->
+    <div id="tiage-lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);cursor:zoom-out;align-items:center;justify-content:center;">
+        <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;padding:4px 8px;opacity:0.8;">✕</button>
+        <img id="tiage-lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.8);">
+        <div id="tiage-lightbox-caption" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);font-size:13px;white-space:nowrap;"></div>
+    </div>
+    <script>
+        function openLightbox(src, caption) {
+            var lb = document.getElementById('tiage-lightbox');
+            document.getElementById('tiage-lightbox-img').src = src;
+            document.getElementById('tiage-lightbox-caption').textContent = caption || '';
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('tiage-lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
     </script>
 </body>
 </html>

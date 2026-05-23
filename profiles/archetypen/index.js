@@ -7,7 +7,7 @@
  *
  * BaseArchetypProfile Struktur:
  * {
- *   single: { id, key, label, name, beschreibung, beduerfnisse, quellen, kernwerte, vermeidet },
+ *   single: { id, key, label, name, beschreibung, umfrageWerte, quellen, kernwerte, vermeidet },
  *   duo: { ... },
  *   ...
  * }
@@ -46,8 +46,8 @@
             label: profil.name,
             name: profil.name,
             beschreibung: profil.beschreibung,
-            // Statistische Umfragewerte für alle ~220 Bedürfnisse
-            umfrageWerte: profil.beduerfnisse,
+            // Statistische Umfragewerte für alle 16 Bedürfnisse (#B1–#B16)
+            umfrageWerte: profil.umfrageWerte,
             // Zusätzliche Infos
             quellen: profil.quellen || [],
             kernwerte: profil.kernwerte || [],
@@ -923,15 +923,11 @@
             return;
         }
 
-        if (typeof TiageState === 'undefined' || typeof TiageState.subscribe !== 'function') {
-            // Retry mit Backoff (state.js wird nach index.js geladen)
-            if (!registerFlatNeedsSubscribers._retries) registerFlatNeedsSubscribers._retries = 0;
-            registerFlatNeedsSubscribers._retries++;
-            if (registerFlatNeedsSubscribers._retries <= 20) {
-                setTimeout(registerFlatNeedsSubscribers, 100);
-                return;
-            }
-            console.warn('[ProfileCalculator] TiageState.subscribe nicht verfügbar nach 20 Versuchen - reaktive Updates deaktiviert');
+        if (typeof window.TiageState === 'undefined' || typeof window.TiageState.subscribe !== 'function') {
+            window.addEventListener('tiageStateReady', function handler() {
+                window.removeEventListener('tiageStateReady', handler);
+                registerFlatNeedsSubscribers();
+            });
             return;
         }
 
@@ -1009,14 +1005,8 @@
         });
     }
 
-    // Subscriber nach kurzer Verzögerung registrieren (TiageState muss bereit sein)
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(registerFlatNeedsSubscribers, 50);
-        });
-    } else {
-        setTimeout(registerFlatNeedsSubscribers, 50);
-    }
+    // Subscriber registrieren — sofort falls TiageState bereit, sonst via Event
+    registerFlatNeedsSubscribers();
 
     // ═══════════════════════════════════════════════════════════════════════════
     // 6. AUTO-INITIALISIERUNG - Lade Profile aus TiageState nach DOM-Ready

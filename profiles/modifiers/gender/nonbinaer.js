@@ -58,18 +58,10 @@ TiageModifiers.Gender.Nonbinaer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        integritaet: 4,
-        wachstum_und_sinn: 4,
-        authentizitaet: 5,
-        gemeinschaft: 4,
-        kommunikation: 5,
-        akzeptanz_und_empathie: 5,
-        offenheit_fuer_neues: 4,
-
-        // Herausforderungen
-        gesellschaft: -3,
-        stabilitaet_und_sicherheit: -2
+        '#B16': +6,   // Selbstentfaltung — authentischer Ausdruck
+        '#B6':  +5,   // Freiheit — Selbstbestimmung
+        '#B13': +5,   // Selbsterkenntnis — Identitätsarbeit
+        '#B11': +5    // Gerechtigkeit — Fairness und Akzeptanz
     },
 
     // ═══════════════════════════════════════════════════════════════════════

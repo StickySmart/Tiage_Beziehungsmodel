@@ -66,12 +66,8 @@ TiageModifiers.Orientierung.Heterosexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        gesellschaft: 5,                     // #B19 Gesellschaftliche Akzeptanz - normative Position
-        zugehoerigkeit: 3,                   // #B42 (R2) Soziale Zugehörigkeit unterstützt
-        gemeinschaft: 2,                     // #B41 (R2) Breite gesellschaftliche Integration
-        rollenausdruck: 2,                   // #B87 Traditionelle Rollenerwartungen
-        stabilitaet_und_sicherheit: 2        // #B11 Normative Sicherheit
+        '#B2': +3,   // Sicherheit — mehr gesellschaftliche Stabilität
+        '#B3': +3    // Leichtigkeit — weniger Diskriminierungserfahrung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

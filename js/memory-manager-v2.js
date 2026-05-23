@@ -128,6 +128,67 @@ const MemoryManagerV2 = (function() {
         return `A${getValue('A')} G${getValue('G')} O${getValue('O')} D${getValue('D')}`;
     }
 
+    // Alle 16 Bedürfnisse als kompaktes Grid inkl. Schloss-Status
+    const SLOT_STUFEN_COLORS = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+
+    function computeEigenschaftenMods(archetyp, states) {
+        if (!states || !archetyp) return {};
+        const getDef = typeof window !== 'undefined' && window.getEigenschaftenDefForArchetyp;
+        if (typeof getDef !== 'function') return {};
+        const def = getDef(archetyp);
+        if (!def || !def.eigenschaften) return {};
+        const mods = {};
+        def.eigenschaften.forEach(function(e) {
+            if (states[e.id]) {
+                e.beduerfnisse.forEach(function(bid) {
+                    mods[bid] = (mods[bid] || 0) + e.delta;
+                });
+            }
+        });
+        return mods;
+    }
+
+    function formatAllNeeds16(beduerfnisse, lockedNeeds, eigenschaftenMods) {
+        if (!beduerfnisse) return '<span style="opacity:0.3;font-size:10px;">Keine Bedürfnisse</span>';
+        const catalog = (typeof window !== 'undefined' && window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse)
+            ? window.BeduerfnisIds.beduerfnisse : null;
+        const locked = lockedNeeds || {};
+        const eMods = eigenschaftenMods || {};
+        const entries = Object.entries(beduerfnisse)
+            .filter(([id]) => id.startsWith('#B'))
+            .sort((a, b) => {
+                // sortieren nach Stufe, dann innerhalb Stufe nach Wert absteigend
+                const sA = (catalog && catalog[a[0]]) ? (catalog[a[0]].stufe || 9) : 9;
+                const sB = (catalog && catalog[b[0]]) ? (catalog[b[0]].stufe || 9) : 9;
+                return sA !== sB ? sA - sB : b[1] - a[1];
+            });
+
+        const rows = entries.map(([id, val]) => {
+            const entry = catalog?.[id];
+            const label = entry?.label || id.replace('#B', 'B');
+            const stufe = entry?.stufe || 1;
+            const color = SLOT_STUFEN_COLORS[stufe] || '#888';
+            const isLocked = !!locked[id];
+            const lockHtml = isLocked
+                ? `<span style="font-size:9px;margin-left:2px;opacity:0.9;">🔒</span>`
+                : `<span style="font-size:9px;margin-left:2px;opacity:0.25;">○</span>`;
+            const valColor = val >= 80 ? '#fff' : val >= 60 ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)';
+            const eMod = eMods[id] || 0;
+            const eModHtml = eMod !== 0
+                ? `<span style="font-size:9px;color:#F59E0B;font-weight:600;min-width:26px;text-align:right;flex-shrink:0;">${eMod > 0 ? '+' : ''}${eMod}</span>`
+                : `<span style="min-width:26px;flex-shrink:0;"></span>`;
+            return `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                <span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;"></span>
+                <span style="flex:1;font-size:10px;color:rgba(255,255,255,0.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</span>
+                <span style="font-size:11px;font-weight:700;color:${valColor};min-width:24px;text-align:right;">${val}</span>
+                ${eModHtml}
+                ${lockHtml}
+            </div>`;
+        }).join('');
+
+        return rows;
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // ICH DATA COLLECTION (per Archetyp)
     // ═══════════════════════════════════════════════════════════════════════
@@ -139,96 +200,28 @@ const MemoryManagerV2 = (function() {
     function collectIchDataForArchetyp(archetyp) {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '4.0',
+            dataVersion: '5.0',
             archetyp: archetyp,
-            geschlecht: null,
-            dominanz: null,
-            orientierung: null,
-            geschlecht_extras: null,  // FFH
-            agodGewichtung: null,     // 3-Wege AGOD (0/1/2)
-            rtiPrioritaeten: null,    // RTI-Säulen (0/1/2)
-            beduerfnisse: null        // FlatNeeds für diesen Archetyp
+            beduerfnisse: null,       // flatNeeds = umfrageWert + manuelle Anpassungen
+            lockedNeeds: null,         // geschlossene (gepinnte) Bedürfnisse
+            eigenschaftenStates: null  // Eigenschaft-Toggle-Zustände für diesen Archetyp
         };
 
         if (typeof TiageState !== 'undefined') {
-            // GOD-Einstellungen aus TiageState
-            data.geschlecht = TiageState.get('personDimensions.ich.geschlecht');
-            data.dominanz = TiageState.get('personDimensions.ich.dominanz');
-            data.orientierung = TiageState.get('personDimensions.ich.orientierung');
-
-            // FFH (Fit/Fuckedup/Horny)
-            data.geschlecht_extras = TiageState.get('personDimensions.ich.geschlecht_extras');
-
-            // Fallback: Try to get from global personDimensions if TiageState is empty
-            if (typeof personDimensions !== 'undefined' && personDimensions.ich) {
-                if (!data.geschlecht && personDimensions.ich.geschlecht) {
-                    data.geschlecht = personDimensions.ich.geschlecht;
-                }
-                if (!data.dominanz && personDimensions.ich.dominanz) {
-                    data.dominanz = personDimensions.ich.dominanz;
-                }
-                if (!data.orientierung && personDimensions.ich.orientierung) {
-                    data.orientierung = personDimensions.ich.orientierung;
-                }
-                if (!data.geschlecht_extras && personDimensions.ich.geschlecht_extras) {
-                    data.geschlecht_extras = personDimensions.ich.geschlecht_extras;
-                }
-            }
-
-            // Fallback for FFH: Try geschlechtExtrasCache (exposed via window from app-main.js)
-            if (!data.geschlecht_extras && typeof window.geschlechtExtrasCache !== 'undefined' && window.geschlechtExtrasCache.ich) {
-                data.geschlecht_extras = { ...window.geschlechtExtrasCache.ich };
-            }
-
-            // AGOD-Gewichtung (neues Format: 0/1/2)
-            // Check if it's the correct NEW 3-way format
-            const isNew3WayFormat = (obj) => {
-                if (!obj) return false;
-                // New format: { O: 2, A: 0, D: 2, G: 2 } - plain numbers 0-2, NO summeLock
-                return typeof obj.O === 'number' && obj.O >= 0 && obj.O <= 2 &&
-                       typeof obj.A === 'number' && obj.A >= 0 && obj.A <= 2 &&
-                       typeof obj.D === 'number' && obj.D >= 0 && obj.D <= 2 &&
-                       typeof obj.G === 'number' && obj.G >= 0 && obj.G <= 2 &&
-                       !obj.summeLock;  // Old format always has summeLock
-            };
-
-            const storedGewichtung = TiageState.getGewichtungen('ich');
-
-            // Primary: TiageState (persistiert, übersteht tempReset)
-            if (isNew3WayFormat(storedGewichtung)) {
-                data.agodGewichtung = storedGewichtung;
-                console.log('[MemoryManagerV2] AGOD from TiageState (persistent):', data.agodGewichtung);
-            }
-            // Fallback: Runtime (nur wenn TiageState leer)
-            else if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.get) {
-                data.agodGewichtung = TiageWeights.AGOD.get();
-                console.log('[MemoryManagerV2] AGOD from Runtime (fallback):', data.agodGewichtung);
-            }
-            // Last resort: defaults
-            else {
-                data.agodGewichtung = { O: 1, A: 1, D: 1, G: 1 };
-                console.log('[MemoryManagerV2] AGOD using defaults');
-            }
-
-            // RTI-Prioritäten
-            data.rtiPrioritaeten = TiageState.get('rtiPriorities.ich');
-
-            // Bedürfnisse (flatNeeds) für diesen spezifischen Archetyp
-            const flatNeeds = TiageState.get(`flatNeeds.ich.${archetyp}`);
+            const flatNeeds = TiageState.getFlatNeeds
+                ? TiageState.getFlatNeeds('ich')
+                : (TiageState.get('flatNeeds.ich') || {});
             if (flatNeeds && Object.keys(flatNeeds).length > 0) {
                 data.beduerfnisse = flatNeeds;
             }
-
-            // Debug: Log collected data
-            console.log('[MemoryManagerV2] collectIchData:', {
-                archetyp,
-                geschlecht: data.geschlecht,
-                dominanz: data.dominanz,
-                orientierung: data.orientierung,
-                geschlecht_extras: data.geschlecht_extras,
-                agodGewichtung: data.agodGewichtung,
-                hasBeduerfnisse: !!data.beduerfnisse
-            });
+            const locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
+            if (locked && Object.keys(locked).length > 0) {
+                data.lockedNeeds = locked;
+            }
+            const eigenStates = TiageState.get('eigenschaften.ich.' + archetyp);
+            if (eigenStates && Object.keys(eigenStates).length > 0) {
+                data.eigenschaftenStates = eigenStates;
+            }
         }
 
         return data;
@@ -324,51 +317,29 @@ const MemoryManagerV2 = (function() {
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '4.0',
+            dataVersion: '5.0',
             archetyp: null,
-            geschlecht: null,
-            dominanz: null,
-            orientierung: null,
-            geschlecht_extras: null,
-            score: null,            // Synthese-Score
-            ichArchetyp: null       // Mit welchem ICH-Archetyp wurde der Score berechnet
+            beduerfnisse: null,  // flatNeeds des Partners
+            score: null,         // Synthese-Score
+            ichArchetyp: null    // Mit welchem ICH-Archetyp wurde der Score berechnet
         };
 
         if (typeof TiageState !== 'undefined') {
-            // Partner-Archetyp
             const archetypes = TiageState.getArchetypes('partner');
             data.archetyp = archetypes?.primary || archetypes;
 
-            // GOD-Einstellungen
-            data.geschlecht = TiageState.get('personDimensions.partner.geschlecht');
-            data.dominanz = TiageState.get('personDimensions.partner.dominanz');
-            data.orientierung = TiageState.get('personDimensions.partner.orientierung');
-            data.geschlecht_extras = TiageState.get('personDimensions.partner.geschlecht_extras');
-
-            // FIX v1.8.947: Fallback für geschlecht_extras (wie bei ICH)
-            // Fallback 1: personDimensions global object
-            if (!data.geschlecht_extras && typeof personDimensions !== 'undefined' && personDimensions.partner) {
-                if (personDimensions.partner.geschlecht_extras) {
-                    data.geschlecht_extras = personDimensions.partner.geschlecht_extras;
-                    console.log('[MemoryManagerV2] Partner geschlecht_extras from personDimensions fallback');
-                }
-            }
-            // Fallback 2: geschlechtExtrasCache (local cache in app-main.js)
-            if (!data.geschlecht_extras && typeof geschlechtExtrasCache !== 'undefined' && geschlechtExtrasCache.partner) {
-                const cache = geschlechtExtrasCache.partner;
-                if (cache.fit || cache.fuckedup || cache.horny) {
-                    data.geschlecht_extras = { ...cache };
-                    console.log('[MemoryManagerV2] Partner geschlecht_extras from cache fallback:', JSON.stringify(cache));
-                }
+            const partnerNeeds = TiageState.getFlatNeeds
+                ? TiageState.getFlatNeeds('partner')
+                : (TiageState.get('flatNeeds.partner') || {});
+            if (partnerNeeds && Object.keys(partnerNeeds).length > 0) {
+                data.beduerfnisse = partnerNeeds;
             }
 
-            // Aktueller Score aus der UI
             const scoreEl = document.getElementById('resultPercentage');
             if (scoreEl && scoreEl.textContent !== '–') {
                 data.score = parseFloat(scoreEl.textContent) || null;
             }
 
-            // ICH-Archetyp für Referenz
             const ichArchetypes = TiageState.getArchetypes('ich');
             data.ichArchetyp = ichArchetypes?.primary || ichArchetypes;
         }
@@ -626,9 +597,7 @@ const MemoryManagerV2 = (function() {
                     icon: ARCHETYPE_ICONS[archetyp],
                     isEmpty: !data,
                     data: data,
-                    formattedGOD: data ? formatGOD(data) : '-',
-                    formattedFFH: data ? formatFFH(data.geschlecht_extras) : '',
-                    formattedAGOD: data ? formatAGOD(data.agodGewichtung) : '-',
+                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds, computeEigenschaftenMods(archetyp, data.eigenschaftenStates)) : '',
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 };
             });
@@ -658,11 +627,10 @@ const MemoryManagerV2 = (function() {
                     data: data,
                     archetyp: data?.archetyp || null,
                     archetypLabel: data?.archetyp ? ARCHETYPE_LABELS[data.archetyp] : '-',
-                    formattedGOD: data ? formatGOD(data) : '-',
-                    formattedFFH: data ? formatFFH(data.geschlecht_extras) : '',  // v1.8.943: FFH für Partner
+                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds) : '',
                     score: data?.score || null,
                     ichArchetyp: data?.ichArchetyp || null,
-                    ichArchetypLabel: data?.ichArchetyp ? ARCHETYPE_LABELS[data.ichArchetyp] : null,  // v1.8.943
+                    ichArchetypLabel: data?.ichArchetyp ? ARCHETYPE_LABELS[data.ichArchetyp] : null,
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 });
             }
@@ -682,38 +650,12 @@ const MemoryManagerV2 = (function() {
                 if (typeof TiageState !== 'undefined') {
                     TiageState.setArchetype('ich', archetyp);
 
-                    // GOD+FFH+AGOD nur setzen wenn Daten vorhanden
-                    if (data) {
-                        if (data.geschlecht) {
-                            TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
-                        }
-                        if (data.dominanz) {
-                            TiageState.set('personDimensions.ich.dominanz', data.dominanz);
-                        }
-                        if (data.orientierung) {
-                            TiageState.set('personDimensions.ich.orientierung', data.orientierung);
-                        }
-                        if (data.geschlecht_extras) {
-                            TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
-                            if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                                window.geschlechtExtrasCache.ich = {
-                                    fit: !!data.geschlecht_extras.fit,
-                                    fuckedup: !!data.geschlecht_extras.fuckedup,
-                                    horny: !!data.geschlecht_extras.horny
-                                };
-                            }
+                    // Bedürfnisse laden (umfrageWert + manuelle Anpassungen)
+                    if (data && data.beduerfnisse) {
+                        if (TiageState.setFlatNeeds) {
+                            TiageState.setFlatNeeds('ich', data.beduerfnisse);
                         } else {
-                            var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
-                            TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
-                            if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                                window.geschlechtExtrasCache.ich = defaultExtras;
-                            }
-                        }
-                        if (data.agodGewichtung) {
-                            TiageState.setGewichtungen('ich', data.agodGewichtung, archetyp);
-                        }
-                        if (data.rtiPrioritaeten) {
-                            TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
+                            TiageState.set('flatNeeds.ich', data.beduerfnisse);
                         }
                     }
 
@@ -941,97 +883,20 @@ const MemoryManagerV2 = (function() {
             const key = getIchStorageKey(archetyp);
             try {
                 const raw = localStorage.getItem(key);
-                if (!raw) {
-                    console.log(`[MemoryManagerV2] Keine gespeicherten GODFUFH-Daten für: ${archetyp} - setze GOD+FFH zurück`);
-                    // FIX: Bei fehlendem Slot alle GOD+FFH-Werte zurücksetzen
-                    // (sonst werden Werte vom vorherigen Archetyp übernommen)
-                    if (typeof TiageState !== 'undefined') {
-                        TiageState.set('personDimensions.ich.geschlecht', null);
-                        TiageState.set('personDimensions.ich.orientierung', null);
-                        TiageState.set('personDimensions.ich.dominanz', null);
-                        var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
-                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
-                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                            window.geschlechtExtrasCache.ich = defaultExtras;
-                        }
-                    }
-                    // UI synchronisieren
-                    if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
-                    if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
-                    if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
-                    if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('ich');
-                    return false;
-                }
+                if (!raw) return false;
 
                 const data = JSON.parse(raw);
 
-                // Daten in TiageState laden (OHNE Archetyp zu setzen!)
-                if (typeof TiageState !== 'undefined') {
-                    // G - Geschlecht (null wenn nicht gespeichert → alten Wert nicht übernehmen)
-                    TiageState.set('personDimensions.ich.geschlecht', data.geschlecht || null);
-
-                    // O - Orientierung
-                    TiageState.set('personDimensions.ich.orientierung', data.orientierung || null);
-
-                    // D - Dominanz
-                    TiageState.set('personDimensions.ich.dominanz', data.dominanz || null);
-
-                    // F - Fit, U - Fucked-up, H - Horny (FFH/geschlecht_extras)
-                    if (data.geschlecht_extras) {
-                        TiageState.set('personDimensions.ich.geschlecht_extras', data.geschlecht_extras);
-                        // Cache synchronisieren (syncGeschlechtExtrasUI liest aus Cache)
-                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                            window.geschlechtExtrasCache.ich = {
-                                fit: !!data.geschlecht_extras.fit,
-                                fuckedup: !!data.geschlecht_extras.fuckedup,
-                                horny: !!data.geschlecht_extras.horny
-                            };
-                        }
+                if (typeof TiageState !== 'undefined' && data.beduerfnisse) {
+                    if (TiageState.setFlatNeeds) {
+                        TiageState.setFlatNeeds('ich', data.beduerfnisse);
                     } else {
-                        // Kein gespeicherter FFH-Zustand → zurücksetzen
-                        var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
-                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
-                        if (typeof window.geschlechtExtrasCache !== 'undefined') {
-                            window.geschlechtExtrasCache.ich = defaultExtras;
-                        }
-                    }
-
-                    // AGOD-Gewichtung (3-Wege: 0/1/2) - per Archetyp
-                    if (data.agodGewichtung) {
-                        TiageState.setGewichtungen('ich', data.agodGewichtung, archetyp);
-                    }
-
-                    // RTI-Prioritäten
-                    if (data.rtiPrioritaeten) {
-                        TiageState.set('rtiPriorities.ich', data.rtiPrioritaeten);
+                        TiageState.set('flatNeeds.ich', data.beduerfnisse);
                     }
                 }
 
-                // UI synchronisieren
-                if (typeof window.syncGeschlechtUI === 'function') {
-                    window.syncGeschlechtUI('ich');
-                }
-                if (typeof window.syncDominanzUI === 'function') {
-                    window.syncDominanzUI('ich');
-                }
-                if (typeof window.syncOrientierungUI === 'function') {
-                    window.syncOrientierungUI('ich');
-                }
-                if (typeof window.syncGeschlechtExtrasUI === 'function') {
-                    window.syncGeschlechtExtrasUI('ich');
-                }
-
-                // AGOD UI aktualisieren
-                if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.init) {
-                    TiageWeights.AGOD.init();
-                }
-
-                console.log(`[MemoryManagerV2] GODFUFH wiederhergestellt für ${archetyp}:`,
-                    'G=' + (data.geschlecht || '-'),
-                    'O=' + (Array.isArray(data.orientierung) ? data.orientierung.join(',') : data.orientierung || '-'),
-                    'D=' + (data.dominanz?.primary || data.dominanz || '-'),
-                    'FFH=' + formatFFH(data.geschlecht_extras),
-                    'AGOD=' + formatAGOD(data.agodGewichtung)
+                console.log(`[MemoryManagerV2] Bedürfnisse wiederhergestellt für ${archetyp}:`,
+                    Object.keys(data.beduerfnisse || {}).length + ' Bedürfnisse'
                 );
                 return true;
             } catch (e) {
@@ -1106,6 +971,13 @@ function openMemoryModalV2() {
     updateMemoryModalV2Content();
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Eigenschaften-JSON vorladen und neu rendern sobald verfügbar (für Modifier-Anzeige)
+    if (typeof window.loadEigenschaftenData === 'function') {
+        window.loadEigenschaftenData().then(function() {
+            updateMemoryModalV2Content();
+        });
+    }
 }
 
 /**
@@ -1142,9 +1014,8 @@ function updateMemoryModalV2Content() {
         <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}" data-action-load-ich="${slot.archetyp}" style="cursor: pointer;" title="Klicken zum Laden">
             <div class="memory-slot-icon">${slot.icon}</div>
             <div class="memory-slot-label">${slot.label}</div>
-            <div class="memory-slot-god">${slot.formattedGOD} ${slot.formattedFFH}</div>
             ${!slot.isEmpty ? `
-                <div class="memory-slot-agod">${slot.formattedAGOD}</div>
+                <div class="memory-slot-needs-grid">${slot.allNeeds}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" data-action-display-ich="${slot.archetyp}" title="Anzeigen">👁️</button>
@@ -1185,7 +1056,7 @@ function updateMemoryModalV2Content() {
                 </button>
             ` : `
                 <div class="memory-slot-archetyp">${slot.archetypLabel}</div>
-                <div class="memory-slot-god">${slot.formattedGOD}${slot.formattedFFH ? ' ' + slot.formattedFFH : ''}</div>
+                <div class="memory-slot-needs-grid">${slot.allNeeds}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
                     <button class="memory-display-btn" data-action-display-partner="${slot.slot}" title="Anzeigen">👁️</button>

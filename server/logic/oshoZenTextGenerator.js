@@ -13,13 +13,40 @@
 // DATEN (werden normalerweise aus JSON geladen)
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Vereinfachte Bedürfnis-Karten-Mapping
+// 16 Grundbedürfnisse → Osho Zen Tarot Karten (v4.0)
 const needsToCards = {
-    '#B1': { karte: 'The Fool', text: 'Der Narr symbolisiert den Anfang, Unschuld und Vertrauen ins Unbekannte.' },
-    '#B2': { karte: 'Awareness', text: 'Bewusstsein ist der erste Schritt zur Transformation.' },
-    '#B3': { karte: 'Courage', text: 'Mut bedeutet, dem Herzen zu folgen trotz Angst.' },
-    '#B4': { karte: 'Trust', text: 'Vertrauen ist die Basis jeder tiefen Verbindung.' },
-    '#B5': { karte: 'Sharing', text: 'Teilen vermehrt, was geteilt wird.' }
+    '#B1':  { karte: 'Going With the Flow', label: 'Wohlbefinden',
+              text: 'Der Körper als Tempel – Wohlbefinden entsteht, wenn du im Einklang mit deiner Natur lebst.' },
+    '#B2':  { karte: 'Trust',               label: 'Sicherheit',
+              text: 'Vertrauen ist die unsichtbare Basis, auf der Sicherheit und Stabilität gedeihen.' },
+    '#B3':  { karte: 'Laziness',            label: 'Leichtigkeit',
+              text: 'Echte Leichtigkeit kommt nicht aus Vermeidung, sondern aus dem Loslassen von Anstrengung.' },
+    '#B4':  { karte: 'Clarity',             label: 'Orientierung',
+              text: 'Klarheit ist kein starres System – sie ist ein Licht, das den nächsten Schritt zeigt.' },
+    '#B5':  { karte: 'The Creator',         label: 'Wirksamkeit',
+              text: 'Schöpferische Kraft entfaltet sich, wenn Handeln aus innerer Fülle kommt.' },
+    '#B6':  { karte: 'The Rebel',           label: 'Freiheit',
+              text: 'Wahre Freiheit ist nicht Rebellion gegen äußeres – sie ist die Befreiung des inneren Menschen.' },
+    '#B7':  { karte: 'Passion',             label: 'Intensität',
+              text: 'Leidenschaft ist das Feuer, das Leben bedeutungsvoll macht – lebe sie bewusst.' },
+    '#B8':  { karte: 'Transformation',      label: 'Entwicklung',
+              text: 'Jede echte Entwicklung erfordert das Sterben des Alten und die Geburt des Neuen.' },
+    '#B9':  { karte: 'Harmony',             label: 'Gemeinschaft',
+              text: 'Harmonie in der Gemeinschaft entsteht nicht durch Gleichheit, sondern durch gegenseitige Achtung.' },
+    '#B10': { karte: 'Appreciation',        label: 'Anerkennung',
+              text: 'Wertschätzung ist das Wasser, das den Garten der Beziehung nährt.' },
+    '#B11': { karte: 'Courage',             label: 'Gerechtigkeit',
+              text: 'Den Mut aufzubringen, für Fairness einzustehen, ist eine Form spiritueller Reife.' },
+    '#B12': { karte: 'Intimacy',            label: 'Verbundenheit',
+              text: 'Wahre Intimität beginnt dort, wo Masken fallen und das echte Selbst sich zeigt.' },
+    '#B13': { karte: 'Awareness',           label: 'Selbsterkenntnis',
+              text: 'Selbst-Bewusstsein ist der erste und tiefste Schritt jeder inneren Reise.' },
+    '#B14': { karte: 'The Source',          label: 'Sinn',
+              text: 'Sinn entsteht, wenn das persönliche Leben den universellen Fluss berührt.' },
+    '#B15': { karte: 'Integration',         label: 'Integrität',
+              text: 'Integrität ist die Kunst, das zu sein was man ist – vollständig und ohne Maske.' },
+    '#B16': { karte: 'The Flowering',       label: 'Selbstentfaltung',
+              text: 'Wie eine Blume, die sich zur Sonne dreht: Selbstentfaltung geschieht wenn du aufhörst, dich zu beschränken.' }
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -54,7 +81,7 @@ export function calculateTopMatches(needs1, needs2, topN = 5) {
 
             matches.push({
                 id: needId,
-                label: needId.replace('#', 'Bedürfnis '),
+                label: cardData.label || needId.replace('#', 'Bedürfnis '),
                 score1: Math.round(score1),
                 score2: Math.round(score2),
                 matchScore: Math.round(matchScore),
@@ -77,28 +104,69 @@ export function generateSpiritualText(topMatches) {
     }
 
     const topMatch = topMatches[0];
-    const card = topMatch.karte;
-    const text = topMatch.text;
+    const parts = [
+        `Die Karte "${topMatch.karte}" (${topMatch.label}) spricht zu eurer Verbindung: ${topMatch.text}`
+    ];
 
-    return `Die Karte "${card}" spricht zu euren gemeinsamen Bedürfnissen: ${text}`;
+    if (topMatches.length >= 2) {
+        const second = topMatches[1];
+        parts.push(`Auch "${second.karte}" (${second.label}) zeigt sich: ${second.text}`);
+    }
+
+    return parts.join(' ');
 }
 
 /**
  * Haupt-Generierungsfunktion
+ *
+ * Verwendet beduerfnisse.gemeinsam aus dem Synthesis-Result (keine Raw-Needs nötig).
+ * Fallback: options.ich.needs + options.partner.needs falls vorhanden.
  */
 export function generate(synthesisResult, options = {}) {
     console.log('[OshoZenTextGenerator] generate() aufgerufen');
 
-    const needs1 = synthesisResult?.ich?.needs || {};
-    const needs2 = synthesisResult?.partner?.needs || {};
+    const score        = synthesisResult?.score || 50;
+    const beduerfnisse = synthesisResult?.beduerfnisse || {};
 
-    const topMatches = calculateTopMatches(needs1, needs2, options.topN || 5);
+    // Top-Matches aus gemeinsamen Bedürfnissen ableiten
+    let topMatches = [];
+
+    if (options.ich?.needs && options.partner?.needs) {
+        // Vollständige Needs übergeben → direkte Berechnung
+        topMatches = calculateTopMatches(options.ich.needs, options.partner.needs, options.topN || 5);
+    } else {
+        // Fallback: gemeinsame Bedürfnisse aus Synthesis-Result verwenden
+        const gemeinsam = beduerfnisse.gemeinsam || [];
+        topMatches = gemeinsam
+            .filter(n => n.key && needsToCards[n.key])
+            .slice(0, options.topN || 5)
+            .map(n => {
+                const card = needsToCards[n.key];
+                const avg = ((n.val1 || 50) + (n.val2 || 50)) / 2;
+                return {
+                    id: n.key,
+                    label: card.label,
+                    score1: Math.round(n.val1 || 50),
+                    score2: Math.round(n.val2 || 50),
+                    matchScore: Math.round(avg * (1 - (n.diff || 0) / 100)),
+                    karte: card.karte,
+                    text: card.text
+                };
+            });
+
+        // Falls keine gemeinsamen: Top-B-IDs nach Score aus beduerfnisse auswählen
+        if (topMatches.length === 0) {
+            const allNeedIds = Object.keys(needsToCards);
+            topMatches = allNeedIds.slice(0, 3).map(id => {
+                const card = needsToCards[id];
+                return { id, label: card.label, score1: 50, score2: 50, matchScore: 50, karte: card.karte, text: card.text };
+            });
+        }
+    }
+
     const spiritualText = generateSpiritualText(topMatches);
 
-    // Generiere Interpretation basierend auf Score
-    const score = synthesisResult?.score || 50;
     let interpretation;
-
     if (score >= 70) {
         interpretation = 'Eure Verbindung trägt das Potenzial tiefer Harmonie.';
     } else if (score >= 40) {
@@ -108,7 +176,7 @@ export function generate(synthesisResult, options = {}) {
     }
 
     return {
-        text: spiritualText,
+        text: spiritualText + ' ' + interpretation,
         card: topMatches[0]?.karte || null,
         interpretation,
         topMatches,

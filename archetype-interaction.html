@@ -235,6 +235,8 @@
     <script defer src="js/dimensions/tagDimensionRelevance.js"></script>
     <script defer src="js/dimensions/dominanzModifier.js"></script>
     <script defer src="js/dimensions/tagCalculator.js"></script>
+    <!-- STATE MANAGEMENT - Single Source of Truth (MUSS vor allen Profil-Skripten stehen) -->
+    <script defer src="js/state.js"></script>
     <!-- BEDÜRFNIS-KATALOG (SSOT - lädt JSON direkt, MUSS vor Archetypen) -->
     <script defer src="profiles/definitions/beduerfnis-katalog.js"></script>
     <!-- ARCHETYP PROFILE (88 Bedürfnisse pro Profil) -->
@@ -1171,7 +1173,7 @@
                     <span class="lightbulb-icon">💡</span>
                 </div>
                 <!-- Score Circle (moved to bottom) -->
-                <div class="score-circle-display" id="mainScoreCircle" title="Ti-Age Synthese Score">
+                <div class="score-circle-display" id="mainScoreCircle" title="Bedürfnis-Übereinstimmung öffnen" onclick="openNeedsFullModal()" style="cursor: pointer;">
                     <svg viewBox="0 0 100 100">
                         <circle class="score-bg" cx="50" cy="50" r="42"></circle>
                         <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
@@ -2532,6 +2534,25 @@
                 </ul>
             </div>
 
+            <!-- Quellen & Credits -->
+            <div>
+                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Quellen &amp; Credits</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin: 8px 0;">
+                        <a href="https://liebe-auf-augenhoehe.de" target="_blank" rel="noopener" style="color: #e57373; text-decoration: none;">Volker Schmidt</a>
+                        <span style="color: rgba(255,255,255,0.4);"> – 4-Stufen-Bedürfnis-Modell</span>
+                    </li>
+                    <li style="margin: 8px 0;">
+                        <span style="color: rgba(255,255,255,0.6);">Osho Zen Tarot</span>
+                        <span style="color: rgba(255,255,255,0.4);"> – Ma Deva Padma / Osho International Foundation</span>
+                    </li>
+                    <li style="margin: 8px 0;">
+                        <span style="color: rgba(255,255,255,0.6);">GFK-Bedürfnisse</span>
+                        <span style="color: rgba(255,255,255,0.4);"> – Marshall B. Rosenberg</span>
+                    </li>
+                </ul>
+            </div>
+
             <!-- Wissenschaftliche Quellen -->
             <div>
                 <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;" data-i18n="footer.wissenschaftlicheQuellen">Wissenschaftliche Quellen</h4>
@@ -2634,8 +2655,6 @@
         </div>
     </div>
 
-    <!-- State Management - Single Source of Truth -->
-    <script defer src="js/state.js"></script>
     <!-- Configuration - Dimension Types & Rules -->
     <script defer src="js/config.js"></script>
     <!-- Global Toast System -->

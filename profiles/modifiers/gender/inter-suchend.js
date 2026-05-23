@@ -68,19 +68,11 @@ TiageModifiers.Gender.InterSuchend = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        authentizitaet: 5,                  // #B50 Selbstreflexion
-        wachstum_und_sinn: 5,               // #B61 Offenheit für Wachstum & Entwicklungspotential
-        integritaet: 4,                     // #B52 Ehrlichkeit
-
-        // Herausforderungen (verstärkt durch Intersex-Status)
-        stabilitaet: -5,                    // #B13 Identitätsstabilität - doppelte Unsicherheit
-        stabilitaet_und_sicherheit: -4,     // #B11 Psychische Belastung
-        gesellschaft: -4,                   // #B19 Gesellschaftlicher Druck
-
-        // Support
-        akzeptanz_und_empathie: 5,          // #B25 Unterstützungsbedarf kritisch wichtig
-        kommunikation: 5                    // #B40 Kommunikationsbedarf sehr hoch
+        '#B8':  +12,  // Entwicklung — Exploration zentral
+        '#B6':  +10,  // Freiheit — Raum zum Erkunden
+        '#B13': +8,   // Selbsterkenntnis — Identitätssuche
+        '#B11': +10,  // Gerechtigkeit — Bedürfnis nach Akzeptanz
+        '#B2':  -8    // Sicherheit — doppelte Identitätsunsicherheit
     },
 
     // ═══════════════════════════════════════════════════════════════════════

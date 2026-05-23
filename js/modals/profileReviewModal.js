@@ -1107,10 +1107,10 @@ function getPerspectiveForNeed(needId) {
     if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
 
     var need = window.BeduerfnisKatalog.beduerfnisse[needId];
-    if (!need || !need.kategorie) return null;
-
-    // Get category from need
-    var categoryId = need.kategorie;
+    if (!need) return null;
+    // v4.0: raw JSON has no .kategorie; fall back to altKategorien[0]
+    var categoryId = need.kategorie || (need.altKategorien && need.altKategorien[0]);
+    if (!categoryId) return null;
     if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
 
     var category = window.TiageTaxonomie.kategorien[categoryId];

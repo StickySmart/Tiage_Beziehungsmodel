@@ -2566,6 +2566,12 @@ const TiageAutoSync = (function() {
     };
 })();
 
+// Global export — const is not a window property, explicit assignment needed
+if (typeof window !== 'undefined') {
+    window.TiageState = TiageState;
+    window.TiageAutoSync = TiageAutoSync;
+}
+
 // Auto-Init wenn DOM geladen
 // FIX v1.8.691: TiageState.init() wird automatisch aufgerufen
 // Das stellt sicher, dass ALLE Seiten den State aus localStorage laden
@@ -2575,11 +2581,13 @@ if (typeof window !== 'undefined') {
         document.addEventListener('DOMContentLoaded', () => {
             TiageState.init();      // Lädt State aus localStorage (idempotent)
             TiageAutoSync.init();   // Registriert Sync-Subscriber
+            window.dispatchEvent(new CustomEvent('tiageStateReady'));
         });
     } else {
         // DOM bereits geladen
         TiageState.init();          // Lädt State aus localStorage (idempotent)
         TiageAutoSync.init();       // Registriert Sync-Subscriber
+        window.dispatchEvent(new CustomEvent('tiageStateReady'));
     }
 }
 

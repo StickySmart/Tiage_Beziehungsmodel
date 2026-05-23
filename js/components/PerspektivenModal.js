@@ -896,8 +896,8 @@ const PerspektivenModal = {
                 perspektiveId = this.beduerfnisPerspektiven[key];
             }
             // 3. Kategorie-Mapping (mit Key-Lookup für #K-IDs)
-            else if (need.kategorie) {
-                const katKey = need.kategorie;
+            else if (need.kategorie || (need.altKategorien && need.altKategorien[0])) {
+                const katKey = need.kategorie || need.altKategorien[0];
                 // Direkt als Key versuchen
                 if (this.kategoriePerspektiven[katKey]) {
                     perspektiveId = this.kategoriePerspektiven[katKey];

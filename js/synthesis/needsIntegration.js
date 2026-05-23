@@ -775,7 +775,7 @@ TiageSynthesis.NeedsIntegration = {
 
                     // RTI → Stufen-Gewichtung: jedes Bedürfnis wird nach seiner Stufe gewichtet
                     var bedEntry = katalog && katalog.beduerfnisse ? katalog.beduerfnisse[needId] : null;
-                    var stage = bedEntry ? (self.STUFEN_MAP[bedEntry.kategorie] || 2) : 2;
+                    var stage = bedEntry ? (bedEntry.stufe || self.STUFEN_MAP[bedEntry.kategorie] || 2) : 2;
                     var stageWeight = rtiWeights[stage] || 1.0;
 
                     totalMatch += match * stageWeight;
@@ -870,7 +870,7 @@ TiageSynthesis.NeedsIntegration = {
             var actualValue = this._getNeedValue(needs, needId, bed.label);
             if (actualValue === undefined) continue;
 
-            var stage = this.STUFEN_MAP[bed.kategorie] || 2;
+            var stage = bed.stufe || this.STUFEN_MAP[bed.kategorie] || 2;
             var abweichung = (actualValue - expectedValue) / 50;
             stufeSums[stage] += 1 + abweichung;
             stufeCounts[stage]++;
@@ -897,7 +897,7 @@ TiageSynthesis.NeedsIntegration = {
      * - R = 1.0 wenn actual === expected (keine Abweichung)
      * - R < 1.0 wenn actual !== expected (Abweichung vom Basis-Profil)
      *
-     * SSOT: Referenz-Werte kommen aus BaseArchetypProfile.beduerfnisse
+     * SSOT: Referenz-Werte kommen aus BaseArchetypProfile.umfrageWerte
      * Fallback auf ARCHETYP_KOHAERENZ für Legacy-Kompatibilität
      *
      * @deprecated Verwende _calculateSingleResonanceV35 stattdessen

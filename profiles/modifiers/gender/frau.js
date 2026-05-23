@@ -51,16 +51,11 @@ TiageModifiers.Gender.Frau = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        emotionale_naehe: 3,
-        kommunikation: 3,
-        langfristige_bindung: 3,
-        empathie: 3,
-        sexualitaet: 2,
-        offenheit_fuer_neues: 3,
-
-        // Herausforderungen
-        gesellschaft: -2
+        '#B12': +6,   // Verbundenheit — emotionale Nähe
+        '#B9':  +5,   // Gemeinschaft — soziale Einbindung
+        '#B10': +5,   // Anerkennung — Wertschätzung
+        '#B13': +4,   // Selbsterkenntnis — Selbstreflexion
+        '#B6':  -2    // Freiheit — tendenziell geringere Autonomieorientierung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

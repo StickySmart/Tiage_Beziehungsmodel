@@ -1,1365 +1,1374 @@
 {
-  "version": "2.0.0",
-  "beschreibung": "Osho Zen Tarot Texte zu den 224 Bedürfnissen - Erweiterte Version mit individuellen Weisheitstexten",
-  "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
-  "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.",
-
+  "version": "3.6.0",
+  "beschreibung": "Osho Zen Tarot – Tiage-Synthese für 16 Grundbedürfnisse nach Volkers 4-Stufen-Modell. Je 4 Karten-Varianten (V1/V2/V3/V4) pro Bedürfnis. V4 = Stufe 4-Linse: Identität/Existenziell.",
+  "quelle": "Volker Schmidt: 4-Stufen-Bedürfnis-Modell (liebe-auf-augenhoehe.de) | Osho Zen Tarot: Ma Deva Padma | Tiage-Synthese: Pirsig Quality + Osho | Traditionen: Christentum, Buddhismus, Islam/Sufismus",
+  "hinweis": "V1/V2/V3/V4 = 4 verschiedene Osho Zen Tarot Karten/Perspektiven pro Bedürfnis (keine ICH/WIR/WERDEN-Dimensionen). V4 = Stufe-4-Linse auf jedes Bedürfnis. tiage = persönliche Synthese Osho+Pirsig.",
+  "stufen": {
+    "1": {
+      "label": "Stufe 1: Passive/Basale Bedürfnisse",
+      "thema": "Empfangen, Sein, Grundbedürfnisse",
+      "beschreibung": "Rezeptiv, aufnehmend. Grundlagen empfangen und erleben.",
+      "farbe": "#8B4789"
+    },
+    "2": {
+      "label": "Stufe 2: Handlung/Aktive Bedürfnisse",
+      "thema": "Tun, Gestalten, Wirken, Autonomie",
+      "beschreibung": "Aktiv gestaltend. Vom Empfangen zum Tun.",
+      "farbe": "#D4AF37"
+    },
+    "3": {
+      "label": "Stufe 3: Sozial/Relationale Bedürfnisse",
+      "thema": "Beziehung, Wir, Zwischen-Sein",
+      "beschreibung": "Beziehungsfähigkeit. Vom Ich zum Wir.",
+      "farbe": "#4A90E2"
+    },
+    "4": {
+      "label": "Stufe 4: Identität/Existentielle Bedürfnisse",
+      "thema": "Werden, Transzendenz, Selbst-Verwirklichung",
+      "beschreibung": "Existentielle Reife. Individuation und Lebenssinn.",
+      "farbe": "#50C878"
+    },
+    "quelle": "Volker Schmidt, 'Liebe auf Augenhöhe' (https://liebe-auf-augenhoehe.de)"
+  },
   "beduerfnisse": {
     "#B1": {
-      "label": "Luft",
-      "frage": "Wie wichtig ist Ihnen frische Luft und freies Atmen?",
-      "karte": "The Master",
-      "text": "Wenn du atmest, atmet das Ganze durch dich. Freiheit beginnt mit einem einzigen, bewussten Atemzug."
+      "label": "Wohlbefinden",
+      "stufe": 1,
+      "stufe_label": "Passive Basisbedürfnisse",
+      "stufe_farbe": "#10B981",
+      "stufe_organ": "Gehirn / Sinnesorgane",
+      "faehigkeit": "Selbstversorgung",
+      "icon": "🌿",
+      "paarungs_archetypen": [
+        "duo",
+        "lat"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B002_00001_ (2).png",
+          "karte": "Existence",
+          "karte_de": "Existenz",
+          "karte_key": "major_arcana.1_existence",
+          "karte_nummer": 1,
+          "tiage": "Wohlbefinden ist kein Zustand, den du erreichst – es ist die Qualität deiner Präsenz. Das Universum atmet durch dich, sobald du aufhörst, dagegen zu kämpfen.",
+          "reflexion": "Kann ich in dieser Beziehung SEIN, ohne mich ständig beweisen zu müssen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es das 'Ich bin, der ich bin' (Exodus 3:14) – Sein kommt vor allem Tun, Existenz vor Leistung.",
+            "buddhismus": "Buddha erkannte: Nur wer das eigene Leiden akzeptiert, kann wahrhaft mitfühlend sein. Wahres Mitgefühl wächst aus dem Annehmen, nicht aus dem Bekämpfen der Realität.",
+            "islam": "Der Islam lehrt, dass jede Seele direkt von Allah erschaffen wurde – unvergleichbar, einzigartig und wertvoll in ihrem bloßen Dasein.",
+            "osho": "Du bist nicht hier, um jemand anderes zu werden – du bist hier, um DU zu sein, in deiner ganzen nackten Wahrheit.",
+            "moderne": "Die moderne Bindungsforschung bestätigt: Wahre Verbundenheit entsteht nur zwischen zwei Menschen, die bei sich selbst angekommen sind. Wohlbefinden beginnt nicht mit Optimierung, sondern mit radikaler Akzeptanz: Ich bin, wie ich bin – und das ist der Ausgangspunkt."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B005_00001_.png",
+          "karte": "Healing",
+          "karte_de": "Heilung",
+          "karte_key": "minor_arcana.water.king_healing",
+          "karte_nummer": 14,
+          "tiage": "Im gemeinsamen Wohlbefinden heilt sich, was du allein nicht heilen konntest. Die Begegnung mit dem anderen ist keine Bedrohung deines Friedens – sie ist seine Vervollständigung.",
+          "reflexion": "Fühle ich mich sicher genug, um meine Verletzlichkeit zu zeigen?",
+          "traditionen": {
+            "christentum": "Im Christentum heilt Jesus nicht durch Auslöschen der Wunden, sondern durch liebevolle Berührung des Verletzten. Die Narben bleiben, aber verlieren ihre Macht.",
+            "buddhismus": "Buddha lehrte, dass Heilung durch Achtsamkeit geschieht – durch das bewusste Hinschauen auf den Schmerz, nicht durch sein Verdrängen.",
+            "islam": "Im Islam ist Allah Ar-Raafi (der Erhebende) und Ash-Shafi (der Heilende) – Heilung als göttliches Geschenk, das durch eigene Praxis empfangen wird.",
+            "osho": "Heilung bedeutet nicht, ungeschehen zu machen, sondern ganz zu werden MIT der eigenen Geschichte.",
+            "moderne": "Moderne Traumaforschung zeigt: Co-Regulation, das gemeinsame Regulieren von Emotionen, ist mächtiger als jede Einzeltherapie. Wohlbefinden entsteht, wenn wir einander erlauben, gebrochen UND ganz zu sein."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B059_00001_.png",
+          "karte": "Friendliness",
+          "karte_de": "Freundlichkeit",
+          "karte_key": "minor_arcana.water.2_friendliness",
+          "karte_nummer": 2,
+          "tiage": "Wohlbefinden wurzelt in der Freundschaft mit dir selbst. Wenn du dir mit der gleichen Wärme begegnest, die du einem lieben Freund schenkst, entsteht eine Grundlage, die durch alle Stürme trägt. Freundlichkeit zu sich selbst ist keine Schwäche – sie ist das Fundament.",
+          "reflexion": "Begegne ich mir selbst mit der Freundlichkeit, die ich anderen selbstverständlich zeige?",
+          "traditionen": {
+            "christentum": "Im Christentum gilt das Doppelgebot: 'Liebe deinen Nächsten wie dich selbst' (Mt 22:39) – nicht mehr, nicht weniger. Sich selbst gegenüber freundlich zu sein ist nicht Narzissmus, sondern Voraussetzung für Nächstenliebe.",
+            "buddhismus": "Metta – Liebende Güte – beginnt immer mit sich selbst. Erst wenn du dir selbst Freundlichkeit schenkst, kannst du sie wirklich ausstrahlen. Der eigene Frieden ist die Basis des Weltfriedens.",
+            "islam": "Der Islam lehrt: 'Verursache dir keinen Schaden.' (La darar wa la dirar) Der Prophet Muhammad (ﷺ) war sanft mit sich und mit anderen. Sich selbst freundlich zu begegnen ist islamische Ethik.",
+            "osho": "Sei zuerst dein eigener Freund. Nur dann kannst du wahrhaft freundlich zu anderen sein. Menschen, die sich selbst gegenüber feindlich sind, bringen diese Feindseligkeit in jede Beziehung.",
+            "moderne": "Kristin Neff zeigt: Selbstfreundlichkeit (Self-Compassion) ist ein stärkerer Prädiktor für psychisches Wohlbefinden als Selbstwertgefühl. Wer sich selbst wie einen guten Freund behandelt, ist resilienter, ausgeglichener und verbindungsfähiger."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_01_00000.png",
+          "karte": "Acceptance",
+          "karte_de": "Annahme",
+          "karte_key": "zusaetzliche_karten.acceptance",
+          "karte_nummer": null,
+          "tiage": "Wohlbefinden in seiner tiefsten Form ist kein Zustand, den du erreichst – es ist das, was übrig bleibt, wenn du aufhörst, gegen dich selbst zu kämpfen. Annahme bedeutet nicht Resignation. Sie ist der erste Atemzug von Frieden: Ich bin, wie ich bin – und das ist der Ausgangspunkt, nicht das Ziel.",
+          "reflexion": "Kann ich mich selbst annehmen, nicht obwohl ich unvollkommen bin, sondern einschließlich meiner Unvollkommenheit?",
+          "traditionen": {
+            "christentum": "Im Christentum lädt Jesus: 'Kommt her zu mir, alle, die ihr euch abmüht' (Mt 11:28) – Annahme vor Leistung, Sein vor Tun. Das Evangelium beginnt nicht mit Forderungen, sondern mit Einladung.",
+            "buddhismus": "Tathata – 'So-sein' – ist die buddhistische Lehre radikaler Akzeptanz: Dinge so sehen wie sie sind, ohne sie zu einem Problem zu machen. Das Ende des Leidens beginnt mit dem Aufhören des Kampfes.",
+            "islam": "Rida bezeichnet im Islam die tiefe Zufriedenheit mit dem Ratschluss Allahs – nicht erzwungen, sondern wachsend aus Vertrauen: 'Allah ist mit den Geduldigen.' (2:153)",
+            "osho": "Akzeptanz ist keine Resignation – sie ist das Aufhören des Kampfes. Im Kampf verlierst du Energie. In der Annahme gewinnst du sie zurück. Wohlbefinden ist dein natürlicher Zustand – wenn du aufhörst, ihn zu verhindern.",
+            "moderne": "Kristin Neffs Forschung zu Selbstmitgefühl zeigt: Selbstannahme – nicht Selbstkritik – ist die Basis nachhaltigen Wohlbefindens. Menschen, die sich selbst annehmen können, zeigen höhere Resilienz, weniger Angst und tiefere Beziehungsfähigkeit."
+          }
+        }
+      }
     },
     "#B2": {
-      "label": "Wasser",
-      "frage": "Wie wichtig ist Ihnen ausreichend Wasser und Hydration?",
-      "karte": "Healing",
-      "text": "Wasser trägt Erinnerung. Wenn du dich nährst, wirst du weich. Heilung geschieht im Fließen."
+      "label": "Sicherheit",
+      "stufe": 1,
+      "stufe_label": "Passive Basisbedürfnisse",
+      "stufe_farbe": "#10B981",
+      "stufe_organ": "Gehirn / Sinnesorgane",
+      "faehigkeit": "Gefahrenerkennung",
+      "icon": "🛡️",
+      "paarungs_archetypen": [
+        "duo",
+        "lat",
+        "duo_flex"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B011_00001_.png",
+          "karte": "Trust",
+          "karte_de": "Vertrauen",
+          "karte_key": "minor_arcana.water.page_trust",
+          "karte_nummer": 11,
+          "tiage": "Sicherheit beginnt innen. Nicht in Mauern, nicht in Garantien – sondern im Vertrauen, dass das Leben dich trägt.",
+          "reflexion": "Bauen wir Vertrauen durch Verlässlichkeit oder durch Kontrolle?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Jesus 'Fürchte dich nicht' 365 Mal – für jeden Tag des Jahres. Vertrauen ist eine tägliche Praxis gegen die Angst.",
+            "buddhismus": "Buddha lehrte die Drei Juwelen als Zufluchtsorte: Buddha (Erwachen), Dharma (Wahrheit), Sangha (Gemeinschaft). Vertrauen wächst aus Prinzipien UND Menschen.",
+            "islam": "Der Islam kennt Tawakkul – das Gottvertrauen nach getaner Arbeit: 'Binde dein Kamel, dann vertraue auf Allah.' Vertrauen ersetzt nicht Verantwortung, sondern folgt ihr.",
+            "osho": "Vertraue dem Leben. Wenn du vertraust, kannst du dein Wissen fallen lassen. Mit Vertrauen öffnet sich etwas Unermessliches.",
+            "moderne": "Die Bindungsforschung zeigt: Sichere Bindung entsteht nicht aus Perfektion, sondern aus Reparatur. Vertrauen wächst, wenn nach einem Bruch Heilung geschieht. Sicherheit bedeutet nicht 'Nichts kann schiefgehen', sondern 'Wenn es schiefgeht, bleiben wir im Gespräch.'"
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B026_00001_ (2).png",
+          "karte": "Protection",
+          "karte_de": "Schutz",
+          "karte_key": "zusaetzliche_karten.protection",
+          "karte_nummer": null,
+          "tiage": "Sicherheit entsteht nicht durch das Abhalten aller Bedrohung – sie entsteht im weichen Raum, in dem Verletzlichkeit willkommen ist. Schutz ist nicht eine Mauer aus Stärke, sondern eine sanfte Hülle aus Verständnis: Hier darfst du verletzlich sein.",
+          "reflexion": "Schaffen wir gemeinsam einen Raum, in dem beide weich bleiben dürfen – ohne sich beweisen zu müssen?",
+          "traditionen": {
+            "christentum": "Im Christentum umhüllt Gott wie eine Mutter: 'Wie eine Mutter ihren Sohn tröstet, so will ich euch trösten.' (Jes 66:13) Schutz ist nicht Abschirmung, sondern liebevolle Umhüllung.",
+            "buddhismus": "Die buddhistische Praxis der Nidra (Yoga des Schlafes) lehrt: Im Schutzraum der Stille öffnet sich das Herz. Sicherheit ist die Bedingung, nicht das Ziel der Praxis.",
+            "islam": "Allah ist Al-Muhaymin – der Beschützer, der über alles wacht. Schutz bedeutet: Ich bin gesehen, ich bin gehalten – nicht: Es kann nichts Böses geschehen.",
+            "osho": "Wahrer Schutz kommt nicht von außen – er kommt aus der inneren Stärke, verletzlich sein zu dürfen. Der stärkste Schutz ist der Raum, in dem du keine Stärke zeigen musst.",
+            "moderne": "Polyvagal-Theorie (Stephen Porges): Das Nervensystem braucht Signale der Sicherheit, um aus dem Verteidigungszustand in den Verbindungszustand zu wechseln. Sicherheit wird durch Co-Regulation erlebt – durch jemanden, der ruhig bleibt, wenn du aufgewühlt bist."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": null,
+          "karte": "Compromise",
+          "karte_de": "Kompromiss",
+          "karte_key": "minor_arcana.rainbows.6_compromise",
+          "karte_nummer": 6,
+          "tiage": "Nicht jeder Kompromiss schafft echte Sicherheit. Manche Einigungen kosten deiner Seele zu viel – und hinterlassen ein nagelndes Gefühl der Unwahrheit. Echte Sicherheit entsteht dort, wo der Kompromiss beide wachsen lässt, nicht wo einer sich verbiegt.",
+          "reflexion": "Opfern wir in diesem Bereich unsere Wahrheit für falschen Frieden – oder finden wir echte gemeinsame Lösungen?",
+          "traditionen": {
+            "christentum": "Im Christentum warnt Jesus vor dem 'Ja-Ja-Nein-Nein' (Mt 5:37) – Ehrlichkeit ist Schutz. Ein fauler Kompromiss, der Wahrheit opfert, untergräbt das Fundament jeder Beziehung.",
+            "buddhismus": "Der Mittlere Weg ist kein Durchschnitt. Er ist die lebendige Balance zwischen Extremen – nicht Kompromiss als Halbherzigkeit, sondern als vollständige Präsenz in beiden Wahrheiten.",
+            "islam": "Der Islam kennt Sulh (Ausgleich, Einigung) als Weg zur Gerechtigkeit – aber Sulh, der auf Unrecht aufgebaut ist, schafft keine Sicherheit. Gerechtigkeit ist Bedingung für echten Frieden.",
+            "osho": "Kompromisse können Weisheit sein oder Feigheit. Die Frage ist: Kompromittierst du deine Wahrheit? Ein Kompromiss, der dich kleiner macht, ist kein Frieden – es ist ein langsamer Verrat.",
+            "moderne": "Paartherapie zeigt: Kompromisse, die beide Partner schrumpfen lassen, erzeugen langfristig Ressentiments. Echte Sicherheit kommt aus Lösungen, bei denen beide ihre Kernbedürfnisse gewahrt sehen – nicht aus dem gegenseitigen Nachgeben auf Kosten der eigenen Wahrheit."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_02_00000.png",
+          "karte": "Support",
+          "karte_de": "Unterstützung",
+          "karte_key": "zusaetzliche_karten.support",
+          "karte_nummer": null,
+          "tiage": "Existenzielle Sicherheit entsteht nicht aus dem Fehlen von Bedrohung – sie wächst aus dem Erleben von Halt. Nicht Mauern geben Sicherheit, sondern der unsichtbare Boden, der dich trägt: dein Charakter, deine Werte, deine Verbundenheit mit dem Größeren.",
+          "reflexion": "Welchen inneren Halt habe ich, wenn alle äußere Sicherheit wegfällt?",
+          "traditionen": {
+            "christentum": "In den Psalmen heißt es: 'Der Herr ist mein Hirte, mir wird nichts mangeln.' (Psalm 23:1) Sicherheit nicht als Abwesenheit von Gefahr, sondern als Präsenz des Tragenden.",
+            "buddhismus": "Die Drei Juwelen – Buddha, Dharma, Sangha – sind die drei Zufluchtsorte: Erwachen, Wahrheit und Gemeinschaft. Sicherheit ist in Prinzipien verankert, nicht in Umständen.",
+            "islam": "Al-Wali – der Unterstützer, der Schutzherr – ist einer der 99 Namen Allahs. Existenzielle Sicherheit wurzelt im Wissen: Ich bin nicht allein. Die Unterstützung ist größer als das, was ich sehe.",
+            "osho": "Wahre Unterstützung ist unsichtbar. Sie gibt dir nicht die Antwort – sie gibt dir den Mut, selbst zu suchen. Sicherheit ist nicht das Fehlen von Risiko, sondern das Wissen: Ich werde gehalten.",
+            "moderne": "Resilienzforschung zeigt: Menschen mit starkem internem Locus of Control – dem Gefühl, einen inneren Halt zu haben – überstehen Krisen nicht unbeschadet, aber gestärkt. Sicherheit ist eine Haltung, nicht nur eine Bedingung."
+          }
+        }
+      }
     },
     "#B3": {
-      "label": "Nahrung",
-      "frage": "Wie wichtig ist Ihnen gesunde, regelmäßige Ernährung?",
-      "karte": "Conditioning",
-      "text": "Was du isst, isst dich. Ernährung ist nicht nur Nahrung – es ist Unterscheidung zwischen Echtheit und Anhaftung."
+      "label": "Leichtigkeit",
+      "stufe": 1,
+      "stufe_label": "Passive Basisbedürfnisse",
+      "stufe_farbe": "#10B981",
+      "stufe_organ": "Gehirn / Sinnesorgane",
+      "faehigkeit": "Stressregulation",
+      "icon": "🌊",
+      "paarungs_archetypen": [
+        "single",
+        "ra",
+        "aromantisch"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B047_00001_.png",
+          "karte": "Going With The Flow",
+          "karte_de": "Mit dem Fluss gehen",
+          "karte_key": "minor_arcana.water.ace_going_with_the_flow",
+          "karte_nummer": 1,
+          "tiage": "Leichtigkeit ist nicht das Fehlen von Schwere – sie ist das Vertrauen, dass sich alles fügt. Lass los. Fließ.",
+          "reflexion": "Wo klammere ich mich an Kontrolle, wo ich loslassen könnte?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Jesus: 'Seht die Vögel des Himmels an – sie säen nicht, sie ernten nicht, und euer himmlischer Vater ernährt sie doch.' Vertrauen statt Verkrampfung.",
+            "buddhismus": "Das Tao Te Ching lehrt Wu Wei – handeln durch Nicht-Erzwingen, Kraft durch Nachgeben wie Wasser, das jeden Stein umfließt.",
+            "islam": "Der Islam kennt Tawakkul – die Hingabe nach getaner Arbeit. 'Plane, dann übergib.'",
+            "osho": "Leben ist kein Problem, das gelöst werden muss, sondern ein Mysterium, das gelebt werden will.",
+            "moderne": "Neurobiologie zeigt: Chronischer Kontrolldrang aktiviert permanent das Stresssystem. Leichtigkeit bedeutet die Fähigkeit, Pläne loszulassen wenn das Leben anders will."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B006_00001_.png",
+          "karte": "Slowing Down",
+          "karte_de": "Verlangsamen",
+          "karte_key": "minor_arcana.rainbows.knight_slowing_down",
+          "karte_nummer": 12,
+          "tiage": "Leichtigkeit entsteht nicht durch Beschleunigung. Sie öffnet sich im Verlangsamen – wenn du dem Atemzug lauschst, bevor der nächste kommt. Im bewussten Innehalten entsteht Raum für das, was wirklich zählt.",
+          "reflexion": "Erlauben wir uns, wirklich langsamer zu werden – oder hetzen wir gemeinsam von Moment zu Moment?",
+          "traditionen": {
+            "christentum": "Die christliche Kontemplation lehrt: 'Seid stille und erkennet' (Ps 46:11). Die Regel des Benedikt strukturiert den Tag um Stille herum – nicht Faulheit, sondern heilsames Verlangsamen.",
+            "buddhismus": "Im Zen gibt es Kinhin – gehende Meditation mit winzigen Schritten. Verlangsamen ist eine Praxis: Je langsamer du gehst, desto mehr siehst du. Die Welt entfaltet sich im Innehalten.",
+            "islam": "Der Islam kennt Tafakkur – das langsame, meditative Nachdenken über die Schöpfung. In der Eile geht die Weisheit verloren. Der Prophet (ﷺ) sagte: 'Eile kommt vom Teufel, Bedachtheit von Allah.'",
+            "osho": "Die Welt sagt: Schneller! Zen sagt: Langsamer. Im Langsamen findest du die Tiefe. Wer nie anhält, erlebt nie das Wunder des gegenwärtigen Moments.",
+            "moderne": "Neurobiologisch ist das Default Mode Network – unser Ruhezustand – entscheidend für Kreativität, Integration und emotionale Verarbeitung. Verlangsamen aktiviert diesen Zustand. Chronische Hetze blockiert das Gehirn in permanentem Stressmodus – Leichtigkeit ist buchstäblich neurologisch unmöglich."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B047_00001_ (2).png",
+          "karte": "Harmony",
+          "karte_de": "Harmonie",
+          "karte_key": "minor_arcana.water.10_harmony",
+          "karte_nummer": 10,
+          "tiage": "Wenn du aufhörst zu kämpfen, offenbart sich Harmonie als dein natürlicher Zustand. Leichtigkeit ist das, was übrig bleibt.",
+          "reflexion": "Können wir nach einem Streit wieder zueinander finden?",
+          "traditionen": {
+            "christentum": "In der christlichen Trinität sind Vater, Sohn und Heiliger Geist drei UND eins – Verschiedenheit in vollkommener Harmonie.",
+            "buddhismus": "Der Buddhismus lehrt das Mandalaprinzip: Jedes Element hat seinen Platz, und genau dadurch entsteht das Ganze.",
+            "islam": "Im Islam bedeutet Silm (Frieden) nicht konfliktfrei, sondern gerecht ausbalanciert.",
+            "osho": "Nicht alle spielen denselben Ton, aber alle spielen zusammen.",
+            "moderne": "Paartherapie nach Gottman zeigt: Glückliche Paare streiten genauso viel wie unglückliche – sie reparieren nur besser. Harmonie entsteht aus Vertrauen in die Reparaturfähigkeit."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_03_00000.png",
+          "karte": "Letting Go",
+          "karte_de": "Loslassen",
+          "karte_key": "minor_arcana.water.8_letting_go",
+          "karte_nummer": 8,
+          "tiage": "Die tiefste Leichtigkeit kommt nicht aus dem Weglassen von Aufgaben – sie kommt aus dem Loslassen der Last, die du selbst bist. Wenn du aufhörst, an deiner Geschichte, deinem Selbstbild, deiner Kontrolle festzuhalten, entsteht ein Raum. Loslassen ist nicht Aufgabe – es ist Ankommen.",
+          "reflexion": "Was wäre ich, wenn ich aufhörte, mich an meine Geschichte zu klammern?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Wenn ein Weizenkorn nicht in die Erde fällt und stirbt, bleibt es allein; wenn es aber stirbt, bringt es viel Frucht.' (Joh 12:24) Loslassen ist keine Niederlage – es ist Transformation.",
+            "buddhismus": "Upadana – Anhaftung – bezeichnet der Buddha als eine der Hauptursachen des Leidens. Loslassen ist der Kernweg: nicht unterdrücken, nicht festhalten – fließen lassen.",
+            "islam": "Tawakkul ist das koranische Prinzip des Gottvertrauens nach getaner Arbeit: Du tust, was du kannst, dann lässt du los. 'Und auf Allah soll man vertrauen.' (64:13)",
+            "osho": "Loslassen ist keine Schwäche – es ist die größte Stärke. Nur wer loslassen kann, ist wirklich frei. Die leeren Hände können empfangen. Leichtigkeit ist der natürliche Zustand der Seele, die nichts beweisen muss.",
+            "moderne": "ACT (Acceptance and Commitment Therapy) lehrt kognitive Defusion: die Fähigkeit, Gedanken und Selbstbilder zu beobachten, ohne mit ihnen identisch zu sein. Loslassen schafft psychologische Flexibilität – die Grundlage wahrer Leichtigkeit."
+          }
+        }
+      }
     },
     "#B4": {
-      "label": "Bewegung",
-      "frage": "Wie wichtig ist Ihnen körperliche Bewegung?",
-      "karte": "Adventure",
-      "text": "Bewegung ist Leben. Jeder Schritt ist eine Einladung in das Unbekannte. Mut bedeutet nicht Ziel, sondern Vertrauen."
+      "label": "Orientierung",
+      "stufe": 1,
+      "stufe_label": "Passive Basisbedürfnisse",
+      "stufe_farbe": "#10B981",
+      "stufe_organ": "Gehirn / Sinnesorgane",
+      "faehigkeit": "Mustererkennung",
+      "icon": "🧭",
+      "paarungs_archetypen": [
+        "single",
+        "lat"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B057_00001_.png",
+          "karte": "Awareness",
+          "karte_de": "Bewusstheit",
+          "karte_key": "major_arcana.7_awareness",
+          "karte_nummer": 7,
+          "tiage": "Orientierung kommt nicht von außen – sie entsteht in der Stille deiner Bewusstheit. Du weißt bereits, wo du bist. Du musst nur innehalten.",
+          "reflexion": "Bin ich präsent, oder funktioniere ich nur?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die 'Wachsamkeit' – 'Wachet und betet' (Matthäus 26:41). Der Mystiker Angelus Silesius: 'Die Rose ist ohne Warum, sie blühet weil sie blühet.' Reine Präsenz.",
+            "buddhismus": "Buddha lehrte Vipassana – Einsichtsmeditation durch bloßes Beobachten ohne zu urteilen. Sati (Achtsamkeit) als Grundlage allen Erwachens.",
+            "islam": "Im Sufismus ist Muraqaba (Wachsamkeit) die ständige Präsenz vor Allah – nicht als Überwachung, sondern als liebevolle Aufmerksamkeit.",
+            "osho": "Bewusstheit ist die einzige Transformation. Alles andere folgt von selbst.",
+            "moderne": "Moderne Neurobiologie zeigt: Unser Gehirn ist auf Autopilot 90% der Zeit. Orientierung entsteht nicht durch mehr Planung, sondern durch mehr Präsenz."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B060_00001_.png",
+          "karte": "Inner Voice",
+          "karte_de": "Innere Stimme",
+          "karte_key": "major_arcana.2_inner_voice",
+          "karte_nummer": 2,
+          "tiage": "Wenn zwei Menschen gemeinsam aus ihrer inneren Stimme heraus sprechen, brauchen sie keine Karte mehr. Die Begegnung selbst wird zur Orientierung.",
+          "reflexion": "Kenne ich meine Wahrheit, oder wiederhole ich fremde Überzeugungen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die 'still small voice' – Gottes Stimme nicht im Sturm, sondern im Säuseln (1. Könige 19:12). Der heilige Ignatius lehrte Unterscheidung der Geister: Welche Stimme führt zu Frieden?",
+            "buddhismus": "Buddha erkannte: Die innere Stimme ist nicht das Ego, das ständig quasselt, sondern die stille Weisheit darunter.",
+            "islam": "Im Sufismus ist es Qalb (Herz) als Organ der Erkenntnis – nicht Emotion, sondern tiefste Intuition.",
+            "osho": "Höre auf alle Stimmen, aber folge nur einer – deiner eigenen.",
+            "moderne": "Entwicklungspsychologie zeigt: Viele Menschen haben ihre innere Stimme nie entwickelt, weil sie zu früh lernten, anderen zu gehorchen. Orientierung kommt aus Klarheit: Was will ICH wirklich?"
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B054_00001_.png",
+          "karte": "Receptivity",
+          "karte_de": "Empfänglichkeit",
+          "karte_key": "minor_arcana.water.queen_receptivity",
+          "karte_nummer": 13,
+          "tiage": "Echte Orientierung entsteht nicht allein durch Planung – sie entsteht, wenn du bereit bist zu empfangen: die Zeichen des Lebens, die Impulse des Herzens, die Weisheit des Moments. Empfänglichkeit ist nicht Passivität. Sie ist die Kunst, das Richtige kommen zu lassen.",
+          "reflexion": "Bin ich wirklich offen – oder zu beschäftigt mit meinen eigenen Plänen, um Führung zu empfangen?",
+          "traditionen": {
+            "christentum": "Maria ist das Ur-Bild der Empfänglichkeit: 'Mir geschehe nach deinem Wort.' (Lk 1:38) Nicht Unterwerfung, sondern vollständiges Ja. Orientierung empfangen heißt: offen sein für das, was durch mich hindurch will.",
+            "buddhismus": "Im Buddhismus ist Prajna (Weisheit) empfangend – sie kann nicht erzwungen werden, sie zeigt sich. Wer den Geist ruhig hält und offen ist, empfängt Führung, die der aktive Verstand nie findet.",
+            "islam": "Im Sufismus ist das empfangsbereite Herz (Qalb) das Organ der Erkenntnis. 'Das Herz des Gläubigen ist zwischen den Fingern Allahs' – nicht zerrissen, sondern geführt durch Empfänglichkeit.",
+            "osho": "Das Weibliche ist rezeptiv – nicht passiv. Es empfängt und transformiert. Es ist wie die Erde, die den Samen empfängt und eine Blume hervorbringt. Empfänglichkeit ist die höchste Form der Stärke.",
+            "moderne": "Intuitionsforschung (Gerd Gigerenzen) zeigt: Schnelle, empfangende Urteile sind oft genauer als langes Abwägen. Empfänglichkeit für innere Signale ist eine Fähigkeit, keine Schwäche. Orientierung aus Empfänglichkeit ist oft tiefer als Orientierung aus Analyse."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_04_00000.png",
+          "karte": "The Master",
+          "karte_de": "Der Meister",
+          "karte_key": "major_arcana.the_master",
+          "karte_nummer": null,
+          "tiage": "Der Meister braucht keine Karte mehr – er ist die Mitte. Orientierung auf Stufe 4 heißt nicht, alle Antworten zu kennen. Es heißt, der eigenen inneren Achse so vertraut zu sein, dass du dich nicht verlierst – auch ohne Weg.",
+          "reflexion": "Bin ich meiner eigenen inneren Achse treu – auch wenn niemand den Weg kennt und niemand zusieht?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Ich bin der Weg, die Wahrheit und das Leben.' (Joh 14:6) Orientierung nicht als Karte, sondern als lebendige Verkörperung. Der Meister zeigt den Weg nicht – er ist ihn gegangen.",
+            "buddhismus": "Der Bodhisattva orientiert sich an Mitgefühl und Weisheit, nicht an Regeln. Er ist Meister seiner eigenen Motive. Sein Kompass ist Karuna – das Herz, das weiß.",
+            "islam": "Der Murshid – der spirituelle Führer im Sufismus – ist nicht einer, der Befehle gibt, sondern einer, der verkörpert. Er orientiert durch sein Sein, nicht durch seine Worte.",
+            "osho": "Der Meister im Zen ist kein Meister über andere – er hat sich selbst gemeistert. Er hat keinen persönlichen Zweck, kein Verlangen. In seinen Augen können Schüler ihre eigene Wahrheit reflektiert finden.",
+            "moderne": "Viktor Frankls Logotherapie zeigt: In extremsten Situationen – Konzentrationslager, Verlust, Todesangst – bleibt eine Freiheit: die Wahl der Einstellung. Der innere Kompass ist die letzte Orientierung."
+          }
+        }
+      }
     },
     "#B5": {
-      "label": "Berührung",
-      "frage": "Wie wichtig ist es Ihnen, von anderen berührt zu werden?",
-      "karte": "Touch",
-      "text": "Berührung ist der erste Spiegel. Der Körper spricht, lange bevor Worte entstehen."
+      "label": "Wirksamkeit",
+      "stufe": 2,
+      "stufe_label": "Handlungs-Bedürfnisse",
+      "stufe_farbe": "#3B82F6",
+      "stufe_organ": "Aktive Körperkontrolle",
+      "faehigkeit": "Handlungsfähigkeit",
+      "icon": "⚡",
+      "paarungs_archetypen": [
+        "single",
+        "ra",
+        "solopoly",
+        "polyamor"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B038_00001_.png",
+          "karte": "Thunderbolt",
+          "karte_de": "Der Blitz",
+          "karte_key": "major_arcana.16_thunderbolt",
+          "karte_nummer": 16,
+          "tiage": "Deine tiefste Wirksamkeit entfaltet sich, wenn du aufhörst, das zu schützen, was ohnehin nicht echt ist. Der Blitz räumt auf. Was bleibt, ist Kraft.",
+          "reflexion": "Bin ich bereit, Sicherheiten aufzugeben für Wahrheit?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es Pfingsten – der Heilige Geist als Feuerzungen, der alles Alte verbrennt. Saulus wird Paulus durch Blitzschlag. Manchmal muss alles zusammenbrechen, damit Neues entstehen kann.",
+            "buddhismus": "Im Buddhismus ist es Kensho – plötzliches Erwachen, das alle Illusionen zerschmettert. Der Zen-Meister schlägt den Schüler, und in diesem Moment fällt alles Wissen weg.",
+            "islam": "Im Islam ist es die Nacht von Lailat al-Qadr – eine Nacht, die mehr wert ist als tausend Monate. Transformation in einem Augenblick.",
+            "osho": "Manchmal ist die größte Gnade ein Schock.",
+            "moderne": "In Beziehungen ist Thunderbolt die Krise, die alles in Frage stellt. Moderne Krisenforschung zeigt: Viele Paare berichten, dass die schlimmste Zeit rückblickend die wertvollste war."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "B058.webp",
+          "karte": "Success",
+          "karte_de": "Erfolg",
+          "karte_key": "minor_arcana.fire.6_success",
+          "karte_nummer": 6,
+          "tiage": "Wenn zwei Menschen aus einem gemeinsamen, klaren Bewusstsein heraus handeln, verdoppelt sich nicht nur ihre Wirksamkeit – sie erleben auch echten Erfolg: das tiefe Gefühl, das Richtige getan zu haben, gemeinsam, auf authentische Weise. Wahrer Erfolg ist innere Erfüllung.",
+          "reflexion": "Handeln wir aus dem Gefühl innerer Erfüllung – oder aus dem Druck äußerer Erwartungen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist der größte Erfolg nicht Macht oder Ruhm, sondern: 'Wohl dir, du guter und treuer Knecht.' (Mt 25:21) Wirksamkeit im Dienst des Guten – das ist Erfolg, der trägt.",
+            "buddhismus": "Im Buddhismus ist Kusala (heilsames Handeln) Erfolg – nicht was du erreichst, sondern was du mit deinen Handlungen schaffst: Weniger Leid, mehr Erwachen. Der Erfolg des Bodhisattvas ist das Wohl anderer.",
+            "islam": "Im Islam ist Tawfiq (Erfolg durch Gottes Unterstützung) das Höchste: Deine Arbeit ist gesegnet, wenn sie mit Niyya (reiner Absicht) getan wird. Äußerer Erfolg ohne innere Ausrichtung ist hohles Streben.",
+            "osho": "Wahrer Erfolg ist, wenn du innerlich erblühst. Der Erfolg, den die Welt kennt, ist leer. Du kannst König sein und ein Versager – oder arm und ein Triumph des Lebens.",
+            "moderne": "Self-Determination Theory (Deci & Ryan) zeigt: Erfolg, der intrinsisch motiviert ist – durch Autonomie, Kompetenzerleben und Zugehörigkeit – erzeugt nachhaltiges Wohlbefinden. Extrinsisch erzwungene Wirksamkeit führt zu Burnout. Echter Erfolg fühlt sich von innen stimmig an."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B056_00001_.png",
+          "karte": "Politics",
+          "karte_de": "Politik",
+          "karte_key": "minor_arcana.clouds.7_politics",
+          "karte_nummer": 7,
+          "tiage": "Wirksamkeit verlierst du, wenn Machtspiele und versteckte Agenden den Raum besetzen. Sobald Manipulation eintritt, verliert Handeln seine Kraft. Erkenne die politischen Spiele im Alltag deiner Beziehungen – und wähle den Weg der Transparenz.",
+          "reflexion": "Agiere ich transparent in meinen Absichten – oder verberge ich, was ich wirklich will?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Was ihr im Dunkeln redet, wird man im Licht hören.' (Lk 12:3) Intransparenz untergräbt Wirksamkeit. Wirkliche Kraft kommt aus dem Licht, nicht aus dem Schatten.",
+            "buddhismus": "Im Buddhismus ist Samma Sankappa (rechte Gesinnung) Teil des Achtfachen Pfades. Handeln aus unklaren Motiven – Gier, Hass, Verblendung – schwächt die Wirksamkeit. Klarheit der Absicht ist Kraft.",
+            "islam": "Im Islam ist Ikhlas (aufrichtige Absicht) die Bedingung für gesegnetes Handeln. Heuchlerische Wirksamkeit (Riya) gilt als schwere Sünde. Nur wer transparent handelt, handelt wirksam.",
+            "osho": "Politik ist überall – nicht nur in der Regierung. Erkenne die Spiele in deinem eigenen Leben: Wer manipuliert wen? Wahre Wirksamkeit braucht keine Manipulation – sie wirkt durch Klarheit.",
+            "moderne": "Organisationspsychologie zeigt: Teams mit hoher psychologischer Sicherheit und Transparenz sind signifikant wirksamer als hierarchisch manipulative Teams. Verdeckte politische Dynamiken kosten bis zu 30% der Produktivität – und 100% des Vertrauens."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_05_00000.png",
+          "karte": "The Creator",
+          "karte_de": "Der Schöpfer",
+          "karte_key": "minor_arcana.fire.king_the_creator",
+          "karte_nummer": 14,
+          "tiage": "Der Schöpfer schafft nicht, um Wirkung zu beweisen – er schafft, weil Schöpfung sein Wesen ist. Wirksamkeit auf Stufe 4 fragt nicht 'Was habe ich getan?' sondern 'Wessen Kanal war ich?' Du bist nicht der Urheber – du bist die Öffnung, durch die das Ganze wirkt.",
+          "reflexion": "Lebe ich als Schöpfer meines Lebens – oder als Reaktion auf das, was mir geschieht?",
+          "traditionen": {
+            "christentum": "Die Bibel beginnt mit 'Im Anfang schuf Gott' – und der Mensch ist als Imago Dei geschaffen, als Abbild des Schöpfers. Schöpferisches Handeln ist Teilhabe an Gottes eigentlichster Tätigkeit.",
+            "buddhismus": "Karma bedeutet: Jede Handlung erschafft Realität. Du bist nicht Opfer der Umstände – du bist Mitschöpfer jedes Moments. Wirksamkeit ist Verantwortung, keine Macht.",
+            "islam": "Khalifa – Statthalter, Hüter – ist der koranische Begriff für die menschliche Aufgabe auf Erden. Du verwaltest Schöpfung, nicht als Besitzer, sondern als Treuhänder. Wirksamkeit ist heilige Verantwortung.",
+            "osho": "Du bist nicht der Schöpfer – du bist der Kanal. Wenn du dich leer machst, fließt die Schöpfung durch dich. Der größte Schöpfer ist derjenige, der am wenigsten im Weg steht.",
+            "moderne": "Csikszentmihalyi beschreibt Flow als den Gipfelzustand der Wirksamkeit: Ich und Handlung verschmelzen. Nicht Ich tue – es tut sich. Selbstwirksamkeit (Bandura) wächst nicht durch Kontrolle, sondern durch Vertrauen in den eigenen Kanal."
+          }
+        }
+      }
     },
     "#B6": {
-      "label": "Erholung",
-      "frage": "Wie wichtig ist Ihnen ausreichend Erholung und Schlaf?",
-      "karte": "No-Thingness",
-      "text": "Wahre Erholung entsteht nicht durch Tun – sondern im Sein. Das Nichts ist der größte Rückzugsort."
+      "label": "Freiheit",
+      "stufe": 2,
+      "stufe_label": "Handlungs-Bedürfnisse",
+      "stufe_farbe": "#3B82F6",
+      "stufe_organ": "Aktive Körperkontrolle",
+      "faehigkeit": "Autonomieerhalt",
+      "icon": "🦅",
+      "paarungs_archetypen": [
+        "single",
+        "ra",
+        "aromantisch",
+        "solopoly"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B017_00001_.png",
+          "karte": "The Rebel",
+          "karte_de": "Der Rebell",
+          "karte_key": "major_arcana.4_the_rebel",
+          "karte_nummer": 4,
+          "tiage": "Deine Freiheit ist kein Protest – sie ist ein Ja zu dir selbst. Der wahre Rebell folgt seiner eigenen Wahrheit, nicht dem Widerstand.",
+          "reflexion": "Passe ich mich an aus Liebe – oder aus Angst vor Ablehnung?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Jesus der ultimative Rebell – er bricht den Sabbat, isst mit Sündern, wirft Tische um. Nicht gegen die Tradition, sondern für die Wahrheit hinter der Tradition.",
+            "buddhismus": "Buddha verließ den Palast und alle Sicherheiten – Rebellion gegen das goldene Gefängnis.",
+            "islam": "Im Sufismus ist Hallaj der Rebell, der 'Ana al-Haqq' (Ich bin die Wahrheit) ruft und dafür stirbt. Wahrheit vor Sicherheit.",
+            "osho": "Rebellion ist nicht gegen etwas – sie ist FÜR dich selbst.",
+            "moderne": "Moderne Paartherapie warnt vor 'Pseudo-Mutualität' – dem Mythos, gute Paare seien sich immer einig. Freiheit bedeutet: Ich darf anders sein, auch wenn es dich irritiert."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B036_00001_.png",
+          "karte": "Adventure",
+          "karte_de": "Abenteuer",
+          "karte_key": "minor_arcana.rainbows.page_adventure",
+          "karte_nummer": 11,
+          "tiage": "Freiheit und Liebe sind keine Feinde. In einer wirklichen Begegnung befreit dich die Verbindung. Ich kann dich lieben UND Raum für mich brauchen.",
+          "reflexion": "Lebe ich beides – Freiheit UND Verbundenheit?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Jesus vollkommen Gott UND vollkommen Mensch – Verschiedenheit ohne Verlust der Einheit. Wahre Freiheit liegt nicht in Trennung, sondern in Integration der Gegensätze.",
+            "buddhismus": "Der Mittlere Weg lehrt: Freiheit und Bindung sind kein Widerspruch – es ist eine Frage der Bewusstheit, wie man beides lebt.",
+            "islam": "Der Islam kennt Adl (Balance): Freiheit und Verantwortung gehören zusammen, keines ohne das andere.",
+            "osho": "Ich kann committed sein UND autonom. Freiheit ist nicht 'entweder Bindung oder Unabhängigkeit', sondern beides gleichzeitig.",
+            "moderne": "Moderne Paartherapie nennt es Differenzierung – die Fähigkeit, Ich zu bleiben in der Begegnung mit Du. Die stärksten Beziehungen verbinden maximale Autonomie mit maximaler Verbundenheit."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B044_00001_.png",
+          "karte": "Breakthrough",
+          "karte_de": "Durchbruch",
+          "karte_key": "major_arcana.11_breakthrough",
+          "karte_nummer": 11,
+          "tiage": "Deine Freiheit wächst nicht durch mehr Raum – sie wächst durch mehr Klarheit. Wenn du erkennst, welche Grenzen echt sind und welche du selbst gesetzt hast, bricht das Alte auf.",
+          "reflexion": "Bleibe ich aus Liebe – oder aus Angst vor Veränderung?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es Auferstehung – das Grab kann den Lebendigen nicht halten. Alle Begrenzungen gesprengt.",
+            "buddhismus": "Im Zen ist es Satori – plötzliches Erwachen, das alle Konzepte zerreißt. Die Tür war nie verschlossen, du hattest nur Angst zu drücken.",
+            "islam": "Im Sufismus ist es Fath (Öffnung) – Gott öffnet das Herz, und plötzlich ist alles klar.",
+            "osho": "Du bist nicht gefangen. Du träumst nur, gefangen zu sein.",
+            "moderne": "Moderne Therapie zeigt: Manchmal muss man bereit sein zu gehen, um wirklich bleiben zu können. Freiheit ist nicht Flucht – Freiheit ist die Macht der Wahl."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_06_00000.png",
+          "karte": "Possibilities",
+          "karte_de": "Möglichkeiten",
+          "karte_key": "minor_arcana.fire.2_possibilities",
+          "karte_nummer": 2,
+          "tiage": "Freiheit auf ihrer tiefsten Ebene ist nicht Freiheit von Zwängen – sie ist das Erwachen in die Unendlichkeit der Möglichkeiten. Du bist nicht gefangen in deiner Geschichte. Du bist mehr als die Summe deiner Erfahrungen. Jeder Moment öffnet eine Tür, die noch nie geöffnet wurde.",
+          "reflexion": "Welche Version meiner selbst ist noch ungeboren – und wovor habe ich Angst, ihr zu begegnen?",
+          "traditionen": {
+            "christentum": "Paulus schreibt: 'Wo der Geist des Herrn ist, da ist Freiheit.' (2. Kor 3:17) Freiheit nicht als Abwesenheit von Bindung, sondern als Gabe des Geistes: das Ja zu einer Wirklichkeit, die größer ist als ich.",
+            "buddhismus": "Shunyata – Leerheit – ist im Buddhismus keine Negation, sondern pure Möglichkeit. Was leer ist, kann alles werden. Freiheit wurzelt in der Erkenntnis, dass kein festes Selbst existiert.",
+            "islam": "Insan al-Kamil – der vollkommene Mensch – ist frei, weil er alle Möglichkeiten Allahs in sich widerspiegelt. Die 99 Namen Gottes zeigen: Schöpfung ist unerschöpfliche Möglichkeit.",
+            "osho": "Das Leben ist voller Möglichkeiten. Wenn du dich für eine entscheidest, verschließt du dich nicht – du gehst tiefer. Freiheit ist nicht das Offenhalten aller Türen – sie ist die Tiefe, die hinter jeder Tür wartet.",
+            "moderne": "Viktor Frankl nennt die Freiheit der Einstellung die letzte menschliche Freiheit – unantastbar selbst im Konzentrationslager. Freiheit ist keine äußere Bedingung. Sie ist eine innere Haltung zur Fülle des Möglichen."
+          }
+        }
+      }
     },
     "#B7": {
-      "label": "Sexueller-Ausdruck",
-      "frage": "Wie wichtig ist Ihnen sexueller Ausdruck?",
-      "karte": "Passion",
-      "text": "Sexualität ist ein Feuer, das heilig ist – wenn du es nicht besitzen willst. Ausdruck, nicht Aneignung."
+      "label": "Intensität",
+      "stufe": 2,
+      "stufe_label": "Handlungs-Bedürfnisse",
+      "stufe_farbe": "#3B82F6",
+      "stufe_organ": "Aktive Körperkontrolle",
+      "faehigkeit": "Emotionsregulation",
+      "icon": "🔥",
+      "paarungs_archetypen": [
+        "duo",
+        "polyamor"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B014_00001_.png",
+          "karte": "The Lovers",
+          "karte_de": "Die Liebenden",
+          "karte_key": "major_arcana.6_the_lovers",
+          "karte_nummer": 6,
+          "tiage": "Deine Intensität ist kein Fehler – sie ist dein Geschenk. Die Liebenden haben Flügel: ihre Leidenschaft trägt sie, anstatt sie zu verbrennen.",
+          "reflexion": "Bin ich wirklich präsent in der Intimität – oder funktioniere ich nur?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die Mystische Hochzeit – die Seele vereinigt sich mit Christus. Nicht Verschmelzung, sondern Communio – Gemeinschaft in Verschiedenheit.",
+            "buddhismus": "Im Tantra ist Maithuna die heilige Vereinigung von Shiva (Bewusstsein) und Shakti (Energie) – Sex als Meditation.",
+            "islam": "Der Islam kennt die Liebe zwischen Rumi und Shams – eine Liebe so intensiv, dass sie beide transformierte.",
+            "osho": "Liebe ist nicht Beziehung – Liebe ist ein Zustand des Seins.",
+            "moderne": "Moderne Sexualforschung zeigt: Die intensivsten Begegnungen sind die, in denen beide ganz präsent sind. Nicht Performance, sondern Präsenz. Wahre Leidenschaft braucht Verletzlichkeit."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B048_00001_.png",
+          "karte": "Intensity",
+          "karte_de": "Intensität",
+          "karte_key": "minor_arcana.fire.knight_intensity",
+          "karte_nummer": 12,
+          "tiage": "Wenn zwei Menschen gleichzeitig vollständig präsent sind, brennt die Begegnung wie reines Feuer. Das ist Intensität in ihrer heiligsten Form.",
+          "reflexion": "Bin ich wirklich DA, wenn ich da bin?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die Hingabe der Märtyrer – nicht aus Pflicht, sondern aus brennender Liebe. Absolute Intensität auch in der Verzweiflung.",
+            "buddhismus": "Im Zen ist es der Samurai-Geist – jede Handlung, als wäre es die letzte. Der Teemeister bereitet Tee mit derselben Intensität wie der Krieger kämpft.",
+            "islam": "Im Sufismus tanzen die Derwische bis zur Ekstase – totale Hingabe an den Moment.",
+            "osho": "Sei total in allem. Halbherzigkeit ist die einzige Sünde.",
+            "moderne": "Moderne Aufmerksamkeitsforschung zeigt: Wir sind so abgelenkt, dass echte Präsenz radikal wirkt. Ein Moment voller Präsenz ist mehr wert als Stunden halber Anwesenheit."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B045_00001_.png",
+          "karte": "Projections",
+          "karte_de": "Projektionen",
+          "karte_key": "minor_arcana.water.7_projections",
+          "karte_nummer": 7,
+          "tiage": "Die intensivsten Begegnungen sind Spiegel. Was dich am stärksten bewegt – Bewunderung oder Abstoßung – lebt auch in dir. Intensität ist eine Einladung zur Selbstkenntnis: Was zeigt mir die Stärke meiner Reaktion über mich selbst?",
+          "reflexion": "Was sagt meine Intensität mir über mich selbst – nicht über den anderen?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Jesus: 'Was siehst du den Splitter im Auge deines Bruders, aber den Balken in deinem eigenen Auge bemerkst du nicht?' (Mt 7:3) Projektion ist nicht Bösartigkeit – es ist Blindheit, die Klarheit braucht.",
+            "buddhismus": "Im Buddhismus ist Vipallasa (Fehlwahrnehmung) die Ursache vieler Projektionen. Was wir sehen, sagt mehr über unsere Konditionierungen als über die Wirklichkeit. Meditationspraxis reinigt den Spiegel.",
+            "islam": "Im Sufismus lehrt der Meister: Was dich am anderen stört, ist oft eine gespiegelte Eigenschaft. 'Der Spiegel zeigt nur dein Gesicht' – die Intensität deiner Reaktion weist auf dich zurück.",
+            "osho": "Du siehst nie den anderen – du siehst immer nur deine Projektion. Nimm sie zurück, und du erkennst dich selbst. Je intensiver die Reaktion, desto tiefer die eigene Wunde.",
+            "moderne": "Die Jungianer nennen es Schatten: Was wir am stärksten an anderen ablehnen, ist oft das, was wir in uns selbst nicht integriert haben. Intensive Beziehungen werden zum Katalysator für Schattenarbeit – wenn man bereit ist hinzuschauen."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_07_00000.png",
+          "karte": "Passion",
+          "karte_de": "Leidenschaft",
+          "karte_key": "zusaetzliche_karten.passion",
+          "karte_nummer": null,
+          "tiage": "Die heilige Leidenschaft fragt nicht nach Erlaubnis. Sie ist das Feuer, das dich IM Handeln erkennt – nicht was du tust, sondern WER du bist, wenn du brennst. Intensität auf Stufe 4 ist kein Adrenalin – sie ist Hingabe ohne Ego.",
+          "reflexion": "Für was brenne ich so sehr, dass ich vergesse, wer ich bin?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Ich bin gekommen, Feuer auf die Erde zu werfen.' (Lk 12:49) Passion als göttliches Prinzip – nicht zerstörend, sondern verwandelnd. Die Heiligen brennen, ohne sich zu verzehren.",
+            "buddhismus": "Bodhicitta – die leidenschaftliche Entschlossenheit, zum Wohl aller Wesen erwacht zu werden – ist die Kraft, die Bodhisattvas durch Äonen trägt. Leidenschaft als grenzenlose Hingabe.",
+            "islam": "Ishq – göttliche Liebe, heilige Leidenschaft – ist das Herzstück der Sufi-Tradition. Rumi lehrte: Das Feuer der Liebe brennt alles weg, was nicht wahr ist. Was bleibt, ist reines Gold.",
+            "osho": "Sexualität ist ein Feuer, das heilig ist – wenn du es nicht besitzen willst. Transformiere sie, unterdrücke sie nicht. Passion ist der Samen der höchsten Energie. Lass sie aufsteigen.",
+            "moderne": "Csikszentmihalyi unterscheidet leidenschaftliches Engagement vom Burnout: Passion, die aus Bedeutung wächst, erschöpft nicht – sie ernährt. Intensity, die ich wähle, ist Lebensenergie. Intensity, die mich treibt, ist Angst."
+          }
+        }
+      }
     },
     "#B8": {
-      "label": "Physische-Sicherheit",
-      "frage": "Wie wichtig ist Ihnen physische Sicherheit?",
-      "karte": "Courage",
-      "text": "Sicherheit ist nicht das Fehlen von Gefahr – sondern das Erblühen mitten im Stein."
+      "label": "Entwicklung",
+      "stufe": 2,
+      "stufe_label": "Handlungs-Bedürfnisse",
+      "stufe_farbe": "#3B82F6",
+      "stufe_organ": "Aktive Körperkontrolle",
+      "faehigkeit": "Lernfähigkeit",
+      "icon": "🌱",
+      "paarungs_archetypen": [
+        "duo",
+        "duo_flex"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "B061.webp",
+          "karte": "The Fool",
+          "karte_de": "Der Narr",
+          "karte_key": "major_arcana.0_the_fool",
+          "karte_nummer": 0,
+          "tiage": "Deine Entwicklung beginnt dort, wo dein Wissen aufhört. Der Narr ist nicht naiv – er ist weise genug, das Unbekannte zu begrüßen.",
+          "reflexion": "Kenne ich dich – oder meine ich nur, dich zu kennen?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Paulus: 'Wenn jemand unter euch meint, weise zu sein, der werde ein Narr, damit er weise werde.' (1. Kor 3:18) Die göttliche Torheit ist weiser als menschliche Weisheit.",
+            "buddhismus": "Im Zen ist Shoshin (Anfängergeist) die höchste Tugend – 'Im Geist des Anfängers gibt es viele Möglichkeiten, im Geist des Experten nur wenige.'",
+            "islam": "Der Islam kennt die Malamatiyya (Tadler-Sufis), die bewusst als Narren auftreten, um nicht in Stolz zu verfallen.",
+            "osho": "Bleib ein Fool – das ist die einzige Weisheit.",
+            "moderne": "Entwicklungspsychologie zeigt: Paare, die sich als 'fertig ausgelernt' betrachten, erstarren. Entwicklung bedeutet: bereit sein, den Partner wieder nicht zu kennen."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B065_00001_.png",
+          "karte": "Transformation",
+          "karte_de": "Transformation",
+          "karte_key": "major_arcana.13_transformation",
+          "karte_nummer": 13,
+          "tiage": "In der Begegnung transformiert ihr euch gegenseitig. Nicht weil ihr es wollt, sondern weil echte Verbindung unvermeidlich verändert.",
+          "reflexion": "Kann ich den Tod des Alten zulassen – oder klammere ich mich fest?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es Tod und Auferstehung – 'Wenn das Weizenkorn nicht in die Erde fällt und stirbt, bleibt es allein.' (Johannes 12:24)",
+            "buddhismus": "Im Buddhismus ist es die Lehre von Anicca (Vergänglichkeit) – alles wandelt sich, immer. Festhalten ist Leiden.",
+            "islam": "Im Sufismus ist Fana (Auslöschung) die Vorbedingung für Baqa (Fortbestehen in Gott). Das Ego muss sterben, damit das Selbst leben kann.",
+            "osho": "Stirb jeden Moment – dann lebst du wirklich.",
+            "moderne": "Paartherapie zeigt: Viele Ehen brauchen mehrere 'Tode' – die Ehe ohne Kinder stirbt, die Ehe mit Kindern. Entwicklung heißt: bereit sein loszulassen, wer wir waren."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/image_00000.png",
+          "karte": "Change",
+          "karte_de": "Veränderung",
+          "karte_key": "major_arcana.10_change",
+          "karte_nummer": 10,
+          "tiage": "Deine Entwicklung ist kein gerader Weg – sie ist ein Tanz mit dem Wandel. Halte fest an dem, was wesentlich ist, und lass alles andere gehen.",
+          "reflexion": "Tanze ich mit dem Wandel – oder kämpfe ich dagegen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Ecclesia semper reformanda (die Kirche, die sich immer reformiert) das Prinzip des heilsamen Wandels.",
+            "buddhismus": "Anicca (Vergänglichkeit) ist das erste Kennzeichen aller Existenz – das Rad dreht sich, und wer mit ihm tanzt, leidet nicht.",
+            "islam": "Der Islam lehrt: La hawla wa la quwwata illa billah – es gibt keine Kraft außer bei Allah. Wandel ist göttlich gewirkt.",
+            "osho": "Alles verändert sich. Das ist die einzige Wahrheit. Wenn du mit dem Fluss gehst, wirst du tanzen.",
+            "moderne": "Entwicklungspsychologie zeigt: Zyklen des Wandels sind unvermeidlich. Paare, die Veränderung als Konstante akzeptieren, sind stabiler als jene, die Unveränderlichkeit anstreben."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_08_00000.png",
+          "karte": "Maturity",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.ace_maturity",
+          "karte_nummer": 1,
+          "tiage": "Reife ist das Ziel aller Entwicklung – und paradoxerweise ihr Ende. Der reife Mensch hört auf zu wachsen und beginnt zu sein. Entwicklung auf Stufe 4 heißt: Du wirst nicht mehr – du bist bereits. Die Frucht braucht nicht mehr zuzunehmen. Sie kann fallen.",
+          "reflexion": "Was wäre, wenn Entwicklung nicht Wachstum bedeutet – sondern Ankommen?",
+          "traditionen": {
+            "christentum": "Paulus schreibt: 'Als ich ein Kind war, redete ich wie ein Kind... Als ich ein Mann wurde, tat ich ab, was kindlich war.' (1. Kor 13:11) Reife als spirituelles Ziel – die Erlangung des vollkommenen Maßes des Wachstums Christi (Eph 4:13).",
+            "buddhismus": "Die Paramitas – die zehn Vollkommenheiten – beschreiben die Reife eines Bodhisattvas. Nicht Perfektionismus, sondern Integration. Der reife Bodhisattva leidet noch, aber er klebt nicht mehr.",
+            "islam": "Insan al-Kamil – der vollkommene, reife Mensch – ist das islamische Ideal spiritueller Entwicklung. Reife bedeutet: Die Attribute Gottes spiegeln sich im Menschen. Er gibt Rahma (Barmherzigkeit) weiter.",
+            "osho": "Reife ist nicht eine Frage des Alters. Es ist eine Frage der Integration. Ein reifer Mensch hat seine Erfahrungen verdaut – sie besitzen ihn nicht mehr, er trägt sie.",
+            "moderne": "Robert Kegans Theorie der erwachsenen Entwicklung beschreibt fünf Bewusstseinsstufen. Postkonventionelles Denken – Stufe 4/5 – ist das Zeichen von Reife: nicht mehr getrieben, sondern wählend. Die meisten Menschen erreichen diese Stufe nie vollständig."
+          }
+        }
+      }
     },
     "#B9": {
-      "label": "Unterschlupf",
-      "frage": "Wie wichtig ist Ihnen ein sicherer Wohnraum?",
-      "karte": "Harmony",
-      "text": "Ein Zuhause ist dort, wo das Herz nicht kämpfen muss. Innere Harmonie ist der wahre Unterschlupf."
+      "label": "Gemeinschaft",
+      "stufe": 3,
+      "stufe_label": "Soziale Bedürfnisse",
+      "stufe_farbe": "#8B5CF6",
+      "stufe_organ": "Soziale Lebensweise",
+      "faehigkeit": "Soziale Integration",
+      "icon": "🤝",
+      "paarungs_archetypen": [
+        "ra",
+        "solopoly",
+        "polyamor"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B033_00001_.png",
+          "karte": "Participation",
+          "karte_de": "Teilnahme",
+          "karte_key": "minor_arcana.fire.4_participation",
+          "karte_nummer": 4,
+          "tiage": "Dein Bedürfnis nach Gemeinschaft erfüllt sich nicht durch Zugehörigkeit allein – es erfüllt sich durch Teilnahme. Dein Einzigartiges bereichert das Gemeinsame.",
+          "reflexion": "Bringe ich mich ein – oder passe ich mich nur an?",
+          "traditionen": {
+            "christentum": "Im Christentum ist die Gemeinde 'Ein Leib, viele Glieder' (1. Kor 12) – jeder trägt bei aus eigener Gabe, nicht aus Zwang.",
+            "buddhismus": "Im Buddhismus ist Sangha (Gemeinschaft) eines der Drei Juwelen – nicht optional, sondern essentiell. Der Weg wird gemeinsam gegangen.",
+            "islam": "Im Islam ist Ummah (Gemeinschaft der Gläubigen) zentral – Salah (Gebet) hat mehr Kraft in Gemeinschaft.",
+            "osho": "Du kannst nicht allein erleuchtet werden – Erleuchtung geschieht im Tanz mit anderen.",
+            "moderne": "Moderne Soziologie zeigt: Menschen in Gemeinschaft leben länger, gesünder, glücklicher. Gemeinschaft entsteht nicht durch Gleichheit, sondern durch lebendige Teilhabe der Verschiedenen."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B024_00001_.png",
+          "karte": "Celebration",
+          "karte_de": "Feier",
+          "karte_key": "minor_arcana.water.3_celebration",
+          "karte_nummer": 3,
+          "tiage": "Wenn ihr zusammen feiert – ohne Anlass, ohne Agenda – entsteht Gemeinschaft in ihrer reinsten Form.",
+          "reflexion": "Feiern wir Erfolge – oder hetzen wir nur zur nächsten Aufgabe?",
+          "traditionen": {
+            "christentum": "Im Christentum ist das Abendmahl Eucharistia (Danksagung) – Feier der Präsenz Gottes im Brot. Jüdische Feste wie Pessach vergegenwärtigen Geschichte als lebendige Gemeinschaft.",
+            "buddhismus": "Im Hinduismus sind Feste wie Holi kosmische Ereignisse – das Göttliche feiert durch Menschen.",
+            "islam": "Die islamischen Feste Eid ul-Fitr und Eid ul-Adha sind Gemeinschaftsfeiern – Dankbarkeit als kollektive Praxis.",
+            "osho": "Feiere alles – Geburt, Tod, Liebe, Schmerz. Leben selbst ist der Grund zum Feiern.",
+            "moderne": "Positive Psychologie zeigt: Paare, die gemeinsam feiern, bleiben zufriedener. Gemeinschaft entsteht nicht nur in Krisen, sondern mehr noch in gemeinsamer Freude."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B039_00001_.png",
+          "karte": "The Dream",
+          "karte_de": "Der Traum",
+          "karte_key": "minor_arcana.water.6_the_dream",
+          "karte_nummer": 6,
+          "tiage": "Jede lebendige Gemeinschaft trägt einen Traum – eine gemeinsame Vision, die größer ist als die Einzelnen. Die entscheidende Frage ist: Ist euer Traum ein lebendiger Samen, der euch wachsen lässt – oder eine starre Illusion, die euch von der Gegenwart trennt?",
+          "reflexion": "Teilen wir einen echten gemeinsamen Traum – oder projizieren wir unsere individuellen Wünsche aufeinander?",
+          "traditionen": {
+            "christentum": "Im Christentum lebt die Gemeinschaft aus einer gemeinsamen Hoffnung: dem Traum vom Reich Gottes. Dieser Traum inspiriert und verbindet – solange er lebendig bleibt und nicht zur starren Doktrin erstarrt.",
+            "buddhismus": "Im Buddhismus ist der Bodhisattva-Vow ein kollektiver Traum: Alle Wesen zu befreien. Dieser Traum ist kein Tagtraum – er ist eine Sehnsucht, die das Handeln täglich formt.",
+            "islam": "Der Islam kennt die Ummah als Gemeinschaft des gemeinsamen Glaubens und der gemeinsamen Hoffnung. Ein Traum, der Gemeinschaft schafft, muss gelebt werden – nicht nur geglaubt.",
+            "osho": "Träume können inspirieren oder gefangen halten. Die Frage ist: Träumst du, um aufzuwachen, oder um weiterzuschlafen? Der lebendige Traum zieht dich ins Handeln; die tote Illusion hält dich fest.",
+            "moderne": "Sozialpsychologie zeigt: Gruppen mit einer geteilten, bedeutsamen Vision zeigen höheren Zusammenhalt und mehr Kreativität. Aber Gruppenträume können auch zu Groupthink erstarren. Der Traum muss periodisch hinterfragt werden – ist er noch real?"
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_09_00000.png",
+          "karte": "Love",
+          "karte_de": "Liebe",
+          "karte_key": "zusaetzliche_karten.love",
+          "karte_nummer": null,
+          "tiage": "Gemeinschaft auf ihrer tiefsten Ebene ist nicht Organisation – sie ist Liebe. Nicht die Liebe, die braucht und nimmt, sondern die Liebe, die erkennt: Wir sind nicht getrennt. Du liebst nicht die Gemeinschaft – du bist sie. Jeder echte Kontakt ist ein Moment des Erkennens: Du bist auch ich.",
+          "reflexion": "Erfahre ich Gemeinschaft als Heimkommen zu mir selbst – oder als Flucht aus mir selbst?",
+          "traditionen": {
+            "christentum": "Johannes schreibt: 'Gott ist Liebe, und wer in der Liebe bleibt, bleibt in Gott.' (1. Joh 4:16) Gemeinschaft nicht als Institution, sondern als Ort, wo Liebe wohnt. Die Kirche als Liebesgemeinschaft.",
+            "buddhismus": "Metta – Liebende Güte – ist die grenzenlose Ausdehnung des Herzens auf alle Wesen: Freunde, Fremde, Feinde. Gemeinschaft als Übungsfeld für universelle Liebe.",
+            "islam": "Die Ummah – die Gemeinschaft der Gläubigen – wird beschrieben als ein Körper: wenn ein Glied leidet, leidet der ganze Körper. (Hadith) Liebe ist die Substanz, aus der Gemeinschaft besteht.",
+            "osho": "Liebe ist nicht etwas, das du bekommst – es ist etwas, das du bist. Wenn du liebst, fragst du nicht nach Gegenleistung. Gemeinschaft entsteht dort, wo Menschen aufgehört haben, sich zu brauchen.",
+            "moderne": "Martin Bubers Ich-Du-Philosophie beschreibt echte Begegnung: Nicht Ich und ein Objekt, sondern Ich und ein Gegenüber. Gemeinschaft ist möglich, wo Liebe die Angst überwindet. Nur wer sich selbst liebt, kann wirklich anderen begegnen."
+          }
+        }
+      }
     },
     "#B10": {
-      "label": "Beständigkeit",
-      "frage": "Wie wichtig ist Ihnen Beständigkeit in Beziehungen?",
-      "karte": "Completion",
-      "text": "Beständigkeit entsteht nicht, weil man festhält, sondern weil man dem Leben erlaubt, sich zu vollenden."
+      "label": "Anerkennung",
+      "stufe": 3,
+      "stufe_label": "Soziale Bedürfnisse",
+      "stufe_farbe": "#8B5CF6",
+      "stufe_organ": "Soziale Lebensweise",
+      "faehigkeit": "Selbstwertregulation",
+      "icon": "🌟",
+      "paarungs_archetypen": [
+        "duo",
+        "duo_flex"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B041_00001_.png",
+          "karte": "Warmth",
+          "karte_de": "Wärme",
+          "karte_key": "zusaetzliche_karten.warmth",
+          "karte_nummer": null,
+          "tiage": "Die tiefste Anerkennung ist Wärme: keine bewertende Zustimmung, kein Lob als Währung – sondern das natürliche Ausstrahlen eines Herzens, das offen ist. Wärme ist Präsenz, die nicht urteilt. Wenn du dich wirklich anerkannt fühlst, ist es diese Wärme, die du spürst.",
+          "reflexion": "Anerkenne ich durch echte Wärme und Präsenz – oder vergebe ich Anerkennung als Belohnung?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Agape nicht Gefühl, sondern Entscheidung: zu sehen, zu wärmen, zu nähren – unabhängig von Verdienst. 'Gott ist die Liebe' (1. Joh 4:8) – diese Liebe ist Wärme ohne Bedingung.",
+            "buddhismus": "Mudita – Mitfreude – ist eine der vier Brahmaviharas: echte Freude über das Wohlbefinden anderer. Diese strahlende Wärme ist Anerkennung in ihrer reinsten Form: Ich freue mich, dass du bist, wer du bist.",
+            "islam": "Wärme ist das natürliche Ausstrahlen eines Herzens, das Gott liebt. Der Prophet (ﷺ) war bekannt für sein warmes Lächeln und seine Präsenz. Wärme ist Rahma (Barmherzigkeit) in verkörperter Form.",
+            "osho": "Wärme ist kein Gefühl, sondern Präsenz, die nicht urteilt. Du musst sie nicht erzeugen – nur das Herz öffnen. Ein offenes Herz strahlt von selbst. Anerkennung ist Wärme: du wirst gesehen, ohne bewertet zu werden.",
+            "moderne": "Neurobiologie zeigt: Warme, wertschätzende Blicke aktivieren das Belohnungssystem stärker als verbales Lob. Wärme als nonverbale Anerkennung ist evolutionär primär – sie signalisiert: Du gehörst dazu, du bist sicher."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B047_00001_ (3).png",
+          "karte": "Playfulness",
+          "karte_de": "Verspieltheit",
+          "karte_key": "minor_arcana.fire.page_playfulness",
+          "karte_nummer": 11,
+          "tiage": "Die schönste Form der Anerkennung ist Leichtigkeit: wenn der andere dich so vollständig sieht, dass er mit dir lachen kann.",
+          "reflexion": "Können wir lachen – auch über uns selbst?",
+          "traditionen": {
+            "christentum": "Im Christentum spielt Gott die Welt ins Dasein – 'Deus ludens'. Der Heilige Geist weht wo er will – unberechenbar, leicht.",
+            "buddhismus": "Im Zen ist das Leben selbst ein Spiel – warum so ernst? 'Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water' – aber mit einem Lächeln.",
+            "islam": "Im Sufismus tanzen die Derwische – Religion als ekstatisches Spiel.",
+            "osho": "Nimm das Leben nicht ernst – du kommst sowieso nicht lebend raus.",
+            "moderne": "Forschung zeigt: Paare, die gemeinsam lachen, streiten konstruktiver. Manchmal ist ein Augenzwinkern mehr wert als pathetische Worte."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B023_00001_.png",
+          "karte": "Comparison",
+          "karte_de": "Vergleich",
+          "karte_key": "minor_arcana.clouds.5_comparison",
+          "karte_nummer": 5,
+          "tiage": "Anerkennung stirbt in dem Moment, in dem du anfängst zu vergleichen. Der Vergleich macht uns zu Objekten auf einer Skala statt zu einzigartigen Menschen. Die tiefste Anerkennung erkennt: Du bist ein Original – und kein Original braucht einen Maßstab.",
+          "reflexion": "Erkenne ich den anderen in seiner Einzigartigkeit – oder messe ich ihn ständig an anderen oder an mir?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Paulus: 'Wir wagen nicht, uns mit einigen zu vergleichen oder zu messen, die sich selbst empfehlen.' (2. Kor 10:12) Vergleich ist Selbstbetrug. Anerkennung erkennt das Einzigartige.",
+            "buddhismus": "Der Buddha lehrte: Kein Wesen ist einem anderen gleich. Buddha-Natur manifestiert sich in jedem auf einzigartige Weise. Vergleich verkennt die Natur des Seins.",
+            "islam": "Im Islam ist jeder Mensch einzigartig erschaffen. 'Kein Mensch hat dieselben Fingerabdrücke' – eine koranische Metapher für Einzigartigkeit. Allah sieht nicht auf Äußeres, sondern auf das Herz.",
+            "osho": "Vergleiche dich nie. Du bist einzigartig. Es gibt keinen Maßstab, weil es niemanden wie dich gibt. Wenn du anfängst zu vergleichen, hörst du auf, du selbst zu sein – und ich höre auf, dich wirklich zu sehen.",
+            "moderne": "Sozialvergleichstheorie (Festinger) zeigt: Aufwärtsvergleich erzeugt chronisch schlechtes Selbstwertgefühl, Abwärtsvergleich erzeugt trügerische Überlegenheit. Beides verhindert echte Begegnung. Echte Anerkennung suspendiert den Vergleich und sieht das Konkrete."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_10_00000.png",
+          "karte": "Compassion",
+          "karte_de": "Mitgefühl",
+          "karte_key": "zusaetzliche_karten.compassion",
+          "karte_nummer": null,
+          "tiage": "Die tiefste Anerkennung ist Mitgefühl: Du siehst den anderen nicht, weil er dir ähnelt oder dich bestätigt. Du siehst ihn, weil er ist. Mitgefühl ist Anerkennung ohne Bedingung – der Blick, der sagt: Ich sehe dich, und ich muss dich nicht verändern.",
+          "reflexion": "Erkenne ich den anderen in seiner Einzigartigkeit – oder suche ich ihn als Spiegel meiner eigenen Bedürfnisse?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Was ihr dem Geringsten meiner Brüder getan habt, habt ihr mir getan.' (Mt 25:40) Anerkennung des anderen als Anerkennung Gottes selbst. Compassio als Mit-Leiden auf Augenhöhe.",
+            "buddhismus": "Karuna – Mitgefühl – ist eine der vier Brahmaviharas: die unermessliche Eigenschaft der Seele. Sie sieht das Leiden anderer ohne Distanz, ohne Überlegenheit. Mitgefühl ist die höchste Form der Anerkennung.",
+            "islam": "Al-Rahman, Al-Rahim – der Erbarmer, der Barmherzige – sind die ersten Attribute Allahs in jeder Koransure. Barmherzigkeit ist die Grundhaltung, aus der Anerkennung des anderen entsteht.",
+            "osho": "Mitgefühl ist nicht Mitleid. Mitleid schaut von oben herab. Mitgefühl ist auf Augenhöhe – es erkennt: Wir sind gleich. Du bist nicht besser – du bist genauso menschlich wie ich.",
+            "moderne": "Axel Honneths Theorie der Anerkennung zeigt: Menschen kämpfen ihr Leben lang um gesehen zu werden. Das Tiefste dabei ist nicht Lob – es ist die Erfahrung: Du wirst als vollständiger Mensch anerkannt, nicht für deine Leistung."
+          }
+        }
+      }
     },
     "#B11": {
-      "label": "Sich-sicher-fühlen",
-      "frage": "Wie wichtig ist es Ihnen, sich emotional sicher zu fühlen?",
-      "karte": "Trust",
-      "text": "Sich sicher fühlen heißt nicht, alles zu kontrollieren – sondern zu springen, auch wenn du den Boden nicht siehst."
+      "label": "Gerechtigkeit",
+      "stufe": 3,
+      "stufe_label": "Soziale Bedürfnisse",
+      "stufe_farbe": "#8B5CF6",
+      "stufe_organ": "Soziale Lebensweise",
+      "faehigkeit": "Fairness-Empfinden",
+      "icon": "⚖️",
+      "paarungs_archetypen": [
+        "duo_flex",
+        "lat",
+        "polyamor"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B035_00001_.png",
+          "karte": "Abundance",
+          "karte_de": "Fülle",
+          "karte_key": "minor_arcana.rainbows.king_abundance",
+          "karte_nummer": 14,
+          "tiage": "Gerechtigkeit, die aus dem Bewusstsein der Fülle kommt, ist anderer Art als Gerechtigkeit aus Mangel. Wer weiß, dass genug für alle da ist, teilt anders – nicht aus Pflicht, sondern aus Überfluss. Fülle ist das Fundament großzügiger Fairness.",
+          "reflexion": "Kommt mein Gerechtigkeitsgefühl aus dem Bewusstsein der Fülle – oder aus der Angst, zu kurz zu kommen?",
+          "traditionen": {
+            "christentum": "Im Christentum speist Jesus fünftausend Menschen mit fünf Broten und zwei Fischen – Fülle als Wunder. Gerechtigkeit entsteht nicht durch Aufteilen von Mangel, sondern durch das Teilen von Fülle, die sich vermehrt.",
+            "buddhismus": "Zen will, dass du lebst, in Fülle lebst, in Totalität lebst – nicht auf dem Minimum, sondern auf dem Maximum, überfließend. Aus dieser Fülle heraus entsteht natürliche Gerechtigkeit: Du nimmst nicht mehr als du brauchst.",
+            "islam": "Zakat – die islamische Pflicht zur Armensteuer – entsteht aus der Erkenntnis: Was ich habe, gehört nicht allein mir. Fülle verpflichtet zur Gerechtigkeit. Allah der Geber segnet den, der aus Fülle heraus teilt.",
+            "osho": "Gerechtigkeit entsteht nicht durch Fordern, sondern durch Geben aus Überfluss. Wenn du fühlst, dass du genug hast, hörst du auf zu kämpfen. Fülle und Gerechtigkeit sind zwei Seiten derselben Wahrheit.",
+            "moderne": "Behavioral Economics zeigt: Menschen in Scarcity-Mindset (Mangelbewusstsein) treffen schlechtere Entscheidungen, sind weniger fair und großzügig. Abundance-Mindset erzeugt kooperativeres Verhalten. Gerechtigkeit beginnt in der inneren Haltung zur Ressource."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "B120.webp",
+          "karte": "Sharing",
+          "karte_de": "Teilen",
+          "karte_key": "minor_arcana.fire.queen_sharing",
+          "karte_nummer": 13,
+          "tiage": "Teilen ist Gerechtigkeit in Aktion. Wenn du aus dem Bewusstsein der Verbundenheit heraus teilst – nicht aus Pflicht, sondern weil du überfließt – entsteht Gerechtigkeit nicht als Regel, sondern als natürlicher Ausdruck. Was du gibst, kehrt zurück, vervielfacht.",
+          "reflexion": "Teile ich aus Überfluss und Verbundenheit – oder aus Pflicht und dem Gefühl, es zu müssen?",
+          "traditionen": {
+            "christentum": "Die erste Gemeinde in Jerusalem hatte 'alles gemeinsam' (Apg 2:44) – nicht als Zwang, sondern als Überschwang der Freude. Teilen als spontaner Ausdruck von Gemeinschaft: Gerechtigkeit aus Liebe.",
+            "buddhismus": "Dana – Großzügigkeit – ist die erste Paramita. Im Theravada beginnt spirituelles Wachstum mit dem Lernen zu geben, ohne an Gegenleistung zu denken. Teilen löst Anhaftung und schafft Gerechtigkeit.",
+            "islam": "Sadaqa – freiwillige Spende – geht über das Pflichtmaß der Zakat hinaus. 'Teile nicht, weil du musst – teile, weil du kannst.' Der Koran beschreibt die Großzügigen als 'von Gott geliebt'.",
+            "osho": "Teile nicht, weil du sollst – teile, weil du überfließest. Wahres Teilen kennt kein Opfer. Wenn du teilst und es leer zurücklässt, war es kein echtes Teilen – du hast nur gegeben, was du nicht mehr wolltest.",
+            "moderne": "Positive Psychologie (Seligman) zeigt: Großzügiges Geben ist eine der stärksten Quellen für Lebenszufriedenheit. Gesellschaften mit höherer Bereitschaft zum Teilen (soziales Kapital) sind gerechter, gesünder und glücklicher."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B024_00001_ (2).png",
+          "karte": "We Are the World",
+          "karte_de": "Wir sind die Welt",
+          "karte_key": "minor_arcana.rainbows.10_we_are_the_world",
+          "karte_nummer": 10,
+          "tiage": "Echte Gerechtigkeit hört nicht an der eigenen Haustür auf. 'Wir sind die Welt' bedeutet: Was ich tue, hat Konsequenzen für das ganze Netz. Gerechtigkeit in der Beziehung, die sich nicht um die Welt drum herum sorgt, ist auf halbem Weg stehen geblieben.",
+          "reflexion": "Denken wir bei Gerechtigkeit auch an die, die nicht am Tisch sitzen – an alle Betroffenen, die zukünftigen Generationen?",
+          "traditionen": {
+            "christentum": "Im Christentum ruft die Propheten-Tradition: 'Recht zu üben, Liebe zu bevorzugen und demütig zu gehen mit deinem Gott.' (Mi 6:8) Gerechtigkeit ist nie nur individuell – sie betrifft das ganze Volk Gottes.",
+            "buddhismus": "Im Buddhismus ist Pratityasamutpada (bedingtes Entstehen) die tiefste Grundlage der Gerechtigkeit: Alles hängt zusammen. Ungerechtigkeit irgendwo erschüttert überall. Wir sind die Welt – und die Welt sind wir.",
+            "islam": "Die islamische Ummah verbindet alle Gläubigen zu einem Körper. Gerechtigkeit ist systemisch, nicht individuell. Wenn ein Teil leidet, leidet der ganze Körper – diese Einsicht macht Ungerechtigkeit überall zur eigenen Angelegenheit.",
+            "osho": "Du bist nicht eine Insel – du bist der ganze Ozean. Erkenne die Verbundenheit, und Mitgefühl entsteht von selbst. Gerechtigkeit, die die Welt vergisst, ist kein Gerechtigkeitsgefühl – es ist Cliquenwirtschaft.",
+            "moderne": "Systemische Therapie zeigt: Probleme in Beziehungen haben oft Wurzeln in größeren sozialen Ungerechtigkeiten. Gerechtigkeit denken heißt: über den eigenen Bubble hinaussehen. Wahre Fairness berücksichtigt alle Stakeholder – auch die Unsichtbaren."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_11_00000.png",
+          "karte": "Understanding",
+          "karte_de": "Verstehen",
+          "karte_key": "minor_arcana.water.knight_understanding",
+          "karte_nummer": 12,
+          "tiage": "Gerechtigkeit ohne Verstehen ist Gesetz. Gerechtigkeit mit Verstehen ist Weisheit. Auf Stufe 4 fragen wir nicht zuerst 'Was ist Recht?' – wir fragen 'Was braucht diese Seele?' Verstehen ist das Fundament, auf dem wahre Gerechtigkeit gebaut wird.",
+          "reflexion": "Kann ich gerecht handeln, ohne zu urteilen – und urteilen, ohne zu verurteilen?",
+          "traditionen": {
+            "christentum": "Jakobus schreibt: 'Die Barmherzigkeit triumphiert über das Gericht.' (Jak 2:13) Verstehen überwindet Gesetz. Jesus schützt die Frau im Ehebruch – nicht durch Regelbruch, sondern durch Verständnis.",
+            "buddhismus": "Prajna – Weisheit – ist im Buddhismus die tiefste Form des Verstehens: nicht intellektuell, sondern existenziell. Wer wirklich versteht, warum Menschen leiden, kann nicht mehr verurteilen.",
+            "islam": "Ijtihad – eigenständiges rechtliches Denken aus tiefem Verstehen – ist das islamische Prinzip, dass Gerechtigkeit Verstehen braucht, nicht nur Buchstaben. Ilm (Wissen/Verstehen) geht jeder Rechtspraxis voraus.",
+            "osho": "Verstehen ist nicht intellektuell – es ist existentiell. Wenn du wirklich verstehst, transformiert es dich. Du kannst nicht mehr verurteilen, weil du siehst: Unter anderen Umständen wärst du das.",
+            "moderne": "Restorative Justice – Wiederherstellende Gerechtigkeit – setzt Verstehen vor Strafe. Die Begegnung von Täter und Opfer, der Blick auf die Bedürfnisse hinter der Handlung: das ist Gerechtigkeit, die heilt statt trennt."
+          }
+        }
+      }
     },
     "#B12": {
-      "label": "Schutz",
-      "frage": "Wie wichtig ist Ihnen das Gefühl, beschützt zu werden?",
-      "karte": "Protection",
-      "text": "Schutz ist nicht Abschirmung – es ist der Raum, in dem du weich bleiben darfst."
+      "label": "Verbundenheit",
+      "stufe": 3,
+      "stufe_label": "Soziale Bedürfnisse",
+      "stufe_farbe": "#8B5CF6",
+      "stufe_organ": "Soziale Lebensweise",
+      "faehigkeit": "Bindungsfähigkeit",
+      "icon": "💞",
+      "paarungs_archetypen": [
+        "duo",
+        "duo_flex",
+        "polyamor"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B021_00001_.png",
+          "karte": "Beyond Illusion",
+          "karte_de": "Jenseits der Illusion",
+          "karte_key": "major_arcana.20_beyond_illusion",
+          "karte_nummer": 20,
+          "tiage": "Das tiefste Verbundenheitsgefühl entsteht nicht durch Nähe – es entsteht durch das Erkennen, dass Trennung die eigentliche Illusion ist.",
+          "reflexion": "Fühle ich Verbundenheit – oder nur Nähe?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die mystische Einheit – 'Ich lebe, doch nun nicht ich, sondern Christus lebt in mir' (Galater 2:20). Die Grenze zwischen Ich und Du löst sich auf.",
+            "buddhismus": "Im Buddhismus ist es die Erkenntnis von Anatta (Nicht-Selbst) – es gibt kein fixes Ich, also auch keine Trennung.",
+            "islam": "Im Sufismus ruft Hallaj 'Ana al-Haqq' (Ich bin die Wahrheit) – er und Gott sind eins.",
+            "osho": "Liebe ist nicht Beziehung zwischen zwei Menschen – Liebe ist das Verschwinden der Zwei.",
+            "moderne": "Neurowissenschaft zeigt: In tiefer Intimität synchronisieren sich Gehirnwellen, Herzschlag, Atmung. Verbundenheit ist nicht hergestellt – sie wird erkannt."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B020_00001_.png",
+          "karte": "Touch",
+          "karte_de": "Berührung",
+          "karte_key": "zusaetzliche_karten.touch",
+          "karte_nummer": null,
+          "tiage": "Verbundenheit beginnt im Körper. Eine achtsame Berührung kann heilen, was Worte nie erreichen. Der Körper ist der ehrlichste Ort der Begegnung – er lügt nicht. Vor aller Sprache, vor aller Geschichte: du und ich, zwei Körper, die sich berühren.",
+          "reflexion": "Sind wir körperlich wirklich präsent füreinander – oder nur im Kopf verbunden?",
+          "traditionen": {
+            "christentum": "Jesus heilt durch Berührung – 'Er streckte die Hand aus und berührte ihn' (Mk 1:41). Berührung ist Inkarnation: das Göttliche, das durch Körper spricht. Die Umarmung der Auferstehung ist körperlich.",
+            "buddhismus": "Im Vajrayana (Tantra) ist der Körper heilig – nicht zu überwinden, sondern zu heiligen. Berührung kann in ihrer achtsamen Form Tiefe erreichen, die keine Meditation bietet. Körper als Pfad.",
+            "islam": "Im Islam beginnt die Begegnung mit Salaam – Friede – und dem Handschlag. Der Prophet (ﷺ) begrüßte Menschen mit Wärme und Körperkontakt. Berührung ist Segen: 'Wer ein Kind küsst, wird dafür von Gott belohnt.'",
+            "osho": "Der Körper ist nicht getrennt von der Seele – er ist ihr Tempel. Berührung kann heilen, was Worte nie erreichen. Verbundenheit, die sich nie körperlich zeigt, ist eine Verbundenheit auf Distanz.",
+            "moderne": "Oxytocin-Forschung zeigt: Achtsame Berührung erhöht den Bindungshormon-Spiegel dramatisch. Touch-Deprivation ist ein reales Phänomen mit gesundheitlichen Folgen. Verbundenheit braucht körperliche Sprache – sie kann nicht rein kognitiv existieren."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "B028.webp",
+          "karte": "Sorrow",
+          "karte_de": "Trauer",
+          "karte_key": "minor_arcana.clouds.9_sorrow",
+          "karte_nummer": 9,
+          "tiage": "Die tiefste Verbundenheit öffnet auch die tiefste Verletzlichkeit. Trauer ist der Preis der Liebe – und zugleich ihr Beweis. Wenn du für jemanden oder etwas trauern kannst, warst du wirklich verbunden. Lass die Trauer sein: sie ehrt, was war.",
+          "reflexion": "Erlaube ich mir die Trauer, wenn Verbundenheit sich verliert – als Zeichen ihrer Echtheit und Tiefe?",
+          "traditionen": {
+            "christentum": "Im Christentum weint Jesus am Grab des Lazarus – 'Jesus weinte.' (Joh 11:35) Gott selbst trauert. Trauer ist heilig. Sie ist der Ausdruck der Liebe, die verliert, was sie liebt.",
+            "buddhismus": "Buddha lehrte Dukkha (Leiden/Schmerz) als ersten der Drei Kennzeichen. Wer Verbundenheit sucht, wird auch Trennung kennen. Die Bereitschaft zur Trauer ist die Bereitschaft zur echten Liebe.",
+            "islam": "Im Islam ist Trauer erlaubt und menschlich. Der Prophet (ﷺ) weinte beim Tod seines Sohnes Ibrahim. 'Das Auge weint, das Herz trauert, aber wir sagen nur, was unserem Herrn gefällt.' Trauer ist kein Glaubensversagen.",
+            "osho": "Trauer ist nicht das Gegenteil von Freude – sie ist ihre Tiefe. Wer nicht trauern kann, kann auch nicht wirklich freuen. Verbundenheit, die nicht auch Trauer kennt, war nicht wirklich tief.",
+            "moderne": "Attachment Theory zeigt: Trauer über Verlust von Verbundenheit ist ein biologisch normaler Prozess. Unterdrückte Trauer somatisiert sich – sie wird krank, nicht überwunden. Echte Verbundenheit schließt die Fähigkeit zur Trauer ein."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_12_00000.png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "zusaetzliche_karten.intimacy",
+          "karte_nummer": null,
+          "tiage": "Verbundenheit auf ihrer tiefsten Ebene ist Intimität: die Fähigkeit, ohne Maske gesehen zu werden – und den anderen ohne Maske zu sehen. Nicht verbunden durch Ähnlichkeit oder Geschichte, sondern durch die nackte Wahrheit des Augenblicks. Das größte Risiko. Das größte Geschenk.",
+          "reflexion": "Erlaube ich es, wirklich gesehen zu werden – auch in dem, was ich am meisten verberge?",
+          "traditionen": {
+            "christentum": "Adam und Eva waren 'nackt und schämten sich nicht' (Gen 2:25) – die paradiesische Verbundenheit vor dem Schleier des Urteils. Intimität als Rückkehr zur ursprünglichen Offenheit vor Gott und voreinander.",
+            "buddhismus": "Shoshin – Anfängergeist – ist eine Art existenzieller Intimität: Ich begegne dir ohne Vorwissen, ohne Kategorie, als ob zum ersten Mal. Buddhas totale Präsenz mit jedem Menschen war Intimität in Reinform.",
+            "islam": "Uns – innige Vertrautheit mit Gott – ist der Sufi-Begriff für die tiefste Verbundenheit. Die Mystiker sprechen von Gott als dem Geliebten. Wahre Verbundenheit ist Intimität: das Vertraute, das kein Fremd kennt.",
+            "osho": "Intimität erfordert Mut – den Mut, dich zu zeigen, wie du wirklich bist. Das ist das größte Risiko und das größte Geschenk. Verbundenheit entsteht dort, wo zwei Menschen aufgehört haben, sich zu verstecken.",
+            "moderne": "Brené Brown zeigt: Verletzlichkeit – die Bereitschaft, gesehen zu werden – ist die Quelle echter Verbundenheit. Intimität ist nicht das Fehlen von Grenzen. Es ist die Wahl, trotz Grenzen Kontakt zuzulassen."
+          }
+        }
+      }
     },
     "#B13": {
-      "label": "Stabilität",
-      "frage": "Wie wichtig ist Ihnen emotionale Stabilität?",
-      "karte": "Maturity",
-      "text": "Stabilität ist keine Starre. Sie ist gereiftes Gleichgewicht – innen wie außen."
+      "label": "Selbsterkenntnis",
+      "stufe": 4,
+      "stufe_label": "Identitäts-Bedürfnisse",
+      "stufe_farbe": "#F59E0B",
+      "stufe_organ": "Metakognition",
+      "faehigkeit": "Selbstreflexion",
+      "icon": "🔍",
+      "paarungs_archetypen": [
+        "single",
+        "ra",
+        "aromantisch"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "B072.webp",
+          "karte": "Patience",
+          "karte_de": "Geduld",
+          "karte_key": "minor_arcana.rainbows.7_patience",
+          "karte_nummer": 7,
+          "tiage": "Selbsterkenntnis beginnt, wenn du bereit bist, geduldig hinzuschauen – ohne Eile, ohne Urteilen. Die Wahrheit über dich wächst langsam ans Licht.",
+          "reflexion": "Bin ich geduldig mit mir – und mit dir?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Geduld eine Frucht des Geistes (Galater 5:22) – Gott wirkt langsam, aber sicher. 'Bei Gott sind tausend Jahre wie ein Tag.'",
+            "buddhismus": "Im Buddhismus ist Khanti (Geduld) eine der Sechs Paramitas (Vollkommenheiten) – nicht Resignation, sondern Ausdauer. Der Lotus wächst im Schlamm, aber nicht über Nacht.",
+            "islam": "Im Sufismus ist Sabr (Geduld) die Tugend der Heiligen – Gott vertrauend aushalten.",
+            "osho": "Geduld ist nicht Warten. Geduld ist die Fähigkeit, glücklich zu sein während des Wartens.",
+            "moderne": "Moderne Entwicklungspsychologie zeigt: Menschen wachsen in Phasen, nicht linear. Selbsterkenntnis kommt nicht durch Beschleunigung, sondern durch geduldiges Hinschauen. Wahre Intimität braucht Zeit – nicht Stunden, sondern Jahre."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B018_00001_ (2).png",
+          "karte": "Creativity",
+          "karte_de": "Kreativität",
+          "karte_key": "major_arcana.3_creativity",
+          "karte_nummer": 3,
+          "tiage": "Selbsterkenntnis entsteht auch im schöpferischen Ausdruck. Was du erschaffst – ohne Publikum, ohne Ziel – zeigt dir, wer du wirklich bist. Im Erschaffen fließt das Unbewusste ans Licht. Kreativität ist Selbstoffenbarung.",
+          "reflexion": "Was erschaffe ich, wenn niemand zuschaut – und was offenbart das über mein innerstes Wesen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist Kreativität Imago Dei: Wir erschaffen, weil wir im Abbild des Schöpfers sind. Was ich erschaffe, zeigt, was in mir lebt. Selbsterkenntnis durch Schöpfung ist ein theologischer Weg.",
+            "buddhismus": "Im Buddhismus ist der kreative Ausdruck – Kalligrafie, Tee, Ikebana – ein Weg der Selbsterkenntnis. Wenn Ego zur Seite tritt und die Schöpfung durch dich fließt, erkennst du, wer du wirklich bist.",
+            "islam": "Der Islam ehrt Handwerk als Gottesdienst. Was du mit Hingabe erschaffst, trägt deine Seele. Der Kalligraph, der Allahs Namen schreibt, erkennt sich selbst im Dienst der Schönheit.",
+            "osho": "Kreativität ist deine Natur. Wenn du kreativ bist, fließt das Universum durch dich. Und in diesem Fließen zeigst du dich: nackt, unzensiert, wirklich. Selbsterkenntnis ist der Nebeneffekt echter Kreativität.",
+            "moderne": "Ausdruckstherapie (Expressive Arts Therapy) nutzt gezielt kreative Prozesse für Selbsterkenntnis. Das Unbewusste zeigt sich im Symbol, im Bild, im Klang – bevor Worte es greifen können. Kreativität ist ein direkter Zugang zur eigenen Wahrheit."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B066_00001_.png",
+          "karte": "New Vision",
+          "karte_de": "Neue Sicht",
+          "karte_key": "major_arcana.12_new_vision",
+          "karte_nummer": 12,
+          "tiage": "Dein Selbst-Verständnis wächst, wenn du bereit bist, dich auf den Kopf stellen zu lassen. Gib nach. Was du dann siehst, war immer schon da.",
+          "reflexion": "Bin ich bereit, mich selbst neu zu sehen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist die Bekehrung oft eine Umkehr der Perspektive – Saulus wird Paulus durch eine vollständige Neuausrichtung seines Blicks.",
+            "buddhismus": "Im Zen: Wenn alle Konzepte fallen, sieht das Auge, das immer schon gesehen hat. Neues Sehen ist das Ende des begrifflichen Sehens.",
+            "islam": "Im Sufismus führt Hingabe zu Fath (Öffnung) – das Herz sieht plötzlich, was immer schon wahr war.",
+            "osho": "Hingabe ist keine Niederlage – sie ist der größte Sieg. Wenn du aufhörst zu kämpfen, siehst du plötzlich, was immer schon da war.",
+            "moderne": "Kognitionspsychologie zeigt: Neue Perspektiven entstehen nicht durch mehr Denken, sondern durch Unterbrechung des gewohnten Denkens. Selbsterkenntnis braucht manchmal den radikalen Perspektivwechsel."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_13_00000.png",
+          "karte": "Turning In",
+          "karte_de": "Innenwendung",
+          "karte_key": "minor_arcana.water.4_turning_in",
+          "karte_nummer": 4,
+          "tiage": "Selbsterkenntnis ist die Wendung nach innen – nicht um Antworten zu finden, sondern um den Frager zu erkennen. Wer bin ich, wenn ich aufhöre, jemand zu sein? Die Innenwendung ist keine Technik und kein Konzept. Sie ist das Ende aller Suche – und der Beginn des Erkennens.",
+          "reflexion": "Was bleibt, wenn ich alle meine Rollen, Geschichten und Überzeugungen loslasse?",
+          "traditionen": {
+            "christentum": "Der Psalm sagt: 'Seid stille und erkennet, dass ich Gott bin.' (Ps 46:11) Die kontemplative Tradition – Meister Eckhart, Johannes vom Kreuz – kennt die Innenwendung als Weg zu Gott. Gott ist im Innersten tiefer als das Innerste.",
+            "buddhismus": "Vipassana – Einsichtsmeditation – ist die systematische Innenwendung: die Aufmerksamkeit auf den Geist, der den Geist beobachtet. Selbsterkenntnis entsteht nicht durch Denken, sondern durch Schauen.",
+            "islam": "Muraqaba – das Bewachen und Beobachten des Herzens – ist die Sufi-Praxis der Innenwendung. 'Wer sich selbst kennt, kennt seinen Herrn.' (Sufi-Hadith) Selbsterkenntnis als Weg zu Gott.",
+            "osho": "Die Reise nach außen hat ihre Grenzen. Die Reise nach innen ist grenzenlos. Wende dich nach innen – nicht um Antworten zu finden, sondern um den zu erkennen, der fragt.",
+            "moderne": "Das Konzept des Observer Self in IFS (Internal Family Systems) und in ACT: Es gibt einen Teil in dir, der alle anderen Teile beobachten kann, ohne mit ihnen identisch zu sein. Dieser Zeuge ist das Ziel der Innenwendung."
+          }
+        }
+      }
     },
     "#B14": {
-      "label": "Leichtigkeit",
-      "frage": "Wie wichtig ist Ihnen Leichtigkeit im Alltag?",
-      "karte": "Playfulness",
-      "text": "Leichtigkeit ist die Kunst, dem Moment zu vertrauen – nicht, weil er leicht ist, sondern weil du es bist."
+      "label": "Sinn",
+      "stufe": 4,
+      "stufe_label": "Identitäts-Bedürfnisse",
+      "stufe_farbe": "#F59E0B",
+      "stufe_organ": "Metakognition",
+      "faehigkeit": "Kohärenzerleben",
+      "icon": "✨",
+      "paarungs_archetypen": [
+        "ra",
+        "solopoly"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B062_00001_.png",
+          "karte": "Guidance",
+          "karte_de": "Führung",
+          "karte_key": "minor_arcana.rainbows.3_guidance",
+          "karte_nummer": 3,
+          "tiage": "Sinn lässt sich nicht erzwingen. Er zeigt sich, wenn du aufhörst, nach ihm zu suchen, und anfängst, dem zu folgen, was dich wirklich bewegt.",
+          "reflexion": "Folge ich blinden Autoritäten – oder meiner eigenen Wahrheit?",
+          "traditionen": {
+            "christentum": "Im Christentum ist der Heilige Geist der Paraklet (Beistand) – nicht außerhalb, sondern in dir.",
+            "buddhismus": "Im Buddhismus ist die Buddha-Natur bereits in jedem – nicht zu erreichen, nur zu erkennen.",
+            "islam": "Im Sufismus ist Murshid (spiritueller Führer) ein Spiegel – er zeigt dir nur, was bereits in dir ist.",
+            "osho": "Du brauchst keinen Meister – aber vielleicht einen Spiegel.",
+            "moderne": "Logotherapie (Viktor Frankl) zeigt: Sinn entsteht nicht durch Finden, sondern durch Schaffen. Die Frage ist nicht 'Was ist der Sinn?', sondern 'Was ist MEIN Sinn – hier, mit dir?'"
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "B070.webp",
+          "karte": "Experiencing",
+          "karte_de": "Erfahren",
+          "karte_key": "minor_arcana.fire.3_experiencing",
+          "karte_nummer": 3,
+          "tiage": "Sinn zeigt sich nicht nur im Nachdenken – er entfaltet sich im vollständigen Erleben. Wenn du ganz eintauchst, ohne zurückzuhalten, entsteht der Moment, in dem alles Sinn ergibt. Nicht als Erklärung, sondern als lebendige Erfahrung.",
+          "reflexion": "Lebe ich meine Begegnungen wirklich – oder beobachte ich sie nur von einem sicheren Abstand aus?",
+          "traditionen": {
+            "christentum": "Im Christentum ist die Inkarnation das Prinzip des vollständigen Eintauchens: Gott wird Mensch, um menschliche Erfahrung von innen zu kennen. Sinn entsteht durch Erfahrung, nicht durch Konzept.",
+            "buddhismus": "Im Zen gibt es kein Verstehen ohne Erleben. 'Wenn du Hunger hast, iss.' Sinn ist nicht Deutung – er ist das vollständige Eintauchen in den Moment. Die Erfahrung selbst ist der Sinn.",
+            "islam": "Im Islam ist Ibada (Gottesdienst) nicht nur Ritual – es ist vollständige Gegenwart. Der Hajj ist ein Erfahrungspfad: Du musst die Stationen leibhaftig durchschreiten, nicht nur darüber nachdenken.",
+            "osho": "Lebe nicht halb. Tauche ganz ein in jede Erfahrung. Nur so lernst du wirklich. Sinn entsteht nicht durch Philosophie, sondern durch gelebtes Leben. Ein vollständig gelebter Moment enthält mehr Sinn als ein Jahr des Nachdenkens.",
+            "moderne": "Existenzpsychologie (Yalom) zeigt: Sinn ist oft kein Konzept, sondern ein Erfahrungsphänomen – ein Aufleuchten im vollständigen Erleben. Flow-Erfahrungen (Csikszentmihalyi) sind die subjektiv sinnvollsten Momente – und sie entstehen im Eintauchen, nicht im Nachdenken."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B063_00001_.png",
+          "karte": "Past Lives",
+          "karte_de": "Vergangene Leben",
+          "karte_key": "major_arcana.18_past_lives",
+          "karte_nummer": 18,
+          "tiage": "Sinn entsteht auch im Rückblick: Was Muster wiederholen sich in deinem Leben, in deinen Beziehungen? Die Vergangenheit – ob wörtlich oder symbolisch verstanden – trägt Botschaften über das, was du zu lernen kamst. Erkenne das Muster, und der Sinn zeigt sich.",
+          "reflexion": "Welche Muster wiederholen sich in meinen Beziehungen – und was wollen sie mir über meinen tieferen Lebensauftrag zeigen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist das Erinnern (Anamnesis) zentral: 'Tut dies zu meinem Gedächtnis.' Vergangenes wird gegenwärtig, damit es zum Sinn wird. Geschichte ist nicht Vergangenheit – sie lebt in uns und formt uns.",
+            "buddhismus": "Im Buddhismus wiederholen sich karmische Muster über viele Leben, bis sie erkannt und aufgelöst werden. Die Vergangenheit lebt in deinem Unbewussten weiter, bis du sie bewusst machst. Selbstkenntnis beginnt im Erkennen der Wiederholung.",
+            "islam": "Im Islam ist der Koran ein 'Dhikr' – Erinnerung. Das Erinnern der göttlichen Wahrheit verleiht dem Leben Sinn. Auch das Erinnern eigener Muster ist eine Form des Dhikr: Was zeigt mir Allah durch das, was sich wiederholt?",
+            "osho": "Die Vergangenheit ist nicht vorbei – sie lebt in deinem Unbewussten weiter. Muster wiederholen sich, bis du sie erkennst und loslässt. Was sich immer wieder zeigt, will gesehen werden – und im Sehen löst es sich auf.",
+            "moderne": "Narrative Therapie (White & Epston) und ACT zeigen: Wir sind die Geschichten, die wir uns erzählen. Wiederkehrende Muster in Beziehungen sind oft Echos alter Wunden. Im Erkennen des Musters liegt der erste Schritt zur Bedeutung – und zur Befreiung."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_14_00000.png",
+          "karte": "Completion",
+          "karte_de": "Vollendung",
+          "karte_key": "major_arcana.21_completion",
+          "karte_nummer": 21,
+          "tiage": "Sinn ist nicht etwas, das du findest – es ist das, was du erkennst, wenn du auf dein Leben schaust: der Bogen, der sich schließt. Vollendung ist nicht das Ende, sondern der Moment, in dem das Muster sichtbar wird. Dein Leben ergibt Sinn nicht durch Erklärung, sondern durch Gestalt.",
+          "reflexion": "Wenn ich am Ende meines Lebens zurückschaue – was war der rote Faden, der alles verband?",
+          "traditionen": {
+            "christentum": "Jesus ruft am Kreuz: 'Es ist vollbracht.' (Joh 19:30) Tetelestai – das griechische Wort bedeutet: vollständig erfüllt, abgeschlossen, vollendet. Sinn entsteht, wenn der Zweck ganz gelebt wurde.",
+            "buddhismus": "Parinirvana – das vollständige Erlöschen des Buddha – ist Vollendung ohne Rest. Nicht Tod, sondern Abschluss eines vollständig gelebten Weges. Sinn zeigt sich im vollendeten Bogen.",
+            "islam": "'Wahrlich, zu Allah gehören wir, und zu Ihm kehren wir zurück.' (Inna lillahi wa inna ilayhi raji'un) – der Koranvers bei Trauer. Sinn liegt im vollständigen Kreis: von Gott, durch das Leben, zurück zu Gott.",
+            "osho": "Vollendung ist nicht Perfektion. Es geht um Präsenz. Es geht darum, den gesamten Bogen der Erfahrung zu ehren – und zu wissen, dass du ganz bist, auch wenn du wieder von vorn beginnst.",
+            "moderne": "Dan McAdams Theorie der narrativen Identität zeigt: Menschen finden Sinn, wenn sie ihr Leben als kohärente Geschichte erzählen können. Viktor Frankl entdeckte im Lager: Wer ein Warum hat, erträgt fast jedes Wie."
+          }
+        }
+      }
     },
     "#B15": {
-      "label": "Geborgenheit",
-      "frage": "Wie wichtig ist Ihnen das Gefühl der Geborgenheit?",
-      "karte": "We Are the World",
-      "text": "Geborgenheit entsteht, wenn du dich eingebunden weißt – nicht durch Nähe, sondern durch Verbindung."
+      "label": "Integrität",
+      "stufe": 4,
+      "stufe_label": "Identitäts-Bedürfnisse",
+      "stufe_farbe": "#F59E0B",
+      "stufe_organ": "Metakognition",
+      "faehigkeit": "Wertekongruenz",
+      "icon": "💎",
+      "paarungs_archetypen": [
+        "duo",
+        "lat"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B015_00001_.png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "major_arcana.17_silence",
+          "karte_nummer": 17,
+          "tiage": "Integrität wächst in der Stille. Nicht im Lärm der Rechtfertigungen und Erklärungen – sondern in den Momenten, in denen du inne hältst und horchst: Stimmt das, was ich tue, mit dem überein, was ich wirklich bin? Die Stille ist der ehrlichste Spiegel.",
+          "reflexion": "Gönne ich mir genug Stille, um ehrlich mit mir selbst zu sein – fern von Ablenkung und Erwartung?",
+          "traditionen": {
+            "christentum": "Im Christentum sagt Gott im Säuseln, nicht im Sturm (1. Kön 19:12). Die kontemplative Tradition – von den Wüstenvätern bis Meister Eckhart – kennt Stille als den Raum, in dem Integrität entsteht: Im Schweigen höre ich, ob ich mir selbst treu bin.",
+            "buddhismus": "Im Zen ist Zazen (Sitz-Meditation) die höchste Praxis – nicht Denken über Wahrheit, sondern Sein in Wahrheit. In der Stille zeigt sich, was echt ist und was Fassade. Integrität entsteht im Schweigen, nicht im Reden.",
+            "islam": "Im Sufismus ist Sukut (Schweigen) eine der höchsten Praktiken. Der stille Murid lernt: Was schweigend erkannt wird, ist wahrer als was laut behauptet wird. Integrität ist das Handeln aus dem schweigsamen Wissen des Herzens.",
+            "osho": "In der Stille verschwindet die Maske. Wenn du dir erlaubst, wirklich still zu sein, merkst du, was echt in dir ist – und was nur Performance war. Integrität kann nicht erklärt werden; sie kann nur in der Stille gefühlt werden.",
+            "moderne": "Stressforscher (Elissa Epel) zeigen: Chronische Selbstüberforderung und Lärm unterdrücken den medialen präfrontalen Kortex – den Ort der Selbstreflexion. Stille ist neurologisch die Bedingung für echte Selbstkenntnis. Integrität braucht mentale Ruhe: Wer sich nie stillt, kann nicht ehrlich mit sich sein."
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B050_00001_.png",
+          "karte": "Ordinariness",
+          "karte_de": "Gewöhnlichkeit",
+          "karte_key": "minor_arcana.rainbows.8_ordinariness",
+          "karte_nummer": 8,
+          "tiage": "Integrität zeigt sich nicht in großen Momenten – sie offenbart sich im Gewöhnlichen. Wie du deinen Alltag lebst, wie du mit dem Kleinen umgehst, das sagt alles über dein Wesen. Das Gewöhnliche ist der Prüfstein der Wahrheit.",
+          "reflexion": "Lebe ich meine Werte im Alltag – oder nur wenn jemand zuschaut?",
+          "traditionen": {
+            "christentum": "Im Benediktinerorden ist 'ora et labora' (bete und arbeite) kein Widerspruch – die gewöhnliche Arbeit wird zur geistlichen Praxis. Integrität bewährt sich im kleinen, täglichen Dienst, nicht auf der großen Bühne.",
+            "buddhismus": "Im Zen gibt es die Geschichte vom Meister, der fragt: 'Hast du gegessen?' – 'Ja.' – 'Dann wasch deine Schüssel.' Integrität beginnt damit, das Gewöhnliche vollständig zu tun. Die Erleuchtung ist in den einfachen Dingen.",
+            "islam": "Der Prophet Muhammad (ﷺ) reparierte sein eigenes Schuhwerk und nähte seine eigene Kleidung. Im Islam ist die Würde der gewöhnlichen Handlung die Grundlage aller Spiritualität. Wer im Kleinen integer ist, ist es auch im Großen.",
+            "osho": "Die größte Spiritualität ist das einfachste Leben. Du brauchst keine großen Taten, um integer zu sein – nur vollständige Aufmerksamkeit für das, was gerade ist. Das Gewöhnliche ist heilig.",
+            "moderne": "Charakterpsychologie (James Q. Wilson) zeigt: Integrität ist kein Zustand, sondern eine Gewohnheit. Sie entsteht durch tausende gewöhnliche Handlungen, nicht durch eine große Entscheidung. Virtue ethics: der Charakter zeigt sich im Alltag."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B051_00001_.png",
+          "karte": "Morality",
+          "karte_de": "Moral",
+          "karte_key": "minor_arcana.clouds.queen_morality",
+          "karte_nummer": 13,
+          "tiage": "Integrität ist nicht aufgezwungene Moral – sie ist gelebte Ethik. Moral kommt von außen, Ethik von innen. Wenn du handelst, weil du musst, ist es Moral. Wenn du handelst, weil es dir aus dem Innersten heraus richtig erscheint – das ist Integrität.",
+          "reflexion": "Handle ich nach meinen eigenen Werten – oder nach dem, was andere von mir erwarten?",
+          "traditionen": {
+            "christentum": "Im Christentum unterscheidet Paulus Gesetz und Gnade: Das Gesetz sagt, was du tun sollst – die Gnade bewirkt es von innen (Röm 8:3-4). Integrität entsteht nicht durch Regelgehorsam, sondern durch Transformation des Herzens.",
+            "buddhismus": "Im Theravada ist Sila (Ethik) nicht ein Regelwerk, sondern Ausdruck der inneren Reinheit. Der Arhat braucht keine Regeln mehr – er handelt von selbst richtig, weil sein Wesen gereinigt ist. Integrität ist reife Ethik.",
+            "islam": "Der Koran unterscheidet Zahir (Äußeres) und Batin (Inneres). Oberflächliche Moral ohne innere Ausrichtung ist Riya (Heuchelei). Echte islamische Ethik entsteht aus Taqwa (Gottesbewusstsein), nicht aus sozialem Druck.",
+            "osho": "Moral ist Knechtschaft – Ethik ist Befreiung. Moral sagt dir, was du tun sollst. Ethik fragt dich, wer du wirklich bist. Integrität ist der Mut, nach deiner eigenen inneren Wahrheit zu leben, auch wenn sie unbequem ist.",
+            "moderne": "Entwicklungspsychologie (Kohlberg/Gilligan) zeigt: Moralische Reife wächst von konventioneller Regelbefolgung (Stufe 3-4) zur post-konventionellen Eigenverantwortung (Stufe 5-6). Integrität auf höchster Ebene ist nicht Regelgehorsam, sondern der Mut zur eigenen ethischen Wahrheit."
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_15_00000.png",
+          "karte": "Commitment",
+          "karte_de": "Verbindlichkeit",
+          "karte_key": "zusaetzliche_karten.commitment",
+          "karte_nummer": null,
+          "tiage": "Integrität auf ihrer tiefsten Ebene ist Verbindlichkeit mit dir selbst. Nicht als Pflicht, sondern als tiefste Treue zu dem, was du erkannt hast. Commitment ist nicht Kette – es ist die Form, die deine Freiheit annimmt. Wer sich selbst treu bleibt, braucht keine Maske.",
+          "reflexion": "Welchen Versprechen an mich selbst – nicht an andere – bin ich wirklich treu?",
+          "traditionen": {
+            "christentum": "Jesus sagt: 'Euer Ja sei ein Ja, euer Nein ein Nein.' (Mt 5:37) Integrität als Einheit von Wort und Sein. Das ist Commitment: nicht aus Zwang, sondern aus Übereinstimmung mit dem inneren Wesen.",
+            "buddhismus": "Sila – ethische Disziplin – ist einer der drei Aspekte des Achtfachen Pfades. Das Gelübde des Bodhisattvas ist das ultimative Commitment: für alle Wesen zu handeln, unabhängig von Ergebnissen.",
+            "islam": "Amanah – Vertrauenswürdigkeit, Integrität – ist eines der zentralen Attribute des gläubigen Menschen. Das Commitment zu Amanah bedeutet: Ich bin ein Zeuge meiner selbst, nicht nur für andere.",
+            "osho": "Wahre Verbindlichkeit kommt nicht aus Pflicht, sondern aus Liebe. Sie ist keine Kette, sondern ein Tanz. Commitment ohne innere Übereinstimmung ist Heuchelei – Commitment aus Erkenntnis ist Integrität.",
+            "moderne": "Die Kohärenztheorie der Integrität zeigt: Integrität ist die Übereinstimmung zwischen Werten, Worten und Handlungen. Menschen mit hoher Integrität fühlen sich innerlich ganz – nicht weil sie perfekt sind, sondern weil sie ehrlich sind."
+          }
+        }
+      }
     },
     "#B16": {
-      "label": "Wärme",
-      "frage": "Wie wichtig ist Ihnen emotionale Wärme?",
-      "karte": "Warmth",
-      "text": "Wärme ist kein Gefühl, sondern Präsenz, die nicht urteilt."
-    },
-    "#B17": {
-      "label": "Wertschätzung",
-      "frage": "Wie wichtig ist Ihnen Wertschätzung von Ihrem Partner?",
-      "karte": "Success",
-      "text": "Wertschätzung geschieht, wenn du gesehen wirst ohne Maske – nicht für Leistung, sondern für dein Sein."
-    },
-    "#B18": {
-      "label": "Nähe",
-      "frage": "Wie wichtig ist Ihnen emotionale Nähe?",
-      "karte": "The Lovers",
-      "text": "Nähe ist die Brücke zwischen zwei inneren Welten – sie beginnt mit Intimität zu dir selbst."
-    },
-    "#B19": {
-      "label": "Gesellschaft",
-      "frage": "Wie wichtig ist Ihnen Gesellschaft?",
-      "karte": "Participation",
-      "text": "Gesellschaft nährt, wenn du dich nicht beweisen musst. Dabei sein ist genug."
-    },
-    "#B20": {
-      "label": "Intimität",
-      "frage": "Wie wichtig ist Ihnen Intimität?",
-      "karte": "Intimacy",
-      "text": "Intimität ist Nacktheit der Seele – nicht des Körpers."
-    },
-    "#B21": {
-      "label": "Liebe",
-      "frage": "Wie wichtig ist Ihnen Liebe?",
-      "karte": "Love",
-      "text": "Liebe ist nicht Beziehung. Sie ist Raum. Wenn du liebst, lässt du frei."
-    },
-    "#B22": {
-      "label": "Fürsorge",
-      "frage": "Wie wichtig ist es Ihnen, für andere zu sorgen?",
-      "karte": "Compassion",
-      "text": "Fürsorge ist Hingabe ohne Forderung – sie gießt, ohne zu zählen."
-    },
-    "#B23": {
-      "label": "Unterstützung",
-      "frage": "Wie wichtig ist Ihnen Unterstützung?",
-      "karte": "Support",
-      "text": "Unterstützung ist ein unsichtbarer Boden. Du weißt, er ist da – weil du wagst."
-    },
-    "#B24": {
-      "label": "Füreinander-da-sein",
-      "frage": "Wie wichtig ist es Ihnen, füreinander da zu sein?",
-      "karte": "Friendliness",
-      "text": "Füreinander da sein bedeutet, gemeinsam in Stille wachsen zu dürfen – ohne Griff, ohne Muss."
-    },
-    "#B25": {
-      "label": "Akzeptanz",
-      "frage": "Wie wichtig ist Ihnen Akzeptanz?",
-      "karte": "Acceptance",
-      "text": "Akzeptanz ist der erste Atemzug von Freiheit. Du hörst auf zu kämpfen – und das Leben atmet durch dich."
-    },
-    "#B26": {
-      "label": "Mitgefühl",
-      "frage": "Wie wichtig ist Ihnen Mitgefühl?",
-      "karte": "Completion",
-      "text": "Mitgefühl vollendet den Kreis zwischen dir und dem anderen. Es ist das Erkennen: Wir sind nicht getrennt."
-    },
-    "#B27": {
-      "label": "Berücksichtigung",
-      "frage": "Wie wichtig ist Ihnen Berücksichtigung?",
-      "karte": "Trust",
-      "text": "Berücksichtigt zu werden heißt, im Bewusstsein des anderen einen Platz zu haben. Es ist ein Akt des Vertrauens."
-    },
-    "#B28": {
-      "label": "Empathie",
-      "frage": "Wie wichtig ist Ihnen Empathie?",
-      "karte": "Receptivity",
-      "text": "Empathie ist die Fähigkeit, mit dem Herzen zu hören. Der Kelch muss leer sein, um die Tränen des anderen aufzufangen."
-    },
-    "#B29": {
-      "label": "Vertrauen",
-      "frage": "Wie wichtig ist Ihnen Vertrauen?",
-      "karte": "Change",
-      "text": "Vertrauen ist der Mut, sich dem Wandel hinzugeben. Es sagt Ja, bevor es Gewissheit gibt."
-    },
-    "#B30": {
-      "label": "Beachtung",
-      "frage": "Wie wichtig ist Ihnen Beachtung?",
-      "karte": "Awareness",
-      "text": "Beachtet zu werden ist das Geschenk der Aufmerksamkeit. Bewusstheit richtet sich auf das, was wichtig ist."
-    },
-    "#B31": {
-      "label": "Gesehen-werden",
-      "frage": "Wie wichtig ist Ihnen Gesehen-werden?",
-      "karte": "The Lovers",
-      "text": "Gesehen werden heißt, in deiner Essenz erkannt zu werden. Die Liebenden sehen einander ohne Schleier."
-    },
-    "#B32": {
-      "label": "Verstanden-werden",
-      "frage": "Wie wichtig ist Ihnen Verstanden-werden?",
-      "karte": "Understanding",
-      "text": "Verstanden werden ist mehr als Worte. Es ist das Gefühl, dass jemand deine Sprache des Herzens spricht."
-    },
-    "#B33": {
-      "label": "Harmonie",
-      "frage": "Wie wichtig ist Ihnen Harmonie?",
-      "karte": "Rebirth",
-      "text": "Wahre Harmonie entsteht durch Wiedergeburt – durch das Loslassen alter Dissonanzen."
-    },
-    "#B34": {
-      "label": "Selbstbestimmung",
-      "frage": "Wie wichtig ist Ihnen Selbstbestimmung?",
-      "karte": "Aloneness",
-      "text": "Selbstbestimmung beginnt im Alleinsein. Nur wer sich selbst gehört, kann sich frei entscheiden."
-    },
-    "#B35": {
-      "label": "Wählen-können",
-      "frage": "Wie wichtig ist Ihnen Wählen-können?",
-      "karte": "Transformation",
-      "text": "Jede Wahl ist eine kleine Transformation. Wählen zu können bedeutet, dein Leben aktiv zu gestalten."
-    },
-    "#B36": {
-      "label": "Unabhängigkeit",
-      "frage": "Wie wichtig ist Ihnen Unabhängigkeit?",
-      "karte": "The Rebel",
-      "text": "Unabhängigkeit ist der Weg des Rebellen. Er folgt seiner eigenen Wahrheit, auch wenn sie gegen den Strom geht."
-    },
-    "#B37": {
-      "label": "Raum-haben",
-      "frage": "Wie wichtig ist Ihnen Raum-haben?",
-      "karte": "Adventure",
-      "text": "Raum haben bedeutet Freiheit zum Entdecken. Das Abenteuer braucht Weite, nicht Enge."
-    },
-    "#B38": {
-      "label": "Spontaneität",
-      "frage": "Wie wichtig ist Ihnen Spontaneität?",
-      "karte": "Playfulness",
-      "text": "Spontaneität ist der Tanz des Augenblicks. Das spielende Kind in dir kennt keine Pläne – nur Freude."
-    },
-    "#B39": {
-      "label": "Zusammenarbeit",
-      "frage": "Wie wichtig ist Ihnen Zusammenarbeit?",
-      "karte": "Participation",
-      "text": "Zusammenarbeit ist geteilte Schöpfung. Wenn alle teilnehmen, entsteht mehr als die Summe der Teile."
-    },
-    "#B40": {
-      "label": "Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Kommunikation?",
-      "karte": "The Lovers",
-      "text": "Wahre Kommunikation ist der Dialog zweier Herzen. Die Liebenden sprechen auch in der Stille."
-    },
-    "#B41": {
-      "label": "Gemeinschaft",
-      "frage": "Wie wichtig ist Ihnen Gemeinschaft?",
-      "karte": "We Are the World",
-      "text": "Gemeinschaft ist das Erkennen: Wir sind alle Wellen desselben Ozeans. Verbundenheit ist unser natürlicher Zustand."
-    },
-    "#B42": {
-      "label": "Zugehörigkeit",
-      "frage": "Wie wichtig ist Ihnen Zugehörigkeit?",
-      "karte": "We Are the World",
-      "text": "Zugehörigkeit ist kein Besitz – es ist das Wissen, dass du Teil des Ganzen bist."
-    },
-    "#B43": {
-      "label": "Gegenseitigkeit",
-      "frage": "Wie wichtig ist Ihnen Gegenseitigkeit?",
-      "karte": "Going With The Flow",
-      "text": "Gegenseitigkeit ist der natürliche Fluss zwischen Geben und Empfangen. Wie Wasser findet sie ihr Gleichgewicht."
-    },
-    "#B44": {
-      "label": "Respekt",
-      "frage": "Wie wichtig ist Ihnen Respekt?",
-      "karte": "The Master",
-      "text": "Wahrer Respekt beginnt bei dir selbst. Der Meister ehrt das Leben in jeder Form."
-    },
-    "#B45": {
-      "label": "Bedeutung-haben",
-      "frage": "Wie wichtig ist Ihnen Bedeutung-haben?",
-      "karte": "Ripeness",
-      "text": "Bedeutung reift wie eine Frucht. Wenn die Zeit gekommen ist, wird sichtbar, was du beigetragen hast."
-    },
-    "#B46": {
-      "label": "Schönheit",
-      "frage": "Wie wichtig ist Ihnen Schönheit?",
-      "karte": "Creativity",
-      "text": "Schönheit ist die Sprache der Seele. Kreativität macht sichtbar, was das Herz empfindet."
-    },
-    "#B47": {
-      "label": "Freizeit",
-      "frage": "Wie wichtig ist Ihnen Freizeit?",
-      "karte": "Moment to Moment",
-      "text": "Freizeit ist die Kunst, im Moment zu sein. Nicht füllen, sondern leeren – das ist wahre Erholung."
-    },
-    "#B48": {
-      "label": "Freude",
-      "frage": "Wie wichtig ist Ihnen Freude?",
-      "karte": "Integration",
-      "text": "Freude entsteht, wenn alle Teile von dir zusammenkommen. Integration ist der Weg zur tiefen Freude."
-    },
-    "#B49": {
-      "label": "Humor",
-      "frage": "Wie wichtig ist Ihnen Humor?",
-      "karte": "Celebration",
-      "text": "Humor ist die Feier des Absurden. Wer lachen kann, hat verstanden, dass das Leben ein Spiel ist."
-    },
-    "#B50": {
-      "label": "Authentizität",
-      "frage": "Wie wichtig ist Ihnen Authentizität?",
-      "karte": "Integration",
-      "text": "Authentizität ist Integration. Wenn Innen und Außen übereinstimmen, bist du ganz du selbst."
-    },
-    "#B51": {
-      "label": "Echtheit",
-      "frage": "Wie wichtig ist Ihnen Echtheit?",
-      "karte": "Friendliness",
-      "text": "Echtheit zeigt sich in der Freundlichkeit zu dir selbst. Nur wer sich nicht verstellt, kann wahrhaft freundlich sein."
-    },
-    "#B52": {
-      "label": "Integrität",
-      "frage": "Wie wichtig ist Ihnen Integrität?",
-      "karte": "Healing",
-      "text": "Integrität ist Heilung der inneren Spaltung. Wenn du integer bist, bist du heil."
-    },
-    "#B53": {
-      "label": "Präsenz",
-      "frage": "Wie wichtig ist Ihnen Präsenz?",
-      "karte": "Awareness",
-      "text": "Präsenz ist gelebte Bewusstheit. Hier und jetzt – das ist der einzige Ort, an dem Leben stattfindet."
-    },
-    "#B54": {
-      "label": "Ordnung",
-      "frage": "Wie wichtig ist Ihnen Ordnung?",
-      "karte": "Understanding",
-      "text": "Ordnung entsteht durch Verstehen. Wenn du die Dinge durchschaust, finden sie ihren Platz."
-    },
-    "#B55": {
-      "label": "Bewusstheit",
-      "frage": "Wie wichtig ist Ihnen Bewusstheit?",
-      "karte": "Consciousness",
-      "text": "Bewusstheit ist der Himmel – Gedanken sind nur Wolken. Du bist der Himmel, nicht die Wolken."
-    },
-    "#B56": {
-      "label": "Herausforderung",
-      "frage": "Wie wichtig ist Ihnen Herausforderung?",
-      "karte": "Courage",
-      "text": "Herausforderungen rufen deinen Mut. Jede überwundene Hürde macht dich stärker."
-    },
-    "#B57": {
-      "label": "Klarheit",
-      "frage": "Wie wichtig ist Ihnen Klarheit?",
-      "karte": "Breakthrough",
-      "text": "Klarheit kommt nach dem Durchbruch. Wenn die Nebel sich lichten, siehst du, was immer schon da war."
-    },
-    "#B58": {
-      "label": "Kompetenz",
-      "frage": "Wie wichtig ist Ihnen Kompetenz?",
-      "karte": "The Creator",
-      "text": "Kompetenz ist Meisterschaft im Werden. Der Schöpfer verfeinert sein Handwerk durch liebevolle Übung."
-    },
-    "#B59": {
-      "label": "Effizienz",
-      "frage": "Wie wichtig ist Ihnen Effizienz?",
-      "karte": "The Master",
-      "text": "Wahre Effizienz ist mühelose Präzision. Der Meister verschwendet keine Energie – er fließt."
-    },
-    "#B60": {
-      "label": "Wirksamkeit",
-      "frage": "Wie wichtig ist Ihnen Wirksamkeit?",
-      "karte": "Totality",
-      "text": "Wirksamkeit entsteht durch Totalität. Was immer du tust – tu es ganz, und es wird Wirkung zeigen."
-    },
-    "#B61": {
-      "label": "Wachstum",
-      "frage": "Wie wichtig ist Ihnen Wachstum?",
-      "karte": "Rebirth",
-      "text": "Wachstum ist kontinuierliche Wiedergeburt. Jeden Tag stirbt etwas Altes, damit etwas Neues erblühen kann."
-    },
-    "#B62": {
-      "label": "Sinn",
-      "frage": "Wie wichtig ist Ihnen Sinn?",
-      "karte": "Silence",
-      "text": "In der Stille offenbart sich der Sinn. Er kann nicht gedacht werden – nur gefühlt, in der Tiefe der Stille."
-    },
-    "#B63": {
-      "label": "Beitrag-leisten",
-      "frage": "Wie wichtig ist Ihnen Beitrag-leisten?",
-      "karte": "Sharing",
-      "text": "Beitragen ist natürliches Teilen. Wenn du aus der Fülle gibst, bereicherst du dich selbst."
-    },
-    "#B64": {
-      "label": "Kreativität",
-      "frage": "Wie wichtig ist Ihnen Kreativität?",
-      "karte": "Creativity",
-      "text": "Kreativität ist deine Natur. Wenn du schaffst, bist du eins mit dem Universum, das unaufhörlich erschafft."
-    },
-    "#B65": {
-      "label": "Entdecken",
-      "frage": "Wie wichtig ist Ihnen Entdecken?",
-      "karte": "Adventure",
-      "text": "Entdecken ist das Abenteuer des Unbekannten. Jeder Schritt ins Neue ist ein Schritt in deine Weite."
-    },
-    "#B66": {
-      "label": "Lernen",
-      "frage": "Wie wichtig ist Ihnen Lernen?",
-      "karte": "Understanding",
-      "text": "Lernen ist der Weg zum Verstehen. Der wahre Schüler bleibt immer neugierig, immer offen."
-    },
-    "#B67": {
-      "label": "Selbst-Ausdruck",
-      "frage": "Wie wichtig ist Ihnen Selbst-Ausdruck?",
-      "karte": "Integration",
-      "text": "Selbst-Ausdruck ist gelebte Integration. Wenn du ganz du bist, fließt dein Wesen natürlich nach außen."
-    },
-    "#B68": {
-      "label": "Anreize-bekommen",
-      "frage": "Wie wichtig ist Ihnen Anreize-bekommen?",
-      "karte": "Source",
-      "text": "Die tiefsten Anreize kommen aus der Quelle in dir. Äußere Impulse wecken, was innen bereits lebt."
-    },
-    "#B69": {
-      "label": "Leben-feiern",
-      "frage": "Wie wichtig ist Ihnen Leben-feiern?",
-      "karte": "Celebration",
-      "text": "Das Leben ist ein Fest – du brauchst keinen Grund zu feiern. Dein Sein selbst ist Grund genug."
-    },
-    "#B70": {
-      "label": "Inspiration",
-      "frage": "Wie wichtig ist Ihnen Inspiration?",
-      "karte": "Inner Voice",
-      "text": "Inspiration ist die Stimme der inneren Weisheit. Sie flüstert dir zu, was dein Herz bereits weiß."
-    },
-    "#B71": {
-      "label": "Trauer-ausdrücken",
-      "frage": "Wie wichtig ist Ihnen Trauer-ausdrücken?",
-      "karte": "Sorrow",
-      "text": "Trauer braucht Ausdruck wie der Regen braucht zu fallen. Lass sie fließen – auf der anderen Seite wartet Klarheit."
-    },
-    "#B72": {
-      "label": "Einsehen",
-      "frage": "Wie wichtig ist Ihnen Einsehen?",
-      "karte": "New Vision",
-      "text": "Einsicht ist neue Sicht. Manchmal musst du die Perspektive wechseln, um zu sehen, was immer schon da war."
-    },
-    "#B73": {
-      "label": "Anfang-Ende",
-      "frage": "Wie wichtig ist Ihnen Anfang-Ende?",
-      "karte": "Completion",
-      "text": "Jedes Ende trägt einen Anfang in sich. Der Kreis schließt sich, damit ein neuer beginnen kann."
-    },
-    "#B74": {
-      "label": "Kontrolle-ausüben",
-      "frage": "Wie wichtig ist Ihnen Kontrolle-ausüben?",
-      "karte": "Control",
-      "text": "Wahre Kontrolle liegt im Loslassen der Kontrolle. Der Meister des Lebens kontrolliert nicht – er fließt."
-    },
-    "#B75": {
-      "label": "Hingabe",
-      "frage": "Wie wichtig ist Ihnen Hingabe?",
-      "karte": "Letting Go",
-      "text": "Hingabe ist Loslassen in Vertrauen. Die leeren Hände sind bereit zu empfangen."
-    },
-    "#B76": {
-      "label": "Führung-geben",
-      "frage": "Wie wichtig ist Ihnen Führung-geben?",
-      "karte": "Guidance",
-      "text": "Führung geben heißt, anderen den Weg zu zeigen, den du selbst gegangen bist. Authentische Führung inspiriert."
-    },
-    "#B77": {
-      "label": "Geführt-werden",
-      "frage": "Wie wichtig ist Ihnen Geführt-werden?",
-      "karte": "Trust",
-      "text": "Geführt werden erfordert Vertrauen. Es ist der Mut, einem anderen die Hand zu reichen im Dunkeln."
-    },
-    "#B78": {
-      "label": "Ritual",
-      "frage": "Wie wichtig ist Ihnen Ritual?",
-      "karte": "The Master",
-      "text": "Rituale sind bewusste Handlungen. Sie bringen das Heilige in den Alltag und den Alltag ins Heilige."
-    },
-    "#B79": {
-      "label": "Nachsorge",
-      "frage": "Wie wichtig ist Ihnen Nachsorge?",
-      "karte": "Healing",
-      "text": "Nachsorge ist achtsame Heilung. Sie gibt dem, was geschehen ist, Raum zur Integration."
-    },
-    "#B80": {
-      "label": "Grenzen-setzen",
-      "frage": "Wie wichtig ist Ihnen Grenzen-setzen?",
-      "karte": "The Rebel",
-      "text": "Grenzen setzen ist ein Akt der Selbstachtung. Der Rebell sagt Nein, um sein Ja zu schützen."
-    },
-    "#B81": {
-      "label": "Grenzen-respektieren",
-      "frage": "Wie wichtig ist Ihnen Grenzen-respektieren?",
-      "karte": "Receptivity",
-      "text": "Grenzen respektieren heißt, den Raum des anderen zu ehren. Empfänglichkeit beginnt mit Achtsamkeit."
-    },
-    "#B82": {
-      "label": "Intensität",
-      "frage": "Wie wichtig ist Ihnen Intensität?",
-      "karte": "Intensity",
-      "text": "Intensität ist Leben in seiner reinsten Form. Brenne hell – aber verbrenne dich nicht."
-    },
-    "#B83": {
-      "label": "Vertrauen-schenken",
-      "frage": "Wie wichtig ist Ihnen Vertrauen-schenken?",
-      "karte": "Trust",
-      "text": "Vertrauen schenken ist ein Akt des Mutes. Es öffnet die Tür zu tiefer Verbindung."
-    },
-    "#B84": {
-      "label": "Verantwortung-übernehmen",
-      "frage": "Wie wichtig ist Ihnen Verantwortung-übernehmen?",
-      "karte": "Maturity",
-      "text": "Verantwortung übernehmen ist ein Zeichen der Reife. Es heißt: Ich bin der Schöpfer meines Lebens."
-    },
-    "#B85": {
-      "label": "Sich-fallenlassen",
-      "frage": "Wie wichtig ist Ihnen Sich-fallenlassen?",
-      "karte": "Trust",
-      "text": "Sich fallenlassen erfordert tiefes Vertrauen. Es ist der Sprung, wissend, dass du gehalten wirst."
-    },
-    "#B86": {
-      "label": "Machtaustausch",
-      "frage": "Wie wichtig ist Ihnen Machtaustausch?",
-      "karte": "Transformation",
-      "text": "Machtaustausch ist Transformation in Beziehung. Beide Partner verwandeln sich durch das bewusste Spiel."
-    },
-    "#B87": {
-      "label": "Dienend-sein",
-      "frage": "Wie wichtig ist Ihnen Dienend-sein?",
-      "karte": "Compassion",
-      "text": "Dienend sein aus Mitgefühl ist Hingabe ohne Verlust. Du gibst und empfängst zugleich."
-    },
-    "#B88": {
-      "label": "Beschützen",
-      "frage": "Wie wichtig ist Ihnen Beschützen?",
-      "karte": "Courage",
-      "text": "Beschützen erfordert Mut – den Mut, für das einzustehen, was du liebst."
-    },
-    "#B89": {
-      "label": "Kinderwunsch",
-      "frage": "Wie wichtig ist Ihnen Kinderwunsch?",
-      "karte": "Flowering",
-      "text": "Der Kinderwunsch ist das Verlangen nach Blüte. Leben möchte sich fortsetzen, erblühen, weitergeben."
-    },
-    "#B90": {
-      "label": "Elternschaft",
-      "frage": "Wie wichtig ist Ihnen Elternschaft?",
-      "karte": "The Lovers",
-      "text": "Elternschaft ist eine Form der Liebe, die loslässt. Die Liebenden werden zu drei – und die Liebe wächst."
-    },
-    "#B91": {
-      "label": "Fortpflanzung",
-      "frage": "Wie wichtig ist Ihnen Fortpflanzung?",
-      "karte": "Source",
-      "text": "Fortpflanzung verbindet dich mit der Quelle des Lebens selbst. Du wirst zum Kanal für neues Sein."
-    },
-    "#B92": {
-      "label": "Familie-gründen",
-      "frage": "Wie wichtig ist Ihnen Familie-gründen?",
-      "karte": "We Are the World",
-      "text": "Familie gründen heißt, einen Kreis der Verbundenheit zu schaffen. Ein Mikrokosmos der Welt."
-    },
-    "#B93": {
-      "label": "Patchwork-Familie",
-      "frage": "Wie wichtig ist Ihnen Patchwork-Familie?",
-      "karte": "Creativity",
-      "text": "Patchwork ist kreatives Gestalten von Familie. Neue Muster entstehen aus verschiedenen Fäden."
-    },
-    "#B94": {
-      "label": "Kinderfreies-Leben",
-      "frage": "Wie wichtig ist Ihnen Kinderfreies-Leben?",
-      "karte": "Aloneness",
-      "text": "Ein kinderfreies Leben ist ein bewusster Weg. Im Alleinsein findest du andere Formen der Erfüllung."
-    },
-    "#B95": {
-      "label": "Adoption",
-      "frage": "Wie wichtig ist Ihnen Adoption?",
-      "karte": "Compassion",
-      "text": "Adoption ist Mitgefühl in Aktion. Du öffnest dein Herz für ein Kind, das nicht von dir kommt."
-    },
-    "#B96": {
-      "label": "Pflegekinder",
-      "frage": "Wie wichtig ist Ihnen Pflegekinder?",
-      "karte": "Healing",
-      "text": "Pflegekinder aufnehmen ist Heilungsarbeit. Du gibst einem Kind, was es braucht, um zu heilen."
-    },
-    "#B97": {
-      "label": "Zusammenziehen",
-      "frage": "Wie wichtig ist Ihnen Zusammenziehen?",
-      "karte": "Harmony",
-      "text": "Zusammenziehen ist das Weben gemeinsamer Harmonie. Zwei Leben werden zu einem geteilten Raum."
-    },
-    "#B98": {
-      "label": "Getrennt-wohnen",
-      "frage": "Wie wichtig ist Ihnen Getrennt-wohnen?",
-      "karte": "Aloneness",
-      "text": "Getrennt wohnen ehrt das Bedürfnis nach Alleinsein. Nähe braucht manchmal Distanz, um zu atmen."
-    },
-    "#B99": {
-      "label": "WG-Leben",
-      "frage": "Wie wichtig ist Ihnen WG-Leben?",
-      "karte": "Participation",
-      "text": "WG-Leben ist geteilte Teilnahme am Alltag. Gemeinschaft entsteht in den kleinen Momenten."
-    },
-    "#B100": {
-      "label": "Eigenes-Zimmer",
-      "frage": "Wie wichtig ist Ihnen Eigenes-Zimmer?",
-      "karte": "Aloneness",
-      "text": "Ein eigenes Zimmer ist der Rückzugsort der Seele. Im Alleinsein findest du dich selbst wieder."
-    },
-    "#B101": {
-      "label": "Stadt-Leben",
-      "frage": "Wie wichtig ist Ihnen Stadt-Leben?",
-      "karte": "Experiencing",
-      "text": "Stadtleben ist intensives Erfahren. Die Stadt pulsiert mit Leben – wer offen ist, wird reich beschenkt."
-    },
-    "#B102": {
-      "label": "Land-Leben",
-      "frage": "Wie wichtig ist Ihnen Land-Leben?",
-      "karte": "Harmony",
-      "text": "Landleben ist Harmonie mit der Natur. Der Rhythmus der Erde wird zu deinem Rhythmus."
-    },
-    "#B103": {
-      "label": "Mobilität",
-      "frage": "Wie wichtig ist Ihnen Mobilität?",
-      "karte": "Traveling",
-      "text": "Mobilität ist die Freiheit der Reise. Wer sich bewegen kann, kann sich entfalten."
-    },
-    "#B104": {
-      "label": "Sesshaftigkeit",
-      "frage": "Wie wichtig ist Ihnen Sesshaftigkeit?",
-      "karte": "Maturity",
-      "text": "Sesshaftigkeit ist gereifte Erdung. Wurzeln schlagen bedeutet, tief zu wachsen statt weit."
-    },
-    "#B105": {
-      "label": "Heiraten",
-      "frage": "Wie wichtig ist Ihnen Heiraten?",
-      "karte": "Commitment",
-      "text": "Heirat ist ein bewusstes Ja. Es ist die Entscheidung, gemeinsam durch alle Jahreszeiten zu gehen."
-    },
-    "#B106": {
-      "label": "Ohne-Trauschein",
-      "frage": "Wie wichtig ist Ihnen Ohne-Trauschein?",
-      "karte": "The Rebel",
-      "text": "Ohne Trauschein zu leben ist der Weg des Rebellen. Die Liebe braucht keine Urkunde – nur Wahrhaftigkeit."
-    },
-    "#B107": {
-      "label": "Verpartnerung",
-      "frage": "Wie wichtig ist Ihnen Verpartnerung?",
-      "karte": "The Lovers",
-      "text": "Verpartnerung ist die offizielle Anerkennung der Liebe. Die Liebenden treten sichtbar in die Welt."
-    },
-    "#B108": {
-      "label": "Haustiere",
-      "frage": "Wie wichtig ist Ihnen Haustiere?",
-      "karte": "Friendliness",
-      "text": "Haustiere lehren bedingungslose Freundlichkeit. Sie lieben, ohne zu fragen – und werden geliebt."
-    },
-    "#B109": {
-      "label": "Keine-Haustiere",
-      "frage": "Wie wichtig ist Ihnen Keine-Haustiere?",
-      "karte": "Slowing Down",
-      "text": "Keine Haustiere zu haben schafft Raum für Langsamkeit. Weniger Verpflichtung, mehr Stille."
-    },
-    "#B110": {
-      "label": "Gemeinsame-Hobbys",
-      "frage": "Wie wichtig ist Ihnen Gemeinsame-Hobbys?",
-      "karte": "Celebration",
-      "text": "Gemeinsame Hobbys sind geteilte Feste. Was Freude macht, wird größer, wenn es geteilt wird."
-    },
-    "#B111": {
-      "label": "Eigene-Hobbys",
-      "frage": "Wie wichtig ist Ihnen Eigene-Hobbys?",
-      "karte": "Aloneness",
-      "text": "Eigene Hobbys sind Räume des Alleinseins. Sie nähren den Teil von dir, der nur dir gehört."
-    },
-    "#B112": {
-      "label": "Gemeinsamer-Urlaub",
-      "frage": "Wie wichtig ist Ihnen Gemeinsamer-Urlaub?",
-      "karte": "Adventure",
-      "text": "Gemeinsamer Urlaub ist geteiltes Abenteuer. Neue Orte öffnen neue Räume – auch füreinander."
-    },
-    "#B113": {
-      "label": "Getrennter-Urlaub",
-      "frage": "Wie wichtig ist Ihnen Getrennter-Urlaub?",
-      "karte": "Aloneness",
-      "text": "Getrennter Urlaub ehrt das Bedürfnis nach Alleinsein. Manchmal musst du allein reisen, um dich zu finden."
-    },
-    "#B114": {
-      "label": "Langzeit-Planung",
-      "frage": "Wie wichtig ist Ihnen Langzeit-Planung?",
-      "karte": "Patience",
-      "text": "Langzeit-Planung ist geduldiges Säen. Du vertraust darauf, dass die Saat zur rechten Zeit aufgeht."
-    },
-    "#B115": {
-      "label": "Im-Moment-leben",
-      "frage": "Wie wichtig ist Ihnen Im-Moment-leben?",
-      "karte": "Moment to Moment",
-      "text": "Im Moment leben ist die höchste Kunst. Vergangenheit und Zukunft verschwinden – nur Jetzt bleibt."
-    },
-    "#B116": {
-      "label": "Karriere-Fokus",
-      "frage": "Wie wichtig ist Ihnen Karriere-Fokus?",
-      "karte": "Success",
-      "text": "Karriere-Fokus ist gerichtete Energie. Doch wahrer Erfolg liegt nicht im Erreichen, sondern im Werden."
-    },
-    "#B117": {
-      "label": "Familie-Fokus",
-      "frage": "Wie wichtig ist Ihnen Familie-Fokus?",
-      "karte": "We Are the World",
-      "text": "Familie-Fokus ist Verbundenheit als Priorität. Die Familie ist ein Mikrokosmos der Welt."
-    },
-    "#B118": {
-      "label": "Balance-Arbeit-Leben",
-      "frage": "Wie wichtig ist Ihnen Balance-Arbeit-Leben?",
-      "karte": "Integration",
-      "text": "Work-Life-Balance ist gelebte Integration. Wenn alle Lebensbereiche fließen, entsteht Harmonie."
-    },
-    "#B119": {
-      "label": "Gemeinsame-Werte",
-      "frage": "Wie wichtig ist Ihnen Gemeinsame-Werte?",
-      "karte": "We Are the World",
-      "text": "Gemeinsame Werte sind das unsichtbare Band. Sie verbinden tiefer als Worte oder Taten."
-    },
-    "#B120": {
-      "label": "Respekt-Unterschiede",
-      "frage": "Wie wichtig ist Ihnen Respekt-Unterschiede?",
-      "karte": "Understanding",
-      "text": "Unterschiede respektieren heißt verstehen, dass Vielfalt Reichtum ist. Der Regenbogen braucht alle Farben."
-    },
-    "#B121": {
-      "label": "Traditionen-pflegen",
-      "frage": "Wie wichtig ist Ihnen Traditionen-pflegen?",
-      "karte": "Ordinariness",
-      "text": "Traditionen pflegen ehrt das Gewöhnliche. Im Wiederkehrenden liegt das Heilige des Alltags."
-    },
-    "#B122": {
-      "label": "Neue-Wege-gehen",
-      "frage": "Wie wichtig ist Ihnen Neue-Wege-gehen?",
-      "karte": "Adventure",
-      "text": "Neue Wege gehen ist das Abenteuer des Pioniers. Das Unbekannte ruft – und du antwortest."
-    },
-    "#B123": {
-      "label": "Spiritualität-teilen",
-      "frage": "Wie wichtig ist Ihnen Spiritualität-teilen?",
-      "karte": "Inner Voice",
-      "text": "Spiritualität teilen heißt, gemeinsam der inneren Stimme zu lauschen. Geteilte Stille ist doppelte Tiefe."
-    },
-    "#B124": {
-      "label": "Säkulares-Leben",
-      "frage": "Wie wichtig ist Ihnen Säkulares-Leben?",
-      "karte": "Ordinariness",
-      "text": "Säkulares Leben findet das Heilige im Gewöhnlichen. Jeder Moment ist heilig – auch ohne Ritual."
-    },
-    "#B125": {
-      "label": "Gesunde-Ernährung",
-      "frage": "Wie wichtig ist Ihnen Gesunde-Ernährung?",
-      "karte": "Awareness",
-      "text": "Gesunde Ernährung ist bewusstes Nähren. Was du isst, wird zu dir – wähle mit Achtsamkeit."
-    },
-    "#B126": {
-      "label": "Sport-Fitness",
-      "frage": "Wie wichtig ist Ihnen Sport-Fitness?",
-      "karte": "Totality",
-      "text": "Sport und Fitness leben von Totalität. Gib dich ganz – und der Körper antwortet mit Vitalität."
-    },
-    "#B127": {
-      "label": "Finanzielle-Unabhängigkeit",
-      "frage": "Wie wichtig ist Ihnen Finanzielle-Unabhängigkeit?",
-      "karte": "Abundance",
-      "text": "Finanzielle Unabhängigkeit ist äußere Fülle als Spiegel innerer Freiheit. Fülle zieht Fülle an."
-    },
-    "#B128": {
-      "label": "Gemeinsame-Finanzen",
-      "frage": "Wie wichtig ist Ihnen Gemeinsame-Finanzen?",
-      "karte": "Going With The Flow",
-      "text": "Gemeinsame Finanzen sind geteilter Fluss. Das Geld fließt zwischen euch wie Wasser – natürlich und frei."
-    },
-    "#B129": {
-      "label": "Getrennte-Finanzen",
-      "frage": "Wie wichtig ist Ihnen Getrennte-Finanzen?",
-      "karte": "Aloneness",
-      "text": "Getrennte Finanzen ehren die Eigenständigkeit. Jeder trägt seinen Teil – das schafft Klarheit."
-    },
-    "#B130": {
-      "label": "Sparsamkeit",
-      "frage": "Wie wichtig ist Ihnen Sparsamkeit?",
-      "karte": "Patience",
-      "text": "Sparsamkeit ist geduldiges Hüten. Wie der Bauer seine Saat spart, sparst du für die Zukunft."
-    },
-    "#B131": {
-      "label": "Großzügigkeit",
-      "frage": "Wie wichtig ist Ihnen Großzügigkeit?",
-      "karte": "Sharing",
-      "text": "Großzügigkeit ist Fülle, die überfließt. Wer aus der Quelle lebt, kann nicht anders als geben."
-    },
-    "#B132": {
-      "label": "Vermögensaufbau",
-      "frage": "Wie wichtig ist Ihnen Vermögensaufbau?",
-      "karte": "Abundance",
-      "text": "Vermögensaufbau ist materielle Fülle schaffen. Doch vergiss nicht: Wahrer Reichtum ist innen."
-    },
-    "#B133": {
-      "label": "Minimalismus",
-      "frage": "Wie wichtig ist Ihnen Minimalismus?",
-      "karte": "No-Thingness",
-      "text": "Minimalismus ist die Kunst der Leere. Weniger Dinge, mehr Raum – mehr Raum, mehr Freiheit."
-    },
-    "#B134": {
-      "label": "Berufliche-Erfüllung",
-      "frage": "Wie wichtig ist Ihnen Berufliche-Erfüllung?",
-      "karte": "The Creator",
-      "text": "Berufliche Erfüllung ist Schöpfung im Alltag. Wenn Arbeit Ausdruck deines Wesens wird, ist sie Berufung."
-    },
-    "#B135": {
-      "label": "Arbeit-als-Mittel",
-      "frage": "Wie wichtig ist Ihnen Arbeit-als-Mittel?",
-      "karte": "Ordinariness",
-      "text": "Arbeit als Mittel sieht das Gewöhnliche nüchtern. Arbeit ist Werkzeug, nicht Identität."
-    },
-    "#B136": {
-      "label": "Selbstständigkeit",
-      "frage": "Wie wichtig ist Ihnen Selbstständigkeit?",
-      "karte": "The Rebel",
-      "text": "Selbstständigkeit ist der Weg des Rebellen in der Arbeitswelt. Du erschaffst nach deinen Regeln."
-    },
-    "#B137": {
-      "label": "Angestellten-Dasein",
-      "frage": "Wie wichtig ist Ihnen Angestellten-Dasein?",
-      "karte": "Participation",
-      "text": "Angestellt sein ist Teilnahme an etwas Größerem. Du bringst dich ein in ein gemeinsames Werk."
-    },
-    "#B138": {
-      "label": "Führungsposition",
-      "frage": "Wie wichtig ist Ihnen Führungsposition?",
-      "karte": "Guidance",
-      "text": "Führung ist Dienst, nicht Herrschaft. Der wahre Führer weist den Weg, den er selbst geht."
-    },
-    "#B139": {
-      "label": "Team-Arbeit",
-      "frage": "Wie wichtig ist Ihnen Team-Arbeit?",
-      "karte": "Participation",
-      "text": "Teamarbeit ist choreographierte Teilnahme. Jeder tanzt seinen Part, und gemeinsam entsteht das Ganze."
-    },
-    "#B140": {
-      "label": "Home-Office",
-      "frage": "Wie wichtig ist Ihnen Home-Office?",
-      "karte": "Aloneness",
-      "text": "Home-Office vereint Arbeit und Alleinsein. Im eigenen Raum findest du deinen eigenen Rhythmus."
-    },
-    "#B141": {
-      "label": "Büro-Präsenz",
-      "frage": "Wie wichtig ist Ihnen Büro-Präsenz?",
-      "karte": "Participation",
-      "text": "Büro-Präsenz ist physische Teilnahme. Manche Energie entsteht nur, wenn Menschen zusammen sind."
-    },
-    "#B142": {
-      "label": "Flexible-Arbeitszeit",
-      "frage": "Wie wichtig ist Ihnen Flexible-Arbeitszeit?",
-      "karte": "Going With The Flow",
-      "text": "Flexible Arbeitszeit ist Arbeit im Fluss. Du passt dich dem Rhythmus des Lebens an, nicht umgekehrt."
-    },
-    "#B143": {
-      "label": "Feste-Strukturen",
-      "frage": "Wie wichtig ist Ihnen Feste-Strukturen?",
-      "karte": "Maturity",
-      "text": "Feste Strukturen geben dem Leben Form. Die reife Seele schätzt den Rahmen, der Halt gibt."
-    },
-    "#B144": {
-      "label": "Weiterbildung",
-      "frage": "Wie wichtig ist Ihnen Weiterbildung?",
-      "karte": "Understanding",
-      "text": "Weiterbildung ist der Weg des ewigen Schülers. Wer aufhört zu lernen, hört auf zu wachsen."
-    },
-    "#B145": {
-      "label": "Ruhestand-Planung",
-      "frage": "Wie wichtig ist Ihnen Ruhestand-Planung?",
-      "karte": "Patience",
-      "text": "Ruhestand planen heißt, geduldig in die Zukunft säen. Die Ernte wird kommen – zur rechten Zeit."
-    },
-    "#B146": {
-      "label": "Sabbatical",
-      "frage": "Wie wichtig ist Ihnen Sabbatical?",
-      "karte": "Turning In",
-      "text": "Ein Sabbatical ist eine Zeit des Nach-innen-Wendens. Der äußere Stopp ermöglicht innere Bewegung."
-    },
-    "#B147": {
-      "label": "Risiko-Bereitschaft",
-      "frage": "Wie wichtig ist Ihnen Risiko-Bereitschaft?",
-      "karte": "Adventure",
-      "text": "Risikobereitschaft ist der Mut zum Abenteuer. Wer nie springt, erfährt nie, dass er fliegen kann."
-    },
-    "#B148": {
-      "label": "Sicherheits-Orientierung",
-      "frage": "Wie wichtig ist Ihnen Sicherheits-Orientierung?",
-      "karte": "Protection",
-      "text": "Sicherheitsorientierung ist weiser Schutz. Manchmal ist Vorsicht die mutigste Entscheidung."
-    },
-    "#B149": {
-      "label": "Täglicher-Austausch",
-      "frage": "Wie wichtig ist Ihnen Täglicher-Austausch?",
-      "karte": "Friendliness",
-      "text": "Täglicher Austausch ist gelebte Freundlichkeit. Kleine Worte weben das Netz der Verbundenheit."
-    },
-    "#B150": {
-      "label": "Qualitäts-Zeit",
-      "frage": "Wie wichtig ist Ihnen Qualitäts-Zeit?",
-      "karte": "Moment to Moment",
-      "text": "Qualitätszeit ist präsente Zeit. Nicht die Menge zählt, sondern die Tiefe jedes Moments."
-    },
-    "#B151": {
-      "label": "Tiefgehende-Gespräche",
-      "frage": "Wie wichtig ist Ihnen Tiefgehende-Gespräche?",
-      "karte": "Understanding",
-      "text": "Tiefgehende Gespräche führen zum Verstehen. Worte werden zu Brücken zwischen Seelen."
-    },
-    "#B152": {
-      "label": "Leichte-Unterhaltung",
-      "frage": "Wie wichtig ist Ihnen Leichte-Unterhaltung?",
-      "karte": "Playfulness",
-      "text": "Leichte Unterhaltung ist spielerisches Sein. Nicht alles muss tief sein – manchmal reicht ein Lächeln."
-    },
-    "#B153": {
-      "label": "Emotionale-Offenheit",
-      "frage": "Wie wichtig ist Ihnen Emotionale-Offenheit?",
-      "karte": "Receptivity",
-      "text": "Emotionale Offenheit ist empfängliches Herz. Der Kelch ist leer – bereit, gefüllt zu werden."
-    },
-    "#B154": {
-      "label": "Sachliche-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Sachliche-Kommunikation?",
-      "karte": "Consciousness",
-      "text": "Sachliche Kommunikation ist klares Bewusstsein. Gedanken werden präzise ausgedrückt."
-    },
-    "#B155": {
-      "label": "Konflikt-Ansprechen",
-      "frage": "Wie wichtig ist Ihnen Konflikt-Ansprechen?",
-      "karte": "Breakthrough",
-      "text": "Konflikte ansprechen führt zum Durchbruch. Was ausgesprochen wird, kann heilen."
-    },
-    "#B156": {
-      "label": "Harmonie-Bewahren",
-      "frage": "Wie wichtig ist Ihnen Harmonie-Bewahren?",
-      "karte": "Harmony",
-      "text": "Harmonie bewahren ist eine Kunst. Doch wahre Harmonie entsteht nicht durch Vermeidung, sondern durch Integration."
-    },
-    "#B157": {
-      "label": "Direkte-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Direkte-Kommunikation?",
-      "karte": "Courage",
-      "text": "Direkte Kommunikation erfordert Mut. Die Wahrheit auszusprechen ist ein Akt der Liebe."
-    },
-    "#B158": {
-      "label": "Diplomatische-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Diplomatische-Kommunikation?",
-      "karte": "Receptivity",
-      "text": "Diplomatische Kommunikation ist empfänglich für den anderen. Worte werden gewählt, um zu verbinden."
-    },
-    "#B159": {
-      "label": "Feedback-Kultur",
-      "frage": "Wie wichtig ist Ihnen Feedback-Kultur?",
-      "karte": "Understanding",
-      "text": "Feedback ist gegenseitiges Verstehen. Jede Rückmeldung ist ein Geschenk – wenn sie gehört wird."
-    },
-    "#B160": {
-      "label": "Nonverbale-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Nonverbale-Kommunikation?",
-      "karte": "Silence",
-      "text": "Nonverbale Kommunikation spricht in der Stille. Der Körper sagt, was Worte nicht können."
-    },
-    "#B161": {
-      "label": "Aktives-Zuhören",
-      "frage": "Wie wichtig ist Ihnen Aktives-Zuhören?",
-      "karte": "Receptivity",
-      "text": "Aktives Zuhören ist empfängliche Präsenz. Du hörst nicht nur Worte – du hörst das Herz dahinter."
-    },
-    "#B162": {
-      "label": "Humor-im-Gespräch",
-      "frage": "Wie wichtig ist Ihnen Humor-im-Gespräch?",
-      "karte": "Celebration",
-      "text": "Humor im Gespräch ist eine kleine Feier. Gemeinsames Lachen verbindet tiefer als viele Worte."
-    },
-    "#B163": {
-      "label": "Ernsthaftigkeit",
-      "frage": "Wie wichtig ist Ihnen Ernsthaftigkeit?",
-      "karte": "Maturity",
-      "text": "Ernsthaftigkeit ist reife Präsenz. Manche Themen verdienen die Tiefe ungeteilter Aufmerksamkeit."
-    },
-    "#B164": {
-      "label": "Spontane-Gespräche",
-      "frage": "Wie wichtig ist Ihnen Spontane-Gespräche?",
-      "karte": "Playfulness",
-      "text": "Spontane Gespräche sind spielerischer Austausch. Ungeplante Momente tragen oft die größte Magie."
-    },
-    "#B165": {
-      "label": "Geplante-Gespräche",
-      "frage": "Wie wichtig ist Ihnen Geplante-Gespräche?",
-      "karte": "Guidance",
-      "text": "Geplante Gespräche geben Raum für Wichtiges. Manche Themen brauchen einen geschützten Rahmen."
-    },
-    "#B166": {
-      "label": "Schriftliche-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Schriftliche-Kommunikation?",
-      "karte": "Consciousness",
-      "text": "Schriftliche Kommunikation ist reflektiertes Bewusstsein. Das geschriebene Wort wiegt schwerer."
-    },
-    "#B167": {
-      "label": "Mündliche-Kommunikation",
-      "frage": "Wie wichtig ist Ihnen Mündliche-Kommunikation?",
-      "karte": "Experiencing",
-      "text": "Mündliche Kommunikation ist lebendige Erfahrung. Die Stimme trägt mehr als nur Worte."
-    },
-    "#B168": {
-      "label": "Gemeinsam-Entscheiden",
-      "frage": "Wie wichtig ist Ihnen Gemeinsam-Entscheiden?",
-      "karte": "The Lovers",
-      "text": "Gemeinsam entscheiden ist die Kunst der Liebenden. Zwei Stimmen finden eine gemeinsame Melodie."
-    },
-    "#B169": {
-      "label": "Eigenständige-Entscheidungen",
-      "frage": "Wie wichtig ist Ihnen Eigenständige-Entscheidungen?",
-      "karte": "The Rebel",
-      "text": "Eigenständige Entscheidungen sind der Weg des Rebellen. Du wählst nach deiner eigenen Wahrheit."
-    },
-    "#B170": {
-      "label": "Kompromiss-Bereitschaft",
-      "frage": "Wie wichtig ist Ihnen Kompromiss-Bereitschaft?",
-      "karte": "Compromise",
-      "text": "Kompromiss ist eine Kunst. Doch unterscheide zwischen weiser Flexibilität und Selbstverrat."
-    },
-    "#B171": {
-      "label": "Klare-Standpunkte",
-      "frage": "Wie wichtig ist Ihnen Klare-Standpunkte?",
-      "karte": "Courage",
-      "text": "Klare Standpunkte erfordern Mut. Zu wissen, wofür du stehst, ist der Anker in stürmischen Zeiten."
-    },
-    "#B172": {
-      "label": "Emotionale-Unterstützung",
-      "frage": "Wie wichtig ist Ihnen Emotionale-Unterstützung?",
-      "karte": "Healing",
-      "text": "Emotionale Unterstützung ist heilende Präsenz. Manchmal reicht es, da zu sein – ohne Worte."
-    },
-    "#B173": {
-      "label": "Praktische-Unterstützung",
-      "frage": "Wie wichtig ist Ihnen Praktische-Unterstützung?",
-      "karte": "Abundance",
-      "text": "Praktische Unterstützung ist Fülle in Aktion. Helfende Hände zeigen Liebe durch Taten."
-    },
-    "#B174": {
-      "label": "Regelmäßige-Check-Ins",
-      "frage": "Wie wichtig ist Ihnen Regelmäßige-Check-Ins?",
-      "karte": "Awareness",
-      "text": "Regelmäßige Check-Ins sind bewusste Aufmerksamkeit. Sie halten den Finger am Puls der Beziehung."
-    },
-    "#B175": {
-      "label": "Beziehungs-Reflexion",
-      "frage": "Wie wichtig ist Ihnen Beziehungs-Reflexion?",
-      "karte": "New Vision",
-      "text": "Beziehungs-Reflexion bringt neue Sicht. Innehalten und schauen zeigt, wo ihr wirklich steht."
-    },
-    "#B176": {
-      "label": "Natürlicher-Flow",
-      "frage": "Wie wichtig ist Ihnen Natürlicher-Flow?",
-      "karte": "Going With The Flow",
-      "text": "Natürlicher Flow ist müheloses Fließen. Wenn ihr nicht mehr kämpft, trägt euch der Strom."
-    },
-    "#B177": {
-      "label": "Soziale-Energie",
-      "frage": "Wie wichtig ist Ihnen Soziale-Energie?",
-      "karte": "Experiencing",
-      "text": "Soziale Energie ist lebendige Erfahrung mit anderen. Manche Menschen laden dich auf – suche sie."
-    },
-    "#B178": {
-      "label": "Geselligkeit",
-      "frage": "Wie wichtig ist Ihnen Geselligkeit?",
-      "karte": "Celebration",
-      "text": "Geselligkeit ist gemeinsames Feiern des Lebens. Menschen zusammen – das ist schon ein Fest."
-    },
-    "#B179": {
-      "label": "Ruhe-von-Menschen",
-      "frage": "Wie wichtig ist Ihnen Ruhe-von-Menschen?",
-      "karte": "Aloneness",
-      "text": "Ruhe von Menschen ist heilsames Alleinsein. Die Stille nach dem Trubel ist ein Geschenk."
-    },
-    "#B180": {
-      "label": "Freunde-pflegen",
-      "frage": "Wie wichtig ist Ihnen Freunde-pflegen?",
-      "karte": "Friendliness",
-      "text": "Freunde pflegen ist Freundlichkeit als Praxis. Beziehungen brauchen Aufmerksamkeit, um zu blühen."
-    },
-    "#B181": {
-      "label": "Paar-Zeit-Fokus",
-      "frage": "Wie wichtig ist Ihnen Paar-Zeit-Fokus?",
-      "karte": "The Lovers",
-      "text": "Paar-Zeit ist exklusive Zeit der Liebenden. In diesem Raum seid nur ihr zwei – und das ist heilig."
-    },
-    "#B182": {
-      "label": "Gemeinsame-Freunde",
-      "frage": "Wie wichtig ist Ihnen Gemeinsame-Freunde?",
-      "karte": "We Are the World",
-      "text": "Gemeinsame Freunde erweitern eure Welt. Der Kreis wird größer, die Verbundenheit tiefer."
-    },
-    "#B183": {
-      "label": "Eigene-Freunde",
-      "frage": "Wie wichtig ist Ihnen Eigene-Freunde?",
-      "karte": "Aloneness",
-      "text": "Eigene Freunde sind Räume des Individuellen. Nicht alles muss geteilt werden – manches gehört nur dir."
-    },
-    "#B184": {
-      "label": "Familie-treffen",
-      "frage": "Wie wichtig ist Ihnen Familie-treffen?",
-      "karte": "We Are the World",
-      "text": "Familientreffen verbinden mit deinen Wurzeln. Du bist Teil eines größeren Stroms des Lebens."
-    },
-    "#B185": {
-      "label": "Familie-Distanz",
-      "frage": "Wie wichtig ist Ihnen Familie-Distanz?",
-      "karte": "Aloneness",
-      "text": "Distanz zur Familie kann heilsam sein. Manchmal brauchst du Raum, um dich selbst zu finden."
-    },
-    "#B186": {
-      "label": "Partys-Events",
-      "frage": "Wie wichtig ist Ihnen Partys-Events?",
-      "karte": "Celebration",
-      "text": "Partys und Events sind kollektive Feiern. Die Energie vieler Menschen verstärkt die Freude."
-    },
-    "#B187": {
-      "label": "Ruhige-Abende",
-      "frage": "Wie wichtig ist Ihnen Ruhige-Abende?",
-      "karte": "Silence",
-      "text": "Ruhige Abende sind Oasen der Stille. Im Schweigen des Abends findest du dich wieder."
-    },
-    "#B188": {
-      "label": "Neue-Leute-treffen",
-      "frage": "Wie wichtig ist Ihnen Neue-Leute-treffen?",
-      "karte": "Adventure",
-      "text": "Neue Leute treffen ist ein Abenteuer. Jeder Mensch ist eine Welt – warte auf die Entdeckung."
-    },
-    "#B189": {
-      "label": "Vertrauter-Kreis",
-      "frage": "Wie wichtig ist Ihnen Vertrauter-Kreis?",
-      "karte": "Trust",
-      "text": "Ein vertrauter Kreis ist ein Kreis des Vertrauens. Hier kannst du sein, wer du wirklich bist."
-    },
-    "#B190": {
-      "label": "Allein-Zeit",
-      "frage": "Wie wichtig ist Ihnen Allein-Zeit?",
-      "karte": "Aloneness",
-      "text": "Allein-Zeit ist nicht Einsamkeit – sie ist der Raum, in dem du dich selbst wiederfindest."
-    },
-    "#B191": {
-      "label": "Gemeinsam-sein",
-      "frage": "Wie wichtig ist Ihnen Gemeinsam-sein?",
-      "karte": "We Are the World",
-      "text": "Gemeinsam sein ist gelebte Verbundenheit. Nicht allein zu sein ist ein tiefes menschliches Bedürfnis."
-    },
-    "#B192": {
-      "label": "Spontane-Besuche",
-      "frage": "Wie wichtig ist Ihnen Spontane-Besuche?",
-      "karte": "Playfulness",
-      "text": "Spontane Besuche sind spielerische Überraschungen. Das Unerwartete bringt Frische ins Leben."
-    },
-    "#B193": {
-      "label": "Geplante-Treffen",
-      "frage": "Wie wichtig ist Ihnen Geplante-Treffen?",
-      "karte": "Patience",
-      "text": "Geplante Treffen sind geduldige Vorfreude. Das Warten macht das Wiedersehen süßer."
-    },
-    "#B194": {
-      "label": "Gastgeber-sein",
-      "frage": "Wie wichtig ist Ihnen Gastgeber-sein?",
-      "karte": "Sharing",
-      "text": "Gastgeber sein ist großzügiges Teilen. Du öffnest deinen Raum und dein Herz."
-    },
-    "#B195": {
-      "label": "Gast-sein",
-      "frage": "Wie wichtig ist Ihnen Gast-sein?",
-      "karte": "Receptivity",
-      "text": "Gast sein ist empfänglich sein. Du nimmst an, was andere dir anbieten – mit Dankbarkeit."
-    },
-    "#B196": {
-      "label": "Online-Kontakte",
-      "frage": "Wie wichtig ist Ihnen Online-Kontakte?",
-      "karte": "Possibilities",
-      "text": "Online-Kontakte eröffnen Möglichkeiten. Die digitale Welt verbindet, was Entfernung trennt."
-    },
-    "#B197": {
-      "label": "Persönliche-Treffen",
-      "frage": "Wie wichtig ist Ihnen Persönliche-Treffen?",
-      "karte": "Experiencing",
-      "text": "Persönliche Treffen sind volle Erfahrung. Präsenz von Angesicht zu Angesicht ist unersetzlich."
-    },
-    "#B198": {
-      "label": "Community-Engagement",
-      "frage": "Wie wichtig ist Ihnen Community-Engagement?",
-      "karte": "Participation",
-      "text": "Community-Engagement ist aktive Teilnahme am größeren Ganzen. Du gibst zurück, was du empfängst."
-    },
-    "#B199": {
-      "label": "Privat-Leben",
-      "frage": "Wie wichtig ist Ihnen Privat-Leben?",
-      "karte": "Silence",
-      "text": "Privatleben ist geschützte Stille. Manches gehört nur dir – und das ist gut so."
-    },
-    "#B200": {
-      "label": "Netzwerken",
-      "frage": "Wie wichtig ist Ihnen Netzwerken?",
-      "karte": "We Are the World",
-      "text": "Netzwerken webt Verbindungen. Jeder Kontakt ist ein Faden im großen Netz des Lebens."
-    },
-    "#B201": {
-      "label": "Wenige-tiefe-Beziehungen",
-      "frage": "Wie wichtig ist Ihnen Wenige-tiefe-Beziehungen?",
-      "karte": "Intimacy",
-      "text": "Wenige tiefe Beziehungen sind Intimität in Essenz. Qualität über Quantität – das ist der Weg des Herzens."
-    },
-    "#B202": {
-      "label": "Viele-Bekanntschaften",
-      "frage": "Wie wichtig ist Ihnen Viele-Bekanntschaften?",
-      "karte": "Friendliness",
-      "text": "Viele Bekanntschaften sind ausgebreitete Freundlichkeit. Ein weites Herz berührt viele Menschen."
-    },
-    "#B203": {
-      "label": "Kulturelle-Events",
-      "frage": "Wie wichtig ist Ihnen Kulturelle-Events?",
-      "karte": "Creativity",
-      "text": "Kulturelle Events nähren die Kreativität. Kunst öffnet Türen zu Welten jenseits des Alltags."
-    },
-    "#B204": {
-      "label": "Körpernähe",
-      "frage": "Wie wichtig ist Ihnen Körpernähe?",
-      "karte": "Touch",
-      "text": "Körpernähe ist die Sprache der Berührung. Der Körper sehnt sich nach Kontakt – er ist dafür gemacht."
-    },
-    "#B205": {
-      "label": "Kuscheln",
-      "frage": "Wie wichtig ist Ihnen Kuscheln?",
-      "karte": "Warmth",
-      "text": "Kuscheln ist Wärme ohne Worte. In der Nähe eines anderen Körpers schmelzen die Grenzen."
-    },
-    "#B206": {
-      "label": "Physische-Distanz",
-      "frage": "Wie wichtig ist Ihnen Physische-Distanz?",
-      "karte": "Aloneness",
-      "text": "Physische Distanz schafft Raum zum Atmen. Manchmal braucht der Körper seine eigene Zone."
-    },
-    "#B207": {
-      "label": "Körperkontakt",
-      "frage": "Wie wichtig ist Ihnen Körperkontakt?",
-      "karte": "Touch",
-      "text": "Körperkontakt ist ursprüngliche Kommunikation. Die Haut ist das größte Sinnesorgan – nutze es."
-    },
-    "#B208": {
-      "label": "Umarmungen",
-      "frage": "Wie wichtig ist Ihnen Umarmungen?",
-      "karte": "Love",
-      "text": "Umarmungen sind Liebe in Aktion. Ein Arm um den anderen sagt mehr als tausend Worte."
-    },
-    "#B209": {
-      "label": "Schmerzerleben",
-      "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
-      "karte": "Transformation",
-      "text": "Bewusstes Schmerzerleben kann transformieren. Durch das Feuer gehend, wirst du gereinigt."
-    },
-    "#B210": {
-      "label": "Schmerz-geben",
-      "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
-      "karte": "Intensity",
-      "text": "Schmerz geben in bewusstem Rahmen ist Intensität als Geschenk. Grenzen werden zu Toren."
-    },
-    "#B211": {
-      "label": "Bondage-erleben",
-      "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
-      "karte": "Letting Go",
-      "text": "Bondage erleben ist paradoxe Befreiung. Durch äußere Einschränkung findest du innere Freiheit."
-    },
-    "#B212": {
-      "label": "Bondage-geben",
-      "frage": "Wie wichtig ist Ihnen Bondage-geben?",
-      "karte": "The Creator",
-      "text": "Bondage geben ist kreatives Halten. Du erschaffst einen Raum, in dem der andere sich fallen lassen kann."
-    },
-    "#B213": {
-      "label": "Devotion",
-      "frage": "Wie wichtig ist Ihnen Devotion?",
-      "karte": "Trust",
-      "text": "Devotion ist tiefes Vertrauen in Hingabe. Du gibst dich einem größeren als dir selbst."
-    },
-    "#B214": {
-      "label": "Anbetung",
-      "frage": "Wie wichtig ist Ihnen Anbetung?",
-      "karte": "Inner Voice",
-      "text": "Anbetung folgt der inneren Stimme der Ehrfurcht. Das Göttliche im anderen zu sehen ist heilig."
-    },
-    "#B215": {
-      "label": "Demütig-sein",
-      "frage": "Wie wichtig ist Ihnen Demütig-sein?",
-      "karte": "No-Thingness",
-      "text": "Demut ist das Erkennen der eigenen Leere. Im Nichts liegst du zu Füßen des Ganzen."
-    },
-    "#B216": {
-      "label": "Dominieren",
-      "frage": "Wie wichtig ist Ihnen Dominieren?",
-      "karte": "The Master",
-      "text": "Dominieren ist Meisterschaft in Verantwortung. Der wahre Meister dient, indem er führt."
-    },
-    "#B217": {
-      "label": "Bestrafung-erhalten",
-      "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
-      "karte": "Transformation",
-      "text": "Bestrafung im bewussten Kontext ist Transformation. Das Ego stirbt ein wenig, damit du freier wirst."
-    },
-    "#B218": {
-      "label": "Bestrafen",
-      "frage": "Wie wichtig ist Ihnen Bestrafen?",
-      "karte": "Guidance",
-      "text": "Bestrafen als bewusste Praxis ist Führung. Der Meister korrigiert mit Liebe, nicht mit Wut."
-    },
-    "#B219": {
-      "label": "Service-geben",
-      "frage": "Wie wichtig ist Ihnen Service zu geben?",
-      "karte": "Compassion",
-      "text": "Service geben ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht."
-    },
-    "#B220": {
-      "label": "Service-empfangen",
-      "frage": "Wie wichtig ist Ihnen Service-empfangen?",
-      "karte": "Receptivity",
-      "text": "Service empfangen ist empfängliche Demut. Annehmen zu können ist eine eigene Kunst."
-    },
-    "#B221": {
-      "label": "Schmerzerleben",
-      "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
-      "karte": "Transformation",
-      "text": "Schmerz bewusst zu erleben ist ein Tor zur Transformation. In der Intensität liegt Befreiung."
-    },
-    "#B222": {
-      "label": "Schmerz-geben",
-      "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
-      "karte": "Trust",
-      "text": "Schmerz zu geben erfordert tiefes Vertrauen. Der bewusste Geber trägt Verantwortung wie ein Heiler."
-    },
-    "#B223": {
-      "label": "Bondage-erleben",
-      "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
-      "karte": "Surrender",
-      "text": "In der Hingabe an Fesseln liegt paradoxe Freiheit. Loslassen beginnt, wo Kontrolle aufhört."
-    },
-    "#B224": {
-      "label": "Zucker",
-      "frage": "Wie wichtig ist Ihnen Zuckerkonsum?",
-      "karte": "Moment to Moment",
-      "text": "Süße ist ein Genuss des Augenblicks. Die Frage ist: Genießt du bewusst oder flüchtest du?"
-    },
-    "#B225": {
-      "label": "Beschützt-werden",
-      "frage": "Wie wichtig ist Ihnen beschützt zu werden?",
-      "karte": "The Lovers",
-      "text": "Beschützt zu werden bedeutet, sich fallen lassen zu können. In der Geborgenheit liegt die Freiheit zur Verletzlichkeit."
-    },
-    "#B226": {
-      "label": "Vertrauen-empfangen",
-      "frage": "Wie wichtig ist Ihnen Vertrauen zu empfangen?",
-      "karte": "Trust",
-      "text": "Vertrauen empfangen ist eine heilige Verantwortung. Du wirst zum Hüter eines kostbaren Geschenks."
+      "label": "Selbstentfaltung",
+      "stufe": 4,
+      "stufe_label": "Identitäts-Bedürfnisse",
+      "stufe_farbe": "#F59E0B",
+      "stufe_organ": "Metakognition",
+      "faehigkeit": "Potenzialentwicklung",
+      "icon": "🌸",
+      "paarungs_archetypen": [
+        "duo",
+        "duo_flex",
+        "solopoly"
+      ],
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B018_00001_.png",
+          "karte": "Flowering",
+          "karte_de": "Erblühen",
+          "karte_key": "minor_arcana.rainbows.queen_flowering",
+          "karte_nummer": 13,
+          "tiage": "Deine Selbstentfaltung ist kein Projekt – sie ist deine Natur. Dein Nektar gehört nicht dir allein – er ist das Geschenk, das du der Welt mitgebracht hast.",
+          "reflexion": "Wachse ich in dieser Beziehung – oder schrumpfe ich?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es die Frucht des Geistes (Galater 5:22-23) – Liebe, Freude, Friede... nicht gemacht, sondern gewachsen.",
+            "buddhismus": "Im Buddhismus ist Bodhi (Erwachen) wie die Lotusblüte – aus dem Schlamm gewachsen, aber unberührt von ihm.",
+            "islam": "Im Sufismus ist Fana-fi-Allah (Auflösung in Gott) nicht Vernichtung, sondern höchste Entfaltung.",
+            "osho": "Eine Rose braucht keine Erlaubnis zum Blühen – sie blüht einfach.",
+            "moderne": "Entwicklungspsychologie zeigt: Menschen in unterstützenden Beziehungen entfalten sich weiter als allein. Wahre Liebe sagt nicht 'Bleib wie du bist', sondern 'Werde, wer du sein kannst.'"
+          }
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "B067.webp",
+          "karte": "Moment to Moment",
+          "karte_de": "Moment zu Moment",
+          "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
+          "karte_nummer": 2,
+          "tiage": "Im Miteinander entfaltet ihr euch, indem ihr jeden Moment vollständig lebt. Keine Agenda, keine Erwartung für später – nur dieser Augenblick.",
+          "reflexion": "Bin ich präsent – oder lebe ich in Erinnerungen und Plänen?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es 'Sorgt nicht für morgen' (Matthäus 6:34) – jeder Tag hat seine eigene Plage.",
+            "buddhismus": "Im Zen ist es das Koan: 'Wenn du gehst, geh. Wenn du sitzt, sitz. Aber wackel nicht!' Ganz im Moment sein.",
+            "islam": "Im Sufismus ist der Augenblick (Waqt) heilig – Vergangenheit ist Erinnerung, Zukunft ist Fantasie, nur jetzt ist real.",
+            "osho": "Das Leben ist keine Probe – jeder Moment ist die Aufführung.",
+            "moderne": "Achtsamkeitsforschung zeigt: Präsenz ist der stärkste Prädiktor für Beziehungszufriedenheit. Selbstentfaltung ist nicht ein Ziel in der Zukunft, sondern ein Prozess jetzt – in diesem Atemzug."
+          }
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "B069.webp",
+          "karte": "Ripeness",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.9_ripeness",
+          "karte_nummer": 9,
+          "tiage": "Deine Entfaltung kann nicht erzwungen werden. Sie geschieht, wenn die Zeit reif ist. Was in dir angelegt ist, wird sich zeigen – zur rechten Zeit, von selbst.",
+          "reflexion": "Ist es Zeit loszulassen – oder halte ich fest aus Angst?",
+          "traditionen": {
+            "christentum": "Im Christentum ist es Kairos (erfüllte Zeit) vs. Chronos (ablaufende Zeit) – der richtige Moment, göttlich bestimmt.",
+            "buddhismus": "Im Zen ist es 'Wenn du reif bist, fällt die Frucht.' Nicht zu früh pflücken, nicht zu spät.",
+            "islam": "Im Sufismus ist Baqa (Fortbestehen nach Fana) die reife Stufe – nicht mehr Kampf, sondern Sein.",
+            "osho": "Reife ist, wenn du aufhörst zu werden und anfängst zu sein.",
+            "moderne": "Entwicklungspsychologie zeigt: Übergänge sind oft schmerzhaft, aber notwendig. Selbstentfaltung kennt kein fixes Ziel – nur die Reife des Moments. Die Frage ist nicht 'Sind wir am Ziel?', sondern 'Sind wir reif für den nächsten Schritt?'"
+          }
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_16_00000.png",
+          "karte": "Rebirth",
+          "karte_de": "Wiedergeburt",
+          "karte_key": "minor_arcana.clouds.10_rebirth",
+          "karte_nummer": 10,
+          "tiage": "Selbstentfaltung endet nie – sie erneut sich. Jede vollständige Entfaltung trägt den Keim der nächsten Wiedergeburt. Das Kamel wird zum Löwen, der Löwe zum Kind. Wiedergeburt ist nicht einmalig – sie ist der Rhythmus des wachenden Lebens. Du entfaltest dich nicht ein Mal. Du entfaltest dich immer wieder neu.",
+          "reflexion": "Welche Version meiner selbst muss sterben, damit die nächste geboren werden kann?",
+          "traditionen": {
+            "christentum": "Jesus sagt zu Nikodemus: 'Es sei denn, dass jemand von neuem geboren werde, kann er das Reich Gottes nicht sehen.' (Joh 3:3) Wiedergeburt nicht als einmaliges Ereignis, sondern als Prinzip: immer wieder neu geboren werden.",
+            "buddhismus": "Rebirth ist im Buddhismus nicht nur ein kosmisches Prinzip – es ist ein psychologisches: In jedem Moment stirbt ein Selbst, und ein neues entsteht. Erwachen ist die Wiedergeburt aus dem Schlaf der Konditionierung.",
+            "islam": "Fana – die Vernichtung des Ego – und Baqa – das Bestehen in Gott – sind die Sufi-Stufen der spirituellen Wiedergeburt. Das alte Selbst stirbt, damit das wahre Selbst in Gott leben kann.",
+            "osho": "Dein Bewusstsein ist ein Spiegel. Du wirst jung, du wirst alt; du bist lebendig, du bist tot. All diese Zustände sind nur Spiegelungen. Nietzsche nannte es: Kamel, Löwe, Kind. Selbstentfaltung ist nie abgeschlossen – sie gebiert sich immer neu.",
+            "moderne": "Nietzsches drei Metamorphosen – Kamel, Löwe, Kind – beschreiben die Wiedergeburt des Geistes durch Transformation. Posttraumatisches Wachstum (Tedeschi/Calhoun) zeigt: Menschen nach Krisen berichten ein Gefühl des Neugeborenseins. Mezirows transformatives Lernen: jede tiefe Erkenntnis ist eine Wiedergeburt der Sichtweise."
+          }
+        }
+      }
     }
   }
 }

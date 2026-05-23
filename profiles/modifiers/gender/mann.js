@@ -52,13 +52,11 @@ TiageModifiers.Gender.Mann = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        stabilitaet_und_sicherheit: 2,
-        selbstbestimmung_und_unabhaengigkeit: 3,
-        fuehrung_geben: 2,
-
-        // Herausforderungen
-        vertrauen_schenken: -1
+        '#B5':  +6,   // Wirksamkeit — Handlungsfähigkeit und Leistung
+        '#B6':  +5,   // Freiheit — Autonomie und Unabhängigkeit
+        '#B10': +4,   // Anerkennung — Status und Respekt
+        '#B9':  -4,   // Gemeinschaft — weniger sozialer Fokus
+        '#B12': -3    // Verbundenheit — weniger emotionale Nähe
     },
 
     // ═══════════════════════════════════════════════════════════════════════

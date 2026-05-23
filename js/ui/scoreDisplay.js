@@ -302,26 +302,18 @@ function updateRFactorDisplay() {
     const rDisplay = document.getElementById('rFactorDisplay');
     if (!rDisplay) return;
 
-    // Stufen-Zuordnung: Bedürfnis-Kategorie → Stufen-Nr (1-4)
-    const STUFEN_MAP = {
-        '#K1':1,'#K2':1,'#K7':1,'#K18':1,
-        '#K5':2,'#K9':2,'#K11':2,'#K14':2,
-        '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
-        '#K4':4,'#K8':4,'#K12':4,'#K13':4
-    };
-
-    // Berechne Ø-Wert (0-100) pro Stufe — fällt auf Archetyp-Baseline zurück wenn keine manuellen Werte
+    // Berechne Ø-Wert (0-100) pro Stufe aus 16er-Katalog (bed.stufe direkt)
     function calcStufeAverages(flatNeeds, archetype) {
-        var beduerfnisse = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) || {};
+        var beduerfnisse = (window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse) || {};
         if (Object.keys(beduerfnisse).length === 0) return null;
         var sums = {1:0,2:0,3:0,4:0};
         var counts = {1:0,2:0,3:0,4:0};
         for (var needId in beduerfnisse) {
             if (!Object.prototype.hasOwnProperty.call(beduerfnisse, needId)) continue;
             var bed = beduerfnisse[needId];
-            if (!bed || !bed.kategorie) continue;
-            var stufe = STUFEN_MAP[bed.kategorie];
-            if (!stufe) continue;
+            if (!bed || !bed.stufe) continue;
+            var stufe = bed.stufe;
+            if (stufe < 1 || stufe > 4) continue;
             var val = (flatNeeds && flatNeeds[needId] !== undefined) ? flatNeeds[needId]
                     : (archetype && window.BaseArchetypProfile && window.BaseArchetypProfile[archetype]
                        ? window.BaseArchetypProfile[archetype].umfrageWerte[needId] : undefined);

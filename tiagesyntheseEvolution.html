@@ -37,6 +37,7 @@
     <script src="profiles/archetypen/ra.js"></script>
     <script src="profiles/archetypen/lat.js"></script>
     <script src="profiles/archetypen/aromantisch.js"></script>
+    <script src="profiles/archetypen/base-profiles.js"></script>
 
     <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
     <script src="profiles/definitions/beduerfnis-katalog.js"></script>
@@ -292,9 +293,7 @@
             }
         ];
 
-        // Stufen Map: Kategorie → Stufen-Nr (aus needsIntegration.js STUFEN_MAP)
-        // Dieselbe Quelle wie die GOD+FFH-Tabelle auf der 🎯-Seite:
-        // window.SingleProfil.beduerfnisse, window.DuoProfil.beduerfnisse, etc.
+        // Archetyp-Profil Mapping: bed.stufe wird direkt genutzt (16er-Modell)
         var ARCHETYPE_PROFIL_NAMES = {
             'single':      'SingleProfil',
             'duo':         'DuoProfil',
@@ -310,24 +309,80 @@
             var name = ARCHETYPE_PROFIL_NAMES[archetype];
             if (!name) return null;
             var profil = window[name];
-            return (profil && profil.beduerfnisse) ? profil.beduerfnisse : null;
+            // v5.0: profiles use umfrageWerte; fall back to beduerfnisse for legacy
+            return (profil && profil.umfrageWerte) ? profil.umfrageWerte
+                 : (profil && profil.beduerfnisse)  ? profil.beduerfnisse : null;
         }
 
-        var STUFEN_MAP = null;
+        // Image mapping: needId → array of filenames (variant 0=primary, 1=medium, 2=high)
+        var TOP5_IMAGE_MAP = {
+            '#B1':  ['B002.webp','B005.webp'],
+            '#B2':  ['B011.webp','B012.webp'],
+            '#B3':  ['B014.webp','B006.webp','B047.webp'],
+            '#B4':  ['B057.webp','B055.webp','B054.webp'],
+            '#B5':  ['B060.webp','B058.webp','B056.webp'],
+            '#B6':  ['B034.webp','B036.webp','B035.webp'],
+            '#B7':  ['B082.webp','B048.webp','B007.webp'],
+            '#B8':  ['B061.webp','B065.webp'],
+            '#B9':  ['B041.webp','B042.webp','B039.webp'],
+            '#B10': ['B017.webp','B044.webp','B045.webp'],
+            '#B11': ['B119.webp','B120.webp'],
+            '#B12': ['B021.webp','B020.webp','B028.webp'],
+            '#B13': ['B072.webp','B175.webp'],
+            '#B14': ['B062.webp','B070.webp','B063.webp'],
+            '#B15': ['B052.webp','B050.webp','B051.webp'],
+            '#B16': ['B064.webp','B067.webp','B069.webp']
+        };
+        var IMG_BASE = 'assets/images/beduerfnisse-v2/';
 
-        function getStufenMap() {
-            if (STUFEN_MAP) return STUFEN_MAP;
-            if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.STUFEN_MAP) {
-                STUFEN_MAP = TiageSynthesis.NeedsIntegration.STUFEN_MAP;
-            } else {
-                STUFEN_MAP = {
-                    '#K1':1,'#K2':1,'#K7':1,'#K18':1,
-                    '#K5':2,'#K9':2,'#K11':2,'#K14':2,
-                    '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
-                    '#K4':4,'#K8':4,'#K12':4,'#K13':4
-                };
-            }
-            return STUFEN_MAP;
+        function getImageVariant(needId, value) {
+            var variants = TOP5_IMAGE_MAP[needId];
+            if (!variants || variants.length === 0) return null;
+            var idx = value <= 33 ? 0 : value <= 66 ? 1 : 2;
+            return IMG_BASE + variants[Math.min(idx, variants.length - 1)];
+        }
+
+        function renderTop5Section(ichNeeds, ichArchetype) {
+            var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
+            if (!catalog) return '';
+            var STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            var baseNeeds = getArchetypeBaseNeeds(ichArchetype);
+
+            var needsList = Object.keys(catalog).map(function(needId) {
+                var val = ichNeeds[needId];
+                if (val === undefined && baseNeeds) val = baseNeeds[needId];
+                if (val === undefined) val = 50;
+                return { id: needId, label: catalog[needId].label, value: val,
+                         stufe: catalog[needId].stufe, icon: catalog[needId].icon };
+            });
+            needsList.sort(function(a, b) { return b.value - a.value; });
+            var top5 = needsList.slice(0, 5);
+
+            var cardsHtml = top5.map(function(n) {
+                var imgSrc = getImageVariant(n.id, n.value);
+                var color = STUFEN_FARBEN[n.stufe] || '#888';
+                var imgHtml = imgSrc
+                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" onclick="openLightbox(\'' + imgSrc + '\',\'' + n.label.replace(/'/g,"&#39;") + '\')" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;cursor:pointer;">'
+                    : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
+                return '<div style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;" onclick="showEvolutionNeedDetail(\'' + n.id + '\')">'
+                    + imgHtml
+                    + '<div style="padding:6px 8px;">'
+                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
+                    +   '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">' + Math.round(n.value) + '</div>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+
+            return '<div style="background:var(--bg-card);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--border);">'
+                + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">'
+                +   '<span style="font-size:20px;">⭐</span>'
+                +   '<div>'
+                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">Top-5 Bedürfnisse</div>'
+                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Deine stärksten Antriebe</div>'
+                +   '</div>'
+                + '</div>'
+                + '<div style="display:flex;gap:8px;">' + cardsHtml + '</div>'
+                + '</div>';
         }
 
         function toggleCard(stufeKey) {
@@ -347,35 +402,32 @@
         }
 
         /**
-         * Collect top-N needs for a given Stufe number from the catalog
+         * Collect top-N needs for a given Stufe number from the catalog (16er-Modell)
          */
         function getNeedsForStufe(stufeNr, ichArchetype, ichNeeds, topN) {
-            var katalog = window.BeduerfnisKatalog;
-            if (!katalog || !katalog.beduerfnisse) return [];
+            var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
+            if (!catalog) return [];
 
-            var stufenMap = getStufenMap();
             var baseNeeds = getArchetypeBaseNeeds(ichArchetype);
             var results = [];
 
             var lockedNeeds = (typeof TiageState !== 'undefined' && TiageState.get)
                 ? (TiageState.get('profileReview.ich.global.lockedNeeds') || {}) : {};
 
-            var beduerfnisse = katalog.beduerfnisse;
-            for (var needId in beduerfnisse) {
-                if (!beduerfnisse.hasOwnProperty(needId)) continue;
-                var bed = beduerfnisse[needId];
-                if (!bed.kategorie || stufenMap[bed.kategorie] !== stufeNr) continue;
+            for (var needId in catalog) {
+                if (!catalog.hasOwnProperty(needId)) continue;
+                var bed = catalog[needId];
+                if (!bed.stufe || bed.stufe !== stufeNr) continue;
 
                 var expectedValue = baseNeeds ? baseNeeds[needId] : undefined;
-                if (expectedValue === undefined) continue;
-
                 var actualValue = ichNeeds[needId];
-                var delta = (actualValue !== undefined) ? (actualValue - expectedValue) : null;
+                var displayExpected = expectedValue !== undefined ? expectedValue : (actualValue || 50);
+                var delta = (actualValue !== undefined && expectedValue !== undefined) ? (actualValue - expectedValue) : null;
 
                 results.push({
                     id: needId,
                     label: bed.label || needId,
-                    expected: expectedValue,
+                    expected: displayExpected,
                     actual: actualValue,
                     delta: delta,
                     isLocked: Object.prototype.hasOwnProperty.call(lockedNeeds, needId)
@@ -423,7 +475,7 @@
                     deltaHtml = '<span class="stufen-need-delta" style="color:rgba(255,255,255,0.2);">–</span>';
                 }
                 return '<div class="stufen-need-row">'
-                    + '<span class="stufen-need-label">' + n.label + '</span>'
+                    + '<span class="stufen-need-label" onclick="showEvolutionNeedDetail(\'' + n.id + '\')" style="cursor:pointer;" title="Details anzeigen">' + n.label + '</span>'
                     + '<div class="stufen-need-bar-wrap"><div class="stufen-need-bar-fill" style="width:' + barWidth + '%;background:' + color + ';opacity:0.6;"></div></div>'
                     + '<span class="stufen-need-val">' + Math.round(val) + (n.actual !== undefined && n.expected !== undefined ? '<br><span style="font-size:9px;color:rgba(255,255,255,0.22);">Ø ' + Math.round(n.expected) + '</span>' : '') + '</span>'
                     + deltaHtml
@@ -432,19 +484,62 @@
         }
 
         /**
-         * Berechnet den Ø-Bedürfniswert (0-100) für eine Stufe.
-         * Nutzt manuelle flatNeeds-Werte, fällt auf Archetyp-Baseline zurück wenn keine gesetzt.
+         * Zeigt Need-Detail-Popup für Evolution-Stufen-Karten
+         */
+        function showEvolutionNeedDetail(id) {
+            var existing = document.getElementById('evo-need-detail-popup');
+            if (existing) existing.remove();
+
+            var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(id) : null;
+            if (!need) return;
+
+            var STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+            var color = STUFEN_FARBEN[need.stufe] || '#888';
+
+            var popup = document.createElement('div');
+            popup.id = 'evo-need-detail-popup';
+            popup.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);';
+            popup.onclick = function(e) { if (e.target === popup) popup.remove(); };
+
+            var synonymeHtml = (need.synonyme && need.synonyme.length)
+                ? '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;">' + need.synonyme.join(' · ') + '</div>'
+                : '';
+            var strategieHtml = need.strategie
+                ? '<div style="font-size:12px;color:rgba(255,255,255,0.55);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);">' + need.strategie + '</div>'
+                : '';
+
+            popup.innerHTML = '<div style="background:#1a1a2e;border-radius:14px;max-width:420px;width:100%;padding:20px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);">'
+                + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">'
+                +   '<div>'
+                +     '<div style="font-size:11px;font-family:monospace;color:rgba(255,255,255,0.3);">' + (need.id || id) + '</div>'
+                +     '<div style="font-size:20px;font-weight:700;color:#fff;margin-top:3px;">' + need.label + '</div>'
+                +   '</div>'
+                +   '<button onclick="document.getElementById(\'evo-need-detail-popup\').remove()" style="background:none;border:none;font-size:22px;color:rgba(255,255,255,0.4);cursor:pointer;line-height:1;">×</button>'
+                + '</div>'
+                + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">'
+                +   (need.stufe ? '<span style="font-size:11px;font-weight:600;color:' + color + ';background:' + color + '22;padding:3px 8px;border-radius:5px;">' + STUFEN_LABELS[need.stufe] + '</span>' : '')
+                +   (need.faehigkeit ? '<span style="font-size:11px;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:5px;">' + need.faehigkeit + '</span>' : '')
+                + '</div>'
+                + synonymeHtml
+                + strategieHtml
+                + '</div>';
+
+            document.body.appendChild(popup);
+        }
+
+        /**
+         * Berechnet den Ø-Bedürfniswert (0-100) für eine Stufe (16er-Modell).
          */
         function calculateStufeAverage(stufeNr, needs, archetype) {
-            var stufenMap = getStufenMap();
-            var beduerfnisse = (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) || {};
-            if (Object.keys(beduerfnisse).length === 0) return null;
+            var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
+            if (!catalog || Object.keys(catalog).length === 0) return null;
             var baseNeeds = getArchetypeBaseNeeds(archetype);
             var sum = 0, count = 0;
-            for (var needId in beduerfnisse) {
-                if (!beduerfnisse.hasOwnProperty(needId)) continue;
-                var bed = beduerfnisse[needId];
-                if (!bed.kategorie || stufenMap[bed.kategorie] !== stufeNr) continue;
+            for (var needId in catalog) {
+                if (!catalog.hasOwnProperty(needId)) continue;
+                var bed = catalog[needId];
+                if (!bed.stufe || bed.stufe !== stufeNr) continue;
                 var value = (needs && needs[needId] !== undefined) ? needs[needId]
                           : (baseNeeds ? baseNeeds[needId] : undefined);
                 if (value !== undefined) { sum += value; count++; }
@@ -545,7 +640,10 @@
                     ? 'ICH × PARTNER — Ø-Bedürfnisstärke je Stufe (0–100)'
                     : 'DU — Bedürfnisstärke je Stufe (0–100)';
 
-                container.innerHTML = '<div class="synthese-section">'
+                var top5Html = renderTop5Section(ichNeeds, ichArchetype);
+
+                container.innerHTML = top5Html
+                    + '<div class="synthese-section">'
                     + '<div class="synthese-section-header">'
                     +   '<span class="synthese-section-icon">🧬</span>'
                     +   '<div>'
@@ -563,6 +661,29 @@
                 renderContent: renderContent,
                 pageTitle: 'synthese.pageTitleEvolution'
             });
+        });
+    </script>
+
+    <!-- Lightbox Overlay -->
+    <div id="tiage-lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);cursor:zoom-out;align-items:center;justify-content:center;">
+        <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;padding:4px 8px;opacity:0.8;">✕</button>
+        <img id="tiage-lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.8);">
+        <div id="tiage-lightbox-caption" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);font-size:13px;white-space:nowrap;"></div>
+    </div>
+    <script>
+        function openLightbox(src, caption) {
+            var lb = document.getElementById('tiage-lightbox');
+            document.getElementById('tiage-lightbox-img').src = src;
+            document.getElementById('tiage-lightbox-caption').textContent = caption || '';
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('tiage-lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
         });
     </script>
 </body>

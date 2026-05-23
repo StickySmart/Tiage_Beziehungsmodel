@@ -67,16 +67,10 @@ TiageModifiers.Gender.FrauNonbinaer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        authentizitaet: 5,                  // #B50 Eigener Weg jenseits binärer Normen
-        wachstum_und_sinn: 4,               // #B61 Persönliche Entwicklung
-        gemeinschaft: 4,                    // #B41 Oft stärkere Community-Anbindung
-        kommunikation: 4,                   // #B40 Bedarf an Kommunikation über Identität
-
-        // Herausforderungen
-        gesellschaft: -2,                   // #B19 Gesellschaftliche Herausforderungen (oft besser als AMAB-NB)
-        stabilitaet_und_sicherheit: -2,     // #B11 Zusätzliche psychische Belastung
-        rollenausdruck: -2                  // #B55 Navigation zwischen Sozialisation und Identität
+        '#B16': +6,   // Selbstentfaltung — authentischer Ausdruck
+        '#B6':  +5,   // Freiheit — Selbstbestimmung
+        '#B13': +5,   // Selbsterkenntnis — Identitätsarbeit
+        '#B11': +5    // Gerechtigkeit — Fairness und Akzeptanz
     },
 
     // ═══════════════════════════════════════════════════════════════════════

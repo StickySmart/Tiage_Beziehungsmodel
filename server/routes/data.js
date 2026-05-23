@@ -9,8 +9,11 @@
 
 import { Router } from 'express';
 import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, URL } from 'url';
 import { dirname, join } from 'path';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,7 +22,17 @@ const __dirname = dirname(__filename);
 const PROJECT_ROOT = join(__dirname, '..', '..');
 const DATA_PATH = join(PROJECT_ROOT, 'profiles', 'data');
 const PROFILES_PATH = join(PROJECT_ROOT, 'profiles', 'archetypen');
-const DEFINITIONS_PATH = join(PROJECT_ROOT, 'profiles', 'definitions');
+
+const ARCHETYPE_FILES = {
+    'single':      'single',
+    'duo':         'duo',
+    'duo_flex':    'duo-flex',
+    'lat':         'lat',
+    'solopoly':    'solopoly',
+    'polyamor':    'polyamor',
+    'ra':          'ra',
+    'aromantisch': 'aromantisch'
+};
 
 const router = Router();
 
@@ -47,19 +60,16 @@ router.get('/needs', async (req, res, next) => {
             needsCache = loadJson(join(DATA_PATH, 'beduerfnis-katalog.json'));
         }
 
-        // Nur Bedürfnisse (B-Prefix), keine Metadaten
-        const needs = {};
-        for (const [key, value] of Object.entries(needsCache)) {
-            if (key.startsWith('B') || key.startsWith('#B')) {
-                needs[key] = value;
-            }
-        }
+        // v4.0: Bedürfnisse liegen unter "beduerfnisse" (verschachtelt)
+        const needs = needsCache.beduerfnisse || needsCache;
 
         res.json({
             success: true,
             result: {
                 needs,
-                count: Object.keys(needs).length  // 224
+                count: Object.keys(needs).length,
+                version: needsCache.version,
+                stufen: needsCache.stufen
             }
         });
     } catch (error) {
@@ -91,32 +101,18 @@ router.get('/archetypes', async (req, res, next) => {
 
 /**
  * GET /api/data/taxonomy
- * Liefert Perspektiven, Dimensionen, Kategorien
+ * Liefert Stufen und Metadaten aus dem Bedürfnis-Katalog
  */
 router.get('/taxonomy', async (req, res, next) => {
     try {
         if (!taxonomyCache) {
-            // taxonomie.js ist ein ES-Modul, wir müssen es anders laden
-            // Für jetzt: Statische Daten basierend auf SSOT
+            if (!needsCache) {
+                needsCache = loadJson(join(DATA_PATH, 'beduerfnis-katalog.json'));
+            }
             taxonomyCache = {
-                perspektiven: [
-                    { id: 'P1', name: 'Selbst' },
-                    { id: 'P2', name: 'Beziehung' },
-                    { id: 'P3', name: 'Gesellschaft' },
-                    { id: 'P4', name: 'Transzendenz' }
-                ],
-                dimensionen: [
-                    { id: 'D1', kurzform: 'A', name: 'Autonomie' },
-                    { id: 'D2', kurzform: 'B', name: 'Bindung' },
-                    { id: 'D3', kurzform: 'C', name: 'Kontrolle' },
-                    { id: 'D4', kurzform: 'D', name: 'Dynamik' },
-                    { id: 'D5', kurzform: 'E', name: 'Emotion' },
-                    { id: 'D6', kurzform: 'F', name: 'Freiheit' }
-                ],
-                kategorien: Array.from({ length: 18 }, (_, i) => ({
-                    id: `K${i + 1}`,
-                    name: `Kategorie ${i + 1}`
-                }))
+                version: needsCache.version,
+                modell: needsCache.modell,
+                stufen: needsCache.stufen || {}
             };
         }
 
@@ -143,21 +139,21 @@ router.get('/archetype-profile/:name', async (req, res, next) => {
             'solopoly', 'polyamor', 'ra', 'aromantisch'
         ];
 
-        if (!validArchetypes.includes(name)) {
+        if (!ARCHETYPE_FILES[name]) {
             return res.status(400).json({
                 error: `Invalid archetype: ${name}`,
-                valid: validArchetypes
+                valid: Object.keys(ARCHETYPE_FILES)
             });
         }
 
         if (!archetypeProfilesCache[name]) {
-            // JS-Dateien können nicht direkt geladen werden
-            // TODO: Migration zu JSON oder dynamischer Import
-            // Für jetzt: Placeholder
+            const filename = ARCHETYPE_FILES[name];
+            const profil = require(join(PROFILES_PATH, `${filename}.js`));
             archetypeProfilesCache[name] = {
                 name,
-                needs: {},  // Wird später implementiert
-                message: 'Archetyp-Profile werden migriert'
+                label: profil.name,
+                beschreibung: profil.beschreibung,
+                needs: profil.umfrageWerte || {}
             };
         }
 

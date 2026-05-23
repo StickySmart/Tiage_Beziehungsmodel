@@ -68,17 +68,10 @@ TiageModifiers.Gender.MannTrans = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        emotionale_sicherheit: 3,           // #B136 Emotionale Kontrolle
-        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 Selbstständigkeit
-        authentizitaet: 5,                  // #B50 Durch Transition erreicht
-        kommunikation: 3,                   // #B40 Verbessert durch Transition
-        wachstum_und_sinn: 4,               // #B61 Resilienz durch Herausforderungen
-        emotionale_tiefe: 3,                // #B71 Beziehungstiefe
-
-        // Herausforderungen
-        gesellschaft: -2,                   // #B19 Gesellschaftlicher Druck
-        akzeptanz_und_empathie: 2           // #B25 Unterstützungsbedarf
+        '#B15': +10,  // Integrität — Authentizität
+        '#B6':  +10,  // Freiheit — erkämpfte Selbstbestimmung
+        '#B13': +8,   // Selbsterkenntnis — Identitätsprozess
+        '#B11': +8    // Gerechtigkeit — Respekt und Akzeptanz
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -1,5 +1,5 @@
 /**
- * TIAGE BEDÜRFNIS-KATALOG WRAPPER v4.0
+ * TIAGE BEDÜRFNIS-KATALOG WRAPPER v5.0
  *
  * SSOT: Lädt beduerfnis-katalog.json direkt - KEINE separate IDS-Datei mehr!
  *
@@ -7,13 +7,13 @@
  * - Lädt die JSON-Datei einmalig
  * - Generiert Lookup-Tabellen zur Laufzeit
  * - Stellt dieselbe API wie das alte BeduerfnisIds bereit
- * - Ist vollständig abwärtskompatibel
  *
- * Struktur:
- * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
- * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
- * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
- * #B1-#B224 → 224 Bedürfnisse   (SSOT: beduerfnis-katalog.json)
+ * Struktur v5 (Volker-Modell):
+ * #B1-#B16  → 16 Grundbedürfnisse in 4 Stufen (SSOT: beduerfnis-katalog.json)
+ *   Stufe 1: Wohlbefinden, Sicherheit, Leichtigkeit, Orientierung
+ *   Stufe 2: Wirksamkeit, Freiheit, Intensität, Entwicklung
+ *   Stufe 3: Gemeinschaft, Anerkennung, Gerechtigkeit, Verbundenheit
+ *   Stufe 4: Selbsterkenntnis, Sinn, Integrität, Selbstentfaltung
  */
 
 const BeduerfnisIds = {
@@ -133,18 +133,20 @@ const BeduerfnisIds = {
             if (!need.label) return;
 
             self.beduerfnisse[id] = {
-                key: self._labelToKey(need.label),
-                kategorie: need.kategorie,
-                label: need.label,
-                // Zusätzliche Felder aus dem Katalog
-                frageTyp: need.frageTyp,
-                frage: need.frage,
-                nuancen: need.nuancen,
-                hauptbeduerfnis: need.hauptbeduerfnis,
-                kontext: need.kontext,
-                dimension: need.dimension,
-                sekundaer: need.sekundaer,
-                skala: need.skala
+                key:          need.key || self._labelToKey(need.label),
+                label:        need.label,
+                faehigkeit:   need.faehigkeit  || null,
+                stufe:        need.stufe        || null,
+                icon:         need.icon         || null,
+                synonyme:     need.synonyme     || [],
+                strategie:    need.strategie    || null,
+                // Rückwärtskompatibilität: kategorie = erster alt-Eintrag
+                kategorie:    need.kategorie    || (need.altKategorien && need.altKategorien[0]) || null,
+                altKategorien:need.altKategorien|| [],
+                // Legacy-Felder (werden nicht mehr befüllt, bleiben null)
+                frageTyp: null, frage: null, nuancen: null,
+                hauptbeduerfnis: null, kontext: null, dimension: null,
+                sekundaer: null, skala: null
             };
         });
 

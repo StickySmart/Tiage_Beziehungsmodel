@@ -1591,7 +1591,7 @@ var TiageLocale_FR = {
         oshoTopNeeds: '🔥 Vos Top {count} besoins communs',
         oshoBasedOn: 'Basé sur la correspondance de vos profils de besoins',
         oshoNeedAlt: 'Besoin {label}',
-        oshoFooter: 'Contenu inspiré par le Tarot Osho Zen de Ma Deva Padma (St. Martins Press), basé sur les enseignements d\'Osho. Tous droits réservés aux détenteurs respectifs.',
+        oshoFooter: 'Cette synthèse combine des concepts du modèle RTI, du modèle à 4 niveaux de Volker Schmidt, des enseignements d\'Osho et de la philosophie de la qualité de Robert M. Pirsig. Tous droits réservés aux détenteurs respectifs.',
         dynamikBoth: 'Votre dynamique vit de {dynamik} – le potentiel de croissance se trouve dans {wachstum}.',
         dynamikOnly: 'Votre dynamique se déploie à travers {dynamik}.',
         growthOnly: 'Le potentiel de croissance se manifeste dans {wachstum}.'

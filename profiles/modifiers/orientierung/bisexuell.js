@@ -68,21 +68,11 @@ TiageModifiers.Orientierung.Bisexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // R1 ORIENTIERUNG - sexuelle Offenheit
-        sexuelle_experimentierfreude: 4,     // #B175 (R1) Breiteres sexuelles Spektrum
-        koerperliche_naehe: 2,               // #B160 (R1) Offenheit für Körperkontakt
-
-        // R4 GESCHLECHT/IDENTITÄT
-        akzeptanz_und_empathie: 3,           // #B25 (R4) Verständnis für Vielfalt
-
-        // Weitere Modifikatoren
-        offenheit_fuer_neues: 5,             // #B189 Anziehungsflexibilität & Vielfalt
-        sexualitaet: 5,                      // #B172 Breiteres Spektrum
-        empathie: 4,                         // #B28 Verständnis für verschiedene Orientierungen
-
-        // Herausforderungen
-        gesellschaft: -3,                    // #B19 Bi-Erasure & Außenseiterrolle
-        integritaet: -2                      // #B52 Identitätsdruck durch Umfeld
+        '#B11': +8,   // Gerechtigkeit — oft von beiden Seiten hinterfragt
+        '#B6':  +10,  // Freiheit — Offenheit und Selbstbestimmung
+        '#B13': +5,   // Selbsterkenntnis — Identitätsreflexion
+        '#B8':  +8,   // Entwicklung — Exploration und Entdeckung
+        '#B16': +5    // Selbstentfaltung — authentischer Ausdruck
     },
 
     // ═══════════════════════════════════════════════════════════════════════

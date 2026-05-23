@@ -60,26 +60,11 @@ TiageModifiers.Orientierung.Pansexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // R1 ORIENTIERUNG - maximale sexuelle Offenheit
-        sexuelle_experimentierfreude: 6,     // #B175 (R1) Geschlechtsunabhängige Experimentierfreude
-        koerperliche_naehe: 3,               // #B160 (R1) Offenheit für Körperkontakt
-        intimitaet: 3,                       // #B20  (R1) Tiefe Intimität
-
-        // R2 ARCHETYP - Selbstbestimmung
-        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 (R2) Person vor Kategorie
-
-        // R4 GESCHLECHT/IDENTITÄT
-        akzeptanz_und_empathie: 4,           // #B25 (R4) Verständnis für Vielfalt
-        selbst_ausdruck: 3,                  // #B67 (R4) Freier Ausdruck
-
-        // Weitere Modifikatoren
-        offenheit_fuer_neues: 8,             // #B189 Maximale Anziehungsflexibilität
-        sexualitaet: 6,                      // #B172 Geschlechtsunabhängige Anziehung
-        empathie: 6,                         // #B28 Tiefes Verständnis für Vielfalt
-
-        // Herausforderungen (geringer als bei Bisexuellen)
-        gesellschaft: -2,                    // #B19 Weniger Bi-Erasure, aber Erklärungsbedarf
-        integritaet: -1                      // #B52 Selbst-Definition außerhalb binärer Normen
+        '#B6':  +10,  // Freiheit — geschlechtsunabhängige Offenheit
+        '#B11': +8,   // Gerechtigkeit — Fairness und Akzeptanz
+        '#B12': +5,   // Verbundenheit — tiefe Intimität
+        '#B8':  +6,   // Entwicklung — Exploration
+        '#B16': +5    // Selbstentfaltung — authentischer Ausdruck
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -53,6 +53,7 @@ const DimensionKategorieFilter = (function() {
             beschreibung: 'Orientierung - Existenz, Zuneigung, Freiheit, Identität, Muße, Intimität',
             sourceLabel: 'Orientierung',
             kategorienKeys: ['existenz', 'zuneigung', 'freiheit', 'teilnahme', 'musse', 'identitaet', 'intimitaet_romantik'],
+            needIds: ['#B1', '#B3', '#B7', '#B12'],
             taxonomieDimensionen: ['#D3'] // Nähe-Distanz
         },
         'R2': {
@@ -65,6 +66,7 @@ const DimensionKategorieFilter = (function() {
             beschreibung: 'Archetyp - Werte, Soziales, Praktisches Leben',
             sourceLabel: 'Archetyp',
             kategorienKeys: ['werte_haltungen', 'soziales_leben', 'praktisches_leben'],
+            needIds: ['#B2', '#B8', '#B9', '#B14'],
             taxonomieDimensionen: ['#D1', '#D2'] // Beziehungsphilosophie, Werte-Alignment
         },
         'R3': {
@@ -77,6 +79,7 @@ const DimensionKategorieFilter = (function() {
             beschreibung: 'Dominanz - Kontrolle, Hingabe, Macht',
             sourceLabel: 'Dominanz',
             kategorienKeys: ['dynamik', 'sicherheit'],
+            needIds: ['#B4', '#B5', '#B6', '#B11'],
             taxonomieDimensionen: ['#D4'] // Autonomie
         },
         'R4': {
@@ -89,6 +92,7 @@ const DimensionKategorieFilter = (function() {
             beschreibung: 'Geschlecht - Authentizität, Harmonie, Spiritualität',
             sourceLabel: 'Geschlecht',
             kategorienKeys: ['verstaendnis', 'erschaffen', 'verbundenheit', 'beziehungsform', 'spiritualitaet', 'kommunikation_stil'],
+            needIds: ['#B10', '#B13', '#B15', '#B16'],
             taxonomieDimensionen: ['#D5', '#D6'] // Kommunikation, Soziale-Kompatibilität
         }
     };

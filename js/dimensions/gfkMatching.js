@@ -387,8 +387,7 @@ var TiageGfkMatching = (function() {
 
         if (!container && !mobileContainer) return;
 
-        if (container) container.style.display = 'block';
-        if (mobileContainer) mobileContainer.style.display = 'block';
+        // Container bleibt ausgeblendet — Score ist via Score-Circle erreichbar
 
         var scoreColor = matching.level === 'hoch' ? '#22c55e' :
                         matching.level === 'mittel' ? '#eab308' : '#ef4444';

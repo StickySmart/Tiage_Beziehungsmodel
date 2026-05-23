@@ -67,16 +67,10 @@ TiageModifiers.Gender.MannNonbinaer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        authentizitaet: 5,                  // #B50 Eigener Weg jenseits binärer Normen
-        wachstum_und_sinn: 4,               // #B61 Persönliche Entwicklung
-        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 Autonomie in Identitätsausdruck
-        kommunikation: 4,                   // #B40 Bedarf an Kommunikation über Identität
-
-        // Herausforderungen
-        gesellschaft: -3,                   // #B19 Gesellschaftliche Sichtbarkeit als AMAB-NB
-        stabilitaet_und_sicherheit: -2,     // #B11 Zusätzliche psychische Belastung
-        vertrauen_schenken: -2              // #B83 Erfahrungen mit Ablehnung können Vertrauen beeinflussen
+        '#B16': +6,   // Selbstentfaltung — authentischer Ausdruck
+        '#B6':  +5,   // Freiheit — Selbstbestimmung
+        '#B13': +5,   // Selbsterkenntnis — Identitätsarbeit
+        '#B11': +5    // Gerechtigkeit — Fairness und Akzeptanz
     },
 
     // ═══════════════════════════════════════════════════════════════════════

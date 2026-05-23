@@ -66,16 +66,14 @@ TiageModifiers.Dominanz.Dominant = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
-        fuehrung_geben: 5,                  // #B76 Kernmerkmal
-        verantwortung_uebernehmen: 4,       // #B84 Für Partner sorgen
-        selbstbestimmung_und_unabhaengigkeit: 5, // #B34 Klare Entscheidungen
-        empathie: 3,                        // #B28 Wider Erwarten hoch (Forschung)
-        struktur: 4,                        // #B198 Klare Rahmen setzen
-
-        // Herausforderungen
-        kontrolle_ausueben: -2,             // #B74 Kann zu rigide werden
-        gegenseitigkeit: -1                 // #B43 Kompromissbereitschaft schwieriger
+        '#B5':  +15,  // Wirksamkeit — Kern der Dominanz
+        '#B6':  +12,  // Freiheit — Selbstbestimmung
+        '#B7':  +10,  // Intensität — Spannung und Kraft
+        '#B10': +12,  // Anerkennung — braucht Respekt und Bedeutung
+        '#B15': +8,   // Integrität — trägt Verantwortung
+        '#B2':  -8,   // Sicherheit — gibt Sicherheit, braucht sie weniger
+        '#B12': -5,   // Verbundenheit — weniger Nähe-Bedürfnis
+        '#B3':  -5    // Leichtigkeit — mehr Spannung als Entspannung
     },
 
     // ═══════════════════════════════════════════════════════════════════════

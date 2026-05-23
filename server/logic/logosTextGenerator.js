@@ -223,44 +223,116 @@ export function generateResonanzText(R, seed) {
     return fillVariables(selectPhrase(phrases, seed), vars);
 }
 
+const FACTOR_LABELS = {
+    archetyp:     'Beziehungsmodell',
+    orientierung: 'Orientierung',
+    dominanz:     'Dynamik',
+    geschlecht:   'Identität'
+};
+
+const DIM_LABELS = {
+    leben:       'Leben/Körper',
+    philosophie: 'Philosophie',
+    dynamik:     'Dynamik',
+    identitaet:  'Identität'
+};
+
+function scoreLabel(score) {
+    if (score >= 85) return 'sehr hoch';
+    if (score >= 70) return 'hoch';
+    if (score >= 55) return 'mittel';
+    if (score >= 40) return 'niedrig';
+    return 'sehr niedrig';
+}
+
 /**
  * Haupt-Generierungsfunktion
  */
 export function generate(synthesisResult, options = {}) {
     console.log('[LogosTextGenerator] generate() aufgerufen');
 
-    const seed = generateHash(
-        synthesisResult?.ich?.archetyp || 'duo',
-        synthesisResult?.partner?.archetyp || 'duo',
-        synthesisResult?.ich?.dominanz || 'ausgeglichen',
-        synthesisResult?.partner?.dominanz || 'ausgeglichen',
-        synthesisResult?.score || 50
+    const score       = synthesisResult?.score || 50;
+    const breakdown   = synthesisResult?.breakdown || {};
+    const resonanz    = synthesisResult?.resonanz || {};
+    const dimensional = resonanz.dimensional || {};
+    const beduerfnisse= synthesisResult?.beduerfnisse || {};
+    const logos       = synthesisResult?.logos || {};
+    const pathos      = synthesisResult?.pathos || {};
+    const v31         = synthesisResult?.meta?.v31Resonanz || {};
+    const arch1       = v31.person1?.archetyp || 'duo';
+    const arch2       = v31.person2?.archetyp || 'duo';
+
+    const seed     = generateHash(arch1, arch2, 'ausgeglichen', 'ausgeglichen', score);
+    const tonality = getTonality(score);
+
+    const parts = [];
+
+    // 1. Eröffnung
+    parts.push(selectPhrase(synthesePhrases.openings[tonality], seed));
+
+    // 2. Gesamt-Score + Logos/Pathos
+    parts.push(
+        `Gesamt-Score: ${score} Punkte (Logos ${logos.score ?? '–'}, Pathos ${pathos.score ?? '–'}).`
     );
 
-    const tonality = getTonality(synthesisResult?.score || 50);
+    // 3. Faktor-Analyse (nur Ausreißer nach oben/unten)
+    const factorLines = [];
+    for (const [factor, data] of Object.entries(breakdown)) {
+        if (!data?.score) continue;
+        const label = FACTOR_LABELS[factor] || factor;
+        factorLines.push(`${label}: ${data.score} (${scoreLabel(data.score)})`);
+    }
+    if (factorLines.length > 0) {
+        parts.push('Faktoren — ' + factorLines.join(' · ') + '.');
+    }
 
-    const opening = fillVariables(
-        selectPhrase(synthesePhrases.openings[tonality], seed),
-        { ich: 'Ich', partner: 'Partner' }
-    );
+    // 4. Dimensionale R-Faktoren
+    const dimLines = [];
+    for (const [dim, data] of Object.entries(dimensional)) {
+        if (!data?.rValue) continue;
+        const label = DIM_LABELS[dim] || dim;
+        const status = data.status === 'resonanz' ? '↑' : data.status === 'dissonanz' ? '↓' : '=';
+        dimLines.push(`${label} R=${data.rValue}${status}`);
+    }
+    if (dimLines.length > 0) {
+        parts.push('Resonanz-Faktoren: ' + dimLines.join(' · ') + '.');
+    }
 
-    const resonanzText = generateResonanzText(
-        synthesisResult?.resonanz?.coefficient,
-        seed
-    );
+    // 5. Bedürfnis-Bilanz
+    const gemCount  = (beduerfnisse.gemeinsam || []).length;
+    const diffCount = (beduerfnisse.unterschiedlich || []).length;
+    if (gemCount > 0 || diffCount > 0) {
+        parts.push(
+            `Bedürfnis-Analyse: ${gemCount} übereinstimmende, ${diffCount} divergente Bereiche.`
+        );
+    }
 
-    // Analyse-Daten
-    const analysis = {
-        tonality,
-        breakdown: synthesisResult?.breakdown || {},
-        resonanz: synthesisResult?.resonanz || {}
-    };
+    // 6. Empfehlung
+    if (score >= 70) {
+        parts.push('Empfehlung: Solide Basis – Kommunikation über Unterschiede vertiefen.');
+    } else if (score >= 45) {
+        parts.push('Empfehlung: Potenzial vorhanden – gezielte Gespräche über Kernbedürfnisse.');
+    } else {
+        parts.push('Empfehlung: Grundlegende Wertearbeit empfohlen bevor Bindungstiefe entsteht.');
+    }
+
+    const resonanzText = generateResonanzText(resonanz.coefficient, seed);
+    const text = parts.join(' ') + (resonanzText ? ' ' + resonanzText : '');
 
     return {
-        text: opening + (resonanzText ? ' ' + resonanzText : ''),
-        analysis,
-        opening,
-        resonanz: resonanzText
+        text,
+        tonality,
+        opening: parts[0] || '',
+        resonanz: resonanzText,
+        paragraphs: parts,
+        analysis: {
+            tonality,
+            score,
+            logos: logos.score,
+            pathos: pathos.score,
+            breakdown,
+            resonanz: { coefficient: resonanz.coefficient, dimensional }
+        }
     };
 }
 

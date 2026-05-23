@@ -68,27 +68,11 @@ TiageModifiers.Orientierung.Queer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // R1 ORIENTIERUNG - fluide Sexualität
-        sexuelle_experimentierfreude: 5,     // #B175 (R1) Fluide, offene Sexualität
-        koerperliche_resonanz: 3,            // #B227 (R1) Körperliche Resonanz jenseits Normen
-
-        // R2 ARCHETYP - radikale Selbstbestimmung
-        selbstbestimmung_und_unabhaengigkeit: 7, // #B34 (R2) Bewusste Selbst-Definition
-
-        // R4 GESCHLECHT/IDENTITÄT - starke Identität
-        authentizitaet: 5,                   // #B50 (R4) Radikal authentisch
-        selbst_ausdruck: 5,                  // #B67 (R4) Starke Ablehnung von Kategorien
-        akzeptanz_und_empathie: 4,           // #B25 (R4) Verständnis für Vielfalt
-        gesehen_und_verstanden_werden: 3,    // #B31 (R4) Bedürfnis gesehen zu werden
-
-        // Weitere Modifikatoren
-        offenheit_fuer_neues: 10,            // #B189 Maximale Flexibilität und Fluidität
-        empathie: 5,                         // #B28 Verständnis für Vielfalt
-        sexualitaet: 4,                      // #B172 Offene, fluide Anziehung
-
-        // Herausforderungen
-        gesellschaft: -4,                    // #B19 Konfrontation mit heteronormativen Strukturen
-        integritaet: -2                      // #B52 Konstanter Erklärungsdruck
+        '#B6':  +12,  // Freiheit — radikale Selbstbestimmung
+        '#B15': +10,  // Integrität — radikal authentisch
+        '#B16': +8,   // Selbstentfaltung — Ablehnung von Kategorien
+        '#B11': +8,   // Gerechtigkeit — Fairness und Sichtbarkeit
+        '#B8':  +8    // Entwicklung — maximale Flexibilität
     },
 
     // ═══════════════════════════════════════════════════════════════════════
