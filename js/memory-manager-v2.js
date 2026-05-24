@@ -225,7 +225,7 @@ const MemoryManagerV2 = (function() {
             if (archNeeds && Object.keys(archNeeds).length > 0) {
                 data.beduerfnisse = archNeeds;
             }
-            const locked = TiageState.get ? (TiageState.get('profileReview.ich.lockedNeeds') || {}) : {};
+            const locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
             if (locked && Object.keys(locked).length > 0) {
                 data.lockedNeeds = locked;
             }
@@ -263,8 +263,8 @@ const MemoryManagerV2 = (function() {
             });
             if (Object.keys(allFlatNeeds).length > 0) data.beduerfnisse = allFlatNeeds;
 
-            const locked = TiageState.get ? (TiageState.get('profileReview.ich.lockedNeeds') || {}) : {};
-            data.lockedNeeds = locked;
+            const locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
+            data.lockedNeeds = locked || {};
         }
 
         return data;
@@ -631,7 +631,7 @@ const MemoryManagerV2 = (function() {
                     icon: ARCHETYPE_ICONS[archetyp],
                     isEmpty: !data,
                     data: data,
-                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds) : '',
+                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds || (TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {})) : '',
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 };
             });
