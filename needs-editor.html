@@ -410,18 +410,17 @@
             font-weight: 600;
         }
 
-        /* Eigenschaften-Modus: nur Eigenschaften-Toggles sichtbar */
-        /* .flat-needs-header wird NICHT versteckt, da .eigenschaften-section darin lebt */
-        body.eigenschaften-modus .flat-needs-list,
-        body.eigenschaften-modus .flat-needs-subtitle,
-        body.eigenschaften-modus .flat-needs-sort-info,
-        body.eigenschaften-modus .flat-needs-selection-bar,
-        body.eigenschaften-modus #activeFilterCardContainer,
-        body.eigenschaften-modus .profile-review-search-container,
-        body.eigenschaften-modus .resonanz-profile-header-card {
+        /* Needs16-Modus: nur 16 Grundbedürfnisse sichtbar */
+        body.needs16-modus .flat-needs-list,
+        body.needs16-modus .flat-needs-subtitle,
+        body.needs16-modus .flat-needs-sort-info,
+        body.needs16-modus .flat-needs-selection-bar,
+        body.needs16-modus #activeFilterCardContainer,
+        body.needs16-modus .profile-review-search-container,
+        body.needs16-modus .resonanz-profile-header-card {
             display: none !important;
         }
-        body.eigenschaften-modus .eigenschaften-section {
+        body.needs16-modus .needs16-section {
             display: block !important;
         }
 
@@ -813,7 +812,7 @@
                 const rows = [];
                 rows.push({ label: `Basis (${archetypForStats || 'Profil'})`, val: basisWert, sign: false, color: '#2d6a4f' });
                 if (g) rows.push({ label: 'G — Geschlecht', val: g, sign: true, color: '#F4A261' });
-                if (o) rows.push({ label: 'O — Orientierung', val: o, sign: true, color: '#E63946' });
+                if (o) rows.push({ label: 'O — Attraktion', val: o, sign: true, color: '#E63946' });
                 if (d) rows.push({ label: 'D — Dominanz', val: d, sign: true, color: '#8B5CF6' });
                 if (fi) rows.push({ label: 'Fi — Fit', val: fi, sign: true, color: '#2ECC71' });
                 if (fu) rows.push({ label: 'Fu — Fucked up', val: fu, sign: true, color: '#E74C3C' });
@@ -968,11 +967,6 @@
                     console.warn('[NeedsEditor] BeduerfnisIds konnte nicht geladen werden:', e);
                 }
             }
-            // Eigenschaften-Daten vorladen
-            if (typeof window.loadEigenschaftenData === 'function') {
-                await window.loadEigenschaftenData();
-            }
-
             initializeNeedsEditor();
 
             // Workflow Guide initialisieren
@@ -1085,15 +1079,15 @@
                 }, 300);
             }
 
-            // Eigenschaften-Modus: nur Eigenschaften-Toggles zeigen
-            var eigenschaftenParam = urlParams.get('eigenschaften');
-            if (eigenschaftenParam === '1') {
-                window._eigenschaftenModeActive = true;
-                document.body.classList.add('eigenschaften-modus');
+            // Needs16-Modus: nur 16 Grundbedürfnisse zeigen
+            var needs16Param = urlParams.get('needs16');
+            if (needs16Param === '1') {
+                window._needs16ModeActive = true;
+                document.body.classList.add('needs16-modus');
                 document.addEventListener('flatNeedsRendered', function() {
-                    document.body.classList.add('eigenschaften-modus');
-                    var firstProp = document.querySelector('.eigenschaften-section');
-                    if (firstProp) firstProp.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.body.classList.add('needs16-modus');
+                    var firstSection = document.querySelector('.needs16-section');
+                    if (firstSection) firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             }
 
@@ -1945,7 +1939,10 @@
             // Stufen-Token aus Bedürfnis (v4.0: direkt über need.stufe)
             var needRaw = window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse[needId];
             var stufeNr = needRaw ? (needRaw.stufe || STUFEN_MAP_EDITOR[needRaw.kategorie || (needRaw.altKategorien && needRaw.altKategorien[0])]) : null;
-            if (stufeNr && STUFEN_LABELS_EDITOR[stufeNr]) texts.push(STUFEN_LABELS_EDITOR[stufeNr]);
+            if (stufeNr) {
+                if (STUFEN_LABELS_EDITOR[stufeNr]) texts.push(STUFEN_LABELS_EDITOR[stufeNr]);
+                texts.push('S' + stufeNr); // Token für S1/S2/S3/S4 Filter
+            }
 
             return texts.join(' ').toLowerCase();
         }
@@ -2036,11 +2033,9 @@
             // FIX v1.8.998: Für R1-R4/P1-P4 nur exakte ID matchen (nicht Label als Substring)
             // "leben" soll nicht "Lebensplanung", "Zusammenleben" etc. matchen
             function matchesSingleFilter(searchableString, f) {
-                if (f.type === 'dimension' || f.type === 'perspektive') {
-                    // Strukturierte Filter: Nur exakte ID matchen (z.B. " r1 " im Text)
-                    // getSearchableTextsForNeed() fügt "R1" als separates Token hinzu
+                if (f.type === 'dimension' || f.type === 'perspektive' || f.type === 'stufe') {
+                    // Strukturierte Filter: exakte ID als eigenständiges Token matchen
                     var idLower = f.id.toLowerCase();
-                    // Wortgrenzen prüfen: ID muss als eigenständiges Token vorkommen
                     var regex = new RegExp('(^|\\s|,)' + idLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(\\s|,|$)');
                     return regex.test(searchableString);
                 }
@@ -2079,8 +2074,8 @@
             updateFilteredCountDisplay(totalMatches, allNeedItems.length, filters.length > 0);
 
             // Eigenschaften-Section ausblenden wenn Filter aktiv (gilt auch nach Re-Render)
-            if (!window._eigenschaftenModeActive) {
-                document.querySelectorAll('.eigenschaften-section').forEach(function(s) {
+            if (!window._needs16ModeActive) {
+                document.querySelectorAll('.needs16-section').forEach(function(s) {
                     s.style.display = filters.length > 0 ? 'none' : '';
                 });
             }
@@ -2135,7 +2130,7 @@
             var suggestions = generateSearchSuggestions(query);
             displaySearchSuggestions(suggestions);
             // Eigenschaften einklappen wenn Suchtext vorhanden
-            var sections = document.querySelectorAll('.eigenschaften-section');
+            var sections = document.querySelectorAll('.needs16-section');
             sections.forEach(function(s) {
                 s.style.display = query && query.trim().length > 0 ? 'none' : '';
             });
@@ -2342,6 +2337,29 @@
         });
 
         // FIX: Bei Filter-Reset auch Suchstring und aktive Suggestion löschen
+        // Sofort speichern bevor der User die Seite verlässt (flush debounced saves)
+        window.addEventListener('pagehide', function() {
+            if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
+                TiageState.saveToStorage();
+            }
+            if (typeof MemoryManagerV2 !== 'undefined' && MemoryManagerV2.saveCurrentIchNow) {
+                MemoryManagerV2.saveCurrentIchNow();
+            }
+        });
+
+        // bfcache: Wenn Browser die Seite aus dem Cache wiederherstellt, TiageState neu laden + rendern
+        window.addEventListener('pageshow', function(e) {
+            if (e.persisted) {
+                if (typeof TiageState !== 'undefined' && TiageState.loadFromStorage) {
+                    TiageState.loadFromStorage();
+                }
+                setTimeout(function() {
+                    loadNeedsData();
+                    renderNeedsList();
+                }, 100);
+            }
+        });
+
         document.addEventListener('dimensionKategorieFilterChange', function(event) {
             var kategorien = event.detail && event.detail.kategorien;
             // Wenn Filter zurückgesetzt wurde (keine Kategorien aktiv)

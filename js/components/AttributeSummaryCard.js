@@ -90,60 +90,24 @@ const AttributeSummaryCard = (function() {
      * @param {string} needId - Die Bedürfnis-ID (#B-ID)
      * @returns {object|null} { factor: 'R1'|'R2'|'R3'|'R4', color: '#...', label: '...' } oder null
      */
-    function getRFactorForNeed(needId) {
-        if (typeof DimensionKategorieFilter === 'undefined' || !DimensionKategorieFilter.DIMENSIONEN) return null;
-        const dims = DimensionKategorieFilter.DIMENSIONEN;
+    const _STUFEN_BADGE = [
+        { s: 1, short: 'S1', label: 'Fundament',    color: '#10B981' },
+        { s: 2, short: 'S2', label: 'Entfaltung',   color: '#3B82F6' },
+        { s: 3, short: 'S3', label: 'Verbundenheit', color: '#8B5CF6' },
+        { s: 4, short: 'S4', label: 'Sinn',          color: '#F59E0B' }
+    ];
 
-        // v4.0: Direktes Lookup über needIds (16-Bedürfnis-System, SSOT)
-        for (const [factor, config] of Object.entries(dims)) {
-            if (config.needIds && config.needIds.includes(needId)) {
-                return { factor, color: config.color, label: config.label };
-            }
-        }
+    function getRFactorForNeed(needId) { return null; } // kept for compat
 
-        // Legacy-Fallback: Kategorie-basiert (alte 224-Need-IDs)
-        let categoryKey = null;
-        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse && BeduerfnisIds.beduerfnisse[needId]) {
-            const need = BeduerfnisIds.beduerfnisse[needId];
-            const catId = need.kategorie;
-            if (catId && typeof window.TiageTaxonomie !== 'undefined' && window.TiageTaxonomie.kategorien) {
-                const cat = window.TiageTaxonomie.kategorien[catId];
-                if (cat && cat.key) categoryKey = cat.key;
-            }
-        }
-        if (categoryKey) {
-            for (const [factor, config] of Object.entries(dims)) {
-                if (config.kategorienKeys && config.kategorienKeys.includes(categoryKey)) {
-                    return { factor, color: config.color, label: config.label };
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Erzeugt das HTML für das R-Faktor Badge
-     * @param {string} needId - Die Bedürfnis-ID
-     * @param {number} value - Der aktuelle Wert des Bedürfnisses
-     * @returns {string} HTML-String für das Badge oder leer
-     */
     function renderRFactorBadge(needId, value) {
-        const rInfo = getRFactorForNeed(needId);
-        if (!rInfo) return '';
-
-        // Berechne den Beitrag: Wert / 100 zeigt wie stark dieses Bedürfnis R beeinflusst
-        const contribution = (value / 100).toFixed(2);
+        const num = parseInt(needId.replace('#B', ''), 10);
+        if (!num || num < 1 || num > 16) return '';
+        const st = _STUFEN_BADGE[Math.floor((num - 1) / 4)];
+        if (!st) return '';
         const isHigh = value >= 70;
-        const isLow = value <= 30;
-        const intensityClass = isHigh ? 'r-badge-high' : (isLow ? 'r-badge-low' : '');
-        const coreClass = rInfo.isCore ? ' r-badge-core' : '';
-
-        return `<span class="r-factor-badge ${intensityClass}${coreClass}"
-                      style="--r-color: ${rInfo.color};"
-                      title="${rInfo.label}: Wert ${value} → Beitrag ×${contribution}">
-                    ${rInfo.factor}
-                </span>`;
+        const isLow  = value <= 30;
+        const cls = isHigh ? 'r-badge-high' : (isLow ? 'r-badge-low' : '');
+        return `<span class="r-factor-badge ${cls}" style="--r-color:${st.color};" title="${st.short}: ${st.label}">${st.short}</span>`;
     }
 
     /**
@@ -1364,17 +1328,15 @@ const AttributeSummaryCard = (function() {
             const newBadgeHtml = renderSaveStatusBadge(need.id, need.value, need.locked);
 
             if (oldBadge && newBadgeHtml) {
-                // Ersetze alten Badge mit neuem
                 const temp = document.createElement('div');
                 temp.innerHTML = newBadgeHtml;
-                const newBadge = temp.firstChild;
-                oldBadge.replaceWith(newBadge);
+                oldBadge.replaceWith(temp.firstChild);
             } else if (!oldBadge && newBadgeHtml) {
-                // Füge neuen Badge am Anfang ein
                 const temp = document.createElement('div');
                 temp.innerHTML = newBadgeHtml;
-                const newBadge = temp.firstChild;
-                controls.insertBefore(newBadge, controls.firstChild);
+                controls.insertBefore(temp.firstChild, controls.firstChild);
+            } else if (oldBadge && !newBadgeHtml) {
+                oldBadge.remove();
             }
         });
 
@@ -1448,57 +1410,32 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // FIX v1.8.1009: Auto-Lock — berechne erwartete Werte um manuelle Änderungen zu erkennen
-        // Needs deren Wert vom berechneten Profil abweicht werden automatisch gelockt (Persistenz)
-        let calculatedNeeds = {};
-        if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-            const archetyp = TiageState.get(`archetypes.${currentPerson}.primary`) || 'single';
-            const geschlecht = TiageState.get(`personDimensions.${currentPerson}.geschlecht`) || null;
-            const dominanz = TiageState.get(`personDimensions.${currentPerson}.dominanz`) || null;
-            const orientierung = TiageState.get(`personDimensions.${currentPerson}.orientierung`) || null;
-            const geschlecht_extras = TiageState.get(`personDimensions.${currentPerson}.geschlecht_extras`) || {};
-            calculatedNeeds = ProfileCalculator.calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung, geschlecht_extras) || {};
-        }
-
         console.log(`[SSOT] Sync RAM → TiageState für ${currentPerson} (${flatNeeds.length} needs)`);
 
-        let autoLockedCount = 0;
-
         // Alle Needs durchgehen und in TiageState schreiben
+        // Nur explizit gesperrte Needs (need.locked === true) werden gelockt —
+        // kein Auto-Lock anhand von Werteabweichung, da das explizite Entsperren sonst rückgängig gemacht wird.
         flatNeeds.forEach(need => {
-            const calculatedValue = calculatedNeeds[need.id];
-            const isManuallyChanged = calculatedValue !== undefined && need.value !== calculatedValue;
-
-            if (need.locked || isManuallyChanged) {
-                // Auto-Lock: Wert weicht vom berechneten Profil ab → sperren für Persistenz
-                if (!need.locked && isManuallyChanged) {
-                    need.locked = true; // RAM aktualisieren (UI zeigt 🔒)
-                    autoLockedCount++;
-                }
+            if (need.locked) {
                 if (TiageState.lockNeed) {
                     TiageState.lockNeed(currentPerson, need.id, need.value);
                 }
-                // FIX v1.8.1009: AUCH flatNeeds aktualisieren (lockNeed schreibt nur profileReview)
                 if (TiageState.setNeed) {
                     TiageState.setNeed(currentPerson, need.id, need.value);
                 }
             } else {
-                // Need ist NICHT gelockt und nicht manuell geändert → entsperren falls es vorher gelockt war
+                // Need ist NICHT gelockt → entsperren falls es vorher gelockt war
                 if (TiageState.isNeedLocked && TiageState.isNeedLocked(currentPerson, need.id)) {
                     if (TiageState.unlockNeed) {
                         TiageState.unlockNeed(currentPerson, need.id);
                     }
                 }
-                // Wert trotzdem schreiben (für ungelockte Needs)
                 if (TiageState.setNeed) {
                     TiageState.setNeed(currentPerson, need.id, need.value);
                 }
             }
         });
 
-        if (autoLockedCount > 0) {
-            console.log(`[SSOT] Auto-Lock: ${autoLockedCount} manuell geänderte Bedürfnisse gesperrt`);
-        }
         console.log('[SSOT] ✅ Sync abgeschlossen - RAM → TiageState');
     }
 
@@ -1975,14 +1912,15 @@ const AttributeSummaryCard = (function() {
      * @param {number} currentValue - Wird nicht mehr für Vergleich genutzt (Rückwärtskompatibilität)
      * @returns {boolean} true wenn vom User gesperrt, false wenn system-berechnet
      */
+    // Snapshot of values at last render — * shows when current value differs from snapshot
+    let _needsValueSnapshot = {};
+
     function isValueChanged(needId, currentValue) {
-        // FIX v1.8.972: Prüfe RAM-Status (flatNeeds), nicht TiageState
-        // Mit Explicit Save Workflow sind Lock-Änderungen erst im RAM, nicht in persistent storage.
         const needObj = findNeedById(needId);
-        if (needObj) {
-            return needObj.locked === true;
-        }
-        return false;
+        if (!needObj || needObj.locked) return false; // locked = abgeschlossen → kein *
+        const snap = _needsValueSnapshot[needId];
+        if (snap === undefined) return false;
+        return Math.round(currentValue) !== Math.round(snap);
     }
 
     /**
@@ -2472,23 +2410,6 @@ const AttributeSummaryCard = (function() {
         // v1.8.998: Einheitlicher Titel (keine Hauptfragen-Ansicht mehr)
         const titleText = 'Alle Bedürfnisse';
 
-        // Eigenschaften-Toggles für alle aktiven Archetypen
-        let eigenschaftenToggleHtml = '';
-        if (typeof window.getEigenschaftenHtml === 'function') {
-            const slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : (archetyp ? [archetyp] : []);
-            console.log('[AttributeSummaryCard] Eigenschaften-Toggles für Slots:', slots);
-            slots.forEach(function(slotArch) {
-                if (!slotArch) return;
-                const ad = window.tiageData && window.tiageData.archetypes && window.tiageData.archetypes[slotArch];
-                if (slots.length > 1) {
-                    eigenschaftenToggleHtml += '<div style="margin-top:8px;padding:4px 8px;font-size:11px;font-weight:600;color:' + (ad ? ad.color : 'var(--primary)') + ';border-left:3px solid ' + (ad ? ad.color : 'var(--primary)') + ';border-radius:2px;">' + ((window.icons && window.icons[slotArch]) || '') + ' ' + (ad ? ad.name : slotArch) + '</div>';
-                }
-                eigenschaftenToggleHtml += window.getEigenschaftenHtml(slotArch);
-            });
-        } else {
-            console.warn('[AttributeSummaryCard] window.getEigenschaftenHtml nicht verfügbar');
-        }
-
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
         html += `<div class="flat-needs-header">
@@ -2518,27 +2439,14 @@ const AttributeSummaryCard = (function() {
             </div>
             ${sortStack.length > 1 || additiveSortMode ? `<div class="flat-needs-sort-info">${additiveSortMode ? '<span class="sort-mode-indicator">Multi-Sort aktiv</span> ' : ''}${sortStack.length > 1 ? `Sortierung: ${sortStack.map((s, i) => `<span class="sort-badge sort-${i+1}">${getSortLabel(s)} ${sortDirections[s] ? '↓' : '↑'}</span>`).join(' → ')}` : ''}</div>` : ''}
 
-            ${eigenschaftenToggleHtml}
-
-            <div class="flat-needs-selection-bar">
-                <span class="selection-counter${selectedNeeds.size > 0 ? ' has-selection' : ''}">${selectedNeeds.size > 0 ? selectedNeeds.size + ' markiert' : 'Klick = markieren, CTRL+Klick = mehrere'}</span>
-                <div class="selection-quick-btns">
-                    <button class="selection-quick-btn" data-action="select-all-needs" title="Alle sichtbaren markieren">Alle</button>
-                    <button class="selection-quick-btn" data-action="clear-needs-selection" title="Keine markieren">Keine</button>
-                    <button class="selection-quick-btn" data-action="invert-needs-selection" title="Markierung umkehren">Umkehren</button>
-                </div>
-                <div class="bulk-action-card${selectedNeeds.size === 0 ? ' disabled' : ''}">
-                    <button class="bulk-reset-btn" data-action="bulk-reset-needs" title="Markierte (nicht gesperrte) Werte auf Original zurücksetzen" ${selectedNeeds.size === 0 ? 'disabled' : ''}>
-                        <span class="bulk-btn-icon">↺</span>
-                        <span class="bulk-btn-label">Reset</span>
-                    </button>
-                </div>
-                <!-- Speichern-Button entfernt: Auto-Save bei jeder Änderung -->
-            </div>
         </div>`;
 
         // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
         // Kein zweiter Container nötig - wurde entfernt um duplicate ID zu vermeiden
+
+        // Snapshot der aktuellen Werte — * zeigt wenn Wert seit diesem Render geändert
+        _needsValueSnapshot = {};
+        flatNeeds.forEach(n => { _needsValueSnapshot[n.id] = Math.round(n.value); });
 
         // v1.8.998: Einheitliche flache Liste — alle Needs gleichberechtigt
         html += `<div class="flat-needs-list-wrapper">
@@ -2826,52 +2734,39 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-    /**
-     * Rendert den Speicher-Status-Badge (🟢 gespeichert / 🔴 nicht gespeichert)
-     * FIX v1.8.975: Explicit Save Workflow - zeigt ob RAM-Werte mit TiageState übereinstimmen
+     * Rendert den Status-Badge: 🟢 abgeschlossen (locked) · 🔴 geändert (unlocked+changed) · '' default
      * @param {string} needId - #B-ID
      * @param {number} ramValue - Aktueller Wert im RAM
      * @param {boolean} ramLocked - Lock-Status im RAM
      * @returns {string} HTML für den Status-Badge
      */
     function renderSaveStatusBadge(needId, ramValue, ramLocked) {
-        // Prüfe ob TiageState verfügbar ist
-        if (typeof TiageState === 'undefined' || !TiageState.get || !TiageState.isNeedLocked) {
-            // Fallback: Zeige 🔴 (nicht gespeichert) wenn TiageState nicht verfügbar
-            return `<span class="save-status-badge save-status-unsaved" title="Storage nicht verfügbar">🔴</span>`;
+        if (ramLocked) {
+            return `<span class="save-status-badge save-status-saved" title="Abgeschlossen ✓">🟢</span>`;
         }
+        if (isValueChanged(needId, ramValue)) {
+            return `<span class="save-status-badge save-status-unsaved" title="Geändert – noch offen">🔴</span>`;
+        }
+        return '';
+    }
 
-        try {
-            // Ermittle Person und Archetyp
-            let currentPerson = 'ich';
-            if (window.currentProfileReviewContext?.person) {
-                currentPerson = window.currentProfileReviewContext.person;
-            }
-            // FIX v1.8.1009: Person-aware Archetyp (nicht hardcoded 'ich')
-            const archetyp = TiageState.get(`archetypes.${currentPerson}.primary`) || 'single';
-
-            // REFACTORING v1.8.982: Vereinfachte Logik - alle Needs (inkl. Hauptfragen) in flatNeeds
-            // FIX v1.8.1009: Partner nutzt flachen Pfad (kein per-Archetyp)
-            const stateNeeds = (currentPerson === 'ich')
-                ? (TiageState.get(`flatNeeds.ich.${archetyp}`) || {})
-                : (TiageState.get(`flatNeeds.partner`) || {});
-            const stateValue = stateNeeds[needId];
-            const stateLocked = TiageState.isNeedLocked(currentPerson, needId);
-
-            // FIX v1.8.1012: Toleranter Vergleich — undefined in State behandeln wie RAM-Wert
-            // Needs die nie explizit in flatNeeds geschrieben wurden haben stateValue=undefined
-            const valueMatch = (stateValue !== undefined) ? (ramValue === stateValue) : true;
-            const lockMatch = (ramLocked === stateLocked);
-            const isSaved = valueMatch && lockMatch;
-
-            const icon = isSaved ? '🟢' : '🔴';
-            const title = isSaved ? 'Gespeichert ✓' : 'Nicht gespeichert (nur RAM) ✗';
-            const cssClass = isSaved ? 'save-status-saved' : 'save-status-unsaved';
-
-            return `<span class="save-status-badge ${cssClass}" title="${title}">${icon}</span>`;
-        } catch (error) {
-            console.error('[renderSaveStatusBadge] Fehler:', error, 'needId:', needId);
-            return `<span class="save-status-badge save-status-unsaved" title="Fehler beim Laden">🔴</span>`;
+    function updateSingleSaveStatusBadge(needId, value, locked) {
+        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+        if (!needItem) return;
+        const controls = needItem.querySelector('.flat-need-controls');
+        if (!controls) return;
+        const oldBadge = controls.querySelector('.save-status-badge');
+        const newBadgeHtml = renderSaveStatusBadge(needId, value, locked);
+        if (oldBadge && newBadgeHtml) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = newBadgeHtml;
+            oldBadge.replaceWith(tmp.firstChild);
+        } else if (!oldBadge && newBadgeHtml) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = newBadgeHtml;
+            controls.insertBefore(tmp.firstChild, controls.firstChild);
+        } else if (oldBadge && !newBadgeHtml) {
+            oldBadge.remove();
         }
     }
 
@@ -2919,8 +2814,7 @@ const AttributeSummaryCard = (function() {
         const lockTitle = isLocked ? 'Entsperren' : 'Sperren';
 
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
-             onclick="AttributeSummaryCard.toggleNeedSelection('${needId}', event)">
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}>
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
@@ -2936,8 +2830,8 @@ const AttributeSummaryCard = (function() {
             </div>
             <div class="flat-need-slider-row">
                 <div style="flex:1;position:relative;height:24px;">
-                    <div style="position:absolute;top:8px;left:0;right:0;">${renderSegmentBar(needId, value)}</div>
-                    <input type="range" class="need-slider" style="position:absolute;top:0;left:0;width:100%;height:24px;opacity:0.01;cursor:pointer;margin:0;z-index:1;${isLocked ? 'pointer-events:none;' : ''}"
+                    <div style="position:absolute;top:8px;left:0;right:0;pointer-events:none;">${renderSegmentBar(needId, value)}</div>
+                    <input type="range" class="need-slider" style="position:absolute;top:0;left:0;width:100%;height:24px;opacity:0.01;cursor:pointer;margin:0;z-index:2;${isLocked ? 'pointer-events:none;' : ''}"
                            min="0" max="100" step="1" value="${value}"
                            oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.closest('.flat-need-slider-row').querySelector('.flat-need-input'); if(inp) inp.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                            onclick="event.stopPropagation()"
@@ -3177,14 +3071,26 @@ const AttributeSummaryCard = (function() {
             const input = needItem.querySelector('.flat-need-input');
             const lockIcon = needItem.querySelector('.need-lock-icon');
 
-            if (slider) slider.disabled = isLocked;
-            if (input) input.readOnly = isLocked;
+            if (slider) {
+                slider.disabled = isLocked;
+                slider.style.pointerEvents = isLocked ? 'none' : '';
+            }
+            if (input) {
+                input.disabled = isLocked;
+                input.style.pointerEvents = isLocked ? 'none' : '';
+                input.style.opacity = isLocked ? '0.4' : '';
+            }
 
             // FIX v1.8.984: UPDATE LOCK ICON! 🔒/🔓
             if (lockIcon) {
                 lockIcon.textContent = isLocked ? '🔒' : '🔓';
                 lockIcon.title = isLocked ? 'Wert fixiert - Klick zum Entsperren' : 'Wert flexibel - Klick zum Fixieren';
             }
+
+            // Update * indicator immediately on lock/unlock
+            const currentNeedObj = findNeedById(needId);
+            const currentVal = currentNeedObj ? currentNeedObj.value : 0;
+            updateChangedIndicator(needItem, needId, currentVal);
         }
 
         // v1.8.990: Lock = Auto-Save — sofort persistieren
@@ -3200,6 +3106,11 @@ const AttributeSummaryCard = (function() {
 
         // FIX v1.8.979: Konsistent mit lockSelectedNeeds() - gleiche Update-Funktion
         updateAllSaveStatusBadges();
+
+        // Auto-Save zum aktiven Speicher-Slot (falls einer gesetzt ist)
+        if (typeof MemoryManagerV2 !== 'undefined' && MemoryManagerV2.autoSaveIchToActiveSlot) {
+            MemoryManagerV2.autoSaveIchToActiveSlot();
+        }
 
         // Event (für andere Listener)
         document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
@@ -3589,16 +3500,17 @@ const AttributeSummaryCard = (function() {
         const shouldShowIndicator = isValueChanged(needId, currentValue);
 
         if (shouldShowIndicator && !existingIndicator) {
-            // Indikator hinzufügen
             const indicator = document.createElement('span');
             indicator.className = 'value-changed-indicator';
             indicator.title = 'Wert wurde geändert';
             indicator.textContent = ' *';
             labelElement.appendChild(indicator);
         } else if (!shouldShowIndicator && existingIndicator) {
-            // Indikator entfernen
             existingIndicator.remove();
         }
+
+        // Sync CSS class on the item container
+        needItem.classList.toggle('value-changed', shouldShowIndicator);
     }
 
     /**
@@ -4137,7 +4049,89 @@ const AttributeSummaryCard = (function() {
      * Rendert einen farbigen Segment-Balken der die Einfluss-Quellen zeigt.
      * Farben: Basis=grau, G=orange, O=rot, D=lila, F=grün, Fu=rot, H=pink, Toggle=cyan
      */
+    // Archetype-Farben für Multi-Slot-Balken
+    const ARCH_BAR_COLORS = {
+        single:      '#E63946',
+        duo:         '#EC4899',
+        duo_flex:    '#F59E0B',
+        solopoly:    '#10B981',
+        polyamor:    '#8B5CF6',
+        ra:          '#06B6D4',
+        lat:         '#3B82F6',
+        aromantisch: '#9CA3AF'
+    };
+    const ARCH_BAR_LABELS = {
+        single:'Single', duo:'Duo', duo_flex:'Duo-Flex', solopoly:'Solopoly',
+        polyamor:'Polyamor', ra:'RA', lat:'LAT', aromantisch:'Aromant.'
+    };
+
+    function renderMultiSlotBar(needId, totalValue, slots) {
+        const hatch = (c) => `repeating-linear-gradient(135deg,${c},${c} 2px,transparent 2px,transparent 5px)`;
+
+        // Profil-Basiswert je Slot
+        function getProfileBase(arch) {
+            if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile?.[arch]?.umfrageWerte) {
+                const stringKey = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey ? BeduerfnisIds.toKey(needId) : null;
+                const uW = GfkBeduerfnisse.archetypProfile[arch].umfrageWerte;
+                const raw = (stringKey && uW[stringKey] !== undefined) ? uW[stringKey] : (uW[needId] !== undefined ? uW[needId] : 50);
+                return Math.round(raw);
+            }
+            return 50;
+        }
+
+        const slotVals = slots.map(arch => ({ arch, value: getProfileBase(arch) }));
+
+        // Sequenziell nach Größe sortiert: jedes Segment zeigt nur den Zuwachs über dem vorherigen
+        const sorted = [...slotVals].sort((a, b) => a.value - b.value);
+        const maxVal = sorted.length > 0 ? sorted[sorted.length - 1].value : 50;
+        const baseCombined = maxVal; // Basis = höchster Slot-Wert
+
+        let archSegs = '';
+        let prev = 0;
+        sorted.forEach(sv => {
+            const w = sv.value - prev;
+            if (w > 0) {
+                const c = ARCH_BAR_COLORS[sv.arch] || '#9CA3AF';
+                const lbl = ARCH_BAR_LABELS[sv.arch] || sv.arch;
+                archSegs += `<div style="position:absolute;left:${prev}%;width:${w}%;height:100%;background:${c};" title="${lbl}: ${sv.value}"></div>`;
+                if (prev > 0) {
+                    archSegs += `<div style="position:absolute;left:${prev}%;width:1px;height:100%;background:rgba(0,0,0,0.5);z-index:2;"></div>`;
+                }
+            }
+            prev = sv.value;
+        });
+
+        // Manuell-Segment (gelb positiv / schraffiert negativ)
+        const userDelta = totalValue - baseCombined;
+        let manualSeg = '';
+        if (Math.abs(userDelta) >= 1) {
+            if (userDelta > 0) {
+                const w = Math.min(userDelta, 100 - baseCombined);
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${baseCombined}%;width:${w}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
+            } else {
+                const left = Math.max(0, totalValue);
+                const w = Math.min(Math.abs(userDelta), baseCombined - left);
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
+            }
+        }
+
+        const sign = (n) => (n > 0 ? '+' : '') + Math.round(n);
+        const parts = sorted.map(sv => `${ARCH_BAR_LABELS[sv.arch]||sv.arch}: ${sv.value}`);
+        if (Math.abs(userDelta) >= 1) parts.push(`Manuell: ${sign(userDelta)}`);
+        const barTitle = parts.join(' | ') + '\nSegmente hovern für Details.';
+
+        return `<div class="segment-bar" data-need="${needId}" data-computed-base="${baseCombined}" data-slots="${slots.join(',')}" title="${barTitle.replace(/"/g,'&quot;')}" style="position:relative;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);cursor:help;">${archSegs}${manualSeg}</div>`;
+    }
+
     function renderSegmentBar(needId, totalValue) {
+        // Multi-Slot: Archetyp-Anteile zeigen
+        if (typeof TiageState !== 'undefined' && TiageState.getIchSlots) {
+            const slots = TiageState.getIchSlots();
+            if (slots.length > 1) return renderMultiSlotBar(needId, totalValue, slots);
+        }
+
+        const hatch = (color) => `repeating-linear-gradient(45deg,${color},${color} 2px,transparent 2px,transparent 5px)`;
+
         // Basis-Wert aus Archetyp-Profil
         let basisWert = 50;
         const arch = currentFlatArchetyp || 'single';
@@ -4150,7 +4144,7 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Modifier-Breakdown
+        // GOD-Modifier-Breakdown
         let gDelta = 0, oDelta = 0, dDelta = 0, fDelta = 0, fuDelta = 0, hDelta = 0;
         if (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getModifierBreakdown && typeof BeduerfnisIds !== 'undefined') {
             const stringKey = BeduerfnisIds.toKey ? BeduerfnisIds.toKey(needId) : null;
@@ -4168,20 +4162,20 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Toggle-Delta = Total - Basis - GOD-Deltas
         const godTotal = gDelta + oDelta + dDelta + fDelta + fuDelta + hDelta;
-        const toggleDelta = totalValue - basisWert - godTotal;
+        // computedBase = Fixpunkt, ab dem manuelle Anpassung beginnt
+        const computedBase = Math.max(0, Math.min(100, basisWert + godTotal));
+        const userDelta = totalValue - computedBase;
 
-        // Segmente aufbauen - Grüntöne positiv, Rottöne negativ, schraffiert bei negativ
-        const MIN_SEG = 4;
-        const segments = [];
+        // Segmente mit absoluter Positionierung aufbauen — Basis bleibt immer an fester Position
+        const segs = [];
+        let cursor = 0;
 
-        // Schraffur-Pattern für negative Werte (CSS repeating-linear-gradient)
-        const hatch = (color) => `repeating-linear-gradient(45deg, ${color}, ${color} 2px, transparent 2px, transparent 5px)`;
-
-        // Basis-Segment - gedämpftes Grün
+        // Basis-Segment (dunkelgrün)
         if (basisWert > 0) {
-            segments.push({ w: basisWert, c: '#2d6a4f', bg: null, t: 'Basis: ' + basisWert });
+            const w = Math.min(basisWert, 100);
+            segs.push(`<div style="position:absolute;left:${cursor}%;width:${w}%;height:100%;background:#2d6a4f;" title="Basis: ${basisWert}"></div>`);
+            cursor += w;
         }
 
         // GOD-Modifier-Segmente
@@ -4194,47 +4188,37 @@ const AttributeSummaryCard = (function() {
             { d: hDelta, cp: '#EC4899', cn: '#b03060', l: 'H' }
         ];
         mods.forEach(m => {
-            if (m.d !== 0) {
-                const visW = Math.max(MIN_SEG, Math.abs(m.d));
-                if (m.d > 0) {
-                    segments.push({ w: visW, c: m.cp, bg: null, t: m.l + ': +' + m.d });
-                } else {
-                    segments.push({ w: visW, c: null, bg: hatch(m.cn), t: m.l + ': ' + m.d });
+            if (m.d === 0) return;
+            if (m.d > 0) {
+                const w = Math.min(m.d, 100 - cursor);
+                if (w > 0) {
+                    segs.push(`<div style="position:absolute;left:${cursor}%;width:${w}%;height:100%;background:${m.cp};" title="${m.l}: +${m.d}"></div>`);
+                    cursor += w;
+                }
+            } else {
+                const left = Math.max(0, cursor - Math.abs(m.d));
+                const w = cursor - left;
+                if (w > 0) {
+                    segs.push(`<div style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch(m.cn)};" title="${m.l}: ${m.d}"></div>`);
+                    cursor = left;
                 }
             }
         });
 
-        // Toggle-Segment
-        if (toggleDelta !== 0) {
-            const visW = Math.max(MIN_SEG, Math.abs(toggleDelta));
-            if (toggleDelta > 0) {
-                segments.push({ w: visW, c: '#06B6D4', bg: null, t: 'T: +' + Math.round(toggleDelta) });
+        // Manuell-Segment (gelb = positiv, schraffiert-orange = negativ)
+        let manualSeg = '';
+        if (Math.abs(userDelta) >= 1) {
+            if (userDelta > 0) {
+                const w = Math.min(userDelta, 100 - computedBase);
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${computedBase}%;width:${w}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
             } else {
-                segments.push({ w: visW, c: null, bg: hatch('#0891b2'), t: 'T: ' + Math.round(toggleDelta) });
+                const left = Math.max(0, totalValue);
+                const w = Math.min(Math.abs(userDelta), computedBase - left);
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
             }
         }
 
-        // User-Edit
-        const calcSum = basisWert + godTotal + (toggleDelta > 0 ? toggleDelta : 0);
-        const userEdit = totalValue - Math.max(0, Math.min(100, calcSum));
-        if (Math.abs(userEdit) >= 1) {
-            const visW = Math.max(MIN_SEG, Math.abs(userEdit));
-            if (userEdit > 0) {
-                segments.push({ w: visW, c: '#fbbf24', bg: null, t: 'Manuell: +' + Math.round(userEdit) });
-            } else {
-                segments.push({ w: visW, c: null, bg: hatch('#b45309'), t: 'Manuell: ' + Math.round(userEdit) });
-            }
-        }
-
-        // Rendern
-        const segHtml = segments.map(seg => {
-            const style = seg.bg
-                ? `background:${seg.bg};`
-                : `background:${seg.c};`;
-            return `<div style="flex:${seg.w};height:100%;${style}min-width:2px;" title="${seg.t}"></div>`;
-        }).join('');
-
-        // Summary-Tooltip für den gesamten Balken
+        // Tooltip
         const sign = (n) => (n > 0 ? '+' : '') + Math.round(n);
         const parts = [`Gesamt: ${totalValue}/100`, `Basis (${arch}): ${basisWert}`];
         if (gDelta) parts.push(`G: ${sign(gDelta)}`);
@@ -4243,21 +4227,45 @@ const AttributeSummaryCard = (function() {
         if (fDelta) parts.push(`Fi: ${sign(fDelta)}`);
         if (fuDelta) parts.push(`Fu: ${sign(fuDelta)}`);
         if (hDelta) parts.push(`H: ${sign(hDelta)}`);
-        if (toggleDelta !== 0) parts.push(`Toggle: ${sign(toggleDelta)}`);
-        const userEditVal = totalValue - Math.max(0, Math.min(100, basisWert + godTotal + (toggleDelta > 0 ? toggleDelta : 0)));
-        if (Math.abs(userEditVal) >= 1) parts.push(`Manuell: ${sign(userEditVal)}`);
-        const barTitle = parts.join(' | ') + '\nSegmente einzeln hovern für Details. 0–100 Skala.';
+        if (Math.abs(userDelta) >= 1) parts.push(`Manuell: ${sign(userDelta)}`);
+        const barTitle = parts.join(' | ') + '\nSegmente hovern für Details. 0–100 Skala.';
 
-        return `<div class="segment-bar" data-need="${needId}" title="${barTitle.replace(/"/g, '&quot;')}" style="position:relative;display:flex;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);cursor:help;">` +
-            `<div style="display:flex;width:${totalValue}%;height:100%;transition:width 0.15s;">${segHtml}</div>` +
-            `</div>`;
+        return `<div class="segment-bar" data-need="${needId}" data-computed-base="${computedBase}" title="${barTitle.replace(/"/g, '&quot;')}" style="position:relative;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);cursor:help;">${segs.join('')}${manualSeg}</div>`;
     }
 
     function updateSegmentBar(needId, newValue) {
-        // Lightweight: Nur innere Füllung anpassen (äußere graue Bar bleibt 100% = Skala)
         const bar = document.querySelector(`.segment-bar[data-need="${needId}"]`);
-        const fill = bar && bar.firstElementChild;
-        if (fill) fill.style.width = newValue + '%';
+        if (!bar) return;
+        newValue = Math.max(0, Math.min(100, parseInt(newValue, 10)));
+
+        const hatch = (color) => `repeating-linear-gradient(45deg,${color},${color} 2px,transparent 2px,transparent 5px)`;
+        const computedBase = parseInt(bar.dataset.computedBase || '50', 10);
+        const delta = newValue - computedBase;
+        let manSeg = bar.querySelector('.seg-manual');
+        if (Math.abs(delta) >= 1) {
+            if (!manSeg) {
+                manSeg = document.createElement('div');
+                manSeg.className = 'seg-manual';
+                manSeg.style.position = 'absolute';
+                manSeg.style.height = '100%';
+                bar.appendChild(manSeg);
+            }
+            if (delta > 0) {
+                manSeg.style.left = computedBase + '%';
+                manSeg.style.width = Math.min(delta, 100 - computedBase) + '%';
+                manSeg.style.background = '#fbbf24';
+                manSeg.title = `Manuell: +${Math.round(delta)}`;
+            } else {
+                const left = Math.max(0, newValue);
+                manSeg.style.left = left + '%';
+                manSeg.style.width = Math.min(Math.abs(delta), computedBase - left) + '%';
+                manSeg.style.background = hatch('#b45309');
+                manSeg.title = `Manuell: ${Math.round(delta)}`;
+            }
+        } else if (manSeg) {
+            manSeg.remove();
+        }
+        bar.title = `Basis: ${computedBase} | Manuell: ${delta >= 0 ? '+' : ''}${Math.round(delta)} | Gesamt: ${newValue}/100`;
     }
 
     /**
@@ -4268,26 +4276,22 @@ const AttributeSummaryCard = (function() {
         const parsed = Math.max(0, Math.min(100, parseInt(newValue, 10)));
         if (isNaN(parsed)) return;
 
-        // GLOBAL: Für alle 8 Archetypen setzen
+        // Nur für den aktuell geöffneten Archetyp speichern
         if (typeof TiageState !== 'undefined') {
-            const archetypen = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
-            archetypen.forEach(arch => {
-                TiageState.set(`flatNeeds.ich.${arch}.${needId}`, parsed);
-            });
-            TiageState.saveToStorage();
+            const arch = currentFlatArchetyp || 'single';
+            TiageState.set(`flatNeeds.ich.${arch}.${needId}`, parsed);
+            debouncedSaveToStorage();
         }
 
         // UI aktualisieren
         const needObj = findNeedById(needId);
         if (needObj) needObj.value = parsed;
 
-        // Slider + Input aktualisieren
-        const container = document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
-        if (container) {
-            const slider = container.querySelector('.need-slider');
-            const input = container.querySelector('.flat-need-input');
-            if (slider) slider.value = parsed;
-            if (input) input.value = parsed;
+        // * und 🔴/🟢 sofort aktualisieren
+        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+        if (needItem) {
+            updateChangedIndicator(needItem, needId, parsed);
+            updateSingleSaveStatusBadge(needId, parsed, needObj?.locked || false);
         }
     }
 

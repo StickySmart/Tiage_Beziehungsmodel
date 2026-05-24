@@ -812,7 +812,7 @@ var TiageLocale_DE = {
     dimensions: {
         geschlechtLabel: 'Geschlechtsidentität',
         dominanzLabel: 'Dominanz',
-        orientierungLabel: 'Orientierung',
+        orientierungLabel: 'Attraktion',
         gfkLabel: 'GFK-Kompetenz',
         multiSelect: '(Mehrfachauswahl)',
         legend: {
@@ -1696,6 +1696,7 @@ var TiageLocale_DE = {
         // Tab-Tooltips (Standalone-Seiten)
         tabScore: 'Score & Übersicht',
         tabResonanz: 'Ti-Age Gemeinsame Bedürfnisse',
+        tabEvolution: 'Evolutionäre Bedürfnisstärke',
         tabNuancen: 'Ti-Age Nuancen',
         tabProContra: 'Resonanzfaktoren',
         tabRTI: 'RTI Säulen (Petzold)',
@@ -1703,6 +1704,7 @@ var TiageLocale_DE = {
 
         // Archetyp-Nav
         labelIch: 'ICH',
+        labelDu: 'DU',
         labelPartner: 'PARTNER',
 
         // Lademeldungen

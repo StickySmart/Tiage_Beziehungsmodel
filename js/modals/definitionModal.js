@@ -29,173 +29,86 @@ let currentDefinitionPerson = 'ich';
 let definitionTouchStartX = 0;
 
 // ========================================
-// Eigenschaften-Toggle System
+// 16 Grundbedürfnisse — Direct Value Editor
 // ========================================
-let eigenschaftenData = null;
-let eigenschaftenStates = {}; // { archetyp: { eigenschaftId: true/false } }
 
-// CSS für Toggle-Switches (einmalig injizieren)
-(function injectToggleCSS() {
-    if (document.getElementById('eigenschaften-toggle-css')) return;
+const NEEDS_16_DEF = [
+    { id: '#B1',  label: 'Wohlbefinden',  stufe: 1, color: '#10B981' },
+    { id: '#B2',  label: 'Sicherheit',    stufe: 1, color: '#10B981' },
+    { id: '#B3',  label: 'Erholung',      stufe: 1, color: '#10B981' },
+    { id: '#B4',  label: 'Orientierung',  stufe: 1, color: '#10B981' },
+    { id: '#B5',  label: 'Wirksamkeit',   stufe: 2, color: '#3B82F6' },
+    { id: '#B6',  label: 'Freiheit',      stufe: 2, color: '#3B82F6' },
+    { id: '#B7',  label: 'Intensität',    stufe: 2, color: '#3B82F6' },
+    { id: '#B8',  label: 'Wachstum',      stufe: 2, color: '#3B82F6' },
+    { id: '#B9',  label: 'Zugehörigkeit', stufe: 3, color: '#8B5CF6' },
+    { id: '#B10', label: 'Anerkennung',   stufe: 3, color: '#8B5CF6' },
+    { id: '#B11', label: 'Gerechtigkeit', stufe: 3, color: '#8B5CF6' },
+    { id: '#B12', label: 'Intimität',     stufe: 3, color: '#8B5CF6' },
+    { id: '#B13', label: 'Identität',     stufe: 4, color: '#F59E0B' },
+    { id: '#B14', label: 'Sinngebung',    stufe: 4, color: '#F59E0B' },
+    { id: '#B15', label: 'Integrität',    stufe: 4, color: '#F59E0B' },
+    { id: '#B16', label: 'Transzendenz',  stufe: 4, color: '#F59E0B' },
+];
+const NEEDS_16_STUFE_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+
+(function injectNeeds16CSS() {
+    if (document.getElementById('needs16-section-css')) return;
     const style = document.createElement('style');
-    style.id = 'eigenschaften-toggle-css';
+    style.id = 'needs16-section-css';
     style.textContent = `
-        .eigenschaften-section { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border); }
-        .eigenschaften-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
-        .eigenschaften-liste { display: flex; flex-direction: column; gap: 3px; }
-        .eigenschaft-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; user-select: none; }
-        .eigenschaft-row:hover { background: rgba(255,255,255,0.05); }
-        .eigenschaft-row.aktiv .eigenschaft-label { color: var(--text-primary, #e0e0e0); }
-        .eigenschaft-row.inaktiv .eigenschaft-label { color: var(--text-muted, #666); opacity: 0.6; }
-        .eigenschaft-label { font-size: 12px; flex: 1; }
-        .toggle-switch { width: 36px; height: 20px; background: rgba(255,255,255,0.15); border-radius: 10px; position: relative; transition: background 0.2s; flex-shrink: 0; margin-left: 8px; }
-        .toggle-switch.aktiv { background: #8b5cf6; }
-        .toggle-switch::after { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
-        .toggle-switch.aktiv::after { transform: translateX(16px); }
+        .needs16-section { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border); }
+        .needs16-title { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+        .needs16-stufe-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 8px 0 2px 2px; }
+        .needs16-row { display: flex; align-items: center; gap: 7px; padding: 3px 6px; border-radius: 4px; }
+        .needs16-row:hover { background: rgba(255,255,255,0.04); }
+        .needs16-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .needs16-bar-fill { height: 100%; border-radius: 2px; transition: width 0.15s; }
+        .needs16-input { width: 42px; padding: 2px 4px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: var(--text-primary, #e0e0e0); font-size: 12px; text-align: right; -moz-appearance: textfield; }
+        .needs16-input::-webkit-inner-spin-button, .needs16-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+        .needs16-input:focus { outline: none; border-color: rgba(139,92,246,0.6); }
     `;
     document.head.appendChild(style);
 })();
 
-async function loadEigenschaftenData() {
-    if (eigenschaftenData) return eigenschaftenData;
-    try {
-        const resp = await fetch('profiles/data/archetyp-eigenschaften.json');
-        if (resp.ok) {
-            const json = await resp.json();
-            eigenschaftenData = json.archetypen || {};
+function getNeeds16Html(archetypeId) {
+    let lastStufe = 0;
+    let rows = '';
+
+    NEEDS_16_DEF.forEach(function(n) {
+        if (n.stufe !== lastStufe) {
+            lastStufe = n.stufe;
+            rows += `<div class="needs16-stufe-label" style="color:${n.color};">${NEEDS_16_STUFE_LABELS[n.stufe]}</div>`;
         }
-    } catch (e) {
-        console.warn('[DefinitionModal] Eigenschaften-Daten nicht geladen:', e);
-    }
-    return eigenschaftenData || {};
-}
-
-function getEigenschaftenState(archetypeId) {
-    if (!eigenschaftenStates[archetypeId]) {
-        eigenschaftenStates[archetypeId] = {};
-        // Initialize with defaults
-        const archData = eigenschaftenData?.[archetypeId];
-        if (archData?.eigenschaften) {
-            archData.eigenschaften.forEach(e => {
-                eigenschaftenStates[archetypeId][e.id] = e.default;
-            });
-        }
-    }
-    // Always sync from TiageState — ensures values survive page reload
-    // (cache may have been initialized before TiageState finished loading)
-    if (typeof TiageState !== 'undefined') {
-        const saved = TiageState.get(`eigenschaften.ich.${archetypeId}`);
-        if (saved && typeof saved === 'object') {
-            Object.assign(eigenschaftenStates[archetypeId], saved);
-        }
-    }
-    return eigenschaftenStates[archetypeId];
-}
-
-function toggleEigenschaft(archetypeId, eigenschaftId) {
-    const archData = eigenschaftenData?.[archetypeId];
-    if (!archData) return;
-
-    const eigenschaft = archData.eigenschaften.find(e => e.id === eigenschaftId);
-    if (!eigenschaft) return;
-
-    const states = getEigenschaftenState(archetypeId);
-    const neuerStatus = !states[eigenschaftId];
-    states[eigenschaftId] = neuerStatus;
-
-    // Bedürfnisse anpassen (mit Lock-Schutz + AGOD-Skalierung)
-    // Schreibt in den Archetyp-Slot der getoggelt wurde
-    if (typeof TiageState !== 'undefined') {
-        // AGOD-Gesamtfaktor berechnen: Durchschnitt aller 4 Gewichtungen
-        // 0=Egal→0.5, 1=Normal→1.0, 2=Wichtig→1.5
-        const agodMap = { 0: 0.5, 1: 1.0, 2: 1.5 };
-        const gew = TiageState.getGewichtungen ? TiageState.getGewichtungen('ich', archetypeId) : { O: 1, A: 1, D: 1, G: 1 };
-        const agodFaktor = (
-            (agodMap[gew.A] || 1.0) +
-            (agodMap[gew.G] || 1.0) +
-            (agodMap[gew.O] || 1.0) +
-            (agodMap[gew.D] || 1.0)
-        ) / 4;
-
-        eigenschaft.beduerfnisse.forEach(needId => {
-            // Lock-Check
-            const lockPath = `profileReview.ich.global.${needId}`;
-            const lockData = TiageState.get(lockPath);
-            if (lockData && lockData.locked) return;
-
-            const needPath = `flatNeeds.ich.${archetypeId}.${needId}`;
-            const current = TiageState.get(needPath) || 50;
-            // Option C: Faktor-basiert mit AGOD-Skalierung
-            const scaledDelta = Math.round(eigenschaft.delta * agodFaktor);
-            const delta = neuerStatus ? scaledDelta : -scaledDelta;
-            const newVal = Math.max(0, Math.min(100, current + delta));
-            TiageState.set(needPath, newVal);
-            console.log(`[Eigenschaften] ${needId}: ${current} → ${newVal} (${delta > 0 ? '+' : ''}${delta}) [AGOD-Faktor: ${agodFaktor.toFixed(2)}]`);
-
-            // Slider-UI sofort aktualisieren
-            const container = document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
-            if (container) {
-                const slider = container.querySelector('.need-slider');
-                const input = container.querySelector('.flat-need-input');
-                if (slider) { slider.value = newVal; slider.style.setProperty('--value', newVal + '%'); }
-                if (input) input.value = newVal;
-            }
-        });
-
-        // Eigenschafts-State persistieren
-        TiageState.set(`eigenschaften.ich.${archetypeId}`, { ...states });
-        TiageState.saveToStorage();
-    }
-
-    // Toggle-UI aktualisieren
-    updateEigenschaftenUI(archetypeId);
-}
-
-function updateEigenschaftenUI(archetypeId) {
-    const states = getEigenschaftenState(archetypeId);
-    const container = document.getElementById('eigenschaften-liste-' + archetypeId);
-    if (!container) return;
-
-    container.querySelectorAll('.eigenschaft-row').forEach(row => {
-        const id = row.dataset.id;
-        const aktiv = states[id];
-        row.className = 'eigenschaft-row ' + (aktiv ? 'aktiv' : 'inaktiv');
-        const toggle = row.querySelector('.toggle-switch');
-        if (toggle) toggle.className = 'toggle-switch' + (aktiv ? ' aktiv' : '');
-    });
-}
-
-function getEigenschaftenHtml(archetypeId) {
-    console.log('[Eigenschaften] getEigenschaftenHtml called for:', archetypeId, 'eigenschaftenData loaded:', !!eigenschaftenData, 'keys:', eigenschaftenData ? Object.keys(eigenschaftenData) : 'null');
-    const archData = eigenschaftenData?.[archetypeId];
-    if (!archData?.eigenschaften) {
-        console.warn('[Eigenschaften] Keine Daten für:', archetypeId);
-        return '';
-    }
-
-    const states = getEigenschaftenState(archetypeId);
-    const lang = (typeof TiageI18n !== 'undefined') ? TiageI18n.getLanguage() : 'de';
-    const title = lang === 'de' ? 'EIGENSCHAFTEN' : 'PROPERTIES';
-
-    const rows = archData.eigenschaften.map(e => {
-        const aktiv = states[e.id] ?? e.default;
-        const label = (lang !== 'de' && e.label_en) ? e.label_en : e.label;
-        return `
-            <div class="eigenschaft-row ${aktiv ? 'aktiv' : 'inaktiv'}" data-id="${e.id}" onclick="window._toggleEigenschaft('${archetypeId}', '${e.id}')">
-                <span class="eigenschaft-label">${label}</span>
-                <div class="toggle-switch${aktiv ? ' aktiv' : ''}"></div>
-            </div>`;
-    }).join('');
-
-    return `
-        <div class="eigenschaften-section">
-            <div class="eigenschaften-title">${title}</div>
-            <div class="eigenschaften-liste" id="eigenschaften-liste-${archetypeId}">${rows}</div>
+        const val = (typeof TiageState !== 'undefined')
+            ? (TiageState.get('flatNeeds.ich.' + archetypeId + '.' + n.id) ?? 50)
+            : 50;
+        const barId = 'needs16bar_' + archetypeId + '_' + n.id.replace('#', '');
+        rows += `<div class="needs16-row">
+            <span style="width:6px;height:6px;border-radius:50%;background:${n.color};flex-shrink:0;"></span>
+            <span style="flex:none;font-size:11px;color:rgba(255,255,255,0.75);min-width:84px;">${n.label}</span>
+            <div class="needs16-bar"><div class="needs16-bar-fill" id="${barId}" style="width:${val}%;background:${n.color};"></div></div>
+            <input type="number" class="needs16-input" min="0" max="100" value="${val}"
+                onchange="window._setNeed16('${archetypeId}','${n.id}',this.value)"
+                oninput="var b=document.getElementById('${barId}');if(b)b.style.width=Math.max(0,Math.min(100,parseInt(this.value)||0))+'%'">
         </div>`;
+    });
+
+    return `<div class="needs16-section">
+        <div class="needs16-title">Grundbedürfnisse</div>
+        ${rows}
+    </div>`;
 }
 
-// Global handler für onclick in HTML
-window._toggleEigenschaft = toggleEigenschaft;
+window._setNeed16 = function(archetypeId, needId, value) {
+    var val = Math.max(0, Math.min(100, parseInt(value) || 0));
+    if (typeof TiageState !== 'undefined') {
+        TiageState.set('flatNeeds.ich.' + archetypeId + '.' + needId, val);
+        TiageState.saveToStorage();
+        if (typeof window.updateComparisonView === 'function') window.updateComparisonView();
+        document.dispatchEvent(new CustomEvent('tiage:needs16Changed', { detail: { archetypeId: archetypeId, needId: needId, value: val } }));
+    }
+};
 
 // ========================================
 // Open / Close
@@ -298,9 +211,6 @@ async function showArchetypeInfo(person) {
         console.error('Data not available for archetype:', archetype);
         return;
     }
-
-    // Eigenschaften-Daten laden (einmalig)
-    await loadEigenschaftenData();
 
     currentDefinitionIndex = window.archetypeOrder.indexOf(archetype);
     if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
@@ -562,26 +472,7 @@ window.confirmDefinitionSelection  = confirmDefinitionSelection;
 window.showArchetypeInfoByType     = showArchetypeInfoByType;
 window.showArchetypeInfo           = showArchetypeInfo;
 window.getShortDef                 = getShortDef;
-window.getEigenschaftenHtml        = getEigenschaftenHtml;
-window.loadEigenschaftenData       = loadEigenschaftenData;
-window.toggleEigenschaft           = toggleEigenschaft;
-window.getEigenschaftenDefForArchetyp = function(archetypeId) { return eigenschaftenData?.[archetypeId] || null; };
-
-// Apply imported eigenschaft states to partner's flatNeeds (used by share-link import)
-// Uses unscaled delta (AGOD=1.0) since sender's AGOD is unknown
-window.applyEigenschaftenToPartner = async function(archetypeId, states) {
-    await loadEigenschaftenData();
-    const archData = eigenschaftenData?.[archetypeId];
-    if (!archData?.eigenschaften || !states) return;
-    archData.eigenschaften.forEach(function(e) {
-        const targetState = states[e.id];
-        if (targetState === undefined || targetState === e.default) return; // no change from default
-        const delta = targetState ? e.delta : -e.delta;
-        e.beduerfnisse.forEach(function(needId) {
-            const current = (typeof TiageState !== 'undefined' && TiageState.get(`flatNeeds.partner.${needId}`)) || 50;
-            TiageState.set(`flatNeeds.partner.${needId}`, Math.max(0, Math.min(100, current + delta)));
-        });
-    });
-};
+window.getNeeds16Html              = getNeeds16Html;
+window.loadEigenschaftenData       = function() { return Promise.resolve({}); }; // stub for backwards-compat
 
 })();

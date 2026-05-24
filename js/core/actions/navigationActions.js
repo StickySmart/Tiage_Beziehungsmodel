@@ -139,6 +139,22 @@
              * Ersetzt: onclick="if(typeof stopLightbulbBlink!=='undefined')stopLightbulbBlink();if(typeof TiageState!=='undefined')TiageState.saveToStorage();window.location.href='tiagesyntheseResonanz.html'"
              */
             'open-tiage-synthese': function(el, event) {
+                // GAD-Pflichtfelder prüfen (ICH muss Geschlecht, Attraktion, Dominanz gesetzt haben)
+                var ich = window.personDimensions && window.personDimensions.ich;
+                var missing = [];
+                if (!ich || !ich.geschlecht) missing.push('Geschlecht');
+                if (!ich || !ich.orientierung) missing.push('Attraktion');
+                if (!ich || !ich.dominanz) missing.push('Dominanz');
+
+                if (missing.length > 0) {
+                    var toast = document.createElement('div');
+                    toast.textContent = 'ICH: ' + missing.join(' + ') + ' fehlt für Synthese';
+                    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:8px;background:#ef4444;color:white;font-weight:600;z-index:10000;font-size:14px;box-shadow:0 4px 16px rgba(0,0,0,0.4);';
+                    document.body.appendChild(toast);
+                    setTimeout(function() { toast.remove(); }, 4000);
+                    return;
+                }
+
                 if (typeof stopLightbulbBlink !== 'undefined' && typeof stopLightbulbBlink === 'function') {
                     stopLightbulbBlink();
                 }

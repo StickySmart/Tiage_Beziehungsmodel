@@ -302,18 +302,19 @@ function updateRFactorDisplay() {
     const rDisplay = document.getElementById('rFactorDisplay');
     if (!rDisplay) return;
 
-    // Berechne Ø-Wert (0-100) pro Stufe aus 16er-Katalog (bed.stufe direkt)
+    // Berechne Ø-Wert (0-100) pro Stufe — NUR die 16 Grundbedürfnisse
     function calcStufeAverages(flatNeeds, archetype) {
-        var beduerfnisse = (window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse) || {};
-        if (Object.keys(beduerfnisse).length === 0) return null;
+        // B1-B4=FUND(1), B5-B8=ENTF(2), B9-B12=VERB(3), B13-B16=SINN(4)
+        var GRUNDBEDUERFNISSE = {
+            '#B1':1,'#B2':1,'#B3':1,'#B4':1,
+            '#B5':2,'#B6':2,'#B7':2,'#B8':2,
+            '#B9':3,'#B10':3,'#B11':3,'#B12':3,
+            '#B13':4,'#B14':4,'#B15':4,'#B16':4
+        };
         var sums = {1:0,2:0,3:0,4:0};
         var counts = {1:0,2:0,3:0,4:0};
-        for (var needId in beduerfnisse) {
-            if (!Object.prototype.hasOwnProperty.call(beduerfnisse, needId)) continue;
-            var bed = beduerfnisse[needId];
-            if (!bed || !bed.stufe) continue;
-            var stufe = bed.stufe;
-            if (stufe < 1 || stufe > 4) continue;
+        for (var needId in GRUNDBEDUERFNISSE) {
+            var stufe = GRUNDBEDUERFNISSE[needId];
             var val = (flatNeeds && flatNeeds[needId] !== undefined) ? flatNeeds[needId]
                     : (archetype && window.BaseArchetypProfile && window.BaseArchetypProfile[archetype]
                        ? window.BaseArchetypProfile[archetype].umfrageWerte[needId] : undefined);
@@ -331,37 +332,31 @@ function updateRFactorDisplay() {
         };
     }
 
-    const partnerArchetype = window.getPartnerArchetype() || null;
     const ichArchetype = window.getIchArchetype
         ? window.getIchArchetype()
         : (typeof TiageState !== 'undefined' ? TiageState.get('archetypes.ich.primary') : null);
     const subtitle = document.getElementById('rFactorSubtitle');
+    if (subtitle) subtitle.textContent = 'ICH';
 
     let stufen = { R1: null, R2: null, R3: null, R4: null };
 
     try {
-        const ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
-            ? TiageState.getFlatNeeds('ich') : null;
+        // Alle aktiven ICH-Slots mitteln (nicht nur Primary)
+        var ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+            ? TiageState.getIchSlots() : (ichArchetype ? [ichArchetype] : ['single']);
+        if (!ichSlots || ichSlots.length === 0) ichSlots = [ichArchetype || 'single'];
 
-        if (!partnerArchetype) {
-            if (subtitle) subtitle.textContent = 'ICH';
-            const ichStufen = calcStufeAverages(ichNeeds, ichArchetype);
-            if (ichStufen) stufen = ichStufen;
-        } else {
-            if (subtitle) subtitle.textContent = 'ICH × PARTNER';
-            const partnerNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
-                ? TiageState.getFlatNeeds('partner') : null;
-            const ichStufen = calcStufeAverages(ichNeeds, ichArchetype);
-            const partnerStufen = calcStufeAverages(partnerNeeds, partnerArchetype);
-            if (ichStufen && partnerStufen) {
-                ['R1','R2','R3','R4'].forEach(function(k) {
-                    const a = ichStufen[k], b = partnerStufen[k];
-                    stufen[k] = (a !== null && b !== null) ? Math.round((a + b) / 2)
-                               : (a !== null ? a : b);
-                });
-            } else if (ichStufen) {
-                stufen = ichStufen;
-            }
+        var stufenList = ichSlots.map(function(slot) {
+            var slotNeeds = (typeof TiageState !== 'undefined')
+                ? (TiageState.get('flatNeeds.ich.' + slot) || {}) : {};
+            return calcStufeAverages(slotNeeds, slot);
+        }).filter(Boolean);
+
+        if (stufenList.length > 0) {
+            ['R1','R2','R3','R4'].forEach(function(k) {
+                var vals = stufenList.map(function(s) { return s[k]; }).filter(function(v) { return v !== null; });
+                stufen[k] = vals.length > 0 ? Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length) : null;
+            });
         }
     } catch (e) {
         console.warn('[TIAGE] updateRFactorDisplay error:', e);

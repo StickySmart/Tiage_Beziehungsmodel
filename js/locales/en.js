@@ -1691,6 +1691,7 @@ var TiageLocale_EN = {
         // Tab Tooltips (Standalone Pages)
         tabScore: 'Score & Overview',
         tabResonanz: 'Ti-Age Shared Needs',
+        tabEvolution: 'Evolutionary Need Strength',
         tabNuancen: 'Ti-Age Nuances',
         tabProContra: 'Resonance Factors',
         tabRTI: 'RTI Pillars (Petzold)',
@@ -1698,6 +1699,7 @@ var TiageLocale_EN = {
 
         // Archetype Nav
         labelIch: 'ME',
+        labelDu: 'YOU',
         labelPartner: 'PARTNER',
 
         // Loading Messages

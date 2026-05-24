@@ -1670,6 +1670,7 @@ var TiageLocale_IT = {
         // Tooltip delle schede (Pagine autonome)
         tabScore: 'Score & Panoramica',
         tabResonanz: 'Ti-Age Bisogni condivisi',
+        tabEvolution: 'Forza evolutiva dei bisogni',
         tabNuancen: 'Ti-Age Sfumature',
         tabProContra: 'Fattori di risonanza',
         tabRTI: 'Pilastri RTI (Petzold)',
@@ -1677,6 +1678,7 @@ var TiageLocale_IT = {
 
         // Navigazione archetipo
         labelIch: 'IO',
+        labelDu: 'TU',
         labelPartner: 'PARTNER',
 
         // Messaggi di caricamento

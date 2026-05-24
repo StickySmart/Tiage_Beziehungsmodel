@@ -20,7 +20,7 @@ const ActiveFilterCard = (function() {
     let activeFilters = [];  // [{id: 'P1', label: 'Statistik', type: 'perspektive', color: '#3B82F6'}, {id: 'Liebe', label: 'Liebe', type: 'text', color: '#9CA3AF'}]
     let filterMode = 'AND';  // 'AND' oder 'OR'
 
-    // Filter-Definitionen für R1-R4, P1-P4
+    // Filter-Definitionen für R1-R4, P1-P4, S1-S4
     const FILTER_DEFS = {
         'R1': { label: 'Leben', icon: '🔥', color: '#E63946', type: 'dimension', description: 'Resonanzfaktor Leben/Orientierung' },
         'R2': { label: 'Philosophie', icon: '🧠', color: '#2A9D8F', type: 'dimension', description: 'Resonanzfaktor Philosophie/Archetyp' },
@@ -29,7 +29,11 @@ const ActiveFilterCard = (function() {
         'P1': { label: 'Statistik', icon: '📊', color: '#3B82F6', type: 'perspektive', description: 'Empirisch nachgewiesene Grundbedürfnisse' },
         'P2': { label: 'Konditionierung', icon: '🌱', color: '#F59E0B', type: 'perspektive', description: 'Natürliche vs. anerzogene Bedürfnisse' },
         'P3': { label: 'Qualität', icon: '⚖️', color: '#10B981', type: 'perspektive', description: 'Statische vs. dynamische Qualitätsaspekte' },
-        'P4': { label: 'SexPositiv', icon: '💜', color: '#8B5CF6', type: 'perspektive', description: 'Bewusste Machtdynamik und Consent' }
+        'P4': { label: 'SexPositiv', icon: '💜', color: '#8B5CF6', type: 'perspektive', description: 'Bewusste Machtdynamik und Consent' },
+        'S1': { label: 'Fundament', icon: '🌿', color: '#10B981', type: 'stufe', description: 'Stufe 1: Wohlbefinden, Sicherheit, Leichtigkeit, Orientierung' },
+        'S2': { label: 'Entfaltung', icon: '⚡', color: '#3B82F6', type: 'stufe', description: 'Stufe 2: Wirksamkeit, Freiheit, Intensität, Entwicklung' },
+        'S3': { label: 'Verbundenheit', icon: '🤝', color: '#8B5CF6', type: 'stufe', description: 'Stufe 3: Gemeinschaft, Anerkennung, Gerechtigkeit, Verbundenheit' },
+        'S4': { label: 'Sinn', icon: '✨', color: '#F59E0B', type: 'stufe', description: 'Stufe 4: Selbsterkenntnis, Sinn, Integrität, Selbstentfaltung' }
     };
 
     /**

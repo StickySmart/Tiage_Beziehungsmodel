@@ -485,18 +485,6 @@
         </div>
     </div>
 
-    <!-- RTI-Säulen Definition Modal (höherer z-index als slotMachineModal!) -->
-    <div class="modal-overlay" id="rtiPillarModal" data-action="close-rti-pillar-modal" style="z-index: 2800;">
-        <div class="modal" data-stop-propagation style="max-width: 450px;">
-            <div class="modal-header" style="border-bottom: 2px solid var(--rti-color, #F4A261);">
-                <span class="modal-title" id="rtiPillarModalTitle" style="color: var(--rti-color, #F4A261);">RTI-Säule</span>
-                <button class="modal-close" data-action="close-rti-pillar-modal">&times;</button>
-            </div>
-            <div class="modal-body" id="rtiPillarModalBody" style="padding: 20px;">
-                <!-- Content wird dynamisch gefüllt -->
-            </div>
-        </div>
-    </div>
 
     <!-- Resonanzfaktor-Hilfe Modal (Phase 2: onclick → data-action migriert) -->
     <div class="modal-overlay" id="resonanzHelpModal" data-action="close-resonanz-help-modal" style="z-index: 2450;">
@@ -1006,46 +994,39 @@
                         <option value="aromantisch">Aromantisch</option>
                     </select>
                     <button class="archetype-info-btn" data-action="show-archetype-info" data-person="ich" title="Info zum Archetyp">INFO</button>
+                    <a id="ich-settings-gear" class="archetype-info-btn" href="needs-editor.html?person=ich" style="text-decoration:none;" title="Bedürfnisse anpassen">⚙️</a>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
                     <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1053,9 +1034,9 @@
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="ich-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
-                <!-- RESET Button - ICH FFH + AGOD zurücksetzen -->
+                <!-- RESET Button - ICH FFH + AGAD zurücksetzen -->
                 <div style="display: flex; justify-content: center; margin: 8px 0;">
-                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD zurücksetzen und speichern">RESET</button>
+                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGAD zurücksetzen und speichern">RESET</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-multi">
@@ -1072,7 +1053,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Attraktion</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
@@ -1114,79 +1095,254 @@
                         <span class="r-factor-value" id="rValueR4">-</span>
                     </div>
                 </div>
-                <!-- RTI Prioritäten (steuert Stufen-Gewichtung im Score) -->
-                <div id="centerRtiSection" style="margin: 8px 0;">
-                    <div style="text-align: center; margin-bottom: 6px;">
-                        <div style="color: #F4A261; font-size: 13px; font-weight: 600;">⚡ RTI Prioritäten</div>
-                        <div style="color: var(--text-muted); font-size: 10px;">0 = Egal · 1 = Normal · 2 = Wichtig</div>
-                    </div>
-                    <div class="rti-toggle-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span data-action="open-rti-pillar-modal" data-pillar="S4" style="color:#10B981;font-size:10px;min-width:20px;font-weight:600;cursor:pointer;" title="Definition anzeigen">S4</span>
-                        <span onclick="openNeedsEditorWithRTI('S4');" style="color:var(--text-muted);font-size:10px;flex:1;cursor:pointer;" title="Bedürfnisse für Sicherheit anzeigen">🛡️ Sicherheit</span>
-                        <div class="rti-toggle-group" id="rtiToggleS4" style="display:flex;gap:2px;">
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S4" data-value="0" style="font-size:10px;padding:3px 7px;">0</button>
-                            <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S4" data-value="1" style="font-size:10px;padding:3px 7px;">1</button>
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S4" data-value="2" style="font-size:10px;padding:3px 7px;">2</button>
+                <!-- Grundbedürfnisse ICH – Live-Werte mit Erklärung -->
+                <div id="centerNeedPrioritySection" style="margin:6px 0;width:100%;">
+                    <div id="centerNeeds16Display" style="width:100%;"></div>
+                </div>
+
+                <!-- Erklärung-Popup -->
+                <div id="cn16-popup" style="display:none;position:fixed;z-index:9999;background:linear-gradient(135deg,#1a1f35,#0f1420);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:16px;width:280px;box-shadow:0 12px 40px rgba(0,0,0,0.7);backdrop-filter:blur(8px);">
+                    <button onclick="document.getElementById('cn16-popup').style.display='none'" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#6B7280;font-size:20px;cursor:pointer;line-height:1;padding:0;">×</button>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span id="cn16-p-icon" style="font-size:32px;"></span>
+                        <div>
+                            <div id="cn16-p-id" style="font-size:10px;font-weight:600;letter-spacing:1px;opacity:0.5;margin-bottom:1px;"></div>
+                            <div id="cn16-p-title" style="font-size:18px;font-weight:700;color:white;line-height:1.1;"></div>
                         </div>
                     </div>
-                    <div class="rti-toggle-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span data-action="open-rti-pillar-modal" data-pillar="S1" style="color:#3B82F6;font-size:10px;min-width:20px;font-weight:600;cursor:pointer;" title="Definition anzeigen">S1</span>
-                        <span onclick="openNeedsEditorWithRTI('S1');" style="color:var(--text-muted);font-size:10px;flex:1;cursor:pointer;" title="Bedürfnisse für Leiblichkeit anzeigen">🫀 Leiblichkeit</span>
-                        <div class="rti-toggle-group" id="rtiToggleS1" style="display:flex;gap:2px;">
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S1" data-value="0" style="font-size:10px;padding:3px 7px;">0</button>
-                            <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S1" data-value="1" style="font-size:10px;padding:3px 7px;">1</button>
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S1" data-value="2" style="font-size:10px;padding:3px 7px;">2</button>
-                        </div>
+                    <div id="cn16-p-bar" style="height:5px;border-radius:3px;margin-bottom:12px;transition:width 0.3s;"></div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:10px;font-weight:600;color:#F4A261;text-transform:uppercase;letter-spacing:0.5px;">Fähigkeit</span>
+                        <div id="cn16-p-fae" style="font-size:13px;color:#E5E7EB;margin-top:2px;"></div>
                     </div>
-                    <div class="rti-toggle-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span data-action="open-rti-pillar-modal" data-pillar="S2" style="color:#8B5CF6;font-size:10px;min-width:20px;font-weight:600;cursor:pointer;" title="Definition anzeigen">S2</span>
-                        <span onclick="openNeedsEditorWithRTI('S2');" style="color:var(--text-muted);font-size:10px;flex:1;cursor:pointer;" title="Bedürfnisse für Soziales anzeigen">👥 Soziales</span>
-                        <div class="rti-toggle-group" id="rtiToggleS2" style="display:flex;gap:2px;">
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S2" data-value="0" style="font-size:10px;padding:3px 7px;">0</button>
-                            <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S2" data-value="1" style="font-size:10px;padding:3px 7px;">1</button>
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S2" data-value="2" style="font-size:10px;padding:3px 7px;">2</button>
-                        </div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:10px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;">Synonyme</span>
+                        <div id="cn16-p-syn" style="font-size:12px;color:#9CA3AF;margin-top:2px;font-style:italic;"></div>
                     </div>
-                    <div class="rti-toggle-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span data-action="open-rti-pillar-modal" data-pillar="S3" style="color:#22c55e;font-size:10px;min-width:20px;font-weight:600;cursor:pointer;" title="Definition anzeigen">S3</span>
-                        <span onclick="openNeedsEditorWithRTI('S3');" style="color:var(--text-muted);font-size:10px;flex:1;cursor:pointer;" title="Bedürfnisse für Autonomie anzeigen">🎯 Autonomie</span>
-                        <div class="rti-toggle-group" id="rtiToggleS3" style="display:flex;gap:2px;">
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S3" data-value="0" style="font-size:10px;padding:3px 7px;">0</button>
-                            <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S3" data-value="1" style="font-size:10px;padding:3px 7px;">1</button>
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S3" data-value="2" style="font-size:10px;padding:3px 7px;">2</button>
-                        </div>
-                    </div>
-                    <div class="rti-toggle-row" style="display:flex;align-items:center;gap:8px;">
-                        <span data-action="open-rti-pillar-modal" data-pillar="S5" style="color:#F59E0B;font-size:10px;min-width:20px;font-weight:600;cursor:pointer;" title="Definition anzeigen">S5</span>
-                        <span onclick="openNeedsEditorWithRTI('S5');" style="color:var(--text-muted);font-size:10px;flex:1;cursor:pointer;" title="Bedürfnisse für Werte &amp; Sinn anzeigen">💫 Werte & Sinn</span>
-                        <div class="rti-toggle-group" id="rtiToggleS5" style="display:flex;gap:2px;">
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S5" data-value="0" style="font-size:10px;padding:3px 7px;">0</button>
-                            <button class="agod-toggle-btn active" data-action="set-rti-priority" data-pillar="S5" data-value="1" style="font-size:10px;padding:3px 7px;">1</button>
-                            <button class="agod-toggle-btn" data-action="set-rti-priority" data-pillar="S5" data-value="2" style="font-size:10px;padding:3px 7px;">2</button>
-                        </div>
+                    <div>
+                        <span style="font-size:10px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Strategie</span>
+                        <div id="cn16-p-str" style="font-size:12px;color:#D1D5DB;margin-top:2px;line-height:1.45;"></div>
                     </div>
                 </div>
-                <!-- Score Label -->
-                <div class="score-label" data-i18n="center.syntheseScoreLabel">Ti-Age Synthese Score</div>
-                <!-- Lightbulb Button (moved to top) -->
-                <div class="lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
-                    <span class="lightbulb-icon">💡</span>
-                </div>
-                <!-- Score Circle (moved to bottom) -->
-                <div class="score-circle-display" id="mainScoreCircle" title="Bedürfnis-Übereinstimmung öffnen" onclick="openNeedsFullModal()" style="cursor: pointer;">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
-                        <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
-                    </svg>
-                    <div class="score-circle-value" id="mainScoreValue">0</div>
-                </div>
-                <!-- KO-Text Display (unter dem Score Circle) -->
+
+                <script>
+                (function() {
+                    var NEEDS = [
+                        {id:'#B1',n:'1',label:'Wohlbefinden',s:1,c:'#10B981',icon:'🌿',fae:'Selbstversorgung',syn:'Unversehrtheit, Gesundheit, Fitness',str:'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.'},
+                        {id:'#B2',n:'2',label:'Sicherheit',s:1,c:'#10B981',icon:'🛡️',fae:'Selbstschutz',syn:'Stabilität, Schutz, Halt, Loyalität, Treue',str:'Ein Haus, Kleidung, Verträge, Absprachen…'},
+                        {id:'#B3',n:'3',label:'Leichtigkeit',s:1,c:'#10B981',icon:'🌊',fae:'Energieeinsparung',syn:'Energieeinsparung, Einfachheit, Harmonie',str:'Ordnung, Gewohnheiten, Urlaub, Medienkonsum…'},
+                        {id:'#B4',n:'4',label:'Orientierung',s:1,c:'#10B981',icon:'🧭',fae:'Wahrnehmung',syn:'Klarheit, Struktur, Ordnung, Regeln, Führung',str:'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch…'},
+                        {id:'#B5',n:'5',label:'Wirksamkeit',s:2,c:'#3B82F6',icon:'⚡',fae:'Handlungsfähigkeit',syn:'Einfluss, Macht, Souveränität',str:'Jede aktive Einflussnahme nährt die Wirksamkeit.'},
+                        {id:'#B6',n:'6',label:'Freiheit',s:2,c:'#3B82F6',icon:'🦋',fae:'Entscheidungsfähigkeit',syn:'Autonomie, Selbstbestimmtheit, Un-Abhängigkeit',str:'Jede selbstbestimmte Entscheidung nährt die Freiheit.'},
+                        {id:'#B7',n:'7',label:'Intensität',s:2,c:'#3B82F6',icon:'🔥',fae:'Empfinden',syn:'Lebendigkeit, Leidenschaft, Sinnlichkeit, Genuss',str:'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.'},
+                        {id:'#B8',n:'8',label:'Entwicklung',s:2,c:'#3B82F6',icon:'🌱',fae:'Lernen',syn:'Wachstum, Entfaltung, Lernen',str:'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.'},
+                        {id:'#B9',n:'9',label:'Gemeinschaft',s:3,c:'#8B5CF6',icon:'👥',fae:'Soziale Interaktion',syn:'Gesellschaft, Zugehörigkeit, Familie, Clan, Gruppe',str:'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen…'},
+                        {id:'#B10',n:'10',label:'Anerkennung',s:3,c:'#8B5CF6',icon:'⭐',fae:'Selbstwertempfinden',syn:'Wertschätzung, Respekt, Bedeutung, Nützlichkeit',str:'Ein Lob, ein Kompliment, eine Aufmerksamkeit, ein Lächeln…'},
+                        {id:'#B11',n:'11',label:'Gerechtigkeit',s:3,c:'#8B5CF6',icon:'⚖️',fae:'Wertebewusstsein',syn:'Fairness, Respekt, Angemessenheit, Gleichwertigkeit',str:'Eine Beschwerde, eine Anklage, eine Anzeige, Rache…'},
+                        {id:'#B12',n:'12',label:'Verbundenheit',s:3,c:'#8B5CF6',icon:'💗',fae:'Empathie',syn:'Intimität, Geborgenheit, Nähe, Vertrauen, Liebe',str:'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex…'},
+                        {id:'#B13',n:'13',label:'Selbsterkenntnis',s:4,c:'#F59E0B',icon:'🔮',fae:'Selbstreflexion',syn:'Bewusstheit, Integration, Weisheit',str:'Meditation, Coaching und Therapie, ehrliche Freundschaft…'},
+                        {id:'#B14',n:'14',label:'Sinn',s:4,c:'#F59E0B',icon:'✨',fae:'Intentionalität',syn:'Berufung, Vision, Mission',str:'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.'},
+                        {id:'#B15',n:'15',label:'Integrität',s:4,c:'#F59E0B',icon:'💎',fae:'Selbstverantwortung',syn:'Wahrhaftigkeit, Konsistenz, Authentizität, Würde',str:'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.'},
+                        {id:'#B16',n:'16',label:'Selbstentfaltung',s:4,c:'#F59E0B',icon:'🌸',fae:'Selbstliebe',syn:'Selbstwerdung, Selbstverwirklichung, Flow',str:'Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.'}
+                    ];
+                    var STUFEN = [
+                        {nr:1,label:'Fundament',c:'#10B981'},
+                        {nr:2,label:'Entfaltung',c:'#3B82F6'},
+                        {nr:3,label:'Verbundenheit',c:'#8B5CF6'},
+                        {nr:4,label:'Sinn',c:'#F59E0B'}
+                    ];
+
+                    function getValue(needId) {
+                        if (typeof TiageState === 'undefined') return 50;
+                        var locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
+                        if (locked && locked.hasOwnProperty(needId)) return locked[needId];
+                        // Primären Slot direkt lesen — kein kombiniertes OR (das bläht Werte auf)
+                        var slots = TiageState.getIchSlots ? TiageState.getIchSlots() : ['single'];
+                        var arch = (slots && slots[0]) || 'single';
+                        var v = TiageState.get('flatNeeds.ich.' + arch + '.' + needId);
+                        return typeof v === 'number' ? v : 50;
+                    }
+
+                    function isLocked(needId) {
+                        if (typeof TiageState === 'undefined') return false;
+                        var locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
+                        return locked && locked.hasOwnProperty(needId);
+                    }
+
+                    function valColor(v) {
+                        return v >= 75 ? '#10B981' : v >= 50 ? '#F4A261' : v >= 25 ? '#6B7280' : '#EF4444';
+                    }
+
+                    function showPopup(need, event) {
+                        var v = getValue(need.id);
+                        var pp = document.getElementById('cn16-popup');
+                        if (!pp) return;
+                        document.getElementById('cn16-p-icon').textContent = need.icon;
+                        document.getElementById('cn16-p-id').textContent = need.id + ' · Stufe ' + need.s;
+                        document.getElementById('cn16-p-id').style.color = need.c;
+                        document.getElementById('cn16-p-title').textContent = need.label;
+                        document.getElementById('cn16-p-bar').style.background = 'linear-gradient(90deg,' + need.c + ' ' + v + '%, rgba(255,255,255,0.08) ' + v + '%)';
+                        document.getElementById('cn16-p-fae').textContent = need.fae;
+                        document.getElementById('cn16-p-syn').textContent = need.syn;
+                        document.getElementById('cn16-p-str').textContent = need.str;
+                        // Position
+                        var rect = event.currentTarget.getBoundingClientRect();
+                        var top = Math.max(10, Math.min(rect.top, window.innerHeight - 320));
+                        var left = rect.right + 10;
+                        if (left + 290 > window.innerWidth) left = rect.left - 295;
+                        pp.style.top = top + 'px';
+                        pp.style.left = left + 'px';
+                        pp.style.borderColor = need.c + '55';
+                        pp.style.display = 'block';
+                        event.stopPropagation();
+                    }
+
+                    function getSavedOpenStufe() {
+                        try { var n = parseInt(localStorage.getItem('tiage_cn16_openStufe'), 10); return (n >= 1 && n <= 4) ? n : 1; } catch(e) { return 1; }
+                    }
+
+                    function render() {
+                        var c = document.getElementById('centerNeeds16Display');
+                        if (!c) return;
+                        var openNr = getSavedOpenStufe();
+                        var html = '';
+                        STUFEN.forEach(function(st) {
+                            var isOpen = st.nr === openNr;
+                            html += '<div onclick="window._cn16ToggleStufe('+st.nr+')" style="display:flex;align-items:center;gap:6px;margin:10px 0 2px;padding:3px 6px;background:'+st.c+'18;border-radius:5px;cursor:pointer;user-select:none;">';
+                            html += '<span id="cn16-stc-'+st.nr+'" style="color:'+st.c+';font-size:9px;">'+(isOpen?'▼':'▶')+'</span>';
+                            html += '<span style="color:'+st.c+';font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">'+st.label+'</span>';
+                            html += '</div>';
+                            html += '<div id="cn16-st-'+st.nr+'" style="display:'+(isOpen?'block':'none')+';">';
+                            NEEDS.filter(function(n){return n.s===st.nr;}).forEach(function(need) {
+                                var v = getValue(need.id);
+                                var locked = isLocked(need.id);
+                                var done = !locked && v >= 100;
+                                var borderColor = locked ? '#6366F1' : (done ? '#10B981' : 'transparent');
+                                var rowBorder = 'border-left:2px solid ' + borderColor + ';padding-left:2px;';
+                                var indicator = locked ? '🔒' : (done ? '✓' : 'ℹ');
+                                var indStyle = locked ? 'font-size:11px;' : ('font-size:13px;font-weight:' + (done ? '700' : '400') + ';color:' + (done ? '#10B981' : '#4B5563') + ';');
+                                html += '<div id="cn16r-' + need.n + '" class="cn16-need-row" data-need-n="' + need.n + '" style="display:flex;align-items:center;gap:8px;padding:5px 4px;border-radius:6px;cursor:pointer;transition:background 0.15s;' + rowBorder + '" onmouseenter="this.style.background=\'rgba(255,255,255,0.05)\'" onmouseleave="this.style.background=\'transparent\'">';
+                                html += '<span style="font-size:16px;width:22px;text-align:center;">' + need.icon + '</span>';
+                                html += '<div style="flex:1;min-width:0;">';
+                                html += '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px;">';
+                                html += '<span style="color:' + (locked ? '#9CA3AF' : '#E5E7EB') + ';font-size:13px;font-weight:500;">' + need.label + '</span>';
+                                html += '<span id="cn16v-' + need.n + '" style="color:' + (locked ? '#6366F1' : valColor(v)) + ';font-size:14px;font-weight:700;min-width:30px;text-align:right;">' + v + '</span>';
+                                html += '</div>';
+                                html += '<div style="height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">';
+                                html += '<div id="cn16b-' + need.n + '" style="height:100%;width:' + v + '%;background:' + (locked ? 'linear-gradient(90deg,#6366F1,#818CF8)' : 'linear-gradient(90deg,' + need.c + ',' + need.c + 'aa)') + ';border-radius:3px;transition:width 0.25s;"></div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '<span id="cn16i-' + need.n + '" style="width:16px;text-align:center;' + indStyle + '">' + indicator + '</span>';
+                                html += '</div>';
+                            });
+                            html += '</div>'; // close collapsible stufe div
+                        });
+                        c.innerHTML = html;
+                        // Click-Handler binden
+                        NEEDS.forEach(function(need) {
+                            var row = c.querySelector('[data-need-n="' + need.n + '"]');
+                            if (row) row.addEventListener('click', function(e){ showPopup(need, e); });
+                        });
+                    }
+
+                    function update() {
+                        NEEDS.forEach(function(need) {
+                            var v = getValue(need.id);
+                            var locked = isLocked(need.id);
+                            var done = !locked && v >= 100;
+                            var ve = document.getElementById('cn16v-' + need.n);
+                            var be = document.getElementById('cn16b-' + need.n);
+                            var ie = document.getElementById('cn16i-' + need.n);
+                            var re = document.getElementById('cn16r-' + need.n);
+                            if (ve) { ve.textContent = v; ve.style.color = locked ? '#6366F1' : valColor(v); }
+                            if (be) { be.style.width = v + '%'; be.style.background = locked ? 'linear-gradient(90deg,#6366F1,#818CF8)' : 'linear-gradient(90deg,' + need.c + ',' + need.c + 'aa)'; }
+                            if (ie) { ie.textContent = locked ? '🔒' : (done ? '✓' : 'ℹ'); ie.style.fontSize = locked ? '11px' : '13px'; ie.style.color = locked ? '' : (done ? '#10B981' : '#4B5563'); ie.style.fontWeight = locked ? '' : (done ? '700' : '400'); }
+                            if (re) { re.style.borderLeft = '2px solid ' + (locked ? '#6366F1' : (done ? '#10B981' : 'transparent')); }
+                        });
+                    }
+
+                    // Popup schließen bei Klick außerhalb
+                    document.addEventListener('click', function(e) {
+                        var pp = document.getElementById('cn16-popup');
+                        if (pp && pp.style.display !== 'none' && !pp.contains(e.target)) {
+                            pp.style.display = 'none';
+                        }
+                    });
+
+                    function onArchetypeChange() { setTimeout(render, 300); }
+
+                    function init() {
+                        render();
+                        document.addEventListener('tiage:needs16Changed', update);
+                        window.addEventListener('resonanzfaktoren-changed', update);
+                        // Lock-Änderungen → update() statt render() (erhält Collapse-State)
+                        document.addEventListener('flatNeedLockChange', update);
+                        // Nach Zurück-Navigation von needs-editor: bfcache-Seite hat alten TiageState
+                        window.addEventListener('pageshow', function(e) {
+                            if (e.persisted) {
+                                if (typeof TiageState !== 'undefined' && TiageState.loadFromStorage) {
+                                    TiageState.loadFromStorage();
+                                }
+                                setTimeout(render, 150);
+                            }
+                        });
+                        // ichSelect change = echter Archetyp-Wechsel-Event (dispatched by archetypeGrid.js)
+                        var ichSel = document.getElementById('ichSelect');
+                        if (ichSel) ichSel.addEventListener('change', onArchetypeChange);
+                        var mobileIchSel = document.getElementById('mobileIchSelect');
+                        if (mobileIchSel) mobileIchSel.addEventListener('change', onArchetypeChange);
+                    }
+
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', function(){ setTimeout(init, 600); });
+                    } else {
+                        setTimeout(init, 600);
+                    }
+
+                    window._updateCenterNeeds16 = update;
+                    window._renderCenterNeeds16 = render;
+
+                    var STUFEN_NRS = [1, 2, 3, 4];
+                    window._cn16ToggleStufe = function(nr) {
+                        var clickedBody = document.getElementById('cn16-st-' + nr);
+                        if (!clickedBody) return;
+                        var willOpen = clickedBody.style.display === 'none';
+                        // Accordion: close all, then open clicked (if it was closed)
+                        STUFEN_NRS.forEach(function(n) {
+                            var body = document.getElementById('cn16-st-' + n);
+                            var icon = document.getElementById('cn16-stc-' + n);
+                            if (!body || !icon) return;
+                            var open = (n === nr) && willOpen;
+                            body.style.display = open ? 'block' : 'none';
+                            icon.textContent = open ? '▼' : '▶';
+                        });
+                        // Persist: save open stufe (0 = all closed)
+                        try { localStorage.setItem('tiage_cn16_openStufe', willOpen ? nr : 0); } catch(e) {}
+                    };
+                })();
+                </script>
+                <script>
+                (function() {
+                    function updateSettingsGearHref() {
+                        var slots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots) ? TiageState.getIchSlots() : [];
+                        var arch = slots.length > 0 ? slots[0] : null;
+                        var href = arch ? 'needs-editor.html?archetype=' + arch + '&person=ich' : 'needs-editor.html?person=ich';
+                        ['ich-settings-gear', 'mobile-ich-settings-gear'].forEach(function(id) {
+                            var el = document.getElementById(id);
+                            if (el) el.href = href;
+                        });
+                    }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        setTimeout(updateSettingsGearHref, 800);
+                        var s = document.getElementById('ichSelect');
+                        if (s) s.addEventListener('change', function() { setTimeout(updateSettingsGearHref, 300); });
+                    });
+                    if (document.readyState !== 'loading') setTimeout(updateSettingsGearHref, 800);
+                })();
+                </script>
+                <!-- Score + KO hidden, accessible via FAB -->
+                <div id="mainScoreCircle" style="display:none;"><svg viewBox="0 0 100 100"><circle class="score-bg" cx="50" cy="50" r="42"></circle><circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle></svg><div class="score-circle-value" id="mainScoreValue">0</div></div>
                 <div id="desktopKoTextDisplay" class="desktop-ko-text-display" style="display: none;"></div>
-                <!-- Slot Machine Button - Finde passenden Partner -->
-                <button class="best-match-btn slot-machine-center-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen">
-                    <span class="match-icon">🎰</span>
-                    <span class="match-text" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
-                </button>
             </div>
 
             <!-- PARTNER Column -->
@@ -1248,9 +1404,9 @@
                 <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="partner-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
-                <!-- FREE Button - Reset Partner GOD -->
+                <!-- FREE Button - Reset Partner GAD -->
                 <div style="display: flex; justify-content: center; margin: 8px 0;">
-                    <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD (Geschlecht, Orientierung, Dominanz) zurücksetzen">FREE</button>
+                    <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GAD (Geschlecht, Attraktion, Dominanz) zurücksetzen">FREE</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-multi">
@@ -1267,7 +1423,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Attraktion</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" data-action="show-dimension-tooltip" data-tooltip-key="orientierungKO" title="KO-Kriterien anzeigen">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär - <strong>Regeln</strong>)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
                     </div>
@@ -1337,46 +1493,39 @@
                     </select>
                     <button class="archetype-nav-btn" data-action="navigate-archetype" data-person="ich" data-direction="1" title="Nächster Archetyp">&#9654;</button>
                     <button data-action="open-archetype-info" data-person="ich" data-select-id="mobileIchSelect" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <a id="mobile-ich-settings-gear" href="needs-editor.html?person=ich" style="padding:12px 16px;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:8px;color:var(--text-secondary);cursor:pointer;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;" title="Bedürfnisse anpassen">⚙️</a>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
                     <div class="archetype-symbol-item" data-archetype="single" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=single&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">★</span>
                         <span class="archetype-symbol-name">Single</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="duo" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♡</span>
                         <span class="archetype-symbol-name">Duo</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="duo_flex" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=duo_flex&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⚡</span>
                         <span class="archetype-symbol-name">Duo-Flex</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="solopoly" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=solopoly&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◆</span>
                         <span class="archetype-symbol-name">Solopoly</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="polyamor" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=polyamor&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">♥</span>
                         <span class="archetype-symbol-name">Polyamor</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="ra" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=ra&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">∞</span>
                         <span class="archetype-symbol-name">RA</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="lat" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=lat&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">⌂</span>
                         <span class="archetype-symbol-name">LAT</span>
                     </div>
                     <div class="archetype-symbol-item" data-archetype="aromantisch" data-action="select-archetype" data-person="ich">
-                        <a class="archetype-settings-link" href="needs-editor.html?archetype=aromantisch&person=ich&eigenschaften=1" data-stop-propagation title="Bedürfnisse anpassen">⚙️</a>
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
@@ -1386,9 +1535,9 @@
                     <div class="header-geschlecht-info" id="mobile-ich-header-dominanz"></div>
                     <div class="header-geschlecht-info" id="mobile-ich-header-orientierung"></div>
                 </div>
-                <!-- RESET Button - ICH FFH + AGOD zurücksetzen (Mobile) -->
+                <!-- RESET Button - ICH FFH + AGAD zurücksetzen (Mobile) -->
                 <div style="display: flex; justify-content: center; margin: 8px 0;">
-                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGOD zurücksetzen und speichern">RESET</button>
+                    <button type="button" data-action="reset-ich-ffh-agod" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #64748b, #94a3b8); border: 2px solid #475569; border-radius: 6px; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);" title="FFH + AGAD zurücksetzen und speichern">RESET</button>
                 </div>
                 <div class="column-dimensions mobile-dims-grid" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht-multi">
@@ -1443,7 +1592,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
                         <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
-                            <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
+                            <span><span class="orientierung-info-link" data-stop-propagation>Attraktion</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
@@ -1548,7 +1697,7 @@
                     </div>
                     <!-- FREE Button (Mobile) -->
                     <div style="display: flex; justify-content: center; margin: 8px 0;">
-                        <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GOD zurücksetzen">FREE</button>
+                        <button type="button" data-action="reset-partner-god" class="free-reset-btn" style="padding: 6px 16px; background: linear-gradient(135deg, #f59e0b, #eab308); border: 2px solid #ca8a04; border-radius: 6px; color: #1a1a2e; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);" title="Partner GAD zurücksetzen">FREE</button>
                     </div>
                     <!-- Dimensions (2-column grid) -->
                     <div class="column-dimensions mobile-dims-grid" id="mobilePartnerDimensions">
@@ -1604,7 +1753,7 @@
                         </div>
                         <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
                             <div class="compact-dimension-label" data-action="toggle-dimension-collapse">
-                                <span><span class="orientierung-info-link" data-stop-propagation>Orientierung</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
+                                <span><span class="orientierung-info-link" data-stop-propagation>Attraktion</span> <span style="font-size: 10px;">(Mehrfachauswahl)</span></span>
                                 <span class="collapse-toggle">▼</span>
                             </div>
                             <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
@@ -2490,6 +2639,11 @@
             <a href="https://buymeacoffee.com/cwzfykm89b" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:transparent;border:none;cursor:pointer;text-decoration:none;opacity:0.9;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                 <img src="assets/images/coffee.png" alt="Buy Me a Coffee" height="140" style="display:block;">
             </a>
+            <!-- Augenhöhe Link -->
+            <a href="https://liebe-auf-augenhoehe.de" target="_blank" rel="noopener" title="Volker Schmidt – lieben will gelernt sein" style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;opacity:0.85;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+                <span style="font-size:22px;font-weight:900;color:#fff;font-family:Georgia,serif;letter-spacing:-0.5px;">augenhöhe.</span>
+                <span style="font-size:12px;color:#e57373;font-style:italic;font-family:Georgia,serif;">lieben will gelernt sein</span>
+            </a>
         </div>
 
         <!-- Links-Zeile: persönliche Interessen -->
@@ -2625,13 +2779,13 @@
             </div>
             <div class="modal-body" style="padding: 16px;">
                 <div class="memory-info-box">
-                    <p><strong>ICH:</strong> Auto-Save pro Archetyp (8 Slots) | <strong>PARTNER:</strong> Manuell speichern/löschen (8 Slots)</p>
+                    <p><strong>ICH:</strong> Manuell speichern/löschen (8 Slots) | <strong>PARTNER:</strong> Manuell speichern/löschen (8 Slots)</p>
                 </div>
                 <div class="memory-v2-columns">
-                    <!-- ICH-Spalte (8 Archetypen, Auto-Save) -->
+                    <!-- ICH-Spalte (8 Slots, manuell) -->
                     <div class="memory-v2-column memory-ich-column">
                         <div class="memory-column-header">
-                            <span class="memory-column-title">👤 ICH (Auto-Save)</span>
+                            <span class="memory-column-title">👤 ICH (Manuell)</span>
                             <span class="memory-slot-count-badge" id="memoryIchSlotCount">0/8</span>
                         </div>
                         <div class="memory-ich-slots-list" id="memoryIchSlotsList">
@@ -2866,11 +3020,6 @@
         function openNeedsEditorWithStufe(stufe) {
             var arch = _getIchArchetype();
             window.location.href = 'needs-editor.html?archetype=' + encodeURIComponent(arch) + '&person=ich&stufe=' + stufe;
-        }
-
-        function openNeedsEditorWithRTI(pillar) {
-            var arch = _getIchArchetype();
-            window.location.href = 'needs-editor.html?archetype=' + encodeURIComponent(arch) + '&person=ich&rti=' + pillar;
         }
 
         // Loading Overlay ausblenden wenn App bereit ist

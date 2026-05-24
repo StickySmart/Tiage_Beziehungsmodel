@@ -294,7 +294,7 @@
 
             // Update Orientierung labels
             document.querySelectorAll('.orientierung-info-link').forEach(el => {
-                el.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
+                el.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Attraktion');
             });
 
             // Update GFK labels
@@ -325,7 +325,7 @@
                     const s = TiageI18n.t('dimensions.legend.secondary', 'S');
                     const pFull = TiageI18n.t('dimensions.legend.primaryFull', 'Primär');
                     const sFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
-                    orientierungLink.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
+                    orientierungLink.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Attraktion');
                     legendSpan.innerHTML = `(${p}=${pFull}, ${s}=${sFull})`;
                 }
             });

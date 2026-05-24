@@ -1449,6 +1449,7 @@ var TiageLocale_FR = {
         // Infobulles des onglets (Pages autonomes)
         tabScore: 'Score & Aper\u00e7u',
         tabResonanz: 'Ti-Age Besoins partag\u00e9s',
+        tabEvolution: 'Force des besoins \u00e9volutifs',
         tabNuancen: 'Ti-Age Nuances',
         tabProContra: 'Facteurs de r\u00e9sonance',
         tabRTI: 'Piliers RTI (Petzold)',
@@ -1456,6 +1457,7 @@ var TiageLocale_FR = {
 
         // Navigation arch\u00e9type
         labelIch: 'MOI',
+        labelDu: 'TOI',
         labelPartner: 'PARTENAIRE',
 
         // Messages de chargement

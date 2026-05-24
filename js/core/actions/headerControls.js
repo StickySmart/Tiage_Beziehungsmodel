@@ -324,12 +324,34 @@
                     el.classList.add('needs-selection');
                 });
 
-                // 6. Synthese neu berechnen
+                // 6. ICH Archetyp-Slots: nur Primary behalten (Multi-Selection leeren)
+                if (TiageState.getIchSlots && TiageState.setIchSlots) {
+                    var slots = TiageState.getIchSlots();
+                    var primary = (slots && slots[0]) || 'single';
+                    TiageState.setIchSlots([primary]);
+
+                    // Dropdowns auf Primary setzen
+                    var ichSel = document.getElementById('ichSelect');
+                    var mobileIchSel = document.getElementById('mobileIchSelect');
+                    if (ichSel) ichSel.value = primary;
+                    if (mobileIchSel) mobileIchSel.value = primary;
+
+                    // Archetyp-Grid neu zeichnen (Badges entfernen)
+                    if (typeof window.updateArchetypeGrid === 'function') {
+                        window.updateArchetypeGrid('ich', primary);
+                    }
+
+                    // Archetyp-Change-Event auslösen (triggert Profile-Neuberechnung)
+                    var activeSelect = ichSel || mobileIchSel;
+                    if (activeSelect) activeSelect.dispatchEvent(new Event('change'));
+                }
+
+                // 7. Synthese neu berechnen
                 if (typeof window.updateComparisonView === 'function') {
                     window.updateComparisonView();
                 }
 
-                console.log('[RESET-ICH] GOD + FFH permanent zurückgesetzt und gespeichert');
+                console.log('[RESET-ICH] GOD + FFH + Archetyp-Slots permanent zurückgesetzt und gespeichert');
             },
 
             /**

@@ -187,49 +187,53 @@ const OshoZenTextGenerator = (function() {
     // Stufen-Strategien: Mappt #K-Kategorien auf Fähigkeit + Erfüllungsstrategien
     // ═══════════════════════════════════════════════════════════════════════════
 
-    const STUFEN_STRATEGIEN = {
-        // Stufe 1: Passive Basisbedürfnisse
-        '#K1':  { stufe: 1, faehigkeit: 'Selbstversorgung',     strategie: 'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.' },
-        '#K2':  { stufe: 1, faehigkeit: 'Selbstschutz',         strategie: 'Ein Haus, Kleidung, Verträge, Absprachen...' },
-        '#K7':  { stufe: 1, faehigkeit: 'Energieeinsparung',    strategie: 'Ordnung, Gewohnheiten, Urlaub, Medienkonsum...' },
-        '#K18': { stufe: 1, faehigkeit: 'Wahrnehmung',          strategie: 'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch...' },
-        // Stufe 2: Handlungs-Bedürfnisse
-        '#K5':  { stufe: 2, faehigkeit: 'Entscheidungsfähigkeit', strategie: 'Jede selbstbestimmte Entscheidung nährt die Freiheit.' },
-        '#K9':  { stufe: 2, faehigkeit: 'Handlungsfähigkeit',   strategie: 'Jede aktive Einflussnahme nährt die Wirksamkeit.' },
-        '#K11': { stufe: 2, faehigkeit: 'Empfinden',            strategie: 'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.' },
-        '#K14': { stufe: 2, faehigkeit: 'Lernen',               strategie: 'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.' },
-        // Stufe 3: Soziale Bedürfnisse
-        '#K3':  { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
-        '#K6':  { stufe: 3, faehigkeit: 'Soziale Interaktion',  strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
-        '#K10': { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
-        '#K15': { stufe: 3, faehigkeit: 'Soziale Interaktion',  strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
-        '#K16': { stufe: 3, faehigkeit: 'Empathie',             strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex...' },
-        '#K17': { stufe: 3, faehigkeit: 'Wertebewusstsein',     strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
-        // Stufe 4: Identitäts-Bedürfnisse
-        '#K4':  { stufe: 4, faehigkeit: 'Selbstreflexion',      strategie: 'Meditation, Coaching und Therapie, ehrliche Freundschaft...' },
-        '#K8':  { stufe: 4, faehigkeit: 'Selbstliebe',          strategie: 'Vervollkommnung eigener Gaben und Talente zum Wohle der Welt.' },
-        '#K12': { stufe: 4, faehigkeit: 'Selbstverantwortung',  strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
-        '#K13': { stufe: 4, faehigkeit: 'Intentionalität',      strategie: 'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.' }
+    // Direct #B → Stufe/Fähigkeit/Strategie mapping (replaces old #K-based lookup)
+    const B_STRATEGIEN = {
+        '#B1':  { stufe: 1, faehigkeit: 'Selbstversorgung',      strategie: 'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.' },
+        '#B2':  { stufe: 1, faehigkeit: 'Selbstschutz',          strategie: 'Ein Haus, Kleidung, Verträge, Absprachen...' },
+        '#B3':  { stufe: 1, faehigkeit: 'Energieeinsparung',     strategie: 'Ordnung, Gewohnheiten, Urlaub, Medienkonsum...' },
+        '#B4':  { stufe: 1, faehigkeit: 'Wahrnehmung',           strategie: 'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch...' },
+        '#B5':  { stufe: 2, faehigkeit: 'Handlungsfähigkeit',    strategie: 'Jede aktive Einflussnahme nährt die Wirksamkeit.' },
+        '#B6':  { stufe: 2, faehigkeit: 'Entscheidungsfähigkeit',strategie: 'Jede selbstbestimmte Entscheidung nährt die Freiheit.' },
+        '#B7':  { stufe: 2, faehigkeit: 'Empfinden',             strategie: 'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.' },
+        '#B8':  { stufe: 2, faehigkeit: 'Lernen',                strategie: 'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.' },
+        '#B9':  { stufe: 3, faehigkeit: 'Soziale Interaktion',   strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
+        '#B10': { stufe: 3, faehigkeit: 'Soziale Interaktion',   strategie: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen...' },
+        '#B11': { stufe: 3, faehigkeit: 'Wertebewusstsein',      strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Gerechtigkeit.' },
+        '#B12': { stufe: 3, faehigkeit: 'Empathie',              strategie: 'Ein Gespräch, gemeinsame intensive Erfahrungen, tiefe Begegnung...' },
+        '#B13': { stufe: 4, faehigkeit: 'Selbstreflexion',       strategie: 'Meditation, Coaching und Therapie, ehrliche Freundschaft...' },
+        '#B14': { stufe: 4, faehigkeit: 'Intentionalität',       strategie: 'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.' },
+        '#B15': { stufe: 4, faehigkeit: 'Selbstverantwortung',   strategie: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
+        '#B16': { stufe: 4, faehigkeit: 'Selbstliebe',           strategie: 'Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.' }
     };
 
     // Stufen-Farben (passend zu STUFEN_MAP in needsIntegration.js)
     const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+
+    // Löst den bild-Pfad aus osho-zen-beduerfnisse.json in einen vollständigen URL-Pfad auf
+    function resolveImagePath(bild) {
+        if (!bild) return '';
+        if (bild.startsWith('Future/')) return 'assets/images/' + bild;
+        if (bild.endsWith('.webp') || bild.endsWith('.png')) return 'assets/images/beduerfnisse-v2/' + bild;
+        return bild;
+    }
 
     /**
      * Gibt die Stufen-Strategie für ein Bedürfnis zurück
      * Lookup: needId → BeduerfnisKatalog.kategorie → STUFEN_STRATEGIEN
      */
     function getStrategieForNeed(needId) {
+        // Direct #B lookup (v4.0+)
+        if (B_STRATEGIEN[needId]) return B_STRATEGIEN[needId];
+        // Legacy fallback via catalog
         var katalog = (typeof window !== 'undefined' && window.BeduerfnisKatalog)
             ? window.BeduerfnisKatalog : null;
         if (!katalog || !katalog.beduerfnisse) return null;
         var bed = katalog.beduerfnisse[needId];
         if (!bed) return null;
-        // v4.0: direkte Felder aus 16er-Katalog
         if (bed.stufe) {
             return { stufe: bed.stufe, faehigkeit: bed.faehigkeit || '', strategie: bed.strategie || '' };
         }
-        // Legacy: #K-Kategorie-Lookup
         var katId = bed.kategorie || (bed.altKategorien && bed.altKategorien[0]);
         return katId ? (STUFEN_STRATEGIEN[katId] || null) : null;
     }
@@ -246,20 +250,14 @@ const OshoZenTextGenerator = (function() {
      * @param {number} topN - Anzahl der Top-Matches (default: 5)
      * @returns {Array} Array von { id, label, score1, score2, match, karte, text }
      */
-    // RTI → Stufen Multiplikator für Top-Match-Gewichtung
-    // 0=Egal→0.1, 1=Normal→1.0, 2=Wichtig→4.0 (starke Wirkung gewünscht)
-    function getRtiMultiplierForNeed(needId) {
-        var strategie = getStrategieForNeed(needId);
-        if (!strategie) return 1.0;
-        var stufe = strategie.stufe;
-        var rti = (typeof TiageWeights !== 'undefined' && TiageWeights.RTI)
-            ? TiageWeights.RTI.get() : null;
-        if (!rti) return 1.0;
-        function toMult(v) { return v === 0 ? 0.1 : v === 2 ? 4.0 : 1.0; }
-        if (stufe === 1) return toMult(rti.S4);
-        if (stufe === 2) return (toMult(rti.S1) + toMult(rti.S3)) / 2;
-        if (stufe === 3) return toMult(rti.S2);
-        if (stufe === 4) return toMult(rti.S5) * 0.7 + toMult(rti.S3) * 0.3;
+    // Per-need priority multiplier: 0=Egal→0.1, 1=Normal→1.0, 2=Wichtig→4.0
+    function getNeedPriorityMultiplier(needId) {
+        var priorities = (typeof TiageWeights !== 'undefined' && TiageWeights.NeedPriorities)
+            ? TiageWeights.NeedPriorities.get() : null;
+        if (!priorities) return 1.0;
+        var val = priorities[needId];
+        if (val === 0) return 0.1;
+        if (val === 2) return 4.0;
         return 1.0;
     }
 
@@ -283,14 +281,13 @@ const OshoZenTextGenerator = (function() {
                     const difference = Math.abs(score1 - score2);
                     const similarity = 1 - (difference / 100);
 
-                    // RTI-gewichteter Match-Score: starke Wirkung bei 0 oder 2
-                    const rtiMultiplier = getRtiMultiplierForNeed(needId);
-                    const matchScore = average * similarity * rtiMultiplier;
+                    // Prioritäts-gewichteter Match-Score: starke Wirkung bei 0 oder 2
+                    const prioMultiplier = getNeedPriorityMultiplier(needId);
+                    const matchScore = average * similarity * prioMultiplier;
 
                     const zenData = beduerfnisse[needId];
                     const v1 = (zenData.varianten && zenData.varianten.V1) ? zenData.varianten.V1 : {};
                     const karteName = v1.karte || '';
-                    const kartenDetails = getKartenDetails(karteName);
                     matches.push({
                         id: needId,
                         label: zenData.label || needId,
@@ -299,11 +296,10 @@ const OshoZenTextGenerator = (function() {
                         score2: Math.round(score2),
                         matchScore: Math.round(matchScore),
                         karte: karteName || 'Unknown',
-                        karteName_de: v1.karte_de || kartenDetails?.name_de || karteName,
+                        karteName_de: v1.karte_de || karteName,
                         text: v1.tiage || '',
-                        bild: kartenDetails?.bild || '',
-                        osho: kartenDetails?.osho || '',
-                        quelle: kartenDetails?.quelle || ''
+                        imagePath: resolveImagePath(v1.bild),
+                        traditionen: v1.traditionen || {}
                     });
                 }
             }
@@ -382,23 +378,34 @@ const OshoZenTextGenerator = (function() {
             `;
         }
 
-        // Visuelle Karten-Leiste (alle Needs als Image-Karten)
-        const cardStripHtml = topMatches.map(match => {
-            const imgSrc = getNeedImagePath(match.id);
-            const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
-            const stufe = (imageMappingData && imageMappingData.images && imageMappingData.images[match.id])
-                ? null : null; // stufe aus BeduerfnisKatalog wenn verfügbar
+        // Gruppiere Bedürfnisse mit gleicher Karte zusammen (muss vor Card-Strip stehen)
+        const kartenGroups = [];
+        const kartenMap = {};
+        topMatches.forEach(match => {
+            const key = match.karte || 'Unknown';
+            if (!kartenMap[key]) {
+                kartenMap[key] = { karte: key, karteName_de: match.karteName_de, bild: match.bild, osho: match.osho, quelle: match.quelle, needs: [] };
+                kartenGroups.push(kartenMap[key]);
+            }
+            kartenMap[key].needs.push(match);
+        });
+
+        // Visuelle Karten-Leiste — pro Gruppe (Index stimmt mit Accordion überein)
+        const cardStripHtml = kartenGroups.map((group, groupIndex) => {
+            const firstMatch = group.needs[0];
+            const imgSrc = firstMatch.imagePath || getNeedImagePath(firstMatch.id);
             const bedEntry = (typeof window !== 'undefined' && window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse)
-                ? window.BeduerfnisKatalog.beduerfnisse[match.id] : null;
+                ? window.BeduerfnisKatalog.beduerfnisse[firstMatch.id] : null;
             const color = bedEntry && bedEntry.stufe ? (STUFEN_FARBEN[bedEntry.stufe] || '#888') : '#888';
+            const label = group.needs.map(n => n.label).join(' + ');
             const imgBlock = imgSrc
-                ? `<img src="${imgSrc}" alt="${match.label}" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;" onerror="this.parentElement.style.display='none'">`
+                ? `<img src="${imgSrc}" alt="${label}" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;pointer-events:none;" onerror="this.parentElement.style.display='none'">`
                 : `<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">🃏</div>`;
-            return `<div style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;" onclick="OshoZenTextGenerator.toggleItem(${topMatches.indexOf(match)})" title="${match.label} · ${match.karte}">
+            return `<div id="osho-strip-card-${groupIndex}" data-strip-color="${color}" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1.5px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})" title="${label} · ${group.karte}">
                 ${imgBlock}
                 <div style="padding:5px 7px;">
-                    <div style="font-size:10px;font-weight:700;color:${color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${match.label}</div>
-                    <div style="font-size:10px;color:rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${match.karte}</div>
+                    <div style="font-size:10px;font-weight:700;color:${color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${group.karte}</div>
                 </div>
             </div>`;
         }).join('');
@@ -460,18 +467,6 @@ const OshoZenTextGenerator = (function() {
                 <div class="osho-zen-list">
         `;
 
-        // Gruppiere Bedürfnisse mit gleicher Karte zusammen
-        const kartenGroups = [];
-        const kartenMap = {};
-        topMatches.forEach(match => {
-            const key = match.karte || 'Unknown';
-            if (!kartenMap[key]) {
-                kartenMap[key] = { karte: key, karteName_de: match.karteName_de, bild: match.bild, osho: match.osho, quelle: match.quelle, needs: [] };
-                kartenGroups.push(kartenMap[key]);
-            }
-            kartenMap[key].needs.push(match);
-        });
-
         kartenGroups.forEach((group, groupIndex) => {
             // Header: Karte mit allen Bedürfnissen
             const needLabels = group.needs.map((m, i) =>
@@ -481,13 +476,14 @@ const OshoZenTextGenerator = (function() {
             const hasExpandableContent = group.bild || group.osho || group.needs.some(m => extractFirstSentence(m.text).rest.length > 0);
 
             // Thumbnail für den Header (erstes Bedürfnis der Gruppe)
-            const thumbSrc = getNeedImagePath(group.needs[0].id);
+            const thumbSrc = group.needs[0].imagePath || getNeedImagePath(group.needs[0].id);
             const thumbHtml = thumbSrc
                 ? `<img src="${thumbSrc}" alt="${group.needs[0].label}" style="width:38px;height:38px;object-fit:cover;border-radius:6px;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'">`
                 : '';
 
+            const itemStufeColor = group.needs[0] && group.needs[0].stufe ? (STUFEN_FARBEN[group.needs[0].stufe] || '#8B5CF6') : '#8B5CF6';
             html += `
-                <div class="osho-zen-item" data-index="${groupIndex}">
+                <div class="osho-zen-item" data-index="${groupIndex}" data-stufe-color="${itemStufeColor}">
                     <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})">
                         <div class="osho-zen-item-left">
                             ${thumbHtml}
@@ -506,7 +502,7 @@ const OshoZenTextGenerator = (function() {
 
             // 1. Bilder pro Bedürfnis
             group.needs.forEach(match => {
-                const imgPath = getNeedImagePath(match.id);
+                const imgPath = match.imagePath || getNeedImagePath(match.id);
                 if (imgPath) {
                     html += `
                         <div class="osho-zen-image-container">
@@ -541,15 +537,15 @@ const OshoZenTextGenerator = (function() {
                 `;
             });
 
-            // 3. Geteilte Karten-Inhalte
-            html += `
-                    ${group.bild ? `<div class="osho-zen-bild-text">${group.bild}</div>` : ''}
-                    ${group.osho ? `
+            // 3. Traditionen-Perspektive (Osho-Zitat aus neuem JSON)
+            const firstNeed = group.needs[0];
+            const oshoText = firstNeed.traditionen && firstNeed.traditionen.osho;
+            if (oshoText) {
+                html += `
                     <div class="osho-zen-osho-quote">
-                        <blockquote class="osho-zen-statement">${group.osho}</blockquote>
-                        ${group.quelle ? `<cite>— ${group.quelle}</cite>` : ''}
-                    </div>` : ''}
-            `;
+                        <blockquote class="osho-zen-statement">${oshoText}</blockquote>
+                    </div>`;
+            }
 
             // 4. Footer mit Scores
             html += `<div class="osho-zen-item-footer">`;
@@ -585,15 +581,55 @@ const OshoZenTextGenerator = (function() {
 
         const content = item.querySelector('.osho-zen-item-content');
         const toggle = item.querySelector('.osho-zen-toggle');
+        const header = item.querySelector('.osho-zen-item-header');
+        const isOpening = content.style.display === 'none';
+        const stufeColor = item.dataset.stufeColor || '#8B5CF6';
 
-        if (content.style.display === 'none') {
+        // Strip-Karten zurücksetzen
+        document.querySelectorAll('[id^="osho-strip-card-"]').forEach(function(el) {
+            el.style.borderColor = 'rgba(255,255,255,0.08)';
+            el.style.opacity = '1';
+        });
+
+        if (isOpening) {
+            // Alle anderen Items vollständig ausblenden
+            items.forEach(function(other, i) {
+                if (i !== index) other.style.display = 'none';
+            });
+
+            // Dieses Item: Header + Inhalt zeigen
+            item.style.display = 'block';
             content.style.display = 'block';
             toggle.textContent = '▼';
             item.classList.add('expanded');
+            if (header) {
+                header.style.borderLeft = `3px solid ${stufeColor}`;
+                header.style.background = `${stufeColor}22`;
+            }
+
+            // Aktive Strip-Karte hervorheben, andere abdunkeln
+            document.querySelectorAll('[id^="osho-strip-card-"]').forEach(function(el) {
+                const i = parseInt(el.id.replace('osho-strip-card-', ''), 10);
+                if (i === index) {
+                    el.style.borderColor = stufeColor;
+                    el.style.opacity = '1';
+                } else {
+                    el.style.opacity = '0.4';
+                }
+            });
+
         } else {
-            content.style.display = 'none';
-            toggle.textContent = '▶';
-            item.classList.remove('expanded');
+            // Schließen: alle Items wieder anzeigen, collapsed
+            items.forEach(function(other, i) {
+                other.style.display = 'block';
+                const otherContent = other.querySelector('.osho-zen-item-content');
+                const otherToggle = other.querySelector('.osho-zen-toggle');
+                const otherHeader = other.querySelector('.osho-zen-item-header');
+                if (otherContent) otherContent.style.display = 'none';
+                if (otherToggle) otherToggle.textContent = '▶';
+                other.classList.remove('expanded');
+                if (otherHeader) { otherHeader.style.borderLeft = ''; otherHeader.style.background = ''; }
+            });
         }
     }
 
@@ -1033,18 +1069,19 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-lightbox-close {
-                position: absolute;
-                top: -40px;
-                right: -10px;
-                width: 36px;
-                height: 36px;
-                border: none;
-                background: rgba(255, 255, 255, 0.15);
+                position: fixed;
+                top: 16px;
+                right: 16px;
+                width: 44px;
+                height: 44px;
+                border: 2px solid rgba(255,255,255,0.4);
+                background: rgba(0, 0, 0, 0.6);
                 color: white;
-                font-size: 24px;
+                font-size: 26px;
                 line-height: 1;
                 border-radius: 50%;
                 cursor: pointer;
+                z-index: 10001;
                 transition: background 0.2s, transform 0.2s;
             }
 
@@ -1144,7 +1181,21 @@ const OshoZenTextGenerator = (function() {
 
         // Für Debugging
         getData: function() { return oshoZenData; },
-        isDataLoaded: function() { return oshoZenData !== null; }
+        isDataLoaded: function() { return oshoZenData !== null; },
+
+        // Gibt die Varianten-Daten für ein Bedürfnis zurück (oder null wenn noch nicht geladen)
+        getBeduerfnisData: function(needId) {
+            if (!oshoZenData || !oshoZenData.beduerfnisse) return null;
+            return oshoZenData.beduerfnisse[needId] || null;
+        },
+
+        // Lädt Daten + gibt Bedürfnis-Daten zurück (Promise)
+        loadAndGetBeduerfnisData: function(needId) {
+            return loadOshoZenData().then(function() {
+                if (!oshoZenData || !oshoZenData.beduerfnisse) return null;
+                return oshoZenData.beduerfnisse[needId] || null;
+            });
+        }
     };
 
 })();

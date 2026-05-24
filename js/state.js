@@ -959,14 +959,6 @@ const TiageState = (function() {
             if (slots.length === 0) return {};
             if (slots.length === 1) return this.get(`flatNeeds.ich.${slots[0]}`) || {};
 
-            // Abstufende Gewichte
-            const weightTemplates = {
-                2: [0.60, 0.40],
-                3: [0.50, 0.30, 0.20],
-                4: [0.40, 0.30, 0.20, 0.10]
-            };
-            const weights = weightTemplates[slots.length] || weightTemplates[4];
-
             // Alle Need-IDs sammeln
             const allNeedIds = new Set();
             const slotNeeds = slots.map(arch => {
@@ -975,20 +967,23 @@ const TiageState = (function() {
                 return needs;
             });
 
-            // Gewichteten Mix berechnen
+            // Probabilistisches ODER (Bayesian combination):
+            // combined = 1 - ∏(1 - p_i)
+            // Alle Slots die ein Bedürfnis hoch bewerten verstärken es kumulativ.
+            // Neutralwert 50 → 0.5, damit fehlende Einträge nicht auf 0 ziehen.
             const result = {};
             allNeedIds.forEach(needId => {
-                let weightedSum = 0;
-                let totalWeight = 0;
+                let product = 1;
+                let count = 0;
                 slots.forEach((arch, i) => {
-                    const value = slotNeeds[i][needId];
-                    if (typeof value === 'number') {
-                        weightedSum += value * weights[i];
-                        totalWeight += weights[i];
-                    }
+                    const raw = slotNeeds[i][needId];
+                    const p = typeof raw === 'number' ? raw / 100 : 0.5;
+                    product *= (1 - p);
+                    count++;
                 });
-                if (totalWeight > 0) {
-                    result[needId] = Math.max(0, Math.min(100, Math.round(weightedSum / totalWeight)));
+                if (count > 0) {
+                    const combined = 1 - product;
+                    result[needId] = Math.max(0, Math.min(100, Math.round(combined * 100)));
                 }
             });
             return result;
@@ -1784,6 +1779,7 @@ const TiageState = (function() {
             state.profileReview = { ich: { global: {} }, partner: { lockedNeeds: {} } };
             if (state.bindungsmuster) state.bindungsmuster = null;
             if (state.rtiPriorities) state.rtiPriorities = null;
+            if (state.needPriorities) state.needPriorities = null;
 
             // localStorage leeren (tiage_state)
             try { localStorage.removeItem('tiage_state'); } catch(e) {}
@@ -1970,20 +1966,15 @@ const TiageState = (function() {
                         this.set('bindungsmuster', parsed.bindungsmuster);
                         console.log('[TiageState] loadFromStorage - bindungsmuster geladen:', JSON.stringify(parsed.bindungsmuster));
                     }
-                    // RTI-Säulen Prioritäten laden (S1-S5)
-                    if (parsed.rtiPriorities) {
-                        this.set('rtiPriorities', parsed.rtiPriorities);
-                        console.log('[TiageState] loadFromStorage - rtiPriorities geladen:', JSON.stringify(parsed.rtiPriorities));
+                    // Bedürfnis-Prioritäten laden (#B1-#B16)
+                    if (parsed.needPriorities) {
+                        this.set('needPriorities', parsed.needPriorities);
                     }
                     // flatNeeds Migration: Altes Format (flach) zu neuem Format (pro Archetyp für ICH)
                     if (parsed.flatNeeds) {
                         const migratedFlatNeeds = this._migrateFlatNeeds(parsed.flatNeeds);
                         this.set('flatNeeds', migratedFlatNeeds);
                         console.log('[TiageState] loadFromStorage - flatNeeds geladen/migriert');
-                    }
-                    // Eigenschaften-Toggles laden
-                    if (parsed.eigenschaften) {
-                        this.set('eigenschaften', parsed.eigenschaften);
                     }
                     // UI Settings laden
                     if (parsed.ui) {
@@ -2117,13 +2108,11 @@ _ensureFlatNeedsInitialized: function() {
                     profileReview: this.get('profileReview'),
                     // Bindungsmuster für Slot Machine Tie-Breaker
                     bindungsmuster: this.get('bindungsmuster'),
-                    // RTI-Säulen Prioritäten (S1-S5)
-                    rtiPriorities: this.get('rtiPriorities'),
+                    // Bedürfnis-Prioritäten (#B1-#B16)
+                    needPriorities: this.get('needPriorities'),
                     // flatNeeds - die 220 Bedürfniswerte MÜSSEN gespeichert werden!
                     // Früher: "werden aus Inputs berechnet" - aber sie wurden NICHT neu berechnet beim Laden
                     flatNeeds: this.get('flatNeeds'),
-                    // Eigenschaften-Toggles per Archetyp
-                    eigenschaften: this.get('eigenschaften'),
                     // UI Settings - persistente Einstellungen
                     ui: {
                         matchModalView: this.get('ui.matchModalView'),

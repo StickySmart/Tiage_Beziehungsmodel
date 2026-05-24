@@ -207,9 +207,9 @@ async function runAppInitialization() {
             // console.log('[TIAGE DEBUG] AGOD weight inputs initialized');
         }
 
-        // RTI Prioritäten aus TiageState laden und UI syncen
-        if (typeof window.loadRtiPriorities === 'function') {
-            window.loadRtiPriorities();
+        // Bedürfnis-Prioritäten aus TiageState laden und UI syncen
+        if (typeof window.loadNeedPriorities === 'function') {
+            window.loadNeedPriorities();
         }
 
         // console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');

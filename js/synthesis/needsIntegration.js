@@ -835,15 +835,18 @@ TiageSynthesis.NeedsIntegration = {
      */
     _getRtiStufeWeights: function() {
         function toMult(v) { return v === 0 ? 0.5 : v === 2 ? 2.0 : 1.0; }
-        if (typeof TiageWeights !== 'undefined' && TiageWeights.RTI) {
-            var rti = TiageWeights.RTI.get();
-            var s1 = toMult(rti.S1), s2 = toMult(rti.S2);
-            var s3 = toMult(rti.S3), s4 = toMult(rti.S4), s5 = toMult(rti.S5);
+        if (typeof TiageWeights !== 'undefined' && TiageWeights.NeedPriorities) {
+            var p = TiageWeights.NeedPriorities.get();
+            var avg = function(ids) {
+                var sum = 0;
+                ids.forEach(function(id) { sum += toMult(p[id] !== undefined ? p[id] : 1); });
+                return sum / ids.length;
+            };
             return {
-                1: s4,                   // Fundament ← Sicherheit
-                2: (s1 + s3) / 2,        // Entfaltung ← Leiblichkeit + Autonomie
-                3: s2,                   // Verbundenheit ← Soziales
-                4: (s5 * 0.7 + s3 * 0.3) // Sinn ← Werte (70%) + Autonomie (30%)
+                1: avg(['#B1','#B2','#B3','#B4']),
+                2: avg(['#B5','#B6','#B7','#B8']),
+                3: avg(['#B9','#B10','#B11','#B12']),
+                4: avg(['#B13','#B14','#B15','#B16'])
             };
         }
         return { 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0 };

@@ -46,8 +46,24 @@ const MemoryManagerV2 = (function() {
     };
 
     const MAX_PARTNER_SLOTS = 8;
-    const STORAGE_PREFIX_ICH = 'tiage_ich_';
+    const MAX_ICH_SLOTS = 8;
+    const STORAGE_PREFIX_ICH = 'tiage_ich_';         // per-archetype auto-save (GODFUFH)
+    const STORAGE_PREFIX_ICH_SLOT = 'tiage_ich_slot_'; // user manual snapshots (all archetypes)
     const STORAGE_PREFIX_PARTNER = 'tiage_partner_slot_';
+    const ACTIVE_ICH_SLOT_KEY = 'tiage_active_ich_save_slot'; // last-used numbered slot
+
+    function _getActiveIchSaveSlot() {
+        try { const n = parseInt(localStorage.getItem(ACTIVE_ICH_SLOT_KEY), 10); return (n >= 1 && n <= MAX_ICH_SLOTS) ? n : null; } catch(e) { return null; }
+    }
+    function _setActiveIchSaveSlot(n) {
+        try { if (n) localStorage.setItem(ACTIVE_ICH_SLOT_KEY, String(n)); else localStorage.removeItem(ACTIVE_ICH_SLOT_KEY); } catch(e) {}
+    }
+
+    // Data version tags — bump when the stored shape changes
+    // v6.0: beduerfnisse = { '#B1': 50, ... }  (single archetype)  — used by GODFUFH auto-save
+    // v7.0: beduerfnisse = { single: {...}, duo: {...}, ... }        — used by user manual slots
+    const DATA_VERSION_GODFUFH = '6.0';
+    const DATA_VERSION_COMPLETE = '7.0';
 
     // Auto-Save-Throttle (ms)
     let autoSaveTimeout = null;
@@ -63,6 +79,10 @@ const MemoryManagerV2 = (function() {
 
     function getPartnerStorageKey(slotNumber) {
         return STORAGE_PREFIX_PARTNER + String(slotNumber).padStart(3, '0');
+    }
+
+    function getIchSlotStorageKey(slotNumber) {
+        return STORAGE_PREFIX_ICH_SLOT + String(slotNumber).padStart(3, '0');
     }
 
     function formatDateTime(timestamp) {
@@ -131,57 +151,34 @@ const MemoryManagerV2 = (function() {
     // Alle 16 Bedürfnisse als kompaktes Grid inkl. Schloss-Status
     const SLOT_STUFEN_COLORS = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
 
-    function computeEigenschaftenMods(archetyp, states) {
-        if (!states || !archetyp) return {};
-        const getDef = typeof window !== 'undefined' && window.getEigenschaftenDefForArchetyp;
-        if (typeof getDef !== 'function') return {};
-        const def = getDef(archetyp);
-        if (!def || !def.eigenschaften) return {};
-        const mods = {};
-        def.eigenschaften.forEach(function(e) {
-            if (states[e.id]) {
-                e.beduerfnisse.forEach(function(bid) {
-                    mods[bid] = (mods[bid] || 0) + e.delta;
-                });
-            }
-        });
-        return mods;
-    }
-
-    function formatAllNeeds16(beduerfnisse, lockedNeeds, eigenschaftenMods) {
+    function formatAllNeeds16(beduerfnisse, lockedNeeds) {
         if (!beduerfnisse) return '<span style="opacity:0.3;font-size:10px;">Keine Bedürfnisse</span>';
         const catalog = (typeof window !== 'undefined' && window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse)
             ? window.BeduerfnisIds.beduerfnisse : null;
         const locked = lockedNeeds || {};
-        const eMods = eigenschaftenMods || {};
+        const NEEDS16_LABELS = { '#B1':'Wohlbefinden','#B2':'Sicherheit','#B3':'Leichtigkeit','#B4':'Orientierung','#B5':'Wirksamkeit','#B6':'Freiheit','#B7':'Intensität','#B8':'Entwicklung','#B9':'Gemeinschaft','#B10':'Anerkennung','#B11':'Gerechtigkeit','#B12':'Verbundenheit','#B13':'Selbsterkenntnis','#B14':'Sinn','#B15':'Integrität','#B16':'Selbstentfaltung' };
+        const NEEDS16_STUFE = { '#B1':1,'#B2':1,'#B3':1,'#B4':1,'#B5':2,'#B6':2,'#B7':2,'#B8':2,'#B9':3,'#B10':3,'#B11':3,'#B12':3,'#B13':4,'#B14':4,'#B15':4,'#B16':4 };
         const entries = Object.entries(beduerfnisse)
-            .filter(([id]) => id.startsWith('#B'))
+            .filter(([id]) => NEEDS16_LABELS[id])
             .sort((a, b) => {
-                // sortieren nach Stufe, dann innerhalb Stufe nach Wert absteigend
-                const sA = (catalog && catalog[a[0]]) ? (catalog[a[0]].stufe || 9) : 9;
-                const sB = (catalog && catalog[b[0]]) ? (catalog[b[0]].stufe || 9) : 9;
+                const sA = NEEDS16_STUFE[a[0]] || 9;
+                const sB = NEEDS16_STUFE[b[0]] || 9;
                 return sA !== sB ? sA - sB : b[1] - a[1];
             });
 
         const rows = entries.map(([id, val]) => {
-            const entry = catalog?.[id];
-            const label = entry?.label || id.replace('#B', 'B');
-            const stufe = entry?.stufe || 1;
+            const stufe = NEEDS16_STUFE[id] || 1;
             const color = SLOT_STUFEN_COLORS[stufe] || '#888';
-            const isLocked = !!locked[id];
+            const label = (catalog && catalog[id] && catalog[id].label) ? catalog[id].label : (NEEDS16_LABELS[id] || id);
+            const isLocked = Object.prototype.hasOwnProperty.call(locked, id);
             const lockHtml = isLocked
                 ? `<span style="font-size:9px;margin-left:2px;opacity:0.9;">🔒</span>`
                 : `<span style="font-size:9px;margin-left:2px;opacity:0.25;">○</span>`;
             const valColor = val >= 80 ? '#fff' : val >= 60 ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)';
-            const eMod = eMods[id] || 0;
-            const eModHtml = eMod !== 0
-                ? `<span style="font-size:9px;color:#F59E0B;font-weight:600;min-width:26px;text-align:right;flex-shrink:0;">${eMod > 0 ? '+' : ''}${eMod}</span>`
-                : `<span style="min-width:26px;flex-shrink:0;"></span>`;
             return `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
                 <span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;"></span>
                 <span style="flex:1;font-size:10px;color:rgba(255,255,255,0.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</span>
                 <span style="font-size:11px;font-weight:700;color:${valColor};min-width:24px;text-align:right;">${val}</span>
-                ${eModHtml}
                 ${lockHtml}
             </div>`;
         }).join('');
@@ -193,35 +190,80 @@ const MemoryManagerV2 = (function() {
     // ICH DATA COLLECTION (per Archetyp)
     // ═══════════════════════════════════════════════════════════════════════
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // TWO DISTINCT COLLECTION FUNCTIONS — never mix their outputs
+    //
+    //  collectIchDataForArchetyp(arch)  →  DATA_VERSION_GODFUFH (v6.0)
+    //    beduerfnisse = { '#B1': 50, ... }   ← flat, ONE archetype's needs
+    //    stored under STORAGE_PREFIX_ICH + arch  (tiage_ich_single etc.)
+    //    read by restoreSettingsForArchetyp / loadIchFromArchetyp
+    //
+    //  collectCompleteIchData()         →  DATA_VERSION_COMPLETE (v7.0)
+    //    beduerfnisse = { single: {...}, duo: {...}, ... }  ← ALL archetypes
+    //    stored under STORAGE_PREFIX_ICH_SLOT + n  (tiage_ich_slot_001 etc.)
+    //    read by loadIchFromSlot
+    // ─────────────────────────────────────────────────────────────────────────
+
     /**
-     * Sammelt die aktuellen ICH-Daten für einen bestimmten Archetyp
-     * Wird bei jeder Änderung automatisch gespeichert
+     * GODFUFH auto-save — stores ONE specific archetype's needs.
+     * Called on archetype switch to snapshot the outgoing slot.
+     * Format v6.0: beduerfnisse = { '#B1': 50, ... }
      */
     function collectIchDataForArchetyp(archetyp) {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '5.0',
+            dataVersion: DATA_VERSION_GODFUFH,
             archetyp: archetyp,
-            beduerfnisse: null,       // flatNeeds = umfrageWert + manuelle Anpassungen
-            lockedNeeds: null,         // geschlossene (gepinnte) Bedürfnisse
-            eigenschaftenStates: null  // Eigenschaft-Toggle-Zustände für diesen Archetyp
+            beduerfnisse: null,
+            lockedNeeds: null
         };
 
         if (typeof TiageState !== 'undefined') {
-            const flatNeeds = TiageState.getFlatNeeds
-                ? TiageState.getFlatNeeds('ich')
-                : (TiageState.get('flatNeeds.ich') || {});
-            if (flatNeeds && Object.keys(flatNeeds).length > 0) {
-                data.beduerfnisse = flatNeeds;
+            // Direct path — bypasses smart-getter which always returns primary slot
+            const archNeeds = TiageState.get(`flatNeeds.ich.${archetyp}`);
+            if (archNeeds && Object.keys(archNeeds).length > 0) {
+                data.beduerfnisse = archNeeds;
             }
-            const locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
+            const locked = TiageState.get ? (TiageState.get('profileReview.ich.lockedNeeds') || {}) : {};
             if (locked && Object.keys(locked).length > 0) {
                 data.lockedNeeds = locked;
             }
-            const eigenStates = TiageState.get('eigenschaften.ich.' + archetyp);
-            if (eigenStates && Object.keys(eigenStates).length > 0) {
-                data.eigenschaftenStates = eigenStates;
-            }
+        }
+
+        return data;
+    }
+
+    /**
+     * User manual snapshot — stores ALL archetypes' needs in one blob.
+     * Called on explicit user save to a numbered ICH slot.
+     * Format v7.0: beduerfnisse = { single: {...}, duo: {...}, ... }
+     */
+    function collectCompleteIchData() {
+        const data = {
+            timestamp: Date.now(),
+            dataVersion: DATA_VERSION_COMPLETE,
+            archetyp: null,
+            beduerfnisse: null,
+            lockedNeeds: null
+        };
+
+        if (typeof TiageState !== 'undefined') {
+            const archetypes = TiageState.getArchetypes ? TiageState.getArchetypes('ich') : null;
+            data.archetyp = (archetypes && archetypes.primary) ? archetypes.primary
+                : (typeof archetypes === 'string' ? archetypes : 'single');
+
+            // Direct per-arch reads — bypasses smart-getter which returns only primary
+            const allFlatNeeds = {};
+            ARCHETYPES.forEach(arch => {
+                const archNeeds = TiageState.get(`flatNeeds.ich.${arch}`);
+                if (archNeeds && Object.keys(archNeeds).length > 0) {
+                    allFlatNeeds[arch] = archNeeds;
+                }
+            });
+            if (Object.keys(allFlatNeeds).length > 0) data.beduerfnisse = allFlatNeeds;
+
+            const locked = TiageState.get ? (TiageState.get('profileReview.ich.lockedNeeds') || {}) : {};
+            data.lockedNeeds = locked;
         }
 
         return data;
@@ -373,23 +415,13 @@ const MemoryManagerV2 = (function() {
         // lockedNeeds: manually pinned values (small payload)
         const lockedNeeds = (typeof TiageState !== 'undefined') ? (TiageState.getLockedNeeds('ich') || {}) : {};
 
-        // Eigenschaft toggle states for the primary ICH slot (compact — a few booleans)
         const primaryArch = archetyp || 'single';
         const ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
             ? TiageState.getIchSlots() : null;
         const allSlots = ichSlots && ichSlots.length > 0 ? ichSlots : [primaryArch];
-        const eigenschaftenStates = {};
-        if (typeof TiageState !== 'undefined') {
-            allSlots.forEach(function(slot) {
-                const states = TiageState.get(`eigenschaften.ich.${slot}`);
-                if (states && Object.keys(states).length > 0) {
-                    eigenschaftenStates[slot] = states;
-                }
-            });
-        }
 
         // s = all active ICH slots (multi-slot support); a = primary for backward compat
-        const payload = { a: archetyp, s: allSlots.length > 1 ? allSlots : undefined, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds, e: eigenschaftenStates };
+        const payload = { a: archetyp, s: allSlots.length > 1 ? allSlots : undefined, g: geschlecht, d: dominanz, o: orientierung, f: geschlecht_extras, n: lockedNeeds };
         return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     }
 
@@ -530,13 +562,14 @@ const MemoryManagerV2 = (function() {
          */
         initAutoSave() {
             if (typeof TiageState !== 'undefined' && TiageState.subscribe) {
-                // Subscribe to relevant state changes - speichert für AKTUELLEN Archetyp
+                // Subscribe to relevant state changes
                 TiageState.subscribe('personDimensions.ich', triggerAutoSave);
                 TiageState.subscribe('personDimensions.ich.geschlecht_extras', triggerAutoSave); // FFH explicit
                 TiageState.subscribe('gewichtungen.ich', triggerAutoSave);
                 TiageState.subscribe('rtiPriorities.ich', triggerAutoSave);
                 TiageState.subscribe('archetypes.ich', triggerAutoSave);
-                TiageState.subscribe('flatNeeds.ich', triggerAutoSave); // FlatNeeds-Änderungen
+                // FlatNeeds immer komplett für alle Archetypen speichern (wie Partner-Save)
+                TiageState.subscribe('flatNeeds.ich', triggerAutoSaveAll);
 
                 // profileReview enthält locked needs - diese gelten für ALLE Archetypen
                 TiageState.subscribe('profileReview.ich', triggerAutoSaveAll);
@@ -597,7 +630,7 @@ const MemoryManagerV2 = (function() {
                     icon: ARCHETYPE_ICONS[archetyp],
                     isEmpty: !data,
                     data: data,
-                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds, computeEigenschaftenMods(archetyp, data.eigenschaftenStates)) : '',
+                    allNeeds: data ? formatAllNeeds16(data.beduerfnisse, data.lockedNeeds) : '',
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 };
             });
@@ -832,6 +865,166 @@ const MemoryManagerV2 = (function() {
         },
 
         // ═══════════════════════════════════════════════════════════════════════
+        // ICH NUMBERED SLOTS (manuell, wie Partner)
+        // ═══════════════════════════════════════════════════════════════════════
+
+        getIchSaveSlots() {
+            const slots = [];
+            for (let i = 1; i <= MAX_ICH_SLOTS; i++) {
+                const key = getIchSlotStorageKey(i);
+                let data = null;
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (raw) data = JSON.parse(raw);
+                } catch (e) {
+                    console.warn('[MemoryManagerV2] Fehler beim Lesen ICH-Slot:', i, e);
+                }
+
+                // v7.0: beduerfnisse = { single: {...}, duo: {...} } → primären Slot für Anzeige extrahieren
+                let displayNeeds = null;
+                if (data && data.beduerfnisse) {
+                    const isMultiArch = ARCHETYPES.some(a => data.beduerfnisse[a] !== undefined);
+                    displayNeeds = isMultiArch
+                        ? (data.beduerfnisse[data.archetyp] || data.beduerfnisse[ARCHETYPES.find(a => data.beduerfnisse[a])] || null)
+                        : data.beduerfnisse;
+                }
+
+                slots.push({
+                    slot: i,
+                    isEmpty: !data,
+                    data: data,
+                    archetyp: data ? data.archetyp : null,
+                    archetypLabel: data && data.archetyp ? (ARCHETYPE_LABELS[data.archetyp] || data.archetyp) : '-',
+                    archetypIcon: data && data.archetyp ? (ARCHETYPE_ICONS[data.archetyp] || '👤') : null,
+                    allNeeds: data ? formatAllNeeds16(displayNeeds, data.lockedNeeds) : '',
+                    dateTime: data ? formatDateTime(data.timestamp) : '-'
+                });
+            }
+            return slots;
+        },
+
+        saveIchToSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_ICH_SLOTS) return false;
+            const data = collectCompleteIchData();
+            const key = getIchSlotStorageKey(slotNumber);
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                console.log(`[MemoryManagerV2] ICH gespeichert in Slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Speichern ICH-Slot:', e);
+                return false;
+            }
+        },
+
+        loadIchFromSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_ICH_SLOTS) return false;
+            const key = getIchSlotStorageKey(slotNumber);
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return false;
+                const data = JSON.parse(raw);
+
+                if (typeof TiageState !== 'undefined') {
+                    if (data.archetyp) TiageState.setArchetype('ich', data.archetyp);
+
+                    // beduerfnisse: v7.0 speichert alle Archetypen { single: {...}, duo: {...}, ... }
+                    if (data.beduerfnisse) {
+                        const isMultiArch = ARCHETYPES.some(a => data.beduerfnisse[a] !== undefined);
+                        if (isMultiArch) {
+                            ARCHETYPES.forEach(arch => {
+                                if (data.beduerfnisse[arch]) {
+                                    TiageState.set(`flatNeeds.ich.${arch}`, data.beduerfnisse[arch]);
+                                }
+                            });
+                        } else {
+                            // Altes Format (nur primary-Archetype-Daten)
+                            if (TiageState.setFlatNeeds) {
+                                TiageState.setFlatNeeds('ich', data.beduerfnisse);
+                            }
+                        }
+                    }
+
+                    // Locks wiederherstellen (auch leeres Objekt setzen um alte Locks zu löschen)
+                    TiageState.set('profileReview.ich.global.lockedNeeds', data.lockedNeeds || {});
+
+                    TiageState.saveToStorage();
+                }
+
+                const archetyp = data.archetyp;
+                if (archetyp) {
+                    const ichSelect = document.getElementById('ichSelect');
+                    const mobileIchSelect = document.getElementById('mobileIchSelect');
+                    const archetypeSelect = document.getElementById('archetypeSelect');
+                    if (ichSelect) ichSelect.value = archetyp;
+                    if (mobileIchSelect) mobileIchSelect.value = archetyp;
+                    if (archetypeSelect) archetypeSelect.value = archetyp;
+                    if (typeof window.updateArchetypeGrid === 'function') window.updateArchetypeGrid('ich', archetyp);
+                }
+
+                if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
+                if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
+                if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
+                if (typeof window.syncGeschlechtExtrasUI === 'function') window.syncGeschlechtExtrasUI('ich');
+                if (typeof window.updateAll === 'function') window.updateAll();
+                // Lock-Zustand UI aktualisieren (archetype-interaction center needs display)
+                if (typeof window._renderCenterNeeds16 === 'function') window._renderCenterNeeds16();
+                document.dispatchEvent(new CustomEvent('flatNeedLockChange', { detail: { person: 'ich', bulk: true } }));
+                if (typeof TiageWeights !== 'undefined' && TiageWeights.AGOD && TiageWeights.AGOD.init) {
+                    TiageWeights.AGOD.init();
+                }
+
+                console.log(`[MemoryManagerV2] ICH geladen aus Slot ${slotNumber}`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Laden ICH-Slot:', e);
+                return false;
+            }
+        },
+
+        deleteIchSlot(slotNumber) {
+            if (slotNumber < 1 || slotNumber > MAX_ICH_SLOTS) return false;
+            const key = getIchSlotStorageKey(slotNumber);
+            try {
+                localStorage.removeItem(key);
+                console.log(`[MemoryManagerV2] ICH Slot ${slotNumber} gelöscht`);
+                return true;
+            } catch (e) {
+                console.error('[MemoryManagerV2] Fehler beim Löschen ICH-Slot:', e);
+                return false;
+            }
+        },
+
+        getUsedIchSlotCount() {
+            let count = 0;
+            for (let i = 1; i <= MAX_ICH_SLOTS; i++) {
+                if (localStorage.getItem(getIchSlotStorageKey(i))) count++;
+            }
+            return count;
+        },
+
+        getActiveIchSlot: _getActiveIchSaveSlot,
+        setActiveIchSlot: _setActiveIchSaveSlot,
+
+        // Auto-save zum aktiven Slot (falls einer ausgewählt ist)
+        autoSaveIchToActiveSlot() {
+            const slot = _getActiveIchSaveSlot();
+            if (!slot) return false;
+            const data = collectCompleteIchData();
+            const key = getIchSlotStorageKey(slot);
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                console.log(`[MemoryManagerV2] Auto-Save ICH → Slot ${slot}`);
+                return true;
+            } catch(e) {
+                console.error('[MemoryManagerV2] Auto-Save Fehler:', e);
+                return false;
+            }
+        },
+
+        MAX_ICH_SLOTS,
+
+        // ═══════════════════════════════════════════════════════════════════════
         // PRO-ARCHETYP GODFUFH PERSISTENZ
         // Speichert/Lädt GOD+FFH+AGOD beim Archetyp-Wechsel
         // ═══════════════════════════════════════════════════════════════════════
@@ -888,6 +1081,11 @@ const MemoryManagerV2 = (function() {
                 const data = JSON.parse(raw);
 
                 if (typeof TiageState !== 'undefined' && data.beduerfnisse) {
+                    // Guard: reject v7.0 complete-snapshots (multi-arch format) — wrong function
+                    if (data.dataVersion === DATA_VERSION_COMPLETE) {
+                        console.error('[MemoryManagerV2] restoreSettingsForArchetyp erwartet v6.0 (single-arch), nicht v7.0 (complete). Falscher Slot?');
+                        return false;
+                    }
                     if (TiageState.setFlatNeeds) {
                         TiageState.setFlatNeeds('ich', data.beduerfnisse);
                     } else {
@@ -972,12 +1170,6 @@ function openMemoryModalV2() {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Eigenschaften-JSON vorladen und neu rendern sobald verfügbar (für Modifier-Anzeige)
-    if (typeof window.loadEigenschaftenData === 'function') {
-        window.loadEigenschaftenData().then(function() {
-            updateMemoryModalV2Content();
-        });
-    }
 }
 
 /**
@@ -997,32 +1189,33 @@ function updateMemoryModalV2Content() {
 
     if (!ichContainer || !partnerContainer) return;
 
-    // ICH-Slots (Auto-Save pro Archetyp)
-    const ichSlots = MemoryManagerV2.getIchSlots();
+    // ICH-Slots (manuell, wie Partner)
+    const ichSaveSlots = MemoryManagerV2.getIchSaveSlots();
+    const activeIchSlot = MemoryManagerV2.getActiveIchSlot();
     let ichHtml = '';
 
-    // Aktueller ICH-Archetyp für Highlighting
-    let currentIchArchetyp = null;
-    if (typeof TiageState !== 'undefined') {
-        const archetypes = TiageState.getArchetypes('ich');
-        currentIchArchetyp = archetypes?.primary || archetypes;
-    }
-
-    for (const slot of ichSlots) {
-        const isActive = slot.archetyp === currentIchArchetyp;
+    for (const slot of ichSaveSlots) {
+        const isActive = slot.slot === activeIchSlot;
+        const activeLabel = isActive ? ' <span style="font-size:9px;color:#818CF8;font-weight:700;margin-left:4px;">AUTO</span>' : '';
         ichHtml += `
-        <div class="memory-ich-slot ${slot.isEmpty ? 'empty' : 'filled'} ${isActive ? 'active' : ''}" data-archetyp="${slot.archetyp}" data-action-load-ich="${slot.archetyp}" style="cursor: pointer;" title="Klicken zum Laden">
-            <div class="memory-slot-icon">${slot.icon}</div>
-            <div class="memory-slot-label">${slot.label}</div>
-            ${!slot.isEmpty ? `
+        <div class="memory-partner-slot ${slot.isEmpty ? 'empty' : 'filled'}${isActive ? ' active-save-slot' : ''}" data-slot="${slot.slot}" style="${isActive ? 'border-color:#818CF8;box-shadow:0 0 6px rgba(129,140,248,0.35);' : ''}">
+            <div class="memory-slot-number">${slot.slot}${activeLabel}</div>
+            ${slot.isEmpty ? `
+                <div class="memory-slot-empty">Leer</div>
+                <button class="memory-save-btn" data-action-save-ich="${slot.slot}" title="ICH hier speichern">
+                    💾
+                </button>
+            ` : `
+                <div class="memory-slot-archetyp">${slot.archetypIcon ? slot.archetypIcon + ' ' : ''}${slot.archetypLabel}</div>
                 <div class="memory-slot-needs-grid">${slot.allNeeds}</div>
                 <div class="memory-slot-date" title="Gespeichert: ${slot.dateTime}">${slot.dateTime}</div>
                 <div class="memory-slot-actions">
-                    <button class="memory-display-btn" data-action-display-ich="${slot.archetyp}" title="Anzeigen">👁️</button>
-                    <button class="memory-load-btn" data-action-load-ich="${slot.archetyp}" title="Laden">📥</button>
-                    <button class="memory-delete-btn" data-action-delete-ich="${slot.archetyp}"${isActive ? ' disabled style="opacity:0.3"' : ''} title="ICH-Slot löschen">🗑️</button>
+                    <button class="memory-display-btn" data-action-display-ich-slot="${slot.slot}" title="Anzeigen">👁️</button>
+                    <button class="memory-load-btn" data-action-load-ich-slot="${slot.slot}" title="Laden">📥</button>
+                    <button class="memory-save-btn" data-action-save-ich="${slot.slot}" title="Aktuellen Zustand hier speichern" style="padding:2px 6px;font-size:11px;">💾</button>
+                    <button class="memory-delete-btn" data-action-delete-ich-slot="${slot.slot}" title="Löschen">🗑️</button>
                 </div>
-            ` : '<div class="memory-slot-empty">-</div>'}
+            `}
         </div>
         `;
     }
@@ -1032,12 +1225,14 @@ function updateMemoryModalV2Content() {
     if (!ichContainer._delegationActive) {
         ichContainer._delegationActive = true;
         ichContainer.addEventListener('click', function(e) {
-            const deleteBtn  = e.target.closest('[data-action-delete-ich]');
-            const displayBtn = e.target.closest('[data-action-display-ich]');
-            const loadBtn    = e.target.closest('[data-action-load-ich]');
-            if (deleteBtn)  { e.stopPropagation(); handleDeleteIchV2(deleteBtn.dataset.actionDeleteIch); return; }
-            if (displayBtn) { e.stopPropagation(); handleDisplayIchV2(displayBtn.dataset.actionDisplayIch); return; }
-            if (loadBtn)    { handleLoadIchV2(loadBtn.dataset.actionLoadIch); }
+            const saveBtn    = e.target.closest('[data-action-save-ich]');
+            const displayBtn = e.target.closest('[data-action-display-ich-slot]');
+            const loadBtn    = e.target.closest('[data-action-load-ich-slot]');
+            const deleteBtn  = e.target.closest('[data-action-delete-ich-slot]');
+            if (saveBtn)    { handleSaveIchSlotV2(parseInt(saveBtn.dataset.actionSaveIch)); return; }
+            if (displayBtn) { e.stopPropagation(); handleDisplayIchSlotV2(parseInt(displayBtn.dataset.actionDisplayIchSlot)); return; }
+            if (loadBtn)    { handleLoadIchSlotV2(parseInt(loadBtn.dataset.actionLoadIchSlot)); return; }
+            if (deleteBtn)  { e.stopPropagation(); handleDeleteIchSlotV2(parseInt(deleteBtn.dataset.actionDeleteIchSlot)); }
         });
     }
 
@@ -1088,8 +1283,7 @@ function updateMemoryModalV2Content() {
     const ichCountEl = document.getElementById('memoryIchSlotCount');
     const partnerCountEl = document.getElementById('memoryPartnerSlotCount');
     if (ichCountEl) {
-        const filledIch = ichSlots.filter(s => !s.isEmpty).length;
-        ichCountEl.textContent = `${filledIch}/8`;
+        ichCountEl.textContent = `${MemoryManagerV2.getUsedIchSlotCount()}/8`;
     }
     if (partnerCountEl) {
         partnerCountEl.textContent = `${MemoryManagerV2.getUsedPartnerSlotCount()}/8`;
@@ -1271,6 +1465,74 @@ function handleDisplayIchV2(archetyp) {
     `;
 
     showDetailModal(`ICH: ${slot.label}`, detailHtml);
+}
+
+// ═══ ICH NUMBERED SLOT HANDLERS ═══
+
+function handleSaveIchSlotV2(slotNumber) {
+    if (MemoryManagerV2.saveIchToSlot(slotNumber)) {
+        MemoryManagerV2.setActiveIchSlot(slotNumber); // → auto-save target
+        updateMemoryModalV2Content();
+        showMemoryToast(`ICH in Slot ${slotNumber} gespeichert ✓ (aktiver Slot)`);
+    } else {
+        showMemoryToast('Fehler beim Speichern', 'error');
+    }
+}
+
+function handleLoadIchSlotV2(slotNumber) {
+    if (MemoryManagerV2.loadIchFromSlot(slotNumber)) {
+        MemoryManagerV2.setActiveIchSlot(slotNumber); // → auto-save target
+        showMemoryToast(`ICH aus Slot ${slotNumber} geladen ✓ (aktiver Slot)`);
+        closeMemoryModalV2();
+    } else {
+        showMemoryToast('Fehler beim Laden', 'error');
+    }
+}
+
+function handleDeleteIchSlotV2(slotNumber) {
+    if (MemoryManagerV2.deleteIchSlot(slotNumber)) {
+        updateMemoryModalV2Content();
+        showMemoryToast(`ICH Slot ${slotNumber} gelöscht`);
+    } else {
+        showMemoryToast('Fehler beim Löschen', 'error');
+    }
+}
+
+function handleDisplayIchSlotV2(slotNumber) {
+    const slots = MemoryManagerV2.getIchSaveSlots();
+    const slot = slots.find(s => s.slot === slotNumber);
+    if (!slot || slot.isEmpty) {
+        showMemoryToast('Keine Daten vorhanden', 'error');
+        return;
+    }
+    const data = slot.data;
+    const rawJson = JSON.stringify(data, null, 2);
+    const uniqueId = 'ich_slot_' + slotNumber + '_' + Date.now();
+    const detailHtml = `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">ICH Slot ${slotNumber}: ${slot.archetypIcon || '👤'} ${slot.archetypLabel}</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Gespeichert</span>
+                    <span class="memory-detail-value">${slot.dateTime}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Version</span>
+                    <span class="memory-detail-value">${data.dataVersion || '-'}</span>
+                </div>
+            </div>
+        </div>
+        ${generateNeedsBreakdownV2(data, uniqueId + '_needs')}
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" style="cursor: pointer;" data-toggle-raw="${uniqueId}">
+                ROHDATEN (JSON) <span id="rawIcon_${uniqueId}" style="float: right;">+</span>
+            </div>
+            <div id="rawJson_${uniqueId}" class="memory-detail-raw-json" style="display: none;">
+                <pre>${escapeHtml(rawJson)}</pre>
+            </div>
+        </div>
+    `;
+    showDetailModal(`ICH Slot ${slotNumber}`, detailHtml);
 }
 
 /**

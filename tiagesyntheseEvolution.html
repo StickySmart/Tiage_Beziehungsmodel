@@ -44,6 +44,7 @@
 
     <script src="js/synthesis/constants.js"></script>
     <script src="js/synthesis/needsIntegration.js"></script>
+    <script src="js/synthesis/oshoZenTextGenerator.js"></script>
 
     <script src="js/weights/rtiPriorities.js"></script>
     <script src="js/synthesis/synthesePageShared.js"></script>
@@ -230,9 +231,8 @@
                 <span class="synthese-title" data-i18n="synthese.title">Ti-Age Synthese</span>
             </div>
             <div class="synthese-tabs">
-                <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse" data-i18n-title="synthese.tabResonanz">🔥</a>
-                <a href="tiagesyntheseEvolution.html" class="synthese-tab active" title="Evolutionäre Bedürfnisstärke">🧬</a>
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Bedürfnis-Aufschlüsselung" data-i18n-title="synthese.tabScore">🎯</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
@@ -358,13 +358,17 @@
             needsList.sort(function(a, b) { return b.value - a.value; });
             var top5 = needsList.slice(0, 5);
 
+            var top5Ids = top5.map(function(n) { return n.id; });
+
             var cardsHtml = top5.map(function(n) {
                 var imgSrc = getImageVariant(n.id, n.value);
                 var color = STUFEN_FARBEN[n.stufe] || '#888';
+                var safeKey = n.id.replace('#', '');
                 var imgHtml = imgSrc
-                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" onclick="openLightbox(\'' + imgSrc + '\',\'' + n.label.replace(/'/g,"&#39;") + '\')" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;cursor:pointer;">'
+                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;pointer-events:none;">'
                     : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
-                return '<div style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;" onclick="showEvolutionNeedDetail(\'' + n.id + '\')">'
+                return '<div id="top5-card-' + safeKey + '" data-need-id="' + n.id + '" data-need-val="' + Math.round(n.value) + '" data-stufe-color="' + color + '"'
+                    + ' style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1.5px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;" onclick="toggleNeedCardText(\'' + n.id + '\',' + Math.round(n.value) + ')">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
                     +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
@@ -378,10 +382,11 @@
                 +   '<span style="font-size:20px;">⭐</span>'
                 +   '<div>'
                 +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">Top-5 Bedürfnisse</div>'
-                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Deine stärksten Antriebe</div>'
+                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Karte anklicken für Tiage-Weisheit</div>'
                 +   '</div>'
                 + '</div>'
                 + '<div style="display:flex;gap:8px;">' + cardsHtml + '</div>'
+                + '<div id="need-card-text-panel" style="display:none;margin-top:12px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.08);"></div>'
                 + '</div>';
         }
 
@@ -475,7 +480,7 @@
                     deltaHtml = '<span class="stufen-need-delta" style="color:rgba(255,255,255,0.2);">–</span>';
                 }
                 return '<div class="stufen-need-row">'
-                    + '<span class="stufen-need-label" onclick="showEvolutionNeedDetail(\'' + n.id + '\')" style="cursor:pointer;" title="Details anzeigen">' + n.label + '</span>'
+                    + '<span class="stufen-need-label">' + n.label + '</span>'
                     + '<div class="stufen-need-bar-wrap"><div class="stufen-need-bar-fill" style="width:' + barWidth + '%;background:' + color + ';opacity:0.6;"></div></div>'
                     + '<span class="stufen-need-val">' + Math.round(val) + (n.actual !== undefined && n.expected !== undefined ? '<br><span style="font-size:9px;color:rgba(255,255,255,0.22);">Ø ' + Math.round(n.expected) + '</span>' : '') + '</span>'
                     + deltaHtml
@@ -483,49 +488,109 @@
             }).join('');
         }
 
+        var _activeNeedCardId = null;
+        var STUFEN_FARBEN_CARD = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+        var TRAD_LIST = [
+            { key: 'christentum', icon: '✝', label: 'Christentum',    col: '#C9B99A' },
+            { key: 'buddhismus',  icon: '☸', label: 'Buddhismus',     col: '#A3C4BC' },
+            { key: 'islam',       icon: '☪', label: 'Islam / Sufismus', col: '#B5C9A0' },
+            { key: 'osho',        icon: '✨', label: 'Osho',           col: '#D4A8D0' },
+            { key: 'moderne',     icon: '🧬', label: 'Moderne',        col: '#A0B5C9' },
+            { key: 'pirsig',      icon: '⚙',  label: 'Pirsig · Qualität', col: '#E8C97A' }
+        ];
+
         /**
-         * Zeigt Need-Detail-Popup für Evolution-Stufen-Karten
+         * Klappt Karten-Text im Top-5-Bereich inline auf/zu (kein Popup)
          */
-        function showEvolutionNeedDetail(id) {
-            var existing = document.getElementById('evo-need-detail-popup');
-            if (existing) existing.remove();
+        function toggleNeedCardText(needId, value) {
+            var panel = document.getElementById('need-card-text-panel');
+            if (!panel) return;
 
-            var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(id) : null;
-            if (!need) return;
+            // Alle Top-5 Karten-Borders zurücksetzen
+            function resetBorders() {
+                document.querySelectorAll('[id^="top5-card-"]').forEach(function(el) {
+                    el.style.borderColor = 'rgba(255,255,255,0.08)';
+                });
+            }
 
-            var STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
+            // Gleiche Karte nochmal → zuklappen
+            if (_activeNeedCardId === needId) {
+                _activeNeedCardId = null;
+                panel.style.display = 'none';
+                resetBorders();
+                return;
+            }
+
+            _activeNeedCardId = needId;
+            resetBorders();
+
+            // Aktive Karte hervorheben
+            var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+            var color = need ? (STUFEN_FARBEN_CARD[need.stufe] || '#888') : '#888';
+            var safeKey = needId.replace('#', '');
+            var activeCard = document.getElementById('top5-card-' + safeKey);
+            if (activeCard) activeCard.style.borderColor = color;
+
+            // Panel öffnen mit Ladeindikator
+            panel.style.display = 'block';
+            var variantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
             var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
-            var color = STUFEN_FARBEN[need.stufe] || '#888';
 
-            var popup = document.createElement('div');
-            popup.id = 'evo-need-detail-popup';
-            popup.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);';
-            popup.onclick = function(e) { if (e.target === popup) popup.remove(); };
+            panel.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;padding:10px 0;">Karten-Text wird geladen…</div>';
 
-            var synonymeHtml = (need.synonyme && need.synonyme.length)
-                ? '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;">' + need.synonyme.join(' · ') + '</div>'
-                : '';
-            var strategieHtml = need.strategie
-                ? '<div style="font-size:12px;color:rgba(255,255,255,0.55);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);">' + need.strategie + '</div>'
-                : '';
+            if (typeof OshoZenTextGenerator === 'undefined') return;
 
-            popup.innerHTML = '<div style="background:#1a1a2e;border-radius:14px;max-width:420px;width:100%;padding:20px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);">'
-                + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">'
-                +   '<div>'
-                +     '<div style="font-size:11px;font-family:monospace;color:rgba(255,255,255,0.3);">' + (need.id || id) + '</div>'
-                +     '<div style="font-size:20px;font-weight:700;color:#fff;margin-top:3px;">' + need.label + '</div>'
-                +   '</div>'
-                +   '<button onclick="document.getElementById(\'evo-need-detail-popup\').remove()" style="background:none;border:none;font-size:22px;color:rgba(255,255,255,0.4);cursor:pointer;line-height:1;">×</button>'
-                + '</div>'
-                + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">'
-                +   (need.stufe ? '<span style="font-size:11px;font-weight:600;color:' + color + ';background:' + color + '22;padding:3px 8px;border-radius:5px;">' + STUFEN_LABELS[need.stufe] + '</span>' : '')
-                +   (need.faehigkeit ? '<span style="font-size:11px;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:5px;">' + need.faehigkeit + '</span>' : '')
-                + '</div>'
-                + synonymeHtml
-                + strategieHtml
-                + '</div>';
+            OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
+                if (_activeNeedCardId !== needId || !panel) return;
+                if (!bedData) { panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
 
-            document.body.appendChild(popup);
+                var varianten = bedData.varianten || {};
+                var v = varianten[variantKey] || varianten['V1'] || Object.values(varianten)[0];
+                if (!v) { panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
+
+                var trad = v.traditionen || {};
+                var kartenName = v.karte_de || v.karte || variantKey;
+
+                // Header-Zeile
+                var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.07);">'
+                         +   '<div style="display:flex;align-items:center;gap:8px;">'
+                         +     (need && need.stufe ? '<span style="font-size:10px;font-weight:600;color:' + color + ';background:' + color + '22;padding:2px 7px;border-radius:4px;">' + STUFEN_LABELS[need.stufe] + '</span>' : '')
+                         +     '<span style="font-size:12px;font-weight:700;color:#fff;">' + (need ? need.label : needId) + '</span>'
+                         +     '<span style="font-size:10px;color:rgba(255,255,255,0.35);">· ' + kartenName + ' (' + variantKey + ')</span>'
+                         +   '</div>'
+                         +   '<button onclick="_activeNeedCardId=null;document.getElementById(\'need-card-text-panel\').style.display=\'none\';document.querySelectorAll(\'[id^=top5-card-]\').forEach(function(e){e.style.borderColor=\'rgba(255,255,255,0.08)\'});" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:18px;cursor:pointer;line-height:1;padding:0;">×</button>'
+                         + '</div>';
+
+                // Tiage-Text
+                if (v.tiage) {
+                    html += '<div style="font-size:13px;color:rgba(255,255,255,0.75);font-style:italic;margin-bottom:14px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';line-height:1.55;">'
+                          + v.tiage + '</div>';
+                }
+
+                // Traditionenabschnitte (2-Spalten-Grid auf großen Screens)
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Weisheitstraditionen</div>';
+                html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;">';
+                TRAD_LIST.forEach(function(t) {
+                    if (!trad[t.key]) return;
+                    html += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
+                          +   '<div style="font-size:11px;font-weight:600;color:' + t.col + ';margin-bottom:4px;">' + t.icon + ' ' + t.label + '</div>'
+                          +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[t.key] + '</div>'
+                          + '</div>';
+                });
+                html += '</div>';
+
+                // Reflexion
+                if (v.reflexion) {
+                    html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;">'
+                          +   '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
+                          +   '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
+                          + '</div>';
+                }
+
+                panel.innerHTML = html;
+            }).catch(function() {
+                if (panel) panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Karten-Texte konnten nicht geladen werden.</div>';
+            });
         }
 
         /**
@@ -666,7 +731,7 @@
 
     <!-- Lightbox Overlay -->
     <div id="tiage-lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);cursor:zoom-out;align-items:center;justify-content:center;">
-        <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;padding:4px 8px;opacity:0.8;">✕</button>
+        <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:16px;right:20px;z-index:10;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);border-radius:50%;color:#fff;font-size:22px;cursor:pointer;line-height:1;width:38px;height:38px;display:flex;align-items:center;justify-content:center;">✕</button>
         <img id="tiage-lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.8);">
         <div id="tiage-lightbox-caption" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);font-size:13px;white-space:nowrap;"></div>
     </div>

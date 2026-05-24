@@ -784,12 +784,12 @@ function generateJungGfkStatement() {
     //
     // Theoretische Begründung:
     //
-    // R1 ORIENTIERUNG (Anziehung/Sexualität)
+    // R1 ATTRAKTION (Anziehung/Sexualität)
     //   → GFK (40%):  Rosenbergs Grundbedürfnisse umfassen Intimität,
-    //                 körperliche Nähe - Orientierung ist fundamental
+    //                 körperliche Nähe - Attraktion ist fundamental
     //   → Osho (30%): Tantra, sexuelle Energie, Polarität sind zentral
     //   → Pirsig (15%): Qualitätsphilosophie fokussiert nicht auf Sexualität
-    //   → Kink (15%):  Kink fokussiert auf Dynamik, nicht Orientierung
+    //   → Kink (15%):  Kink fokussiert auf Dynamik, nicht Attraktion
     //
     // R2 ARCHETYP (Beziehungsphilosophie)
     //   → GFK (25%):  Bedürfnisse variieren leicht nach Beziehungsform
@@ -810,7 +810,7 @@ function generateJungGfkStatement() {
     // Dokumentation: docs/theory/faktor-perspektiven-matrix.md
     // ═══════════════════════════════════════════════════════════════════
     const gewichtMatrix = {
-        R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },  // Orientierung
+        R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },  // Attraktion
         R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },  // Archetyp
         R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },  // Dominanz
         R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }   // Geschlecht
@@ -826,7 +826,7 @@ function generateJungGfkStatement() {
 
     // Resonanzfaktor-Konfiguration
     const faktoren = {
-        R1: { label: 'Orientierung', color: '#E63946' },
+        R1: { label: 'Attraktion', color: '#E63946' },
         R2: { label: 'Archetyp', color: '#2A9D8F' },
         R3: { label: 'Dominanz', color: '#8B5CF6' },
         R4: { label: 'Geschlecht', color: '#F4A261' }
