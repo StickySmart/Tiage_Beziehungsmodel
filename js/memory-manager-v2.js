@@ -171,14 +171,15 @@ const MemoryManagerV2 = (function() {
             const color = SLOT_STUFEN_COLORS[stufe] || '#888';
             const label = (catalog && catalog[id] && catalog[id].label) ? catalog[id].label : (NEEDS16_LABELS[id] || id);
             const isLocked = Object.prototype.hasOwnProperty.call(locked, id);
+            const displayVal = isLocked ? locked[id] : val;
             const lockHtml = isLocked
                 ? `<span style="font-size:9px;margin-left:2px;opacity:0.9;">🔒</span>`
                 : `<span style="font-size:9px;margin-left:2px;opacity:0.25;">○</span>`;
-            const valColor = val >= 80 ? '#fff' : val >= 60 ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)';
+            const valColor = displayVal >= 80 ? '#fff' : displayVal >= 60 ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)';
             return `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
                 <span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;"></span>
                 <span style="flex:1;font-size:10px;color:rgba(255,255,255,0.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</span>
-                <span style="font-size:11px;font-weight:700;color:${valColor};min-width:24px;text-align:right;">${val}</span>
+                <span style="font-size:11px;font-weight:700;color:${valColor};min-width:24px;text-align:right;">${displayVal}</span>
                 ${lockHtml}
             </div>`;
         }).join('');
