@@ -137,8 +137,10 @@
             background: rgba(255,255,255,0.1);
         }
 
+        .synthese-title-block { display: flex; flex-direction: column; gap: 1px; }
+        .synthese-title-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
         .synthese-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-primary);
         }
@@ -212,70 +214,9 @@
             color: var(--text-primary);
         }
 
-        .synthese-archetype-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 16px 20px;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .archetype-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .archetype-nav-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.05);
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .archetype-nav-btn:hover {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-primary);
-        }
-
-        .archetype-info {
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .archetype-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .archetype-label.ich {
-            color: var(--success);
-        }
-
-        .archetype-label.partner {
-            color: var(--danger);
-        }
-
-        .archetype-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .archetype-separator {
-            font-size: 18px;
-            color: var(--text-muted);
-        }
+        .arch-ich     { color: var(--success); font-weight: 600; }
+        .arch-partner { color: var(--danger);  font-weight: 600; }
+        .arch-sep     { color: var(--text-muted); font-size: 11px; }
 
         .synthese-content {
             padding: 20px;
@@ -681,6 +622,26 @@
             .breakdown-table td.td-name { max-width: 80px; }
             .td-name-btn { max-width: 80px; }
         }
+
+        /* Sticky Top-5 Thumbnail Bar */
+        #top5-sticky-bar {
+            position: sticky;
+            top: 0;
+            z-index: 89;
+            background: var(--bg-dark);
+            padding: 8px 16px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        #top5-sticky-bar:empty { display: none; }
+        #top5-sticky-bar > div {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        /* OshoZen Resonanz — Thumbnail-Reihe + alle Bilder ausblenden, Text-Karten behalten */
+        .osho-zen-no-images .osho-zen-card-strip { display: none !important; }
+        .osho-zen-no-images .osho-zen-image-container { display: none !important; }
+        .osho-zen-no-images img { display: none !important; }
     </style>
 </head>
 <body>
@@ -705,7 +666,14 @@
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </a>
-                <span class="synthese-title" data-i18n="synthese.title">Ti-Age Synthese</span>
+                <div class="synthese-title-block">
+                    <span class="synthese-title-label">Ti-Age Synthese</span>
+                    <div class="synthese-title">
+                        <span class="arch-ich" id="ichArchetypeName">-</span>
+                        <span class="arch-sep">×</span>
+                        <span class="arch-partner" id="partnerArchetypeName">-</span>
+                    </div>
+                </div>
             </div>
             <div class="synthese-tabs">
                 <span class="synthese-tab active fire-blink" title="Ti-Age Synthese">🔥</span>
@@ -713,26 +681,8 @@
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
         </div>
 
-        <!-- Archetyp Navigation -->
-        <div class="synthese-archetype-nav">
-            <div class="archetype-selector">
-                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
-                <div class="archetype-info">
-                    <div class="archetype-label ich" data-i18n="synthese.labelDu">DU</div>
-                    <div class="archetype-name" id="ichArchetypeName">-</div>
-                </div>
-                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
-            </div>
-            <span class="archetype-separator">×</span>
-            <div class="archetype-selector">
-                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)">‹</button>
-                <div class="archetype-info">
-                    <div class="archetype-label partner" data-i18n="synthese.labelPartner">PARTNER</div>
-                    <div class="archetype-name" id="partnerArchetypeName">-</div>
-                </div>
-                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)">›</button>
-            </div>
-        </div>
+        <!-- Sticky Top-5 Bar -->
+        <div id="top5-sticky-bar"></div>
 
         <!-- Content -->
         <div class="synthese-content" id="syntheseContent">
@@ -1260,7 +1210,43 @@
             const ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
                 ? TiageState.getFlatNeeds('ich') : {};
 
-            const top5Html = renderTop5SectionUebersicht(ichNeeds, state.ichArchetype);
+            // Gemeinsame Bedürfnisse berechnen (Durchschnitt ICH × PARTNER)
+            let top5Html = '';
+            let top5Title = 'Top-5 Bedürfnisse';
+            let top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
+            let needsForTop5 = ichNeeds;
+
+            if (state.hasPartner) {
+                let needs2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                    ? TiageState.getFlatNeeds('partner') : {};
+                if (Object.keys(needs2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
+                    const bp = BaseArchetypProfile[state.partnerArchetype];
+                    if (bp && bp.umfrageWerte) needs2 = bp.umfrageWerte;
+                }
+                const catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
+                if (catalog && Object.keys(needs2).length > 0) {
+                    const gemeinsam = {};
+                    Object.keys(catalog).forEach(id => {
+                        const v1 = ichNeeds[id] !== undefined ? ichNeeds[id] : 50;
+                        const v2 = needs2[id]  !== undefined ? needs2[id]  : 50;
+                        gemeinsam[id] = (v1 + v2) / 2;
+                    });
+                    needsForTop5 = gemeinsam;
+                    top5Title    = 'Eure Top-5 gemeinsamen Bedürfnisse';
+                    top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
+                }
+            }
+
+            top5Html = renderTop5SectionUebersicht(needsForTop5, state.ichArchetype, top5Title, top5Subtitle);
+
+            // Sticky bar befüllen und Offset dynamisch setzen
+            const stickyBar = document.getElementById('top5-sticky-bar');
+            if (stickyBar) {
+                stickyBar.innerHTML = top5Html;
+                const headerEl = document.querySelector('.synthese-header');
+                stickyBar.style.top = (headerEl ? headerEl.offsetHeight : 52) + 'px';
+            }
+
             const breakdownHtml = `<div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🎯</span>
@@ -1274,16 +1260,19 @@
             _U_breakdownHtml = breakdownHtml;
             _U_activeNeedId  = null;
 
-            // Gemeinsame Bedürfnisse (Resonanz) Section
+            // Gemeinsame Bedürfnisse (OshoZen) — Bilder werden per CSS unterdrückt
             let resonanzHtml = '';
             if (state.hasPartner && typeof OshoZenTextGenerator !== 'undefined') {
                 let needs1 = ichNeeds;
-                let needs2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
-                    ? TiageState.getFlatNeeds('partner') : {};
-                if (Object.keys(needs2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
-                    const bp = BaseArchetypProfile[state.partnerArchetype];
-                    if (bp && bp.umfrageWerte) needs2 = bp.umfrageWerte;
-                }
+                let needs2 = needsForTop5 !== ichNeeds ? needsForTop5 : (() => {
+                    let n2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                        ? TiageState.getFlatNeeds('partner') : {};
+                    if (Object.keys(n2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
+                        const bp = BaseArchetypProfile[state.partnerArchetype];
+                        if (bp && bp.umfrageWerte) n2 = bp.umfrageWerte;
+                    }
+                    return n2;
+                })();
                 const oshoContent = OshoZenTextGenerator.generateSync({
                     profile1: { name: names[state.ichArchetype], needs: needs1, beduerfnisse: needs1 },
                     profile2: { name: names[state.partnerArchetype], needs: needs2, beduerfnisse: needs2 },
@@ -1291,7 +1280,7 @@
                     name2: names[state.partnerArchetype],
                     topN: 5
                 });
-                resonanzHtml = `<div class="synthese-section" style="margin-top:16px;">
+                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
                         <div>
@@ -1299,10 +1288,10 @@
                             <div class="synthese-section-subtitle">Resonanz & Übereinstimmung</div>
                         </div>
                     </div>
-                    <div class="osho-zen-content">${oshoContent}</div>
+                    <div class="osho-zen-content osho-zen-no-images">${oshoContent}</div>
                 </div>`;
             } else if (!state.hasPartner) {
-                resonanzHtml = `<div class="synthese-section" style="margin-top:16px;">
+                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
                         <div><div class="synthese-section-title">Gemeinsame Bedürfnisse</div></div>
@@ -1315,8 +1304,7 @@
             }
 
             try {
-                container.innerHTML = top5Html
-                    + `<div id="uebersicht-lower-section">${breakdownHtml}</div>`
+                container.innerHTML = `<div id="uebersicht-lower-section">${breakdownHtml}</div>`
                     + resonanzHtml;
             } catch(e) {
                 // Fallback ohne Katalog
@@ -1332,23 +1320,24 @@
         }
 
         // Image mapping for Top-5 section: needId → filenames per variant
+        // SSOT: idx 0=V1, 1=V2, 2=V3 — direkt aus osho-zen-beduerfnisse.json varianten[Vx].bild
         var TOP5_IMAGE_MAP = {
-            '#B1':  ['B002.webp','B005.webp'],
-            '#B2':  ['B011.webp','B012.webp'],
-            '#B3':  ['B014.webp','B006.webp','B047.webp'],
-            '#B4':  ['B057.webp','B055.webp','B054.webp'],
-            '#B5':  ['B060.webp','B058.webp','B056.webp'],
-            '#B6':  ['B034.webp','B036.webp','B035.webp'],
-            '#B7':  ['B082.webp','B048.webp','B007.webp'],
-            '#B8':  ['Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png','B065.webp'],
-            '#B9':  ['B041.webp','B042.webp','B039.webp'],
-            '#B10': ['B017.webp','B044.webp','B045.webp'],
-            '#B11': ['B119.webp','B120.webp'],
-            '#B12': ['B021.webp','B020.webp','B028.webp'],
-            '#B13': ['B072.webp','B175.webp'],
-            '#B14': ['B062.webp','B070.webp','B063.webp'],
-            '#B15': ['B052.webp','B050.webp','B051.webp'],
-            '#B16': ['B064.webp','B067.webp','B069.webp']
+            '#B1':  ['Future/B002_00001_ (2).png',  'Future/B005_00001_.png',              'Future/B059_00001_.png'],
+            '#B2':  ['Future/B011_00001_.png',       'Future/B026_00001_ (2).png',          'Future/B011_00001_.png'],
+            '#B3':  ['Future/B047_00001_.png',       'Future/B006_00001_.png',              'Future/B047_00001_ (2).png'],
+            '#B4':  ['Future/B057_00001_.png',       'Future/B060_00001_.png',              'Future/B054_00001_.png'],
+            '#B5':  ['Future/B038_00001_.png',       'B058.webp',                           'Future/B056_00001_.png'],
+            '#B6':  ['Future/B017_00001_.png',       'Future/B036_00001_.png',              'Future/B044_00001_.png'],
+            '#B7':  ['Future/B014_00001_.png',       'Future/B048_00001_.png',              'Future/B045_00001_.png'],
+            '#B8':  ['Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png', 'Future/B065_00001_.png', 'Future/image_00000.png'],
+            '#B9':  ['Future/B033_00001_.png',       'Future/B024_00001_.png',              'Future/B039_00001_.png'],
+            '#B10': ['Future/B041_00001_.png',       'Future/B047_00001_ (3).png',          'Future/B023_00001_.png'],
+            '#B11': ['Future/B035_00001_.png',       'B120.webp',                           'Future/B024_00001_ (2).png'],
+            '#B12': ['Future/B021_00001_.png',       'Future/B020_00001_.png',              'B028.webp'],
+            '#B13': ['B072.webp',                    'Future/B018_00001_ (2).png',          'Future/B066_00001_.png'],
+            '#B14': ['Future/B062_00001_.png',       'B070.webp',                           'Future/B063_00001_.png'],
+            '#B15': ['Future/B015_00001_.png',       'Future/B050_00001_.png',              'Future/B051_00001_.png'],
+            '#B16': ['Future/B018_00001_.png',       'B067.webp',                           'B069.webp']
         };
         var IMG_BASE_UEBERSICHT = 'assets/images/beduerfnisse-v2/';
 
@@ -1361,111 +1350,246 @@
             { key: 'moderne',     icon: '🧬', label: 'Moderne',         col: '#A0B5C9' },
             { key: 'pirsig',      icon: '⚙',  label: 'Pirsig · Qualität', col: '#E8C97A' }
         ];
+        var _U_cachedBedData    = {};
+        var _U_activeVariantKey = null;
+
+        function _U_activateOshoZenItem(needId, hideAll) {
+            document.querySelectorAll('.osho-zen-item').forEach(function(item) {
+                var ids = (item.dataset.needIds || '').split(' ');
+                var content = item.querySelector('.osho-zen-item-content');
+                var toggle  = item.querySelector('.osho-zen-toggle');
+                var isMatch = needId && ids.indexOf(needId) >= 0;
+                if (hideAll) {
+                    item.style.display = 'none';
+                } else {
+                    item.style.display = (needId && !isMatch) ? 'none' : '';
+                }
+                if (content) content.style.display = isMatch ? 'block' : 'none';
+                if (toggle)  toggle.textContent    = isMatch ? '▼' : '▶';
+            });
+        }
         var _U_activeNeedId  = null;
         var _U_breakdownHtml = '';
+        var _U_viewModes   = ['bild', 'gemeinsam', 'tradition', 'karte'];
+        var _U_viewModeIdx = 0;
+
+        var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+        var _BTN_STYLE = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:22px;line-height:1;padding:4px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all 0.15s;';
+
+        // Renders cycling wisdom content into #uebersicht-lower-section
+        function _U_renderLowerSection(needId, value, bedData) {
+            var section = document.getElementById('uebersicht-lower-section');
+            if (!section || _U_activeNeedId !== needId) return;
+
+            var varianten  = bedData.varianten || {};
+            var v = varianten[_U_activeVariantKey] || varianten['V1'] || Object.values(varianten)[0];
+            if (!v) return;
+
+            var need  = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+            var color = need ? (_U_FARBEN[need.stufe] || '#888') : '#888';
+            var trad  = v.traditionen || {};
+            var kartenName = v.karte_de || v.karte || _U_activeVariantKey;
+            var allKeys = Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort();
+            var curIdx  = allKeys.indexOf(_U_activeVariantKey);
+            if (curIdx < 0) curIdx = 0;
+            var hasMulti = allKeys.length > 1;
+
+            var bildSrc = '';
+            if (v.bild) {
+                bildSrc = v.bild.startsWith('Future/') ? 'assets/images/' + v.bild : 'assets/images/beduerfnisse-v2/' + v.bild;
+            }
+
+            var mode = _U_viewModes[_U_viewModeIdx] || 'bild';
+            var modeLabels = { bild: '📷 Bild', gemeinsam: '📖 Weisheit', tradition: '🕊 Traditionen', karte: '🃏 Bedürfniskarte' };
+            var modeDotsHtml = _U_viewModes.map(function(m, i) {
+                return '<span style="width:7px;height:7px;border-radius:50%;background:' + (i === _U_viewModeIdx ? color : 'rgba(255,255,255,0.15)') + ';display:inline-block;margin:0 2px;"></span>';
+            }).join('');
+
+            // Indicator injected inside the active thumbnail card
+            var oldInd = document.getElementById('u-sticky-indicator');
+            if (oldInd) {
+                if (oldInd.parentElement) oldInd.parentElement.style.overflow = 'hidden';
+                oldInd.remove();
+            }
+            var activeCardEl = document.getElementById('u-top5-card-' + needId.replace('#', ''));
+            if (activeCardEl) {
+                activeCardEl.style.overflow = 'visible';
+                var arrowsHtml = (hasMulti && mode === 'bild')
+                    ? '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',-1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="Vorherige">‹</button>'
+                    + '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="Nächste">›</button>'
+                    : '';
+                activeCardEl.insertAdjacentHTML('beforeend',
+                    '<div id="u-sticky-indicator" style="padding:4px 6px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;gap:4px;background:rgba(0,0,0,0.3);" onclick="toggleUebersichtWisdom(\'' + needId + '\',' + value + ');event.stopPropagation();" title="Nächste Ansicht">'
+                    + '<div style="display:flex;align-items:center;gap:4px;">'
+                    +   '<span style="font-size:9px;color:rgba(255,255,255,0.45);white-space:nowrap;">' + (modeLabels[mode] || mode) + '</span>'
+                    +   '<span style="display:inline-flex;align-items:center;">' + modeDotsHtml + '</span>'
+                    + '</div>'
+                    + '<div style="display:flex;align-items:center;gap:2px;" onclick="event.stopPropagation();">'
+                    +   arrowsHtml
+                    +   '<button onclick="toggleUebersichtWisdom_close();event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;" title="Schließen">×</button>'
+                    + '</div>'
+                    + '</div>'
+                );
+            }
+
+            // Mode content (no header — indicator is in sticky bar)
+            var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+            if (mode === 'bild') {
+                if (bildSrc) {
+                    html += '<div style="text-align:center;margin-bottom:14px;">'
+                        + '<img src="' + bildSrc + '" alt="' + kartenName + '" onclick="openLightbox(this.src,\'' + kartenName.replace(/'/g, "\\'") + '\')" style="max-height:280px;max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.5);object-fit:contain;cursor:zoom-in;">'
+                        + '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;">' + kartenName + (hasMulti ? ' · ' + (curIdx+1) + '/' + allKeys.length : '') + ' · zum Vergrößern klicken</div>'
+                        + '</div>';
+                } else {
+                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Kein Bild verfügbar</div>';
+                }
+            } else if (mode === 'gemeinsam') {
+                if (v.tiage) {
+                    html += '<div style="font-size:13px;color:rgba(255,255,255,0.78);font-style:italic;margin-bottom:14px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';line-height:1.6;">' + v.tiage + '</div>';
+                } else {
+                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Kein Weisheitstext verfügbar</div>';
+                }
+            } else if (mode === 'tradition') {
+                var tradHtml = '';
+                _U_TRAD.forEach(function(t) {
+                    if (!trad[t.key]) return;
+                    tradHtml += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
+                        + '<div style="font-size:11px;font-weight:600;color:' + t.col + ';margin-bottom:4px;">' + t.icon + ' ' + t.label + '</div>'
+                        + '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[t.key] + '</div>'
+                        + '</div>';
+                });
+                html += tradHtml
+                    ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;">' + tradHtml + '</div>'
+                    : '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Keine Traditionsquellen verfügbar</div>';
+                if (v.reflexion) {
+                    html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;margin-top:10px;">'
+                        + '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
+                        + '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
+                        + '</div>';
+                }
+            } // karte: lower section stays empty, resonanz block shown below
+
+            if (mode !== 'karte') {
+                html += '</div>';
+                section.innerHTML = html;
+            } else {
+                section.innerHTML = '';
+            }
+
+            // Show OshoZen card + resonanz block only in karte mode
+            var resonanzBlock = document.getElementById('synthese-resonanz-block');
+            if (mode === 'karte') {
+                if (resonanzBlock) resonanzBlock.style.display = '';
+                _U_activateOshoZenItem(needId);
+            } else {
+                if (resonanzBlock) resonanzBlock.style.display = 'none';
+                _U_activateOshoZenItem(null, true);
+            }
+        }
+
+        window.toggleUebersichtWisdom_close = function() {
+            var section = document.getElementById('uebersicht-lower-section');
+            _U_activeNeedId = null;
+            _U_viewModeIdx  = 0;
+            document.querySelectorAll('[id^="u-top5-card-"]').forEach(function(el) {
+                el.style.border    = '1px solid rgba(255,255,255,0.08)';
+                el.style.boxShadow = '';
+            });
+            var oldInd = document.getElementById('u-sticky-indicator');
+            if (oldInd) {
+                if (oldInd.parentElement) oldInd.parentElement.style.overflow = 'hidden';
+                oldInd.remove();
+            }
+            if (section) section.innerHTML = _U_breakdownHtml;
+            var resonanzBlock = document.getElementById('synthese-resonanz-block');
+            if (resonanzBlock) resonanzBlock.style.display = '';
+            _U_activateOshoZenItem(null);
+        };
+
+        window._U_switchVariant = function(needId, value, delta) {
+            var bedData = _U_cachedBedData[needId];
+            if (!bedData) return;
+            var varianten = bedData.varianten || {};
+            var keys = Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort();
+            if (keys.length <= 1) return;
+            var idx = keys.indexOf(_U_activeVariantKey);
+            if (idx < 0) idx = 0;
+            idx = (idx + delta + keys.length) % keys.length;
+            _U_activeVariantKey = keys[idx];
+            _U_renderLowerSection(needId, value, bedData);
+        };
 
         window.toggleUebersichtWisdom = function(needId, value) {
             var section = document.getElementById('uebersicht-lower-section');
             if (!section) return;
 
-            // Alle Karten-Borders zurücksetzen
+            // Reset card borders
             document.querySelectorAll('[id^="u-top5-card-"]').forEach(function(el) {
-                el.style.border = '1px solid rgba(255,255,255,0.08)';
+                el.style.border    = '1px solid rgba(255,255,255,0.08)';
                 el.style.boxShadow = '';
             });
 
-            // Gleiche Karte nochmal → zurück zur Aufschlüsselung
+            // Same card → cycle view mode
             if (_U_activeNeedId === needId) {
-                _U_activeNeedId = null;
-                section.innerHTML = _U_breakdownHtml;
+                _U_viewModeIdx = (_U_viewModeIdx + 1) % _U_viewModes.length;
+                var cachedBd = _U_cachedBedData[needId];
+                if (cachedBd) {
+                    var need2  = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+                    var color2 = need2 ? (_U_FARBEN[need2.stufe] || '#888') : '#888';
+                    var ac2 = document.getElementById('u-top5-card-' + needId.replace('#', ''));
+                    if (ac2) { ac2.style.border = '2px solid ' + color2; ac2.style.boxShadow = '0 0 10px ' + color2 + '44'; }
+                    _U_renderLowerSection(needId, value, cachedBd);
+                }
                 return;
             }
-            _U_activeNeedId = needId;
 
-            // Aktive Karte hervorheben
-            var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+            // Different card → open fresh at Bild
+            _U_activeNeedId = needId;
+            _U_viewModeIdx  = 0;
+
+            var need  = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
             var color = need ? (_U_FARBEN[need.stufe] || '#888') : '#888';
-            var safeKey = needId.replace('#', '');
-            var activeCard = document.getElementById('u-top5-card-' + safeKey);
-            if (activeCard) {
-                activeCard.style.border = '2px solid ' + color;
-                activeCard.style.boxShadow = '0 0 10px ' + color + '44';
+            var activeCard = document.getElementById('u-top5-card-' + needId.replace('#', ''));
+            if (activeCard) { activeCard.style.border = '2px solid ' + color; activeCard.style.boxShadow = '0 0 10px ' + color + '44'; }
+
+            // Cached?
+            if (_U_cachedBedData[needId]) {
+                var varianten0 = _U_cachedBedData[needId].varianten || {};
+                var defKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
+                _U_activeVariantKey = varianten0[defKey] ? defKey
+                    : (Object.keys(varianten0).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1');
+                _U_renderLowerSection(needId, value, _U_cachedBedData[needId]);
+                return;
             }
 
-            // Ladeindikator
+            // Loading indicator in lower section
             section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px;">🧬 Lade Tiage-Weisheit…</div>';
+            var resonanzBlockLoad = document.getElementById('synthese-resonanz-block');
+            if (resonanzBlockLoad) resonanzBlockLoad.style.display = 'none';
+            _U_activateOshoZenItem(null, true);
 
             if (typeof OshoZenTextGenerator === 'undefined' || typeof OshoZenTextGenerator.loadAndGetBeduerfnisData !== 'function') {
                 section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">OshoZenTextGenerator nicht verfügbar.</div>';
                 return;
             }
 
-            var variantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
-            var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
-
+            var defaultVariantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
             OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
                 if (_U_activeNeedId !== needId) return;
                 if (!bedData) { section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Kein Text verfügbar.</div>'; return; }
-
+                _U_cachedBedData[needId] = bedData;
                 var varianten = bedData.varianten || {};
-                var v = varianten[variantKey] || varianten['V1'] || Object.values(varianten)[0];
-                if (!v) { section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Kein Text verfügbar.</div>'; return; }
-
-                var trad = v.traditionen || {};
-                var kartenName = v.karte_de || v.karte || variantKey;
-
-                var bildSrc = '';
-                if (v.bild) {
-                    bildSrc = v.bild.startsWith('Future/') ? 'assets/images/' + v.bild : 'assets/images/beduerfnisse-v2/' + v.bild;
-                }
-
-                var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">'
-                    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.07);">'
-                    +   '<div style="display:flex;align-items:center;gap:8px;">'
-                    +     (need && need.stufe ? '<span style="font-size:10px;font-weight:600;color:' + color + ';background:' + color + '22;padding:2px 8px;border-radius:4px;">' + (STUFEN_LABELS[need.stufe] || '') + '</span>' : '')
-                    +     '<span style="font-size:14px;font-weight:700;color:#fff;">' + (need ? need.label : needId) + '</span>'
-                    +     '<span style="font-size:10px;color:rgba(255,255,255,0.3);">· ' + kartenName + ' (' + variantKey + ')</span>'
-                    +   '</div>'
-                    +   '<button onclick="toggleUebersichtWisdom(\'' + needId + '\',' + value + ')" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:20px;cursor:pointer;line-height:1;padding:0 4px;" title="Zurück zur Aufschlüsselung">×</button>'
-                    + '</div>';
-
-                if (bildSrc) {
-                    html += '<div style="text-align:center;margin-bottom:16px;">'
-                          +   '<img src="' + bildSrc + '" alt="' + kartenName + '" onclick="openLightbox(this.src,\'' + kartenName.replace(/'/g, "\\'") + '\')" style="max-height:260px;max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.5);object-fit:contain;cursor:zoom-in;">'
-                          +   '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;letter-spacing:0.5px;">' + kartenName + ' · zum Vergrößern klicken</div>'
-                          + '</div>';
-                }
-
-                if (v.tiage) {
-                    html += '<div style="font-size:13px;color:rgba(255,255,255,0.78);font-style:italic;margin-bottom:14px;padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';line-height:1.6;">' + v.tiage + '</div>';
-                }
-
-                html += '<div style="font-size:10px;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Weisheitstraditionen</div>';
-                html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;">';
-                _U_TRAD.forEach(function(t) {
-                    if (!trad[t.key]) return;
-                    html += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
-                          +   '<div style="font-size:11px;font-weight:600;color:' + t.col + ';margin-bottom:4px;">' + t.icon + ' ' + t.label + '</div>'
-                          +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[t.key] + '</div>'
-                          + '</div>';
-                });
-                html += '</div>';
-
-                if (v.reflexion) {
-                    html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;">'
-                          +   '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
-                          +   '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
-                          + '</div>';
-                }
-
-                html += '</div>';
-                section.innerHTML = html;
+                _U_activeVariantKey = varianten[defaultVariantKey] ? defaultVariantKey
+                    : (Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1');
+                _U_renderLowerSection(needId, value, bedData);
             }).catch(function() {
-                if (section) section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Texte konnten nicht geladen werden.</div>';
+                section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Texte konnten nicht geladen werden.</div>';
             });
         };
 
-        function renderTop5SectionUebersicht(ichNeeds, ichArchetype) {
+        function renderTop5SectionUebersicht(ichNeeds, ichArchetype, title, subtitle) {
+            title    = title    || 'Top-5 Bedürfnisse';
+            subtitle = subtitle || 'Karte anklicken für Tiage-Weisheit';
             var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
             if (!catalog) return '';
 
@@ -1506,12 +1630,12 @@
                     + '</div>';
             }).join('');
 
-            return '<div style="background:var(--bg-card);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--border);">'
+            return '<div style="background:var(--bg-card);border-radius:12px;padding:12px 16px 10px;border:1px solid var(--border);">'
                 + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">'
                 +   '<span style="font-size:20px;">⭐</span>'
                 +   '<div>'
-                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">Top-5 Bedürfnisse</div>'
-                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Karte anklicken für Tiage-Weisheit</div>'
+                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">' + title + '</div>'
+                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">' + subtitle + '</div>'
                 +   '</div>'
                 + '</div>'
                 + '<div style="display:flex;gap:8px;">' + cardsHtml + '</div>'

@@ -283,22 +283,32 @@ function findBestPartnerMatch() {
 
     // Sortiere Ergebnisse nach Score
     results.sort((a, b) => b.score - a.score);
-    console.log('[findBestPartnerMatch] ICH:', ichArchetype);
+
+    // Alle aktiven ICH-Slots ausschließen (nicht nur Primary)
+    const ichSlots = (typeof TiageState !== 'undefined' && TiageState.getIchSlots)
+        ? TiageState.getIchSlots()
+        : [ichArchetype];
+
+    console.log('[findBestPartnerMatch] ICH:', ichArchetype, '| Slots:', ichSlots);
     console.log('[findBestPartnerMatch] Ranking:', results);
 
-    // Wähle den besten Match aus, der NICHT derselbe Archetyp wie ICH ist
-    // (nächstbester statt identischer Archetyp)
-    const bestDifferentMatch = results.find(r => r.archetype !== ichArchetype);
+    // Wähle den besten Match aus, der NICHT in den ICH-Slots ist
+    const bestDifferentMatch = results.find(r => !ichSlots.includes(r.archetype));
     if (bestDifferentMatch) {
         bestMatch = bestDifferentMatch.archetype;
         bestScore = bestDifferentMatch.score;
     }
 
-    console.log('[findBestPartnerMatch] Bester Match (≠ ICH):', bestMatch, 'mit Score:', bestScore);
+    console.log('[findBestPartnerMatch] Bester Match (∉ ICH-Slots):', bestMatch, 'mit Score:', bestScore);
 
     // Wähle den besten Match aus
     if (bestMatch) {
         window.selectArchetypeFromGrid('partner', bestMatch);
+
+        // Markiere besten Match visuell im Grid
+        if (typeof window.markBestMatchInGrid === 'function') {
+            window.markBestMatchInGrid('partner', bestMatch, bestScore);
+        }
 
         // Zeige kurze Feedback-Animation auf dem Button
         const matchBtns = document.querySelectorAll('.best-match-btn');
@@ -567,6 +577,11 @@ function findBestIchMatch() {
     // Wähle den besten Match aus
     if (bestMatch) {
         window.selectArchetypeFromGrid('ich', bestMatch);
+
+        // Markiere besten Match visuell im Grid
+        if (typeof window.markBestMatchInGrid === 'function') {
+            window.markBestMatchInGrid('ich', bestMatch, bestScore);
+        }
 
         // Zeige kurze Feedback-Animation auf dem Button
         const matchBtns = document.querySelectorAll('.ich-match-btn');

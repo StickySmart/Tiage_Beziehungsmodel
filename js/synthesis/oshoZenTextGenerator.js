@@ -462,7 +462,7 @@ const OshoZenTextGenerator = (function() {
                     <h3>${t('synthese.oshoTopNeeds', '🔥 Eure Top {count} gemeinsamen Bedürfnisse').replace('{count}', topMatches.length)}</h3>
                     <p class="osho-zen-subtitle">${t('synthese.oshoBasedOn', 'Basierend auf der Übereinstimmung eurer Bedürfnis-Profile')}</p>
                 </div>
-                <div style="display:flex;gap:8px;margin-bottom:10px;">${cardStripHtml}</div>
+                <div class="osho-zen-card-strip" style="display:flex;gap:8px;margin-bottom:10px;">${cardStripHtml}</div>
                 <div style="display:flex;gap:8px;margin-bottom:16px;">${stufenSectionHtml}</div>
                 <div class="osho-zen-list">
         `;
@@ -483,7 +483,7 @@ const OshoZenTextGenerator = (function() {
 
             const itemStufeColor = group.needs[0] && group.needs[0].stufe ? (STUFEN_FARBEN[group.needs[0].stufe] || '#8B5CF6') : '#8B5CF6';
             html += `
-                <div class="osho-zen-item" data-index="${groupIndex}" data-stufe-color="${itemStufeColor}">
+                <div class="osho-zen-item" data-index="${groupIndex}" data-need-ids="${group.needs.map(n => n.id).join(" ")}" data-stufe-color="${itemStufeColor}">
                     <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${groupIndex})">
                         <div class="osho-zen-item-left">
                             ${thumbHtml}

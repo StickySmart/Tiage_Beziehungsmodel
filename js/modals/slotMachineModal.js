@@ -918,6 +918,12 @@ var TiageSlotMachine = (function() {
         // Score neu berechnen
         if (updateComparisonView) updateComparisonView();
 
+        // Markiere besten Match visuell im Partner-Grid
+        const markBestMatchInGrid = getAppFunction('markBestMatchInGrid');
+        if (markBestMatchInGrid && result.archetyp) {
+            markBestMatchInGrid('partner', result.archetyp, result.score);
+        }
+
         // Modal schließen
         closeSlotMachineModal();
         resetSlotMachine();

@@ -247,10 +247,42 @@
     }
 
 
+    // Marks the best-matching archetype in the grid with a gold star + score badge.
+    // Does NOT change the current selection — purely visual.
+    function markBestMatchInGrid(person, archetype, score) {
+        const gridIds = person === 'ich'
+            ? ['ich-archetype-grid', 'mobile-ich-archetype-grid']
+            : ['partner-archetype-grid', 'mobile-partner-archetype-grid'];
+
+        gridIds.forEach(function(id) {
+            const grid = document.getElementById(id);
+            if (!grid) return;
+
+            // Clear previous indicator
+            grid.querySelectorAll('.archetype-symbol-item').forEach(function(item) {
+                item.classList.remove('best-match-indicator');
+                const old = item.querySelector('.best-match-score-badge');
+                if (old) old.remove();
+            });
+
+            if (!archetype) return;
+
+            const bestItem = grid.querySelector('.archetype-symbol-item[data-archetype="' + archetype + '"]');
+            if (!bestItem) return;
+
+            bestItem.classList.add('best-match-indicator');
+            const badge = document.createElement('span');
+            badge.className = 'best-match-score-badge';
+            badge.textContent = score ? Math.round(score) + '%' : '★';
+            bestItem.appendChild(badge);
+        });
+    }
+
     // ── Exports ─────────────────────────────────────────────────────────────
     window.navigateArchetype = navigateArchetype;
     window.selectArchetypeFromGrid = selectArchetypeFromGrid;
     window.updateArchetypeGrid = updateArchetypeGrid;
+    window.markBestMatchInGrid = markBestMatchInGrid;
     window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
     window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
 
