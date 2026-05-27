@@ -1455,11 +1455,9 @@
     }
 
     .mobile-profile-card.ich-card {
-        border-top: 3px solid var(--success);
     }
 
     .mobile-profile-card.partner-card {
-        border-top: 3px solid var(--danger);
     }
 
     .mobile-profile-header {
@@ -1512,7 +1510,6 @@
     .mobile-synthese-section {
         background: var(--bg-card);
         border-radius: 16px;
-        border-top: 3px solid #6366f1;
         padding: 15px;
         margin-bottom: 12px;
     }
@@ -1521,7 +1518,6 @@
     .mobile-bestmatch-section {
         background: var(--bg-card);
         border-radius: 16px;
-        border-top: 3px solid #F4A261;
         padding: 15px;
         margin-bottom: 12px;
     }
