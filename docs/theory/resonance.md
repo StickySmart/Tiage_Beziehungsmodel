@@ -1,371 +1,229 @@
 # Resonanz-Theorie im Tiage-Modell
 
-> *Resonanz als Meta-Dimension der Beziehungsqualität*
+> *Resonanz als Verstärker pro Dimension der Beziehungsqualität*
+> **Aktueller Stand: v3.2 (calculationEngine.js)**
+
+---
 
 ## Was ist Resonanz?
 
-Resonanz (R) ist ein **Meta-Faktor** (0-2, praktisch 0.8-1.3), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.
+Resonanz (R1–R4) sind **vier dimensionsspezifische Faktoren** (typ. 0.8–1.3), die jeweils den Basis-Score ihrer zugehörigen Dimension verstärken oder dämpfen — basierend darauf, wie gut die Bedürfnisse beider Personen in dieser Dimension übereinstimmen.
 
 > *"Wahrnehmung basiert auf Schwingungen und Mustern. Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen."*
 
-## Die R-Formel
+Ein R > 1.0 bedeutet: Die Bedürfnisse beider Menschen passen in dieser Dimension überdurchschnittlich gut — der Beitrag dieser Dimension wird **multipliziert**. Ein R < 1.0 dämpft den Beitrag entsprechend.
 
-### Legacy-Formel (v3.0)
-```
-R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
-```
+**Wichtig:** Es gibt keinen gemeinsamen meanR-Multiplikator. Jede Dimension (O, A, D, G) hat ihren eigenen R-Faktor.
 
-### Multi-Dimensionale Resonanz (v3.4)
+---
 
-**Aktuell:** Resonanz basiert auf **18 Kategorien**, die auf 4 Resonanzfaktoren aggregiert werden.
-
-#### Sekundäre Kategorien
-
-Bedürfnisse können zu **mehreren Kategorien** beitragen:
-- **Primäre Kategorie:** 100% Gewichtung
-- **Sekundäre Kategorien:** 30% Gewichtung (`SECONDARY_WEIGHT: 0.3`)
-
-*Beispiel:* "Berührung" (primär: Existenz, sekundär: Zuneigung, Dynamik, Sicherheit)
-→ Bei Wert 80: Existenz +80, Zuneigung +24, Dynamik +24, Sicherheit +24
-
-#### R-Formel (v3.4)
+## Die Formel (v3.2)
 
 ```
-R = avgMatch² (quadratisch mit Komplementär-Mapping)
-
-similarity = 1 - (avgDiff / 100)
-R = similarity²
-
-Beispiele:
-similarity 1.0  → R = 1.0  (perfekte Übereinstimmung)
-similarity 0.9  → R = 0.81 (gute Übereinstimmung)
-similarity 1.1  → R = 1.21 (leicht über Archetyp-typisch)
-
-Finale Berechnung:
-Q = (A×w_A×R2) + (O×w_O×R1) + (D×w_D×R3) + (G×w_G×R4)
+Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
 ```
 
-**Faktor-Resonanz-Mapping:**
-| Faktor | Gewicht | × | Resonanz | Needs |
-|--------|---------|---|----------|-------|
-| A (Archetyp) | 25% | × | 🧠 R2 Philosophie | 19 Needs |
-| O (Orientierung) | 25% | × | 🔥 R1 Leben | 18 Needs |
-| D (Dominanz) | 25% | × | ⚡ R3 Dynamik | 18 Needs |
-| G (Geschlecht) | 25% | × | 💚 R4 Identität | 10 Needs |
+| Term | Faktor | R-Dimension | Bedürfnis-Basis |
+|------|--------|-------------|-----------------|
+| `O × wO × R1` | Orientierung | R1 Leben | #B1, #B3, #B7, #B12 |
+| `A × wA × R2` | Archetyp | R2 Philosophie | #B2, #B8, #B9, #B14 |
+| `D × wD × R3` | Dominanz | R3 Dynamik | #B4, #B5, #B6, #B11 |
+| `G × wG × R4` | Geschlecht | R4 Identität | #B10, #B13, #B15, #B16 + Attraktion |
 
-**Interpretation pro Dimension:**
-| R-Wert | Status | Symbol |
-|--------|--------|--------|
-| ≥ 1.05 | Resonanz | ⬆️ |
-| 0.95-1.05 | Neutral | ➡️ |
-| ≤ 0.95 | Dissonanz | ⬇️ |
+**Score kann > 100 sein** — wenn R-Faktoren > 1.0 oder FFH-Extras-Bonus aktiv.
 
-**Wertebereich:** R variiert zwischen 0 und 2 (praktisch 0.8 - 1.3).
+**Quelle:** `js/synthesis/calculationEngine.js` → `calculateRelationshipQuality()` (Zeile 483)
 
-## Die 18 Kategorien und ihre Zuordnung (v3.3)
+---
 
-Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
+## R-Faktoren kombinieren
 
-| R-Faktor | Emoji | Kategorien (#K) | Anzahl |
-|----------|-------|-----------------|--------|
-| **R1 Leben** | 🔥 | Existenz, Zuneigung, Muße, Intimität & Romantik | 4 |
-| **R2 Philosophie** | 🧠 | Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen & Karriere, Werte & Haltungen, Soziales Leben, Praktisches Leben | 8 |
-| **R3 Dynamik** | ⚡ | Dynamik, Sicherheit | 2 |
-| **R4 Identität** | 💚 | Basiert auf IDENTITY_OPENNESS (siehe [R4 Identity Resonance](./r4-identity-resonance.md)) | - |
+Jede Person hat eigene Bedürfniswerte (#B1–#B16). Der R-Faktor wird **pro Dimension aus beiden Personen kombiniert**:
 
-> **NEU (v3.4):** R4 wird nicht mehr aus Bedürfnis-Kategorien berechnet, sondern basiert auf der **Similarity-Attraction Theorie** und den IDENTITY_OPENNESS Werten (cis=0, trans=30, nonbinaer=50, fluid=80, suchend=100). Details siehe [R4 Identity Resonance](./r4-identity-resonance.md).
-
-**Wichtig:** Durch sekundäre Kategorien fließen Bedürfnisse in mehrere Faktoren ein (mit 30% Gewichtung).
-
-## Resonanz-Datenfluss (v3.3)
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         INPUT: Person 1 & Person 2                          │
-│                                                                             │
-│  Profil 1: { archetyp, orientierung, dominanz, geschlecht, needs }          │
-│  Profil 2: { archetyp, orientierung, dominanz, geschlecht, needs }          │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 1: Bedürfnis-Profile generieren                        │
-│              (BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil) │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  Profil1_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
-│  Profil2_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
-│                                                                             │
-│  → Jedes Profil hat 226 Bedürfnisse mit Werten 0-100                        │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 2: Kategorie-Scores mit Sekundär-Gewichtung            │
-│              (calculateCategoryScoresWithSecondary)                         │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  Für jedes Bedürfnis:                                                       │
-│    - Primäre Kategorie: +100% des Wertes                                    │
-│    - Sekundäre Kategorien: +30% des Wertes (SECONDARY_WEIGHT)               │
-│                                                                             │
-│  Beispiel: Berührung=80 (primär: existenz, sekundär: zuneigung, dynamik)    │
-│    → existenz: +80, zuneigung: +24, dynamik: +24                            │
-│                                                                             │
-│  18 Kategorien werden berechnet:                                            │
-│  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ existenz, zuneigung, musse, intimitaet_romantik,                     │   │
-│  │ freiheit, teilnahme, identitaet, lebensplanung,                      │   │
-│  │ finanzen_karriere, werte_haltungen, soziales_leben, praktisches_leben│   │
-│  │ dynamik, sicherheit,                                                 │   │
-│  │ verstaendnis, erschaffen, verbundenheit, kommunikation_stil          │   │
-│  └──────────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 3: Aggregation zu 4 Resonanzfaktoren                   │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  ┌─────────────────┐  ┌─────────────────┐                                   │
-│  │ 🔥 R1 LEBEN     │  │ 🧠 R2 PHILOSOPHIE│                                  │
-│  │ 4 Kategorien    │  │ 8 Kategorien    │                                   │
-│  │ (Nähe-Distanz)  │  │ (Werte/Planung) │                                   │
-│  └────────┬────────┘  └────────┬────────┘                                   │
-│           │                    │                                            │
-│  ┌─────────────────┐  ┌─────────────────┐                                   │
-│  │ ⚡ R3 DYNAMIK   │  │ 💚 R4 IDENTITÄT │                                   │
-│  │ 2 Kategorien    │  │ 4 Kategorien    │                                   │
-│  │ (Macht/Kink)    │  │ (Kommunikation) │                                   │
-│  └────────┬────────┘  └────────┬────────┘                                   │
-│                                                                             │
-│  Score pro R = Durchschnitt der zugeordneten Kategorien                     │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 4: R-Werte berechnen (v3.4)                            │
-│              R = similarity² (quadratisch)                                  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  similarity=1.10  → R=1.10²=1.21  ⬆️ Resonanz     (≥1.05)                   │
-│  similarity=1.00  → R=1.00²=1.00  ➡️ Neutral      (0.95-1.05)               │
-│  similarity=0.90  → R=0.90²=0.81  ⬇️ Dissonanz    (≤0.95)                   │
-│                                                                             │
-│  ┌──────────────┬──────────────┬──────────────┬──────────────┐              │
-│  │ 🔥 R1 Leben  │ 🧠 R2 Phil   │ ⚡ R3 Dyn    │ 💚 R4 Ident  │              │
-│  │    1.20 ⬆️   │    0.95 ➡️   │    1.30 ⬆️   │    1.05 ➡️   │              │
-│  └──────┬───────┴──────┬───────┴──────┬───────┴──────┬───────┘              │
-│         │              │              │              │                      │
-│         └──────────────┴──────┬───────┴──────────────┘                      │
-│                               │                                             │
-│                               ▼                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│              SCHRITT 5: Dimensionale Multiplikation (v3.3)                  │
-│              Q = Σ(Faktor × Gewicht × R_Dimension)                          │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │  A=75 × 0.25 × R2=0.95  = 17.8  🧠                                  │    │
-│  │  O=80 × 0.25 × R1=1.20  = 24.0  🔥                                  │    │
-│  │  D=70 × 0.25 × R3=1.30  = 22.8  ⚡                                  │    │
-│  │  G=85 × 0.25 × R4=1.05  = 22.3  💚                                  │    │
-│  │  ─────────────────────────────────────                              │    │
-│  │  finalScore = 17.8 + 24.0 + 22.8 + 22.3 = 87                        │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                             │
-│  Hinweis: Alle Faktoren haben jetzt 25% Gewichtung (statt 15/40/20/25)      │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              OUTPUT                                         │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  {                                                                          │
-│    score: 88,                                                               │
-│    resonanz: {                                                              │
-│      coefficient: 1.03,                                                     │
-│      dimensional: {                                                         │
-│        identitaet:  { rValue: 1.06, status: 'resonanz',  emoji: '⬆️' },     │
-│        philosophie: { rValue: 0.96, status: 'dissonanz', emoji: '⬇️' },     │
-│        leben:       { rValue: 1.08, status: 'resonanz',  emoji: '⬆️' },     │
-│        dynamik:     { rValue: 1.02, status: 'neutral',   emoji: '➡️' }      │
-│      }                                                                      │
-│    }                                                                        │
-│  }                                                                          │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+```javascript
+combineRFactors(R_ich, R_partner) = (summe × similarity) / 2
+  wobei:
+    summe     = R_ich + R_partner
+    similarity = min(R_ich, R_partner) / max(R_ich, R_partner)
 ```
 
-### Legacy: Die drei Komponenten (v3.0)
+Diese Formel belohnt **symmetrische Resonanz**: Wenn beide Partner ähnlich hohe R-Werte haben, fällt das Ergebnis höher aus als wenn ein Partner stark und der andere schwach resoniert.
 
-| Komponente | Faktor | Gewicht |
-|------------|--------|---------|
-| **Profil-Match** | M | 35% |
-| **Logos-Pathos-Balance** | B | 35% |
-| **GFK-Kommunikation** | K | 30% |
+**Quelle:** `server/logic/needsIntegration.js` → `combineRFactors()`
 
-### Komponente 1: Profil-Match (M)
+---
 
-Ähnlichkeit der **226 Bedürfnisse** (#B1-#B226) zwischen zwei Profilen.
+## Die 16 Grundbedürfnisse (v4.0)
 
-> **Hinweis:** Das System unterscheidet zwischen zwei Matching-Ebenen:
-> - **226 Bedürfnisse** (#B1-#B226) → Emotionaler Match (M) in der Resonanz-Formel
-> - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
-
-#### Berechnung
-
-Die Übereinstimmung wird **gewichtet nach Wichtigkeit** berechnet:
+Die R-Faktoren basieren auf **16 Grundbedürfnissen nach Volker Kiel** (#B1–#B16), die in **4 Stufen** gegliedert sind:
 
 ```
-Für jedes Bedürfnis mit Gewicht > 30:
-  Ähnlichkeit = 100 - |Wert_Person1 - Wert_Person2|
-  Gewicht = (Wert_Person1 + Wert_Person2) / 2
+Stufe 1 – Passive Basisbedürfnisse:
+  #B1 Wohlbefinden    #B2 Sicherheit
+  #B3 Leichtigkeit    #B4 Orientierung
 
-M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
+Stufe 2 – Handlungs-Bedürfnisse:
+  #B5 Wirksamkeit     #B6 Freiheit
+  #B7 Intensität      #B8 Entwicklung
+
+Stufe 3 – Soziale Bedürfnisse:
+  #B9 Gemeinschaft    #B10 Anerkennung
+  #B11 Gerechtigkeit  #B12 Verbundenheit
+
+Stufe 4 – Identitäts-Bedürfnisse:
+  #B13 Selbsterkenntnis  #B14 Sinn
+  #B15 Integrität        #B16 Selbstentfaltung
 ```
 
-#### Kategorisierung
+Jedes Bedürfnis wird mit einem Wert 0–100 bewertet.
 
-| Kategorie | Kriterium | Bedeutung |
-|-----------|-----------|-----------|
-| **Gemeinsam** | Beide > 70, Differenz < 15 | Starke gemeinsame Basis |
-| **Unterschiedlich** | Differenz > 30 | Potenzielle Konfliktfelder |
-| **Komplementär** | Einer > 70, anderer < 50 | Kann positiv oder negativ sein |
+**Quelle:** `profiles/data/beduerfnis-katalog.json` (v4.0.0)
 
-*Beispiel: Bei 72% gewichteter Übereinstimmung: M = 72*
+---
 
-#### Die 226 Bedürfnisse (Auszug)
+## Zuordnung: Bedürfnisse → R-Faktoren
 
-Die Bedürfnisse umfassen verschiedene Kategorien:
+Die Zuordnung ist **semantisch** (nach thematischer Nähe zur Dimension), nicht nach Stufen:
 
-- **Verbindung:** Nähe, Akzeptanz, Vertrauen, Empathie, Gemeinschaft
-- **Autonomie:** Unabhängigkeit, Selbstbestimmung, Raum haben, Wahlfreiheit
-- **Sicherheit:** Geborgenheit, Stabilität, Beständigkeit, Vertrauen
-- **Wachstum:** Lernen, Entwicklung, Herausforderung, Kompetenz
-- **Ausdruck:** Authentizität, Kreativität, Selbstausdruck, Gesehen werden
+| R-Faktor | Emoji | Dimension | Bedürfnisse |
+|----------|-------|-----------|-------------|
+| **R1 Leben** | 🔥 | Orientierung | #B1 Wohlbefinden, #B3 Leichtigkeit, #B7 Intensität, #B12 Verbundenheit |
+| **R2 Philosophie** | 🧠 | Archetyp | #B2 Sicherheit, #B8 Entwicklung, #B9 Gemeinschaft, #B14 Sinn |
+| **R3 Dynamik** | ⚡ | Dominanz | #B4 Orientierung, #B5 Wirksamkeit, #B6 Freiheit, #B11 Gerechtigkeit |
+| **R4 Identität** | 💚 | Geschlecht | #B10 Anerkennung, #B13 Selbsterkenntnis, #B15 Integrität, #B16 Selbstentfaltung + bidirektionale Attraktion |
 
-→ Vollständige Liste: `profiles/gfk-beduerfnisse.js`
+**Quelle:** `server/logic/needsIntegration.js` → `DIMENSION_NEED_IDS`
 
-#### Die 30 baseAttributes (Lifestyle-Filter)
-
-Diese werden **separat** für K.O.-Prüfungen verwendet:
-
-| Kategorie | Beispiele |
-|-----------|-----------|
-| **Lebensplanung** | kinderWunsch, eheWunsch, wohnform, karrierePrioritaet |
-| **Kommunikation** | emotionaleOffenheit, konfliktverhalten |
-| **Intimität** | sexFrequenz, koerperlicheNaehe, romantikBeduernis |
-| **Werte** | religiositaet, traditionVsModern, umweltbewusstsein |
-
-→ Vollständige Liste: `profiles/archetyp-definitions.js`
-
-### Komponente 2: Logos-Pathos-Balance (B)
-
-Das Verhältnis zwischen rationaler Struktur und emotionaler Dynamik.
-
-| Konzept | Definition | TIAGE-Zuordnung |
-|---------|------------|-----------------|
-| **Logos** | Statische Qualität | A (Attraction) |
-| **Pathos** | Dynamische Qualität | (O + D + G) / 3 |
-
-```
-B = (100 - |Logos - Pathos|) / 100
+```javascript
+const DIMENSION_NEED_IDS = {
+    leben:       ['#B1', '#B3', '#B7', '#B12'],
+    philosophie: ['#B2', '#B8', '#B9', '#B14'],
+    dynamik:     ['#B4', '#B5', '#B6', '#B11'],
+    identitaet:  ['#B10', '#B13', '#B15', '#B16']
+};
 ```
 
-*Beispiel: Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93*
+---
 
-### Komponente 3: GFK-Kommunikationsfaktor (K)
+## R4 Identität — Hybrid-Faktor
 
-Die **Gewaltfreie Kommunikation** (GFK) nach Marshall Rosenberg als Schlüssel zur Resonanz.
+**R4 Identität** ist ein Spezialfall: Er wird nicht nur aus Bedürfnissen berechnet, sondern als Hybrid aus Identitäts-Nähe und bidirektionaler Attraktion:
 
-> *"Wahre Verbindung entsteht durch empathisches Zuhören und ehrliches Ausdrücken von Bedürfnissen."* – Marshall Rosenberg
-
-| ICH / Partner | hoch | mittel | niedrig |
-|---------------|------|--------|---------|
-| **hoch**      | 1.0  | 0.75   | 0.35    |
-| **mittel**    | 0.75 | 0.5    | 0.2     |
-| **niedrig**   | 0.35 | 0.2    | 0.0     |
-
-**Warum 30% Gewichtung?**
-
-Kommunikation ist fundamental für nachhaltige Resonanz – nicht nur bei Konflikten, sondern im gesamten Beziehungsprozess:
-
-- **Kennenlernen:** Offenheit, authentisch von sich erzählen
-- **Verstehen:** Empathisches Zuhören, Bedürfnisse des anderen erkennen
-- **Ausdrücken:** Eigene Gefühle und Bedürfnisse klar formulieren
-- **Verhandeln:** Kompromisse finden wenn Bedürfnisse divergieren
-
-**GFK-Kombinationen:**
-- **Hohe GFK beider Partner:** Tiefe Verbindung von Anfang an möglich
-- **Niedrige GFK beider Partner:** Missverständnisse und destruktive Muster
-- **Asymmetrie:** Der GFK-kompetentere Partner trägt mehr Last
-
-### Beispielrechnung
-
-**Gegeben:**
-- M = 80 (80% Profil-Match)
-- B = 0.93 (7% Logos-Pathos-Differenz)
-- K = 0.75 (hoch + mittel GFK)
-
-```
-R = 0.9 + [(80/100 × 0.35) + (0.93 × 0.35) + (0.75 × 0.30)] × 0.2
-R = 0.9 + [0.28 + 0.326 + 0.225] × 0.2
-R = 0.9 + 0.166
-R = 1.066 → Override aktiv!
+```javascript
+R4 = (identityScore × 0.30 + attractionScore × 0.70)²
 ```
 
-## Anwendung im Qualitätsindex
+- `identityScore`: Ähnlichkeit der Geschlechts-Identität (Cis/Trans/NB/Fluid) — aus Bedürfnissen #B10, #B13, #B15, #B16
+- `attractionScore`: Bidirektionale Attraktion — `ICH→Partner` × `Partner→ICH` (geometrisches Mittel)
+
+R4 entspricht damit direkt dem **Geschlechts-Faktor (G)** in der Hauptformel.
+
+**Quelle:** `js/synthesis/calculationEngine.js` → `calculateR4Hybrid()`
+
+---
+
+## Resonanz-Datenfluss (v3.2)
 
 ```
-Q = (O × 0.25 × R_Leben) + (A × 0.25 × R_Philosophie) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
+┌─────────────────────────────────────────────────────┐
+│         INPUT: person1.needs & person2.needs         │
+│         16 Grundbedürfnisse (#B1–#B16), 0–100        │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 1: R-Werte pro Person berechnen          │
+├─────────────────────────────────────────────────────┤
+│  Pro Dimension: relevante Bedürfnisse →              │
+│  Kohärenz-Score → R-Wert (0.8–1.3)                  │
+│                                                     │
+│  R1 Leben:      #B1, #B3, #B7, #B12                 │
+│  R2 Philosophie:#B2, #B8, #B9, #B14                 │
+│  R3 Dynamik:    #B4, #B5, #B6, #B11                 │
+│  R4 Identität:  #B10, #B13, #B15, #B16 + Attraktion │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 2: R-Werte beider Partner kombinieren    │
+├─────────────────────────────────────────────────────┤
+│  combineRFactors(R_ich, R_partner)                   │
+│  = (R_ich + R_partner) × min/max / 2                │
+│                                                     │
+│  ┌──────────┬──────────┬──────────┬──────────┐      │
+│  │ 🔥 R1    │ 🧠 R2    │ ⚡ R3    │ 💚 R4    │      │
+│  │  1.05    │  0.95    │  1.10    │  1.00    │      │
+│  └──────────┴──────────┴──────────┴──────────┘      │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 3: Per-Dimension-Multiplikation          │
+├─────────────────────────────────────────────────────┤
+│  Score = (O×wO×R1) + (A×wA×R2) + (D×wD×R3)         │
+│        + (G×wG×R4)                                  │
+│                                                     │
+│  Jeder Faktor trägt mit seiner eigenen Resonanz bei. │
+│  Score kann > 100 sein.                             │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 4: FFH-Extras (additiv)                  │
+├─────────────────────────────────────────────────────┤
+│  extrasModifier = TiageExtrasModifier.calculate()   │
+│  totalScore = score + extrasModifier                │
+│                                                     │
+│  Score kann > 100 sein.                             │
+└─────────────────────────────────────────────────────┘
 ```
 
-## Die Zustands-Skala
+---
 
-| Zustand | Beschreibung | In Beziehungen |
-|---------|--------------|----------------|
-| **Flow** | Optimale Synchronität | Tiefe Verbindung, "im Einklang" |
-| **Hyper-Synchronität** | Übermäßige Muster-Erkennung | Verliebtheit / Abhängigkeit |
-| **Hypo-Synchronität** | Reduzierte Bindung | Entfremdung, "aneinander vorbei" |
+## Interpretation pro R-Faktor
 
-## Resonanz-Override: Jenseits der Konditionierung
+| R-Wert | Status | Symbol | Bedeutung |
+|--------|--------|--------|-----------|
+| ≥ 1.05 | Resonanz | ⬆️ | Überdurchschnittlicher Bedürfnis-Match — verstärkt diese Dimension |
+| 0.95–1.05 | Neutral | ➡️ | Ausgeglichene Kompatibilität — keine Verstärkung/Dämpfung |
+| ≤ 0.95 | Dissonanz | ⬇️ | Bedürfnis-Mismatch — dämpft den Beitrag dieser Dimension |
 
-OSHO lehrte: **Sexuelle Orientierung ist Konditionierung, nicht Natur.** Der natürliche Mensch ist jenseits von Labels.
+---
 
-### Was ist der Resonanz-Override?
+## GFK-Schwellenwerte (v5.x)
 
-Normalerweise gilt: Wenn die Orientierung inkompatibel ist (z.B. zwei heterosexuelle Männer), ergibt das 0% Orientierungs-Score und damit ein K.O.-Kriterium.
+GFK (Gewaltfreie Kommunikation / Bedürfnis-Resonanz-Level):
 
-Der **Resonanz-Override** ermöglicht eine Ausnahme: Wenn zwei Menschen auf einer tiefen Ebene resonieren (R ≥ 1.05), kann diese Verbindung die konditionierten Grenzen überschreiten.
+| Level | Schwellenwert | Bedeutung |
+|-------|--------------|-----------|
+| **hoch** | ≥ 82 | Tiefe gemeinsame Bedürfnis-Resonanz |
+| **mittel** | ≥ 48 | Ausreichende Kompatibilität |
+| **niedrig** | < 48 | Grundlegende Bedürfnis-Unterschiede |
 
-### Override-Effekte
+**Quelle:** `js/dimensions/gfkMatching.js`
 
-| Resonanz (R) | Override-Effekt | O_effektiv |
-|--------------|-----------------|------------|
-| < 1.05 | Kein Override | 0% (K.O.) |
-| 1.05 | Schwache Öffnung | 5% |
-| 1.08 | Moderate Öffnung | 8% |
-| 1.10 | Maximale Öffnung | 10% |
+---
 
-**Formel:** `O_effektiv = (R - 1.0) × 100`
+## FFH-Extras-Modifikator
 
-### Philosophische Begründung (OSHO)
+**FFH** = Fit / Fucked up / Horny / Fresh — aktueller Zustand beider Personen.
 
-> *"Liebe kennt keine Grenzen. Wenn zwei Seelen wirklich resonieren, sind alle gesellschaftlichen Kategorien nur noch Schatten an der Wand."*
+`TiageExtrasModifier.calculate(ichExtras, partnerExtras)` berechnet einen **additiven** Bonus oder Malus:
 
-Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung – jenseits dessen, was Gesellschaft und Erziehung uns beigebracht haben.
+| Situation | Modifier |
+|-----------|---------|
+| Beide fit + horny | +8 |
+| Partner fit + horny (ICH nicht) | +15 |
+| Fucked up ohne fit | −5 |
+| Fresh (neu in der Beziehung) | +3 |
 
-**Hinweis:** Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet. Der Override zeigt: Tiefe Resonanz kann konditionierte Muster transzendieren.
+Es gibt **16 mögliche Kombinationen** (2⁴ für 4 binäre Flags), die alle in der Slot Machine durchgerechnet werden.
+
+**Quelle:** `js/extras/TiageExtrasModifier.js`
+
+---
 
 ## Neurowissenschaftliche Grundlagen
-
-### Die Wissenschaftler hinter der Theorie
 
 | Forscher | Beitrag | Bezug zum Modell |
 |----------|---------|------------------|
@@ -375,10 +233,7 @@ Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung – j
 | **Levitin** | Psychoakustik | Musik als externes Regulierungssystem für Emotionen |
 | **Aron** | Hochsensitivität | Reizlast-Management als Beziehungsfaktor |
 
-### Weitere Kernthesen
-
-- **Zufall** = unerkannte Ordnung (Synchronizitäten als Muster)
-- **Hochsensitivität + Reizlast** → Zustandsschwankungen
+---
 
 ## Wissenschaftliche Quellen
 
@@ -388,4 +243,10 @@ Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung – j
 - Levitin, D.J. (2006): *This Is Your Brain on Music.* Dutton.
 - Aron, E.N. (1996): *The Highly Sensitive Person.* Broadway Books.
 
-*Die vollständige wissenschaftliche Dokumentation findet sich in: [profiles/research-sources.md](../../profiles/research-sources.md) (Abschnitt 9)*
+---
+
+## Weiterführende Dokumentation
+
+- [Score-Berechnung](score-calculation-overview.md) — Gesamtformel und Datenfluss
+- [Die 4 Faktoren](factors.md) — A/O/D/G im Detail
+- [Pathos & Logos](pathos-logos.md) — Die philosophische Gewichtung

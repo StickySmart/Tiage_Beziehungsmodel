@@ -1,504 +1,287 @@
 # Score-Berechnung: Gesamtzusammenhang
 
-> Dieses Dokument zeigt den kompletten Datenfluss von Input zu Output mit allen Quellenangaben.
+> Dieses Dokument zeigt den kompletten Datenfluss von Input zu Output.
+> **Aktueller Stand: v3.2 (calculationEngine.js)**
 
 ---
 
-## Hauptformel (v3.1)
+## Hauptformel (v3.2)
 
 ```
-Q = (A × 0.25 × R_Philosophie) + (O × 0.25 × R_Leben) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
+Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
 ```
 
-Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
+Jede Dimension trägt mit ihrer eigenen Bedürfnis-Resonanz (R1–R4) bei. Es gibt keinen gemeinsamen meanR-Multiplikator.
 
-| Faktor | Gewicht | Resonanz |
-|--------|---------|----------|
-| A (Archetyp) | 25% | 🧠 R_Philosophie |
-| O (Orientierung) | 25% | 🔥 R_Leben |
-| D (Dominanz) | 25% | ⚡ R_Dynamik |
-| G (Geschlecht) | 25% | 💚 R_Identität |
+| Variable | Beschreibung | Bereich |
+|----------|-------------|---------|
+| **O** | Orientierungs-Kompatibilität | 0–100 |
+| **A** | Archetyp-Philosophie-Score | 0–100 |
+| **D** | Dominanz-Harmonie | 0–100 |
+| **G** | Geschlechts-Attraktion (= R4) | 0–100 |
+| **wO/wA/wD/wG** | Normalisierte Benutzer-Gewichte | je 0–1, Summe = 1 |
+| **R1** | Resonanz Leben — Bedürfnisse #B1, #B3, #B7, #B12 | typ. 0.8–1.3 |
+| **R2** | Resonanz Philosophie — Bedürfnisse #B2, #B8, #B9, #B14 | typ. 0.8–1.3 |
+| **R3** | Resonanz Dynamik — Bedürfnisse #B4, #B5, #B6, #B11 | typ. 0.8–1.3 |
+| **R4** | Resonanz Identität — Hybrid aus Bedürfnissen + Attraktion | typ. 0.8–1.3 |
 
-> **Hinweis:** Die Gewichtungen sind dynamisch via UI-Slider anpassbar. 25% ist der Default.
+**Score kann > 100 sein** — wenn R-Faktoren > 1.0 oder FFH-Extras-Bonus aktiv.
 
-**Quelle:** `js/synthesis/synthesisCalculator.js:8` und `js/synthesis/constants.js:147-152`
+**Quelle:** `js/synthesis/calculationEngine.js` → `calculateRelationshipQuality()` (Zeile 483)
 
 ---
 
-## NEU v3.0: Bedürfnis-Integration pro Faktor
+## Benutzer-konfigurierbare Gewichte (AGOD)
 
-Jeder Faktor (A, O, D, G) kombiniert jetzt Matrix-Score mit Bedürfnis-Match:
-
-```
-Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
-```
-
-### Gewichtung pro Faktor
-
-| Faktor | Matrix | Bedürfnisse | Relevante Needs |
-|--------|--------|-------------|-----------------|
-| **Archetyp** | 60% | 40% | kinderwunsch, langfristige_bindung, nicht_anhaften... |
-| **Orientierung** | 50% | 50% | sexuelle_experimentierfreude, biologische_anziehung... |
-| **Dominanz** | 50% | 50% | kontrolle_ausueben, hingabe, dynamische_evolution... |
-| **Geschlecht** | 60% | 40% | authentizitaet, eigene_wahrheit, akzeptanz... |
-
-### Pirsig/Osho-Bedürfnisse in Faktoren
-
-Die philosophischen Bedürfnisse fließen jetzt DIREKT in die Faktor-Berechnung:
-
-```
-Orientierung:
-  Matrix (50%): Geometrie-Check (Hetero×Hetero = 100)
-  Needs (50%):  sex_als_meditation, hier_und_jetzt_intimitaet, wildheit_und_zartheit...
-
-Dominanz:
-  Matrix (50%): Dom×Sub = 100, Dom×Dom = 55
-  Needs (50%):  statische_stabilitaet (Pirsig), dynamische_evolution (Pirsig)...
-```
-
-**Quelle:** `js/synthesis/needsIntegration.js` und `js/synthesis/constants.js:NEEDS_INTEGRATION`
-
----
-
-## Variablen-Übersicht
-
-| Variable | Name | Gewicht | Kategorie | Quelle (Formel) | Quelle (Wert) |
-|----------|------|---------|-----------|-----------------|---------------|
-| **Q** | Qualitätsindex | - | Ergebnis | `synthesisCalculator.js:195` | Berechnet |
-| **A** | Archetyp-Score | 25% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
-| **O** | Orientierungs-Score | 25% | PATHOS | `constants.js:25` | `orientationFactor.js` |
-| **D** | Dominanz-Score | 25% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
-| **G** | Geschlechts-Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
-| **R** | Resonanz-Koeffizient | 0-2 (praktisch 0.8-1.3) | Meta | `synthesisCalculator.js` (v3.4) | Berechnet |
-
----
-
-## Datenfluss-Diagramm
-
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              INPUT: Person 1 & 2                                │
-│                                                                                 │
-│   person1: { archetyp, orientierung, dominanz, geschlecht }                     │
-│   person2: { archetyp, orientierung, dominanz, geschlecht }                     │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           SCHRITT 1: FAKTOR-BERECHNUNG                          │
-│                           (synthesisCalculator.js:68-92)                        │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│   ┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐           │
-│   │  ARCHETYP (A)   │    │ ORIENTIERUNG (O) │    │  DOMINANZ (D)    │           │
-│   │  archetypeFactor│    │orientationFactor │    │ dominanceFactor  │           │
-│   │    .js:27-73    │    │    .js:205-224   │    │    .js:96-122    │           │
-│   └────────┬────────┘    └────────┬─────────┘    └────────┬─────────┘           │
-│            │                      │                       │                     │
-│   ┌────────▼────────┐    ┌────────▼─────────┐    ┌────────▼─────────┐           │
-│   │ archetype-      │    │ HARD_KO Prüfung  │    │ DOMINANCE_MATRIX │           │
-│   │ matrix.json     │    │ constants.js:    │    │ constants.js:    │           │
-│   │ (8×8 Matrix)    │    │ 143-154          │    │ 96-122           │           │
-│   └─────────────────┘    └──────────────────┘    └──────────────────┘           │
-│                                                                                 │
-│   ┌─────────────────┐                                                           │
-│   │ GESCHLECHT (G)  │                                                           │
-│   │  genderFactor   │                                                           │
-│   │   .js:262-323   │                                                           │
-│   └────────┬────────┘                                                           │
-│            │                                                                    │
-│   ┌────────▼────────┐                                                           │
-│   │ GENDER Werte    │                                                           │
-│   │ constants.js:   │                                                           │
-│   │ 201-205         │                                                           │
-│   └─────────────────┘                                                           │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                          SCHRITT 2: LOGOS & PATHOS                              │
-│                          (synthesisCalculator.js:95-100)                        │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│   LOGOS = A                                     (Zeile 98)                      │
-│                                                                                 │
-│   PATHOS = (O + D + G) / 3                      (Zeile 100)                     │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                     SCHRITT 3: MULTI-DIMENSIONALE RESONANZ (v3.1)               │
-│                          (synthesisCalculator.js:774-824)                       │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│   Jeder Faktor hat seine EIGENE Resonanz-Dimension:                             │
-│                                                                                 │
-│   R = avgMatch² (v3.4 quadratisch mit Komplementär-Mapping)                    │
-│                                                                                 │
-│   R_Philosophie = similarity²      🧠 19 Needs                                  │
-│   R_Leben       = similarity²      🔥 18 Needs                                  │
-│   R_Dynamik     = similarity²      ⚡ 18 Needs                                  │
-│   R_Identität   = similarity²      💚 10 Needs                                  │
-│                                                                                 │
-│   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ BEDÜRFNIS-DIMENSIONEN (disjunkt, keine Überlappung)                   │     │
-│   │ Quelle: constants.js:NEEDS_INTEGRATION                                │     │
-│   │                                                                       │     │
-│   │ 🧠 ARCHETYP_NEEDS (19):                                               │     │
-│   │    kinderwunsch, langfristige_bindung, nicht_anhaften...              │     │
-│   │                                                                       │     │
-│   │ 🔥 ORIENTIERUNG_NEEDS (18):                                           │     │
-│   │    sexuelle_experimentierfreude, sex_als_meditation...                │     │
-│   │                                                                       │     │
-│   │ ⚡ DOMINANZ_NEEDS (18):                                                │     │
-│   │    kontrolle_ausueben, hingabe, fuehrung_geben...                     │     │
-│   │                                                                       │     │
-│   │ 💚 GESCHLECHT_NEEDS (10):                                             │     │
-│   │    authentizitaet, eigene_wahrheit, akzeptanz...                      │     │
-│   └───────────────────────────────────────────────────────────────────────┘     │
-│                                                                                 │
-│   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ INTERPRETATION PRO DIMENSION (v3.4)                                   │     │
-│   │ Quelle: constants.js:FORMULAS.r_factor.thresholds                     │     │
-│   │                                                                       │     │
-│   │   R ≥ 1.05  →  Resonanz ⬆️   (verstärkter Match)                      │     │
-│   │   R 0.95-1.05 → Neutral ➡️   (ausgewogen)                             │     │
-│   │   R ≤ 0.95  →  Dissonanz ⬇️  (geschwächter Match)                     │     │
-│   │                                                                       │     │
-│   │ Wertebereich: 0 - 2 (praktisch 0.8 - 1.3)                             │     │
-│   └───────────────────────────────────────────────────────────────────────┘     │
-│                                                                                 │
-│   RESONANZ-KONSTANTEN (constants.js:28-45):                                     │
-│   - R-Formel: R = avgMatch² (v3.4 quadratisch)                                  │
-│   - THRESHOLDS.resonance: 1.05                                                  │
-│   - THRESHOLDS.dissonance: 0.95                                                 │
-│   - Alle 4 Dimensionen: weight = 0.25                                           │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                     SCHRITT 4: DIMENSIONALE MULTIPLIKATION (v3.1)               │
-│                          (synthesisCalculator.js:200-219)                       │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│   Jeder Faktor wird mit SEINER Resonanz-Dimension multipliziert:                │
-│                                                                                 │
-│   finalScore = Math.round(                                                      │
-│       (A × 0.25 × R_Philosophie) +                               🧠             │
-│       (O × 0.25 × R_Leben) +                                     🔥             │
-│       (D × 0.25 × R_Dynamik) +                                   ⚡             │
-│       (G × 0.25 × R_Identität)                                   💚             │
-│   )                                                                             │
-│                                                                                 │
-│   Beispiel (mit Default-Gewichtungen 25%):                                      │
-│   A=75 × 0.25 × R_Phil=0.96   = 18.0  🧠                                        │
-│   O=100 × 0.25 × R_Leben=1.08 = 27.0  🔥                                        │
-│   D=100 × 0.25 × R_Dyn=1.02   = 25.5  ⚡                                        │
-│   G=90 × 0.25 × R_Ident=1.06  = 23.9  💚                                        │
-│   ─────────────────────────────────────                                         │
-│   finalScore = 94                                                               │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              OUTPUT: Ergebnis-Objekt                            │
-│                              (synthesisCalculator.js:126-198)                   │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│   {                                                                             │
-│     score: finalScore,              // 0-100 (Zeile 127)                        │
-│     baseScore: baseScore,           // Vor Resonanz (Zeile 128)                 │
-│                                                                                 │
-│     logos: {                        // Archetyp-Beitrag                         │
-│       score: A,                                                                 │
-│       weight: 0.25,                 // Default, via UI anpassbar                │
-│       contribution: A × 0.25                                                    │
-│     },                                                                          │
-│                                                                                 │
-│     pathos: {                       // O+D+G-Beitrag                            │
-│       score: (O+D+G)/3,                                                         │
-│       weight: 0.75,                 // Default (3 × 0.25)                        │
-│       contribution: (O×0.25) + (D×0.25) + (G×0.25)                              │
-│     },                                                                          │
-│                                                                                 │
-│     resonanz: {                     // (Zeile 568-575)                          │
-│       coefficient: R,                                                           │
-│       balance: B,                                                               │
-│       profilMatch: M,                                                           │
-│       gfk: { value: K, ... }                                                    │
-│     },                                                                          │
-│                                                                                 │
-│     breakdown: {                    // Einzelne Faktoren                        │
-│       archetyp:     { score: A, weight: 0.25, category: 'logos' },              │
-│       orientierung: { score: O, weight: 0.25, category: 'pathos' },             │
-│       dominanz:     { score: D, weight: 0.25, category: 'pathos' },             │
-│       geschlecht:   { score: G, weight: 0.25, category: 'pathos' }              │
-│     },   // Gewichtungen sind via UI-Slider anpassbar (Default: je 25%)         │                                                                          │
-│                                                                                 │
-│     meta: {                         // (Zeile 178-194)                          │
-│       isHardKO: boolean,            // Orientierung geometrisch unmöglich       │
-│       isSoftKO: boolean,            // 3+ kritische Bedürfnis-Konflikte         │
-│       hasExploration: boolean       // "interessiert" Status aktiv              │
-│     },                                                                          │
-│                                                                                 │
-│     beduerfnisse: { ... }           // Vollständige Bedürfnis-Analyse           │
-│   }                                                                             │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Die 4 Faktoren im Detail
-
-### 1. Archetyp (A) - 25% LOGOS
-
-**Quelle:** `js/synthesis/factors/archetypeFactor.js`
-**Daten:** `archetype-matrix.json`
-
-```
-A = Matrix[archetyp1][archetyp2].overall
-```
-
-Die 8×8 Matrix enthält vorberechnete Kompatibilitätswerte (0-100) für alle Archetyp-Kombinationen.
-
-**Beispielwerte:**
-| Kombination | Wert | Quelle |
-|-------------|------|--------|
-| duo × duo | 97 | `archetype-matrix.json` |
-| duo × duoflex | 75 | `archetype-matrix.json` |
-| duo × polyamor | 51 | `archetype-matrix.json` |
-
----
-
-### 2. Orientierung (O) - 25% PATHOS
-
-**Quelle:** `js/synthesis/factors/orientationFactor.js`
-**Konstanten:** `constants.js:129-135`
+Die vier Faktoren können vom Benutzer gewichtet werden (0 = Egal, 1 = Normal, 2 = Wichtig, 3 = Entscheidend):
 
 ```javascript
-ORIENTATION: {
-    COMPATIBLE: 100,     // Volle Kompatibilität
-    EXPLORING: 70,       // Exploration-Phase
-    UNLIKELY: 30,        // Unwahrscheinlich
-    INCOMPATIBLE: 10,    // Soft K.O.
-    HARD_KO: 0           // Geometrisch unmöglich
-}
+// Quadratische Gewichtung: 0→0, 1→1, 2→4, 3→9
+eO = gew.O², eA = gew.A², eD = gew.D², eG = gew.G²
+sum = eO + eA + eD + eG  (bei 0+0+0+0: Gleichgewichtung)
+
+wO = eO / sum   // normalisiert
+wA = eA / sum
+wD = eD / sum
+wG = eG / sum
 ```
 
-**Hard K.O. Fälle** (Quelle: `constants.js:143-154`):
-- Hetero♂ + Hetero♂ → O = 0
-- Hetero♀ + Hetero♀ → O = 0
-- Hetero♂ + Lesbe♀ → O = 0
+**Default:** alle Gewichte = 1 → jeder Faktor = 25%
+
+Quadratische Skalierung bewirkt echte Dominanz bei hohen Werten:
+- Gewicht 3 bei einem Faktor = 9/12 = **75%** dieses Faktors
+- Gewicht 0 = Faktor wird **vollständig ignoriert**
+
+**Quelle:** `js/weights/agodWeights.js` → `AGOD_DEFAULT_WEIGHTS = { O: 1, A: 1, D: 1, G: 1 }`
 
 ---
 
-### 3. Dominanz (D) - 25% PATHOS
+## Datenfluss
 
-**Quelle:** `js/synthesis/factors/dominanceFactor.js`
-**Matrix:** `constants.js:96-122`
-
-```javascript
-DOMINANCE_MATRIX: {
-    "dominant-submissiv": 100,   // Komplementär
-    "submissiv-dominant": 100,
-    "ausgeglichen-ausgeglichen": 95,
-    "switch-switch": 90,
-    "dominant-dominant": 55,     // Spannung
-    "submissiv-submissiv": 55
-}
+```
+┌─────────────────────────────────────────────────────┐
+│               INPUT: ICH & Partner                   │
+│  { archetyp, geschlecht, orientierung, dominanz,    │
+│    needs[#B1–#B16], geschlecht_extras }             │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 1: Orientierungs-KO-Check                │
+│     Quelle: scoringEngine.js                         │
+├─────────────────────────────────────────────────────┤
+│  checkPhysicalCompatibility(p1, p2)                  │
+│  → Bidirektionale Prüfung: kann p1 p2 attraktiv      │
+│    finden UND p2 p1?                                 │
+│                                                     │
+│  Hard-KO (score = 0):                               │
+│    → calculationEngine gibt direkt                  │
+│      { score: 0, blocked: true } zurück             │
+│    → In der Slot Machine: "— / Nicht kompatibel"    │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│          SCHRITT 2: Basis-Faktoren (0–100)           │
+│          Quelle: scoringEngine.js                    │
+├─────────────────────────────────────────────────────┤
+│  O = calculateOrientationScore(p1, p2)              │
+│      → Geometrie-Check (Hetero×Hetero etc.)          │
+│                                                     │
+│  A = getArchetypeScore(arch1, arch2)                 │
+│      → 8×8 Matrix aus archetype-matrix.json          │
+│                                                     │
+│  D = calculateDominanceHarmony(dom1, dom2)           │
+│      → Dom×Sub=100, Switch×Switch=90 etc.            │
+│                                                     │
+│  G = calculateR4Hybrid(p1, p2)                      │
+│      → (identityScore×0.30 + attractionScore×0.70)² │
+│      → bidirektionale Attraktion                    │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 3: R-Faktoren aus 16 Grundbedürfnissen  │
+│     Quelle: needsIntegration.js                     │
+├─────────────────────────────────────────────────────┤
+│  16 Grundbedürfnisse (#B1–#B16) in 4 Stufen:        │
+│                                                     │
+│  Stufe 1 – Passive Basisbedürfnisse:                │
+│    #B1 Wohlbefinden  #B2 Sicherheit                 │
+│    #B3 Leichtigkeit  #B4 Orientierung               │
+│                                                     │
+│  Stufe 2 – Handlungs-Bedürfnisse:                   │
+│    #B5 Wirksamkeit   #B6 Freiheit                   │
+│    #B7 Intensität    #B8 Entwicklung                │
+│                                                     │
+│  Stufe 3 – Soziale Bedürfnisse:                     │
+│    #B9 Gemeinschaft  #B10 Anerkennung               │
+│    #B11 Gerechtigkeit #B12 Verbundenheit            │
+│                                                     │
+│  Stufe 4 – Identitäts-Bedürfnisse:                  │
+│    #B13 Selbsterkenntnis  #B14 Sinn                 │
+│    #B15 Integrität        #B16 Selbstentfaltung     │
+│                                                     │
+│  Semantische Zuordnung zu Dimensionen:              │
+│  → R1 (Leben):      #B1, #B3, #B7, #B12            │
+│  → R2 (Philosophie):#B2, #B8, #B9, #B14            │
+│  → R3 (Dynamik):    #B4, #B5, #B6, #B11            │
+│  → R4 (Identität):  #B10, #B13, #B15, #B16         │
+│                     + bidirektionale Attraktion      │
+│                                                     │
+│  Kombination beider Partner:                        │
+│  combineRFactors(a, b) = (a+b) × min(a,b)/max(a,b) / 2 │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 4: Hauptformel                           │
+│     Quelle: calculationEngine.js Zeile 483           │
+├─────────────────────────────────────────────────────┤
+│  Score = (O×wO×R1) + (A×wA×R2) + (D×wD×R3)         │
+│        + (G×wG×R4)                                  │
+│                                                     │
+│  (Default wO=wA=wD=wG=0.25 → Mittelwert der        │
+│   R-verstärkten Faktor-Scores)                      │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│     SCHRITT 5: FFH-Extras-Modifikator               │
+│     Quelle: TiageExtrasModifier.js                  │
+├─────────────────────────────────────────────────────┤
+│  FFH = Fit / Fucked up / Horny / Fresh              │
+│  Kombinations-Bonus oder -Malus (additiv):          │
+│                                                     │
+│  totalScore = score + extrasModifier                │
+│                                                     │
+│  Beispiel: Beide Fit+Horny → +8 Punkte             │
+│            Fuckedup ohne Fit → −5 Punkte           │
+└──────────────────────────┬──────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│                    OUTPUT                           │
+├─────────────────────────────────────────────────────┤
+│  score: Math.round(totalScore × 10) / 10           │
+│         → Eine Dezimalstelle, kann > 100 sein       │
+│                                                     │
+│  breakdown: {                                       │
+│    orientierung: O × wO × R1,                      │
+│    archetyp:     A × wA × R2,                      │
+│    dominanz:     D × wD × R3,                      │
+│    geschlecht:   G × wG × R4                       │
+│  }                                                  │
+│  → Zeigt den R-verstärkten Beitrag jeder           │
+│    Dimension, kann > 100 sein.                     │
+│                                                     │
+│  resonanz: { R1, R2, R3, R4, GFK, M, B, stufen }   │
+└─────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 4. Geschlecht (G) - 25% PATHOS
-
-**Quelle:** `js/synthesis/factors/genderFactor.js`
-**Konstanten:** `constants.js:201-205`
-
-```javascript
-GENDER: {
-    FULL_MATCH: 100,
-    NON_BINARY_INVOLVED: 80,
-    MIXED_ORIENTATION: 75
-}
-```
-
----
-
-## Resonanz-Berechnung im Detail (v3.4)
-
-**Multi-Dimensionale Formel** (Quelle: `js/synthesis/constants.js:28-40`):
-
-```
-R = avgMatch² (quadratisch mit Komplementär-Mapping)
-similarity = 1 - (avgDiff / 100)
-R = similarity²
-```
-
-Jede der 4 Dimensionen berechnet ihren eigenen R-Wert basierend auf dem Bedürfnis-Match:
-
-| Dimension | Bedürfnis-Quelle | Anzahl Needs |
-|-----------|------------------|--------------|
-| 🧠 R_Philosophie | ARCHETYP_NEEDS | 19 |
-| 🔥 R_Leben | ORIENTIERUNG_NEEDS | 18 |
-| ⚡ R_Dynamik | DOMINANZ_NEEDS | 18 |
-| 💚 R_Identität | GESCHLECHT_NEEDS | 10 |
-
-### Match-Berechnung pro Dimension
-
-**Quelle:** `synthesisCalculator.js:931-955`
-
-```
-Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n
-```
-
-Für jedes Bedürfnis in der Dimension wird die Ähnlichkeit berechnet und gemittelt.
-
-**Datenquellen:**
-- `profiles/gfk-beduerfnisse.js` → Basis-Bedürfnisse pro Archetyp
-- `constants.js:NEEDS_INTEGRATION` → Bedürfnis-Listen pro Dimension
-
-### Interpretation pro Dimension
-
-**Quelle:** `constants.js:41-45`
-
-| R-Wert | Status | Bedeutung |
-|--------|--------|-----------|
-| ≥ 1.05 | ⬆️ Resonanz | Verstärkter Match in dieser Dimension |
-| 0.95-1.05 | ➡️ Neutral | Ausgewogen |
-| ≤ 0.95 | ⬇️ Dissonanz | Geschwächter Match in dieser Dimension |
-
----
-
-## Rechenbeispiel
+## Rechenbeispiel (v3.2)
 
 **Input:**
-```javascript
-person1: { archetyp: "duo", orientierung: "heterosexuell", dominanz: "dominant", geschlecht: "mann" }
-person2: { archetyp: "duoflex", orientierung: "heterosexuell", dominanz: "submissiv", geschlecht: "frau" }
-GFK: person1 = "mittel", person2 = "mittel"
+```
+person1: duo / Mann-Cis / dominant / heterosexuell
+         needs: #B1=80, #B3=75, #B7=70, #B12=85, …
+person2: solopoly / Frau-Cis / submissiv / heterosexuell
+         FFH: fit=true, horny=true
 ```
 
-**Schritt 1: Faktoren**
+**Schritt 1: KO-Check**
 ```
-A = 75  (duo_duoflex aus archetype-matrix.json)
-O = 100 (Hetero♂ + Hetero♀ = COMPATIBLE)
-D = 100 (dominant + submissiv aus DOMINANCE_MATRIX)
-G = 100 (Hetero♂ + Hetero♀ = FULL_MATCH)
+Hetero♂ ↔ Hetero♀: bidirektionale Anziehung möglich → kein KO
 ```
 
-**Schritt 2: Logos & Pathos**
+**Schritt 2: Basis-Faktoren**
 ```
-logos = A = 75
-pathos = (100 + 100 + 100) / 3 = 100
-```
-
-**Schritt 3: Multi-Dimensionale Resonanz (v3.4)**
-```
-Match pro Dimension (angenommen):
-  similarity_Phil   = 0.98  → R_Phil   = 0.98² = 0.96  🧠
-  similarity_Leben  = 1.04  → R_Leben  = 1.04² = 1.08  🔥
-  similarity_Dyn    = 1.01  → R_Dyn    = 1.01² = 1.02  ⚡
-  similarity_Ident  = 1.03  → R_Ident  = 1.03² = 1.06  💚
+O = 100  (Hetero♂ + Hetero♀ = kompatibel)
+A = 68   (duo × solopoly aus archetype-matrix.json)
+D = 100  (dominant + submissiv = komplementär)
+G = 100  (gegenseitige Attraktion bidirektional = 100)
 ```
 
-**Schritt 4: Dimensionale Multiplikation (v3.4)**
+**Schritt 3: R-Faktoren (kombiniert, angenommen)**
 ```
-finalScore = Math.round(
-  (75 × 0.25 × 0.96) +     = 18.0  🧠 (Archetyp × R_Philosophie)
-  (100 × 0.25 × 1.08) +    = 27.0  🔥 (Orientierung × R_Leben)
-  (100 × 0.25 × 1.02) +    = 25.5  ⚡ (Dominanz × R_Dynamik)
-  (100 × 0.25 × 1.06)      = 26.5  💚 (Geschlecht × R_Identität)
-)
-────────────────────────────────────
-finalScore = 97
+R1 = 1.02  (Leben: #B1,#B3,#B7,#B12 — beide ähnlich hoch)
+R2 = 0.95  (Philosophie: #B2,#B8,#B9,#B14 — etwas unterschiedlich)
+R3 = 1.05  (Dynamik: #B4,#B5,#B6,#B11 — gute Übereinstimmung)
+R4 = 1.00  (Identität: #B10,#B13,#B15,#B16 + Attraktion)
 ```
 
-> **Hinweis:** v3.4 verwendet quadratische R-Formel (R = similarity²)
-> mit Komplementär-Mapping für Geben/Empfangen-Paare.
+**Schritt 4: Hauptformel (Default-Gewichte: alle 0.25)**
+```
+Score = (100×0.25×1.02) + (68×0.25×0.95) + (100×0.25×1.05) + (100×0.25×1.00)
+      = 25.5 + 16.15 + 26.25 + 25.0
+      = 92.9
+```
+
+**Schritt 5: FFH-Extras**
+```
+ICH: fit=false, partner: fit+horny → extrasModifier = +15
+totalScore = 92.9 + 15 = 107.9
+```
+
+**Output:**
+```
+score: 107.9
+breakdown: { orientierung: 25.5, archetyp: 16.15, dominanz: 26.25, geschlecht: 25.0 }
+```
 
 ---
 
-## Profil-Komposition (A-F Kategorie-Scores)
+## Basis-Faktor Details
 
-Die 864 psychologischen Profile werden **on-demand komponiert** und erhalten individuelle Kategorie-Scores basierend auf ihrer Kombination.
+### Archetyp (A)
 
-### Kompositions-Formel
+8×8-Matrix aus `archetype-matrix.json`. Beispielwerte:
 
-```
-Score[Kategorie] = baseScores[archetyp][Kategorie]
-                 + genderModifiers[gender].categoryModifiers[Kategorie]
-                 + dominanceModifiers[dominanz].categoryModifiers[Kategorie]
-                 + orientationModifiers[orientierung].categoryModifiers[Kategorie]
-```
+| Kombination | Score |
+|-------------|-------|
+| duo × duo | 100 |
+| duo × duo-flex | ~75 |
+| duo × polyamor | ~40 |
+| lat × solopoly | ~80 |
 
-**Quelle:** `profiles/profile-store.js`
+### Orientierung (O)
 
-### Kategorie-Dimensionen
+| Kombination | Score |
+|-------------|-------|
+| Hetero♂ + Hetero♀ | 100 |
+| Bi + beliebig | 100 |
+| Pan + beliebig | 100 |
+| Homo♂ + Homo♂ | 100 |
+| Hetero♂ + Hetero♂ | 0 (Hard-KO) |
 
-| Kategorie | Name | Beschreibung |
-|-----------|------|--------------|
-| **A** | Beziehungsphilosophie | Grundlegende Einstellung zu Beziehungen |
-| **B** | Werte-Alignment | Übereinstimmung traditioneller/progressiver Werte |
-| **C** | Nähe-Distanz | Bedürfnis nach Intimität vs. Freiraum |
-| **D** | Autonomie | Unabhängigkeit in der Beziehung |
-| **E** | Kommunikation | Emotionale Offenheit und Ausdrucksfähigkeit |
-| **F** | Soziale Kompatibilität | Passung zu gesellschaftlichen Normen |
+### Dominanz (D)
 
-### Basis-Scores (nach Archetyp)
+| Kombination | Score |
+|-------------|-------|
+| Dominant + Submissiv | 100 |
+| Ausgeglichen + Ausgeglichen | 95 |
+| Switch + Switch | 90 |
+| Dominant + Dominant | 55 |
 
-| Archetyp | A | B | C | D | E | F |
-|----------|---|---|---|---|---|---|
-| Single | 66.7 | 66.8 | 62.2 | 77.5 | 68.0 | 63.8 |
-| Duo | 55.0 | 64.3 | 68.7 | 49.7 | 66.3 | 62.2 |
-| Duo-Flex | 73.7 | 73.8 | 69.5 | 71.5 | 72.7 | 66.5 |
-| Solopoly | 67.5 | 69.0 | 58.7 | 74.5 | 73.3 | 50.0 |
-| Polyamor | 68.3 | 72.0 | 65.5 | 70.3 | 78.7 | 50.7 |
-| RA | 72.0 | 68.0 | 62.0 | 85.0 | 72.0 | 42.0 |
-| LAT | 68.0 | 72.0 | 65.0 | 78.0 | 72.0 | 68.0 |
-| Aromantisch | 65.0 | 68.0 | 62.0 | 78.0 | 68.0 | 48.0 |
+### Geschlecht (G = R4)
 
-### Modifier-Beispiele
+`R4 = (identityScore × 0.30 + attractionScore × 0.70)²`
+- Attraktion bidirektional: ICH→Partner × Partner→ICH
+- Pan/Bi = 100 für alle Geschlechter
 
-**Gender-Modifier (Mann-Cis):**
-```javascript
-{ A: 0, B: +2, C: -2, D: +3, E: -4, F: +3 }
-```
+---
 
-**Dominanz-Modifier (Dominant):**
-```javascript
-{ A: 0, B: +1, C: -3, D: +5, E: -2, F: +2 }
-```
+## GFK-Schwellenwerte
 
-**Orientierungs-Modifier (Heterosexuell):**
-```javascript
-{ A: -2, B: +3, C: +2, D: -3, E: -2, F: +5 }
-```
+| Level | Schwellenwert | Bedeutung |
+|-------|--------------|-----------|
+| **hoch** | ≥ 82 | Tiefe gemeinsame Bedürfnis-Resonanz |
+| **mittel** | ≥ 48 | Ausreichende Kompatibilität |
+| **niedrig** | < 48 | Grundlegende Unterschiede |
 
-### Rechenbeispiel
-
-**Profil:** Single + Mann-Cis + Dominant + Heterosexuell
-
-```
-A: 66.7 + 0 + 0 + (-2) = 64.7
-B: 66.8 + 2 + 1 + 3 = 72.8
-C: 62.2 + (-2) + (-3) + 2 = 59.2
-D: 77.5 + 3 + 5 + (-3) = 82.5
-E: 68.0 + (-4) + (-2) + (-2) = 60.0
-F: 63.8 + 3 + 2 + 5 = 73.8
-```
-
-### Score-Grenzen
-
-Alle Werte werden auf den Bereich **0-100** begrenzt:
-```javascript
-scores[cat] = Math.max(0, Math.min(100, scores[cat] + modifier))
-```
+Quelle: `js/dimensions/gfkMatching.js`
 
 ---
 
@@ -506,20 +289,19 @@ scores[cat] = Math.max(0, Math.min(100, scores[cat] + modifier))
 
 | Datei | Funktion |
 |-------|----------|
-| `js/synthesis/constants.js` | Alle Gewichte, Matrizen, Konstanten |
-| `js/synthesis/synthesisCalculator.js` | Hauptberechnung, Resonanz |
-| `js/synthesis/factors/archetypeFactor.js` | Archetyp-Score (A) |
-| `js/synthesis/factors/orientationFactor.js` | Orientierungs-Score (O) |
-| `js/synthesis/factors/dominanceFactor.js` | Dominanz-Score (D) |
-| `js/synthesis/factors/genderFactor.js` | Geschlechts-Score (G) |
-| `archetype-matrix.json` | 8×8 Archetyp-Kompatibilitätsmatrix |
-| `profiles/gfk-beduerfnisse.js` | Basis-Bedürfnisse pro Archetyp |
-| `profiles/beduerfnis-modifikatoren.js` | Bedürfnis-Modifikatoren |
+| `js/synthesis/calculationEngine.js` | Hauptberechnung `calculateRelationshipQuality()` |
+| `js/synthesis/scoringEngine.js` | Basis-Faktor-Funktionen (O/A/D/G), KO-Check |
+| `js/synthesis/needsIntegration.js` | R-Faktoren aus Bedürfnissen, `combineRFactors()` |
+| `js/weights/agodWeights.js` | AGOD-Default-Gewichte |
+| `js/dimensions/gfkMatching.js` | GFK-Level Berechnung |
+| `js/extras/TiageExtrasModifier.js` | FFH-Extras-Modifikator |
+| `profiles/data/beduerfnis-katalog.json` | 16 Grundbedürfnisse #B1–#B16 (v4.0.0) |
+| `profiles/data/archetype-matrix.json` | 8×8 Archetyp-Kompatibilitätsmatrix |
 
 ---
 
 ## Weiterführende Dokumentation
 
-- [Pathos & Logos](pathos-logos.md) - Die 25:75 Gewichtung
-- [Resonanz-Theorie](resonance.md) - Meta-Dimension
-- [Beziehungsmodell](../../beziehungsmodell.md) - Vollständige Modellbeschreibung
+- [Pathos & Logos](pathos-logos.md) — Die philosophische Gewichtung
+- [Resonanz-Theorie](resonance.md) — R-Faktoren und Bedürfnis-Mapping
+- [Die 4 Faktoren](factors.md) — A/O/D/G im Detail
