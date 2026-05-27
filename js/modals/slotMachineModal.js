@@ -21,6 +21,7 @@ var TiageSlotMachine = (function() {
     let slotMachineResult = null;
     let slotMachineTop4Results = [];
     let slotMachineTop10Results = [];
+    let slotMachineGenderResults = { mann: null, frau: null, inter: null };
     let slotMachineExpanded = false;
     let slotMachineBindung = { primary: null, secondary: null };
     let bindungTooltipTimeout = null;
@@ -30,22 +31,35 @@ var TiageSlotMachine = (function() {
     // ═══════════════════════════════════════════════════════════════════════
 
     // Bindungsmuster Präferenzen für Tie-Breaker
+    // Reihenfolge = Präferenz (Index 0 = beste Passung), basierend auf Bindungstheorie:
+    // Hazan & Shaver (1987), Mikulincer & Shaver (2007), Mogilski et al. (2017),
+    // Levin (2004) zu LAT, Main & Hesse (1990) zu Desorganisiert, Feeney (1999) zu Dominanz
     const BINDUNGSMUSTER_PRAEFERENZEN = {
         sicher: {
-            archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'ra', 'single', 'aromantisch'],
+            // Sicher = flexibel, keine strukturelle Präferenz belegt → Reihenfolge neutral
+            archetypen: ['duo', 'duo_flex', 'lat', 'solopoly', 'polyamor', 'ra', 'single', 'aromantisch'],
             dominanz: ['ausgeglichen', 'switch', 'dominant', 'submissiv']
         },
         aengstlich: {
-            archetypen: ['duo', 'duo_flex', 'lat', 'polyamor', 'solopoly', 'single', 'ra', 'aromantisch'],
+            // Hyperaktiviertes Bindungssystem → braucht Nähe und Commitment-Signale
+            // LAT + SoloPoly erzeugen Distanzsignal → destabilisierend (Levin 2004)
+            // ENM erhöht Eifersucht bei Ängstlichen (Mogilski et al. 2017)
+            archetypen: ['duo', 'duo_flex', 'polyamor', 'single', 'solopoly', 'ra', 'lat', 'aromantisch'],
             dominanz: ['submissiv', 'ausgeglichen', 'switch', 'dominant']
         },
         vermeidend: {
+            // Deaktiviertes Bindungssystem → schützt Autonomie, meidet Abhängigkeit
+            // LAT = Nähe ohne Abhängigkeit, gut belegt (Levin 2004)
+            // Dominant vor ausgeglichen: Kontrolle als Distanzierungsstrategie (Feeney 1999)
             archetypen: ['lat', 'single', 'solopoly', 'ra', 'aromantisch', 'duo_flex', 'duo', 'polyamor'],
-            dominanz: ['ausgeglichen', 'dominant', 'switch', 'submissiv']
+            dominanz: ['dominant', 'ausgeglichen', 'switch', 'submissiv']
         },
         desorganisiert: {
-            archetypen: ['duo_flex', 'ra', 'polyamor', 'lat', 'duo', 'solopoly', 'single', 'aromantisch'],
-            dominanz: ['switch', 'ausgeglichen', 'dominant', 'submissiv']
+            // Gleichzeitiges Wollen + Fürchten von Nähe, oft traumaassoziiert (Main & Hesse 1990)
+            // Profitiert von Struktur + Vorhersehbarkeit, nicht von Strukturlosigkeit
+            // RA + offene Strukturen verstärken Desorganisation
+            archetypen: ['duo', 'duo_flex', 'lat', 'solopoly', 'single', 'polyamor', 'ra', 'aromantisch'],
+            dominanz: ['ausgeglichen', 'switch', 'dominant', 'submissiv']
         }
     };
 
@@ -123,6 +137,11 @@ var TiageSlotMachine = (function() {
             modal.style.display = 'flex';
             resetSlotMachine();
 
+            // Vorheriges Best-Match-Ergebnis löschen — Neuberechnung von einer leeren Basis
+            if (typeof window.setPartnerArchetype === 'function') {
+                window.setPartnerArchetype(null);
+            }
+
             // Lade gespeicherte Bindungsmuster aus TiageState
             if (typeof TiageState !== 'undefined') {
                 const saved = TiageState.get('bindungsmuster.ich');
@@ -185,7 +204,11 @@ var TiageSlotMachine = (function() {
         slotMachineResult = null;
         slotMachineTop4Results = [];
         slotMachineTop10Results = [];
+        slotMachineGenderResults = { mann: null, frau: null, inter: null };
         slotMachineExpanded = false;
+
+        const existingGenderSplit = document.getElementById('slotGenderSplit');
+        if (existingGenderSplit) existingGenderSplit.remove();
 
         updateBindungsmusterUI();
         checkStartButtonState();
@@ -247,7 +270,7 @@ var TiageSlotMachine = (function() {
 
         bindungTooltipTimeout = setTimeout(() => {
             tooltip.classList.remove('show');
-        }, 4000);
+        }, 2000);
     }
 
     /**
@@ -347,12 +370,53 @@ var TiageSlotMachine = (function() {
             return calculateTieBreaker(a) - calculateTieBreaker(b);
         });
 
-        // v1.8.941: Gruppiere nach Archetyp - zeige nur den besten Score pro Archetyp
-        // Jeder Archetyp erscheint genau einmal mit seinem Maximum-Score
-        const bestPerArchetyp = {};
+        // Gender-Split: absolute beste Kombination pro Geschlecht (archetype-übergreifend)
+        // allResults ist bereits nach Score sortiert → find() gibt die beste zurück
+        slotMachineGenderResults = {
+            mann:  allResults.find(r => (r.geschlecht?.primary || r.geschlecht) === 'mann')  || null,
+            frau:  allResults.find(r => (r.geschlecht?.primary || r.geschlecht) === 'frau')  || null,
+            inter: allResults.find(r => ['inter', 'nonbinaer', 'fluid'].includes(r.geschlecht?.primary || r.geschlecht)) || null
+        };
+
+        // v5.1: Gender-diverse deduplication — one result per archetype, but gender rotates
+        // For Pan/Bi ICH all genders score identically → Mann was always winning by iteration order.
+        // Fix: prefer the least-seen gender when scores tie within an archetype.
+        const genderSeenCount = {};
+        const byArchetypGender = {};
+
+        // allResults is sorted desc by score → first occurrence per {archetype×gender} = best for that combo
         allResults.forEach(result => {
-            if (!bestPerArchetyp[result.archetyp]) {
-                bestPerArchetyp[result.archetyp] = result;
+            const gPrimary = (result.geschlecht && typeof result.geschlecht === 'object')
+                ? result.geschlecht.primary
+                : (result.geschlecht || 'unknown');
+            const key = `${result.archetyp}__${gPrimary}`;
+            if (!byArchetypGender[key]) byArchetypGender[key] = result;
+        });
+
+        // Process archetypes in the order their best score appears (already desc-sorted)
+        const archetypeOrder = [];
+        allResults.forEach(result => {
+            if (!archetypeOrder.includes(result.archetyp)) archetypeOrder.push(result.archetyp);
+        });
+
+        const bestPerArchetyp = {};
+        archetypeOrder.forEach(arch => {
+            const combos = ['mann', 'frau', 'inter', 'unknown'].reduce((acc, g) => {
+                const key = `${arch}__${g}`;
+                if (byArchetypGender[key]) acc.push({ g, result: byArchetypGender[key] });
+                return acc;
+            }, []);
+
+            // Primary sort: score desc. Tiebreaker: prefer gender seen least often so far.
+            combos.sort((a, b) => {
+                if (b.result.score !== a.result.score) return b.result.score - a.result.score;
+                return (genderSeenCount[a.g] || 0) - (genderSeenCount[b.g] || 0);
+            });
+
+            if (combos.length > 0) {
+                const chosen = combos[0];
+                bestPerArchetyp[arch] = chosen.result;
+                genderSeenCount[chosen.g] = (genderSeenCount[chosen.g] || 0) + 1;
             }
         });
 
@@ -529,7 +593,9 @@ var TiageSlotMachine = (function() {
             orientierungOptions = [
                 { primary: 'heterosexuell', secondary: null, all: ['heterosexuell'] },
                 { primary: 'homosexuell', secondary: null, all: ['homosexuell'] },
-                { primary: 'bisexuell', secondary: null, all: ['bisexuell'] }
+                { primary: 'bisexuell', secondary: null, all: ['bisexuell'] },
+                { primary: 'pansexuell', secondary: null, all: ['pansexuell'] },
+                { primary: 'queer', secondary: null, all: ['queer'] }
             ];
         }
 
@@ -540,7 +606,8 @@ var TiageSlotMachine = (function() {
             dominanzOptions = [
                 { primary: 'dominant', secondary: null },
                 { primary: 'submissiv', secondary: null },
-                { primary: 'switch', secondary: null }
+                { primary: 'switch', secondary: null },
+                { primary: 'ausgeglichen', secondary: null }
             ];
         }
 
@@ -551,14 +618,13 @@ var TiageSlotMachine = (function() {
         if (partnerHasFFH) {
             ffhOptions = [partnerDims.geschlecht_extras];
         } else {
-            ffhOptions = [
-                { fit: false, fuckedup: false, horny: false, fresh: false },
-                { fit: true, fuckedup: false, horny: false, fresh: false },
-                { fit: false, fuckedup: true, horny: false, fresh: false },
-                { fit: false, fuckedup: false, horny: true, fresh: false },
-                { fit: false, fuckedup: false, horny: false, fresh: true },
-                { fit: true, fuckedup: true, horny: true, fresh: true }
-            ];
+            // Alle 16 FFH-Kombinationen (2^4) — vollständige Varianz
+            ffhOptions = Array.from({ length: 16 }, (_, i) => ({
+                fit:      !!(i & 8),
+                fuckedup: !!(i & 4),
+                horny:    !!(i & 2),
+                fresh:    !!(i & 1)
+            }));
         }
 
         // GFK für Partner
@@ -619,6 +685,7 @@ var TiageSlotMachine = (function() {
                             };
 
                             let score = 0;
+                            let breakdown = null;
 
                             try {
                                 const pathosCheck = checkPhysicalCompatibility(ichObj, partnerObj);
@@ -630,9 +697,10 @@ var TiageSlotMachine = (function() {
                                     const ichRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(ichObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
                                     const partnerRFaktoren = calculateRFactorsFromNeeds ? calculateRFactorsFromNeeds(partnerObj) : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-                                    // FIX v4.3: Übergebe FFH der aktuellen Iteration als extras
-                                    // damit der Extras-Modifier korrekt berechnet wird (nicht aus globalem Cache)
-                                    const ichExtrasForCalc = window.geschlechtExtrasCache ? window.geschlechtExtrasCache.ich : { fit: false, fuckedup: false, horny: false, fresh: false };
+                                    // ICH-Extras aus personDimensions.ich (TiageState), Fallback auf Cache
+                                    const ichExtrasForCalc = ichDims.geschlecht_extras
+                                        || (window.geschlechtExtrasCache ? window.geschlechtExtrasCache.ich : null)
+                                        || { fit: false, fuckedup: false, horny: false, fresh: false };
                                     const result = calculateOverallWithModifiers(ichObj, partnerObj, pathosCheck, logosCheck, {
                                         rFaktoren: {
                                             ich: ichRFaktoren,
@@ -646,6 +714,10 @@ var TiageSlotMachine = (function() {
                                     let baseScore = result.overall || 0;
                                     const confidenceMultiplier = getConfidenceMultiplier ? getConfidenceMultiplier(pathosCheck.confidence) : 1.0;
                                     score = Math.round(baseScore * confidenceMultiplier * 10) / 10;
+                                    // Store 4-factor breakdown (varies per archetype + G/O/D combo)
+                                    // Note: categories A-F are NOT stored — matrix has no numeric scores for B-F,
+                                    // so they'd all be ~50 regardless of archetype.
+                                    breakdown = result.breakdown || null;
                                 } else if (pathosCheck.result === 'unvollständig') {
                                     score = logosCheck.score || 50;
                                 }
@@ -659,7 +731,8 @@ var TiageSlotMachine = (function() {
                                 orientierung: orientierung.primary || orientierung,
                                 dominanz: dominanz.primary || dominanz,
                                 ffh: ffh,
-                                score: score
+                                score: score,
+                                breakdown: breakdown
                             });
                         }
                     }
@@ -709,6 +782,19 @@ var TiageSlotMachine = (function() {
             return GESCHLECHT_LABELS[geschlecht] || geschlecht;
         }
 
+        function buildCatScoreRow(breakdown) {
+            if (!breakdown) return '';
+            const fmt = v => (v !== undefined && v !== null) ? Math.round(v) : '-';
+            // 4 real factor scores that actually vary per archetype + G/O/D combination
+            const spans = [
+                `<span class="slot-cat slot-cat-a" title="Archetyp-Philosophie">A:${fmt(breakdown.archetyp)}</span>`,
+                `<span class="slot-cat slot-cat-o" title="Attraktion">Att:${fmt(breakdown.orientierung)}</span>`,
+                `<span class="slot-cat slot-cat-d" title="Dominanz-Harmonie">D:${fmt(breakdown.dominanz)}</span>`,
+                `<span class="slot-cat slot-cat-g" title="Geschlechts-Attraktion">G:${fmt(breakdown.geschlecht)}</span>`
+            ].join('');
+            return `<div class="slot-top4-cats">${spans}</div>`;
+        }
+
         const rankIcons = ['🥇', '🥈', '🥉', '4.'];
         const rankClasses = ['gold', 'silver', 'bronze', 'fourth'];
 
@@ -733,6 +819,7 @@ var TiageSlotMachine = (function() {
                             <span class="slot-top4-detail">D: ${dominanzLabel}</span>
                             <span class="slot-top4-detail">FFH: ${getFFHLabel(res.ffh)}</span>
                         </div>
+                        ${buildCatScoreRow(res.breakdown)}
                     </div>
                     <button class="slot-top4-apply-btn" onclick="TiageSlotMachine.applySlotResult(${index})">✓ Übernehmen</button>
                 </div>
@@ -764,6 +851,7 @@ var TiageSlotMachine = (function() {
                                 <span class="slot-top4-detail">D: ${dominanzLabel}</span>
                                 <span class="slot-top4-detail">FFH: ${getFFHLabel(res.ffh)}</span>
                             </div>
+                            ${buildCatScoreRow(res.breakdown)}
                         </div>
                         <button class="slot-top4-apply-btn" onclick="TiageSlotMachine.applySlotResult(${i})">✓ Übernehmen</button>
                     </div>
@@ -771,6 +859,53 @@ var TiageSlotMachine = (function() {
             }
             expandedContainer.innerHTML = expandedHtml;
         }
+
+        // Gender-Split: beste Kombination je Geschlecht
+        const phase3 = document.getElementById('slotPhase3');
+        let genderSplit = document.getElementById('slotGenderSplit');
+        if (!genderSplit && phase3) {
+            genderSplit = document.createElement('div');
+            genderSplit.id = 'slotGenderSplit';
+            phase3.appendChild(genderSplit);
+        }
+        if (genderSplit) {
+            const genderDefs = [
+                { key: 'mann',  icon: '👨', label: 'Mann' },
+                { key: 'frau',  icon: '👩', label: 'Frau' },
+                { key: 'inter', icon: '🌈', label: 'NB / Inter' }
+            ];
+            let gsHtml = '<div class="slot-gender-split-title">Beste je Geschlecht</div><div class="slot-gender-grid">';
+            genderDefs.forEach(def => {
+                const r = slotMachineGenderResults[def.key];
+                if (!r) {
+                    gsHtml += `<div class="slot-gender-block slot-gender-empty"><div class="slot-gender-head">${def.icon} ${def.label}</div><div class="slot-gender-na">—</div></div>`;
+                    return;
+                }
+                const oLabel = ORIENTIERUNG_LABELS[r.orientierung] || r.orientierung || '-';
+                const dLabel = DOMINANZ_LABELS[r.dominanz] || r.dominanz || '-';
+                const aLabel = ARCHETYP_LABELS[r.archetyp] || r.archetyp;
+                gsHtml += `
+                    <div class="slot-gender-block">
+                        <div class="slot-gender-head">${def.icon} ${def.label}</div>
+                        <div class="slot-gender-line1">${aLabel} <span class="slot-gender-score">${r.score}</span></div>
+                        <div class="slot-gender-line2">${oLabel} / ${dLabel}</div>
+                        <button class="slot-top4-apply-btn slot-gender-apply-btn" onclick="TiageSlotMachine.applyGenderResult('${def.key}')">✓ Übernehmen</button>
+                    </div>`;
+            });
+            gsHtml += '</div>';
+            genderSplit.innerHTML = gsHtml;
+        }
+    }
+
+    /**
+     * Wendet das Gender-Split-Ergebnis an
+     */
+    function applyGenderResult(gender) {
+        const result = slotMachineGenderResults[gender];
+        if (!result) return;
+        // Hänge Ergebnis temporär an top10 und nutze vorhandene Apply-Logik
+        slotMachineTop10Results.push(result);
+        applySlotResult(slotMachineTop10Results.length - 1);
     }
 
     /**
@@ -954,6 +1089,7 @@ var TiageSlotMachine = (function() {
         // Results
         toggleExpand: toggleSlotExpand,
         applySlotResult: applySlotResult,
+        applyGenderResult: applyGenderResult,
         goToIchAttributes: goToIchAttributes,
 
         // State access (for debugging)
@@ -968,6 +1104,37 @@ var TiageSlotMachine = (function() {
         }
     };
 
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTO-RESTART: Neuberechnung wenn flatNeeds.ich sich ändert und Phase 2/3 aktiv
+// Parallel zu ResonanzCard.subscribe — Modul ist selbst verantwortlich für Reaktion
+// ═══════════════════════════════════════════════════════════════════════════
+
+(function initSlotMachineSubscriber() {
+    'use strict';
+
+    if (typeof TiageState === 'undefined') {
+        setTimeout(initSlotMachineSubscriber, 100);
+        return;
+    }
+
+    let _restartTimer = null;
+
+    TiageState.subscribe('flatNeeds.ich', function() {
+        const phase2 = document.getElementById('slotPhase2');
+        const phase3 = document.getElementById('slotPhase3');
+        const resultsVisible = (phase2 && phase2.style.display !== 'none') ||
+                               (phase3 && phase3.style.display !== 'none');
+        if (!resultsVisible) return;
+
+        if (_restartTimer) clearTimeout(_restartTimer);
+        _restartTimer = setTimeout(function() {
+            TiageSlotMachine.start();
+        }, 600);
+    });
+
+    console.log('[SlotMachineModal] flatNeeds.ich → Auto-Restart Subscriber aktiv');
 })();
 
 // ═══════════════════════════════════════════════════════════════════════════

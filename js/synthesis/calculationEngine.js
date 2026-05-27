@@ -773,16 +773,21 @@ function calculateRelationshipQuality(person1, person2, options) {
     // ═══════════════════════════════════════
     // SSOT-VERGLEICH (async, blockiert nicht)
     // ═══════════════════════════════════════
+    // v5.1: Breakdown mit R-Faktor-Verstärkung — zeigt was jede Dimension wirklich beiträgt.
+    // Gleiche Amplifikation wie Gesamt-Score (meanR × (1+resonanceBoost)), kann > 100 sein.
+    const amplification = meanR * (1 + resonanceBoost);
+    const fmt1 = v => Math.round(v * 10) / 10;
+
     const result = {
         score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle (kann > 100 sein)
         blocked: false,
         resonanceBoost: resonanceBoost > 0 ? Math.round(resonanceBoost * 1000) / 10 : 0,  // Als Prozent
         noRealNeeds: rFactorSource === 'default',  // Flag für UI-Warnung
         breakdown: {
-            archetyp: archetypeScore,
-            dominanz: dominanceScore,
-            orientierung: orientationScore,
-            geschlecht: genderScore
+            archetyp: fmt1(archetypeScore * amplification),
+            dominanz: fmt1(dominanceScore * amplification),
+            orientierung: fmt1(orientationScore * amplification),
+            geschlecht: fmt1(genderScore * amplification)
         },
         resonanz: {
             R1: Math.round(R1 * 100) / 100,

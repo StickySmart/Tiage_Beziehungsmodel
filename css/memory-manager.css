@@ -1282,6 +1282,144 @@
 .wizard-hidden {
     display: none !important;
 }
+/* Higher-specificity override — wins against .mobile-dims-grid { display:flex !important }
+   which appears later in this file (line ~1501). !important tie-breaks by specificity:
+   #mobilePage1 .wizard-hidden (1,1,0) > .mobile-dims-grid (0,1,0)               */
+#mobilePage1 .wizard-hidden {
+    display: none !important;
+}
+
+/* ── Wizard Navigation buttons ─────────────────────────────────────── */
+.wz-nav {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: flex-end;
+}
+
+.wz-back, .wz-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+}
+
+.wz-back {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.wz-back:hover {
+    background: rgba(255,255,255,0.13);
+    color: rgba(255,255,255,0.8);
+}
+
+.wz-next {
+    background: rgba(99,102,241,0.3);
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(99,102,241,0.25);
+    flex: 1;
+    justify-content: center;
+}
+
+.wz-next--ready {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 12px rgba(99,102,241,0.4);
+}
+
+.wz-next--ready:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.wz-next:disabled {
+    cursor: default;
+}
+
+.wz-dot {
+    cursor: pointer;
+}
+
+/* ── Info box (Screens 2-4) ─────────────────────────────────────────── */
+.wz-infobox {
+    margin-top: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(99,102,241,0.2);
+}
+
+.wz-infobox-toggle {
+    display: block;
+    width: 100%;
+    padding: 7px 12px;
+    background: rgba(99,102,241,0.08);
+    border: none;
+    color: rgba(170,170,255,0.7);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.15s;
+}
+
+.wz-infobox-toggle:hover {
+    background: rgba(99,102,241,0.15);
+}
+
+.wz-infobox-content {
+    max-height: 0;
+    overflow: hidden;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+    padding: 0 12px;
+    transition: max-height 0.25s ease, padding 0.2s ease;
+}
+
+.wz-infobox--open .wz-infobox-content {
+    max-height: 120px;
+    padding: 8px 12px;
+}
+
+.wz-infobox--open .wz-infobox-toggle {
+    color: rgba(170,170,255,0.9);
+}
+
+/* ── Bedürfnisse-Link (letzter Screen) ──────────────────────────────── */
+.wz-needs-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 11px 16px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+    border: 1px solid rgba(99,102,241,0.35);
+    border-radius: 10px;
+    color: rgba(170,170,255,0.9);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.wz-needs-btn:hover {
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.25));
+    border-color: rgba(99,102,241,0.6);
+    color: #fff;
+}
 
 /* Highlight current wizard step */
 #mobilePage1.wizard-mode .compact-dimension.wizard-active {

@@ -1835,7 +1835,7 @@ var TiageLocale_EN = {
         oshoTopNeeds: '🔥 Your Top {count} shared needs',
         oshoBasedOn: 'Based on the match of your need profiles',
         oshoNeedAlt: 'Need {label}',
-        oshoFooter: 'This synthesis combines concepts from the RTI model, the 4-level model by Volker Schmidt, the teachings of Osho, and the quality philosophy of Robert M. Pirsig. All rights reserved to the respective owners.',
+        oshoFooter: 'This synthesis combines concepts from the RTI model (5 Pillars of Identity by Hilarion Petzold), the 4-level model by Volker Schmidt, the teachings of Osho, and the quality philosophy of Robert M. Pirsig. All rights reserved to the respective owners.',
         dynamikBoth: 'Your dynamic thrives on {dynamik} – growth potential lies in {wachstum}.',
         dynamikOnly: 'Your dynamic unfolds through {dynamik}.',
         growthOnly: 'Growth potential shows in {wachstum}.'

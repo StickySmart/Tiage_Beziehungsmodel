@@ -939,9 +939,21 @@
 
             // Speichere in TiageState - dies triggert den Subscriber in ResonanzCard.js
             if (typeof TiageState !== 'undefined' && TiageState.setNeed) {
+                const prevValue = TiageState.getNeed ? TiageState.getNeed(currentPerson, needId) : null;
                 TiageState.setNeed(currentPerson, needId, value);
                 needsEditorDirty = true;
                 console.log('[NeedsEditor] Wert in TiageState.flatNeeds gespeichert:', needId, '=', value, 'für', currentPerson);
+                // Auto-Lock: needs-editor edits survive ProfileCalculator.recalculateFlatNeedsForPerson()
+                // Without locking, returning to the main page causes initFromState() to overwrite
+                // the saved value with the archetype-computed value.
+                // Exception: if the slider is at its max (100) but the stored AGOD value was >100,
+                // this is a slider-cap artifact — do NOT lock so AGOD can recalculate the real value.
+                if (currentPerson === 'ich' && TiageState.lockNeed) {
+                    const isSliderCapArtifact = value === 100 && prevValue !== null && prevValue > 100;
+                    if (!isSliderCapArtifact) {
+                        TiageState.lockNeed(currentPerson, needId, value);
+                    }
+                }
             }
         });
 
@@ -1096,6 +1108,41 @@
                 needsEditorDirty = false;
                 console.log('[NeedsEditor] Dirty-Flag zurückgesetzt (tiage:needsSaved Event)');
             });
+
+            // Focus-Filter aus URL (?focus=#B5) — zeigt nur das spezifische Bedürfnis
+            var focusParam = urlParams.get('focus');
+            if (focusParam) {
+                // Entwicklungsstufen-Übersichtskarte ausblenden — bei Fokus auf ein einzelnes
+                // Bedürfnis ist die Stufen-Übersicht ablenkende Zusatzinfo
+                var headerCard = document.querySelector('.resonanz-profile-header-card');
+                if (headerCard) {
+                    headerCard.style.display = 'none';
+                } else {
+                    // Card wird ggf. nach DOMContentLoaded injiziert — einmalig beobachten
+                    var _obs = new MutationObserver(function() {
+                        var c = document.querySelector('.resonanz-profile-header-card');
+                        if (c) { c.style.display = 'none'; _obs.disconnect(); }
+                    });
+                    _obs.observe(document.body, { childList: true, subtree: false });
+                }
+
+                setTimeout(function() {
+                    var foundItem = null;
+                    document.querySelectorAll('.flat-need-item').forEach(function(item) {
+                        if (item.getAttribute('data-need') === focusParam) {
+                            foundItem = item;
+                        } else {
+                            item.classList.add('filter-hidden');
+                        }
+                    });
+                    if (foundItem) {
+                        foundItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        foundItem.style.transition = 'box-shadow 0.3s';
+                        foundItem.style.boxShadow = '0 0 0 2px rgba(167,139,250,0.7), 0 0 16px rgba(167,139,250,0.3)';
+                        setTimeout(function() { foundItem.style.boxShadow = ''; }, 2500);
+                    }
+                }, 400);
+            }
         }
 
         /**
@@ -1542,14 +1589,11 @@
         }
 
         function goBack() {
-            // MOMENTE-gesteuerte Speicherabfrage bei ungespeicherten Änderungen
-            const momentsEnabled = localStorage.getItem('tiage_moments_enabled') !== 'false';
+            saveCurrentState();
 
-            if (momentsEnabled && needsEditorDirty) {
-                const save = confirm('Du hast Änderungen vorgenommen.\n\nMöchtest du vor dem Verlassen speichern?');
-                if (save) {
-                    saveCurrentState();
-                }
+            // Slot Machine nur starten wenn Bedürfnisse tatsächlich geändert wurden
+            if (needsEditorDirty) {
+                sessionStorage.setItem('tiage_needs_changed', '1');
             }
 
             // Navigiere zurück

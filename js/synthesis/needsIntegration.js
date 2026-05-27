@@ -799,9 +799,7 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         if (count === 0) {
-            console.warn('[NeedsIntegration._calculateSingleResonanceV35] Keine Bedürfnisse gefunden für:',
-                rFaktor, archetyp);
-            return 1.0;
+            return 1.0; // Neutral — needs leer oder kein Overlap (kein Warn-Spam)
         }
 
         // v4.0: R = avgMatch^2.5 — RTI-gewichteter Schnitt
@@ -913,8 +911,7 @@ TiageSynthesis.NeedsIntegration = {
         var expectedNeeds = this._getExpectedNeedsFromSSOT(archetyp, dimensionKohaerenz);
 
         if (!expectedNeeds || Object.keys(expectedNeeds).length === 0) {
-            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Referenz-Daten für:', archetyp);
-            return 1.0; // Neutral wenn keine Daten
+            return 1.0; // Neutral wenn keine Referenz-Daten
         }
 
         var totalMatch = 0;
@@ -965,8 +962,7 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         if (count === 0) {
-            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Bedürfnisse gefunden für:', archetyp);
-            return 1.0;
+            return 1.0; // Neutral — needs leer oder kein Overlap (kein Warn-Spam)
         }
 
         // v3.4: R = avgMatch² (quadratisch, mit Richtung)

@@ -72,8 +72,9 @@ TiageModifiers.Dominanz.Submissiv = {
         '#B10': +8,   // Anerkennung — Wertschätzung empfangen
         '#B3':  +8,   // Leichtigkeit — sich fallen lassen können
         '#B4':  +8,   // Orientierung — Führung annehmen und folgen
-        '#B6':  -15,  // Freiheit — gibt Autonomie bewusst ab
-        '#B5':  -10   // Wirksamkeit — übergibt Kontrolle
+        '#B6':  -8,   // Freiheit — gibt Autonomie bewusst ab (symmetrisch zu dominant +8)
+        '#B5':  -10,  // Wirksamkeit — übergibt Kontrolle
+        '#B15': +5    // Integrität — authentische Submission braucht Selbsterkenntnis
     },
 
     // ═══════════════════════════════════════════════════════════════════════

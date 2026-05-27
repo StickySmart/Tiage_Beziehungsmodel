@@ -46,7 +46,7 @@
       "varianten": {
         "V1": {
           "kontext": "V1",
-          "bild": "Future/B002_00001_ (2).png",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
           "karte": "Existence",
           "karte_de": "Existenz",
           "karte_key": "major_arcana.1_existence",
@@ -64,7 +64,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "Future/B005_00001_.png",
+          "bild": "Future/Firefly_B1V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
           "karte": "Healing",
           "karte_de": "Heilung",
           "karte_key": "minor_arcana.water.king_healing",
@@ -115,7 +115,18 @@
             "moderne": "Kristin Neffs Forschung zu Selbstmitgefühl zeigt: Selbstannahme – nicht Selbstkritik – ist die Basis nachhaltigen Wohlbefindens. Menschen, die sich selbst annehmen können, zeigen höhere Resilienz, weniger Angst und tiefere Beziehungsfähigkeit.",
             "pirsig": "Pirsig: Wirkliche Qualität beginnt mit dem Annehmen dessen, was ist. Existenzielles Wohlbefinden entsteht nicht durch Optimierung, sondern durch vollständige Präsenz im Jetzt."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B005_00001_.png", "karte": "Meditation", "karte_de": "Meditation", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B005_00001_ (2).png", "karte": "Contemplation", "karte_de": "Kontemplation", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B005_00001_ (3).png", "karte": "Lotus", "karte_de": "Lotus", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B059_00001_ (2).png", "karte": "Silence", "karte_de": "Stille", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B005_00001_ (4).png", "karte": "Lotus Light", "karte_de": "Lotus-Licht", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B005_00001_ (5).png", "karte": "Healing Pod", "karte_de": "Heilungsraum", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/Firefly_Gemini Flash_B1V1- The compassionate healer's (a half human half humanite) touch making whole, lot 88722.png", "karte": "Healing Touch", "karte_de": "Heilende Berührung", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V12": { "kontext": "V12", "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722 (1).png", "karte": "Source Light", "karte_de": "Quellenlicht", "karte_key": "custom.v12", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V13": { "kontext": "V13", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (2).png", "karte": "Sacred Healing", "karte_de": "Heilige Heilung", "karte_key": "custom.v13", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V14": { "kontext": "V14", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487 (1).png", "karte": "Tree Healer", "karte_de": "Baum-Heiler", "karte_key": "custom.v14", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V15": { "kontext": "V15", "bild": "Future/Erkenntnisse_Kapitel_01_00000 (2).png", "karte": "Existence Light", "karte_de": "Existenz-Licht", "karte_key": "custom.v15", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B2": {
@@ -134,7 +145,7 @@
       "varianten": {
         "V1": {
           "kontext": "V1",
-          "bild": "Future/B011_00001_.png",
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
           "karte": "Trust",
           "karte_de": "Vertrauen",
           "karte_key": "minor_arcana.water.page_trust",
@@ -170,7 +181,7 @@
         },
         "V3": {
           "kontext": "V3",
-          "bild": null,
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Noah's ark weathering the storm, Shiva's protective dance in stillness, cave sh 88722.png",
           "karte": "Compromise",
           "karte_de": "Kompromiss",
           "karte_key": "minor_arcana.rainbows.6_compromise",
@@ -203,7 +214,12 @@
             "moderne": "Resilienzforschung zeigt: Menschen mit starkem internem Locus of Control – dem Gefühl, einen inneren Halt zu haben – überstehen Krisen nicht unbeschadet, aber gestärkt. Sicherheit ist eine Haltung, nicht nur eine Bedingung.",
             "pirsig": "Pirsig: Sicherheit auf der Identitätsebene bedeutet, in der eigenen Qualität verwurzelt zu sein – unerschütterlich nicht durch Mauern, sondern durch innere Stimmigkeit."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B011_00001_.png", "karte": "Shelter", "karte_de": "Geborgenheit", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B011_00001_ (2).png", "karte": "Cave Moon", "karte_de": "Höhlenmond", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (4).png", "karte": "Inner Sanctuary", "karte_de": "Inneres Heiligtum", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B026_00001_.png", "karte": "Protection", "karte_de": "Schutz", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/Erkenntnisse_Kapitel_02_00000 (2).png", "karte": "Trust Light", "karte_de": "Vertrauenslicht", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B3": {
@@ -222,7 +238,7 @@
       "varianten": {
         "V1": {
           "kontext": "V1",
-          "bild": "Future/B047_00001_.png",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.1- Berührung der Hände. Two luminous hands almost touching, energy f 291798.png",
           "karte": "Going With The Flow",
           "karte_de": "Mit dem Fluss gehen",
           "karte_key": "minor_arcana.water.ace_going_with_the_flow",
@@ -240,7 +256,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "Future/B006_00001_.png",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.2- Schlaf der Sterne. Ethereal figure resting on purple nebula cloud 495626.png",
           "karte": "Slowing Down",
           "karte_de": "Verlangsamen",
           "karte_key": "minor_arcana.rainbows.knight_slowing_down",
@@ -258,7 +274,7 @@
         },
         "V3": {
           "kontext": "V3",
-          "bild": "Future/B047_00001_ (2).png",
+          "bild": "Future/Firefly_Leichtigkeit Var.3- Tanz der Polarität. Two spiral energies dancing, one golden solar 88722.png",
           "karte": "Harmony",
           "karte_de": "Harmonie",
           "karte_key": "minor_arcana.water.10_harmony",
@@ -291,7 +307,12 @@
             "moderne": "ACT (Acceptance and Commitment Therapy) lehrt kognitive Defusion: die Fähigkeit, Gedanken und Selbstbilder zu beobachten, ohne mit ihnen identisch zu sein. Loslassen schafft psychologische Flexibilität – die Grundlage wahrer Leichtigkeit.",
             "pirsig": "Pirsig: Das höchste Niveau der Autonomie ist die Übereinstimmung mit der eigenen Qualitätsnatur – frei von sozialen Masken, authentisch im tiefsten Sinne."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/Firefly_Gemini Flash_B3V1- Birds neither sowing nor reaping yet fed, Krishna's divine play and Zen master' 88722.png", "karte": "Carefree", "karte_de": "Sorglosigkeit", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/Firefly_B3V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png", "karte": "Dream Lightness", "karte_de": "Traumleichtigkeit", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/Firefly_Gemini Flash_B3V3- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png", "karte": "Dance", "karte_de": "Tanz", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B030_00001_ (2).png", "karte": "Playfulness", "karte_de": "Spielfreude", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/Erkenntnisse_Kapitel_03_00000 (2).png", "karte": "Flow Light", "karte_de": "Fließendes Licht", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B4": {
@@ -327,7 +348,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "Future/B060_00001_.png",
+          "bild": "Future/Firefly_B4V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
           "karte": "Inner Voice",
           "karte_de": "Innere Stimme",
           "karte_key": "major_arcana.2_inner_voice",
@@ -378,7 +399,16 @@
             "moderne": "Viktor Frankls Logotherapie zeigt: In extremsten Situationen – Konzentrationslager, Verlust, Todesangst – bleibt eine Freiheit: die Wahl der Einstellung. Der innere Kompass ist die letzte Orientierung.",
             "pirsig": "Pirsig: Die tiefste Ruhe ist nicht Passivität, sondern die Stille des vollständig integrierten Menschen – wo Dynamic und Static Quality in Einklang schwingen."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B030_00001_.png", "karte": "Compass", "karte_de": "Kompass", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER - postiv mit 523487.png", "karte": "The Thinker", "karte_de": "Der Denker", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B054_00001_ (2).png", "karte": "Order", "karte_de": "Ordnung", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B057_00001_ (2).png", "karte": "Clarity", "karte_de": "Klarheit", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B057_00001_ (3).png", "karte": "Breakthrough", "karte_de": "Durchbruch", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B014_00001_ (3).png", "karte": "Compass Portal", "karte_de": "Kompass-Portal", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/Erkenntnisse_Kapitel_04_00000 (2).png", "karte": "Clarity Light", "karte_de": "Klares Licht", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V12": { "kontext": "V12", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (8).png", "karte": "Quest", "karte_de": "Suche", "karte_key": "custom.v12", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V13": { "kontext": "V13", "bild": "Future/Firefly_Gemini Flash.png", "karte": "Cosmic Compass", "karte_de": "Kosmischer Kompass", "karte_key": "custom.v13", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B5": {
@@ -416,7 +446,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "B058.webp",
+          "bild": "Future/Firefly_Gemini Flash_Gebrauchsanweisung im Alien-Modu 952409 KfR.png",
           "karte": "Success",
           "karte_de": "Erfolg",
           "karte_key": "minor_arcana.fire.6_success",
@@ -467,7 +497,11 @@
             "moderne": "Csikszentmihalyi beschreibt Flow als den Gipfelzustand der Wirksamkeit: Ich und Handlung verschmelzen. Nicht Ich tue – es tut sich. Selbstwirksamkeit (Bandura) wächst nicht durch Kontrolle, sondern durch Vertrauen in den eigenen Kanal.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Freude kein Zustand, sondern eine Art zu sein – die Qualität des vollständig lebendigen Menschen, der keiner Ablenkung mehr bedarf."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B008_00001_.png", "karte": "Energy Mandala", "karte_de": "Kraftmandala", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (5).png", "karte": "Energy Transfer", "karte_de": "Energie-Transfer", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B038_00001_ (2).png", "karte": "Effectiveness", "karte_de": "Wirksamkeit", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B056_00001_ (2).png", "karte": "Courage", "karte_de": "Mut", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B6": {
@@ -556,7 +590,12 @@
             "moderne": "Viktor Frankl nennt die Freiheit der Einstellung die letzte menschliche Freiheit – unantastbar selbst im Konzentrationslager. Freiheit ist keine äußere Bedingung. Sie ist eine innere Haltung zur Fülle des Möglichen.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Wahrhaftigkeit keine Tugend mehr – sie ist die Essenz. Der Mensch, der vollständig bei sich ist, kann gar nicht anders als authentisch sein."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B006_00001_.png", "karte": "Boundless", "karte_de": "Grenzenlos", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B006_00001_ (2).png", "karte": "Cloud Freedom", "karte_de": "Wolkenfreiheit", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B017_00001_ (2).png", "karte": "Aloneness", "karte_de": "Alleinsein", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B036_00001_ (2).png", "karte": "The Rebel", "karte_de": "Der Rebell", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B044_00001_ (2).png", "karte": "Transformation", "karte_de": "Transformation", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B7": {
@@ -643,7 +682,12 @@
             "moderne": "Csikszentmihalyi unterscheidet leidenschaftliches Engagement vom Burnout: Passion, die aus Bedeutung wächst, erschöpft nicht – sie ernährt. Intensity, die ich wähle, ist Lebensenergie. Intensity, die mich treibt, ist Angst.",
             "pirsig": "Pirsig: Die tiefste Erkenntnis ist die Erkenntnis der Qualität selbst – jenseits von Subjekt und Objekt, wo das Wissen zum Sein wird."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B009_00001_.png", "karte": "Star Burst", "karte_de": "Sternexplosion", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B053_00001_.png", "karte": "Lightning", "karte_de": "Blitz", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B045_00001_ (2).png", "karte": "Passion", "karte_de": "Leidenschaft", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B048_00001_ (2).png", "karte": "Joy", "karte_de": "Freude", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B012_00001_ (3).png", "karte": "Energy Waves", "karte_de": "Energiewellen", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B8": {
@@ -730,7 +774,15 @@
             "moderne": "Robert Kegans Theorie der erwachsenen Entwicklung beschreibt fünf Bewusstseinsstufen. Postkonventionelles Denken – Stufe 4/5 – ist das Zeichen von Reife: nicht mehr getrieben, sondern wählend. Die meisten Menschen erreichen diese Stufe nie vollständig.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Selbstachtung die stille Gewissheit der eigenen Qualität – nicht als Leistung erworben, sondern als ontologische Tatsache erkannt."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B011_00001_ (4).png", "karte": "Portal", "karte_de": "Portal", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B032_00001_.png", "karte": "Cosmic Spiral", "karte_de": "Kosmische Spirale", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487.png", "karte": "New World", "karte_de": "Neue Welt", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B047_00001_.png", "karte": "Wide Vision", "karte_de": "Weite Vision", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B065_00001_ (2).png", "karte": "Adventure", "karte_de": "Abenteuer", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B011_00001_ (3).png", "karte": "Star Gate", "karte_de": "Sternentor", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/B014_00001_ (4).png", "karte": "Breakthrough Portal", "karte_de": "Durchbruch-Portal", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V12": { "kontext": "V12", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487 (1).png", "karte": "Journey", "karte_de": "Reise", "karte_key": "custom.v12", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B9": {
@@ -818,7 +870,15 @@
             "moderne": "Martin Bubers Ich-Du-Philosophie beschreibt echte Begegnung: Nicht Ich und ein Objekt, sondern Ich und ein Gegenüber. Gemeinschaft ist möglich, wo Liebe die Angst überwindet. Nur wer sich selbst liebt, kann wirklich anderen begegnen.",
             "pirsig": "Pirsig: Die vollständige Verbindung zweier Menschen ist der Punkt, wo Individual- und Sozialqualität ineinander übergehen – das Ich im Wir aufgelöst, ohne sich zu verlieren."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B060_00001_ (2).png", "karte": "Network", "karte_de": "Netzwerk", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B009_00001_ (2).png", "karte": "Home Community", "karte_de": "Heimatliche Gemeinschaft", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (9).png", "karte": "Master and Sangha", "karte_de": "Meister & Sangha", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B033_00001_ (2).png", "karte": "Community", "karte_de": "Gemeinschaft", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B039_00001_ (2).png", "karte": "Participation", "karte_de": "Teilhabe", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B008_00001_ (2).png", "karte": "Dinner Circle", "karte_de": "Abendrunde", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (6).png", "karte": "Community Circle", "karte_de": "Gemeinschaftskreis", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V12": { "kontext": "V12", "bild": "Future/B002_00001_ (4).png", "karte": "Kitchen Sharing", "karte_de": "Küchen-Teilen", "karte_key": "custom.v12", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B10": {
@@ -905,7 +965,11 @@
             "moderne": "Axel Honneths Theorie der Anerkennung zeigt: Menschen kämpfen ihr Leben lang um gesehen zu werden. Das Tiefste dabei ist nicht Lob – es ist die Erfahrung: Du wirst als vollständiger Mensch anerkannt, nicht für deine Leistung.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Lebensfreude keine emotionale Reaktion mehr, sondern eine ontologische Qualität – der Grundton des Menschen, der sich selbst verwirklicht hat."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B041_00001_ (2).png", "karte": "Appreciation", "karte_de": "Wertschätzung", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B047_00001_.png", "karte": "Respect", "karte_de": "Respekt", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B047_00001_ (2).png", "karte": "Success", "karte_de": "Erfolg", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B023_00001_ (2).png", "karte": "Significance", "karte_de": "Bedeutsamkeit", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B11": {
@@ -942,7 +1006,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "B120.webp",
+          "bild": "Future/B029_00001_.png",
           "karte": "Sharing",
           "karte_de": "Teilen",
           "karte_key": "minor_arcana.fire.queen_sharing",
@@ -993,7 +1057,11 @@
             "moderne": "Restorative Justice – Wiederherstellende Gerechtigkeit – setzt Verstehen vor Strafe. Die Begegnung von Täter und Opfer, der Blick auf die Bedürfnisse hinter der Handlung: das ist Gerechtigkeit, die heilt statt trennt.",
             "pirsig": "Pirsig: Die höchste Form des Ehrgeizes ist das Streben nach Qualität um ihrer selbst willen – ohne Publikum, ohne Preis. Das ist die Reife der Identitätsebene."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B060_00001_.png", "karte": "Wheel of Balance", "karte_de": "Rad des Gleichgewichts", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B029_00001_ (2).png", "karte": "Understanding Differences", "karte_de": "Unterschiede verstehen", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B035_00001_ (2).png", "karte": "Shared Values", "karte_de": "Gemeinsame Werte", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild  523487.png", "karte": "Equal Lightning", "karte_de": "Gleiches Feuer", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B12": {
@@ -1048,7 +1116,7 @@
         },
         "V3": {
           "kontext": "V3",
-          "bild": "B028.webp",
+          "bild": "Future/B027_00001_.png",
           "karte": "Sorrow",
           "karte_de": "Trauer",
           "karte_key": "minor_arcana.clouds.9_sorrow",
@@ -1081,7 +1149,18 @@
             "moderne": "Brené Brown zeigt: Verletzlichkeit – die Bereitschaft, gesehen zu werden – ist die Quelle echter Verbundenheit. Intimität ist nicht das Fehlen von Grenzen. Es ist die Wahl, trotz Grenzen Kontakt zuzulassen.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Empathie keine Technik mehr, sondern die natürliche Durchlässigkeit des Menschen, der sich selbst kennt."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B042_00001_.png", "karte": "Soul Connection", "karte_de": "Seelenverbindung", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B042_00001_ (2).png", "karte": "Intimacy", "karte_de": "Intimität", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B053_00001_ (2).png", "karte": "Passion in Rain", "karte_de": "Leidenschaft im Regen", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B014_00001_ (2).png", "karte": "Touch", "karte_de": "Berührung", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B020_00001_ (2).png", "karte": "Intimacy", "karte_de": "Intimität", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B021_00001_ (2).png", "karte": "Love", "karte_de": "Liebe", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/B027_00001_ (2).png", "karte": "Empathy", "karte_de": "Empathie", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V12": { "kontext": "V12", "bild": "Future/B011_00001_ (5).png", "karte": "Storm Comfort", "karte_de": "Sturm-Geborgenheit", "karte_key": "custom.v12", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V13": { "kontext": "V13", "bild": "Future/B012_00001_ (4).png", "karte": "Home Dance", "karte_de": "Heimtanz", "karte_key": "custom.v13", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V14": { "kontext": "V14", "bild": "Future/B047_00001_ (4).png", "karte": "Joyful Glance", "karte_de": "Freudiger Blick", "karte_key": "custom.v14", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V15": { "kontext": "V15", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild  523487 (1).png", "karte": "Rain Romance", "karte_de": "Regen-Romantik", "karte_key": "custom.v15", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B13": {
@@ -1100,7 +1179,7 @@
       "varianten": {
         "V1": {
           "kontext": "V1",
-          "bild": "B072.webp",
+          "bild": "B013.png",
           "karte": "Patience",
           "karte_de": "Geduld",
           "karte_key": "minor_arcana.rainbows.7_patience",
@@ -1169,7 +1248,13 @@
             "moderne": "Das Konzept des Observer Self in IFS (Internal Family Systems) und in ACT: Es gibt einen Teil in dir, der alle anderen Teile beobachten kann, ohne mit ihnen identisch zu sein. Dieser Zeuge ist das Ziel der Innenwendung.",
             "pirsig": "Pirsig: Vollständige Harmonie ist der Zustand, wo das Individuum nicht mehr zwischen Authentizität und Zugehörigkeit wählen muss – beides ist Ausdruck derselben Qualität."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B012_00001_.png", "karte": "Inner Light", "karte_de": "Inneres Licht", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B012_00001_ (2).png", "karte": "Cave of Insight", "karte_de": "Höhle der Erkenntnis", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B032_00001_ (2).png", "karte": "Mirror", "karte_de": "Spiegel", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487.png", "karte": "Eternal Knowledge", "karte_de": "Ewiges Wissen", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B014_00001_ (5).png", "karte": "Mutual Recognition", "karte_de": "Gegenseitige Erkenntnis", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER  523487.png", "karte": "Dark Thinker", "karte_de": "Dunkler Denker", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B14": {
@@ -1205,7 +1290,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "B070.webp",
+          "bild": "Future/B069_00001_.png",
           "karte": "Experiencing",
           "karte_de": "Erfahren",
           "karte_key": "minor_arcana.fire.3_experiencing",
@@ -1256,7 +1341,14 @@
             "moderne": "Dan McAdams Theorie der narrativen Identität zeigt: Menschen finden Sinn, wenn sie ihr Leben als kohärente Geschichte erzählen können. Viktor Frankl entdeckte im Lager: Wer ein Warum hat, erträgt fast jedes Wie.",
             "pirsig": "Pirsig: Auf der Identitätsebene ist Neugier keine Eigenschaft mehr, sondern Seinsweise – der vollständig wache Mensch, der das Leben selbst als Dynamic Quality erlebt."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B002_00001_.png", "karte": "Tree of Life", "karte_de": "Lebensbaum", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (7).png", "karte": "Cosmic Tree", "karte_de": "Kosmischer Lebensbaum", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B062_00001_ (2).png", "karte": "Silence", "karte_de": "Stille", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/B063_00001_ (2).png", "karte": "Sharing", "karte_de": "Beitrag", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V9": { "kontext": "V9", "bild": "Future/B002_00001_ (3).png", "karte": "Purple Tree of Life", "karte_de": "Violetter Lebensbaum", "karte_key": "custom.v9", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V10": { "kontext": "V10", "bild": "Future/B002_00002_.png", "karte": "Sunset Tree", "karte_de": "Sonnenuntergangsbaum", "karte_key": "custom.v10", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V11": { "kontext": "V11", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (1).png", "karte": "Sacred Traditions", "karte_de": "Heilige Traditionen", "karte_key": "custom.v11", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B15": {
@@ -1343,7 +1435,11 @@
             "moderne": "Die Kohärenztheorie der Integrität zeigt: Integrität ist die Übereinstimmung zwischen Werten, Worten und Handlungen. Menschen mit hoher Integrität fühlen sich innerlich ganz – nicht weil sie perfekt sind, sondern weil sie ehrlich sind.",
             "pirsig": "Pirsig: Der schöpferische Mensch auf der Identitätsebene hat die Trennung zwischen sich und seinem Werk überwunden. Das Leben selbst wird zum Kunstwerk."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B015_00001_ (2).png", "karte": "Integrity", "karte_de": "Integrität", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/B050_00001_ (2).png", "karte": "Authenticity", "karte_de": "Authentizität", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V7": { "kontext": "V7", "bild": "Future/B051_00001_ (2).png", "karte": "Genuineness", "karte_de": "Echtheit", "karte_key": "custom.v7", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V8": { "kontext": "V8", "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne schild text wie abgebildet - zusätzli 523487.png", "karte": "Infinite Heart", "karte_de": "Unendliches Herz", "karte_key": "custom.v8", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     },
     "#B16": {
@@ -1380,7 +1476,7 @@
         },
         "V2": {
           "kontext": "V2",
-          "bild": "B067.webp",
+          "bild": "Future/B066_00001_ (2).png",
           "karte": "Moment to Moment",
           "karte_de": "Moment zu Moment",
           "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
@@ -1398,7 +1494,7 @@
         },
         "V3": {
           "kontext": "V3",
-          "bild": "B069.webp",
+          "bild": "Future/B069_00001_ (2).png",
           "karte": "Ripeness",
           "karte_de": "Reife",
           "karte_key": "minor_arcana.rainbows.9_ripeness",
@@ -1431,7 +1527,9 @@
             "moderne": "Nietzsches drei Metamorphosen – Kamel, Löwe, Kind – beschreiben die Wiedergeburt des Geistes durch Transformation. Posttraumatisches Wachstum (Tedeschi/Calhoun) zeigt: Menschen nach Krisen berichten ein Gefühl des Neugeborenseins. Mezirows transformatives Lernen: jede tiefe Erkenntnis ist eine Wiedergeburt der Sichtweise.",
             "pirsig": "Pirsig: Die höchste Stufe ist die vollständige Identifikation mit Qualität selbst – nicht als Erfahrung, sondern als Sein. Der Mensch ist Qualität, die sich selbst erkennt."
           }
-        }
+        },
+        "V5": { "kontext": "V5", "bild": "Future/B002_00001_ (2).png", "karte": "Magic Growth Tree", "karte_de": "Magischer Wachstumsbaum", "karte_key": "custom.v5", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} },
+        "V6": { "kontext": "V6", "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (3).png", "karte": "Cosmic Bloom", "karte_de": "Kosmische Entfaltung", "karte_key": "custom.v6", "karte_nummer": null, "tiage": "", "reflexion": "", "traditionen": {} }
       }
     }
   }

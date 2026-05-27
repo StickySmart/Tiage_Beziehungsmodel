@@ -161,42 +161,41 @@ TiageCompatibility.Physical = (function() {
             }
 
             // ═══════════════════════════════════════════════════════════════════
-            // BISEXUELL: Zu beiden BINÄREN Geschlechtern angezogen
+            // BISEXUELL: Zu binären UND nonbinären Geschlechtern angezogen
+            // Moderne Definition: angezogen von gleichem + anderen Geschlechtern,
+            // einschließlich nonbinärer Identitäten.
             // ═══════════════════════════════════════════════════════════════════
             if (normalizedOrientation === 'bisexuell') {
-                // Nonbinäre Geschlechter: nur Pan/Queer kann angezogen sein!
-                if (isNonBinaryGender(theirGender)) {
-                    return false;
-                }
-                // Binäre Geschlechter: bisexuell ist zu beiden angezogen
                 return true;
             }
 
             // ═══════════════════════════════════════════════════════════════════
-            // HOMOSEXUELL: Nur gleiches Geschlecht
+            // HOMOSEXUELL: Gleiches Geschlecht; nonbinär = möglich (kein K.O.)
             // ═══════════════════════════════════════════════════════════════════
             if (normalizedOrientation === 'homosexuell') {
-                // Nonbinäre Geschlechter: nur Pan/Queer kann angezogen sein!
+                // Nonbinärer Partner: partielle Anziehung möglich (kein K.O.)
                 if (isNonBinaryGender(theirGender)) {
-                    return false;
+                    return true;
                 }
-                // Gleiches binäres Geschlecht: homosexuell ist angezogen
+                // Gleiches binäres Geschlecht
                 return isSameGenderCategory(myGender, theirGender);
             }
 
             // ═══════════════════════════════════════════════════════════════════
-            // HETEROSEXUELL: Nur anderes binäres Geschlecht
+            // HETEROSEXUELL: Anderes binäres Geschlecht; nonbinär = möglich (kein K.O.)
+            // Nonbinäre Beteiligung senkt den Score (NON_BINARY_INVOLVED), ist aber
+            // kein Ausschlusskriterium — unterschiedliche Bedürfnisse zeigen sich im Scoring.
             // ═══════════════════════════════════════════════════════════════════
             if (normalizedOrientation === 'heterosexuell') {
-                // Nonbinäre Geschlechter: nur Pan/Queer kann angezogen sein!
+                // Nonbinärer Partner: partielle Anziehung möglich (kein K.O.)
                 if (isNonBinaryGender(theirGender)) {
-                    return false;
+                    return true;
                 }
-                // Nonbinär mit Hetero: Anziehung zu beiden binären Geschlechtern erlauben
+                // Nonbinäre Person mit Hetero: kann zu beiden binären Geschlechtern angezogen sein
                 if (isNonBinaryGender(myGender)) {
                     return isMaleGender(theirGender) || isFemaleGender(theirGender);
                 }
-                // Anderes binäres Geschlecht: heterosexuell ist angezogen
+                // Anderes binäres Geschlecht
                 return isDifferentBinaryGender(myGender, theirGender);
             }
 

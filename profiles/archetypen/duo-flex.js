@@ -27,7 +27,7 @@ const DuoFlexProfil = {
         // --- Stufe 4: Identitaets-Bedurfnisse
         '#B13': 77,  // Selbsterkenntnis
         '#B14': 68,  // Sinn
-        '#B15': 62,  // Integritaet
+        '#B15': 70,  // Integritaet
         '#B16': 81,  // Selbstentfaltung
     }
 };

@@ -959,7 +959,11 @@ const TiageState = (function() {
             if (slots.length === 0) return {};
             if (slots.length === 1) return this.get(`flatNeeds.ich.${slots[0]}`) || {};
 
-            // Alle Need-IDs sammeln
+            // Pol-Zuordnung: Struktur (Verbindlichkeit) vs. Freiheit (Autonomie)
+            const STRUKTUR_POL = new Set(['duo', 'duo_flex', 'duoflex', 'lat', 'polyamor']);
+            const FREIHEIT_POL = new Set(['ra', 'single', 'solopoly', 'aromantisch']);
+
+            // Need-Daten sammeln
             const allNeedIds = new Set();
             const slotNeeds = slots.map(arch => {
                 const needs = this.get(`flatNeeds.ich.${arch}`) || {};
@@ -967,24 +971,62 @@ const TiageState = (function() {
                 return needs;
             });
 
-            // Probabilistisches ODER (Bayesian combination):
-            // combined = 1 - ∏(1 - p_i)
-            // Alle Slots die ein Bedürfnis hoch bewerten verstärken es kumulativ.
-            // Neutralwert 50 → 0.5, damit fehlende Einträge nicht auf 0 ziehen.
+            // Nur Slots mit tatsächlichen Daten berücksichtigen
+            const activeIdx = slots.map((s, i) => Object.keys(slotNeeds[i]).length > 0 ? i : -1).filter(i => i >= 0);
+            if (activeIdx.length === 0) return {};
+            if (activeIdx.length === 1) return { ...slotNeeds[activeIdx[0]] };
+
+            // Aktive Slots nach Polen aufteilen
+            const sIdx = activeIdx.filter(i => STRUKTUR_POL.has(slots[i].toLowerCase()));
+            const fIdx = activeIdx.filter(i => FREIHEIT_POL.has(slots[i].toLowerCase()));
+            const sCount = sIdx.length;
+            const fCount = fIdx.length;
+            const totalActive = activeIdx.length;
+
+            // Spannung: 0 = reiner Pol, 0.5 = maximale Kreuzung (50-50)
+            const tension = totalActive > 0 ? Math.min(sCount, fCount) / totalActive : 0;
+
+            // Kein Pol-Konflikt → MAX wie bisher
+            if (tension === 0) {
+                const result = {};
+                allNeedIds.forEach(needId => {
+                    let maxVal = 0;
+                    activeIdx.forEach(i => {
+                        const raw = slotNeeds[i][needId];
+                        if (typeof raw === 'number') maxVal = Math.max(maxVal, raw);
+                    });
+                    result[needId] = maxVal;
+                });
+                return result;
+            }
+
+            // Pol-Konflikt → pol-gewichtetes Blending mit Spannungsabzug
+            // Je mehr Kreuzung der Pole, desto mehr Kompromiss bei widersprüchlichen Needs
+            const sWeight = sCount / totalActive;
+            const fWeight = fCount / totalActive;
+            const discountFactor = 1 - (tension * 0.15); // max -7.5% bei 50-50
+
             const result = {};
             allNeedIds.forEach(needId => {
-                let product = 1;
-                let count = 0;
-                slots.forEach((arch, i) => {
+                let sMax = 0, fMax = 0, sHas = false, fHas = false;
+                sIdx.forEach(i => {
                     const raw = slotNeeds[i][needId];
-                    const p = typeof raw === 'number' ? raw / 100 : 0.5;
-                    product *= (1 - p);
-                    count++;
+                    if (typeof raw === 'number') { sMax = Math.max(sMax, raw); sHas = true; }
                 });
-                if (count > 0) {
-                    const combined = 1 - product;
-                    result[needId] = Math.max(0, Math.min(100, Math.round(combined * 100)));
+                fIdx.forEach(i => {
+                    const raw = slotNeeds[i][needId];
+                    if (typeof raw === 'number') { fMax = Math.max(fMax, raw); fHas = true; }
+                });
+
+                let blended;
+                if (sHas && fHas) {
+                    // Beide Pole haben Daten → gewichtetes Blend + Spannungsabzug
+                    blended = Math.round((sWeight * sMax + fWeight * fMax) * discountFactor);
+                } else {
+                    // Nur ein Pol hat Daten für diesen Need → kein Abzug
+                    blended = sHas ? sMax : fMax;
                 }
+                result[needId] = blended;
             });
             return result;
         },

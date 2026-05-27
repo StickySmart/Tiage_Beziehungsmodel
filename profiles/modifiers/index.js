@@ -395,8 +395,7 @@
 
         Object.keys(deltas).forEach(key => {
             if (result[key] !== undefined) {
-                // Wert modifizieren und auf 0-100 begrenzen
-                result[key] = Math.min(100, Math.max(0, result[key] + deltas[key]));
+                result[key] = Math.max(0, result[key] + deltas[key]);
             }
         });
 

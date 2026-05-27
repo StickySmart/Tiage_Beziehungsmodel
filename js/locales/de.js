@@ -1862,7 +1862,7 @@ var TiageLocale_DE = {
         oshoTopNeeds: '🔥 Eure Top {count} gemeinsamen Bedürfnisse',
         oshoBasedOn: 'Basierend auf der Übereinstimmung eurer Bedürfnis-Profile',
         oshoNeedAlt: 'Bedürfnis {label}',
-        oshoFooter: 'Diese Synthese verbindet Konzepte aus dem RTI-Modell, dem 4-Stufen-Modell nach Volker Schmidt, den Lehren von Osho sowie der Qualitätsphilosophie von Robert M. Pirsig. Alle Rechte bei den jeweiligen Inhabern.',
+        oshoFooter: 'Diese Synthese verbindet Konzepte aus dem RTI-Modell (5 Säulen der Identität nach Hilarion Petzold), dem 4-Stufen-Modell nach Volker Schmidt, den Lehren von Osho sowie der Qualitätsphilosophie von Robert M. Pirsig. Alle Rechte bei den jeweiligen Inhabern.',
 
         // Dynamik-Sätze
         dynamikBoth: 'Eure Dynamik lebt von {dynamik} – hier liegt Wachstumspotential in {wachstum}.',

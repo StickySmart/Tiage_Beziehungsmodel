@@ -1,157 +1,226 @@
 /**
  * ICH WIZARD — Schrittweiser Aufbau des Du-Profils (Mobile only)
  *
- * Zeigt auf Page 1 die Dimensionen nacheinander solange das
- * Profil noch nicht vollständig ausgefüllt ist.
- * Nach Abschluss aller 4 Schritte: normales Layout.
+ * 6 Screens mit expliziten Weiter/Zurück-Buttons:
+ *  1. Beziehungstyp     — Archetyp-Grid
+ *  2. Geschlecht        — Geschlechtsidentität + Mehr-Info
+ *  3. Attraktion        — Orientierung + Mehr-Info
+ *  4. Dominanz          — Dominanz-Dynamik + Mehr-Info
+ *  5. Best Match        — Partner finden + Score
+ *  6. Synthese          — Ergebnis → weiter zu Bedürfnissen
  *
  * © 2026 Ti-age.de Alle Rechte vorbehalten.
  */
 var IchWizard = (function() {
     'use strict';
 
-    // ── State helpers ────────────────────────────────────────────────────────
+    var _screen = 1;
 
-    function getArchetyp() {
-        // DOM ist Wahrheit: nur wenn das Grid einen aktiven Button zeigt gilt der Schritt als getan
-        var activeItem = document.querySelector('#mobile-ich-archetype-grid .archetype-symbol-item.active');
-        return activeItem ? activeItem.dataset.archetype : null;
-    }
-
-    function getGeschlecht() {
-        if (typeof TiageState === 'undefined') return null;
-        var g = TiageState.get('personDimensions.ich.geschlecht');
-        if (!g) return null;
-        if (typeof g === 'string') return g;
-        if (typeof g === 'object') return g.primary || null;
-        return null;
-    }
-
-    function getOrientierung() {
-        if (typeof TiageState === 'undefined') return null;
-        var o = TiageState.get('personDimensions.ich.orientierung');
-        if (!o) return null;
-        if (typeof o === 'string') return o;
-        if (typeof o === 'object') return o.primary || null;
-        return null;
-    }
-
-    function getDominanz() {
-        if (typeof TiageState === 'undefined') return null;
-        var d = TiageState.get('personDimensions.ich.dominanz');
-        if (!d) return null;
-        if (typeof d === 'string') return d;
-        if (typeof d === 'object') return d.primary || null;
-        return null;
-    }
-
-    // ── Wizard steps ─────────────────────────────────────────────────────────
-
-    var STEPS = [
+    var SCREENS = [
         {
-            label:     'Was bist du?',
-            sublabel:  'Wähle deinen Beziehungstyp',
-            dimension: null,                              // archetype grid is always above
-            get:       getArchetyp
+            icon: '🧬', label: 'Beziehungstyp', sub: 'Wähle deinen Archetypen',
+            info: null
         },
         {
-            label:     'Deine Geschlechtsidentität',
-            sublabel:  'Körper & Identität',
-            dimension: 'mobile-ich-geschlecht-multi',
-            get:       getGeschlecht
+            icon: '⚤', label: 'Geschlechtsidentität', sub: 'Körper & Identität',
+            info: 'Deine Geschlechtsidentität beeinflusst, wie das Ti-Age-Modell deine Bedürfnisse gewichtet. Wähle was zu dir passt — Körper, Seele oder beides.',
+            infoAction: 'show-body-soul-modal'
         },
         {
-            label:     'Deine Orientierung',
-            sublabel:  'Wen begehrst du?',
-            dimension: 'mobile-ich-orientierung-multi',
-            get:       getOrientierung
+            icon: '🧲', label: 'Attraktion', sub: 'Wen begehrst du?',
+            info: 'Deine Anziehung bestimmt, welche Partner-Profile für dich relevant sind. Mehrfachauswahl möglich — Primär hat mehr Gewicht.',
+            infoAction: null
         },
         {
-            label:     'Deine Dominanz',
-            sublabel:  'Deine Rolle in der Dynamik',
-            dimension: 'mobile-ich-dominanz-multi',
-            get:       getDominanz
+            icon: '⚡', label: 'Dominanz', sub: 'Deine Rolle in der Dynamik',
+            info: 'Dominanz beschreibt deine bevorzugte Energie in Beziehungen. Du kannst mehrere Rollen wählen — Gelebt = aktiv, Interessiert = offen dafür.',
+            infoAction: null
+        },
+        {
+            icon: '🎰', label: 'Best Match', sub: 'Finde deinen Typ',
+            info: null
+        },
+        {
+            icon: '💡', label: 'Synthese', sub: 'Dein Ergebnis',
+            info: null
         }
     ];
 
-    // ── Core logic ───────────────────────────────────────────────────────────
+    var DIM_KEYS = {
+        2: 'mobile-ich-geschlecht-multi',
+        3: 'mobile-ich-orientierung-multi',
+        4: 'mobile-ich-dominanz-multi'
+    };
 
-    function getCurrentStep() {
-        for (var i = 0; i < STEPS.length; i++) {
-            if (!STEPS[i].get()) return i;
-        }
-        return STEPS.length; // all complete
+    // ── Completion check ─────────────────────────────────────────────────────
+
+    function getArchetyp() {
+        var el = document.querySelector('#mobile-ich-archetype-grid .archetype-symbol-item.active');
+        return el ? el.dataset.archetype : null;
     }
 
-    function update() {
-        var page1 = document.getElementById('mobilePage1');
+    // ── DOM helpers ──────────────────────────────────────────────────────────
+
+    function show(el) { if (el) el.classList.remove('wizard-hidden'); }
+    function hide(el) { if (el) el.classList.add('wizard-hidden'); }
+
+    function showDimOnly(key) {
+        [2, 3, 4].forEach(function(n) {
+            var el = document.querySelector('[data-dimension="' + DIM_KEYS[n] + '"]');
+            if (!el) return;
+            if (DIM_KEYS[n] === key) show(el);
+            else hide(el);
+        });
+    }
+
+    // ── Screen application ───────────────────────────────────────────────────
+
+    function applyScreen(n) {
+        _screen = n;
+        var page1       = document.getElementById('mobilePage1');
         if (!page1) return;
 
-        var currentStep = getCurrentStep();
-        var wizardActive = currentStep < STEPS.length;
+        page1.classList.add('wizard-mode');
 
-        page1.classList.toggle('wizard-mode', wizardActive);
+        var archGrid    = document.getElementById('mobile-ich-archetype-grid');
+        var headerInfo  = page1.querySelector('.mobile-header-info-container');
+        var ichCard     = document.getElementById('mobileIchCard');
+        var ichDims     = document.getElementById('mobileIchDimensions');
+        var gfkDim      = page1.querySelector('[data-dimension="mobile-ich-gfk"]');
+        var resetRow    = page1.querySelector('.free-reset-btn') ? page1.querySelector('.free-reset-btn').closest('div') : null;
+        var selectRow   = document.getElementById('mobile-ich-select-row');
+        var partnerCard = document.getElementById('mobilePartnerCard');
+        var bmSect      = page1.querySelector('.mobile-bestmatch-section');
+        var synthSect   = page1.querySelector('.mobile-synthese-section');
+        var resetAllBtn = page1.querySelector('[data-action="reset-all"]');
 
-        // ── Progress dots ────────────────────────────────────────────────────
+        // Always hidden in wizard
+        hide(selectRow);
+        hide(resetAllBtn);
+        hide(gfkDim);
+
+        if (n === 1) {
+            // ── Archetyp ──
+            show(ichCard);
+            show(archGrid);
+            if (headerInfo) headerInfo.style.display = '';
+            hide(ichDims);
+            hide(resetRow);
+            hide(partnerCard);
+            hide(bmSect);
+            hide(synthSect);
+
+        } else if (n >= 2 && n <= 4) {
+            // ── Geschlecht / Attraktion / Dominanz ──
+            show(ichCard);
+            hide(archGrid);
+            if (headerInfo) headerInfo.style.display = 'none';
+            show(ichDims);
+            show(resetRow);
+            hide(partnerCard);
+            hide(bmSect);
+            hide(synthSect);
+            showDimOnly(DIM_KEYS[n]);
+
+        } else if (n === 5) {
+            // ── Best Match ── (kein DU/PARTNER-Card nötig)
+            hide(ichCard);
+            hide(archGrid);
+            if (headerInfo) headerInfo.style.display = 'none';
+            hide(ichDims);
+            hide(resetRow);
+            hide(partnerCard);
+            show(bmSect);
+            show(synthSect);
+
+        } else if (n === 6) {
+            // ── Synthese ──
+            hide(ichCard);
+            hide(archGrid);
+            if (headerInfo) headerInfo.style.display = 'none';
+            hide(ichDims);
+            hide(resetRow);
+            hide(partnerCard);
+            hide(bmSect);
+            show(synthSect);
+        }
+
+        _updateUI();
+        window.scrollTo(0, 0);
+    }
+
+    // ── UI update ────────────────────────────────────────────────────────────
+
+    function _updateUI() {
         var progressEl = document.getElementById('ichWizardProgress');
-        if (progressEl) {
-            progressEl.style.display = wizardActive ? 'flex' : 'none';
-            var dots = progressEl.querySelectorAll('.wz-dot');
-            dots.forEach(function(dot, i) {
-                dot.className = 'wz-dot ' + (i < currentStep ? 'done' : i === currentStep ? 'active' : 'pending');
-                dot.textContent = i < currentStep ? '✓' : String(i + 1);
-            });
-        }
+        var promptEl   = document.getElementById('ichWizardPrompt');
+        if (!progressEl || !promptEl) return;
 
-        // ── Step prompt ──────────────────────────────────────────────────────
-        var promptEl = document.getElementById('ichWizardPrompt');
-        if (promptEl) {
-            if (wizardActive) {
-                promptEl.style.display = 'block';
-                var numEl = promptEl.querySelector('.wz-num');
-                var lblEl = promptEl.querySelector('.wz-label');
-                var subEl = promptEl.querySelector('.wz-sublabel');
-                if (numEl) numEl.textContent = 'Schritt ' + (currentStep + 1) + ' von ' + STEPS.length;
-                if (lblEl) lblEl.textContent = STEPS[currentStep].label;
-                if (subEl) subEl.textContent = STEPS[currentStep].sublabel;
-            } else {
-                promptEl.style.display = 'none';
-            }
-        }
-
-        // ── Dimension visibility ─────────────────────────────────────────────
-        STEPS.forEach(function(step, i) {
-            if (!step.dimension) return;
-            var el = document.querySelector('[data-dimension="' + step.dimension + '"]');
-            if (!el) return;
-
-            el.classList.remove('wizard-hidden', 'wizard-active', 'wizard-done');
-
-            if (!wizardActive) return; // normal mode: show all
-
-            if (i < currentStep) {
-                el.classList.add('wizard-done');
-            } else if (i === currentStep) {
-                el.classList.add('wizard-active');
-            }
-            // future steps: no class — all dimensions always visible
+        // Progress dots
+        progressEl.style.display = 'flex';
+        var dots = progressEl.querySelectorAll('.wz-dot');
+        dots.forEach(function(dot, i) {
+            var sn = i + 1;
+            dot.className = 'wz-dot ' + (sn < _screen ? 'done' : sn === _screen ? 'active' : 'pending');
+            dot.textContent = sn < _screen ? '✓' : String(sn);
         });
 
-        // GFK und RESET-Button in wizard mode verstecken
-        var gfkEl = document.querySelector('[data-dimension="mobile-ich-gfk"]');
-        if (gfkEl) gfkEl.classList.toggle('wizard-hidden', wizardActive);
+        // Prompt content
+        promptEl.style.display = 'block';
+        var sc     = SCREENS[_screen - 1];
+        var numEl  = promptEl.querySelector('.wz-num');
+        var lblEl  = promptEl.querySelector('.wz-label');
+        var subEl  = promptEl.querySelector('.wz-sublabel');
+        var infoBox = promptEl.querySelector('.wz-infobox');
+        var infoContent = promptEl.querySelector('.wz-infobox-content');
+        var infoToggle  = promptEl.querySelector('.wz-infobox-toggle');
+        var nextBtn = promptEl.querySelector('.wz-next');
+        var backBtn = promptEl.querySelector('.wz-back');
+        var needsBtn = promptEl.querySelector('.wz-needs-btn');
 
-        var resetBtn = page1.querySelector('.free-reset-btn');
-        if (resetBtn) resetBtn.closest('div').classList.toggle('wizard-hidden', wizardActive);
+        if (numEl) numEl.textContent = 'Schritt ' + _screen + ' von ' + SCREENS.length;
+        if (lblEl) lblEl.textContent = sc.icon + ' ' + sc.label;
+        if (subEl) subEl.textContent = sc.sub;
 
-        // In wizard mode force ICH card open so dimensions are accessible
-        var ichCard = document.getElementById('mobileIchCard');
-        var ichBody = document.getElementById('mobileIchBody');
-        if (ichCard && ichBody && wizardActive) {
-            ichCard.classList.remove('is-collapsed');
-            ichBody.style.display = 'block';
+        // Info box (screens 2-4)
+        if (infoBox) {
+            if (sc.info) {
+                infoBox.style.display = '';
+                if (infoContent) infoContent.textContent = sc.info;
+                // Collapse by default on screen change
+                infoBox.classList.remove('wz-infobox--open');
+            } else {
+                infoBox.style.display = 'none';
+            }
+        }
+
+        // Back button
+        if (backBtn) backBtn.style.display = _screen > 1 ? 'inline-flex' : 'none';
+
+        // "Zu den Bedürfnissen" button — only on last screen
+        if (needsBtn) needsBtn.style.display = _screen === SCREENS.length ? 'flex' : 'none';
+
+        // Next button
+        if (nextBtn) {
+            if (_screen >= SCREENS.length) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                var canAdvance = _screen !== 1 || !!getArchetyp();
+                nextBtn.disabled = !canAdvance;
+                nextBtn.classList.toggle('wz-next--ready', canAdvance);
+            }
         }
     }
+
+    // ── Public navigation ────────────────────────────────────────────────────
+
+    function goTo(n) {
+        n = Math.max(1, Math.min(SCREENS.length, n));
+        applyScreen(n);
+    }
+
+    function getScreen() { return _screen; }
 
     // ── Init ─────────────────────────────────────────────────────────────────
 
@@ -159,50 +228,80 @@ var IchWizard = (function() {
         var dims = document.getElementById('mobileIchDimensions');
         if (!dims || document.getElementById('ichWizardUI')) return;
 
-        // Insert wizard UI above the ICH card (not inside its body)
+        // Force ICH card open
         var ichCard = document.getElementById('mobileIchCard');
+        var ichBody = document.getElementById('mobileIchBody');
+        if (ichCard) ichCard.classList.remove('is-collapsed');
+        if (ichBody) ichBody.style.display = 'block';
+
+        // Insert wizard UI above the ICH card
         var insertBefore = ichCard || dims;
         var insertParent = insertBefore.parentNode;
 
-        var ui = document.createElement('div');
-        ui.id = 'ichWizardUI';
-
-        var dots = STEPS.map(function(s, i) {
-            return '<span class="wz-dot pending">' + (i + 1) + '</span>' +
-                   (i < STEPS.length - 1 ? '<span class="wz-line"></span>' : '');
+        var dots = SCREENS.map(function(s, i) {
+            return '<span class="wz-dot pending" data-wf-go="' + (i + 1) + '">' + (i + 1) + '</span>' +
+                   (i < SCREENS.length - 1 ? '<span class="wz-line"></span>' : '');
         }).join('');
 
+        var ui = document.createElement('div');
+        ui.id = 'ichWizardUI';
         ui.innerHTML =
             '<div id="ichWizardProgress" class="wz-progress" style="display:none;">' + dots + '</div>' +
             '<div id="ichWizardPrompt" class="wz-prompt" style="display:none;">' +
                 '<span class="wz-num"></span>' +
                 '<span class="wz-label"></span>' +
                 '<span class="wz-sublabel"></span>' +
+                '<div class="wz-infobox" style="display:none;">' +
+                    '<button type="button" class="wz-infobox-toggle">ℹ Mehr Info</button>' +
+                    '<div class="wz-infobox-content"></div>' +
+                '</div>' +
+                '<div class="wz-nav">' +
+                    '<button type="button" class="wz-back" style="display:none;">← Zurück</button>' +
+                    '<button type="button" class="wz-next" disabled>Weiter →</button>' +
+                '</div>' +
+                '<a href="needs-editor.html?person=ich" class="wz-needs-btn" style="display:none;">' +
+                    '⚙️ Bedürfnisse anpassen →' +
+                '</a>' +
             '</div>';
 
         insertParent.insertBefore(ui, insertBefore);
 
-        // MutationObserver auf dem Archetype-Grid: reagiert auf .active-Klassen-Änderungen
+        // Event listeners
+        var progressEl  = document.getElementById('ichWizardProgress');
+        var promptEl    = document.getElementById('ichWizardPrompt');
+
+        progressEl.addEventListener('click', function(e) {
+            var dot = e.target.closest('[data-wf-go]');
+            if (dot) goTo(parseInt(dot.dataset.wfGo, 10));
+        });
+
+        promptEl.querySelector('.wz-back').addEventListener('click', function() {
+            goTo(_screen - 1);
+        });
+        promptEl.querySelector('.wz-next').addEventListener('click', function() {
+            goTo(_screen + 1);
+        });
+        promptEl.querySelector('.wz-infobox-toggle').addEventListener('click', function() {
+            this.closest('.wz-infobox').classList.toggle('wz-infobox--open');
+        });
+
+        // Watch archetype grid — enables Weiter on screen 1
         var grid = document.getElementById('mobile-ich-archetype-grid');
         if (grid) {
-            var observer = new MutationObserver(update);
-            observer.observe(grid, { attributes: true, subtree: true, attributeFilter: ['class'] });
+            new MutationObserver(function() {
+                if (_screen === 1) _updateUI();
+            }).observe(grid, { attributes: true, subtree: true, attributeFilter: ['class'] });
         }
 
-        // Subscribe to GOD-Dimensionen (Schritt 2-4)
-        if (typeof TiageState !== 'undefined' && TiageState.subscribe) {
-            TiageState.subscribe('personDimensions.ich.geschlecht', update);
-            TiageState.subscribe('personDimensions.ich.orientierung', update);
-            TiageState.subscribe('personDimensions.ich.dominanz', update);
-        }
+        applyScreen(1);
 
-        update();
+        // Re-enforce screen state after other components may have reset visibility
+        setTimeout(function() { applyScreen(_screen); }, 700);
     }
 
-    return { init: init, update: update };
+    return { init: init, goTo: goTo, getScreen: getScreen, update: _updateUI };
 })();
 
-// Init after app is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(IchWizard.init, 350); });
 } else {

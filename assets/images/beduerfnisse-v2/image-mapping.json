@@ -1,133 +1,137 @@
 {
-  "version": "3.0.0",
-  "description": "42 Bildvarianten für 16 Grundbedürfnisse. Pro Bedürfnis 2–3 Varianten. Erste Variante = primäres Bild.",
-  "format": "webp",
-  "basePath": "/assets/images/beduerfnisse-v2/",
+  "version": "4.0.0",
+  "description": "42 Bildvarianten für 16 Grundbedürfnisse. Nur Landscape/Square Bilder (Portrait entfernt). Neue Firefly-Bilder eingeordnet.",
+  "format": "png/webp",
   "totalImages": 42,
   "needCount": 16,
-  "note": "Variantenauswahl bei Top-5-Anzeige: 0 = primär, 1+ = nach Wert rotierend",
+  "note": "Variantenauswahl bei Top-5-Anzeige: 0=V1 primär, 1=V2, 2=V3. Future/-Prefix → assets/images/Future/",
   "images": {
     "#B1": {
       "label": "Wohlbefinden",
       "varianten": [
-        { "file": "B002.webp", "label": "Wasser",    "karte": "Healing",      "stimmung": "regenerativ" },
-        { "file": "B005.webp", "label": "Berührung",  "karte": "Touch",        "stimmung": "körperlich" }
+        { "file": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png", "label": "Existenz",  "karte": "Existence",  "stimmung": "präsent" },
+        { "file": "Future/Firefly_B1V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",              "label": "Heilung",   "karte": "Healing",    "stimmung": "regenerativ" },
+        { "file": "Future/B059_00001_.png",                                                                                                        "label": "Stille",    "karte": "Silence",    "stimmung": "still" }
       ]
     },
     "#B2": {
       "label": "Sicherheit",
       "varianten": [
-        { "file": "B011.webp", "label": "Sich-sicher-fühlen", "karte": "Trust",       "stimmung": "geborgen" },
-        { "file": "B012.webp", "label": "Schutz",              "karte": "Protection",  "stimmung": "geschützt" }
+        { "file": "Future/Firefly_Gemini Flash_B2V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png", "label": "Vertrauen", "karte": "Trust",       "stimmung": "geborgen" },
+        { "file": "Future/B026_00001_ (2).png",                                                                                                   "label": "Schutz",    "karte": "Protection",  "stimmung": "geschützt" },
+        { "file": "Future/Firefly_Gemini Flash_B2V1- Noah's ark weathering the storm, Shiva's protective dance in stillness, cave sh 88722.png",  "label": "Geborgenheit","karte": "Compromise","stimmung": "sicher" }
       ]
     },
     "#B3": {
       "label": "Leichtigkeit",
       "varianten": [
-        { "file": "B014.webp", "label": "Leichtigkeit", "karte": "Playfulness",     "stimmung": "spielerisch" },
-        { "file": "B006.webp", "label": "Erholung",     "karte": "No-Thingness",    "stimmung": "entspannt" },
-        { "file": "B047.webp", "label": "Freizeit",     "karte": "Moment to Moment","stimmung": "unbeschwert" }
+        { "file": "Future/Firefly_Gemini Flash_Leichtigkeit Var.1- Berührung der Hände. Two luminous hands almost touching, energy f 291798.png", "label": "Berührung",  "karte": "Going With The Flow", "stimmung": "spielerisch" },
+        { "file": "Future/Firefly_Gemini Flash_Leichtigkeit Var.2- Schlaf der Sterne. Ethereal figure resting on purple nebula cloud 495626.png", "label": "Schlaf der Sterne","karte": "Slowing Down", "stimmung": "entspannt" },
+        { "file": "Future/Firefly_Leichtigkeit Var.3- Tanz der Polarität. Two spiral energies dancing, one golden solar 88722.png",               "label": "Tanz",        "karte": "Harmony",    "stimmung": "unbeschwert" }
       ]
     },
     "#B4": {
       "label": "Orientierung",
       "varianten": [
-        { "file": "B057.webp", "label": "Klarheit",    "karte": "Breakthrough",   "stimmung": "klar" },
-        { "file": "B055.webp", "label": "Bewusstheit", "karte": "Consciousness",  "stimmung": "bewusst" },
-        { "file": "B054.webp", "label": "Ordnung",     "karte": "Understanding",  "stimmung": "strukturiert" }
+        { "file": "Future/B057_00001_.png",                                                                                                        "label": "Klarheit",    "karte": "Breakthrough",  "stimmung": "klar" },
+        { "file": "Future/Firefly_B4V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",               "label": "Bewusstheit", "karte": "Inner Voice",   "stimmung": "bewusst" },
+        { "file": "Future/B054_00001_.png",                                                                                                        "label": "Ordnung",     "karte": "Understanding", "stimmung": "strukturiert" }
       ]
     },
     "#B5": {
       "label": "Wirksamkeit",
       "varianten": [
-        { "file": "B060.webp", "label": "Wirksamkeit",   "karte": "Totality",     "stimmung": "kraftvoll" },
-        { "file": "B058.webp", "label": "Kompetenz",     "karte": "The Creator",  "stimmung": "kompetent" },
-        { "file": "B056.webp", "label": "Herausforderung","karte": "Courage",     "stimmung": "mutig" }
+        { "file": "Future/B038_00001_.png",                                                                                                        "label": "Wirksamkeit",    "karte": "Totality",   "stimmung": "kraftvoll" },
+        { "file": "Future/Firefly_Gemini Flash_Gebrauchsanweisung im Alien-Modu 952409 KfR.png",                                                  "label": "Kompetenz",      "karte": "The Creator","stimmung": "kompetent" },
+        { "file": "Future/B056_00001_.png",                                                                                                        "label": "Herausforderung","karte": "Courage",    "stimmung": "mutig" }
       ]
     },
     "#B6": {
       "label": "Freiheit",
       "varianten": [
-        { "file": "B034.webp", "label": "Selbstbestimmung", "karte": "Aloneness",       "stimmung": "autonom" },
-        { "file": "B036.webp", "label": "Unabhängigkeit",   "karte": "The Rebel",       "stimmung": "rebellisch" },
-        { "file": "B035.webp", "label": "Wählen-können",    "karte": "Transformation",  "stimmung": "wählend" }
+        { "file": "Future/B017_00001_.png", "label": "Selbstbestimmung", "karte": "Aloneness",      "stimmung": "autonom" },
+        { "file": "Future/B036_00001_.png", "label": "Unabhängigkeit",   "karte": "The Rebel",      "stimmung": "rebellisch" },
+        { "file": "Future/B044_00001_.png", "label": "Wählen-können",    "karte": "Transformation", "stimmung": "wählend" }
       ]
     },
     "#B7": {
       "label": "Intensität",
       "varianten": [
-        { "file": "B082.webp", "label": "Intensität",       "karte": "Intensity",   "stimmung": "intensiv" },
-        { "file": "B048.webp", "label": "Freude",           "karte": "Integration", "stimmung": "freudig" },
-        { "file": "B007.webp", "label": "Sexueller-Ausdruck","karte": "Passion",    "stimmung": "leidenschaftlich" }
+        { "file": "Future/B014_00001_.png", "label": "Intensität",        "karte": "Intensity",   "stimmung": "intensiv" },
+        { "file": "Future/B048_00001_.png", "label": "Freude",            "karte": "Integration", "stimmung": "freudig" },
+        { "file": "Future/B045_00001_.png", "label": "Leidenschaft",      "karte": "Passion",     "stimmung": "leidenschaftlich" }
       ]
     },
     "#B8": {
       "label": "Entwicklung",
       "varianten": [
-        { "file": "B061.webp", "label": "Wachstum",  "karte": "Rebirth",    "stimmung": "wachsend" },
-        { "file": "B065.webp", "label": "Entdecken", "karte": "Adventure",  "stimmung": "neugierig" }
+        { "file": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png", "label": "Wachstum",  "karte": "Rebirth",   "stimmung": "wachsend" },
+        { "file": "Future/B065_00001_.png",                                                     "label": "Entdecken", "karte": "Adventure", "stimmung": "neugierig" },
+        { "file": "Future/image_00000.png",                                                     "label": "Vision",    "karte": "New Vision","stimmung": "visionär" }
       ]
     },
     "#B9": {
       "label": "Gemeinschaft",
       "varianten": [
-        { "file": "B041.webp", "label": "Gemeinschaft",   "karte": "We Are the World", "stimmung": "gemeinschaftlich" },
-        { "file": "B042.webp", "label": "Zugehörigkeit",  "karte": "We Are the World", "stimmung": "zugehörig" },
-        { "file": "B039.webp", "label": "Zusammenarbeit", "karte": "Participation",     "stimmung": "kooperativ" }
+        { "file": "Future/B033_00001_.png", "label": "Gemeinschaft",   "karte": "We Are the World",  "stimmung": "gemeinschaftlich" },
+        { "file": "Future/B024_00001_.png", "label": "Zugehörigkeit",  "karte": "We Are the World",  "stimmung": "zugehörig" },
+        { "file": "Future/B039_00001_.png", "label": "Zusammenarbeit", "karte": "Participation",     "stimmung": "kooperativ" }
       ]
     },
     "#B10": {
       "label": "Anerkennung",
       "varianten": [
-        { "file": "B017.webp", "label": "Wertschätzung",   "karte": "Success",  "stimmung": "anerkannt" },
-        { "file": "B044.webp", "label": "Respekt",          "karte": "The Master","stimmung": "respektiert" },
-        { "file": "B045.webp", "label": "Bedeutung-haben", "karte": "Ripeness", "stimmung": "bedeutsam" }
+        { "file": "Future/B041_00001_.png",        "label": "Wertschätzung",   "karte": "The Master", "stimmung": "anerkannt" },
+        { "file": "Future/B047_00001_ (3).png",    "label": "Respekt",          "karte": "Success",    "stimmung": "respektiert" },
+        { "file": "Future/B023_00001_.png",        "label": "Bedeutung-haben", "karte": "Ripeness",   "stimmung": "bedeutsam" }
       ]
     },
     "#B11": {
       "label": "Gerechtigkeit",
       "varianten": [
-        { "file": "B119.webp", "label": "Gemeinsame-Werte",    "karte": "We Are the World", "stimmung": "werteverbunden" },
-        { "file": "B120.webp", "label": "Respekt-Unterschiede","karte": "Understanding",     "stimmung": "fair" }
+        { "file": "Future/B035_00001_.png", "label": "Gemeinsame-Werte",    "karte": "We Are the World", "stimmung": "werteverbunden" },
+        { "file": "Future/B029_00001_.png", "label": "Respekt-Unterschiede","karte": "Understanding",    "stimmung": "fair" },
+        { "file": "Future/B024_00001_ (2).png", "label": "Balance",         "karte": "Balance",          "stimmung": "ausgewogen" }
       ]
     },
     "#B12": {
       "label": "Verbundenheit",
       "varianten": [
-        { "file": "B021.webp", "label": "Liebe",   "karte": "Love",      "stimmung": "liebend" },
-        { "file": "B020.webp", "label": "Intimität","karte": "Intimacy", "stimmung": "intim" },
-        { "file": "B028.webp", "label": "Empathie", "karte": "Receptivity","stimmung": "empathisch" }
+        { "file": "Future/B021_00001_.png", "label": "Liebe",    "karte": "Love",        "stimmung": "liebend" },
+        { "file": "Future/B020_00001_.png", "label": "Intimität","karte": "Intimacy",    "stimmung": "intim" },
+        { "file": "Future/B027_00001_.png", "label": "Empathie", "karte": "Receptivity", "stimmung": "empathisch" }
       ]
     },
     "#B13": {
       "label": "Selbsterkenntnis",
       "varianten": [
-        { "file": "B072.webp", "label": "Einsehen",              "karte": "New Vision", "stimmung": "erkennend" },
-        { "file": "B175.webp", "label": "Beziehungs-Reflexion",  "karte": "New Vision", "stimmung": "reflektierend" }
+        { "file": "B013.png",                    "label": "Einsehen",             "karte": "New Vision", "stimmung": "erkennend" },
+        { "file": "Future/B018_00001_ (2).png",  "label": "Beziehungs-Reflexion", "karte": "New Vision", "stimmung": "reflektierend" },
+        { "file": "Future/B066_00001_.png",      "label": "Klarheit",             "karte": "Clarity",    "stimmung": "klar" }
       ]
     },
     "#B14": {
       "label": "Sinn",
       "varianten": [
-        { "file": "B062.webp", "label": "Sinn",           "karte": "Silence",    "stimmung": "sinnerfüllt" },
-        { "file": "B070.webp", "label": "Inspiration",    "karte": "Inner Voice","stimmung": "inspiriert" },
-        { "file": "B063.webp", "label": "Beitrag-leisten","karte": "Sharing",    "stimmung": "beitragend" }
+        { "file": "Future/B062_00001_.png", "label": "Sinn",            "karte": "Silence",    "stimmung": "sinnerfüllt" },
+        { "file": "Future/B069_00001_.png", "label": "Inspiration",     "karte": "Celebration","stimmung": "inspiriert" },
+        { "file": "Future/B063_00001_.png", "label": "Beitrag-leisten", "karte": "Sharing",    "stimmung": "beitragend" }
       ]
     },
     "#B15": {
       "label": "Integrität",
       "varianten": [
-        { "file": "B052.webp", "label": "Integrität",  "karte": "Healing",      "stimmung": "integer" },
-        { "file": "B050.webp", "label": "Authentizität","karte": "Integration",  "stimmung": "authentisch" },
-        { "file": "B051.webp", "label": "Echtheit",    "karte": "Friendliness", "stimmung": "echt" }
+        { "file": "Future/B015_00001_.png", "label": "Integrität",   "karte": "Healing",      "stimmung": "integer" },
+        { "file": "Future/B050_00001_.png", "label": "Authentizität","karte": "Integration",  "stimmung": "authentisch" },
+        { "file": "Future/B051_00001_.png", "label": "Echtheit",     "karte": "Friendliness", "stimmung": "echt" }
       ]
     },
     "#B16": {
       "label": "Selbstentfaltung",
       "varianten": [
-        { "file": "B064.webp", "label": "Kreativität",   "karte": "Creativity",   "stimmung": "kreativ" },
-        { "file": "B067.webp", "label": "Selbst-Ausdruck","karte": "Integration", "stimmung": "ausdrucksstark" },
-        { "file": "B069.webp", "label": "Leben-feiern",  "karte": "Celebration",  "stimmung": "feiernd" }
+        { "file": "Future/B018_00001_.png",        "label": "Kreativität",    "karte": "Creativity",  "stimmung": "kreativ" },
+        { "file": "Future/B066_00001_ (2).png",    "label": "Selbst-Ausdruck","karte": "Integration", "stimmung": "ausdrucksstark" },
+        { "file": "Future/B069_00001_ (2).png",    "label": "Leben-feiern",   "karte": "Celebration", "stimmung": "feiernd" }
       ]
     }
   }

@@ -1914,6 +1914,7 @@ const AttributeSummaryCard = (function() {
      */
     // Snapshot of values at last render — * shows when current value differs from snapshot
     let _needsValueSnapshot = {};
+    let _needsBarMaxScale = 100; // Skalierungsbasis für Balken: größter Need-Wert (unbegrenzt)
 
     function isValueChanged(needId, currentValue) {
         const needObj = findNeedById(needId);
@@ -2448,6 +2449,9 @@ const AttributeSummaryCard = (function() {
         _needsValueSnapshot = {};
         flatNeeds.forEach(n => { _needsValueSnapshot[n.id] = Math.round(n.value); });
 
+        // Skalierungsbasis: größter Wert bestimmt Balkenlänge 100% (unbegrenzte Skala)
+        _needsBarMaxScale = Math.max(100, ...sortedNeeds.map(n => Math.round(parseFloat(n.value) || 0)));
+
         // v1.8.998: Einheitliche flache Liste — alle Needs gleichberechtigt
         html += `<div class="flat-needs-list-wrapper">
             <div class="flat-needs-list">`;
@@ -2832,14 +2836,14 @@ const AttributeSummaryCard = (function() {
                 <div style="flex:1;position:relative;height:24px;">
                     <div style="position:absolute;top:8px;left:0;right:0;pointer-events:none;">${renderSegmentBar(needId, value)}</div>
                     <input type="range" class="need-slider" style="position:absolute;top:0;left:0;width:100%;height:24px;opacity:0.01;cursor:pointer;margin:0;z-index:2;${isLocked ? 'pointer-events:none;' : ''}"
-                           min="0" max="100" step="1" value="${value}"
+                           min="0" max="${_needsBarMaxScale}" step="1" value="${value}"
                            oninput="AttributeSummaryCard.editNeedValue('${needId}', this.value); var inp=this.closest('.flat-need-slider-row').querySelector('.flat-need-input'); if(inp) inp.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                            onclick="event.stopPropagation()"
                            ${isLocked ? 'disabled' : ''}>
                 </div>
-                <input type="number" class="flat-need-input" value="${value}" min="0" max="100" step="1"
+                <input type="number" class="flat-need-input" value="${value}" min="0" step="1"
                        onclick="event.stopPropagation(); this.select();"
-                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.closest('.flat-need-slider-row').querySelector('.need-slider'); if(sl) sl.value=this.value; AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
+                       onchange="AttributeSummaryCard.editNeedValue('${needId}', this.value); var sl=this.closest('.flat-need-slider-row').querySelector('.need-slider'); if(sl) { var v=parseInt(this.value)||0; if(v>parseInt(sl.max||100)) sl.max=v; sl.value=this.value; } AttributeSummaryCard.updateSegmentBar('${needId}', this.value);"
                        onkeydown="if(event.key==='Enter'){this.blur();}"
                        style="width:56px;text-align:center;flex-shrink:0;${isLocked ? 'opacity:0.4;pointer-events:none;' : ''}"
                        ${isLocked ? 'disabled' : ''}>
@@ -3209,7 +3213,7 @@ const AttributeSummaryCard = (function() {
             flatNeeds = data.map(need => {
                 // Validiere und normalisiere
                 const numValue = parseInt(need.value, 10);
-                if (isNaN(numValue) || numValue < 0 || numValue > 100) {
+                if (isNaN(numValue) || numValue < 0) {
                     return null;
                 }
                 newFormatCount++;
@@ -3243,7 +3247,7 @@ const AttributeSummaryCard = (function() {
                 if (typeof entry === 'object' && entry !== null && 'value' in entry) {
                     // v1.8.89-127: { needId: { value, locked } }
                     const numValue = parseInt(entry.value, 10);
-                    if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                    if (!isNaN(numValue) && numValue >= 0) {
                         flatNeeds.push({
                             id: needId,
                             key: numKey,
@@ -3257,7 +3261,7 @@ const AttributeSummaryCard = (function() {
                 } else if (typeof entry === 'number' || !isNaN(parseInt(entry, 10))) {
                     // Legacy: { needId: number }
                     const numValue = parseInt(entry, 10);
-                    if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                    if (!isNaN(numValue) && numValue >= 0) {
                         flatNeeds.push({
                             id: needId,
                             key: numKey,
@@ -4083,8 +4087,11 @@ const AttributeSummaryCard = (function() {
 
         // Sequenziell nach Größe sortiert: jedes Segment zeigt nur den Zuwachs über dem vorherigen
         const sorted = [...slotVals].sort((a, b) => a.value - b.value);
-        const maxVal = sorted.length > 0 ? sorted[sorted.length - 1].value : 50;
-        const baseCombined = maxVal; // Basis = höchster Slot-Wert
+        const baseCombined = sorted.length > 0 ? sorted[sorted.length - 1].value : 50;
+
+        // Skalierung relativ zum größten Wert im aktuellen View
+        const sc = _needsBarMaxScale > 0 ? _needsBarMaxScale : 100;
+        const pct = v => Math.max(0, (v / sc) * 100);
 
         let archSegs = '';
         let prev = 0;
@@ -4093,9 +4100,9 @@ const AttributeSummaryCard = (function() {
             if (w > 0) {
                 const c = ARCH_BAR_COLORS[sv.arch] || '#9CA3AF';
                 const lbl = ARCH_BAR_LABELS[sv.arch] || sv.arch;
-                archSegs += `<div style="position:absolute;left:${prev}%;width:${w}%;height:100%;background:${c};" title="${lbl}: ${sv.value}"></div>`;
+                archSegs += `<div style="position:absolute;left:${pct(prev)}%;width:${pct(w)}%;height:100%;background:${c};" title="${lbl}: ${sv.value}"></div>`;
                 if (prev > 0) {
-                    archSegs += `<div style="position:absolute;left:${prev}%;width:1px;height:100%;background:rgba(0,0,0,0.5);z-index:2;"></div>`;
+                    archSegs += `<div style="position:absolute;left:${pct(prev)}%;width:1px;height:100%;background:rgba(0,0,0,0.5);z-index:2;"></div>`;
                 }
             }
             prev = sv.value;
@@ -4106,12 +4113,10 @@ const AttributeSummaryCard = (function() {
         let manualSeg = '';
         if (Math.abs(userDelta) >= 1) {
             if (userDelta > 0) {
-                const w = Math.min(userDelta, 100 - baseCombined);
-                manualSeg = `<div class="seg-manual" style="position:absolute;left:${baseCombined}%;width:${w}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${pct(baseCombined)}%;width:${pct(userDelta)}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
             } else {
                 const left = Math.max(0, totalValue);
-                const w = Math.min(Math.abs(userDelta), baseCombined - left);
-                manualSeg = `<div class="seg-manual" style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${pct(left)}%;width:${pct(Math.abs(userDelta))}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
             }
         }
 
@@ -4163,45 +4168,42 @@ const AttributeSummaryCard = (function() {
         }
 
         const godTotal = gDelta + oDelta + dDelta + fDelta + fuDelta + hDelta;
-        // computedBase = Fixpunkt, ab dem manuelle Anpassung beginnt
-        const computedBase = Math.max(0, Math.min(100, basisWert + godTotal));
+        // computedBase = Fixpunkt ab dem manuelle Anpassung beginnt (unbegrenzt)
+        const computedBase = Math.max(0, basisWert + godTotal);
         const userDelta = totalValue - computedBase;
 
-        // Segmente mit absoluter Positionierung aufbauen — Basis bleibt immer an fester Position
+        // Skalierung: alle Positionen relativ zum größten Need-Wert im aktuellen View
+        const sc = _needsBarMaxScale > 0 ? _needsBarMaxScale : 100;
+        const pct = v => Math.max(0, (v / sc) * 100);
+
+        // Segmente mit absoluter Positionierung — Cursor in Rohwerten, Anzeige skaliert
         const segs = [];
         let cursor = 0;
 
         // Basis-Segment (dunkelgrün)
         if (basisWert > 0) {
-            const w = Math.min(basisWert, 100);
-            segs.push(`<div style="position:absolute;left:${cursor}%;width:${w}%;height:100%;background:#2d6a4f;" title="Basis: ${basisWert}"></div>`);
-            cursor += w;
+            segs.push(`<div style="position:absolute;left:${pct(cursor)}%;width:${pct(basisWert)}%;height:100%;background:#2d6a4f;" title="Basis: ${basisWert}"></div>`);
+            cursor += basisWert;
         }
 
         // GOD-Modifier-Segmente
         const mods = [
-            { d: gDelta, cp: '#F4A261', cn: '#c0392b', l: 'G' },
-            { d: oDelta, cp: '#e07b53', cn: '#a93226', l: 'O' },
-            { d: dDelta, cp: '#8B5CF6', cn: '#6c3483', l: 'D' },
-            { d: fDelta, cp: '#27ae60', cn: '#c0392b', l: 'Fi' },
+            { d: gDelta,  cp: '#F4A261', cn: '#c0392b', l: 'G'  },
+            { d: oDelta,  cp: '#e07b53', cn: '#a93226', l: 'O'  },
+            { d: dDelta,  cp: '#8B5CF6', cn: '#6c3483', l: 'D'  },
+            { d: fDelta,  cp: '#27ae60', cn: '#c0392b', l: 'Fi' },
             { d: fuDelta, cp: '#e74c3c', cn: '#922b21', l: 'Fu' },
-            { d: hDelta, cp: '#EC4899', cn: '#b03060', l: 'H' }
+            { d: hDelta,  cp: '#EC4899', cn: '#b03060', l: 'H'  }
         ];
         mods.forEach(m => {
             if (m.d === 0) return;
             if (m.d > 0) {
-                const w = Math.min(m.d, 100 - cursor);
-                if (w > 0) {
-                    segs.push(`<div style="position:absolute;left:${cursor}%;width:${w}%;height:100%;background:${m.cp};" title="${m.l}: +${m.d}"></div>`);
-                    cursor += w;
-                }
+                segs.push(`<div style="position:absolute;left:${pct(cursor)}%;width:${pct(m.d)}%;height:100%;background:${m.cp};" title="${m.l}: +${m.d}"></div>`);
+                cursor += m.d;
             } else {
-                const left = Math.max(0, cursor - Math.abs(m.d));
-                const w = cursor - left;
-                if (w > 0) {
-                    segs.push(`<div style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch(m.cn)};" title="${m.l}: ${m.d}"></div>`);
-                    cursor = left;
-                }
+                const newCursor = Math.max(0, cursor + m.d);
+                segs.push(`<div style="position:absolute;left:${pct(newCursor)}%;width:${pct(cursor - newCursor)}%;height:100%;background:${hatch(m.cn)};" title="${m.l}: ${m.d}"></div>`);
+                cursor = newCursor;
             }
         });
 
@@ -4209,26 +4211,24 @@ const AttributeSummaryCard = (function() {
         let manualSeg = '';
         if (Math.abs(userDelta) >= 1) {
             if (userDelta > 0) {
-                const w = Math.min(userDelta, 100 - computedBase);
-                manualSeg = `<div class="seg-manual" style="position:absolute;left:${computedBase}%;width:${w}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${pct(computedBase)}%;width:${pct(userDelta)}%;height:100%;background:#fbbf24;" title="Manuell: +${Math.round(userDelta)}"></div>`;
             } else {
                 const left = Math.max(0, totalValue);
-                const w = Math.min(Math.abs(userDelta), computedBase - left);
-                manualSeg = `<div class="seg-manual" style="position:absolute;left:${left}%;width:${w}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
+                manualSeg = `<div class="seg-manual" style="position:absolute;left:${pct(left)}%;width:${pct(Math.abs(userDelta))}%;height:100%;background:${hatch('#b45309')};" title="Manuell: ${Math.round(userDelta)}"></div>`;
             }
         }
 
         // Tooltip
         const sign = (n) => (n > 0 ? '+' : '') + Math.round(n);
-        const parts = [`Gesamt: ${totalValue}/100`, `Basis (${arch}): ${basisWert}`];
-        if (gDelta) parts.push(`G: ${sign(gDelta)}`);
-        if (oDelta) parts.push(`O: ${sign(oDelta)}`);
-        if (dDelta) parts.push(`D: ${sign(dDelta)}`);
-        if (fDelta) parts.push(`Fi: ${sign(fDelta)}`);
+        const parts = [`Gesamt: ${totalValue}`, `Basis (${arch}): ${basisWert}`];
+        if (gDelta)  parts.push(`G: ${sign(gDelta)}`);
+        if (oDelta)  parts.push(`O: ${sign(oDelta)}`);
+        if (dDelta)  parts.push(`D: ${sign(dDelta)}`);
+        if (fDelta)  parts.push(`Fi: ${sign(fDelta)}`);
         if (fuDelta) parts.push(`Fu: ${sign(fuDelta)}`);
-        if (hDelta) parts.push(`H: ${sign(hDelta)}`);
+        if (hDelta)  parts.push(`H: ${sign(hDelta)}`);
         if (Math.abs(userDelta) >= 1) parts.push(`Manuell: ${sign(userDelta)}`);
-        const barTitle = parts.join(' | ') + '\nSegmente hovern für Details. 0–100 Skala.';
+        const barTitle = parts.join(' | ') + `\nSkala: 0–${sc}`;
 
         return `<div class="segment-bar" data-need="${needId}" data-computed-base="${computedBase}" title="${barTitle.replace(/"/g, '&quot;')}" style="position:relative;height:8px;border-radius:4px;overflow:hidden;flex:1;background:rgba(255,255,255,0.08);cursor:help;">${segs.join('')}${manualSeg}</div>`;
     }
@@ -4236,9 +4236,11 @@ const AttributeSummaryCard = (function() {
     function updateSegmentBar(needId, newValue) {
         const bar = document.querySelector(`.segment-bar[data-need="${needId}"]`);
         if (!bar) return;
-        newValue = Math.max(0, Math.min(100, parseInt(newValue, 10)));
+        newValue = Math.max(0, parseInt(newValue, 10));
 
         const hatch = (color) => `repeating-linear-gradient(45deg,${color},${color} 2px,transparent 2px,transparent 5px)`;
+        const sc = _needsBarMaxScale > 0 ? _needsBarMaxScale : 100;
+        const pct = v => Math.max(0, (v / sc) * 100).toFixed(3) + '%';
         const computedBase = parseInt(bar.dataset.computedBase || '50', 10);
         const delta = newValue - computedBase;
         let manSeg = bar.querySelector('.seg-manual');
@@ -4251,21 +4253,21 @@ const AttributeSummaryCard = (function() {
                 bar.appendChild(manSeg);
             }
             if (delta > 0) {
-                manSeg.style.left = computedBase + '%';
-                manSeg.style.width = Math.min(delta, 100 - computedBase) + '%';
+                manSeg.style.left = pct(computedBase);
+                manSeg.style.width = pct(delta);
                 manSeg.style.background = '#fbbf24';
                 manSeg.title = `Manuell: +${Math.round(delta)}`;
             } else {
                 const left = Math.max(0, newValue);
-                manSeg.style.left = left + '%';
-                manSeg.style.width = Math.min(Math.abs(delta), computedBase - left) + '%';
+                manSeg.style.left = pct(left);
+                manSeg.style.width = pct(Math.abs(delta));
                 manSeg.style.background = hatch('#b45309');
                 manSeg.title = `Manuell: ${Math.round(delta)}`;
             }
         } else if (manSeg) {
             manSeg.remove();
         }
-        bar.title = `Basis: ${computedBase} | Manuell: ${delta >= 0 ? '+' : ''}${Math.round(delta)} | Gesamt: ${newValue}/100`;
+        bar.title = `Basis: ${computedBase} | Manuell: ${delta >= 0 ? '+' : ''}${Math.round(delta)} | Gesamt: ${newValue} (Skala: ${sc})`;
     }
 
     /**
@@ -4273,8 +4275,16 @@ const AttributeSummaryCard = (function() {
      * Änderung gilt GLOBAL für alle Archetypen + Auto-Save.
      */
     function editNeedValue(needId, newValue) {
-        const parsed = Math.max(0, Math.min(100, parseInt(newValue, 10)));
+        const parsed = Math.max(0, parseInt(newValue, 10));
         if (isNaN(parsed)) return;
+
+        // Erweitere Balkenskala dynamisch wenn Wert die bisherige Skala überschreitet
+        if (parsed > _needsBarMaxScale) {
+            _needsBarMaxScale = parsed;
+            // Alle Slider-max aktualisieren damit der neue Scale erreichbar ist
+            document.querySelectorAll('.need-slider').forEach(sl => { sl.max = parsed; });
+            document.querySelectorAll('.flat-need-input').forEach(inp => { inp.max = parsed; });
+        }
 
         // Nur für den aktuell geöffneten Archetyp speichern
         if (typeof TiageState !== 'undefined') {
@@ -4293,6 +4303,7 @@ const AttributeSummaryCard = (function() {
             updateChangedIndicator(needItem, needId, parsed);
             updateSingleSaveStatusBadge(needId, parsed, needObj?.locked || false);
         }
+
     }
 
     return {

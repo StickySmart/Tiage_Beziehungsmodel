@@ -341,6 +341,123 @@
     border-radius: 4px;
 }
 
+.slot-top4-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 10px;
+}
+
+.slot-cat {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.slot-cat-a {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.slot-cat-o {
+    background: rgba(236, 72, 153, 0.2);
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.slot-cat-d {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.slot-cat-g {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GENDER SPLIT — Beste Kombination je Geschlecht
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#slotGenderSplit {
+    margin-top: 16px;
+    padding: 0 4px;
+}
+
+.slot-gender-split-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 8px;
+    padding-left: 2px;
+}
+
+.slot-gender-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.slot-gender-block {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+}
+
+.slot-gender-empty {
+    opacity: 0.35;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+}
+
+.slot-gender-head {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 600;
+}
+
+.slot-gender-line1 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e94560;
+}
+
+.slot-gender-score {
+    font-weight: 800;
+    color: #fff;
+}
+
+.slot-gender-line2 {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+}
+
+.slot-gender-na {
+    font-size: 20px;
+    color: rgba(255,255,255,0.2);
+}
+
+.slot-gender-apply-btn {
+    margin-top: 4px;
+    padding: 5px 6px !important;
+    font-size: 10px !important;
+    width: 100%;
+}
+
 .slot-top4-apply-btn {
     padding: 8px 14px;
     font-size: 12px;

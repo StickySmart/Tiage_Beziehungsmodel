@@ -201,8 +201,8 @@ var TiageGfkMatching = (function() {
 
             if (result && result.score !== undefined) {
                 var level = 'niedrig';
-                if (result.score >= 70) level = 'hoch';
-                else if (result.score >= 40) level = 'mittel';
+                if (result.score >= 82) level = 'hoch';
+                else if (result.score >= 48) level = 'mittel';
 
                 var formatLabel = function(need) {
                     if (need && need.startsWith('#B') && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.getLabel) {
@@ -313,8 +313,8 @@ var TiageGfkMatching = (function() {
         var result = BeduerfnisModifikatoren.berechneÜbereinstimmung(ichProfil, partnerProfil);
 
         var level = 'niedrig';
-        if (result.score >= 70) level = 'hoch';
-        else if (result.score >= 40) level = 'mittel';
+        if (result.score >= 82) level = 'hoch';
+        else if (result.score >= 48) level = 'mittel';
 
         var allGemeinsam = result.gemeinsam.map(function(b) {
             return { label: formatBeduerfnisLabel(b.bedürfnis), id: b.bedürfnis, key: b.bedürfnis, wert1: b.wert1, wert2: b.wert2 };

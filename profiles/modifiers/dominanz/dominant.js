@@ -67,7 +67,7 @@ TiageModifiers.Dominanz.Dominant = {
 
     deltas: {
         '#B5':  +15,  // Wirksamkeit — Kern der Dominanz
-        '#B6':  +12,  // Freiheit — Selbstbestimmung
+        '#B6':  +8,   // Freiheit — Selbstbestimmung
         '#B7':  +10,  // Intensität — Spannung und Kraft
         '#B10': +12,  // Anerkennung — braucht Respekt und Bedeutung
         '#B15': +8,   // Integrität — trägt Verantwortung

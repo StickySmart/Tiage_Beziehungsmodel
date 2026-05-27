@@ -1156,11 +1156,21 @@
                         if (typeof TiageState === 'undefined') return 50;
                         var locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
                         if (locked && locked.hasOwnProperty(needId)) return locked[needId];
-                        // Primären Slot direkt lesen — kein kombiniertes OR (das bläht Werte auf)
+                        // Alle aktiven Slots: höchster Wert gewinnt
                         var slots = TiageState.getIchSlots ? TiageState.getIchSlots() : ['single'];
-                        var arch = (slots && slots[0]) || 'single';
-                        var v = TiageState.get('flatNeeds.ich.' + arch + '.' + needId);
-                        return typeof v === 'number' ? v : 50;
+                        if (!slots || slots.length === 0) slots = ['single'];
+                        var maxVal = null;
+                        slots.forEach(function(slot) {
+                            var v = TiageState.get('flatNeeds.ich.' + slot + '.' + needId);
+                            if (typeof v === 'number') {
+                                maxVal = maxVal === null ? v : Math.max(maxVal, v);
+                            } else if (window.BaseArchetypProfile && window.BaseArchetypProfile[slot]
+                                       && window.BaseArchetypProfile[slot].umfrageWerte) {
+                                var base = window.BaseArchetypProfile[slot].umfrageWerte[needId];
+                                if (typeof base === 'number') maxVal = maxVal === null ? base : Math.max(maxVal, base);
+                            }
+                        });
+                        return maxVal !== null ? Math.round(maxVal) : 50;
                     }
 
                     function isLocked(needId) {
@@ -1284,6 +1294,23 @@
                                     TiageState.loadFromStorage();
                                 }
                                 setTimeout(render, 150);
+                            }
+                            // Neuberechnung via Slot Machine wenn Bedürfnisse geändert wurden
+                            if (sessionStorage.getItem('tiage_needs_changed')) {
+                                sessionStorage.removeItem('tiage_needs_changed');
+                                setTimeout(function() {
+                                    if (typeof TiageSlotMachine === 'undefined') return;
+                                    // Partner-Slot komplett leeren bevor neue Berechnung startet
+                                    if (typeof window.resetPartnerGOD === 'function') {
+                                        window.resetPartnerGOD();
+                                    }
+                                    TiageSlotMachine.open();
+                                    // Wenn Bindungsmuster bereits gewählt → direkt starten
+                                    var saved = (typeof TiageState !== 'undefined') ? TiageState.get('bindungsmuster.ich') : null;
+                                    if (saved && saved.primary) {
+                                        setTimeout(function() { TiageSlotMachine.start(); }, 300);
+                                    }
+                                }, 400);
                             }
                         });
                         // ichSelect change = echter Archetyp-Wechsel-Event (dispatched by archetypeGrid.js)
@@ -1805,6 +1832,20 @@
                 </div>
             </div><!-- /mobile-profile-card partner-card -->
 
+            <!-- ── Best Match Section ─────────────────────────────── -->
+            <div class="mobile-bestmatch-section">
+                <div style="color: #F4A261; font-weight: 700; font-size: var(--font-base); margin-bottom: 10px; text-align: center;">
+                    🎰 <span data-i18n="mobile.bestMatchTitle">Best Match Finder</span>
+                </div>
+                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 16px; min-height: 60px;">
+                    <span class="match-icon" style="font-size: 28px;">🎰</span>
+                    <span class="match-text" style="font-size: 14px;" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
+                </button>
+                <div style="text-align: center; margin-top: 8px; color: var(--text-muted); font-size: 11px;" data-i18n="mobile.testsAllCombinations">
+                    Testet alle 864 Archetyp-Kombinationen
+                </div>
+            </div>
+
             <!-- ── Synthese Section ─────────────────────────────────── -->
             <div class="mobile-synthese-section">
                 <!-- hidden stubs kept for JS compatibility -->
@@ -1829,20 +1870,6 @@
                 </div>
 
                 <div id="mobile-gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;"></div>
-            </div>
-
-            <!-- ── Best Match Section ─────────────────────────────── -->
-            <div class="mobile-bestmatch-section">
-                <div style="color: #F4A261; font-weight: 700; font-size: var(--font-base); margin-bottom: 10px; text-align: center;">
-                    🎰 <span data-i18n="mobile.bestMatchTitle">Best Match Finder</span>
-                </div>
-                <button class="best-match-btn mobile-best-match-card-btn" data-action="open-slot-machine-modal" title="Finde den besten Partner - testet alle 864 Kombinationen" style="width: 100%; padding: 16px; min-height: 60px;">
-                    <span class="match-icon" style="font-size: 28px;">🎰</span>
-                    <span class="match-text" style="font-size: 14px;" data-i18n="center.findMatch">FINDE PASSENDEN PARTNER</span>
-                </button>
-                <div style="text-align: center; margin-top: 8px; color: var(--text-muted); font-size: 11px;" data-i18n="mobile.testsAllCombinations">
-                    Testet alle 864 Archetyp-Kombinationen
-                </div>
             </div>
 
             <button data-action="reset-all" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;" data-i18n="mobile.resetSelection">
@@ -2774,7 +2801,7 @@
     <div class="modal-overlay" id="memoryModalV2" data-action="close-memory-modal-v2" style="z-index: 2600;">
         <div class="modal memory-modal-v2" data-stop-propagation style="max-width: 95%; width: 850px;">
             <div class="modal-header" style="border-bottom: 2px solid rgba(59, 130, 246, 0.3);">
-                <span class="modal-title" style="color: #3B82F6;">💾 Speichermanagement V2</span>
+                <span class="modal-title" style="color: #3B82F6;">💾 Speichermanagement V3</span>
                 <button class="modal-close" data-action="close-memory-modal-v2">&times;</button>
             </div>
             <div class="modal-body" style="padding: 16px;">

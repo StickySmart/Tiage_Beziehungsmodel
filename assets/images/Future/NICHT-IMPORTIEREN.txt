@@ -1,0 +1,51 @@
+# Bilder: NICHT IMPORTIEREN / NICHT NEU GENERIEREN
+# Stand: 2026-05-26
+# Diese Dateien haben keinen Bezug zu den 16 Grundbedürfnissen (#B1–#B16)
+# oder sind aus anderen Gründen nicht nutzbar.
+
+## Gelöscht: Erkenntnisse_Kapitel 17–43 (27 Bilder)
+# Kapitel-Serie: nur 01–16 sind als V4 den 16 Bedürfnissen zugeordnet.
+# Kapitel 17–43 haben keinen Bezug im aktuellen 16-Bedürfnis-Modell.
+
+Erkenntnisse_Kapitel_17_00000.png
+Erkenntnisse_Kapitel_18_00000.png
+Erkenntnisse_Kapitel_19_00000.png
+Erkenntnisse_Kapitel_20_00000.png
+Erkenntnisse_Kapitel_21_00000.png
+Erkenntnisse_Kapitel_22_00000.png
+Erkenntnisse_Kapitel_23_00000.png
+Erkenntnisse_Kapitel_24_00000.png
+Erkenntnisse_Kapitel_25_00000.png
+Erkenntnisse_Kapitel_26_00000.png
+Erkenntnisse_Kapitel_27_00000.png
+Erkenntnisse_Kapitel_28_00000.png
+Erkenntnisse_Kapitel_29_00000.png
+Erkenntnisse_Kapitel_30_00000.png
+Erkenntnisse_Kapitel_31_00000.png
+Erkenntnisse_Kapitel_32_00000.png
+Erkenntnisse_Kapitel_33_00000.png
+Erkenntnisse_Kapitel_34_00000.png
+Erkenntnisse_Kapitel_35_00000.png
+Erkenntnisse_Kapitel_36_00000.png
+Erkenntnisse_Kapitel_37_00000.png
+Erkenntnisse_Kapitel_38_00000.png
+Erkenntnisse_Kapitel_39_00000.png
+Erkenntnisse_Kapitel_40_00000.png
+Erkenntnisse_Kapitel_41_00000.png
+Erkenntnisse_Kapitel_42_00000.png
+Erkenntnisse_Kapitel_43_00000.png
+
+## Nicht gelöscht, aber NICHT IMPORTIEREN (6 Bilder)
+# Noch im Ordner vorhanden – aber nicht in osho-zen-beduerfnisse.json eingetragen.
+
+# Grund: Wasserzeichen "B1V1" in allen 4 Ecken sichtbar (nicht galeriefähig)
+Firefly.png
+
+# Grund: Unpassender Ladentext ("BOSM & KINK") im Hintergrund sichtbar
+Firefly_Gemini Flash_keine Realistischen Menschen sondern eine Mischung aus Humanuiden und Menschen im Com 523487.png
+
+# Grund: Nicht zugeordnet – visuell ähnlich zu bereits verwendeten Varianten
+Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487.png
+Firefly_Gemini Flash_B3V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png
+Firefly_Gemini Flash_B3V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722 (1).png
+Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild  523487.png

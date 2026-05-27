@@ -1083,6 +1083,18 @@ body {
         margin: 0 auto;
     }
 
+    /* Partner wird auf Mobile über Best Match konfiguriert — Score-Kreis weglassen */
+    .mobile-synthese-section .score-label,
+    #mobileScoreCircleDisplay,
+    #mobileScoreNote,
+    #mobileKoTextDisplay,
+    #mobile-gfk-beduerfnis-display {
+        display: none !important;
+    }
+    .mobile-synthese-section .score-circle-container {
+        margin: 8px auto;
+    }
+
     /* ========================================
        LIGHTBULB BUTTON (Seite 3 - größer)
        ======================================== */

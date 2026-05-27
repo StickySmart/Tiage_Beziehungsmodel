@@ -947,6 +947,45 @@
             });
         });
 
+        // Neuberechnung nach Rückkehr aus dem Bedürfnis-Editor
+        window.addEventListener('pageshow', function(e) {
+            var needsChanged = sessionStorage.getItem('tiage_needs_changed');
+            if (needsChanged) sessionStorage.removeItem('tiage_needs_changed');
+
+            // bfcache-Restore: TiageState im Memory ist veraltet → immer neu laden
+            if (!e.persisted && !needsChanged) return;
+
+            // TiageState aus localStorage neu lesen (bfcache hat alten Stand)
+            if (typeof TiageState !== 'undefined' && TiageState.loadFromStorage) {
+                TiageState.loadFromStorage();
+            }
+            if (typeof window.loadRtiPriorities === 'function') {
+                window.loadRtiPriorities();
+            }
+
+            // Etwas warten bis TiageState geladen ist, dann rendern
+            setTimeout(function() {
+                if (typeof renderContent === 'function') {
+                    renderContent();
+                }
+            }, 300);
+
+            // Toast nur wenn explizit geändert (nicht bei jedem Zurück-Navigieren)
+            if (!needsChanged) return;
+            var toast = document.createElement('div');
+            toast.textContent = '↻ Neuberechnung nach Bedürfnis-Änderung';
+            toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+                'background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);' +
+                'color:#38BDF8;padding:8px 18px;border-radius:20px;font-size:13px;' +
+                'z-index:9999;pointer-events:none;white-space:nowrap;';
+            document.body.appendChild(toast);
+            setTimeout(function() {
+                toast.style.transition = 'opacity 0.4s';
+                toast.style.opacity = '0';
+                setTimeout(function() { toast.remove(); }, 400);
+            }, 2200);
+        });
+
         /**
          * Klappt die Detail-Zeile eines Bedürfnisses auf/zu
          */
@@ -1094,8 +1133,8 @@
 
             return `
                 <div class="breakdown-info">
-                    <strong>ℹ️ GOD+FFH Modifikatoren</strong><br>
-                    ${rows.length} Bedürfnisse durch G/O/D${hasFFH ? '/FFH' : ''}${rows.some(r => r.du !== 0) ? '/Manuell' : ''} angepasst · Klick auf Name für Details
+                    <strong>ℹ️ GAD G/A/D FFH</strong><br>
+                    ${rows.length} Bedürfnisse durch G/A/D${hasFFH ? '/FFH' : ''}${rows.some(r => r.du !== 0) ? '/Manuell' : ''} angepasst · Klick auf Name für Details
                 </div>
                 <div class="breakdown-table-wrap">
                     <table class="breakdown-table">
@@ -1210,34 +1249,27 @@
             const ichNeeds = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
                 ? TiageState.getFlatNeeds('ich') : {};
 
-            // Gemeinsame Bedürfnisse berechnen (Durchschnitt ICH × PARTNER)
+            // Top-5 Bar: immer persönliche ICH-Bedürfnisse
             let top5Html = '';
-            let top5Title = 'Top-5 Bedürfnisse';
-            let top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
-            let needsForTop5 = ichNeeds;
+            const top5Title    = 'Top-5 Bedürfnisse';
+            const top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
 
-            if (state.hasPartner) {
+            // Gemeinsame Top-5 IDs berechnen — gleicher Algorithmus wie OshoZen Stufen-Karten
+            _U_gemeinsamTop5Ids = [];
+            if (state.hasPartner && typeof OshoZenTextGenerator !== 'undefined') {
                 let needs2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
                     ? TiageState.getFlatNeeds('partner') : {};
                 if (Object.keys(needs2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
                     const bp = BaseArchetypProfile[state.partnerArchetype];
                     if (bp && bp.umfrageWerte) needs2 = bp.umfrageWerte;
                 }
-                const catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
-                if (catalog && Object.keys(needs2).length > 0) {
-                    const gemeinsam = {};
-                    Object.keys(catalog).forEach(id => {
-                        const v1 = ichNeeds[id] !== undefined ? ichNeeds[id] : 50;
-                        const v2 = needs2[id]  !== undefined ? needs2[id]  : 50;
-                        gemeinsam[id] = (v1 + v2) / 2;
-                    });
-                    needsForTop5 = gemeinsam;
-                    top5Title    = 'Eure Top-5 gemeinsamen Bedürfnisse';
-                    top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
+                if (Object.keys(needs2).length > 0) {
+                    const topMatches = OshoZenTextGenerator.calculateTopMatches(ichNeeds, needs2, 5);
+                    _U_gemeinsamTop5Ids = topMatches.map(m => m.id);
                 }
             }
 
-            top5Html = renderTop5SectionUebersicht(needsForTop5, state.ichArchetype, top5Title, top5Subtitle);
+            top5Html = renderTop5SectionUebersicht(ichNeeds, state.ichArchetype, top5Title, top5Subtitle);
 
             // Sticky bar befüllen und Offset dynamisch setzen
             const stickyBar = document.getElementById('top5-sticky-bar');
@@ -1264,15 +1296,12 @@
             let resonanzHtml = '';
             if (state.hasPartner && typeof OshoZenTextGenerator !== 'undefined') {
                 let needs1 = ichNeeds;
-                let needs2 = needsForTop5 !== ichNeeds ? needsForTop5 : (() => {
-                    let n2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
-                        ? TiageState.getFlatNeeds('partner') : {};
-                    if (Object.keys(n2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
-                        const bp = BaseArchetypProfile[state.partnerArchetype];
-                        if (bp && bp.umfrageWerte) n2 = bp.umfrageWerte;
-                    }
-                    return n2;
-                })();
+                let needs2 = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                    ? TiageState.getFlatNeeds('partner') : {};
+                if (Object.keys(needs2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
+                    const bp = BaseArchetypProfile[state.partnerArchetype];
+                    if (bp && bp.umfrageWerte) needs2 = bp.umfrageWerte;
+                }
                 const oshoContent = OshoZenTextGenerator.generateSync({
                     profile1: { name: names[state.ichArchetype], needs: needs1, beduerfnisse: needs1 },
                     profile2: { name: names[state.partnerArchetype], needs: needs2, beduerfnisse: needs2 },
@@ -1280,7 +1309,7 @@
                     name2: names[state.partnerArchetype],
                     topN: 5
                 });
-                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;">
+                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;display:none;">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
                         <div>
@@ -1291,7 +1320,7 @@
                     <div class="osho-zen-content osho-zen-no-images">${oshoContent}</div>
                 </div>`;
             } else if (!state.hasPartner) {
-                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;">
+                resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;display:none;">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
                         <div><div class="synthese-section-title">Gemeinsame Bedürfnisse</div></div>
@@ -1304,7 +1333,7 @@
             }
 
             try {
-                container.innerHTML = `<div id="uebersicht-lower-section">${breakdownHtml}</div>`
+                container.innerHTML = `<div id="uebersicht-lower-section"></div>`
                     + resonanzHtml;
             } catch(e) {
                 // Fallback ohne Katalog
@@ -1322,22 +1351,22 @@
         // Image mapping for Top-5 section: needId → filenames per variant
         // SSOT: idx 0=V1, 1=V2, 2=V3 — direkt aus osho-zen-beduerfnisse.json varianten[Vx].bild
         var TOP5_IMAGE_MAP = {
-            '#B1':  ['Future/B002_00001_ (2).png',  'Future/B005_00001_.png',              'Future/B059_00001_.png'],
-            '#B2':  ['Future/B011_00001_.png',       'Future/B026_00001_ (2).png',          'Future/B011_00001_.png'],
-            '#B3':  ['Future/B047_00001_.png',       'Future/B006_00001_.png',              'Future/B047_00001_ (2).png'],
-            '#B4':  ['Future/B057_00001_.png',       'Future/B060_00001_.png',              'Future/B054_00001_.png'],
-            '#B5':  ['Future/B038_00001_.png',       'B058.webp',                           'Future/B056_00001_.png'],
+            '#B1':  ['Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig\'s pursuit of excellence me 88722.png', 'Future/Firefly_B1V2- Bridging all faiths through quality and love, Pirsig\'s pursuit of excellence me 88722.png', 'Future/B059_00001_.png'],
+            '#B2':  ['Future/Firefly_Gemini Flash_B2V1- Bridging all faiths through quality and love, Pirsig\'s pursuit of excellence me 88722.png', 'Future/B026_00001_ (2).png', 'Future/Firefly_Gemini Flash_B2V1- Noah\'s ark weathering the storm, Shiva\'s protective dance in stillness, cave sh 88722.png'],
+            '#B3':  ['Future/Firefly_Gemini Flash_Leichtigkeit Var.1- Berührung der Hände. Two luminous hands almost touching, energy f 291798.png', 'Future/Firefly_Gemini Flash_Leichtigkeit Var.2- Schlaf der Sterne. Ethereal figure resting on purple nebula cloud 495626.png', 'Future/Firefly_Leichtigkeit Var.3- Tanz der Polarität. Two spiral energies dancing, one golden solar 88722.png'],
+            '#B4':  ['Future/B057_00001_.png',       'Future/Firefly_B4V2- Bridging all faiths through quality and love, Pirsig\'s pursuit of excellence me 88722.png', 'Future/B054_00001_.png'],
+            '#B5':  ['Future/B038_00001_.png',       'Future/Firefly_Gemini Flash_Gebrauchsanweisung im Alien-Modu 952409 KfR.png', 'Future/B056_00001_.png'],
             '#B6':  ['Future/B017_00001_.png',       'Future/B036_00001_.png',              'Future/B044_00001_.png'],
             '#B7':  ['Future/B014_00001_.png',       'Future/B048_00001_.png',              'Future/B045_00001_.png'],
             '#B8':  ['Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png', 'Future/B065_00001_.png', 'Future/image_00000.png'],
             '#B9':  ['Future/B033_00001_.png',       'Future/B024_00001_.png',              'Future/B039_00001_.png'],
             '#B10': ['Future/B041_00001_.png',       'Future/B047_00001_ (3).png',          'Future/B023_00001_.png'],
-            '#B11': ['Future/B035_00001_.png',       'B120.webp',                           'Future/B024_00001_ (2).png'],
-            '#B12': ['Future/B021_00001_.png',       'Future/B020_00001_.png',              'B028.webp'],
-            '#B13': ['B072.webp',                    'Future/B018_00001_ (2).png',          'Future/B066_00001_.png'],
-            '#B14': ['Future/B062_00001_.png',       'B070.webp',                           'Future/B063_00001_.png'],
+            '#B11': ['Future/B035_00001_.png',       'Future/B029_00001_.png',              'Future/B024_00001_ (2).png'],
+            '#B12': ['Future/B021_00001_.png',       'Future/B020_00001_.png',              'Future/B027_00001_.png'],
+            '#B13': ['B013.png',                     'Future/B018_00001_ (2).png',          'Future/B066_00001_.png'],
+            '#B14': ['Future/B062_00001_.png',       'Future/B069_00001_.png',              'Future/B063_00001_.png'],
             '#B15': ['Future/B015_00001_.png',       'Future/B050_00001_.png',              'Future/B051_00001_.png'],
-            '#B16': ['Future/B018_00001_.png',       'B067.webp',                           'B069.webp']
+            '#B16': ['Future/B018_00001_.png',       'Future/B066_00001_ (2).png',          'Future/B069_00001_ (2).png']
         };
         var IMG_BASE_UEBERSICHT = 'assets/images/beduerfnisse-v2/';
 
@@ -1368,13 +1397,66 @@
                 if (toggle)  toggle.textContent    = isMatch ? '▼' : '▶';
             });
         }
-        var _U_activeNeedId  = null;
-        var _U_breakdownHtml = '';
-        var _U_viewModes   = ['bild', 'gemeinsam', 'tradition', 'karte'];
-        var _U_viewModeIdx = 0;
+        var _U_activeNeedId      = null;
+        var _U_breakdownHtml     = '';
+        var _U_viewModes         = ['bild', 'gemeinsam', 'tradition', 'karte', 'modif'];
+        var _U_viewModeIdx       = 0;
+        var _U_gemeinsamTop5Ids  = [];  // IDs der gemeinsamen Top-5 (leer = kein Partner)
 
         var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
         var _BTN_STYLE = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:22px;line-height:1;padding:4px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all 0.15s;';
+
+        // ── Bild-Präferenz-Persistenz ──────────────────────────────────────────
+        function _U_getImgPref(needId) {
+            try { var p = JSON.parse(localStorage.getItem('tiage_img_pref') || '{}'); return p[needId] || null; } catch(e) { return null; }
+        }
+        function _U_setImgPref(needId, variantKey) {
+            try { var p = JSON.parse(localStorage.getItem('tiage_img_pref') || '{}'); p[needId] = variantKey; localStorage.setItem('tiage_img_pref', JSON.stringify(p)); } catch(e) {}
+        }
+        // Speichert den tatsächlichen Bildpfad (für korrekte Thumbnail-Anzeige nach Reload)
+        function _U_getImgPrefSrc(needId) {
+            try { var p = JSON.parse(localStorage.getItem('tiage_img_pref_src') || '{}'); return p[needId] || null; } catch(e) { return null; }
+        }
+        function _U_setImgPrefSrc(needId, imgSrc) {
+            try { var p = JSON.parse(localStorage.getItem('tiage_img_pref_src') || '{}'); p[needId] = imgSrc; localStorage.setItem('tiage_img_pref_src', JSON.stringify(p)); } catch(e) {}
+        }
+
+        window._U_switchVariantToKey = function(needId, value, variantKey) {
+            var bedData = _U_cachedBedData[needId];
+            if (!bedData || !bedData.varianten[variantKey]) return;
+            _U_activeVariantKey = variantKey;
+            _U_renderLowerSection(needId, value, bedData);
+        };
+
+        window._U_setStandardImg = function(needId, variantKey, value) {
+            _U_setImgPref(needId, variantKey);
+            _U_activeVariantKey = variantKey;
+            var bedData = _U_cachedBedData[needId];
+            if (bedData) {
+                _U_renderLowerSection(needId, value, bedData);
+                // Karten-Thumbnail sofort aktualisieren + Pfad persistieren (für Reload)
+                var vData = bedData.varianten && bedData.varianten[variantKey];
+                if (vData && vData.bild) {
+                    var newSrc = vData.bild.startsWith('Future/') ? 'assets/images/' + vData.bild : 'assets/images/beduerfnisse-v2/' + vData.bild;
+                    _U_setImgPrefSrc(needId, newSrc); // persistiert den echten Bildpfad für Reload
+                    var card = document.getElementById('u-top5-card-' + needId.replace('#', ''));
+                    if (card) {
+                        var cardImg = card.querySelector('img');
+                        if (cardImg) cardImg.src = newSrc;
+                        if (!card.querySelector('[data-pref-badge]')) {
+                            var badge = document.createElement('span');
+                            badge.setAttribute('data-pref-badge', '1');
+                            badge.style.cssText = 'position:absolute;top:4px;left:4px;background:rgba(16,185,129,0.85);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;';
+                            badge.title = 'Standard-Bild gespeichert';
+                            badge.textContent = '✓';
+                            card.appendChild(badge);
+                        }
+                    }
+                }
+            }
+            if (typeof TiageToast !== 'undefined') TiageToast.success('Bild als Standard gespeichert ✓');
+            else { var t=document.createElement('div'); t.textContent='✓ Standard-Bild gespeichert'; t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#10B981;padding:8px 18px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;'; document.body.appendChild(t); setTimeout(function(){t.style.transition='opacity 0.4s';t.style.opacity='0';setTimeout(function(){t.remove();},400);},2000); }
+        };
 
         // Renders cycling wisdom content into #uebersicht-lower-section
         function _U_renderLowerSection(needId, value, bedData) {
@@ -1400,7 +1482,7 @@
             }
 
             var mode = _U_viewModes[_U_viewModeIdx] || 'bild';
-            var modeLabels = { bild: '📷 Bild', gemeinsam: '📖 Weisheit', tradition: '🕊 Traditionen', karte: '🃏 Bedürfniskarte' };
+            var modeLabels = { bild: '📷 Bild', gemeinsam: '📖 Weisheit', tradition: '🕊 Traditionen', karte: '🃏 Bedürfniskarte', modif: '🔢 GAD G/A/D FFH' };
             var modeDotsHtml = _U_viewModes.map(function(m, i) {
                 return '<span style="width:7px;height:7px;border-radius:50%;background:' + (i === _U_viewModeIdx ? color : 'rgba(255,255,255,0.15)') + ';display:inline-block;margin:0 2px;"></span>';
             }).join('');
@@ -1434,12 +1516,126 @@
 
             // Mode content (no header — indicator is in sticky bar)
             var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+
+            // Hinweis: nicht in gemeinsamen Top-5 + Wertevergleich ICH vs. Partner
+            if (_U_gemeinsamTop5Ids.length > 0 && _U_gemeinsamTop5Ids.indexOf(needId) === -1) {
+                var _ichV = null, _pV = null;
+                var _ichDom = null, _pDom = null;
+                if (typeof TiageState !== 'undefined') {
+                    var _ichNeeds = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('ich') : {};
+                    var _pNeeds   = TiageState.getFlatNeeds ? TiageState.getFlatNeeds('partner') : {};
+                    _ichV = _ichNeeds[needId] !== undefined ? Math.round(_ichNeeds[needId]) : null;
+                    _pV   = _pNeeds[needId]   !== undefined ? Math.round(_pNeeds[needId])   : null;
+                    // Fallback: Archetyp-Basis
+                    if (_pV === null && typeof BaseArchetypProfile !== 'undefined') {
+                        var _state3 = SynthesePageShared.getCurrentState();
+                        var _bp = BaseArchetypProfile[_state3.partnerArchetype];
+                        if (_bp && _bp.umfrageWerte && _bp.umfrageWerte[needId] !== undefined)
+                            _pV = Math.round(_bp.umfrageWerte[needId]);
+                    }
+                    // Dominanz für Komplementär-Erkennung
+                    _ichDom = TiageState.get('personDimensions.ich.dominanz');
+                    _pDom   = TiageState.get('personDimensions.partner.dominanz');
+                }
+                var _delta = (_ichV !== null && _pV !== null) ? (_ichV - _pV) : null;
+                var _dSign = _delta !== null ? (_delta > 0 ? '+' : '') : '';
+
+                // Komplementär-Erkennung: Bedürfnisse die im Dom/Sub-Gefälle ERWARTBAR unterschiedlich sind
+                // Dom braucht: hohe Freiheit (#B6), hohe Wirksamkeit (#B5) — Sub gibt sie ab
+                // Sub braucht: hohe Sicherheit (#B2), hohe Verbundenheit (#B12), Orientierung (#B4) — Dom gibt sie
+                var _KOMPLEMENT_DOM_HOCH  = ['#B5', '#B6', '#B7', '#B10'];  // Dom höher erwartet
+                var _KOMPLEMENT_SUB_HOCH  = ['#B2', '#B3', '#B4', '#B12']; // Sub höher erwartet
+                var _isDomSub = (_ichDom === 'dominant' && _pDom === 'submissiv');
+                var _isSubDom = (_ichDom === 'submissiv' && _pDom === 'dominant');
+                var _isKomplementaer = false;
+                var _komplementaerText = '';
+                if (_delta !== null && Math.abs(_delta) > 15 && (_isDomSub || _isSubDom)) {
+                    var _domHigherNeeds = _isDomSub ? _KOMPLEMENT_DOM_HOCH : _KOMPLEMENT_SUB_HOCH;
+                    var _subHigherNeeds = _isDomSub ? _KOMPLEMENT_SUB_HOCH : _KOMPLEMENT_DOM_HOCH;
+                    var _ichHigher = _delta > 0;
+                    if ((_domHigherNeeds.indexOf(needId) !== -1 && _ichHigher) ||
+                        (_subHigherNeeds.indexOf(needId) !== -1 && !_ichHigher)) {
+                        _isKomplementaer = true;
+                        _komplementaerText = _isDomSub
+                            ? 'Komplementäre Dynamik: Dominant braucht dieses Bedürfnis stark — Submissiv gibt es bewusst ab. Das ergänzt sich.'
+                            : 'Komplementäre Dynamik: Submissiv braucht dieses Bedürfnis stark — Dominant füllt es aus. Das ergänzt sich.';
+                    }
+                }
+
+                var _dCol = _delta !== null ? (_delta > 10 ? '#10B981' : _delta < -10 ? '#EF4444' : 'rgba(255,255,255,0.5)') : '';
+                var _borderCol = _isKomplementaer ? 'rgba(99,102,241,0.3)' : 'rgba(245,158,11,0.2)';
+                var _bgCol     = _isKomplementaer ? 'rgba(99,102,241,0.07)' : 'rgba(245,158,11,0.07)';
+                var _textCol   = _isKomplementaer ? 'rgba(165,180,252,0.9)' : 'rgba(245,158,11,0.85)';
+                var _icon      = _isKomplementaer ? '⚡' : '⚠️';
+                var _title     = _isKomplementaer ? 'Komplementär — nicht gemeinsam' : 'Nicht in euren gemeinsamen Top-5';
+
+                var _valHtml = (_ichV !== null && _pV !== null)
+                    ? '<div style="display:flex;align-items:center;gap:8px;margin-top:5px;padding-top:5px;border-top:1px solid ' + _borderCol + ';">'
+                    +   '<span style="font-size:10px;color:#22C55E;font-weight:600;">ICH ' + _ichV + '</span>'
+                    +   '<span style="font-size:9px;color:rgba(255,255,255,0.2);">|</span>'
+                    +   '<span style="font-size:10px;color:#EF4444;font-weight:600;">Partner ' + _pV + '</span>'
+                    +   '<span style="font-size:9px;color:rgba(255,255,255,0.2);">|</span>'
+                    +   '<span style="font-size:10px;font-weight:700;color:' + _dCol + ';">Δ ' + _dSign + _delta + '</span>'
+                    + '</div>'
+                    : '';
+                var _explainText = _isKomplementaer ? _komplementaerText : '';
+                if (!_isKomplementaer) {
+                    if (_delta !== null && Math.abs(_delta) > 25) {
+                        _explainText = _delta > 0
+                            ? 'Dein Spitzenwert wird durch die Differenz neutralisiert — Resonanz braucht ähnliche Stärke bei beiden.'
+                            : 'Dein Partner priorisiert das stärker als du — die Differenz ist zu groß für echte Übereinstimmung.';
+                    } else if (_ichV !== null && _pV !== null && _ichV < 45 && _pV < 45) {
+                        _explainText = 'Beide priorisieren dieses Bedürfnis zu gering für die gemeinsamen Top-5.';
+                    } else if (_delta !== null) {
+                        _explainText = 'Die Werte sind zu unterschiedlich für eine echte gemeinsame Priorität.';
+                    }
+                }
+                var _explainHtml = _explainText
+                    ? '<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;line-height:1.4;font-style:italic;">' + _explainText + '</div>'
+                    : '';
+                html += '<div style="font-size:11px;color:' + _textCol + ';background:' + _bgCol + ';border:1px solid ' + _borderCol + ';border-radius:6px;padding:8px 10px;margin-bottom:12px;">'
+                    + '<div style="display:flex;align-items:center;gap:8px;">'
+                    +   '<span style="font-size:14px;flex-shrink:0;">' + _icon + '</span>'
+                    +   '<span>' + _title + '</span>'
+                    + '</div>'
+                    + _valHtml
+                    + _explainHtml
+                    + '</div>';
+            }
+
             if (mode === 'bild') {
                 if (bildSrc) {
-                    html += '<div style="text-align:center;margin-bottom:14px;">'
-                        + '<img src="' + bildSrc + '" alt="' + kartenName + '" onclick="openLightbox(this.src,\'' + kartenName.replace(/'/g, "\\'") + '\')" style="max-height:280px;max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.5);object-fit:contain;cursor:zoom-in;">'
-                        + '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;">' + kartenName + (hasMulti ? ' · ' + (curIdx+1) + '/' + allKeys.length : '') + ' · zum Vergrößern klicken</div>'
+                    var _savedPref = _U_getImgPref(needId);
+                    html += '<div style="text-align:center;margin-bottom:10px;">'
+                        + '<img src="' + bildSrc + '" alt="' + kartenName + '" onclick="openLightbox(this.src,\'' + kartenName.replace(/'/g, "\\'") + '\')" style="max-height:250px;max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.5);object-fit:contain;cursor:zoom-in;">'
+                        + '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;">' + kartenName + (hasMulti ? ' · ' + (curIdx+1) + '/' + allKeys.length : '') + ' · zum Vergrößern klicken</div>'
                         + '</div>';
+                    // Bildergalerie: alle Varianten als anklickbare Thumbnails mit Checkmark
+                    if (hasMulti) {
+                        html += '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">';
+                        allKeys.forEach(function(vKey) {
+                            var vData = varianten[vKey];
+                            if (!vData || !vData.bild) return;
+                            var vSrc = vData.bild.startsWith('Future/') ? 'assets/images/' + vData.bild : 'assets/images/beduerfnisse-v2/' + vData.bild;
+                            var vLabel = (vData.karte_de || vData.karte || vKey).replace(/'/g, "\\'");
+                            var isActive = vKey === _U_activeVariantKey;
+                            var isPref   = _savedPref === vKey;
+                            html += '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;">'
+                                + '<div style="position:relative;cursor:pointer;" onclick="_U_switchVariantToKey(\'' + needId + '\',' + value + ',\'' + vKey + '\');event.stopPropagation();">'
+                                +   '<img src="' + vSrc + '" alt="' + vLabel + '" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid ' + (isActive ? color : 'rgba(255,255,255,0.12)') + ';box-shadow:' + (isActive ? '0 0 8px ' + color + '55' : 'none') + ';transition:all 0.18s;">'
+                                +   '<button onclick="event.stopPropagation();_U_setStandardImg(\'' + needId + '\',\'' + vKey + '\',' + value + ');" title="Als Standard-Bild für dieses Bedürfnis setzen" style="position:absolute;bottom:2px;right:2px;background:' + (isPref ? color : 'rgba(0,0,0,0.65)') + ';border:' + (isPref ? '1.5px solid ' + color : '1px solid rgba(255,255,255,0.2)') + ';border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:' + (isPref ? '#000' : 'rgba(255,255,255,0.6)') + ';padding:0;line-height:1;font-weight:700;transition:all 0.18s;">✓</button>'
+                                + '</div>'
+                                + '<span style="font-size:9px;color:rgba(255,255,255,' + (isActive ? '0.65' : '0.28') + ');max-width:76px;text-align:center;line-height:1.2;">' + (vData.karte_de || vData.karte || vKey) + '</span>'
+                                + '</div>';
+                        });
+                        html += '</div>';
+                    } else {
+                        // Einzelbild: Checkmark-Button zum Festlegen als Standard
+                        var _singleIsPref = _savedPref === _U_activeVariantKey;
+                        html += '<div style="text-align:center;margin-bottom:10px;">'
+                            + '<button onclick="_U_setStandardImg(\'' + needId + '\',\'' + _U_activeVariantKey + '\',' + value + ');event.stopPropagation();" title="Als Standard-Bild setzen" style="background:' + (_singleIsPref ? color : 'rgba(255,255,255,0.07)') + ';border:1px solid ' + (_singleIsPref ? color : 'rgba(255,255,255,0.15)') + ';border-radius:20px;padding:3px 12px;color:' + (_singleIsPref ? '#000' : 'rgba(255,255,255,0.45)') + ';font-size:11px;cursor:pointer;">✓ Standard</button>'
+                            + '</div>';
+                    }
                 } else {
                     html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Kein Bild verfügbar</div>';
                 }
@@ -1467,13 +1663,117 @@
                         + '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
                         + '</div>';
                 }
+            } else if (mode === 'modif') {
+                // GAD G/A/D FFH — Modifikatoren für dieses Bedürfnis (ausgeschrieben)
+                var state2 = SynthesePageShared.getCurrentState();
+                var ichNeedsAll = (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds)
+                    ? TiageState.getFlatNeeds('ich') : {};
+                var finalVal2 = ichNeedsAll[needId] !== undefined ? Math.round(ichNeedsAll[needId]) : null;
+                var baseNeeds2 = (typeof getBaseNeeds !== 'undefined') ? getBaseNeeds(state2.ichArchetype) : {};
+                var baseVal2 = baseNeeds2 && baseNeeds2[needId] !== undefined ? Math.round(baseNeeds2[needId]) : 50;
+                var dims2 = (typeof TiageState !== 'undefined') ? (TiageState.get('personDimensions.ich') || {}) : {};
+                var profile2 = {
+                    geschlecht: dims2.geschlecht, dominanz: dims2.dominanz,
+                    orientierung: dims2.orientierung, geschlecht_extras: dims2.geschlecht_extras || {}
+                };
+                var allBD = (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getAllModifierBreakdowns)
+                    ? ProfileModifiers.getAllModifierBreakdowns(profile2) : {};
+                var bd2 = allBD[needId] || { g:0, d:0, o:0, f:0, fu:0, h:0, fr:0, total:0 };
+                var du2 = finalVal2 !== null ? Math.round(finalVal2 - baseVal2 - bd2.total) : 0;
+
+                // Build profile display labels
+                var extras2 = dims2.geschlecht_extras || {};
+                var _cap = function(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; };
+                var gLabel2 = dims2.geschlecht
+                    ? (typeof dims2.geschlecht === 'string' ? _cap(dims2.geschlecht) : _cap(dims2.geschlecht.primary || ''))
+                    : '—';
+                var dRaw2 = dims2.dominanz
+                    ? (typeof dims2.dominanz === 'object' ? (dims2.dominanz.primary || '') : dims2.dominanz)
+                    : '';
+                var dLabel2 = dRaw2 ? _cap(dRaw2) : '—';
+                var oArr2 = dims2.orientierung
+                    ? (Array.isArray(dims2.orientierung) ? dims2.orientierung : [dims2.orientierung])
+                    : [];
+                var oLabel2 = oArr2.length ? oArr2.map(_cap).join(' + ') : '—';
+
+                // Modifier rows: [ key, abbr, icon, name, profileValue, delta, alwaysShow ]
+                var _modRows = [
+                    { abbr: 'G',  icon: '⚤',  name: 'Geschlecht',  val: gLabel2,             delta: bd2.g,  show: true },
+                    { abbr: 'A',  icon: '🧲', name: 'Attraktion',  val: oLabel2,             delta: bd2.o,  show: true },
+                    { abbr: 'D',  icon: '⚡', name: 'Dominanz',    val: dLabel2,             delta: bd2.d,  show: true },
+                    { abbr: 'F',  icon: '💪', name: 'Fit',         val: 'Fit',               delta: bd2.f,  show: !!extras2.fit },
+                    { abbr: 'FU', icon: '🔥', name: 'Fucked up',   val: 'Fucked up',         delta: bd2.fu, show: !!extras2.fuckedup },
+                    { abbr: 'H',  icon: '😈', name: 'Horny',       val: 'Horny',             delta: bd2.h,  show: !!extras2.horny },
+                    { abbr: 'FR', icon: '🌿', name: 'Fresh',       val: 'Fresh',             delta: bd2.fr, show: !!extras2.fresh }
+                ];
+
+                var _deltaStr = function(v) { return v === 0 ? '' : (v > 0 ? '+' + v : '' + v); };
+                var _deltaCol = function(v) { return v > 0 ? '#10B981' : v < 0 ? '#EF4444' : 'transparent'; };
+
+                var rowsHtml = '';
+                _modRows.forEach(function(r) {
+                    if (!r.show) return;
+                    var ds = _deltaStr(r.delta);
+                    var dc = _deltaCol(r.delta);
+                    var hasEffect = r.delta !== 0;
+                    rowsHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">'
+                        + '<div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);width:20px;text-align:center;flex-shrink:0;">' + r.abbr + '</div>'
+                        + '<div style="font-size:11px;color:rgba(255,255,255,0.5);flex-shrink:0;width:14px;">' + r.icon + '</div>'
+                        + '<div style="font-size:12px;color:rgba(255,255,255,0.55);flex-shrink:0;width:72px;">' + r.name + '</div>'
+                        + '<div style="font-size:12px;color:rgba(255,255,255,0.8);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + r.val + '</div>'
+                        + (hasEffect
+                            ? '<div style="font-size:13px;font-weight:700;color:' + dc + ';flex-shrink:0;min-width:36px;text-align:right;">' + ds + '</div>'
+                            : '<div style="font-size:11px;color:rgba(255,255,255,0.15);flex-shrink:0;min-width:36px;text-align:right;">—</div>')
+                        + '</div>';
+                });
+                if (du2 !== 0) {
+                    var duS = _deltaStr(du2);
+                    var duC = _deltaCol(du2);
+                    rowsHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">'
+                        + '<div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);width:20px;text-align:center;flex-shrink:0;">±</div>'
+                        + '<div style="font-size:11px;color:rgba(255,255,255,0.5);flex-shrink:0;width:14px;"></div>'
+                        + '<div style="font-size:12px;color:rgba(255,255,255,0.55);flex:1;">Manuell / Umfrage</div>'
+                        + '<div style="font-size:13px;font-weight:700;color:' + duC + ';flex-shrink:0;min-width:36px;text-align:right;">' + duS + '</div>'
+                        + '</div>';
+                }
+
+                // Basis bar
+                var _bPct = Math.min(100, Math.max(0, baseVal2));
+                var _fPct = finalVal2 !== null ? Math.min(100, Math.max(0, finalVal2)) : _bPct;
+                var _fCol = _fPct > _bPct ? '#10B981' : _fPct < _bPct ? '#EF4444' : '#6366F1';
+
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🔢 GAD G/A/D FFH · Modifikatoren</div>';
+
+                // BASIS row
+                html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'
+                    + '<div style="font-size:10px;color:rgba(255,255,255,0.3);width:92px;flex-shrink:0;">Archetypbasis</div>'
+                    + '<div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;position:relative;">'
+                    +   '<div style="width:' + _bPct + '%;height:100%;background:rgba(255,255,255,0.2);border-radius:2px;"></div>'
+                    + '</div>'
+                    + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);width:30px;text-align:right;flex-shrink:0;">' + baseVal2 + '</div>'
+                    + '</div>';
+
+                // Modifier rows
+                html += rowsHtml;
+
+                // FINAL row
+                html += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);">'
+                    + '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);width:92px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.05em;">Final</div>'
+                    + '<div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:2.5px;">'
+                    +   '<div style="width:' + _fPct + '%;height:100%;background:' + _fCol + ';border-radius:2.5px;"></div>'
+                    + '</div>'
+                    + '<div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.9);width:30px;text-align:right;flex-shrink:0;">' + (finalVal2 !== null ? finalVal2 : '–') + '</div>'
+                    + '</div>';
+
             } // karte: lower section stays empty, resonanz block shown below
 
-            if (mode !== 'karte') {
-                html += '</div>';
-                section.innerHTML = html;
+            html += '</div>';
+            if (mode === 'karte') {
+                // karte: only inject section if there's a warning; resonanz block shows below
+                var _hasWarn = _U_gemeinsamTop5Ids.length > 0 && _U_gemeinsamTop5Ids.indexOf(needId) === -1;
+                section.innerHTML = _hasWarn ? html : '';
             } else {
-                section.innerHTML = '';
+                section.innerHTML = html;
             }
 
             // Show OshoZen card + resonanz block only in karte mode
@@ -1491,6 +1791,7 @@
             var section = document.getElementById('uebersicht-lower-section');
             _U_activeNeedId = null;
             _U_viewModeIdx  = 0;
+            if (typeof OshoZenTextGenerator !== 'undefined') OshoZenTextGenerator._resetStufeCards();
             document.querySelectorAll('[id^="u-top5-card-"]').forEach(function(el) {
                 el.style.border    = '1px solid rgba(255,255,255,0.08)';
                 el.style.boxShadow = '';
@@ -1500,7 +1801,7 @@
                 if (oldInd.parentElement) oldInd.parentElement.style.overflow = 'hidden';
                 oldInd.remove();
             }
-            if (section) section.innerHTML = _U_breakdownHtml;
+            if (section) section.innerHTML = '';
             var resonanzBlock = document.getElementById('synthese-resonanz-block');
             if (resonanzBlock) resonanzBlock.style.display = '';
             _U_activateOshoZenItem(null);
@@ -1543,9 +1844,9 @@
                 return;
             }
 
-            // Different card → open fresh at Bild
+            // Different card → keep current view mode, just switch need
             _U_activeNeedId = needId;
-            _U_viewModeIdx  = 0;
+            if (typeof OshoZenTextGenerator !== 'undefined') OshoZenTextGenerator.highlightStufeForNeed(needId);
 
             var need  = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
             var color = need ? (_U_FARBEN[need.stufe] || '#888') : '#888';
@@ -1556,8 +1857,10 @@
             if (_U_cachedBedData[needId]) {
                 var varianten0 = _U_cachedBedData[needId].varianten || {};
                 var defKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
-                _U_activeVariantKey = varianten0[defKey] ? defKey
-                    : (Object.keys(varianten0).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1');
+                var savedKey0 = _U_getImgPref(needId);
+                _U_activeVariantKey = (savedKey0 && varianten0[savedKey0]) ? savedKey0
+                    : (varianten0[defKey] ? defKey
+                    : (Object.keys(varianten0).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1'));
                 _U_renderLowerSection(needId, value, _U_cachedBedData[needId]);
                 return;
             }
@@ -1579,8 +1882,10 @@
                 if (!bedData) { section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Kein Text verfügbar.</div>'; return; }
                 _U_cachedBedData[needId] = bedData;
                 var varianten = bedData.varianten || {};
-                _U_activeVariantKey = varianten[defaultVariantKey] ? defaultVariantKey
-                    : (Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1');
+                var savedKey = _U_getImgPref(needId);
+                _U_activeVariantKey = (savedKey && varianten[savedKey]) ? savedKey
+                    : (varianten[defaultVariantKey] ? defaultVariantKey
+                    : (Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1'));
                 _U_renderLowerSection(needId, value, bedData);
             }).catch(function() {
                 section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Texte konnten nicht geladen werden.</div>';
@@ -1611,22 +1916,63 @@
             needsList.sort(function(a, b) { return b.value - a.value; });
             var top5 = needsList.slice(0, 5);
 
+            // Partner needs for best/worst constellation badges
+            var _pN = {};
+            if (typeof TiageState !== 'undefined' && TiageState.getFlatNeeds) _pN = TiageState.getFlatNeeds('partner') || {};
+            if (!Object.keys(_pN).length && typeof BaseArchetypProfile !== 'undefined') {
+                var _st = SynthesePageShared.getCurrentState();
+                var _bp = _st.hasPartner && BaseArchetypProfile[_st.partnerArchetype];
+                if (_bp && _bp.umfrageWerte) _pN = _bp.umfrageWerte;
+            }
+            var bestMatchId = null, worstMatchId = null;
+            if (Object.keys(_pN).length > 0) {
+                var _bestScore = -Infinity, _worstDelta = -Infinity;
+                top5.forEach(function(n) {
+                    var pV = _pN[n.id] !== undefined ? _pN[n.id] : null;
+                    if (pV === null) return;
+                    var avg = (n.value + pV) / 2;
+                    var diff = Math.abs(n.value - pV);
+                    var ms = avg * Math.max(0, 1 - diff / 160);
+                    if (ms > _bestScore && avg > 30) { _bestScore = ms; bestMatchId = n.id; }
+                    var neg = n.value - pV;
+                    if (neg > _worstDelta && neg > 20) { _worstDelta = neg; worstMatchId = n.id; }
+                });
+                if (worstMatchId === bestMatchId) worstMatchId = null;
+            }
+
             var cardsHtml = top5.map(function(n) {
                 var variants = TOP5_IMAGE_MAP[n.id];
                 var idx = n.value <= 33 ? 0 : n.value <= 66 ? 1 : 2;
-                var imgFile = variants ? variants[Math.min(idx, variants.length - 1)] : null;
-                var imgSrc = imgFile ? (imgFile.startsWith('Future/') ? 'assets/images/' + imgFile : IMG_BASE_UEBERSICHT + imgFile) : null;
+                var savedPrefV = _U_getImgPref(n.id);
+                if (savedPrefV) { var _si = parseInt(savedPrefV.replace('V',''), 10) - 1; if (_si >= 0 && variants && _si < variants.length) idx = _si; }
+                // Gespeicherten echten Bildpfad bevorzugen (gesetzt beim ✓-Klick, stimmt mit OshoZen-Variante überein)
+                var imgSrc = _U_getImgPrefSrc(n.id);
+                if (!imgSrc) {
+                    var imgFile = variants ? variants[Math.min(idx, variants.length - 1)] : null;
+                    imgSrc = imgFile ? (imgFile.startsWith('Future/') ? 'assets/images/' + imgFile : IMG_BASE_UEBERSICHT + imgFile) : null;
+                }
                 var color = _U_FARBEN[n.stufe] || '#888';
                 var safeKey = n.id.replace('#', '');
                 var imgHtml = imgSrc
-                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;">'
-                    : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
-                return '<div id="u-top5-card-' + safeKey + '" onclick="toggleUebersichtWisdom(\'' + n.id + '\',' + n.value + ')" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;" title="Klick: Tiage-Weisheit anzeigen">'
+                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:auto;display:block;">'
+                    : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
+                var badgeHtml = '';
+                if (n.id === bestMatchId) {
+                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;font-size:17px;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.9));" title="Beste gemeinsame Resonanz">💚</span>';
+                } else if (n.id === worstMatchId) {
+                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;background:#EF4444;color:#fff;font-size:11px;font-weight:900;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(239,68,68,0.6);" title="Größte Differenz zum Partner">★</span>';
+                }
+                // Bild-Präferenz-Indikator
+                if (savedPrefV) {
+                    badgeHtml += '<span style="position:absolute;top:4px;left:4px;background:rgba(16,185,129,0.85);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;" title="Standard-Bild gespeichert">✓</span>';
+                }
+                return '<div id="u-top5-card-' + safeKey + '" onclick="toggleUebersichtWisdom(\'' + n.id + '\',' + n.value + ')" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;position:relative;" title="Klick: Tiage-Weisheit anzeigen">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
                     +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
                     +   '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">' + Math.round(n.value) + '</div>'
                     + '</div>'
+                    + badgeHtml
                     + '</div>';
             }).join('');
 

@@ -119,6 +119,7 @@
         .synthese-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); }
         .synthese-loading-spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #8B5CF6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
         /* ── Stufen Cards ── */
         .stufen-card {
@@ -368,7 +369,7 @@
                     ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;pointer-events:none;">'
                     : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
                 return '<div id="top5-card-' + safeKey + '" data-need-id="' + n.id + '" data-need-val="' + Math.round(n.value) + '" data-stufe-color="' + color + '"'
-                    + ' style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1.5px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;" onclick="toggleNeedCardText(\'' + n.id + '\',' + Math.round(n.value) + ')">'
+                    + ' style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1.5px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;" onclick="toggleEvoWisdom(\'' + n.id + '\',' + Math.round(n.value) + ')">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
                     +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
@@ -385,8 +386,8 @@
                 +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Karte anklicken für Tiage-Weisheit</div>'
                 +   '</div>'
                 + '</div>'
-                + '<div style="display:flex;gap:8px;">' + cardsHtml + '</div>'
-                + '<div id="need-card-text-panel" style="display:none;margin-top:12px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.08);"></div>'
+                + '<div id="evo-top5-cards" style="display:flex;gap:8px;">' + cardsHtml + '</div>'
+                + '<div id="evo-lower-section" style="margin-top:12px;"></div>'
                 + '</div>';
         }
 
@@ -488,7 +489,13 @@
             }).join('');
         }
 
-        var _activeNeedCardId = null;
+        // ── 4-Mode cycling state ──────────────────────────────────────────────
+        var _E_viewModes   = ['bild', 'gemeinsam', 'tradition', 'karte'];
+        var _E_viewModeIdx = 0;
+        var _E_activeNeedId  = null;
+        var _E_activeVariantKey = null;
+        var _E_cachedBedData = {};
+
         var STUFEN_FARBEN_CARD = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
         var TRAD_LIST = [
             { key: 'christentum', icon: '✝', label: 'Christentum',    col: '#C9B99A' },
@@ -499,99 +506,228 @@
             { key: 'pirsig',      icon: '⚙',  label: 'Pirsig · Qualität', col: '#E8C97A' }
         ];
 
-        /**
-         * Klappt Karten-Text im Top-5-Bereich inline auf/zu (kein Popup)
-         */
-        function toggleNeedCardText(needId, value) {
-            var panel = document.getElementById('need-card-text-panel');
-            if (!panel) return;
+        // ── 4-Mode cycling helpers ────────────────────────────────────────────
 
-            // Alle Top-5 Karten-Borders zurücksetzen
-            function resetBorders() {
-                document.querySelectorAll('[id^="top5-card-"]').forEach(function(el) {
-                    el.style.borderColor = 'rgba(255,255,255,0.08)';
-                });
-            }
+        function _evoResetCards() {
+            document.querySelectorAll('[id^="top5-card-"]').forEach(function(el) {
+                el.style.border = '1.5px solid rgba(255,255,255,0.08)';
+                el.style.boxShadow = '';
+                el.style.overflow = 'hidden';
+            });
+            var oldInd = document.getElementById('evo-sticky-indicator');
+            if (oldInd) oldInd.remove();
+        }
 
-            // Gleiche Karte nochmal → zuklappen
-            if (_activeNeedCardId === needId) {
-                _activeNeedCardId = null;
-                panel.style.display = 'none';
-                resetBorders();
-                return;
-            }
+        function _E_renderLowerSection(needId, value, bedData) {
+            var section = document.getElementById('evo-lower-section');
+            if (!section || _E_activeNeedId !== needId) return;
 
-            _activeNeedCardId = needId;
-            resetBorders();
-
-            // Aktive Karte hervorheben
             var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
             var color = need ? (STUFEN_FARBEN_CARD[need.stufe] || '#888') : '#888';
-            var safeKey = needId.replace('#', '');
-            var activeCard = document.getElementById('top5-card-' + safeKey);
-            if (activeCard) activeCard.style.borderColor = color;
-
-            // Panel öffnen mit Ladeindikator
-            panel.style.display = 'block';
-            var variantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
             var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
 
-            panel.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;padding:10px 0;">Karten-Text wird geladen…</div>';
+            // Varianten-Key ermitteln
+            var varianten = bedData.varianten || {};
+            var variantKeys = Object.keys(varianten);
+            var hasMulti = variantKeys.length > 1;
+            if (!_E_activeVariantKey || !varianten[_E_activeVariantKey]) {
+                _E_activeVariantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
+                if (!varianten[_E_activeVariantKey]) _E_activeVariantKey = variantKeys[0] || 'V1';
+            }
+            var v = varianten[_E_activeVariantKey] || varianten['V1'] || Object.values(varianten)[0];
+            if (!v) { section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
 
-            if (typeof OshoZenTextGenerator === 'undefined') return;
+            var trad = v.traditionen || {};
+            var kartenName = v.karte_de || v.karte || _E_activeVariantKey;
 
-            OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
-                if (_activeNeedCardId !== needId || !panel) return;
-                if (!bedData) { panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
+            var mode = _E_viewModes[_E_viewModeIdx] || 'bild';
+            var modeLabels = { bild: '📷 Bild', gemeinsam: '📖 Weisheit', tradition: '🕊 Traditionen', karte: '🃏 Bedürfniskarte' };
 
-                var varianten = bedData.varianten || {};
-                var v = varianten[variantKey] || varianten['V1'] || Object.values(varianten)[0];
-                if (!v) { panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
+            // Mode-dots HTML
+            var modeDotsHtml = _E_viewModes.map(function(m, i) {
+                return '<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:' + (i === _E_viewModeIdx ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.2)') + ';"></span>';
+            }).join('');
 
-                var trad = v.traditionen || {};
-                var kartenName = v.karte_de || v.karte || variantKey;
-
-                // Header-Zeile
-                var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.07);">'
-                         +   '<div style="display:flex;align-items:center;gap:8px;">'
-                         +     (need && need.stufe ? '<span style="font-size:10px;font-weight:600;color:' + color + ';background:' + color + '22;padding:2px 7px;border-radius:4px;">' + STUFEN_LABELS[need.stufe] + '</span>' : '')
-                         +     '<span style="font-size:12px;font-weight:700;color:#fff;">' + (need ? need.label : needId) + '</span>'
-                         +     '<span style="font-size:10px;color:rgba(255,255,255,0.35);">· ' + kartenName + ' (' + variantKey + ')</span>'
-                         +   '</div>'
-                         +   '<button onclick="_activeNeedCardId=null;document.getElementById(\'need-card-text-panel\').style.display=\'none\';document.querySelectorAll(\'[id^=top5-card-]\').forEach(function(e){e.style.borderColor=\'rgba(255,255,255,0.08)\'});" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:18px;cursor:pointer;line-height:1;padding:0;">×</button>'
-                         + '</div>';
-
-                // Tiage-Text
-                if (v.tiage) {
-                    html += '<div style="font-size:13px;color:rgba(255,255,255,0.75);font-style:italic;margin-bottom:14px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';line-height:1.55;">'
-                          + v.tiage + '</div>';
+            // Inject indicator into active card
+            var oldInd = document.getElementById('evo-sticky-indicator');
+            if (oldInd) oldInd.remove();
+            var safeKey = needId.replace('#', '');
+            var activeCardEl = document.getElementById('top5-card-' + safeKey);
+            if (activeCardEl) {
+                activeCardEl.style.overflow = 'visible';
+                var arrowsHtml = '';
+                if (hasMulti && mode === 'bild') {
+                    var varIdx = variantKeys.indexOf(_E_activeVariantKey);
+                    arrowsHtml = '<button onclick="_E_switchVariant(\'' + needId + '\',' + value + ',-1);event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;padding:0 2px;line-height:1;">‹</button>'
+                               + '<span style="font-size:9px;color:rgba(255,255,255,0.3);">' + (varIdx + 1) + '/' + variantKeys.length + '</span>'
+                               + '<button onclick="_E_switchVariant(\'' + needId + '\',' + value + ',1);event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;padding:0 2px;line-height:1;">›</button>';
                 }
+                activeCardEl.insertAdjacentHTML('beforeend',
+                    '<div id="evo-sticky-indicator" style="padding:4px 6px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;gap:4px;background:rgba(0,0,0,0.3);" onclick="toggleEvoWisdom(\'' + needId + '\',' + value + ');event.stopPropagation();" title="Nächste Ansicht">'
+                    + '<div style="display:flex;align-items:center;gap:4px;">'
+                    +   '<span style="font-size:9px;color:rgba(255,255,255,0.45);">' + (modeLabels[mode] || mode) + '</span>'
+                    +   '<span style="display:flex;gap:3px;align-items:center;">' + modeDotsHtml + '</span>'
+                    + '</div>'
+                    + '<div onclick="event.stopPropagation();">' + arrowsHtml
+                    +   '<button onclick="toggleEvoWisdom_close();event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;" title="Schließen">×</button>'
+                    + '</div>'
+                    + '</div>'
+                );
+            }
 
-                // Traditionenabschnitte (2-Spalten-Grid auf großen Screens)
-                html += '<div style="font-size:10px;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Weisheitstraditionen</div>';
-                html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;">';
+            // Lower section content
+            if (mode === 'bild') {
+                var imgSrc = getImageVariant(needId, value);
+                if (!imgSrc) {
+                    var allImgs = TOP5_IMAGE_MAP[needId] || [];
+                    if (allImgs.length > 0) imgSrc = 'assets/images/beduerfnisse-v2/' + allImgs[0];
+                }
+                var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+                if (imgSrc) {
+                    html += '<img src="' + imgSrc + '" alt="' + (need ? need.label : needId) + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;">';
+                } else {
+                    html += '<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:0.3;">' + (need && need.icon ? need.icon : '⭐') + '</div>';
+                }
+                html += '<div style="margin-top:10px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">' + kartenName + '</div>';
+                html += '</div>';
+                section.innerHTML = html;
+
+            } else if (mode === 'gemeinsam') {
+                var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📖 Ti-Age Weisheit</div>';
+                if (v.tiage) {
+                    html += '<div style="font-size:13px;color:rgba(255,255,255,0.8);font-style:italic;line-height:1.6;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';">'
+                          + v.tiage + '</div>';
+                } else {
+                    html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;padding:20px 0;">Kein Text verfügbar</div>';
+                }
+                html += '</div>';
+                section.innerHTML = html;
+
+            } else if (mode === 'tradition') {
+                var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🕊 Weisheitstraditionen</div>';
+                var hasTrad = false;
+                html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:12px;">';
                 TRAD_LIST.forEach(function(t) {
                     if (!trad[t.key]) return;
+                    hasTrad = true;
                     html += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
                           +   '<div style="font-size:11px;font-weight:600;color:' + t.col + ';margin-bottom:4px;">' + t.icon + ' ' + t.label + '</div>'
                           +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[t.key] + '</div>'
                           + '</div>';
                 });
+                if (!hasTrad) html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:10px 0;">Keine Traditionen verfügbar</div>';
                 html += '</div>';
-
-                // Reflexion
                 if (v.reflexion) {
                     html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;">'
                           +   '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
                           +   '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
                           + '</div>';
                 }
+                html += '</div>';
+                section.innerHTML = html;
 
-                panel.innerHTML = html;
-            }).catch(function() {
-                if (panel) panel.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Karten-Texte konnten nicht geladen werden.</div>';
-            });
+            } else {
+                // karte mode: card name + large display
+                var imgSrc = getImageVariant(needId, value);
+                var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🃏 Bedürfniskarte</div>';
+                html += '<div style="display:flex;gap:14px;align-items:flex-start;">';
+                if (imgSrc) {
+                    html += '<img src="' + imgSrc + '" alt="' + kartenName + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;flex-shrink:0;">';
+                }
+                html += '<div style="flex:1;">';
+                if (need && need.stufe) {
+                    html += '<div style="font-size:10px;font-weight:600;color:' + color + ';background:' + color + '22;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px;">' + (STUFEN_LABELS[need.stufe] || '') + '</div>';
+                }
+                html += '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">' + (need ? need.label : needId) + '</div>';
+                html += '<div style="font-size:12px;color:rgba(255,255,255,0.45);">' + kartenName + '</div>';
+                html += '</div></div>';
+                if (v.reflexion) {
+                    html += '<div style="margin-top:12px;background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;">'
+                          +   '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
+                          +   '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
+                          + '</div>';
+                }
+                html += '</div>';
+                section.innerHTML = html;
+            }
         }
+
+        window._E_switchVariant = function(needId, value, delta) {
+            var bedData = _E_cachedBedData[needId];
+            if (!bedData) return;
+            var varianten = bedData.varianten || {};
+            var variantKeys = Object.keys(varianten);
+            if (variantKeys.length <= 1) return;
+            var idx = variantKeys.indexOf(_E_activeVariantKey);
+            idx = (idx + delta + variantKeys.length) % variantKeys.length;
+            _E_activeVariantKey = variantKeys[idx];
+            _E_renderLowerSection(needId, value, bedData);
+        };
+
+        window.toggleEvoWisdom_close = function() {
+            _E_activeNeedId = null;
+            _E_viewModeIdx  = 0;
+            _E_activeVariantKey = null;
+            _evoResetCards();
+            var section = document.getElementById('evo-lower-section');
+            if (section) section.innerHTML = '';
+        };
+
+        window.toggleEvoWisdom = function(needId, value) {
+            _evoResetCards();
+
+            // Same card → cycle
+            if (_E_activeNeedId === needId) {
+                _E_viewModeIdx = (_E_viewModeIdx + 1) % _E_viewModes.length;
+                var cached = _E_cachedBedData[needId];
+                if (cached) {
+                    // Re-highlight card
+                    var need2 = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+                    var color2 = need2 ? (STUFEN_FARBEN_CARD[need2.stufe] || '#888') : '#888';
+                    var safeKey2 = needId.replace('#', '');
+                    var activeCard2 = document.getElementById('top5-card-' + safeKey2);
+                    if (activeCard2) { activeCard2.style.border = '1.5px solid ' + color2; activeCard2.style.boxShadow = '0 0 8px ' + color2 + '44'; }
+                    _E_renderLowerSection(needId, value, cached);
+                }
+                return;
+            }
+
+            // Different card → open fresh
+            _E_activeNeedId = needId;
+            _E_viewModeIdx  = 0;
+            _E_activeVariantKey = null;
+
+            var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
+            var color = need ? (STUFEN_FARBEN_CARD[need.stufe] || '#888') : '#888';
+            var safeKey = needId.replace('#', '');
+            var activeCard = document.getElementById('top5-card-' + safeKey);
+            if (activeCard) { activeCard.style.border = '1.5px solid ' + color; activeCard.style.boxShadow = '0 0 8px ' + color + '44'; }
+
+            var section = document.getElementById('evo-lower-section');
+            if (section) section.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;padding:10px 0;">Wird geladen…</div>';
+
+            if (typeof OshoZenTextGenerator === 'undefined') return;
+
+            if (_E_cachedBedData[needId]) {
+                _E_renderLowerSection(needId, value, _E_cachedBedData[needId]);
+                return;
+            }
+
+            OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
+                if (_E_activeNeedId !== needId) return;
+                if (!bedData) {
+                    if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>';
+                    return;
+                }
+                _E_cachedBedData[needId] = bedData;
+                _E_renderLowerSection(needId, value, bedData);
+            }).catch(function() {
+                if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Karten-Texte konnten nicht geladen werden.</div>';
+            });
+        };
 
         /**
          * Berechnet den Ø-Bedürfniswert (0-100) für eine Stufe (16er-Modell).

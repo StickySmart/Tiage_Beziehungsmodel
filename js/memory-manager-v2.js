@@ -62,8 +62,9 @@ const MemoryManagerV2 = (function() {
     // Data version tags — bump when the stored shape changes
     // v6.0: beduerfnisse = { '#B1': 50, ... }  (single archetype)  — used by GODFUFH auto-save
     // v7.0: beduerfnisse = { single: {...}, duo: {...}, ... }        — used by user manual slots
+    // v7.1: + combined (weighted result), god settings
     const DATA_VERSION_GODFUFH = '6.0';
-    const DATA_VERSION_COMPLETE = '7.0';
+    const DATA_VERSION_COMPLETE = '8.0'; // v8.0: combined ohne AGOD-Doppelzählung
 
     // Auto-Save-Throttle (ms)
     let autoSaveTimeout = null;
@@ -199,8 +200,10 @@ const MemoryManagerV2 = (function() {
     //    stored under STORAGE_PREFIX_ICH + arch  (tiage_ich_single etc.)
     //    read by restoreSettingsForArchetyp / loadIchFromArchetyp
     //
-    //  collectCompleteIchData()         →  DATA_VERSION_COMPLETE (v7.0)
-    //    beduerfnisse = { single: {...}, duo: {...}, ... }  ← ALL archetypes
+    //  collectCompleteIchData()         →  DATA_VERSION_COMPLETE (v7.1)
+    //    combined = { '#B1': 70, ... }           ← finales Ergebnis aller aktiven Slots
+    //    beduerfnisse = { single: {...}, ra: {...} } ← nur aktive Slots
+    //    god = { geschlecht, orientierung, dominanz, extras }
     //    stored under STORAGE_PREFIX_ICH_SLOT + n  (tiage_ich_slot_001 etc.)
     //    read by loadIchFromSlot
     // ─────────────────────────────────────────────────────────────────────────
@@ -244,8 +247,12 @@ const MemoryManagerV2 = (function() {
             timestamp: Date.now(),
             dataVersion: DATA_VERSION_COMPLETE,
             archetyp: null,
-            beduerfnisse: null,
-            lockedNeeds: null
+            ichSlots: null,      // aktive Multi-Slot Auswahl
+            combined: null,      // v7.1: finales Ergebnis aller aktiven Slots (16 Werte)
+            beduerfnisse: null,  // v7.1: nur aktive Slots (nicht alle Archetypen)
+            god: null,           // v7.1: Geschlecht, Orientierung, Dominanz, Extras
+            lockedNeeds: null,
+            imagePref: null
         };
 
         if (typeof TiageState !== 'undefined') {
@@ -253,9 +260,29 @@ const MemoryManagerV2 = (function() {
             data.archetyp = (archetypes && archetypes.primary) ? archetypes.primary
                 : (typeof archetypes === 'string' ? archetypes : 'single');
 
-            // Direct per-arch reads — bypasses smart-getter which returns only primary
+            // Alle aktiven Slots speichern (Multi-Auswahl)
+            const activeSlots = [];
+            if (TiageState.getIchSlots) {
+                const slots = TiageState.getIchSlots();
+                if (slots && slots.length > 0) {
+                    data.ichSlots = slots;
+                    activeSlots.push(...slots);
+                }
+            }
+            if (activeSlots.length === 0) activeSlots.push(data.archetyp);
+
+            // v7.1: Kombiniertes Ergebnis aller aktiven Slots (das finale Rechenergebnis)
+            if (TiageState.getCombinedFlatNeeds) {
+                const combined = TiageState.getCombinedFlatNeeds();
+                if (combined && Object.keys(combined).length > 0) {
+                    data.combinedRaw = combined; // v7.2: Roh-MAX (Pol-Blending, ohne AGOD+FFH)
+                    data.combined = combined;    // wird unten mit Modifikatoren überschrieben
+                }
+            }
+
+            // v7.1: Nur aktive Slots speichern (nicht alle Archetypen mit irgendeiner gespeicherten Datenmenge)
             const allFlatNeeds = {};
-            ARCHETYPES.forEach(arch => {
+            activeSlots.forEach(arch => {
                 const archNeeds = TiageState.get(`flatNeeds.ich.${arch}`);
                 if (archNeeds && Object.keys(archNeeds).length > 0) {
                     allFlatNeeds[arch] = archNeeds;
@@ -263,9 +290,38 @@ const MemoryManagerV2 = (function() {
             });
             if (Object.keys(allFlatNeeds).length > 0) data.beduerfnisse = allFlatNeeds;
 
+            // v7.1: GOD-Einstellungen (Geschlecht, Orientierung, Dominanz + FFH-Extras)
+            const geschlecht   = TiageState.get('personDimensions.ich.geschlecht');
+            const dominanz     = TiageState.get('personDimensions.ich.dominanz');
+            const orientierung = TiageState.get('personDimensions.ich.orientierung');
+            let   extras       = TiageState.get('personDimensions.ich.geschlecht_extras');
+            if (!extras && typeof window.geschlechtExtrasCache !== 'undefined') {
+                extras = { ...window.geschlechtExtrasCache.ich };
+            }
+            if (geschlecht || dominanz || orientierung || extras) {
+                data.god = { geschlecht, orientierung, dominanz, extras: extras || null };
+            }
+
+            // v8.0: combined kommt aus getCombinedFlatNeeds() = flatNeeds.ich.${arch}
+            // Diese Werte enthalten AGOD-Modifikatoren bereits (berechnet von ProfileCalculator).
+            // Keine erneute Delta-Anwendung — das würde AGOD doppelt zählen (z.B. 186 → 276).
+            if (data.god && TiageState.getGewichtungen) {
+                data.god.agod = TiageState.getGewichtungen('ich');
+            }
+
             const locked = TiageState.getLockedNeeds ? TiageState.getLockedNeeds('ich') : {};
             data.lockedNeeds = locked || {};
         }
+
+        // Bild-Präferenzen aus localStorage (Variant-Key + aufgelöster Bildpfad)
+        try {
+            const pref = localStorage.getItem('tiage_img_pref');
+            if (pref) data.imagePref = JSON.parse(pref);
+        } catch(e) {}
+        try {
+            const prefSrc = localStorage.getItem('tiage_img_pref_src');
+            if (prefSrc) data.imagePrefSrc = JSON.parse(prefSrc);
+        } catch(e) {}
 
         return data;
     }
@@ -881,22 +937,36 @@ const MemoryManagerV2 = (function() {
                     console.warn('[MemoryManagerV2] Fehler beim Lesen ICH-Slot:', i, e);
                 }
 
-                // v7.0: beduerfnisse = { single: {...}, duo: {...} } → primären Slot für Anzeige extrahieren
+                // v7.1: combined = finales Ergebnis bevorzugen; fallback auf primären Slot
                 let displayNeeds = null;
-                if (data && data.beduerfnisse) {
+                if (data && data.combined) {
+                    displayNeeds = data.combined;
+                } else if (data && data.beduerfnisse) {
                     const isMultiArch = ARCHETYPES.some(a => data.beduerfnisse[a] !== undefined);
                     displayNeeds = isMultiArch
                         ? (data.beduerfnisse[data.archetyp] || data.beduerfnisse[ARCHETYPES.find(a => data.beduerfnisse[a])] || null)
                         : data.beduerfnisse;
                 }
 
+                // v7.1: Multi-Slot Label (z.B. "Single · Solopoly · RA")
+                let archetypLabel = '-';
+                let archetypIcon = null;
+                if (data) {
+                    if (data.ichSlots && data.ichSlots.length > 1) {
+                        archetypLabel = data.ichSlots.map(s => ARCHETYPE_LABELS[s] || s).join(' · ');
+                        archetypIcon = data.ichSlots.map(s => ARCHETYPE_ICONS[s] || '').join('');
+                    } else if (data.archetyp) {
+                        archetypLabel = ARCHETYPE_LABELS[data.archetyp] || data.archetyp;
+                        archetypIcon = ARCHETYPE_ICONS[data.archetyp] || '👤';
+                    }
+                }
                 slots.push({
                     slot: i,
                     isEmpty: !data,
                     data: data,
                     archetyp: data ? data.archetyp : null,
-                    archetypLabel: data && data.archetyp ? (ARCHETYPE_LABELS[data.archetyp] || data.archetyp) : '-',
-                    archetypIcon: data && data.archetyp ? (ARCHETYPE_ICONS[data.archetyp] || '👤') : null,
+                    archetypLabel,
+                    archetypIcon,
                     allNeeds: data ? formatAllNeeds16(displayNeeds, data.lockedNeeds) : '',
                     dateTime: data ? formatDateTime(data.timestamp) : '-'
                 });
@@ -927,7 +997,12 @@ const MemoryManagerV2 = (function() {
                 const data = JSON.parse(raw);
 
                 if (typeof TiageState !== 'undefined') {
-                    if (data.archetyp) TiageState.setArchetype('ich', data.archetyp);
+                    // v7.1: Multi-Slot Auswahl wiederherstellen (vor setArchetype)
+                    if (data.ichSlots && Array.isArray(data.ichSlots) && data.ichSlots.length > 0 && TiageState.setIchSlots) {
+                        TiageState.setIchSlots(data.ichSlots);
+                    } else if (data.archetyp) {
+                        TiageState.setArchetype('ich', data.archetyp);
+                    }
 
                     // beduerfnisse: v7.0 speichert alle Archetypen { single: {...}, duo: {...}, ... }
                     if (data.beduerfnisse) {
@@ -949,10 +1024,32 @@ const MemoryManagerV2 = (function() {
                     // Locks wiederherstellen (auch leeres Objekt setzen um alte Locks zu löschen)
                     TiageState.set('profileReview.ich.global.lockedNeeds', data.lockedNeeds || {});
 
+                    // v7.1: GOD-Einstellungen wiederherstellen
+                    if (data.god) {
+                        if (data.god.geschlecht)   TiageState.set('personDimensions.ich.geschlecht', data.god.geschlecht);
+                        if (data.god.orientierung) TiageState.set('personDimensions.ich.orientierung', data.god.orientierung);
+                        if (data.god.dominanz)     TiageState.set('personDimensions.ich.dominanz', data.god.dominanz);
+                        if (data.god.extras) {
+                            TiageState.set('personDimensions.ich.geschlecht_extras', data.god.extras);
+                            if (typeof window.geschlechtExtrasCache !== 'undefined') {
+                                window.geschlechtExtrasCache.ich = { ...data.god.extras };
+                            }
+                        }
+                    }
+
                     TiageState.saveToStorage();
                 }
 
-                const archetyp = data.archetyp;
+                // Bild-Präferenzen wiederherstellen
+                if (data.imagePref && Object.keys(data.imagePref).length > 0) {
+                    try { localStorage.setItem('tiage_img_pref', JSON.stringify(data.imagePref)); } catch(e) {}
+                }
+                if (data.imagePrefSrc && Object.keys(data.imagePrefSrc).length > 0) {
+                    try { localStorage.setItem('tiage_img_pref_src', JSON.stringify(data.imagePrefSrc)); } catch(e) {}
+                }
+
+                // Primären Archetyp für UI ermitteln
+                const archetyp = data.ichSlots ? data.ichSlots[0] : data.archetyp;
                 if (archetyp) {
                     const ichSelect = document.getElementById('ichSelect');
                     const mobileIchSelect = document.getElementById('mobileIchSelect');
@@ -961,6 +1058,10 @@ const MemoryManagerV2 = (function() {
                     if (mobileIchSelect) mobileIchSelect.value = archetyp;
                     if (archetypeSelect) archetypeSelect.value = archetyp;
                     if (typeof window.updateArchetypeGrid === 'function') window.updateArchetypeGrid('ich', archetyp);
+                    // v7.1: Multi-Slot Grid aktualisieren
+                    if (data.ichSlots && data.ichSlots.length > 1 && typeof window.renderIchSlotBadges === 'function') {
+                        window.renderIchSlotBadges(data.ichSlots);
+                    }
                 }
 
                 if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
@@ -1082,9 +1183,9 @@ const MemoryManagerV2 = (function() {
                 const data = JSON.parse(raw);
 
                 if (typeof TiageState !== 'undefined' && data.beduerfnisse) {
-                    // Guard: reject v7.0 complete-snapshots (multi-arch format) — wrong function
-                    if (data.dataVersion === DATA_VERSION_COMPLETE) {
-                        console.error('[MemoryManagerV2] restoreSettingsForArchetyp erwartet v6.0 (single-arch), nicht v7.0 (complete). Falscher Slot?');
+                    // Guard: reject v7.x complete-snapshots (multi-arch format) — wrong function
+                    if (parseFloat(data.dataVersion) >= 7.0) {
+                        console.error('[MemoryManagerV2] restoreSettingsForArchetyp erwartet v6.0 (single-arch), nicht v7.x (complete). Falscher Slot?');
                         return false;
                     }
                     if (TiageState.setFlatNeeds) {
@@ -1666,7 +1767,34 @@ function formatDominanzDetail(dom) {
  */
 function generateNeedsBreakdownV2(data, uniqueId) {
     const archetyp = data.archetyp;
-    const flatNeeds = data.beduerfnisse;
+
+    // v7.1 Format erkennen (god-Objekt vorhanden oder dataVersion >= 7.0)
+    const isV71 = !!data.god || parseFloat(data.dataVersion) >= 7.0;
+
+    // Flache Needs und Profil je nach Format extrahieren
+    let flatNeeds, profile;
+    if (isV71) {
+        // v7.1: combined = finaler Wert (mit Modifikatoren), combinedRaw = Basis (ohne)
+        flatNeeds = data.combined;
+        const god = data.god || {};
+        profile = {
+            geschlecht:        god.geschlecht   || null,
+            dominanz:          god.dominanz     || null,
+            orientierung:      god.orientierung || null,
+            geschlecht_extras: god.extras       || {},
+            agod:              god.agod         || { O: 1, A: 1, D: 1, G: 1 }
+        };
+    } else {
+        // v6.0: beduerfnisse ist flaches Objekt { '#B1': 50, ... }, GOD auf top-level
+        flatNeeds = data.beduerfnisse;
+        profile = {
+            geschlecht:        data.geschlecht,
+            dominanz:          data.dominanz,
+            orientierung:      data.orientierung,
+            geschlecht_extras: data.geschlecht_extras || {},
+            agod:              data.agodGewichtung   || { O: 1, A: 1, D: 1, G: 1 }
+        };
+    }
 
     // Keine Bedürfnisse gespeichert
     if (!flatNeeds || Object.keys(flatNeeds).length === 0) {
@@ -1678,22 +1806,14 @@ function generateNeedsBreakdownV2(data, uniqueId) {
         `;
     }
 
-    // Basis-Werte aus Archetyp-Profil holen (SSOT: BaseArchetypProfile)
+    // Basis-Werte: v7.1 → combinedRaw (Pol-Blending ohne Modifier), v6.0 → Archetyp-Profil
     let baseNeeds = {};
-    if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+    if (isV71 && data.combinedRaw) {
+        baseNeeds = data.combinedRaw;
+    } else if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
         const profil = GfkBeduerfnisse.archetypProfile[archetyp];
-        if (profil && profil.umfrageWerte) {
-            baseNeeds = profil.umfrageWerte;
-        }
+        if (profil && profil.umfrageWerte) baseNeeds = profil.umfrageWerte;
     }
-
-    // SSOT: Alle Modifier-Breakdowns über zentrale ProfileModifiers-Funktion
-    const profile = {
-        geschlecht: data.geschlecht,
-        dominanz: data.dominanz,
-        orientierung: data.orientierung,
-        geschlecht_extras: data.geschlecht_extras || {}
-    };
     const allBreakdowns = (typeof ProfileModifiers !== 'undefined' && ProfileModifiers.getAllModifierBreakdowns)
         ? ProfileModifiers.getAllModifierBreakdowns(profile)
         : {};
