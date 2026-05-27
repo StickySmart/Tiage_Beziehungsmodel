@@ -215,6 +215,19 @@ function updateReadinessUI() {
     if (fabBar) {
         fabBar.style.pointerEvents = (ichComplete || partnerComplete) ? 'auto' : 'none';
     }
+
+    // ── BLINK ANIMATION ──────────────────────────────────────────────────────
+    // Best Match buttons pulsieren wenn ICH vollständig
+    document.querySelectorAll('.mobile-best-match-card-btn, .slot-machine-center-btn').forEach(function(btn) {
+        btn.classList.toggle('wz-attract-bm', ichComplete);
+    });
+    if (fabBestMatch) fabBestMatch.classList.toggle('wz-attract-bm', ichComplete);
+
+    // Synthese buttons pulsieren wenn PARTNER vollständig
+    document.querySelectorAll('.mobile-lightbulb-button, .lightbulb-button:not(.mobile-lightbulb-button)').forEach(function(btn) {
+        btn.classList.toggle('wz-attract-synth', partnerComplete);
+    });
+    if (fabSynthese) fabSynthese.classList.toggle('wz-attract-synth', partnerComplete);
 }
 window.updateReadinessUI = updateReadinessUI;
 

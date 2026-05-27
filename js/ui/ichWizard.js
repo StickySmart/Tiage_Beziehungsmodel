@@ -167,12 +167,6 @@ var IchWizard = (function() {
             show(synthSect);
         }
 
-        // Blink-Animation: Best Match Button (screen 5) / Synthese Button (screen 6)
-        var bmBtn    = page1.querySelector('.mobile-best-match-card-btn');
-        var synthBtn = page1.querySelector('.mobile-lightbulb-button');
-        if (bmBtn)    bmBtn.classList.toggle('wz-attract-bm',    n === 5);
-        if (synthBtn) synthBtn.classList.toggle('wz-attract-synth', n === 6);
-
         _updateUI();
         window.scrollTo(0, 0);
     }
