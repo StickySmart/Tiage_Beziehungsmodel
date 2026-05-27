@@ -1,332 +1,162 @@
-# SSOT, KISS & Separation of Concerns - Analyse & Refactoring
+# Architektur-Prinzipien: SSOT, KISS & Separation of Concerns
 
-**Datum:** 2025-01-XX
-**Kontext:** Help-Features für Score-Erklärungen
-
-## Probleme (Vor Refactoring)
-
-### 1. **SSOT-Verstöße** (Single Source of Truth)
-
-#### Problem: Duplizierte Formeln
-- ❌ Hauptformel `Q = (A×wA×R2) + ...` war hardcoded in `app-main.js:15536`
-- ❌ Dieselbe Formel existierte bereits in `js/synthesis/constants.js:7` als Dokumentation
-- ❌ R-Faktor-Formel `R = 0.5 + (Übereinstimmung × 1.0)` war hardcoded
-- ❌ Dieselbe Formel existierte in `constants.js:84`
-
-**Konsequenz:**
-- Bei Formeländerungen müssen mehrere Stellen aktualisiert werden
-- Inkonsistenzen möglich
-- Schlechte Wartbarkeit
-
-### 2. **Separation of Concerns-Verstöße**
-
-#### Problem: Vermischung von Concerns
-- ❌ Dokumentations-Texte (was/warum) vermischt mit UI-Rendering (wie)
-- ❌ Fachliche Formeln inline in HTML-Generierung
-- ❌ Keine klare Trennung zwischen:
-  - **Data**: Formeln, Konstanten
-  - **Business Logic**: Berechnungen
-  - **Presentation**: HTML-Generierung
-
-**Konsequenz:**
-- Code schwer zu testen
-- Wiederverwendung unmöglich
-- Änderungen an Formeln erfordern Änderungen an UI-Code
-
-### 3. **KISS-Verstöße** (Keep It Simple, Stupid)
-
-#### Problem: Komplexität durch Inline-Code
-- ❌ Lange ternäre Operatoren für Faktornamen: `rKey === 'R1' ? 'Orientierungs-' : ...`
-- ❌ Hardcoded HTML-Strings mit eingebetteter Logik
-- ❌ Keine Wiederverwendbarkeit
-
-**Konsequenz:**
-- Code schwer zu lesen
-- Fehleranfällig
-- Duplizierung bei mehrfacher Verwendung
+> Lebendes Dokument — beschreibt den aktuellen Zustand der Codebase.
+> **Aktueller Stand: v3.2 (März–Mai 2026)**
 
 ---
 
-## Lösung (Nach Refactoring)
+## Kernprinzipien
 
-### 1. **SSOT etabliert**
+Das Tiage-Modell folgt drei Architektur-Prinzipien, die nach einer umfangreichen Refaktorierung im März 2026 konsequent umgesetzt wurden:
 
-#### Neue zentrale Datei: `js/help-texts.js`
+| Prinzip | Bedeutung | Wichtigste Regel |
+|---------|-----------|-----------------|
+| **SSOT** | Single Source of Truth | Jede Formel, jede Konstante existiert an genau einer Stelle |
+| **KISS** | Keep It Simple, Stupid | Keine vorzeitige Abstraktion — Komplexität nur wo nötig |
+| **SoC** | Separation of Concerns | Data / Business Logic / Presentation strikt getrennt |
+
+---
+
+## SSOT — Wer ist die Quelle der Wahrheit?
+
+### Berechnungsformel
+
+**Quelle:** `js/synthesis/calculationEngine.js` (Zeile 483)
+
+```
+Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
+```
+
+Keine andere Datei darf diese Formel hardcoden. HTML-Kommentare und Dokumentation dürfen sie zitieren, aber nie als eigene Implementierung enthalten.
+
+### AGOD-Standardgewichte
+
+**Quelle:** `js/weights/agodWeights.js`
+
 ```javascript
-var TiageHelpTexts = {
-    getMainFormula: function() {
-        // SSOT: Referenziert constants.js
-        return {
-            text: 'Q = [(A × wₐ × R₂) + ...]',
-            html: 'Q = (A×w<sub>A</sub>×R₂) + ...',
-            description: '...'
-        };
-    },
+AGOD_DEFAULT_WEIGHTS = { O: 1, A: 1, D: 1, G: 1 }
+```
 
-    getRFactorFormula: function() {
-        // SSOT: Referenziert constants.js Zeile 84
-        return {
-            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            range: { min: 0.5, max: 1.5 },
-            interpretation: { ... }
-        };
-    }
+### Dimension → Bedürfnis-Zuordnung (R-Faktoren)
+
+**Quelle:** `server/logic/needsIntegration.js` → `DIMENSION_NEED_IDS`
+
+```javascript
+const DIMENSION_NEED_IDS = {
+    leben:       ['#B1', '#B3', '#B7', '#B12'],
+    philosophie: ['#B2', '#B8', '#B9', '#B14'],
+    dynamik:     ['#B4', '#B5', '#B6', '#B11'],
+    identitaet:  ['#B10', '#B13', '#B15', '#B16']
 };
 ```
 
-**Vorteile:**
-- ✅ Formeln existieren nur noch an einer Stelle
-- ✅ Änderungen müssen nur einmal gemacht werden
-- ✅ Konsistenz garantiert
+Diese Zuordnung wird sowohl server-seitig als auch client-seitig (`js/synthesis/needsIntegration.js`) verwendet. **Achtung:** Falls die Zuordnung geändert wird, müssen beide Dateien synchron gehalten werden.
 
-### 2. **Separation of Concerns umgesetzt**
+### Bedürfnis-Katalog
 
-#### Klare Schichten:
+**Quelle:** `profiles/data/beduerfnis-katalog.json` (v4.0.0)
 
-```
-┌─────────────────────────────────────┐
-│  Presentation Layer (UI)            │
-│  app-main.js: showValueDerivation() │ ← Verwendet HelpTexts
-└───────────────┬─────────────────────┘
-                │
-┌───────────────▼─────────────────────┐
-│  Documentation Layer                │
-│  help-texts.js: getRFactor...()     │ ← Referenziert Constants
-└───────────────┬─────────────────────┘
-                │
-┌───────────────▼─────────────────────┐
-│  Data Layer (SSOT)                  │
-│  constants.js: Formeln, Schwellen   │
-└─────────────────────────────────────┘
-```
+16 Grundbedürfnisse #B1–#B16, 4 Stufen. Kein Code definiert Bedürfnisse oder ihre Namen inline.
 
-**Verantwortlichkeiten:**
-- **Data Layer** (`constants.js`): Rohe Daten, Formeln, Konstanten
-- **Documentation Layer** (`help-texts.js`): Strukturierte Erklärungen, Beispiele
-- **Presentation Layer** (`app-main.js`): HTML-Rendering, User Interaction
+### Archetyp-Kompatibilitätsmatrix
 
-### 3. **KISS angewendet**
+**Quelle:** `profiles/data/archetype-matrix.json`
 
-#### Vorher (komplex):
-```javascript
-Der ${rKey}-Faktor wird direkt mit dem ${rKey === 'R1' ? 'Orientierungs-' :
-    rKey === 'R2' ? 'Archetyp-' : rKey === 'R3' ? 'Dominanz-' : 'Geschlechts-'}Score multipliziert.
-```
+8×8-Matrix aller Archetyp-Kombinationen. Scores werden nicht im Code hardcoded.
 
-#### Nachher (einfach):
-```javascript
-const helpInfo = TiageHelpTexts.getRFactorInfluenceExplanation(rKey);
-// helpInfo.description = "Der R2-Faktor wird direkt mit dem Archetyp-Score multipliziert."
-```
+### Scoring-Funktionen (O/A/D/G)
 
-**Vorteile:**
-- ✅ Lesbarer Code
-- ✅ Zentral getestete Logik
-- ✅ Wiederverwendbar
-- ✅ Einfache Wartung
+**Quelle:** `js/synthesis/scoringEngine.js`
 
----
+- `checkSingleOrientationPair()` — KO-Logik Orientierung
+- `getArchetypeScore()` — Archetyp-Score aus Matrix
+- `calculateDominanceHarmony()` — Dominanz-Harmonie
+- `calculateR4Hybrid()` — Geschlecht/Identität-Score
 
-## Checkliste für zukünftige Entwicklung
+### R-Faktoren kombinieren
 
-### SSOT-Check
-- [ ] Existiert diese Information bereits woanders?
-- [ ] Können wir eine zentrale Quelle referenzieren?
-- [ ] Sind Konstanten/Formeln in `constants.js` oder `help-texts.js`?
-
-### Separation of Concerns-Check
-- [ ] Ist UI-Code getrennt von Daten?
-- [ ] Ist Business Logic getrennt von Presentation?
-- [ ] Sind Verantwortlichkeiten klar?
-
-### KISS-Check
-- [ ] Ist der Code so einfach wie möglich?
-- [ ] Können wir komplexe Logik extrahieren?
-- [ ] Ist der Code selbsterklärend?
-
----
-
-## Refactoring-Details
-
-### Dateien geändert:
-1. **NEU**: `js/help-texts.js` - Zentrale Dokumentation (SSOT)
-2. **GEÄNDERT**: `archetype-interaction.html` - Script-Tag hinzugefügt
-3. **GEÄNDERT**: `js/app-main.js:15532-15552` - Verwendet jetzt `TiageHelpTexts`
-
-### Abwärtskompatibilität:
-- ✅ Fallback eingebaut falls `help-texts.js` nicht geladen
-- ✅ Keine Breaking Changes
-- ✅ Bestehender Code funktioniert weiter
-
----
-
-## Metriken
-
-| Metrik | Vorher | Nachher | Verbesserung |
-|--------|--------|---------|--------------|
-| Formel-Definitionen | 3× dupliziert | 1× zentral | -67% Duplizierung |
-| Code-Lesbarkeit | ❌ Schwer | ✅ Gut | Besser |
-| Wartbarkeit | ❌ Mehrere Stellen | ✅ Eine Stelle | Besser |
-| Wiederverwendbarkeit | ❌ Keine | ✅ Hoch | Besser |
-
----
-
-## Nächste Schritte
-
-### Weitere Optimierungen:
-1. **Needs-Score-Erklärung** (`openNeedsScoreExplanation()`) auch refactoren
-   - Momentan noch inline HTML
-   - Sollte `TiageHelpTexts.getNeedsScoreExplanation()` verwenden
-
-2. **Test-Coverage**
-   - Unit-Tests für `help-texts.js` schreiben
-   - Integration-Tests für UI-Rendering
-
-3. **Dokumentation**
-   - JSDoc-Kommentare für alle Public-APIs
-   - Beispiele für Entwickler
-
----
-
-## Fazit
-
-✅ **SSOT**: Formeln existieren nur noch zentral
-✅ **KISS**: Code ist einfacher und lesbarer
-✅ **SoC**: Klare Trennung zwischen Daten, Logik und Präsentation
-
-**Ergebnis:** Wartbarer, testbarer und erweiterbarer Code ohne Funktionsverlust.
-
----
-
-## UPDATE 2025-12-18: ECHTES SSOT IMPLEMENTIERT
-
-### Problem gelöst: Vorher war es nur ein Kommentar!
-
-**Vorher (Fake-SSOT):**
-```javascript
-// In help-texts.js
-function getRFactorFormula() {
-    // SSOT: constants.js Zeile 84  ← NUR EIN KOMMENTAR!
-    return {
-        text: 'R = 0.5 + ...',  ← HARDCODED!
-        // ...
-    };
-}
-```
-
-**Jetzt (Echtes SSOT):**
-```javascript
-// In help-texts.js
-function getRFactorFormula() {
-    if (hasConstants()) {
-        // Liest WIRKLICH aus constants.js!
-        var formula = TiageSynthesis.Constants.FORMULAS.r_factor;
-        return {
-            text: formula.text,
-            range: { min: formula.params.min, max: formula.params.max }
-        };
-    }
-    // Fallback...
-}
-```
-
-### Was wurde geändert?
-
-#### 1. `js/synthesis/constants.js` - FORMULAS-Sektion hinzugefügt
+**Quelle:** `server/logic/needsIntegration.js` → `combineRFactors()`
 
 ```javascript
-TiageSynthesis.Constants = {
-    FORMULAS: {
-        main: {
-            text: 'Q = [(O × wO × r1) + ...]',
-            html: 'Q = (O×w<sub>O</sub>×r₁) + ...',
-            description: '...',
-            version: '3.1'
-        },
-        r_factor: {
-            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            params: { base: 0.5, multiplier: 1.0, min: 0.5, max: 1.5 },
-            thresholds: { resonance: 1.05, dissonance: 0.97 }
-        },
-        needs_matching: { ... }
-    },
-    // ... restliche Konstanten
-}
+combineRFactors(a, b) = (a + b) × min(a,b)/max(a,b) / 2
 ```
-
-#### 2. `js/help-texts.js` - Echte Referenzierung implementiert
-
-- `getMainFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.main`
-- `getRFactorFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.r_factor`
-- `getNeedsMatchingFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.needs_matching`
-- Fallback-Logik für den Fall dass constants.js nicht geladen ist
-
-#### 3. Hauptformel aktualisiert
-
-**Alt (veraltet):**
-```
-Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
-```
-
-**Neu (v3.1):**
-```
-Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]
-```
-
-Reflektiert korrekt die dimensionalen Resonanzfaktoren (R1-R4).
-
-### Verification
-
-Test-Datei erstellt: `test-ssot.html`
-
-Öffne im Browser um zu verifizieren:
-- ✓ constants.js wird geladen
-- ✓ help-texts.js liest aus constants.js
-- ✓ Keine Hardcoding-Duplikate
-- ✓ SSOT-Prinzip erfüllt
-
-### Metriken (Aktualisiert)
-
-| Metrik | Vorher | Jetzt | Verbesserung |
-|--------|--------|-------|--------------|
-| Formel-Definitionen | 3× dupliziert | 1× zentral (echtes SSOT) | -67% Duplizierung |
-| SSOT-Implementierung | ❌ Nur Kommentare | ✅ Echte Referenzen | **100% SSOT** |
-| Code-Wartung | 3 Stellen ändern | 1 Stelle ändern | **3× weniger Arbeit** |
-| Konsistenz-Garantie | ❌ Keine | ✅ Garantiert | **Keine Drifts mehr** |
-
-### Neue Dateien
-
-- `test-ssot.html` - Browser-Test für SSOT-Verifikation
-- `test-ssot.js` - Node.js Test (experimentell)
-
-### Migration Guide
-
-**Wenn du Formeln ändern willst:**
-
-1. ✅ **RICHTIG:** Ändere `TiageSynthesis.Constants.FORMULAS` in `constants.js`
-2. ❌ **FALSCH:** Ändere **NICHT** `help-texts.js` (liest automatisch aus constants.js)
-
-**Beispiel:**
-```javascript
-// In constants.js ändern:
-FORMULAS: {
-    r_factor: {
-        params: { base: 0.6, multiplier: 1.2 }  // ← Nur hier ändern!
-    }
-}
-
-// help-texts.js ändert sich AUTOMATISCH mit!
-```
-
-### Ergebnis
-
-✅ **ECHTES SSOT**: Keine Kommentare mehr, sondern echte Code-Referenzen  
-✅ **WARTBAR**: Änderungen nur an einer Stelle  
-✅ **KONSISTENT**: Formeln können nicht mehr auseinanderdriften  
-✅ **TESTBAR**: test-ssot.html verifiziert SSOT  
 
 ---
 
-**Datum:** 2025-12-18  
-**Status:** ✅ Implementiert und getestet  
-**Nächste Schritte:** Weitere Konstanten nach FORMULAS-Pattern migrieren  
+## Separation of Concerns — Schichten
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  PRESENTATION (HTML / UI-Module)                         │
+│  js/modals/*.js, css/*.css, *.html                       │
+│  → Rendert Ergebnisse, kennt keine Formeln               │
+├─────────────────────────────────────────────────────────┤
+│  BUSINESS LOGIC (Synthesis-Schicht)                      │
+│  js/synthesis/calculationEngine.js                       │
+│  js/synthesis/scoringEngine.js                           │
+│  js/synthesis/needsIntegration.js                        │
+│  → Berechnet, kennt kein HTML                            │
+├─────────────────────────────────────────────────────────┤
+│  DATA (Profile / Kataloge)                               │
+│  profiles/data/beduerfnis-katalog.json                   │
+│  profiles/data/archetype-matrix.json                     │
+│  js/weights/agodWeights.js                               │
+│  → Reine Daten, keine Logik                              │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Modalfenster
+
+Jedes Modal ist ein eigenständiges Modul in `js/modals/`:
+
+| Datei | Zuständigkeit |
+|-------|--------------|
+| `syntheseModal.js` | Synthese-Ergebnis-Ansicht |
+| `slotMachineModal.js` | Slot Machine (bester Match) |
+| `profileReviewModal.js` | Profil-Überprüfung |
+| `needsModals.js` | Bedürfnis-Editor und Details |
+| `categoryModal.js` | Kategorie-Detailansicht |
+
+---
+
+## KISS — Was nicht abstrahiert wird
+
+Drei gleichartige Zeilen sind besser als eine vorzeitige Abstraktion. Das Modell hat bewusst auf folgende Abstraktionen verzichtet:
+
+- **Keine generische "Factor"-Klasse** — O, A, D, G sind separate Funktionen in `scoringEngine.js`, weil sie fundamentell unterschiedliche Logik haben
+- **Keine Konfigurations-Datei für Formeln** — Die Formel ist direkt lesbar in `calculationEngine.js`
+- **Keine Middleware-Layer zwischen UI und Logik** — Modals rufen Synthesis-Funktionen direkt auf
+
+---
+
+## Bekannte SSOT-Risiken (aktiv beobachten)
+
+| Risiko | Beschreibung | Maßnahme |
+|--------|-------------|----------|
+| **Doppelte `DIMENSION_NEED_IDS`** | `server/logic/needsIntegration.js` und `js/synthesis/needsIntegration.js` definieren dieselbe Zuordnung | Bei Änderung: beide Dateien synchron updaten |
+| **Katalog-Version** | `beduerfnis-katalog.json` v4.0.0 hat noch keine `kohaerenz.typischeWerte` → `_calculateSingleResonanceV35` fällt auf Legacy zurück | Bei nächstem Katalog-Update: `typischeWerte` pro Archetyp ergänzen |
+| **Docs/Code-Drift** | Theory-Docs können veralten | Docs liegen in `docs/theory/` — bei Formeländerungen immer mitpflegen |
+
+---
+
+## Historischer Kontext
+
+Diese Prinzipien wurden nach einer umfangreichen Refaktorierung im **März 2026** etabliert. Vorher war die Hauptformel an mehreren Stellen hardcoded (in `app-main.js`, `constants.js` und in UI-Rendering-Code). Die Extraktion von ~7.000 Zeilen in eigenständige Module (`CalculationEngine`, `SyntheseModal`, `ProfileReviewModal`, `NeedsModals`) schaffte die heutige klare Schichtenarchitektur.
+
+**Vor der Refaktorierung (historisch, nicht mehr gültig):**
+- ❌ Hauptformel hardcoded in `app-main.js:15536`
+- ❌ Formeln inline in HTML-Generierungscode
+- ❌ R-Faktor-Formel dupliziert in `constants.js:84`
+
+**Nach der Refaktorierung (aktueller Stand):**
+- ✅ `calculationEngine.js` ist alleinige Formel-Quelle
+- ✅ Modals kennen keine Berechnungslogik
+- ✅ Daten-Dateien enthalten keine Logik
+
+---
+
+## Weiterführende Dokumentation
+
+- [Score-Berechnung](theory/score-calculation-overview.md) — Datenfluss im Detail
+- [Resonanz-Theorie](theory/resonance.md) — R-Faktor-System
+- [Tiage-Synthese](theory/tiage-synthesis.md) — Philosophische Grundlage und Entstehungsgeschichte

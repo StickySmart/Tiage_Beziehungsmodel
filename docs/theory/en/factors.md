@@ -1,23 +1,102 @@
 # The 4 Quality Factors
 
 > *How the Tiage Model calculates relationship quality*
+> **Current version: v3.2 (calculationEngine.js)**
+
+---
 
 ## Overview
 
 The Tiage Relationship Model uses **4 main factors** to calculate relationship quality:
 
-| Factor | Weight | Dimension | Description |
-|--------|--------|-----------|-------------|
-| **Orientation** | 25% | Pathos | Sexual orientation and direction of attraction |
-| **Gender** | 25% | Pathos | Gender chemistry and identity resonance |
-| **Dominance** | 25% | Pathos | Energetic dynamic and power relationship |
-| **Archetype** | 25% | Logos | Fundamental relationship philosophy |
+| Factor | Symbol | Description |
+|--------|--------|-------------|
+| **Archetype** | A | Fundamental relationship philosophy (0–100) |
+| **Orientation** | O | Sexual orientation and direction of attraction (0–100) |
+| **Dominance** | D | Energetic dynamic and power balance (0–100) |
+| **Gender** | G | Gender chemistry and identity attraction (0–100) |
+
+Each factor is multiplied by its own **resonance factor (R)** before the weighted terms are summed.
 
 ---
 
-## 1. Orientation Factor (25%)
+## Main Formula (v3.2)
 
-**Dimension:** Pathos (Feeling)
+```
+Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
+```
+
+| Term | Meaning |
+|------|---------|
+| `O × wO × R1` | Orientation × user weight × Resonance Life |
+| `A × wA × R2` | Archetype × user weight × Resonance Philosophy |
+| `D × wD × R3` | Dominance × user weight × Resonance Dynamics |
+| `G × wG × R4` | Gender × user weight × Resonance Identity |
+
+Each factor contributes with its **own needs resonance** — there is no shared meanR multiplier.
+
+**Score can exceed 100** — when R-factors > 1.0 or FFH-Extras bonus is active.
+
+**Sources:**
+- `js/synthesis/calculationEngine.js` → `calculateRelationshipQuality()` (line 483)
+- `js/synthesis/scoringEngine.js` → individual O/A/D/G functions
+- `js/weights/agodWeights.js` → `AGOD_DEFAULT_WEIGHTS`
+
+---
+
+## User-Configurable Weights (AGOD)
+
+Each of the 4 factors can be prioritized by the user (0 = Irrelevant, 1 = Normal, 2 = Important, 3 = Decisive):
+
+```javascript
+// Quadratic weighting: 0→0, 1→1, 2→4, 3→9
+eA = weight.A², eO = weight.O², eD = weight.D², eG = weight.G²
+sum = eA + eO + eD + eG  // if all 0+0+0+0: equal weighting (all 25%)
+
+wA = eA / sum   // normalized to 0–1
+wO = eO / sum
+wD = eD / sum
+wG = eG / sum
+```
+
+**Default:** all weights = 1 → each factor contributes 25%.
+
+Quadratic scaling creates true dominance at high values:
+- Weight 3 on one factor = 9/12 = **75%** of that factor
+- Weight 0 = factor is **completely ignored**
+
+**Source:** `js/weights/agodWeights.js` → `AGOD_DEFAULT_WEIGHTS = { O: 1, A: 1, D: 1, G: 1 }`
+
+---
+
+## 1. Archetype Factor (A)
+
+Describes the fundamental relationship philosophy — how two people want to live together.
+
+### The 8 Archetypes
+
+| Archetype | Description |
+|-----------|-------------|
+| **Single** | Autonomous life without a primary relationship |
+| **Duo** | Classic monogamous couple with exclusivity |
+| **Duo-Flex** | Primary relationship with agreed openings |
+| **Solopoly** | Multiple equal relationships with focus on autonomy |
+| **Polyamorous** | Deep emotional bonds with multiple partners |
+| **RA** | Relationship Anarchist — rejects all relationship hierarchies |
+| **LAT** | Living Apart Together — committed partnership without cohabitation |
+| **Aromantic** | Focus on platonic connections without romantic component |
+
+### Calculation
+
+Archetype compatibility is determined via an **8×8 matrix** from `archetype-matrix.json` as a single score (0–100).
+
+In the formula, **R2 (Resonance Philosophy)** acts as the amplifier for the Archetype score.
+
+**Source:** `js/synthesis/scoringEngine.js` → `getArchetypeScore(arch1, arch2)`
+
+---
+
+## 2. Orientation Factor (O)
 
 Defines sexual orientation and thus the basic direction of attraction.
 
@@ -28,57 +107,41 @@ Defines sexual orientation and thus the basic direction of attraction.
 | **Heterosexual** | Attraction to the opposite gender |
 | **Homosexual** | Attraction to the same gender |
 | **Bisexual** | Attraction to multiple genders |
+| **Pansexual** | Attraction regardless of gender/identity |
+| **Queer** | Beyond binary categories |
 
-### KO Criteria
+### Compatibility Logic
 
-**Hard-KO (0%):** Geometrically impossible combinations
-- Hetero♂ + Hetero♂ (both looking for women)
-- Hetero♀ + Hetero♀ (both looking for men)
-- Homo♂ + Lesbian♀ (both looking for someone else)
+The check is **bidirectional**: both people must be able to find each other attractive.
 
-**Soft-KO (10%):** Unlikely but possible
+```javascript
+person1CanBeAttracted = canBeAttractedTo(type1, gender1, gender2)
+person2CanBeAttracted = canBeAttractedTo(type2, gender2, gender1)
+if (person1CanBeAttracted && person2CanBeAttracted) → 'possible'
+else → 'impossible'  // Hard-KO: score = 0
+```
 
----
+| Combination | Score |
+|-------------|-------|
+| Hetero♂ + Hetero♀ | 100 |
+| Gay♂ + Gay♂ | 100 |
+| Bi/Pan + anyone | 100 |
+| Hetero♂ + Hetero♂ | 0 (Hard-KO) |
+| Hetero♀ + Hetero♀ | 0 (Hard-KO) |
 
-## 2. Archetype Factor (25%)
+**Hard-KO (score = 0):** When O = 0, no AGOD score is calculated — `calculationEngine.js` immediately returns `{ score: 0, blocked: true }`.
 
-**Dimension:** Logos (Mind)
+**Hard-KO display:** In the Slot Machine gender split, a `score = 0` shows the entry as **"— / Not compatible (KO)"** instead of a result with an adopt button.
 
-Describes the fundamental relationship philosophy – how two people want to live together.
+In the formula, **R1 (Resonance Life)** acts as the amplifier for the Orientation score.
 
-### The 8 Archetypes
-
-| Archetype | Description |
-|-----------|-------------|
-| **Single** | Autonomous life without primary relationship |
-| **Duo** | Classic monogamous partnership with exclusivity |
-| **Duo-Flex** | Primary relationship with agreed openings |
-| **Solopoly** | Multiple equal relationships with focus on autonomy |
-| **Polyamorous** | Deep emotional bonds with multiple partners |
-| **RA** | Relationship Anarchist – Rejection of all relationship hierarchies |
-| **LAT** | Living Apart Together – Committed partnership without cohabitation |
-| **Aromantic** | Focus on platonic connections without romantic component |
-
-### Calculation
-
-Archetype compatibility is calculated via an 8×8 matrix (`archetype-matrix.json`) containing all 64 possible combinations with scores for 6 categories:
-
-| Category | Meaning |
-|----------|---------|
-| A | Relationship Philosophy |
-| B | Value Alignment |
-| C | Closeness-Distance Preferences |
-| D | Autonomy Needs |
-| E | Communication Matching |
-| F | Social Compatibility |
+**Source:** `js/synthesis/scoringEngine.js` → `checkSingleOrientationPair()`
 
 ---
 
-## 3. Dominance Factor (25%)
+## 3. Dominance Factor (D)
 
-**Dimension:** Pathos (Feeling)
-
-Energetic dynamic and power relationship between partners.
+Energetic dynamic and power balance between partners.
 
 ### The 4 Dominance Types
 
@@ -86,98 +149,49 @@ Energetic dynamic and power relationship between partners.
 |------|-------------|
 | **Dominant** | Assertive, leading, self-confident, directive |
 | **Submissive** | Receptive, supportive, adaptive, following |
-| **Switch** | Can take both roles depending on situation |
-| **Balanced** | Balance between action and receptivity |
-
-### Status
-
-Each type can be marked as **living** (actively practiced) or **interested** (open to exploration).
+| **Switch** | Can take both roles depending on the situation |
+| **Balanced** | Equilibrium between action and receptivity |
 
 ### Harmony Types
 
 | Combination | Score | Explanation |
 |-------------|-------|-------------|
-| Dominant + Submissive | 100% | Complementary polarity |
-| Balanced + Balanced | 95% | Tao balance |
-| Switch + Switch | 90% | Flexible harmony |
-| Dominant + Dominant | 55% | Same poles |
-| Submissive + Submissive | 55% | Same poles |
+| Dominant + Submissive | 100 | Complementary polarity |
+| Balanced + Balanced | 95 | Tao balance |
+| Switch + Switch | 90 | Flexible harmony |
+| Dominant + Dominant | 55 | Same poles |
+| Submissive + Submissive | 55 | Same poles |
+
+In the formula, **R3 (Resonance Dynamics)** acts as the amplifier for the Dominance score.
+
+**Source:** `js/synthesis/scoringEngine.js` → `calculateDominanceHarmony(dom1, dom2)`
 
 ---
 
-## 4. Gender Factor (25%)
+## 4. Gender Factor (G)
 
-**Dimension:** Pathos (Feeling)
+Fine-tuning of gender chemistry: identity similarity and bidirectional attraction.
 
-Fine-tuning of gender chemistry as complement to the orientation factor.
+### Calculation (R4 Hybrid)
 
-### The P/S System (Primary/Secondary)
-
-**Primary (Body):**
-| Primary | Description |
-|---------|-------------|
-| Male | Biologically/physically male |
-| Female | Biologically/physically female |
-| Inter | Intersex |
-
-**Secondary (Identity):**
-| Secondary | Meaning |
-|-----------|---------|
-| Cis | Identity matches body |
-| Trans | Identity opposite to body |
-| Non-binary | Neither male nor female |
-| Fluid | Gender variable/flowing |
-| Uncertain | Not yet clarified |
-
----
-
-## Resonance Coefficient (v3.1)
-
-In addition to the 4 main factors, there is a **meta-factor** that modulates the result.
-
-### Multi-Dimensional Resonance
-
-Each factor has its **own resonance dimension** based on needs match:
-
-| Dimension | Emoji | Factor | Needs |
-|-----------|-------|--------|-------|
-| **R_Philosophy** | 🧠 | Archetype | 17 Needs (Bonding, Autonomy, Life Planning) |
-| **R_Life** | 🔥 | Orientation | 18 Needs (Sexuality, Intimacy, Tantra) |
-| **R_Dynamics** | ⚡ | Dominance | 18 Needs (Leadership, Devotion, Power Dynamics) |
-| **R_Identity** | 💚 | Gender | 10 Needs (Authenticity, Self-Expression) |
-
-**Formula per dimension:**
-```
-R_dim = 0.9 + (Match_dim × 0.2)
+```javascript
+G = (identityScore × 0.30 + attractionScore × 0.70)²
 ```
 
-**Interpretation:**
-| R-Value | Status | Symbol |
-|---------|--------|--------|
-| ≥ 1.05 | Resonance | ⬆️ |
-| 0.95-1.05 | Neutral | ➡️ |
-| ≤ 0.95 | Dissonance | ⬇️ |
+- **identityScore:** Similarity of gender identity (Cis/Trans/NB/Fluid)
+- **attractionScore:** Bidirectional attraction — ME→Partner × Partner→ME (geometric mean)
 
-The resonance coefficient moves between **0 and 2** (practically 0.8 - 1.3) per dimension.
+The G factor simultaneously equals **R4 (Resonance Identity)** — it is a hybrid of needs proximity (identity needs #B10, #B13, #B15, #B16) and direct attraction.
 
----
+### Gender Dimensions
 
-## Total Formula (v3.1)
+**Body (Primary):** Man, Woman, Inter
 
-```
-Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
-```
+**Identity (Secondary):** Cis, Trans, Non-binary, Fluid, Questioning
 
-Where:
-- O = Orientation Score (0-100) × 25% × R₁ (R_Life)
-- A = Archetype Score (0-100) × 25% × R₂ (R_Philosophy)
-- D = Dominance Score (0-100) × 25% × R₃ (R_Dynamics)
-- G = Gender Score (0-100) × 25% × R₄ (R_Identity)
+**Attraction:** Pan/Bi = 100 for all genders.
 
-### Important Distinction
-
-- **226 Needs** (#B1-#B226) → Emotional Match in the resonance formula
-- **30 baseAttributes** → Lifestyle filter (K.O. criteria like desire for children, living arrangement)
+**Source:** `js/synthesis/scoringEngine.js` → `calculateGenderAttraction(p1, p2)`
 
 ---
 
@@ -185,16 +199,18 @@ Where:
 
 | Score | Rating | Meaning |
 |-------|--------|---------|
-| **70-100%** | Good | Solid foundation present |
-| **50-69%** | Medium | Requires conscious effort |
-| **0-49%** | Challenging | Fundamental differences |
+| **> 100** | Extraordinary | High needs resonance + FFH boost active |
+| **80–100** | Very good | Strong foundation, R-factors amplify |
+| **60–79** | Good | Solid compatibility |
+| **40–59** | Medium | Requires conscious effort |
+| **< 40** | Challenging | Fundamental differences |
 
-*The quality index is a guideline value. Real relationships depend on many other factors.*
+*The quality index is a reference value. Real relationships depend on many additional factors.*
 
 ---
 
 ## Further Documentation
 
-- [Tiage Synthesis](tiage-synthesis.md) – The overall concept
-- [Pathos/Logos](pathos-logos.md) – The weighting in detail
-- [Resonance Theory](resonance.md) – The meta-factor
+- [Score Calculation](score-calculation-overview.md) — Complete formula and data flow
+- [Resonance Theory](resonance.md) — R-factors and needs mapping
+- [Pathos & Logos](pathos-logos.md) — The philosophical weighting

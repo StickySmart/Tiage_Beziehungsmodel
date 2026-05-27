@@ -88,6 +88,69 @@ The Tiage Relationship Model is an independent interpretation and application of
 
 It is an **orientation tool**, not a rating system for people.
 
+---
+
+## Development History
+
+*Reconstructed from the project's git history. The first commit dates to November 21, 2025; the concept existed as a document before programming began.*
+
+### Phase 1 — Concept & Prototype (November 2025)
+
+**November 21, 2025 — Project launch on GitHub.**
+First upload of existing concept documents (DOCX/HTML). The model already existed as a philosophical idea before the first code commit.
+
+**Nov 21–22** (Days 1–2): Rapid prototype iteration. The archetype matrix grew from 4×4 to 6×6 within hours; the layout shifted from table to dashboard to mobile-first swipe interface.
+
+**Nov 23–25**: The Pathos/Logos system was formalized. The term *"Tiage's Synthesis"* emerged as an independent theory designation. *"Relationship Quality"* replaced *"Compatibility"* as the guiding concept — a deliberate philosophical decision: the model does not judge, it measures quality.
+
+**Nov 26–28**: 72 profiles (Single × 36, Duo × 36), score formula with Pirsig visualization, first synthesis modal, daily synthesis.
+
+### Phase 2 — Core Development (December 2025)
+
+The most intensive development phase: **~1,655 commits in one month.**
+
+- **GFK/NVC integration** (Marshall B. Rosenberg) — needs language as a bridge between feeling and communication
+- **16 core needs by Volker Kiel** — needs catalog v4.0.0 with 4 levels (#B1–#B16)
+- **Adjustable factor weights (AGOD)** — user-configurable prioritization of the 4 dimensions
+- **R-factor system** — dimension-specific resonance (R1–R4) instead of a single meta-factor
+- **Client-server architecture** — separation of calculation logic (server/) and presentation (js/)
+- **Multilingual support** — 4 languages: German, English, French, Italian
+- **Extended OSHO chapter** — four core concepts documented
+
+### Phase 3 — Features & Refinement (January–March 2026)
+
+**January 1, 2026 — Slot Machine.**
+The first major feature of the new year: automatic calculation of all archetype/gender combinations to find the best theoretical partner match.
+
+**January 2026**: Slot Machine extended with partner-specific R-factors and AGOD weights.
+
+**March 15, 2026 — Philosophical correction.**
+The Pathos/Logos weighting was corrected from 40:60 to **25:75 (Logos:Pathos)** — a clarification, not a change. Equal weighting of the 4 factors (25% each) mathematically yields exactly 75% Pathos (O+D+G) and 25% Logos (A).
+
+**March 15–16, 2026 — Major modularization.**
+~7,000 lines were extracted from `app-main.js` into standalone modules: `CalculationEngine`, `SyntheseModal`, `ProfileReviewModal`, `NeedsModals`. Architecture principle: SSOT, KISS, Separation of Concerns.
+
+**March 31, 2026**: AGOD weights saved persistently per archetype.
+
+### Phase 4 — Maturity (April–May 2026)
+
+**May 25–27, 2026 — Slot Machine v5.1.**
+Gender split, total variance, honest breakdown. Synthesis Overview with 4-mode toggle.
+
+### Key Metrics (as of May 2026)
+
+| Metric | Value |
+|--------|-------|
+| First commit | November 21, 2025 |
+| Total commits | 3,186 |
+| Development duration | ~6 months |
+| Most active month | December 2025 (~1,655 commits) |
+| JavaScript modules | 50+ |
+| Synthesis pages | 9+ |
+| Languages | 4 (DE, EN, FR, IT) |
+
+---
+
 ## Further Documentation
 
 - [Pirsig Philosophy](pirsig.md) - Static and dynamic quality
