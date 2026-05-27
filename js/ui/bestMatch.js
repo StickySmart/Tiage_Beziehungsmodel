@@ -78,7 +78,7 @@ function ensureValidOrientierung(orientierungObj) {
 }
 
 function findBestPartnerMatch() {
-    // Partner vor Neuberechnung leeren
+    // Partner vor Neuberechnung leeren (Grid, Dropdown, Comparison View)
     if (typeof window.setPartnerArchetype === 'function') {
         window.setPartnerArchetype(null);
     }
@@ -87,6 +87,15 @@ function findBestPartnerMatch() {
     }
     if (typeof window.updateArchetypeGrid === 'function') {
         window.updateArchetypeGrid('partner', null);
+    }
+    // Desktop SELECT-Dropdown zurücksetzen
+    var partnerSel = document.getElementById('partnerSelect');
+    if (partnerSel) partnerSel.selectedIndex = 0;
+    var mobilePartnerSel = document.getElementById('mobilePartnerSelect');
+    if (mobilePartnerSel) mobilePartnerSel.selectedIndex = 0;
+    // Score/Comparison View leeren
+    if (typeof window.updateComparisonView === 'function') {
+        window.updateComparisonView();
     }
 
     // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
