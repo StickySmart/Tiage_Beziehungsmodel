@@ -55,7 +55,7 @@ Diese Formel belohnt **symmetrische Resonanz**: Wenn beide Partner ähnlich hohe
 
 ## Visuelle Ebene: Bilder der 16 Grundbedürfnisse
 
-Jedes der 16 Grundbedürfnisse ist mit **3 Bildvarianten** verknüpft — KI-generierte Bilder im Stil des OSHO-Zen-Tarot, die die emotionale Qualität des Bedürfnisses visuell ausdrücken. Jede Variante trägt einen Stimmungsnamen und den assoziierten Tarot-Karten-Namen.
+Jedes der 16 Grundbedürfnisse ist mit **mehreren Bildvarianten** verknüpft — KI-generierte Bilder im Stil des OSHO-Zen-Tarot, die die emotionale Qualität des Bedürfnisses visuell ausdrücken. Jede Variante trägt einen Stimmungsnamen und den assoziierten Tarot-Karten-Namen.
 
 | Bedürfnis | Variante 1 | Variante 2 | Variante 3 |
 |-----------|-----------|-----------|-----------|
@@ -76,7 +76,7 @@ Jedes der 16 Grundbedürfnisse ist mit **3 Bildvarianten** verknüpft — KI-gen
 | #B15 Integrität | Integrität | Authentizität | Echtheit |
 | #B16 Selbstentfaltung | Kreativität | Selbst-Ausdruck | Leben-feiern |
 
-**Gesamtumfang:** 42 Bilder (webp/png) für 16 Bedürfnisse.
+**Gesamtumfang:** Mehrere Varianten pro Bedürfnis (webp/png) — wächst kontinuierlich.
 
 **Quellen:**
 - `assets/images/beduerfnisse-v2/` — Bilddateien (B001–B226.webp)

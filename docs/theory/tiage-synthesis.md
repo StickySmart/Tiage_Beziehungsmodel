@@ -4,20 +4,23 @@
 
 ## Das Tiage-Beziehungsmodell
 
-Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet zwei philosophische Traditionen zu einem praktischen Analyse-Tool:
+Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet mehrere philosophische und psychologische Traditionen zu einem praktischen Analyse-Tool:
 
 | Tradition | Vertreter | Beitrag zum Modell |
 |-----------|-----------|-------------------|
-| **MOQ** | Robert M. Pirsig | Metaphysik der Qualität - statische vs. dynamische Qualität als Grundstruktur |
-| **Bewusstseinsphilosophie** | OSHO | Bewusstsein durch Meditation - Polarität, Balance, Schwingung |
+| **MOQ** | Robert M. Pirsig | Metaphysik der Qualität — statische vs. dynamische Qualität als Grundstruktur |
+| **Bewusstseinsphilosophie** | OSHO | Bewusstsein durch Meditation — Polarität, Balance, Schwingung |
+| **Bedürfnispsychologie** | Volker Kiel | 16 Grundbedürfnisse (*Liebe will gelernt sein*) — das psychische Fundament jeder Beziehung |
+| **GFK** | Marshall B. Rosenberg | Gewaltfreie Kommunikation — Bedürfnis-Sprache als Brücke zwischen Gefühl und Verständigung |
 
 ## Tiages Beitrag
 
-Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit:
+Die Verbindung dieser Traditionen zu einem konkreten Beziehungs-Rechner mit:
 
 - Eigener Gewichtung (25:75 Logos:Pathos)
 - Archetypen-Matrix (8 Beziehungstypen)
-- Resonanz als Meta-Dimension
+- 16 Grundbedürfnisse als Resonanz-Basis (R1–R4)
+- Dimensionsspezifische Resonanz-Faktoren
 - Praktischer Anwendbarkeit
 
 ## Die 25:75 Gewichtung

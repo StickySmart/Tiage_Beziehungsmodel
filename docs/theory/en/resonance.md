@@ -55,7 +55,7 @@ This formula rewards **symmetric resonance**: when both partners have similarly 
 
 ## Visual Layer: Images of the 16 Core Needs
 
-Each of the 16 core needs is linked to **3 image variants** — AI-generated images in the style of OSHO Zen Tarot that visually express the emotional quality of the need. Each variant carries a mood name and the associated Tarot card name.
+Each of the 16 core needs is linked to **multiple image variants** — AI-generated images in the style of OSHO Zen Tarot that visually express the emotional quality of the need. Each variant carries a mood name and the associated Tarot card name.
 
 | Need | Variant 1 | Variant 2 | Variant 3 |
 |------|-----------|-----------|-----------|
@@ -76,7 +76,7 @@ Each of the 16 core needs is linked to **3 image variants** — AI-generated ima
 | #B15 Integrity | Integrity | Authenticity | Genuineness |
 | #B16 Self-Expression | Creativity | Self-Expression | Celebrating-Life |
 
-**Total scope:** 42 images (webp/png) for 16 needs.
+**Total scope:** Multiple variants per need (webp/png) — growing continuously.
 
 **Sources:**
 - `assets/images/beduerfnisse-v2/` — Image files (B001–B226.webp)

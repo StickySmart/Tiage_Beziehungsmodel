@@ -4,20 +4,23 @@
 
 ## The Tiage Relationship Model
 
-An **independent synthesis** by Tiage, developed through online research and personal reflection. The model connects two philosophical traditions into a practical analysis tool:
+An **independent synthesis** by Tiage, developed through online research and personal reflection. The model connects several philosophical and psychological traditions into a practical analysis tool:
 
 | Tradition | Representative | Contribution to the Model |
 |-----------|---------------|---------------------------|
-| **MOQ** | Robert M. Pirsig | Metaphysics of Quality - static vs. dynamic quality as basic structure |
-| **Consciousness Philosophy** | OSHO | Consciousness through meditation - polarity, balance, vibration |
+| **MOQ** | Robert M. Pirsig | Metaphysics of Quality — static vs. dynamic quality as basic structure |
+| **Consciousness Philosophy** | OSHO | Consciousness through meditation — polarity, balance, vibration |
+| **Needs Psychology** | Volker Kiel | 16 core needs (*Liebe will gelernt sein*) — the psychological foundation of every relationship |
+| **NVC** | Marshall B. Rosenberg | Nonviolent Communication — needs language as a bridge between feeling and understanding |
 
 ## Tiage's Contribution
 
-The connection of both philosophies into a concrete relationship calculator with:
+The connection of these traditions into a concrete relationship calculator with:
 
 - Own weighting (25:75 Logos:Pathos)
 - Archetype matrix (8 relationship types)
-- Resonance as meta-dimension
+- 16 core needs as resonance basis (R1–R4)
+- Dimension-specific resonance factors
 - Practical applicability
 
 ## The 25:75 Weighting
