@@ -776,20 +776,19 @@ var TiageLocale_EN = {
         needsLabel: 'Different Need Expressions'
     },
 
-    // New friction levels
-    friction: {
-        levels: {
-            none: { label: 'No Friction', emoji: '✨', range: '90-100%' },
-            light: { label: 'Light Friction', emoji: '🌱', range: '70-89%' },
-            medium: { label: 'Medium Friction', emoji: '🔧', range: '40-69%' },
-            high: { label: 'High Friction', emoji: '⚡', range: '10-39%' },
-            maximum: { label: 'Maximum Friction', emoji: '🔥', range: '0-9%' }
+    // Friction levels (key names match DE locale)
+    reibung: {
+        stufen: {
+            keine: { label: 'No Friction', emoji: '✨', range: '90-100%' },
+            leicht: { label: 'Light Friction', emoji: '🌱', range: '70-89%' },
+            mittel: { label: 'Medium Friction', emoji: '🔧', range: '40-69%' },
+            hoch: { label: 'High Friction', emoji: '⚡', range: '10-39%' },
+            maximal: { label: 'Maximum Friction', emoji: '🔥', range: '0-9%' }
         },
-        // Perspective hints
-        hints: {
+        hinweise: {
             pirsig: 'Quality emerges through integration of differences',
             osho: 'Any conditioning can be consciously transcended',
-            nvc: 'Behind every friction are fulfillable needs',
+            gfk: 'Behind every friction are fulfillable needs',
             rti: 'The 5 pillars of identity show development potentials'
         }
     },
