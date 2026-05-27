@@ -13,6 +13,8 @@ An **independent synthesis** by Tiage, developed through online research and per
 | **Needs Psychology** | Volker Schmidt | 16 core needs (*Liebe will gelernt sein*) — the psychological foundation of every relationship |
 | **NVC** | Marshall B. Rosenberg | Nonviolent Communication — needs language as a bridge between feeling and understanding |
 | **RTI — 5 Pillars of Identity** | Hilarion Petzold | Embodiment · Social Network · Autonomy · Security · Values & Meaning — friction analysis as a standalone synthesis tab |
+| **Attachment Theory** | John Bowlby / Mary Ainsworth | 4 attachment styles (Secure, Anxious, Avoidant, Disorganized) — tie-breaker for equal scores, synthesis texts |
+| **Vibration Philosophies** | Hartmut Rosa et al. | "Everything is vibration" — philosophical background for the resonance concept, from Nada Brahma to quantum physics |
 
 ## Tiage's Contribution
 
@@ -194,3 +196,5 @@ Gender split, total variance, honest breakdown. Synthesis Overview with 4-mode t
 - [OSHO Philosophy](osho.md) - Consciousness and relationship
 - [Pathos/Logos Details](pathos-logos.md) - The weighting in detail
 - [Resonance Theory](resonance.md) - The meta-factor
+- [Attachment Styles](bindungsstile.md) - Bowlby/Ainsworth, commitment, tie-breaker
+- [Atlas of Vibration Philosophies](resonanz-atlas.md) - Philosophical background of resonance

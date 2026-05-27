@@ -13,6 +13,8 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 | **Bedürfnispsychologie** | Volker Schmidt | 16 Grundbedürfnisse (*Liebe will gelernt sein*) — das psychische Fundament jeder Beziehung |
 | **GFK** | Marshall B. Rosenberg | Gewaltfreie Kommunikation — Bedürfnis-Sprache als Brücke zwischen Gefühl und Verständigung |
 | **RTI — 5 Säulen der Identität** | Hilarion Petzold | Leiblichkeit · Soziales Netzwerk · Autonomie · Sicherheit · Werte & Sinn — Reibungs-Analyse als eigenständiger Synthese-Tab |
+| **Bindungstheorie** | John Bowlby / Mary Ainsworth | 4 Bindungsstile (Sicher, Ängstlich, Vermeidend, Desorganisiert) — Tie-Breaker bei gleichem Score, Synthese-Texte |
+| **Schwingungs-Philosophien** | Hartmut Rosa u.a. | „Alles ist Schwingung" — philosophischer Hintergrund für den Resonanz-Begriff, von Nada Brahma bis Quantenphysik |
 
 ## Tiages Beitrag
 
@@ -194,3 +196,5 @@ Gender-Split, Totale Varianz, ehrliches Breakdown. Synthese Übersicht mit 4-Mod
 - [OSHO-Philosophie](osho.md) - Bewusstsein und Beziehung
 - [Pathos/Logos Details](pathos-logos.md) - Die Gewichtung im Detail
 - [Resonanz-Theorie](resonance.md) - Der Meta-Faktor
+- [Bindungsstile](bindungsstile.md) - Bowlby/Ainsworth, Commitment, Tie-Breaker
+- [Atlas der Schwingungs-Philosophien](resonanz-atlas.md) - Philosophischer Hintergrund der Resonanz
