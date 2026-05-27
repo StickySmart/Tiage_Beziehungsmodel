@@ -1442,6 +1442,28 @@
     animation: wzSlideIn 0.25s ease;
 }
 
+@keyframes wzAttractBm {
+    0%   { box-shadow: 0 0 0 0 rgba(244, 162, 97, 0.75); }
+    70%  { box-shadow: 0 0 0 14px rgba(244, 162, 97, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 162, 97, 0); }
+}
+
+@keyframes wzAttractSynth {
+    0%   { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.75); }
+    70%  { box-shadow: 0 0 0 14px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.wz-attract-bm {
+    animation: wzAttractBm 1.4s ease-in-out infinite !important;
+    border-radius: 12px;
+}
+
+.wz-attract-synth {
+    animation: wzAttractSynth 1.4s ease-in-out infinite !important;
+    border-radius: 12px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    MOBILE PROFILE CARDS — Collapsible ICH / PARTNER sections
    ═══════════════════════════════════════════════════════════════════════════ */
