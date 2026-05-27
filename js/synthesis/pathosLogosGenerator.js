@@ -30,6 +30,25 @@
 // C) 6 Kategorien + Templates → Zusammenführung
 // ═══════════════════════════════════════════════════════════════════════
 
+function getLang() {
+    if (typeof TiageI18n !== 'undefined' && TiageI18n.getLanguage) {
+        return TiageI18n.getLanguage();
+    }
+    return 'de';
+}
+
+function getLocalizedPhrases(phrases) {
+    if (Array.isArray(phrases)) return phrases;
+    const lang = getLang();
+    return phrases[lang] || phrases.de || [];
+}
+
+function getLocalizedText(textObj) {
+    if (typeof textObj === 'string') return textObj;
+    const lang = getLang();
+    return textObj[lang] || textObj.de || '';
+}
+
 /**
  * Berechnet einen deterministischen Hash aus den 4 Faktoren
  * Gibt einen Index zurück, der für Statement-Auswahl verwendet wird
@@ -65,40 +84,82 @@ function getTonality(score) {
  */
 const tonalityTemplates = {
     positiv: {
-        pathos: [
-            "Eine vielversprechende Resonanz entsteht zwischen euch.",
-            "Die emotionale Chemie deutet auf tiefes Potenzial hin.",
-            "Eure Energien harmonieren auf einer fundamentalen Ebene."
-        ],
-        logos: [
-            "Die strukturelle Kompatibilität bildet eine solide Basis.",
-            "Eure Beziehungsphilosophien ergänzen sich konstruktiv.",
-            "Das rationale Fundament ermöglicht fruchtbare Kommunikation."
-        ]
+        pathos: {
+            de: [
+                "Eine vielversprechende Resonanz entsteht zwischen euch.",
+                "Die emotionale Chemie deutet auf tiefes Potenzial hin.",
+                "Eure Energien harmonieren auf einer fundamentalen Ebene."
+            ],
+            en: [
+                "A promising resonance arises between you.",
+                "The emotional chemistry points to deep potential.",
+                "Your energies harmonize on a fundamental level."
+            ]
+        },
+        logos: {
+            de: [
+                "Die strukturelle Kompatibilität bildet eine solide Basis.",
+                "Eure Beziehungsphilosophien ergänzen sich konstruktiv.",
+                "Das rationale Fundament ermöglicht fruchtbare Kommunikation."
+            ],
+            en: [
+                "The structural compatibility forms a solid foundation.",
+                "Your relationship philosophies complement each other constructively.",
+                "The rational foundation enables productive communication."
+            ]
+        }
     },
     neutral: {
-        pathos: [
-            "Eine interessante Dynamik entfaltet sich zwischen euch.",
-            "Die emotionale Landschaft bietet sowohl Chancen als auch Herausforderungen.",
-            "Eure Energien begegnen sich – was daraus wird, liegt in euren Händen."
-        ],
-        logos: [
-            "Die strukturellen Unterschiede erfordern bewusste Navigation.",
-            "Eure Beziehungsvorstellungen haben Überschneidungen, aber auch Differenzen.",
-            "Dialog und Klärung werden wichtig sein für das gegenseitige Verständnis."
-        ]
+        pathos: {
+            de: [
+                "Eine interessante Dynamik entfaltet sich zwischen euch.",
+                "Die emotionale Landschaft bietet sowohl Chancen als auch Herausforderungen.",
+                "Eure Energien begegnen sich – was daraus wird, liegt in euren Händen."
+            ],
+            en: [
+                "An interesting dynamic unfolds between you.",
+                "The emotional landscape offers both opportunities and challenges.",
+                "Your energies meet – what becomes of them lies in your hands."
+            ]
+        },
+        logos: {
+            de: [
+                "Die strukturellen Unterschiede erfordern bewusste Navigation.",
+                "Eure Beziehungsvorstellungen haben Überschneidungen, aber auch Differenzen.",
+                "Dialog und Klärung werden wichtig sein für das gegenseitige Verständnis."
+            ],
+            en: [
+                "The structural differences require conscious navigation.",
+                "Your relationship ideas have overlaps, but also differences.",
+                "Dialogue and clarification will be important for mutual understanding."
+            ]
+        }
     },
     kritisch: {
-        pathos: [
-            "Die emotionalen Welten prallen aufeinander.",
-            "Spannungen auf der Gefühlsebene sind zu erwarten.",
-            "Die unterschiedlichen emotionalen Bedürfnisse erfordern besondere Achtsamkeit."
-        ],
-        logos: [
-            "Fundamentale Unterschiede in den Beziehungsvorstellungen werden sichtbar.",
-            "Die strukturellen Differenzen stellen eine erhebliche Herausforderung dar.",
-            "Grundlegende Gespräche über Erwartungen sind unerlässlich."
-        ]
+        pathos: {
+            de: [
+                "Die emotionalen Welten prallen aufeinander.",
+                "Spannungen auf der Gefühlsebene sind zu erwarten.",
+                "Die unterschiedlichen emotionalen Bedürfnisse erfordern besondere Achtsamkeit."
+            ],
+            en: [
+                "The emotional worlds collide.",
+                "Tensions at the emotional level are to be expected.",
+                "The different emotional needs require special mindfulness."
+            ]
+        },
+        logos: {
+            de: [
+                "Fundamentale Unterschiede in den Beziehungsvorstellungen werden sichtbar.",
+                "Die strukturellen Differenzen stellen eine erhebliche Herausforderung dar.",
+                "Grundlegende Gespräche über Erwartungen sind unerlässlich."
+            ],
+            en: [
+                "Fundamental differences in relationship expectations become visible.",
+                "The structural differences present a considerable challenge.",
+                "Fundamental conversations about expectations are essential."
+            ]
+        }
     }
 };
 
@@ -106,41 +167,41 @@ const tonalityTemplates = {
  * Kategorie-spezifische Synthese-Bausteine für die 6 Bereiche
  */
 const categorySynthesisTemplates = {
-    A: { // Beziehungsphilosophie
-        name: "Beziehungsphilosophie",
-        positiv: "Eure Grundhaltungen zu Beziehungen harmonieren.",
-        neutral: "Eure Beziehungsphilosophien haben gemeinsame Punkte, aber auch Unterschiede.",
-        kritisch: "Fundamentale Differenzen in der Beziehungsphilosophie erfordern Klärung."
+    A: {
+        name: { de: "Beziehungsphilosophie", en: "Relationship Philosophy" },
+        positiv: { de: "Eure Grundhaltungen zu Beziehungen harmonieren.", en: "Your fundamental attitudes toward relationships harmonize." },
+        neutral: { de: "Eure Beziehungsphilosophien haben gemeinsame Punkte, aber auch Unterschiede.", en: "Your relationship philosophies have common points, but also differences." },
+        kritisch: { de: "Fundamentale Differenzen in der Beziehungsphilosophie erfordern Klärung.", en: "Fundamental differences in relationship philosophy require clarification." }
     },
-    B: { // Werte-Alignment
-        name: "Werte-Alignment",
-        positiv: "Geteilte Werte bilden ein stabiles Fundament.",
-        neutral: "Manche Werte teilt ihr, andere unterscheiden sich.",
-        kritisch: "Unterschiedliche Wertevorstellungen können zu Konflikten führen."
+    B: {
+        name: { de: "Werte-Alignment", en: "Value Alignment" },
+        positiv: { de: "Geteilte Werte bilden ein stabiles Fundament.", en: "Shared values form a stable foundation." },
+        neutral: { de: "Manche Werte teilt ihr, andere unterscheiden sich.", en: "Some values you share, others differ." },
+        kritisch: { de: "Unterschiedliche Wertevorstellungen können zu Konflikten führen.", en: "Different value expectations can lead to conflicts." }
     },
-    C: { // Nähe-Distanz
-        name: "Nähe-Distanz",
-        positiv: "Eure Bedürfnisse nach Nähe und Raum passen gut zusammen.",
-        neutral: "Die Balance zwischen Nähe und Distanz wird Kommunikation erfordern.",
-        kritisch: "Unterschiedliche Nähe-Distanz-Bedürfnisse können Spannung erzeugen."
+    C: {
+        name: { de: "Nähe-Distanz", en: "Closeness-Distance" },
+        positiv: { de: "Eure Bedürfnisse nach Nähe und Raum passen gut zusammen.", en: "Your needs for closeness and space fit well together." },
+        neutral: { de: "Die Balance zwischen Nähe und Distanz wird Kommunikation erfordern.", en: "The balance between closeness and distance will require communication." },
+        kritisch: { de: "Unterschiedliche Nähe-Distanz-Bedürfnisse können Spannung erzeugen.", en: "Different closeness-distance needs can create tension." }
     },
-    D: { // Autonomie
-        name: "Autonomie",
-        positiv: "Ihr respektiert gegenseitig eure Unabhängigkeit.",
-        neutral: "Das Autonomie-Verständnis bedarf weiterer Abstimmung.",
-        kritisch: "Konfliktpotenzial bei unterschiedlichen Autonomie-Erwartungen."
+    D: {
+        name: { de: "Autonomie", en: "Autonomy" },
+        positiv: { de: "Ihr respektiert gegenseitig eure Unabhängigkeit.", en: "You mutually respect each other's independence." },
+        neutral: { de: "Das Autonomie-Verständnis bedarf weiterer Abstimmung.", en: "The understanding of autonomy requires further coordination." },
+        kritisch: { de: "Konfliktpotenzial bei unterschiedlichen Autonomie-Erwartungen.", en: "Conflict potential with differing autonomy expectations." }
     },
-    E: { // Kommunikation
-        name: "Kommunikation",
-        positiv: "Die Basis für fruchtbaren Dialog ist gegeben.",
-        neutral: "Kommunikationsstile unterscheiden sich – Anpassung möglich.",
-        kritisch: "Unterschiedliche Kommunikationsweisen können Missverständnisse erzeugen."
+    E: {
+        name: { de: "Kommunikation", en: "Communication" },
+        positiv: { de: "Die Basis für fruchtbaren Dialog ist gegeben.", en: "The foundation for productive dialogue is present." },
+        neutral: { de: "Kommunikationsstile unterscheiden sich – Anpassung möglich.", en: "Communication styles differ – adaptation is possible." },
+        kritisch: { de: "Unterschiedliche Kommunikationsweisen können Missverständnisse erzeugen.", en: "Different communication styles can generate misunderstandings." }
     },
-    F: { // Soziale Kompatibilität
-        name: "Soziale Kompatibilität",
-        positiv: "Soziale Vorstellungen und Umfelder harmonieren.",
-        neutral: "Soziale Kompatibilität ist teilweise gegeben.",
-        kritisch: "Unterschiedliche soziale Erwartungen können belasten."
+    F: {
+        name: { de: "Soziale Kompatibilität", en: "Social Compatibility" },
+        positiv: { de: "Soziale Vorstellungen und Umfelder harmonieren.", en: "Social ideas and environments harmonize." },
+        neutral: { de: "Soziale Kompatibilität ist teilweise gegeben.", en: "Social compatibility is partially present." },
+        kritisch: { de: "Unterschiedliche soziale Erwartungen können belasten.", en: "Different social expectations can create strain." }
     }
 };
 
@@ -253,25 +314,40 @@ function generateDetailedPathos(ichArch, partnerArch) {
     // FALLBACK: Original-Logik (wenn PathosTextGenerator nicht geladen)
     // ═══════════════════════════════════════════════════════════════
     const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+    const lang = getLang();
+    const isEN = lang === 'en';
 
     // ICH BRINGT MIT
     const ichParts = [];
     if (ichArch?.pirsig?.dynamicQuality !== undefined) {
         const dynQual = ichArch.pirsig.dynamicQuality;
         if (dynQual >= 0.7) {
-            ichParts.push(`${ichName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
+            ichParts.push(isEN
+                ? `${ichName} brings a high dynamic energy – open to change and spontaneous connection.`
+                : `${ichName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
         } else if (dynQual >= 0.4) {
-            ichParts.push(`${ichName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
+            ichParts.push(isEN
+                ? `${ichName} balances between stability and flexibility in the emotional world.`
+                : `${ichName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
         } else {
-            ichParts.push(`${ichName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
+            ichParts.push(isEN
+                ? `${ichName} seeks emotional depth through constancy and familiar patterns.`
+                : `${ichName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
         }
     }
     if (ichArch?.osho?.naturalness >= 0.7) {
-        ichParts.push(`Emotionale Authentizität steht im Vordergrund – ${ichName} folgt dem natürlichen Fluss der Gefühle.`);
+        ichParts.push(isEN
+            ? `Emotional authenticity is central – ${ichName} follows the natural flow of feelings.`
+            : `Emotionale Authentizität steht im Vordergrund – ${ichName} folgt dem natürlichen Fluss der Gefühle.`);
     }
     const ichDom = person1.dominanz;
     if (ichDom) {
-        const domText = {
+        const domText = isEN ? {
+            'dominant': `As the guiding partner, ${ichName} carries an active emotional energy.`,
+            'submissiv': `${ichName} brings a receptive, surrendering quality.`,
+            'switch': `${ichName} is flexible in emotional dynamics – sometimes leading, sometimes following.`,
+            'ausgeglichen': `${ichName} strives for emotional balance in the connection.`
+        } : {
             'dominant': `Als Führende/r trägt ${ichName} eine aktive emotionale Energie.`,
             'submissiv': `${ichName} bringt eine empfängliche, hingebungsvolle Qualität mit.`,
             'switch': `${ichName} ist flexibel in der emotionalen Dynamik – mal führend, mal folgend.`,
@@ -280,7 +356,9 @@ function generateDetailedPathos(ichArch, partnerArch) {
         if (domText[ichDom]) ichParts.push(domText[ichDom]);
     }
     if (ichArch?.coreValues?.length) {
-        ichParts.push(`Kernwerte wie ${ichArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
+        ichParts.push(isEN
+            ? `Core values such as ${ichArch.coreValues.slice(0, 2).join(' and ')} shape the emotional experience.`
+            : `Kernwerte wie ${ichArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
     }
 
     // PARTNER BRINGT MIT
@@ -288,19 +366,32 @@ function generateDetailedPathos(ichArch, partnerArch) {
     if (partnerArch?.pirsig?.dynamicQuality !== undefined) {
         const dynQual = partnerArch.pirsig.dynamicQuality;
         if (dynQual >= 0.7) {
-            partnerParts.push(`${partnerName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
+            partnerParts.push(isEN
+                ? `${partnerName} brings a high dynamic energy – open to change and spontaneous connection.`
+                : `${partnerName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
         } else if (dynQual >= 0.4) {
-            partnerParts.push(`${partnerName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
+            partnerParts.push(isEN
+                ? `${partnerName} balances between stability and flexibility in the emotional world.`
+                : `${partnerName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
         } else {
-            partnerParts.push(`${partnerName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
+            partnerParts.push(isEN
+                ? `${partnerName} seeks emotional depth through constancy and familiar patterns.`
+                : `${partnerName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
         }
     }
     if (partnerArch?.osho?.naturalness >= 0.7) {
-        partnerParts.push(`Emotionale Authentizität steht im Vordergrund – ${partnerName} folgt dem natürlichen Fluss der Gefühle.`);
+        partnerParts.push(isEN
+            ? `Emotional authenticity is central – ${partnerName} follows the natural flow of feelings.`
+            : `Emotionale Authentizität steht im Vordergrund – ${partnerName} folgt dem natürlichen Fluss der Gefühle.`);
     }
     const partnerDom = person2.dominanz;
     if (partnerDom) {
-        const domText = {
+        const domText = isEN ? {
+            'dominant': `As the guiding partner, ${partnerName} carries an active emotional energy.`,
+            'submissiv': `${partnerName} brings a receptive, surrendering quality.`,
+            'switch': `${partnerName} is flexible in emotional dynamics – sometimes leading, sometimes following.`,
+            'ausgeglichen': `${partnerName} strives for emotional balance in the connection.`
+        } : {
             'dominant': `Als Führende/r trägt ${partnerName} eine aktive emotionale Energie.`,
             'submissiv': `${partnerName} bringt eine empfängliche, hingebungsvolle Qualität mit.`,
             'switch': `${partnerName} ist flexibel in der emotionalen Dynamik – mal führend, mal folgend.`,
@@ -309,12 +400,15 @@ function generateDetailedPathos(ichArch, partnerArch) {
         if (domText[partnerDom]) partnerParts.push(domText[partnerDom]);
     }
     if (partnerArch?.coreValues?.length) {
-        partnerParts.push(`Kernwerte wie ${partnerArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
+        partnerParts.push(isEN
+            ? `Core values such as ${partnerArch.coreValues.slice(0, 2).join(' and ')} shape the emotional experience.`
+            : `Kernwerte wie ${partnerArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
     }
 
     // SYNTHESE
+    const lang = getLang();
     const syntheseParts = [];
-    const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].pathos, hash);
+    const tonalityIntro = selectStatementByHash(getLocalizedPhrases(tonalityTemplates[tonality].pathos), hash);
     if (tonalityIntro) syntheseParts.push(tonalityIntro);
     if (archStatements?.pathos) {
         const allPathos = [...(archStatements.pathos.gemeinsam || []), ...(archStatements.pathos.spannung || [])];
@@ -327,19 +421,29 @@ function generateDetailedPathos(ichArch, partnerArch) {
     const ichDyn = ichArch?.pirsig?.dynamicQuality || 0.5;
     const partnerDyn = partnerArch?.pirsig?.dynamicQuality || 0.5;
     if (Math.abs(ichDyn - partnerDyn) < 0.2) {
-        syntheseParts.push(`Beide schwingen auf einer ähnlichen emotionalen Frequenz.`);
+        syntheseParts.push(lang === 'en'
+            ? `Both vibrate on a similar emotional frequency.`
+            : `Beide schwingen auf einer ähnlichen emotionalen Frequenz.`);
     }
     if (syntheseParts.length === 0) {
-        syntheseParts.push(`${ichName} und ${partnerName} können emotional zueinander finden.`);
+        syntheseParts.push(lang === 'en'
+            ? `${ichName} and ${partnerName} can find each other emotionally.`
+            : `${ichName} und ${partnerName} können emotional zueinander finden.`);
     }
 
     // RESONANZ
     let resonanzText = null;
     if (resonanzData?.R !== undefined) {
         const R = resonanzData.R;
-        if (R >= 1.05) resonanzText = `Hohe emotionale Resonanz (R=${R.toFixed(2)}): Pathos und Logos harmonieren.`;
-        else if (R >= 0.95) resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Emotionale und rationale Ebene im Gleichgewicht.`;
-        else resonanzText = `Resonanz R=${R.toFixed(2)}: Die Wellenlängen sind noch nicht vollständig abgestimmt.`;
+        if (lang === 'en') {
+            if (R >= 1.05) resonanzText = `High emotional resonance (R=${R.toFixed(2)}): Pathos and Logos harmonize.`;
+            else if (R >= 0.95) resonanzText = `Good resonance (R=${R.toFixed(2)}): Emotional and rational levels in balance.`;
+            else resonanzText = `Resonance R=${R.toFixed(2)}: The wavelengths are not yet fully aligned.`;
+        } else {
+            if (R >= 1.05) resonanzText = `Hohe emotionale Resonanz (R=${R.toFixed(2)}): Pathos und Logos harmonieren.`;
+            else if (R >= 0.95) resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Emotionale und rationale Ebene im Gleichgewicht.`;
+            else resonanzText = `Resonanz R=${R.toFixed(2)}: Die Wellenlängen sind noch nicht vollständig abgestimmt.`;
+        }
     }
 
     return {
@@ -469,32 +573,42 @@ function generateDetailedLogos(ichArch, partnerArch) {
     // FALLBACK: Original-Logik (wenn LogosTextGenerator nicht geladen)
     // ═══════════════════════════════════════════════════════════════
     const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+    const lang = getLang();
+    const isEN = lang === 'en';
 
     // ICH BRINGT MIT
     const ichParts = [];
     if (ichArch?.pirsig?.staticQuality !== undefined) {
         const statQual = ichArch.pirsig.staticQuality;
         if (statQual >= 0.7) {
-            ichParts.push(`${ichName} bringt klare Strukturen und feste Werte mit – Verlässlichkeit ist ein Grundpfeiler.`);
+            ichParts.push(isEN
+                ? `${ichName} brings clear structures and firm values – reliability is a cornerstone.`
+                : `${ichName} bringt klare Strukturen und feste Werte mit – Verlässlichkeit ist ein Grundpfeiler.`);
         } else if (statQual >= 0.4) {
-            ichParts.push(`${ichName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
+            ichParts.push(isEN
+                ? `${ichName} balances between firm convictions and openness to new perspectives.`
+                : `${ichName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
         } else {
-            ichParts.push(`${ichName} bevorzugt Flexibilität über starre Regeln.`);
+            ichParts.push(isEN
+                ? `${ichName} prefers flexibility over rigid rules.`
+                : `${ichName} bevorzugt Flexibilität über starre Regeln.`);
         }
     }
     if (ichArch?.coreValues?.length) {
-        ichParts.push(`Kernwerte: ${ichArch.coreValues.slice(0, 3).join(', ')}.`);
+        ichParts.push(isEN
+            ? `Core values: ${ichArch.coreValues.slice(0, 3).join(', ')}.`
+            : `Kernwerte: ${ichArch.coreValues.slice(0, 3).join(', ')}.`);
     }
     if (ichArch?.avoids?.length) {
-        ichParts.push(`Vermeidet: ${ichArch.avoids.slice(0, 2).join(' und ')}.`);
+        ichParts.push(isEN
+            ? `Avoids: ${ichArch.avoids.slice(0, 2).join(' and ')}.`
+            : `Vermeidet: ${ichArch.avoids.slice(0, 2).join(' und ')}.`);
     }
     const ichGfk = window.personDimensions.ich?.gfk;
     if (ichGfk) {
-        const gfkText = {
-            'hoch': `GFK-Kompetenz: hoch.`,
-            'mittel': `GFK-Kompetenz: mittel.`,
-            'niedrig': `GFK-Kompetenz: niedrig.`
-        };
+        const gfkText = isEN
+            ? { 'hoch': `NVC competence: high.`, 'mittel': `NVC competence: medium.`, 'niedrig': `NVC competence: low.` }
+            : { 'hoch': `GFK-Kompetenz: hoch.`, 'mittel': `GFK-Kompetenz: mittel.`, 'niedrig': `GFK-Kompetenz: niedrig.` };
         if (gfkText[ichGfk]) ichParts.push(gfkText[ichGfk]);
     }
 
@@ -503,32 +617,40 @@ function generateDetailedLogos(ichArch, partnerArch) {
     if (partnerArch?.pirsig?.staticQuality !== undefined) {
         const statQual = partnerArch.pirsig.staticQuality;
         if (statQual >= 0.7) {
-            partnerParts.push(`${partnerName} bringt klare Strukturen und feste Werte mit.`);
+            partnerParts.push(isEN
+                ? `${partnerName} brings clear structures and firm values.`
+                : `${partnerName} bringt klare Strukturen und feste Werte mit.`);
         } else if (statQual >= 0.4) {
-            partnerParts.push(`${partnerName} balanciert zwischen Struktur und Flexibilität.`);
+            partnerParts.push(isEN
+                ? `${partnerName} balances between structure and flexibility.`
+                : `${partnerName} balanciert zwischen Struktur und Flexibilität.`);
         } else {
-            partnerParts.push(`${partnerName} bevorzugt adaptive Strukturen.`);
+            partnerParts.push(isEN
+                ? `${partnerName} prefers adaptive structures.`
+                : `${partnerName} bevorzugt adaptive Strukturen.`);
         }
     }
     if (partnerArch?.coreValues?.length) {
-        partnerParts.push(`Kernwerte: ${partnerArch.coreValues.slice(0, 3).join(', ')}.`);
+        partnerParts.push(isEN
+            ? `Core values: ${partnerArch.coreValues.slice(0, 3).join(', ')}.`
+            : `Kernwerte: ${partnerArch.coreValues.slice(0, 3).join(', ')}.`);
     }
     if (partnerArch?.avoids?.length) {
-        partnerParts.push(`Vermeidet: ${partnerArch.avoids.slice(0, 2).join(' und ')}.`);
+        partnerParts.push(isEN
+            ? `Avoids: ${partnerArch.avoids.slice(0, 2).join(' and ')}.`
+            : `Vermeidet: ${partnerArch.avoids.slice(0, 2).join(' und ')}.`);
     }
     const partnerGfk = window.personDimensions.partner?.gfk;
     if (partnerGfk) {
-        const gfkText = {
-            'hoch': `GFK-Kompetenz: hoch.`,
-            'mittel': `GFK-Kompetenz: mittel.`,
-            'niedrig': `GFK-Kompetenz: niedrig.`
-        };
+        const gfkText = isEN
+            ? { 'hoch': `NVC competence: high.`, 'mittel': `NVC competence: medium.`, 'niedrig': `NVC competence: low.` }
+            : { 'hoch': `GFK-Kompetenz: hoch.`, 'mittel': `GFK-Kompetenz: mittel.`, 'niedrig': `GFK-Kompetenz: niedrig.` };
         if (gfkText[partnerGfk]) partnerParts.push(gfkText[partnerGfk]);
     }
 
     // SYNTHESE
     const syntheseParts = [];
-    const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].logos, hash);
+    const tonalityIntro = selectStatementByHash(getLocalizedPhrases(tonalityTemplates[tonality].logos), hash);
     if (tonalityIntro) syntheseParts.push(tonalityIntro);
     if (archStatements?.logos) {
         const allLogos = [...(archStatements.logos.gemeinsam || []), ...(archStatements.logos.unterschied || [])];
@@ -538,19 +660,29 @@ function generateDetailedLogos(ichArch, partnerArch) {
     const ichStat = ichArch?.pirsig?.staticQuality || 0.5;
     const partnerStat = partnerArch?.pirsig?.staticQuality || 0.5;
     if (Math.abs(ichStat - partnerStat) < 0.2) {
-        syntheseParts.push(`Ähnliches Strukturbedürfnis erleichtert die Abstimmung.`);
+        syntheseParts.push(isEN
+            ? `Similar need for structure facilitates coordination.`
+            : `Ähnliches Strukturbedürfnis erleichtert die Abstimmung.`);
     }
     if (syntheseParts.length === 0) {
-        syntheseParts.push(`${ichName} und ${partnerName} haben Potenzial für eine tragfähige Basis.`);
+        syntheseParts.push(isEN
+            ? `${ichName} and ${partnerName} have potential for a viable foundation.`
+            : `${ichName} und ${partnerName} haben Potenzial für eine tragfähige Basis.`);
     }
 
     // RESONANZ
     let resonanzText = null;
     if (resonanzData?.R !== undefined) {
         const R = resonanzData.R;
-        if (R >= 1.05) resonanzText = `Resonanz R=${R.toFixed(2)}: Hohe strukturelle Übereinstimmung.`;
-        else if (R >= 0.95) resonanzText = `Resonanz R=${R.toFixed(2)}: Gute Kompatibilität.`;
-        else resonanzText = `Resonanz R=${R.toFixed(2)}: Erfordert bewusste Abstimmung.`;
+        if (isEN) {
+            if (R >= 1.05) resonanzText = `Resonance R=${R.toFixed(2)}: High structural alignment.`;
+            else if (R >= 0.95) resonanzText = `Resonance R=${R.toFixed(2)}: Good compatibility.`;
+            else resonanzText = `Resonance R=${R.toFixed(2)}: Requires conscious coordination.`;
+        } else {
+            if (R >= 1.05) resonanzText = `Resonanz R=${R.toFixed(2)}: Hohe strukturelle Übereinstimmung.`;
+            else if (R >= 0.95) resonanzText = `Resonanz R=${R.toFixed(2)}: Gute Kompatibilität.`;
+            else resonanzText = `Resonanz R=${R.toFixed(2)}: Erfordert bewusste Abstimmung.`;
+        }
     }
 
     return {
