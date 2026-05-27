@@ -1,6 +1,6 @@
 # Tiage-Beziehungsmodell
 
-**Version 1.8.1151** | [Changelog](CHANGELOG.md) | [English Docs](docs/en/README.md)
+**Version 1.8.1152** | [Changelog](CHANGELOG.md) | [English Docs](docs/en/README.md)
 
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
@@ -27,7 +27,7 @@ Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht
 
 ## Kernkonzept: Logos vs. Pathos
 
-<!-- Gewichtung: 40:60 - Tiage's Synthese -->
+<!-- Gewichtung: 25:75 Logos:Pathos - Tiage's Synthese -->
 
 | Dimension | Pirsig-Begriff | Bedeutung |
 |-----------|----------------|-----------|

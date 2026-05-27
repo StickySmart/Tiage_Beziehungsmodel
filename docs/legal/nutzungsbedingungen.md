@@ -1,8 +1,8 @@
 # Nutzungsbedingungen
 
-**Stand:** Dezember 2025
+**Stand:** Mai 2026
 
-> **© 2025 Ti-age.de** – Das Tiage Beziehungsmodell und alle zugehörigen Inhalte sind urheberrechtlich geschützt.
+> **© 2025–2026 Ti-age.de** – Das Tiage Beziehungsmodell und alle zugehörigen Inhalte sind urheberrechtlich geschützt.
 
 ## 1. Urheberrecht
 
@@ -27,7 +27,7 @@ Das Tiage Beziehungsmodell wurde von **Tiage (StickySmart)** als eigenständige 
 Über das Urheberrecht hinaus beansprucht der Urheber das geistige Eigentum an folgenden konzeptionellen Elementen:
 
 - **Die Synthese:** Die Verbindung von Robert M. Pirsigs Metaphysik der Qualität (MOQ) mit OSHOs Bewusstseinsphilosophie zu einem praktischen Beziehungsmodell
-- **Die Logos/Pathos-Methodik:** Die Anwendung der Unterscheidung statische/dynamische Qualität auf Beziehungskompatibilität mit der spezifischen Gewichtung
+- **Die Logos/Pathos-Methodik:** Die Anwendung der Unterscheidung statische/dynamische Qualität auf Beziehungskompatibilität mit der 25:75-Gewichtung (Logos:Pathos)
 - **Das 8-Archetypen-System:** Die Kategorisierung und Beschreibung der acht Beziehungsformen in ihrer spezifischen Konstellation
 - **Die 4-Faktoren-Berechnung:** Die Methode zur Kompatibilitätsberechnung mit den Faktoren Archetyp-Übereinstimmung, Orientierungs-Kompatibilität, Dominanz-Harmonie und Geschlechts-Attraktion
 - **Die 864 psychologischen Profile:** Die systematische Kombination von Archetyp, Orientierung, Dominanz und Geschlecht
@@ -85,6 +85,6 @@ Der Betreiber behält sich vor, diese Nutzungsbedingungen jederzeit zu ändern. 
 
 ---
 
-*© 2025 Ti-Age – Alle Rechte vorbehalten*
+*© 2025–2026 Ti-Age – Alle Rechte vorbehalten*
 
 [Zurück zur App](../../archetype-interaction.html) | [Datenschutz](datenschutz.md) | [Kontakt](mailto:nerd@ti-age.de)

@@ -1,6 +1,6 @@
 # Datenschutzerklärung
 
-**Stand:** November 2025
+**Stand:** Mai 2026
 
 ## 1. Verantwortlicher
 
@@ -22,7 +22,7 @@ Die Website nutzt die LocalStorage-Funktion deines Browsers, um bestimmte Einste
 
 ## 4. Hosting
 
-Diese Website wird bei einem externen Hosting-Anbieter gehostet. Der Hoster kann Server-Logfiles speichern, die technische Informationen wie IP-Adresse, Browsertyp, Betriebssystem und Zugriffszeit enthalten. Diese Daten dienen der Sicherstellung eines störungsfreien Betriebs und werden nicht mit anderen Datenquellen zusammengeführt.
+Diese Website wird bei **Vercel Inc.** (440 N Barranca Ave #4133, Covina, CA 91723, USA) gehostet. Vercel kann Server-Logfiles speichern, die technische Informationen wie IP-Adresse, Browsertyp, Betriebssystem und Zugriffszeit enthalten. Diese Daten dienen der Sicherstellung eines störungsfreien Betriebs. Weitere Informationen zur Datenverarbeitung durch Vercel: [vercel.com/legal/privacy-policy](https://vercel.com/legal/privacy-policy)
 
 ## 5. Deine Rechte
 
@@ -43,6 +43,6 @@ Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen, um sie 
 
 ---
 
-*© 2025 Ti-Age – Alle Rechte vorbehalten*
+*© 2025–2026 Ti-Age – Alle Rechte vorbehalten*
 
 [Zurück zur App](../../archetype-interaction.html) | [Nutzungsbedingungen](nutzungsbedingungen.md) | [Kontakt](mailto:nerd@ti-age.de)

@@ -143,7 +143,7 @@ Konditionierung → Meditation → Bewusstsein → Bewusste Wahl → Flow → Re
 |--------------|-----------------|----------------------|
 | **Konditionierung** | Archetypen & Orientierungen als gewählte Muster | Das Modell fragt "Was lebst du?" – nicht "Was bist du?" |
 | **Bewusstsein** | Profil-Erstellung als Reflexionsprozess | Jede Frage ist eine Einladung zum Hinschauen |
-| **Flow** | Hohe Resonanz (R ≥ 1.1) zwischen Profilen | Resonanz = Flow-Potenzial, nicht Garantie |
+| **Flow** | Hohe Bedürfnis-Resonanz (R1–R4 ≥ 1.05) zwischen Profilen | Resonanz = Flow-Potenzial, nicht Garantie |
 | **Meditation** | Nutzung ohne Urteil | Das Modell bewertet nicht – es zeigt |
 | **Resonanz-Override** | Konditionierte Grenzen können transzendiert werden | Tiefe Resonanz überschreibt gelernte Labels (siehe [resonance.md](resonance.md)) |
 

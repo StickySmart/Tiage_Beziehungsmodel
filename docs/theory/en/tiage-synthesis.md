@@ -12,6 +12,7 @@ An **independent synthesis** by Tiage, developed through online research and per
 | **Consciousness Philosophy** | OSHO | Consciousness through meditation — polarity, balance, vibration |
 | **Needs Psychology** | Volker Schmidt | 16 core needs (*Liebe will gelernt sein*) — the psychological foundation of every relationship |
 | **NVC** | Marshall B. Rosenberg | Nonviolent Communication — needs language as a bridge between feeling and understanding |
+| **RTI — 5 Pillars of Identity** | Hilarion Petzold | Embodiment · Social Network · Autonomy · Security · Values & Meaning — friction analysis as a standalone synthesis tab |
 
 ## Tiage's Contribution
 
@@ -21,6 +22,7 @@ The connection of these traditions into a concrete relationship calculator with:
 - Archetype matrix (8 relationship types)
 - 16 core needs as resonance basis (R1–R4)
 - Dimension-specific resonance factors
+- RTI pillar analysis (5 Pillars of Identity by Petzold)
 - Practical applicability
 
 ## The 25:75 Weighting

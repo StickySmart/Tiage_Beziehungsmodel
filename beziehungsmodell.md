@@ -757,14 +757,14 @@ Der Resonanz-Koeffizient R wird **pro Faktor** berechnet - jeder Faktor hat sein
 | **⚡ Dynamik** | Tiedens (Power) | Komplementarität - Wer führt, wer folgt? |
 | **💚 Identität** | Friston (Predictive) | Authentizität - Wer bin ich wirklich? |
 
-### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
+### Gewichtungen nach Pirsig (Logos/Pathos = 25/75)
 
 | Gewicht | Wert | Faktor | Pirsig-Kategorie | Begründung |
 |---------|------|--------|------------------|------------|
-| **wₐ** | 0.40 | Archetyp | **Logos** (Statisch) | Rationale Entscheidung über Beziehungsform |
+| **wₐ** | 0.25 | Archetyp | **Logos** (Statisch) | Rationale Entscheidung über Beziehungsform |
 | **wₒ** | 0.25 | Orientierung | **Pathos** (Dynamisch) | Körperliche Anziehung ist fundamental |
-| **wᵈ** | 0.20 | Dominanz | **Pathos** (Dynamisch) | Energetische Spannung und Dynamik |
-| **wᵍ** | 0.15 | Geschlecht | **Pathos** (Dynamisch) | Chemie, das "gewisse Etwas" |
+| **wᵈ** | 0.25 | Dominanz | **Pathos** (Dynamisch) | Energetische Spannung und Dynamik |
+| **wᵍ** | 0.25 | Geschlecht | **Pathos** (Dynamisch) | Chemie, das "gewisse Etwas" |
 
 ---
 
@@ -956,7 +956,7 @@ Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung. Wenn
 
 Die Verbindung von Pirsigs Qualitäts-Philosophie mit OSHOs Polaritäts-Konzept zu einem praktischen Beziehungs-Rechner:
 
-- Eigene Gewichtung (40:60 Logos:Pathos)
+- Eigene Gewichtung (25:75 Logos:Pathos)
 - 8-Archetypen-System
 - 4-Faktoren-Berechnung
 - Archetypen-Kompatibilitäts-Matrix

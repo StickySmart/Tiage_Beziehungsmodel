@@ -467,4 +467,4 @@ Mit σ = 12:
 ---
 
 *Erstellt für das Tiage-Beziehungsmodell*
-*Letzte Aktualisierung: Dezember 2024*
+*Letzte Aktualisierung: Mai 2026*

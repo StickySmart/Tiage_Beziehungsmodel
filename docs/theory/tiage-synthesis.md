@@ -12,6 +12,7 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 | **Bewusstseinsphilosophie** | OSHO | Bewusstsein durch Meditation — Polarität, Balance, Schwingung |
 | **Bedürfnispsychologie** | Volker Schmidt | 16 Grundbedürfnisse (*Liebe will gelernt sein*) — das psychische Fundament jeder Beziehung |
 | **GFK** | Marshall B. Rosenberg | Gewaltfreie Kommunikation — Bedürfnis-Sprache als Brücke zwischen Gefühl und Verständigung |
+| **RTI — 5 Säulen der Identität** | Hilarion Petzold | Leiblichkeit · Soziales Netzwerk · Autonomie · Sicherheit · Werte & Sinn — Reibungs-Analyse als eigenständiger Synthese-Tab |
 
 ## Tiages Beitrag
 
@@ -21,6 +22,7 @@ Die Verbindung dieser Traditionen zu einem konkreten Beziehungs-Rechner mit:
 - Archetypen-Matrix (8 Beziehungstypen)
 - 16 Grundbedürfnisse als Resonanz-Basis (R1–R4)
 - Dimensionsspezifische Resonanz-Faktoren
+- RTI-Säulen-Analyse (5 Säulen der Identität nach Petzold)
 - Praktischer Anwendbarkeit
 
 ## Die 25:75 Gewichtung
