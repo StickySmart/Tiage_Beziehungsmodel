@@ -144,8 +144,7 @@ First upload of existing concept documents (DOCX/HTML). The model already existe
 
 The most intensive development phase: **~1,655 commits in one month.**
 
-- **GFK/NVC integration** (Marshall B. Rosenberg) — needs language as a bridge between feeling and communication
-- **16 core needs by Volker Schmidt** — needs catalog v4.0.0 with 4 levels (#B1–#B16)
+- **GFK/NVC integration** (Marshall B. Rosenberg) — first needs system: 10–18 categories with 150+ needs as the foundation for matching
 - **Adjustable factor weights (AGOD)** — user-configurable prioritization of the 4 dimensions
 - **R-factor system** — dimension-specific resonance (R1–R4) instead of a single meta-factor
 - **Client-server architecture** — separation of calculation logic (server/) and presentation (js/)
@@ -168,6 +167,9 @@ The Pathos/Logos weighting was corrected from 40:60 to **25:75 (Logos:Pathos)** 
 **March 31, 2026**: AGOD weights saved persistently per archetype.
 
 ### Phase 4 — Maturity (April–May 2026)
+
+**May 23, 2026 — Volker Schmidt v4.0 Migration.**
+The needs catalog was migrated to Volker Schmidt's 4-level model: **16 core needs (#B1–#B16)** in four levels (Passive, Action, Social, Identity). Integration was straightforward — the existing GFK-based system was largely congruent and needed structural reorganization rather than new development. Also included: Memory Manager v5.0, Eigenschaften modifiers, RTI/Volker Schmidt/OSHO/Pirsig attribution in synthesis footer.
 
 **May 25–27, 2026 — Slot Machine v5.1.**
 Gender split, total variance, honest breakdown. Synthesis Overview with 4-mode toggle.

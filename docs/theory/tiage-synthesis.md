@@ -144,8 +144,7 @@ Erster Upload bestehender Konzept-Dokumente (DOCX/HTML). Das Modell existierte a
 
 Die intensivste Entwicklungsphase: **~1.655 Commits in einem Monat.**
 
-- **GFK/NVC-Integration** (Marshall B. Rosenberg) — Bedürfnis-Sprache als Brücke zwischen Gefühl und Kommunikation
-- **16 Grundbedürfnisse nach Volker Schmidt** — Bedürfnis-Katalog v4.0.0 mit 4 Stufen (#B1–#B16)
+- **GFK/NVC-Integration** (Marshall B. Rosenberg) — erstes Bedürfnis-System: 10–18 Kategorien mit 150+ Bedürfnissen als Grundlage für das Matching
 - **Einstellbare Faktor-Gewichtungen (AGOD)** — Benutzer-konfigurierbare Priorisierung der 4 Dimensionen
 - **R-Faktoren-System** — Dimensionsspezifische Resonanz (R1–R4) statt eines einzelnen Meta-Faktors
 - **Client-Server-Architektur** — Trennung von Berechnungslogik (server/) und Präsentation (js/)
@@ -168,6 +167,9 @@ Die Pathos/Logos-Gewichtung wurde von 40:60 auf **25:75 (Logos:Pathos)** korrigi
 **31. März 2026**: AGOD-Gewichte pro Archetyp persistent gespeichert.
 
 ### Phase 4 — Reife (April–Mai 2026)
+
+**23. Mai 2026 — Volker Schmidt v4.0 Migration.**
+Der Bedürfnis-Katalog wurde auf das 4-Stufen-Modell von Volker Schmidt umgestellt: **16 Grundbedürfnisse (#B1–#B16)** in vier Stufen (Passiv, Handlung, Sozial, Identität). Die Integration war unkompliziert — das bestehende GFK-basierte System war weitgehend deckungsgleich und musste nur strukturell neu geordnet werden, nicht inhaltlich neu entwickelt werden. Gleichzeitig: Memory Manager v5.0, Eigenschaften-Modifikatoren, RTI/Volker Schmidt/OSHO/Pirsig Attribution im Footer.
 
 **25.–27. Mai 2026 — Slot Machine v5.1.**
 Gender-Split, Totale Varianz, ehrliches Breakdown. Synthese Übersicht mit 4-Mode-Toggle.
