@@ -6,12 +6,15 @@ Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwicke
 
 ## Philosophische Grundlagen
 
-Das Modell verbindet zwei Traditionen:
+Das Modell verbindet mehrere Traditionen:
 
-- **MOQ (Robert M. Pirsig):** Metaphysik der Qualität - statische vs. dynamische Qualität
-- **OSHO:** Bewusstsein durch Meditation - Polarität, Balance, Schwingung
+- **MOQ (Robert M. Pirsig):** Metaphysik der Qualität — statische vs. dynamische Qualität
+- **OSHO:** Bewusstsein durch Meditation — Polarität, Balance, Schwingung
+- **Volker Schmidt:** 16 Grundbedürfnisse (*Liebe will gelernt sein*) — Resonanz-Basis R1–R4
+- **Marshall B. Rosenberg:** Gewaltfreie Kommunikation — Bedürfnis-Sprache
+- **Hilarion Petzold:** RTI — 5 Säulen der Identität (Leiblichkeit, Soziales Netz, Autonomie, Sicherheit, Werte & Sinn)
 
-**Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.
+**Tiage's Beitrag:** Die Verbindung dieser Philosophien zu einem praktischen Beziehungs-Rechner mit eigener Gewichtung (25:75 Logos:Pathos), Archetypen-Matrix und RTI-Reibungsanalyse.
 
 ### Ein Widerspruch zu Pirsig
 
