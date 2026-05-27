@@ -321,6 +321,11 @@ function findBestPartnerMatch() {
             window.markBestMatchInGrid('partner', bestMatch, bestScore);
         }
 
+        // Wizard-Button aktivieren (screen 5 → Weiter wird freigeschaltet)
+        if (typeof IchWizard !== 'undefined' && IchWizard.update) {
+            IchWizard.update();
+        }
+
         // Zeige kurze Feedback-Animation auf dem Button
         const matchBtns = document.querySelectorAll('.best-match-btn');
         matchBtns.forEach(btn => {

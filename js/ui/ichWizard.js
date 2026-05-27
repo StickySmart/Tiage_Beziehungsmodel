@@ -59,6 +59,24 @@ var IchWizard = (function() {
         return el ? el.dataset.archetype : null;
     }
 
+    function canAdvanceFromScreen(n) {
+        var dims = (window.mobilePersonDimensions || window.personDimensions || {}).ich || {};
+        if (n === 1) return !!getArchetyp();
+        if (n === 2) return !!(dims.geschlecht && dims.geschlecht.primary);
+        if (n === 3) {
+            var ori = dims.orientierung;
+            return !!(ori && (Array.isArray(ori) ? ori.length > 0 : ori.primary));
+        }
+        if (n === 4) {
+            var dom = dims.dominanz;
+            return !!(dom && (typeof dom === 'string' ? dom : dom.primary));
+        }
+        if (n === 5) {
+            return !!(typeof window.getPartnerArchetype === 'function' && window.getPartnerArchetype());
+        }
+        return true;
+    }
+
     // ── DOM helpers ──────────────────────────────────────────────────────────
 
     function show(el) { if (el) el.classList.remove('wizard-hidden'); }
@@ -206,7 +224,7 @@ var IchWizard = (function() {
                 nextBtn.style.display = 'none';
             } else {
                 nextBtn.style.display = 'inline-flex';
-                var canAdvance = _screen !== 1 || !!getArchetyp();
+                var canAdvance = canAdvanceFromScreen(_screen);
                 nextBtn.disabled = !canAdvance;
                 nextBtn.classList.toggle('wz-next--ready', canAdvance);
             }
@@ -291,6 +309,24 @@ var IchWizard = (function() {
             new MutationObserver(function() {
                 if (_screen === 1) _updateUI();
             }).observe(grid, { attributes: true, subtree: true, attributeFilter: ['class'] });
+        }
+
+        // Watch dimension grids — enables Weiter on screens 2-4
+        ['mobile-ich-geschlecht-multi', 'mobile-ich-orientierung-multi', 'mobile-ich-dominanz-multi'].forEach(function(key) {
+            var dimEl = document.querySelector('[data-dimension="' + key + '"]');
+            if (dimEl) {
+                new MutationObserver(function() {
+                    if (_screen >= 2 && _screen <= 4) _updateUI();
+                }).observe(dimEl, { attributes: true, subtree: true, attributeFilter: ['class'] });
+            }
+        });
+
+        // Watch partner archetype grid — enables Weiter on screen 5
+        var partnerGrid = document.getElementById('mobile-partner-archetype-grid');
+        if (partnerGrid) {
+            new MutationObserver(function() {
+                if (_screen === 5) _updateUI();
+            }).observe(partnerGrid, { attributes: true, subtree: true, attributeFilter: ['class'] });
         }
 
         applyScreen(1);
