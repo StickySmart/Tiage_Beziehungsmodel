@@ -60,15 +60,45 @@ Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 | **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben |
 | **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
+## Ursprung & Kontext
+
+Das Tiage-Modell entstand nicht aus akademischer Theorie, sondern aus gelebter Erfahrung und persönlicher Reflexion. Die ersten Überlegungen, die später in die Grundstruktur einflossen, entstanden im Kontext von **JoyClub** — einer Plattform, auf der Menschen offen über Beziehungsmodelle, Sexualität und Authentizität sprechen. Dieser Ursprung ist kein Zufall: Das Modell fragt genau dort nach, wo klassische Beziehungsvorstellungen oft schweigen.
+
+Was dabei deutlich wurde: Beziehungen sind komplexer, als gesellschaftliche Rollenbilder es erlauben. Jahrhundertelange Dominanzstrukturen, archaische Männerherrschaft und internalisierte Rollenbilder prägen das Miteinander bis heute — oft unbewusst. Das Modell versucht, diese Unsichtbarkeit sichtbar zu machen, ohne zu werten.
+
+---
+
 ## Tiages gelebter Kern
 
 Was bleibt von OSHO im Tiage-Modell? Nicht abstrakte Konzepte, sondern **gelebte Erfahrung**:
 
 > *Das Leben akzeptieren für das was es ist. Die Schönheit und Schwingung erkennen. Geerdet bleiben.*
 
+### Das Modell als Widerspruchs-Werkzeug
+
+Das Tiage-Modell ist kein Versuch, Beziehungen zu vereinfachen. Es ist der Versuch, Widersprüche **auszuhalten** — und sichtbar zu machen, ohne sie aufzulösen:
+
+| Spannung | Tiage-Antwort |
+|----------|--------------|
+| Bindung ↔ Freiheit | Bindung **ohne** völligen Besitzanspruch |
+| Sexualität ↔ Moral | Sexualität **ohne** automatische Entwertung |
+| Ehrlichkeit ↔ Illusion | Ehrlichkeit **statt** Verdrängung |
+| Individuum ↔ Beziehung | Freiheit **innerhalb** von Beziehung |
+| Unterschiedlichkeit ↔ Respekt | Respekt **trotz** Andersartigkeit |
+
+Das Modell entstand aus dem Wunsch, diese Spannungen nicht aufzulösen, sondern zu vermessen — als Orientierungswerkzeug, nicht als Urteil.
+
 ### Akzeptanz
 
 Das Modell misst nicht, um zu urteilen oder zu "reparieren". Es macht die Schwingung zwischen zwei Menschen sichtbar – ohne Wertung, ob jemand "richtig" oder "falsch" ist.
+
+### Wahrnehmung schärfen: Der HALO-Effekt
+
+Ein wiederkehrendes Thema in der Entstehung des Modells war die Frage, wie stark Attraktivität, Ausstrahlung und Projektionen unsere Wahrnehmung prägen. Der **HALO-Effekt** — die Tendenz, von einer positiven Eigenschaft auf andere zu schließen — verzerrt Beziehungsurteile massiv. Das Modell versucht, dieser Verzerrung durch explizite Dimensionen entgegenzuwirken: Wer vier Faktoren einzeln bewertet, kann Projektion und Realität besser trennen.
+
+### Sexualität als ehrliches Thema
+
+Sexualität erscheint im Modell nicht als Anhang, sondern als gleichwertige Dimension (Orientierung, Geschlecht). Das ist eine bewusste Entscheidung: Menschliche Wünsche, Fantasien und Bedürfnisse sind oft komplexer als klassische Beziehungsbilder erlauben. Das Modell behandelt Sexualität nicht als etwas, das hinter Kompatibilitätsfragen verschwindet, sondern als das, was es ist: ein eigenständiger Resonanzbereich.
 
 ### Schwingung erkennen
 

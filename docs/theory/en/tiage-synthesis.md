@@ -60,15 +60,45 @@ The model weights emotional resonance higher than rational structure because:
 | **LAT** | Living Apart Together - Committed partnership without cohabitation |
 | **Aromantic** | Focus on platonic connections without romantic component |
 
+## Origin & Context
+
+The Tiage Model did not emerge from academic theory but from lived experience and personal reflection. The initial ideas that later shaped its structure arose in the context of **JoyClub** — a platform where people openly discuss relationship models, sexuality, and authenticity. This origin is no coincidence: the model asks exactly where classical relationship ideas often go silent.
+
+What became clear in the process: relationships are more complex than social role models allow. Centuries of dominance structures, archaic patriarchal patterns, and internalized role models shape human interaction to this day — often unconsciously. The model attempts to make this invisibility visible, without judging it.
+
+---
+
 ## Tiage's Lived Core
 
 What remains of OSHO in the Tiage Model? Not abstract concepts, but **lived experience**:
 
 > *Accept life for what it is. Recognize the beauty and vibration. Stay grounded.*
 
+### The Model as a Tool for Holding Contradictions
+
+The Tiage Model is not an attempt to simplify relationships. It is an attempt to **hold contradictions** — to make them visible without resolving them:
+
+| Tension | Tiage's answer |
+|---------|----------------|
+| Commitment ↔ Freedom | Commitment **without** total possession |
+| Sexuality ↔ Morality | Sexuality **without** automatic devaluation |
+| Honesty ↔ Illusion | Honesty **instead of** repression |
+| Individual ↔ Relationship | Freedom **within** relationship |
+| Difference ↔ Respect | Respect **despite** otherness |
+
+The model emerged from the desire not to dissolve these tensions but to measure them — as an orientation tool, not a verdict.
+
 ### Acceptance
 
 The model doesn't measure to judge or "repair". It makes the vibration between two people visible – without judgment about whether someone is "right" or "wrong".
+
+### Sharpening Perception: The HALO Effect
+
+A recurring theme in the model's development was the question of how strongly attractiveness, charisma, and projections shape our perception. The **HALO effect** — the tendency to infer positive qualities from a single positive trait — massively distorts relationship judgments. The model attempts to counter this distortion through explicit dimensions: evaluating four factors separately allows a clearer separation between projection and reality.
+
+### Sexuality as an Honest Topic
+
+Sexuality appears in the model not as an afterthought but as an equal dimension (orientation, gender). This is a deliberate choice: human desires, fantasies, and needs are often more complex than classical relationship models allow. The model treats sexuality not as something that disappears behind compatibility questions, but as what it is: an independent resonance domain.
 
 ### Recognizing Vibration
 
