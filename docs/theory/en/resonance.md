@@ -53,6 +53,38 @@ This formula rewards **symmetric resonance**: when both partners have similarly 
 
 ---
 
+## Visual Layer: Images of the 16 Core Needs
+
+Each of the 16 core needs is linked to **3 image variants** — AI-generated images in the style of OSHO Zen Tarot that visually express the emotional quality of the need. Each variant carries a mood name and the associated Tarot card name.
+
+| Need | Variant 1 | Variant 2 | Variant 3 |
+|------|-----------|-----------|-----------|
+| #B1 Wellbeing | Existence | Healing | Silence |
+| #B2 Security | Trust | Protection | Shelter |
+| #B3 Ease | Touch | Sleep of Stars | Dance |
+| #B4 Orientation | Clarity | Awareness | Order |
+| #B5 Efficacy | Efficacy | Competence | Challenge |
+| #B6 Freedom | Self-Determination | Independence | Freedom of Choice |
+| #B7 Intensity | Intensity | Joy | Passion |
+| #B8 Development | Growth | Discovery | Vision |
+| #B9 Community | Community | Belonging | Collaboration |
+| #B10 Recognition | Appreciation | Respect | Having-Meaning |
+| #B11 Justice | Shared Values | Respecting-Differences | Balance |
+| #B12 Connection | Love | Intimacy | Empathy |
+| #B13 Self-Knowledge | Insight | Relationship-Reflection | Clarity |
+| #B14 Meaning | Meaning | Inspiration | Contributing |
+| #B15 Integrity | Integrity | Authenticity | Genuineness |
+| #B16 Self-Expression | Creativity | Self-Expression | Celebrating-Life |
+
+**Total scope:** 42 images (webp/png) for 16 needs.
+
+**Sources:**
+- `assets/images/beduerfnisse-v2/` — Image files (B001–B226.webp)
+- `assets/images/beduerfnisse-v2/image-mapping.json` — Mapping #B → variants
+- `js/synthesis/oshoZenTextGenerator.js` — Uses images in synthesis output
+
+---
+
 ## The 16 Core Needs (v4.0)
 
 The R-factors are based on **16 core needs by Volker Kiel** (#B1–#B16), organized in **4 levels**:

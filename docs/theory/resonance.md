@@ -53,6 +53,38 @@ Diese Formel belohnt **symmetrische Resonanz**: Wenn beide Partner ähnlich hohe
 
 ---
 
+## Visuelle Ebene: Bilder der 16 Grundbedürfnisse
+
+Jedes der 16 Grundbedürfnisse ist mit **3 Bildvarianten** verknüpft — KI-generierte Bilder im Stil des OSHO-Zen-Tarot, die die emotionale Qualität des Bedürfnisses visuell ausdrücken. Jede Variante trägt einen Stimmungsnamen und den assoziierten Tarot-Karten-Namen.
+
+| Bedürfnis | Variante 1 | Variante 2 | Variante 3 |
+|-----------|-----------|-----------|-----------|
+| #B1 Wohlbefinden | Existenz | Heilung | Stille |
+| #B2 Sicherheit | Vertrauen | Schutz | Geborgenheit |
+| #B3 Leichtigkeit | Berührung | Schlaf der Sterne | Tanz |
+| #B4 Orientierung | Klarheit | Bewusstheit | Ordnung |
+| #B5 Wirksamkeit | Wirksamkeit | Kompetenz | Herausforderung |
+| #B6 Freiheit | Selbstbestimmung | Unabhängigkeit | Wählen-können |
+| #B7 Intensität | Intensität | Freude | Leidenschaft |
+| #B8 Entwicklung | Wachstum | Entdecken | Vision |
+| #B9 Gemeinschaft | Gemeinschaft | Zugehörigkeit | Zusammenarbeit |
+| #B10 Anerkennung | Wertschätzung | Respekt | Bedeutung-haben |
+| #B11 Gerechtigkeit | Gemeinsame Werte | Respekt-Unterschiede | Balance |
+| #B12 Verbundenheit | Liebe | Intimität | Empathie |
+| #B13 Selbsterkenntnis | Einsehen | Beziehungs-Reflexion | Klarheit |
+| #B14 Sinn | Sinn | Inspiration | Beitrag-leisten |
+| #B15 Integrität | Integrität | Authentizität | Echtheit |
+| #B16 Selbstentfaltung | Kreativität | Selbst-Ausdruck | Leben-feiern |
+
+**Gesamtumfang:** 42 Bilder (webp/png) für 16 Bedürfnisse.
+
+**Quellen:**
+- `assets/images/beduerfnisse-v2/` — Bilddateien (B001–B226.webp)
+- `assets/images/beduerfnisse-v2/image-mapping.json` — Zuordnung #B → Varianten
+- `js/synthesis/oshoZenTextGenerator.js` — Verwendet Bilder in der Synthese-Ausgabe
+
+---
+
 ## Die 16 Grundbedürfnisse (v4.0)
 
 Die R-Faktoren basieren auf **16 Grundbedürfnissen nach Volker Kiel** (#B1–#B16), die in **4 Stufen** gegliedert sind:
