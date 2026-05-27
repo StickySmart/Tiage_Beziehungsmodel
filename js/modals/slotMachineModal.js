@@ -141,6 +141,10 @@ var TiageSlotMachine = (function() {
             if (typeof window.setPartnerArchetype === 'function') {
                 window.setPartnerArchetype(null);
             }
+            // Visuelle Markierung im Grid zurücksetzen
+            if (typeof window.markBestMatchInGrid === 'function') {
+                window.markBestMatchInGrid('partner', null, 0);
+            }
 
             // Lade gespeicherte Bindungsmuster aus TiageState
             if (typeof TiageState !== 'undefined') {

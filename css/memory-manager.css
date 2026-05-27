@@ -1450,7 +1450,6 @@
     .mobile-profile-card {
         background: var(--bg-card);
         border-radius: 16px;
-        border: 1px solid var(--border);
         margin-bottom: 12px;
         overflow: hidden;
     }
@@ -1513,7 +1512,6 @@
     .mobile-synthese-section {
         background: var(--bg-card);
         border-radius: 16px;
-        border: 1px solid var(--border);
         border-top: 3px solid #6366f1;
         padding: 15px;
         margin-bottom: 12px;
@@ -1523,7 +1521,6 @@
     .mobile-bestmatch-section {
         background: var(--bg-card);
         border-radius: 16px;
-        border: 1px solid var(--border);
         border-top: 3px solid #F4A261;
         padding: 15px;
         margin-bottom: 12px;
