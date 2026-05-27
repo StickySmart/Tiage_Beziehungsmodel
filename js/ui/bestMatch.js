@@ -78,6 +78,17 @@ function ensureValidOrientierung(orientierungObj) {
 }
 
 function findBestPartnerMatch() {
+    // Partner vor Neuberechnung leeren
+    if (typeof window.setPartnerArchetype === 'function') {
+        window.setPartnerArchetype(null);
+    }
+    if (typeof window.markBestMatchInGrid === 'function') {
+        window.markBestMatchInGrid('partner', null, 0);
+    }
+    if (typeof window.updateArchetypeGrid === 'function') {
+        window.updateArchetypeGrid('partner', null);
+    }
+
     // DEBUG DISABLED v1.8.871: Best-Match iteriert hunderte Kombinationen
     // console.log('[findBestPartnerMatch] Funktion aufgerufen');
     // console.log('[findBestPartnerMatch] data geladen:', window.tiageData !== null);
