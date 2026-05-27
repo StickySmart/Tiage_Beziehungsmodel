@@ -877,8 +877,8 @@ var TiageSlotMachine = (function() {
             let gsHtml = '<div class="slot-gender-split-title">Beste je Geschlecht</div><div class="slot-gender-grid">';
             genderDefs.forEach(def => {
                 const r = slotMachineGenderResults[def.key];
-                if (!r) {
-                    gsHtml += `<div class="slot-gender-block slot-gender-empty"><div class="slot-gender-head">${def.icon} ${def.label}</div><div class="slot-gender-na">—</div></div>`;
+                if (!r || r.score === 0) {
+                    gsHtml += `<div class="slot-gender-block slot-gender-empty"><div class="slot-gender-head">${def.icon} ${def.label}</div><div class="slot-gender-na">—</div><div class="slot-gender-ko">Nicht kompatibel (KO)</div></div>`;
                     return;
                 }
                 const oLabel = ORIENTIERUNG_LABELS[r.orientierung] || r.orientierung || '-';
