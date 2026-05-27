@@ -3,7 +3,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  *
  * Verwaltet die Prioritäten der 16 Grundbedürfnisse (#B1-#B16)
- * nach dem 4-Stufen-Modell (Volker Kiel)
+ * nach dem 4-Stufen-Modell (Volker Schmidt)
  *
  * 3-Wege-Gewichtung:
  *   0 = Egal (ignoriert)

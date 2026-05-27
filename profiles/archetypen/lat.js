@@ -1,6 +1,6 @@
 /**
  * LAT - Archetyp-Basisprofil v5.0
- * 16 Grundbeduerfnisse nach Volker Kiel | Werte: Durchschnitt aus Ti-Age v4.x
+ * 16 Grundbeduerfnisse nach Volker Schmidt | Werte: Durchschnitt aus Ti-Age v4.x
  */
 
 const LATProfil = {

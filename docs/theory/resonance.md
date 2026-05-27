@@ -87,7 +87,7 @@ Jedes der 16 Grundbedürfnisse ist mit **mehreren Bildvarianten** verknüpft —
 
 ## Die 16 Grundbedürfnisse (v4.0)
 
-Die R-Faktoren basieren auf **16 Grundbedürfnissen nach Volker Kiel** (#B1–#B16), die in **4 Stufen** gegliedert sind:
+Die R-Faktoren basieren auf **16 Grundbedürfnissen nach Volker Schmidt** (#B1–#B16), die in **4 Stufen** gegliedert sind:
 
 ```
 Stufe 1 – Passive Basisbedürfnisse:

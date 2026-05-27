@@ -540,7 +540,7 @@ function renderNeedsFullModal() {
     var explanationHtml = '<div style="background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;border-radius:4px;padding:10px 12px;margin-bottom:16px;font-size:12px;line-height:1.6;">' +
         '<div style="display:flex;align-items:start;gap:8px;"><div style="flex:1;">' +
         '<div style="font-weight:600;margin-bottom:4px;color:#22c55e;">Berechnung über alle 16 Grundbedürfnisse</div>' +
-        '<div style="color:var(--text-secondary);font-size:11px;">Gewichtete Übereinstimmung nach Volker Kiels 4-Stufen-Modell basierend auf euren Profilen. ' +
+        '<div style="color:var(--text-secondary);font-size:11px;">Gewichtete Übereinstimmung nach Volker Schmidts 4-Stufen-Modell basierend auf euren Profilen. ' +
         '<span onclick="openNeedsScoreExplanation();" style="color:#22c55e;cursor:pointer;text-decoration:underline;margin-left:4px;">Mehr erfahren ⓘ</span></div>' +
         '</div></div></div>';
 

@@ -95,7 +95,7 @@ router.post('/needs', async (req, res, next) => {
 
 /**
  * POST /api/sort/categories
- * Gruppiert Bedürfnisse nach Stufe (4 Stufen nach Volker Kiel) und berechnet Durchschnitte
+ * Gruppiert Bedürfnisse nach Stufe (4 Stufen nach Volker Schmidt) und berechnet Durchschnitte
  *
  * Body: { ichNeeds, partnerNeeds?, sortBy? }
  */

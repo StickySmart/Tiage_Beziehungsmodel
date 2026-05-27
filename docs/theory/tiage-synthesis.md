@@ -10,7 +10,7 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 |-----------|-----------|-------------------|
 | **MOQ** | Robert M. Pirsig | Metaphysik der Qualität — statische vs. dynamische Qualität als Grundstruktur |
 | **Bewusstseinsphilosophie** | OSHO | Bewusstsein durch Meditation — Polarität, Balance, Schwingung |
-| **Bedürfnispsychologie** | Volker Kiel | 16 Grundbedürfnisse (*Liebe will gelernt sein*) — das psychische Fundament jeder Beziehung |
+| **Bedürfnispsychologie** | Volker Schmidt | 16 Grundbedürfnisse (*Liebe will gelernt sein*) — das psychische Fundament jeder Beziehung |
 | **GFK** | Marshall B. Rosenberg | Gewaltfreie Kommunikation — Bedürfnis-Sprache als Brücke zwischen Gefühl und Verständigung |
 
 ## Tiages Beitrag
@@ -143,7 +143,7 @@ Erster Upload bestehender Konzept-Dokumente (DOCX/HTML). Das Modell existierte a
 Die intensivste Entwicklungsphase: **~1.655 Commits in einem Monat.**
 
 - **GFK/NVC-Integration** (Marshall B. Rosenberg) — Bedürfnis-Sprache als Brücke zwischen Gefühl und Kommunikation
-- **16 Grundbedürfnisse nach Volker Kiel** — Bedürfnis-Katalog v4.0.0 mit 4 Stufen (#B1–#B16)
+- **16 Grundbedürfnisse nach Volker Schmidt** — Bedürfnis-Katalog v4.0.0 mit 4 Stufen (#B1–#B16)
 - **Einstellbare Faktor-Gewichtungen (AGOD)** — Benutzer-konfigurierbare Priorisierung der 4 Dimensionen
 - **R-Faktoren-System** — Dimensionsspezifische Resonanz (R1–R4) statt eines einzelnen Meta-Faktors
 - **Client-Server-Architektur** — Trennung von Berechnungslogik (server/) und Präsentation (js/)

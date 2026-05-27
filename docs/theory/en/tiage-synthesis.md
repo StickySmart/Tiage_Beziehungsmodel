@@ -10,7 +10,7 @@ An **independent synthesis** by Tiage, developed through online research and per
 |-----------|---------------|---------------------------|
 | **MOQ** | Robert M. Pirsig | Metaphysics of Quality — static vs. dynamic quality as basic structure |
 | **Consciousness Philosophy** | OSHO | Consciousness through meditation — polarity, balance, vibration |
-| **Needs Psychology** | Volker Kiel | 16 core needs (*Liebe will gelernt sein*) — the psychological foundation of every relationship |
+| **Needs Psychology** | Volker Schmidt | 16 core needs (*Liebe will gelernt sein*) — the psychological foundation of every relationship |
 | **NVC** | Marshall B. Rosenberg | Nonviolent Communication — needs language as a bridge between feeling and understanding |
 
 ## Tiage's Contribution
@@ -143,7 +143,7 @@ First upload of existing concept documents (DOCX/HTML). The model already existe
 The most intensive development phase: **~1,655 commits in one month.**
 
 - **GFK/NVC integration** (Marshall B. Rosenberg) — needs language as a bridge between feeling and communication
-- **16 core needs by Volker Kiel** — needs catalog v4.0.0 with 4 levels (#B1–#B16)
+- **16 core needs by Volker Schmidt** — needs catalog v4.0.0 with 4 levels (#B1–#B16)
 - **Adjustable factor weights (AGOD)** — user-configurable prioritization of the 4 dimensions
 - **R-factor system** — dimension-specific resonance (R1–R4) instead of a single meta-factor
 - **Client-server architecture** — separation of calculation logic (server/) and presentation (js/)

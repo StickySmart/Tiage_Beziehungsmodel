@@ -87,7 +87,7 @@ Each of the 16 core needs is linked to **multiple image variants** — AI-genera
 
 ## The 16 Core Needs (v4.0)
 
-The R-factors are based on **16 core needs by Volker Kiel** (#B1–#B16), organized in **4 levels**:
+The R-factors are based on **16 core needs by Volker Schmidt** (#B1–#B16), organized in **4 levels**:
 
 ```
 Level 1 – Passive Basic Needs:
