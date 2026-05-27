@@ -60,9 +60,13 @@ var IchWizard = (function() {
     }
 
     function canAdvanceFromScreen(n) {
-        var dims = (window.mobilePersonDimensions || window.personDimensions || {}).ich || {};
+        var dims = (window.personDimensions || {}).ich || {};
         if (n === 1) return !!getArchetyp();
-        if (n === 2) return !!(dims.geschlecht && dims.geschlecht.primary);
+        if (n === 2) {
+            // v4.0: geschlecht is a plain string ("mann", "frau", "nonbinaer")
+            var g = dims.geschlecht;
+            return !!(g && (typeof g === 'string' ? g : g.primary));
+        }
         if (n === 3) {
             var ori = dims.orientierung;
             return !!(ori && (Array.isArray(ori) ? ori.length > 0 : ori.primary));
