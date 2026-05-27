@@ -59,16 +59,13 @@ Before merging any change to the calculation logic, scan the "Verify when..." co
 
 ```
 Required:
-✓ Name of operator (legal name, not just "Ti-Age")
-✗ Full postal address
-✓ Email address
-✗ Phone number (recommended, not strictly required for non-commercial)
-  → For a private non-commercial site, reduced requirements apply
-  → But a publicly accessible website about relationships/data processing
-    strongly benefits from a complete Impressum
+✓ Name of operator: Timo Hartfelder
+✓ Full postal address: Karl-Berbrichstr. 3, 76646 Bruchsal
+✓ Email address: nerd@ti-age.de
+✓ Phone number: 01520 980 5183
 ```
 
-**Recommended action:** Add operator's real name and postal address (or P.O. box) to the Impressum modal, or replace the modal with a dedicated `impressum.html` page.
+**Status:** ✅ Complete as of 2026-05-27. All §5 TMG fields present in `archetype-interaction.html` Impressum modal.
 
 ---
 

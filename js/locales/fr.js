@@ -628,6 +628,8 @@ var TiageLocale_FR = {
     impressum: {
         title: 'Mentions l\u00e9gales',
         operator: 'Exploitant',
+        address: 'Adresse',
+        phone: 'T\u00e9l\u00e9phone',
         project: 'Projet',
         contact: 'Contact'
     },

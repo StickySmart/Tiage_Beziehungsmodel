@@ -871,6 +871,8 @@ var TiageLocale_DE = {
     impressum: {
         title: 'Impressum',
         operator: 'Betreiber',
+        address: 'Anschrift',
+        phone: 'Telefon',
         project: 'Projekt',
         contact: 'Kontakt'
     },

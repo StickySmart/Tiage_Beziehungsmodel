@@ -870,6 +870,8 @@ var TiageLocale_IT = {
     impressum: {
         title: 'Note legali',
         operator: 'Gestore',
+        address: 'Indirizzo',
+        phone: 'Telefono',
         project: 'Progetto',
         contact: 'Contatto'
     },
