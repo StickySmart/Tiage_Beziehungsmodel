@@ -420,12 +420,19 @@ const WorkflowGuide = (function() {
             );
         }
 
-        // Mobil: IchWizard-Screen-Events empfangen — verhindert Sprung von 1 auf 5
+        // Mobil: IchWizard-Screen-Events empfangen — korrekte Zuordnung zu WG-Schritten
+        // Wizard 1 → Step 1 (ICH Archetyp)
+        // Wizard 2,3,4 → Step 2 (ICH Dimensionen — alle drei sind GOD-Screens)
+        // Wizard 5 → Step 3 (Partner-Archetyp / Best Match)
+        // Wizard 6 → Step 5 (Synthese / Ergebnis)
         window.addEventListener('tiage-wizard-screen', function(e) {
             if (window.innerWidth > 768) return;
             var wScreen = e.detail && e.detail.screen ? e.detail.screen : 1;
-            // Wizard-Screens 1-6 → WorkflowGuide-Steps 1-5
-            var mapped = Math.min(wScreen, TOTAL_STEPS);
+            var mapped;
+            if (wScreen === 1)      mapped = 1;
+            else if (wScreen <= 4)  mapped = 2;
+            else if (wScreen === 5) mapped = 3;
+            else                    mapped = 5;
             if (mapped !== currentStep) {
                 currentStep = mapped;
                 render();
