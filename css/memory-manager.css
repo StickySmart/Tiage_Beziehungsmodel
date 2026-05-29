@@ -1627,3 +1627,5 @@
     border-color: rgba(255, 200, 0, 0.5);
     background: linear-gradient(135deg, var(--card-bg, #1e2a3a), rgba(255, 200, 0, 0.08));
 }
+
+@media (max-width: 768px) { .bmc-fab-float { display: none !important; } }
