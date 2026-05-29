@@ -122,6 +122,8 @@ var IchWizard = (function() {
         hide(selectRow);
         hide(resetAllBtn);
         hide(gfkDim);
+        var ichCardHeader = ichCard ? ichCard.querySelector('.mobile-profile-header') : null;
+        hide(ichCardHeader);
 
         if (n === 1) {
             // ── Archetyp ──
