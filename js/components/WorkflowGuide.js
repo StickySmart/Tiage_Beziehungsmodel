@@ -118,15 +118,6 @@ const WorkflowGuide = (function() {
     }
 
     /**
-     * Archetyp-Label für eine Person (z.B. "DUO", "RA", "POLYAMOR")
-     */
-    function archetypeLabel(person) {
-        if (typeof TiageState === 'undefined') return null;
-        var arch = TiageState.getArchetype(person);
-        return arch ? arch.toUpperCase() : null;
-    }
-
-    /**
      * Gibt die Daten für einen Schritt zurück
      */
     function getStepData(step) {
@@ -151,25 +142,11 @@ const WorkflowGuide = (function() {
         }
 
         const stepKey = `workflow.step${step}`;
-        var baseTitle = t(`${stepKey}.title`, `Schritt ${step}`);
-        var desc      = t(`${stepKey}.desc`, '');
-        var philo     = t(`${stepKey}.philosophy`, '');
-
-        // Dynamischer Titel: Archetyp-Kombi einblenden wenn bekannt
-        var ichArch     = archetypeLabel('ich');
-        var partnerArch = archetypeLabel('partner');
-
-        if (step === 2 && ichArch) {
-            baseTitle = ichArch + ' – ' + baseTitle;
-        } else if (step === 3 && ichArch) {
-            baseTitle = ichArch + ' sucht …';
-        } else if (step === 4 && ichArch && partnerArch) {
-            baseTitle = ichArch + ' + ' + partnerArch;
-        } else if (step === 5 && ichArch && partnerArch) {
-            baseTitle = ichArch + ' + ' + partnerArch;
-        }
-
-        return { title: baseTitle, desc: desc, philosophy: philo };
+        return {
+            title: t(`${stepKey}.title`, `Schritt ${step}`),
+            desc:  t(`${stepKey}.desc`, ''),
+            philosophy: t(`${stepKey}.philosophy`, '')
+        };
     }
 
     /**
