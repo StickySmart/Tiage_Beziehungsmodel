@@ -1629,3 +1629,8 @@
 }
 
 @media (max-width: 768px) { .bmc-fab-float { display: none !important; } }
+
+/* Wizard-mode: DU-Header auf Mobile ausblenden */
+.wizard-mode #mobileIchCard .mobile-profile-header {
+    display: none !important;
+}

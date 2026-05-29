@@ -19,7 +19,8 @@ var IchWizard = (function() {
     var SCREENS = [
         {
             icon: '🧬', label: 'Beziehungsarchetyp', sub: 'Wähle deinen Beziehungsarchetypen',
-            info: null
+            info: 'Beziehungsarchetypen beschreiben, wie du Nähe, Verbindlichkeit und Freiheit in Beziehungen lebst — von Duo (klassisch-monogam) bis RA (Beziehungsanarchie). Wähle deinen Haupttyp. Er bildet die Basis aller Bedürfniswerte.',
+            infoAction: null
         },
         {
             icon: '⚤', label: 'Geschlechtsidentität', sub: 'Körper & Identität',
@@ -38,7 +39,8 @@ var IchWizard = (function() {
         },
         {
             icon: '🎰', label: 'Best Match', sub: 'Finde deinen Typ',
-            info: null
+            info: 'Ti-Age berechnet, welcher Partner-Beziehungsarchetyp am besten zu deinem Profil passt. Alle 8 Archetypen werden mit deinen Dimensionen abgeglichen und nach Kompatibilität sortiert. Das Ergebnis ist ein Vorschlag — kein Urteil.',
+            infoAction: null
         },
         {
             icon: '💡', label: 'Synthese', sub: 'Dein Ergebnis',
