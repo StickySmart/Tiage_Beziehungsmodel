@@ -219,9 +219,46 @@
              * Speichert permanent (TiageState + per-Archetyp localStorage).
              */
             'reset-ich-ffh-agod': function(el, event) {
-                console.log('[RESET-ICH] GOD + FFH zurücksetzen (permanent, wie Partner FREE)');
-
                 if (typeof TiageState === 'undefined') return;
+
+                // ── Wizard-Modus: nur die aktuelle Dimension zurücksetzen ──────
+                var wizardScreen = (typeof IchWizard !== 'undefined') ? IchWizard.getScreen() : null;
+                if (wizardScreen && wizardScreen >= 2 && wizardScreen <= 4) {
+                    var allClasses = ['active', 'active-primary', 'active-secondary', 'primary-selected', 'secondary-selected'];
+                    if (wizardScreen === 2) {
+                        TiageState.set('personDimensions.ich.geschlecht', null);
+                        var defaultExtras = { fit: false, fuckedup: false, horny: false, fresh: false };
+                        TiageState.set('personDimensions.ich.geschlecht_extras', defaultExtras);
+                        if (typeof window.geschlechtExtrasCache !== 'undefined') window.geschlechtExtrasCache.ich = defaultExtras;
+                        document.querySelectorAll('#ich-geschlecht-p-grid .geschlecht-btn, #mobile-ich-geschlecht-p-grid .geschlecht-btn, #ich-geschlecht-s-grid .geschlecht-btn, #mobile-ich-geschlecht-s-grid .geschlecht-btn').forEach(function(b) {
+                            b.classList.remove.apply(b.classList, allClasses);
+                            b.querySelectorAll('.geschlecht-indicator').forEach(function(i) { i.remove(); });
+                        });
+                        document.querySelectorAll('#ich-geschlecht-extras-grid .geschlecht-btn, #mobile-ich-geschlecht-extras-grid .geschlecht-btn').forEach(function(b) {
+                            b.classList.remove.apply(b.classList, allClasses);
+                            b.style.background = ''; b.style.borderColor = ''; b.style.color = ''; b.style.opacity = '';
+                        });
+                    } else if (wizardScreen === 3) {
+                        TiageState.set('personDimensions.ich.orientierung', null);
+                        document.querySelectorAll('#ich-orientierung-grid .orientierung-btn, #mobile-ich-orientierung-grid .orientierung-btn').forEach(function(b) {
+                            b.classList.remove.apply(b.classList, allClasses);
+                            b.querySelectorAll('.geschlecht-indicator').forEach(function(i) { i.remove(); });
+                        });
+                    } else if (wizardScreen === 4) {
+                        TiageState.set('personDimensions.ich.dominanz', null);
+                        document.querySelectorAll('#ich-dominanz-grid .dominanz-btn, #mobile-ich-dominanz-grid .dominanz-btn').forEach(function(b) {
+                            b.classList.remove.apply(b.classList, allClasses);
+                            b.querySelectorAll('.geschlecht-indicator').forEach(function(i) { i.remove(); });
+                        });
+                    }
+                    TiageState.saveToStorage();
+                    if (typeof IchWizard !== 'undefined' && typeof IchWizard.update === 'function') IchWizard.update();
+                    console.log('[RESET-ICH] Wizard-Screen ' + wizardScreen + ' zurückgesetzt');
+                    return;
+                }
+
+                // ── Voller Reset (Desktop + Mobile non-wizard) ────────────────
+                console.log('[RESET-ICH] GOD + FFH zurücksetzen (permanent, wie Partner FREE)');
 
                 // 1. GOD in TiageState zurücksetzen
                 TiageState.set('personDimensions.ich.geschlecht', null);
