@@ -145,6 +145,18 @@ var TiageSlotMachine = (function() {
             if (typeof window.markBestMatchInGrid === 'function') {
                 window.markBestMatchInGrid('partner', null, 0);
             }
+            if (typeof window.updateArchetypeGrid === 'function') {
+                window.updateArchetypeGrid('partner', null);
+            }
+            // SELECT-Dropdowns zurücksetzen
+            var partnerSel = document.getElementById('partnerSelect');
+            if (partnerSel) partnerSel.selectedIndex = 0;
+            var mobilePartnerSel = document.getElementById('mobilePartnerSelect');
+            if (mobilePartnerSel) mobilePartnerSel.selectedIndex = 0;
+            // Score/Comparison View leeren
+            if (typeof window.updateComparisonView === 'function') {
+                window.updateComparisonView();
+            }
 
             // Lade gespeicherte Bindungsmuster aus TiageState
             if (typeof TiageState !== 'undefined') {
