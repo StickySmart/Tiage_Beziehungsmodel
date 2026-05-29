@@ -158,6 +158,19 @@ var TiageSlotMachine = (function() {
                 window.updateComparisonView();
             }
 
+            // Partner-GOD-Dimensionen leeren — sonst iteriert die Slotmachine beim 2. Lauf
+            // nur noch die gespeicherte Kombi vom 1. Lauf statt alle ~800 Kombinationen
+            var _dims = ['geschlecht', 'orientierung', 'dominanz', 'geschlecht_extras', 'gfk'];
+            if (typeof TiageState !== 'undefined') {
+                _dims.forEach(function(d) { TiageState.set('personDimensions.partner.' + d, null); });
+            }
+            if (typeof window.personDimensions !== 'undefined' && window.personDimensions.partner) {
+                _dims.forEach(function(d) { window.personDimensions.partner[d] = null; });
+            }
+            if (typeof window.mobilePersonDimensions !== 'undefined' && window.mobilePersonDimensions.partner) {
+                _dims.forEach(function(d) { window.mobilePersonDimensions.partner[d] = null; });
+            }
+
             // Lade gespeicherte Bindungsmuster aus TiageState
             if (typeof TiageState !== 'undefined') {
                 const saved = TiageState.get('bindungsmuster.ich');
