@@ -1252,7 +1252,7 @@
             // Top-5 Bar: immer persönliche ICH-Bedürfnisse
             let top5Html = '';
             const top5Title    = 'Top-5 Bedürfnisse';
-            const top5Subtitle = 'Karte anklicken für Tiage-Weisheit';
+            const top5Subtitle = 'Klicke bis zu 5 mal das Bild um mehr zu erfahren';
 
             // Gemeinsame Top-5 IDs berechnen — gleicher Algorithmus wie OshoZen Stufen-Karten
             _U_gemeinsamTop5Ids = [];
@@ -1894,7 +1894,7 @@
 
         function renderTop5SectionUebersicht(ichNeeds, ichArchetype, title, subtitle) {
             title    = title    || 'Top-5 Bedürfnisse';
-            subtitle = subtitle || 'Karte anklicken für Tiage-Weisheit';
+            subtitle = subtitle || 'Klicke bis zu 5 mal das Bild um mehr zu erfahren';
             var catalog = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse;
             if (!catalog) return '';
 
