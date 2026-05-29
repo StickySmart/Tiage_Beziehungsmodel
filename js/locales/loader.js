@@ -12,7 +12,7 @@ const TiageLocaleLoader = (function() {
 
     const STORAGE_KEY = 'tiage_language';
     const DEFAULT_LANGUAGE = 'de';
-    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it'];
+    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it', 'ru'];
 
     // Cache für geladene Locales
     const loadedLocales = {};

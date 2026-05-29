@@ -16,7 +16,7 @@ const TiageI18n = (function() {
 
     const STORAGE_KEY = 'tiage_language';
     const DEFAULT_LANGUAGE = 'de';
-    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it'];
+    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it', 'ru'];
 
     let currentLanguage = DEFAULT_LANGUAGE;
     let currentLocale = null;
@@ -155,7 +155,7 @@ const TiageI18n = (function() {
      * @returns {string} The locale string (e.g., 'de-DE', 'en-US')
      */
     function getDateLocale() {
-        const localeMap = { de: 'de-DE', en: 'en-US', fr: 'fr-FR', it: 'it-IT' };
+        const localeMap = { de: 'de-DE', en: 'en-US', fr: 'fr-FR', it: 'it-IT', ru: 'ru-RU' };
         return localeMap[currentLanguage] || 'de-DE';
     }
 
@@ -377,7 +377,7 @@ const TiageI18n = (function() {
          * @returns {string} The language name
          */
         getLanguageName(code) {
-            const names = { de: 'Deutsch', en: 'English', fr: 'Français', it: 'Italiano' };
+            const names = { de: 'Deutsch', en: 'English', fr: 'Français', it: 'Italiano', ru: 'Русский' };
             return names[code] || code;
         },
 
