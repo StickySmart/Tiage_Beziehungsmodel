@@ -118,6 +118,15 @@ const WorkflowGuide = (function() {
     }
 
     /**
+     * Archetyp-Label für eine Person (z.B. "DUO", "RA", "POLYAMOR")
+     */
+    function archetypeLabel(person) {
+        if (typeof TiageState === 'undefined') return null;
+        var arch = TiageState.getArchetype(person);
+        return arch ? arch.toUpperCase() : null;
+    }
+
+    /**
      * Gibt die Daten für einen Schritt zurück
      */
     function getStepData(step) {
@@ -133,7 +142,6 @@ const WorkflowGuide = (function() {
         }
 
         if (step === 0) {
-            // Begrüßung: unterschiedlich für neue vs. wiederkehrende User
             const key = isReturningUser ? 'workflow.returning' : 'workflow.greeting';
             return {
                 title: t(`${key}.title`, 'Willkommen'),
@@ -141,12 +149,27 @@ const WorkflowGuide = (function() {
                 philosophy: t(`${key}.philosophy`, '')
             };
         }
+
         const stepKey = `workflow.step${step}`;
-        return {
-            title: t(`${stepKey}.title`, `Schritt ${step}`),
-            desc: t(`${stepKey}.desc`, ''),
-            philosophy: t(`${stepKey}.philosophy`, '')
-        };
+        var baseTitle = t(`${stepKey}.title`, `Schritt ${step}`);
+        var desc      = t(`${stepKey}.desc`, '');
+        var philo     = t(`${stepKey}.philosophy`, '');
+
+        // Dynamischer Titel: Archetyp-Kombi einblenden wenn bekannt
+        var ichArch     = archetypeLabel('ich');
+        var partnerArch = archetypeLabel('partner');
+
+        if (step === 2 && ichArch) {
+            baseTitle = ichArch + ' – ' + baseTitle;
+        } else if (step === 3 && ichArch) {
+            baseTitle = ichArch + ' sucht …';
+        } else if (step === 4 && ichArch && partnerArch) {
+            baseTitle = ichArch + ' + ' + partnerArch;
+        } else if (step === 5 && ichArch && partnerArch) {
+            baseTitle = ichArch + ' + ' + partnerArch;
+        }
+
+        return { title: baseTitle, desc: desc, philosophy: philo };
     }
 
     /**
@@ -419,6 +442,18 @@ const WorkflowGuide = (function() {
                 TiageI18n.subscribe(function() { render(); })
             );
         }
+
+        // Mobil: IchWizard-Screen-Events empfangen — verhindert Sprung von 1 auf 5
+        window.addEventListener('tiage-wizard-screen', function(e) {
+            if (window.innerWidth > 768) return;
+            var wScreen = e.detail && e.detail.screen ? e.detail.screen : 1;
+            // Wizard-Screens 1-6 → WorkflowGuide-Steps 1-5
+            var mapped = Math.min(wScreen, TOTAL_STEPS);
+            if (mapped !== currentStep) {
+                currentStep = mapped;
+                render();
+            }
+        });
 
         // MomentsToggle: auf Toggle-Events reagieren
         window.addEventListener('tiage-moments-toggled', function(e) {

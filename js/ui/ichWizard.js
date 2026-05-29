@@ -2,7 +2,7 @@
  * ICH WIZARD — Schrittweiser Aufbau des Du-Profils (Mobile only)
  *
  * 6 Screens mit expliziten Weiter/Zurück-Buttons:
- *  1. Beziehungstyp     — Archetyp-Grid
+ *  1. Beziehungsarchetyp — Archetyp-Grid
  *  2. Geschlecht        — Geschlechtsidentität + Mehr-Info
  *  3. Attraktion        — Orientierung + Mehr-Info
  *  4. Dominanz          — Dominanz-Dynamik + Mehr-Info
@@ -18,7 +18,7 @@ var IchWizard = (function() {
 
     var SCREENS = [
         {
-            icon: '🧬', label: 'Beziehungstyp', sub: 'Wähle deinen Archetypen',
+            icon: '🧬', label: 'Beziehungsarchetyp', sub: 'Wähle deinen Beziehungsarchetypen',
             info: null
         },
         {
@@ -168,6 +168,7 @@ var IchWizard = (function() {
         }
 
         _updateUI();
+        window.dispatchEvent(new CustomEvent('tiage-wizard-screen', { detail: { screen: n } }));
         window.scrollTo(0, 0);
     }
 

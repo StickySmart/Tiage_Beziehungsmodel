@@ -103,7 +103,7 @@ const TiageArchetypeDescriptions = (function() {
             shortDef: "Vollständige Ablehnung von Beziehungshierarchien und gesellschaftlichen Normen.",
             longDef: "RAs hinterfragen alle gesellschaftlichen Beziehungsnormen radikal. Keine Beziehung ist 'höher' als eine andere - Freundschaften können genauso wichtig sein wie romantische Beziehungen. Jede Verbindung wird individuell definiert, ohne externe Vorlagen.",
             keyPrinciples: [
-                "Keine Hierarchien zwischen Beziehungstypen",
+                "Keine Hierarchien zwischen Beziehungsarchetypen",
                 "Jede Beziehung wird individuell definiert",
                 "Ablehnung gesellschaftlicher Beziehungsnormen",
                 "Autonomie als höchster Wert",

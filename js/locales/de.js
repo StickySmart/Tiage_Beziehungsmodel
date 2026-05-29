@@ -559,7 +559,7 @@ var TiageLocale_DE = {
             shortDef: 'RA - Ablehnung aller Beziehungs-Hierarchien und Labels.',
             longDef: 'RAs hinterfragen radikal alle gesellschaftlichen Beziehungsnormen. Keine Beziehung ist "höher" als eine andere - Freundschaften können genauso wichtig sein wie romantische Beziehungen. Jede Verbindung wird individuell definiert, ohne externe Vorlagen.',
             keyPrinciples: [
-                'Keine Hierarchien zwischen Beziehungstypen',
+                'Keine Hierarchien zwischen Beziehungsarchetypen',
                 'Jede Beziehung wird individuell definiert',
                 'Ablehnung gesellschaftlicher Beziehungsnormen',
                 'Autonomie als höchster Wert',
@@ -1893,28 +1893,28 @@ var TiageLocale_DE = {
             philosophy: 'Deine gelockten Werte sind noch da. Sie bleiben, egal welche Labels du ausprobierst. Falls du dich verändert hast: Das Modell auch.'
         },
         step1: {
-            title: 'Wähle deinen Archetyp',
-            desc: 'Dein Beziehungsmodell bestimmt, wie du Liebe und Partnerschaft lebst. Von klassisch-monogam (Duo) bis beziehungsanarchisch (RA) – es gibt kein richtig oder falsch.',
+            title: 'Wähle deinen Beziehungsarchetyp',
+            desc: 'Von Duo bis Beziehungsanarchie (RA) — dein Beziehungsarchetyp ist die Basis aller Bedürfniswerte. Kein Archetyp ist besser als ein anderer.',
             philosophy: '„Qualität beginnt mit Selbsterkenntnis. Wer bin ich in der Liebe?" — Pirsig'
         },
         step2: {
-            title: 'Definiere deine Dimensionen',
-            desc: 'Geschlecht, sexuelle Orientierung und Dominanz-Präferenz bilden dein Profil. Primär = gelebt, Sekundär = interessiert.',
+            title: 'Deine Dimensionen',
+            desc: 'Geschlecht, Orientierung und Dominanz verfeinern deinen Beziehungsarchetypen. Primär = aktiv gelebt, Sekundär = offen dafür.',
             philosophy: '„Du bist nicht der Körper, nicht der Geist. Finde heraus, wer du jenseits aller Labels bist." — Osho'
         },
         step3: {
-            title: 'Wähle den Partner-Archetyp',
-            desc: 'Welches Beziehungsmodell lebt dein Partner? Falls unsicher: probiere verschiedene Kombinationen aus.',
+            title: 'Partner-Beziehungsarchetyp',
+            desc: 'Welchen Beziehungsarchetyp lebt dein Partner? Die Kombination beider Archetypen erzeugt das gemeinsame Bedürfnisprofil.',
             philosophy: '„Der andere ist kein Objekt, sondern ein Spiegel. Was du suchst, spiegelt was du bist." — Pirsig'
         },
         step4: {
-            title: 'Definiere Partner-Dimensionen',
-            desc: 'Trage Geschlecht, Orientierung und Dominanz deines Partners ein. Genauere Angaben = genaueres Ergebnis.',
+            title: 'Partner-Dimensionen',
+            desc: 'Die tatsächliche Bedürfnisslage entsteht erst aus der Kombination beider Beziehungsarchetypen mit allen Dimensionen. Je genauer, desto realer.',
             philosophy: '„Wahrnehmen ohne zu urteilen ist die höchste Form der Intelligenz." — Osho'
         },
         step5: {
-            title: 'Ergebnis erkunden',
-            desc: 'Klicke auf die vollständige Ti-Age Synthese. Die Resonanzfaktoren zeigen, wo eure Muster harmonieren oder reiben.',
+            title: 'Eure Kombination',
+            desc: 'Die Ti-Age Synthese zeigt die Bedürfnislandschaft, die aus eurer konkreten Archetypen-Kombination entsteht — nicht Theorie, sondern eure Realität.',
             philosophy: '„Qualität ist kein Urteil — sie ist die Erfahrung von Übereinstimmung." — Pirsig'
         },
 

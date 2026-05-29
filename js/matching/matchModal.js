@@ -473,7 +473,7 @@ var TiageMatching = TiageMatching || {};
         const identicalTypeBanner = isIdenticalType ? `
             <div style="background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05));
                         border: 1px solid var(--success); border-radius: 10px; padding: 12px; margin-bottom: 15px; text-align: center;">
-                <div style="font-weight: 600; color: var(--success); margin-bottom: 4px;">✓ Identischer Beziehungstyp</div>
+                <div style="font-weight: 600; color: var(--success); margin-bottom: 4px;">✓ Identischer Beziehungsarchetyp</div>
                 <div style="font-size: var(--font-sm); color: var(--text-secondary);">
                     Ihr teilt dieselbe Grundüberzeugung über Beziehungen
                 </div>
