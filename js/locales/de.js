@@ -1542,8 +1542,8 @@ var TiageLocale_DE = {
             D: 'Dominanz - Gewichtung'
         },
         syntheseScoreLabel: 'TI-AGE SYNTHESE SCORE',
-        findMatch: 'FINDE PASSENDEN PARTNER',
-        findMatchTitle: 'Finde den besten Partner - testet alle 864 Kombinationen',
+        findMatch: 'FINDE DICH .. UND MEHR',
+        findMatchTitle: 'Finde dein ideales Gegenüber — testet alle Beziehungsarchetypen-Kombinationen',
         pleaseSelect: '– Bitte wählen –',
         noArchetypeSelected: 'Kein Archetyp gewählt',
         resetWeights: 'Standard (alle auf 1)',
