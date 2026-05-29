@@ -173,6 +173,16 @@
                 if (newPartnerArch) {
                     selectedPartner = newPartnerArch;
                     try { mobilePartnerArchetype = newPartnerArch; } catch(e) { /* not yet defined */ }
+                    if (window._lightbulbReady) {
+                        // Flash only when switching into bestMatch mode (from idle or synthese)
+                        var prevState = window._tiageBtnToggle || 'idle';
+                        if (typeof window.tiageSetBtnState === 'function') {
+                            window.tiageSetBtnState('bestMatch');
+                        }
+                        if (prevState !== 'bestMatch' && typeof window.triggerLightbulbFlash === 'function') {
+                            window.triggerLightbulbFlash();
+                        }
+                    }
                 }
             });
 

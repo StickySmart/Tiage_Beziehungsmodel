@@ -249,7 +249,6 @@ const MemoryManagerV2 = (function() {
             archetyp: null,
             ichSlots: null,      // aktive Multi-Slot Auswahl
             combined: null,      // v7.1: finales Ergebnis aller aktiven Slots (16 Werte)
-            beduerfnisse: null,  // v7.1: nur aktive Slots (nicht alle Archetypen)
             god: null,           // v7.1: Geschlecht, Orientierung, Dominanz, Extras
             lockedNeeds: null,
             imagePref: null
@@ -261,34 +260,20 @@ const MemoryManagerV2 = (function() {
                 : (typeof archetypes === 'string' ? archetypes : 'single');
 
             // Alle aktiven Slots speichern (Multi-Auswahl)
-            const activeSlots = [];
             if (TiageState.getIchSlots) {
                 const slots = TiageState.getIchSlots();
                 if (slots && slots.length > 0) {
                     data.ichSlots = slots;
-                    activeSlots.push(...slots);
                 }
             }
-            if (activeSlots.length === 0) activeSlots.push(data.archetyp);
 
             // v7.1: Kombiniertes Ergebnis aller aktiven Slots (das finale Rechenergebnis)
             if (TiageState.getCombinedFlatNeeds) {
                 const combined = TiageState.getCombinedFlatNeeds();
                 if (combined && Object.keys(combined).length > 0) {
-                    data.combinedRaw = combined; // v7.2: Roh-MAX (Pol-Blending, ohne AGOD+FFH)
-                    data.combined = combined;    // wird unten mit Modifikatoren überschrieben
+                    data.combined = combined;
                 }
             }
-
-            // v7.1: Nur aktive Slots speichern (nicht alle Archetypen mit irgendeiner gespeicherten Datenmenge)
-            const allFlatNeeds = {};
-            activeSlots.forEach(arch => {
-                const archNeeds = TiageState.get(`flatNeeds.ich.${arch}`);
-                if (archNeeds && Object.keys(archNeeds).length > 0) {
-                    allFlatNeeds[arch] = archNeeds;
-                }
-            });
-            if (Object.keys(allFlatNeeds).length > 0) data.beduerfnisse = allFlatNeeds;
 
             // v7.1: GOD-Einstellungen (Geschlecht, Orientierung, Dominanz + FFH-Extras)
             const geschlecht   = TiageState.get('personDimensions.ich.geschlecht');
@@ -1004,7 +989,9 @@ const MemoryManagerV2 = (function() {
                         TiageState.setArchetype('ich', data.archetyp);
                     }
 
-                    // beduerfnisse: v7.0 speichert alle Archetypen { single: {...}, duo: {...}, ... }
+                    // Bedürfniswerte wiederherstellen:
+                    // v7.0 legacy: beduerfnisse = { single: {...}, duo: {...} } — per-archetype
+                    // v8.0+: nur combined gespeichert (beduerfnisse entfällt — aus ichSlots+god recalculierbar)
                     if (data.beduerfnisse) {
                         const isMultiArch = ARCHETYPES.some(a => data.beduerfnisse[a] !== undefined);
                         if (isMultiArch) {
@@ -1014,10 +1001,13 @@ const MemoryManagerV2 = (function() {
                                 }
                             });
                         } else {
-                            // Altes Format (nur primary-Archetype-Daten)
                             if (TiageState.setFlatNeeds) {
                                 TiageState.setFlatNeeds('ich', data.beduerfnisse);
                             }
+                        }
+                    } else if (data.combined) {
+                        if (TiageState.setFlatNeeds) {
+                            TiageState.setFlatNeeds('ich', data.combined);
                         }
                     }
 
@@ -1217,12 +1207,12 @@ const MemoryManagerV2 = (function() {
     };
 })();
 
-// URL-Import bei Seitenstart prüfen (nach App-Initialisierung, 600ms Versatz)
-setTimeout(function() {
-    if (typeof MemoryManagerV2 !== 'undefined') {
+// URL-Import: nach vollständiger App-Initialisierung ausführen (kein Überschreiben durch loadDimensionsFromState)
+window._runUrlImportAfterInit = function() {
+    if (typeof MemoryManagerV2!== 'undefined') {
         MemoryManagerV2.checkImportFromURL();
     }
-}, 600);
+};
 
 // ═══════════════════════════════════════════════════════════════════════════
 // MODAL UI FUNCTIONS V2

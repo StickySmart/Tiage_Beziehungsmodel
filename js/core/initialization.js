@@ -213,8 +213,14 @@ async function runAppInitialization() {
         }
 
         // console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
+        // URL-Import nach vollständiger Init (verhindert Race Condition mit loadDimensionsFromState)
+        if (typeof window._runUrlImportAfterInit === 'function') {
+            window._runUrlImportAfterInit();
+        }
+        setTimeout(function() { window._lightbulbReady = true; }, 500);
     } catch (e) {
         console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);
+        setTimeout(function() { window._lightbulbReady = true; }, 2000);
     }
 }
 

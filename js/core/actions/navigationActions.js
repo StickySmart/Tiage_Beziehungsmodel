@@ -161,6 +161,9 @@
                 if (typeof TiageState !== 'undefined' && TiageState.saveToStorage) {
                     TiageState.saveToStorage();
                 }
+                if (typeof window.tiageSetBtnState === 'function') {
+                    window.tiageSetBtnState('synthese');
+                }
                 window.location.href = 'tiagesyntheseResonanz.html';
             }
         });

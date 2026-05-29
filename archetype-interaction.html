@@ -143,6 +143,51 @@
         }
         .mobile-wip-blocker .continue-btn:hover { background: #9333EA; }
         .mobile-wip-blocker .continue-btn:active { transform: scale(0.97); }
+
+        /* ── Best Match / Synthese Toggle ─────────────────────────────── */
+        @keyframes tiage-btn-next-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); filter: brightness(1); }
+            50%       { box-shadow: 0 0 22px 6px rgba(255,215,0,0.55); filter: brightness(1.25); }
+        }
+        .tiage-btn--next {
+            animation: tiage-btn-next-pulse 1.8s ease-in-out infinite;
+        }
+        .tiage-btn--done {
+            opacity: 0.55;
+        }
+
+        /* ── Lightbulb Flash Overlay ───────────────────────────────────── */
+        @keyframes tiage-bulb-blink {
+            0%,18%,20%,22%,24%,54%,56%,100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 80px rgba(255,215,0,0.95)) drop-shadow(0 0 40px rgba(255,200,0,0.7));
+            }
+            19%,21%,23%,55% {
+                opacity: 0.15;
+                filter: none;
+            }
+        }
+        .tiage-lightbulb-flash {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: radial-gradient(circle at center, rgba(40,25,0,0.93) 0%, rgba(0,0,0,0.96) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            cursor: pointer;
+            transition: opacity 0.6s ease;
+        }
+        .tiage-lightbulb-flash--out {
+            opacity: 0;
+        }
+        .tiage-lightbulb-flash__icon {
+            font-size: min(55vw, 55vh);
+            line-height: 1;
+            animation: tiage-bulb-blink 4s linear forwards;
+            display: block;
+        }
     </style>
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
@@ -174,7 +219,7 @@
     <script defer src="js/core/actions/slotMachine.js?v=20260210"></script>
     <script defer src="js/core/actions/headerControls.js?v=20260301a"></script>
     <script defer src="js/core/actions/statusToggles.js?v=20260130"></script>
-    <script defer src="js/core/actions/navigationActions.js?v=20260130"></script>
+    <script defer src="js/core/actions/navigationActions.js?v=20260529a"></script>
     <script defer src="js/core/actions/modalActions.js?v=20260130"></script>
     <script defer src="js/core/actions/secondaryActions.js?v=20260130"></script>
     <script defer src="js/core/actions/rtiPillarActions.js?v=20260205"></script>
@@ -2845,7 +2890,7 @@
     <script defer src="js/ui/toast.js"></script>
     <!-- Memory Manager -->
     <script defer src="js/memory-manager.js"></script>
-    <script defer src="js/memory-manager-v2.js?v=20260301a"></script>
+    <script defer src="js/memory-manager-v2.js?v=20260529a"></script>
     <script defer src="js/markdown-loader.js"></script>
 
     <script defer src="js/app-i18n.js?v=20260301a"></script>
@@ -2938,7 +2983,7 @@
     <script defer src="js/dimensions/dimensionUI.js?v=20260301a"></script>
     <script defer src="js/dimensions/gfkMatching.js?v=20260301a"></script>
 
-    <script defer src="js/app-main.js?v=20260301a"></script>
+    <script defer src="js/app-main.js?v=20260529a"></script>
     <script defer src="js/core/appInit.js"></script>
     <script defer src="js/core/initialization.js"></script>
     <script defer src="js/core/debugInspector.js"></script>
@@ -3141,6 +3186,65 @@
             <button onclick="window._bmcHide()" aria-label="Schließen" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:rgba(30,30,40,0.95);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);font-size:10px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(80,40,40,0.95)'" onmouseout="this.style.color='rgba(255,255,255,0.6)';this.style.background='rgba(30,30,40,0.95)'">✕</button>
         </div>
     </div>
+
+    <script>
+    /* Lightbulb Flash — triggered when partner archetype is selected */
+    /* ── Best Match / Synthese Toggle State ── */
+    var TOGGLE_KEY = 'tiage_btn_toggle';
+
+    function _getBtnEls(action) {
+        return document.querySelectorAll('[data-action="' + action + '"]');
+    }
+
+    window.tiageSetBtnState = function(state) {
+        try { sessionStorage.setItem(TOGGLE_KEY, state); } catch(e) {}
+        window._tiageBtnToggle = state;
+        _applyBtnToggleUI(state);
+    };
+
+    function _applyBtnToggleUI(state) {
+        var bestBtns = _getBtnEls('open-slot-machine-modal');
+        var synthBtns = _getBtnEls('open-tiage-synthese');
+        bestBtns.forEach(function(b) {
+            b.classList.toggle('tiage-btn--next', state === 'synthese');
+            b.classList.toggle('tiage-btn--done', state === 'bestMatch');
+        });
+        synthBtns.forEach(function(b) {
+            b.classList.toggle('tiage-btn--next', state === 'bestMatch');
+            b.classList.toggle('tiage-btn--done', state === 'synthese');
+        });
+    }
+
+    // Restore state from session (user returned from Synthese page)
+    document.addEventListener('DOMContentLoaded', function() {
+        var saved = null;
+        try { saved = sessionStorage.getItem(TOGGLE_KEY); } catch(e) {}
+        window._tiageBtnToggle = saved || 'idle';
+        if (saved) _applyBtnToggleUI(saved);
+    });
+
+    window.triggerLightbulbFlash = function() {
+        if (document.querySelector('.tiage-lightbulb-flash')) return;
+        var overlay = document.createElement('div');
+        overlay.className = 'tiage-lightbulb-flash';
+        overlay.innerHTML = '<span class="tiage-lightbulb-flash__icon">💡</span>';
+        document.body.appendChild(overlay);
+        // Hide WorkflowGuide while overlay is active
+        var wg = document.getElementById('workflowGuide');
+        if (wg) wg.style.visibility = 'hidden';
+        function dismiss() {
+            overlay.classList.add('tiage-lightbulb-flash--out');
+            setTimeout(function() {
+                if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                if (wg) wg.style.visibility = '';
+            }, 650);
+        }
+        overlay.addEventListener('click', dismiss);
+        setTimeout(dismiss, 4000);
+    };
+    /* _lightbulbReady is set by initialization.js after runAppInitialization() completes */
+    window._lightbulbReady = false;
+    </script>
 
     <script>
     (function() {
