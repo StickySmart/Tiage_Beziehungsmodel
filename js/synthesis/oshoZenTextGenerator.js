@@ -414,7 +414,12 @@ const OshoZenTextGenerator = (function() {
         }).join('');
 
         // 4 Stufen breakdown below card strip
-        const STUFEN_LABELS_LOC = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+        const STUFEN_LABELS_LOC = {
+            1: t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),
+            2: t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),
+            3: t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'),
+            4: t('beduerfnisKatalog.stufen.S4.label', 'Sinn')
+        };
         const stufeGroups = {};
         topMatches.forEach(match => {
             const bedEntry = (typeof window !== 'undefined' && window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse)
@@ -438,7 +443,7 @@ const OshoZenTextGenerator = (function() {
             const needs = stufeGroups[stufeNr] || [];
             const color = STUFEN_FARBEN[stufeNr];
             const label = STUFEN_LABELS_LOC[stufeNr];
-            const stufeInfo = _STUFE_INFO[stufeNr] || {};
+            const stufeInfo = _getStufeInfo(stufeNr);
             const allChar = stufeInfo.charakteristik || [];
             const matchedIds = new Set(needs.map(n => n.id));
 
@@ -1262,6 +1267,36 @@ const OshoZenTextGenerator = (function() {
         }
     };
 
+    var B_TO_KEY = {
+        '#B1':'wohlbefinden','#B2':'sicherheit','#B3':'leichtigkeit','#B4':'orientierung',
+        '#B5':'wirksamkeit','#B6':'freiheit','#B7':'intensitaet','#B8':'entwicklung',
+        '#B9':'gemeinschaft','#B10':'anerkennung','#B11':'gerechtigkeit','#B12':'verbundenheit',
+        '#B13':'selbsterkenntnis','#B14':'sinn','#B15':'integritaet','#B16':'selbstentfaltung'
+    };
+
+    function _getStufeInfo(n) {
+        var base = _STUFE_INFO[n];
+        if (!base) return {};
+        if (typeof TiageI18n === 'undefined' || !TiageI18n.t) return base;
+        var pfx = 'beduerfnisKatalog.stufeInfo.' + n + '.';
+        return {
+            titel:      t(pfx + 'titel',      base.titel),
+            evolution:  t(pfx + 'evolution',  base.evolution),
+            icon:       base.icon,
+            kernthema:  t(pfx + 'kernthema',  base.kernthema),
+            beschreibung: t(pfx + 'beschreibung', base.beschreibung),
+            charakteristik: (base.charakteristik || []).map(function(c, i) {
+                return {
+                    id:   c.id,
+                    name: t('beduerfnisKatalog.needs.' + (B_TO_KEY[c.id] || ''), c.name),
+                    sub:  t(pfx + 'charakteristik.' + i + '.sub', c.sub)
+                };
+            }),
+            beziehung: t(pfx + 'beziehung', base.beziehung),
+            frage:     t(pfx + 'frage',     base.frage)
+        };
+    }
+
     function _resetStufeCards() {
         [1, 2, 3, 4].forEach(function(n) {
             var card = document.getElementById('osho-stufe-card-' + n);
@@ -1313,7 +1348,7 @@ const OshoZenTextGenerator = (function() {
         const data = window._OshoStufeData && window._OshoStufeData[stufeNr];
         if (!data) return '';
         const { color } = data;
-        const info = _STUFE_INFO[stufeNr] || {};
+        const info = _getStufeInfo(stufeNr);
         const ichNeeds = (typeof TiageState !== 'undefined')
             ? (TiageState.getCombinedFlatNeeds ? TiageState.getCombinedFlatNeeds() : TiageState.getFlatNeeds('ich'))
             : {};
@@ -1357,7 +1392,7 @@ const OshoZenTextGenerator = (function() {
     function _buildStufeNeedChipsResonanz(stufeNr) {
         const data = window._OshoStufeData && window._OshoStufeData[stufeNr];
         if (!data) return '';
-        const info = _STUFE_INFO[stufeNr] || {};
+        const info = _getStufeInfo(stufeNr);
         const ichNeeds = (typeof TiageState !== 'undefined')
             ? (TiageState.getCombinedFlatNeeds ? TiageState.getCombinedFlatNeeds() : TiageState.getFlatNeeds('ich'))
             : {};
@@ -1417,7 +1452,7 @@ const OshoZenTextGenerator = (function() {
         const data = window._OshoStufeData && window._OshoStufeData[stufeNr];
         if (!data) return '';
         const { color } = data;
-        const info = _STUFE_INFO[stufeNr] || {};
+        const info = _getStufeInfo(stufeNr);
         const ichNeeds = (typeof TiageState !== 'undefined')
             ? (TiageState.getCombinedFlatNeeds ? TiageState.getCombinedFlatNeeds() : TiageState.getFlatNeeds('ich'))
             : {};
@@ -1435,7 +1470,7 @@ const OshoZenTextGenerator = (function() {
             const isGemeinsam = c.id && gemeinsamIds.indexOf(c.id) !== -1;
             const nameColor = isGemeinsam ? '#22C55E' : color;
             const gemeinsLink = isGemeinsam
-                ? `<span style="font-size:9px;font-weight:600;color:#22C55E;background:rgba(34,197,94,0.12);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle;">✓ geteilt</span>`
+                ? `<span style="font-size:9px;font-weight:600;color:#22C55E;background:rgba(34,197,94,0.12);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle;">✓ ${t('beduerfnisKatalog.geteiltLabel', 'geteilt')}</span>`
                 : '';
             const ichRank = c.id ? ichRankMap[c.id] : null;
             const topBadge = ichRank
@@ -1459,7 +1494,7 @@ const OshoZenTextGenerator = (function() {
         _activeStufeNr = stufeNr;
 
         const { color, avgScore, needs } = data;
-        const info = _STUFE_INFO[stufeNr] || {};
+        const info = _getStufeInfo(stufeNr);
         const modalId = 'osho-stufe-modal';
 
         const existing = document.getElementById(modalId);
@@ -1484,11 +1519,11 @@ const OshoZenTextGenerator = (function() {
                     <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:2px;">
                         <span style="font-size:22px;">${info.icon || '🔷'}</span>
                         <div>
-                            <div style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.1em;">Stufe ${stufeNr} · ${info.evolution || ''}</div>
+                            <div style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.1em;">${t('beduerfnisKatalog.stufeLabel', 'Stufe')} ${stufeNr} · ${info.evolution || ''}</div>
                             <div style="font-size:20px;font-weight:800;color:rgba(255,255,255,0.95);line-height:1.2;">${info.titel || ''}</div>
                         </div>
                         <div style="margin-left:auto;text-align:right;">
-                            <div style="font-size:11px;color:rgba(255,255,255,0.3);">Euer Ø</div>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.3);">${t('beduerfnisKatalog.avgLabel', 'Euer Ø')}</div>
                             <div style="font-size:18px;font-weight:700;color:${color};">${avgScore}</div>
                         </div>
                     </div>
@@ -1499,7 +1534,7 @@ const OshoZenTextGenerator = (function() {
 
                 <!-- Kernthema -->
                 <div style="background:${color}18;border-left:3px solid ${color};border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;">
-                    <div style="font-size:10px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Kernthema</div>
+                    <div style="font-size:10px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">${t('beduerfnisKatalog.kernthemaLabel', 'Kernthema')}</div>
                     <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.9);">${info.kernthema || ''}</div>
                 </div>
 
@@ -1507,12 +1542,12 @@ const OshoZenTextGenerator = (function() {
                 <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin-bottom:16px;">${info.beschreibung || ''}</div>
 
                 <!-- Archetypal needs grid -->
-                <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Charakteristische Bedürfnisse dieser Stufe</div>
+                <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">${t('beduerfnisKatalog.charakteristikLabel', 'Charakteristische Bedürfnisse dieser Stufe')}</div>
                 <div id="${modalId}-char" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;">${charHtml}</div>
 
                 <!-- Beziehungsrelevanz -->
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
-                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">In eurer Beziehung</div>
+                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">${t('beduerfnisKatalog.beziehungLabel', 'In eurer Beziehung')}</div>
                     <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">${info.beziehung || ''}</div>
                 </div>
 
@@ -1528,14 +1563,14 @@ const OshoZenTextGenerator = (function() {
                 ${info.charakteristik && info.charakteristik.length > 0 ? `
                 <div style="margin-top:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;">
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.08em;">Eure Bedürfnisse auf dieser Stufe</div>
+                        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.08em;">${t('beduerfnisKatalog.eureBeduerfnisseLabel', 'Eure Bedürfnisse auf dieser Stufe')}</div>
                         <div style="display:flex;gap:4px;">
                             <button id="${modalId}-b-s"
                                 onclick="document.getElementById('${modalId}-v-s').style.display='';document.getElementById('${modalId}-v-r').style.display='none';document.getElementById('${modalId}-b-s').style.opacity='1';document.getElementById('${modalId}-b-r').style.opacity='0.45';"
-                                style="font-size:10px;font-weight:700;color:${color};background:${color}20;border:1px solid ${color}50;border-radius:5px;padding:3px 9px;cursor:pointer;">Meine Stärke</button>
+                                style="font-size:10px;font-weight:700;color:${color};background:${color}20;border:1px solid ${color}50;border-radius:5px;padding:3px 9px;cursor:pointer;">${t('beduerfnisKatalog.meineStaerkeLabel', 'Meine Stärke')}</button>
                             <button id="${modalId}-b-r"
                                 onclick="document.getElementById('${modalId}-v-r').style.display='';document.getElementById('${modalId}-v-s').style.display='none';document.getElementById('${modalId}-b-r').style.opacity='1';document.getElementById('${modalId}-b-s').style.opacity='0.45';"
-                                style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:3px 9px;cursor:pointer;opacity:0.45;">Resonanz</button>
+                                style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:3px 9px;cursor:pointer;opacity:0.45;">${t('beduerfnisKatalog.resonanzLabel', 'Resonanz')}</button>
                         </div>
                     </div>
                     <div id="${modalId}-v-s">${needChips}</div>

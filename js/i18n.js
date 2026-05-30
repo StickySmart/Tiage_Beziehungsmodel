@@ -16,7 +16,7 @@ const TiageI18n = (function() {
 
     const STORAGE_KEY = 'tiage_language';
     const DEFAULT_LANGUAGE = 'de';
-    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it', 'ru'];
+    const SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'it', 'ru', 'es'];
 
     let currentLanguage = DEFAULT_LANGUAGE;
     let currentLocale = null;
@@ -27,7 +27,8 @@ const TiageI18n = (function() {
         de: typeof TiageLocale_DE !== 'undefined' ? TiageLocale_DE : null,
         en: typeof TiageLocale_EN !== 'undefined' ? TiageLocale_EN : null,
         fr: typeof TiageLocale_FR !== 'undefined' ? TiageLocale_FR : null,
-        it: typeof TiageLocale_IT !== 'undefined' ? TiageLocale_IT : null
+        it: typeof TiageLocale_IT !== 'undefined' ? TiageLocale_IT : null,
+        es: typeof TiageLocale_ES !== 'undefined' ? TiageLocale_ES : null
     };
 
     /**
@@ -155,7 +156,7 @@ const TiageI18n = (function() {
      * @returns {string} The locale string (e.g., 'de-DE', 'en-US')
      */
     function getDateLocale() {
-        const localeMap = { de: 'de-DE', en: 'en-US', fr: 'fr-FR', it: 'it-IT', ru: 'ru-RU' };
+        const localeMap = { de: 'de-DE', en: 'en-US', fr: 'fr-FR', it: 'it-IT', ru: 'ru-RU', es: 'es-ES' };
         return localeMap[currentLanguage] || 'de-DE';
     }
 
@@ -377,7 +378,7 @@ const TiageI18n = (function() {
          * @returns {string} The language name
          */
         getLanguageName(code) {
-            const names = { de: 'Deutsch', en: 'English', fr: 'Français', it: 'Italiano', ru: 'Русский' };
+            const names = { de: 'Deutsch', en: 'English', fr: 'Français', it: 'Italiano', ru: 'Русский', es: 'Español' };
             return names[code] || code;
         },
 

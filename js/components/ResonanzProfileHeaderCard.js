@@ -12,12 +12,27 @@
 const ResonanzProfileHeaderCard = (function() {
     'use strict';
 
-    const STUFEN_CONFIG = {
-        'S1': { label: 'Fundament',     short: 'Fund.', color: '#10B981', desc: 'Existenz · Sicherheit · Ruhe · Alltag' },
-        'S2': { label: 'Entfaltung',    short: 'Entf.', color: '#3B82F6', desc: 'Freiheit · Ausdruck · Kink · Kommunikation' },
-        'S3': { label: 'Verbundenheit', short: 'Verb.', color: '#8B5CF6', desc: 'Zuneigung · Intimität · Werte · Soziales' },
-        'S4': { label: 'Sinn',          short: 'Sinn',  color: '#F59E0B', desc: 'Identität · Lebensplanung · Transformation' }
+    const STUFEN_CONFIG_BASE = {
+        'S1': { color: '#10B981', labelKey: 'beduerfnisKatalog.stufen.S1.label', shortKey: 'beduerfnisKatalog.stufen.S1.short', descKey: 'beduerfnisKatalog.stufen.S1.desc', label: 'Fundament',     short: 'Fund.', desc: 'Existenz · Sicherheit · Ruhe · Alltag' },
+        'S2': { color: '#3B82F6', labelKey: 'beduerfnisKatalog.stufen.S2.label', shortKey: 'beduerfnisKatalog.stufen.S2.short', descKey: 'beduerfnisKatalog.stufen.S2.desc', label: 'Entfaltung',    short: 'Entf.', desc: 'Freiheit · Ausdruck · Kink · Kommunikation' },
+        'S3': { color: '#8B5CF6', labelKey: 'beduerfnisKatalog.stufen.S3.label', shortKey: 'beduerfnisKatalog.stufen.S3.short', descKey: 'beduerfnisKatalog.stufen.S3.desc', label: 'Verbundenheit', short: 'Verb.', desc: 'Zuneigung · Intimität · Werte · Soziales' },
+        'S4': { color: '#F59E0B', labelKey: 'beduerfnisKatalog.stufen.S4.label', shortKey: 'beduerfnisKatalog.stufen.S4.short', descKey: 'beduerfnisKatalog.stufen.S4.desc', label: 'Sinn',          short: 'Sinn',  desc: 'Identität · Lebensplanung · Transformation' }
     };
+
+    function _t(key, fallback) {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.t) return TiageI18n.t(key, fallback);
+        return fallback;
+    }
+
+    function getStufeConfig(key) {
+        var base = STUFEN_CONFIG_BASE[key];
+        return {
+            color: base.color,
+            label: _t(base.labelKey, base.label),
+            short: _t(base.shortKey, base.short),
+            desc:  _t(base.descKey,  base.desc)
+        };
+    }
 
     const STUFEN_MAP = {
         '#K1':1,'#K2':1,'#K7':1,'#K18':1,
@@ -104,12 +119,12 @@ const ResonanzProfileHeaderCard = (function() {
         <div class="resonanz-profile-header-card">
             <div class="resonanz-profile-header-title">
                 <span class="resonanz-profile-header-icon">🧬</span>
-                <span class="resonanz-profile-header-text">Entwicklungsstufen</span>
+                <span class="resonanz-profile-header-text">${_t('beduerfnisKatalog.heading', 'Entwicklungsstufen')}</span>
             </div>
             <div class="resonanz-profile-header-values">`;
 
         STUFEN_KEYS.forEach(key => {
-            const cfg    = STUFEN_CONFIG[key];
+            const cfg    = getStufeConfig(key);
             const value  = values[key];
             const stufeNr = parseInt(key[1]);
 
@@ -119,13 +134,13 @@ const ResonanzProfileHeaderCard = (function() {
             let richtungSymbol, richtungClass, richtungTitle;
             if (value >= 70) {
                 richtungSymbol = '↑'; richtungClass = 'richtung-mehr';
-                richtungTitle  = 'Hohe Bedürfnisstärke in dieser Stufe';
+                richtungTitle  = _t('beduerfnisKatalog.highStrength', 'Hohe Bedürfnisstärke in dieser Stufe');
             } else if (value >= 45) {
                 richtungSymbol = '='; richtungClass = 'richtung-perfekt';
-                richtungTitle  = 'Mittlere Bedürfnisstärke';
+                richtungTitle  = _t('beduerfnisKatalog.mediumStrength', 'Mittlere Bedürfnisstärke');
             } else {
                 richtungSymbol = '↓'; richtungClass = 'richtung-weniger';
-                richtungTitle  = 'Niedrige Bedürfnisstärke in dieser Stufe';
+                richtungTitle  = _t('beduerfnisKatalog.lowStrength', 'Niedrige Bedürfnisstärke in dieser Stufe');
             }
 
             html += `
@@ -218,7 +233,7 @@ const ResonanzProfileHeaderCard = (function() {
     }
 
     function searchByStufe(stufeKey) {
-        const cfg = STUFEN_CONFIG[stufeKey];
+        const cfg = getStufeConfig(stufeKey);
         if (!cfg) return;
         if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
             if (ActiveFilterCard.isFilterActive && ActiveFilterCard.isFilterActive(stufeKey)) {

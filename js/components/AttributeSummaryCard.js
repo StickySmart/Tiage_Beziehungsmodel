@@ -18,6 +18,11 @@ if (typeof window.openNeedWithResonance !== 'function') {
 const AttributeSummaryCard = (function() {
     'use strict';
 
+    function _t(key, fallback) {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.t) return TiageI18n.t(key, fallback);
+        return fallback;
+    }
+
     // FIX v1.8.687: Debounced save für Performance bei Slider-Bewegungen
     let saveDebounceTimer = null;
     const SAVE_DEBOUNCE_MS = 300; // Speichern max alle 300ms
@@ -91,10 +96,10 @@ const AttributeSummaryCard = (function() {
      * @returns {object|null} { factor: 'R1'|'R2'|'R3'|'R4', color: '#...', label: '...' } oder null
      */
     const _STUFEN_BADGE = [
-        { s: 1, short: 'S1', label: 'Fundament',    color: '#10B981' },
-        { s: 2, short: 'S2', label: 'Entfaltung',   color: '#3B82F6' },
-        { s: 3, short: 'S3', label: 'Verbundenheit', color: '#8B5CF6' },
-        { s: 4, short: 'S4', label: 'Sinn',          color: '#F59E0B' }
+        { s: 1, short: 'S1', labelKey: 'beduerfnisKatalog.stufen.S1.label', label: 'Fundament',    color: '#10B981' },
+        { s: 2, short: 'S2', labelKey: 'beduerfnisKatalog.stufen.S2.label', label: 'Entfaltung',   color: '#3B82F6' },
+        { s: 3, short: 'S3', labelKey: 'beduerfnisKatalog.stufen.S3.label', label: 'Verbundenheit', color: '#8B5CF6' },
+        { s: 4, short: 'S4', labelKey: 'beduerfnisKatalog.stufen.S4.label', label: 'Sinn',          color: '#F59E0B' }
     ];
 
     function getRFactorForNeed(needId) { return null; } // kept for compat
@@ -107,7 +112,7 @@ const AttributeSummaryCard = (function() {
         const isHigh = value >= 70;
         const isLow  = value <= 30;
         const cls = isHigh ? 'r-badge-high' : (isLow ? 'r-badge-low' : '');
-        return `<span class="r-factor-badge ${cls}" style="--r-color:${st.color};" title="${st.short}: ${st.label}">${st.short}</span>`;
+        return `<span class="r-factor-badge ${cls}" style="--r-color:${st.color};" title="${st.short}: ${_t(st.labelKey, st.label)}">${st.short}</span>`;
     }
 
     /**
@@ -2400,16 +2405,19 @@ const AttributeSummaryCard = (function() {
 
         // Subtitle mit Filter-Info, gesperrten und geänderten Bedürfnissen
         const filterActive = filteredCount < totalNeedsCount;
+        const davonGesperrt = _t('needsEditor.davonGesperrt', 'davon gesperrt');
         let subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount} von ${totalNeedsCount}), davon gesperrt: ${lockedCount}`
-            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
+            ? _t('needsEditor.profileTitleFiltered', 'Dein {archetype}-Profil (Gefiltert: {filtered} von {total}), davon gesperrt: {locked}')
+                .replace('{archetype}', archetypLabel).replace('{filtered}', filteredCount).replace('{total}', totalNeedsCount).replace('{locked}', lockedCount)
+            : _t('needsEditor.profileTitle', 'Dein {archetype}-Profil ({count} Bedürfnisse), davon gesperrt: {locked}')
+                .replace('{archetype}', archetypLabel).replace('{count}', totalNeedsCount).replace('{locked}', lockedCount);
         // Füge geänderte Zählung hinzu wenn > 0
         if (changedCount > 0) {
-            subtitleText += `, geändert: ${changedCount}`;
+            subtitleText += `, ${_t('needsEditor.geaendert', 'geändert')}: ${changedCount}`;
         }
 
         // v1.8.998: Einheitlicher Titel (keine Hauptfragen-Ansicht mehr)
-        const titleText = 'Alle Bedürfnisse';
+        const titleText = _t('needsEditor.allNeeds', 'Alle Bedürfnisse');
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -2417,24 +2425,30 @@ const AttributeSummaryCard = (function() {
             <div class="flat-needs-header-top">
                 <div class="flat-needs-header-left">
                     <span class="flat-needs-title">${titleText}</span>
-                    <span class="flat-needs-subtitle">${subtitleText}</span>
+                    <span class="flat-needs-subtitle"
+                          data-archetype="${archetypLabel}"
+                          data-total="${totalNeedsCount}"
+                          data-filtered="${filteredCount}"
+                          data-filter-active="${filterActive}"
+                          data-locked="${lockedCount}"
+                          data-changed="${changedCount}">${subtitleText}</span>
                 </div>
             </div>
 
             <div class="flat-needs-sort-bar">
-                <span class="flat-needs-sort-label">Sortieren:</span>
+                <span class="flat-needs-sort-label">${_t('needsEditor.sortLabel', 'Sortieren:')}</span>
                 <button class="flat-needs-sort-btn sort-additive-btn${additiveSortMode ? ' active' : ''}"
                         onclick="AttributeSummaryCard.toggleAdditiveSortMode()" title="${additiveSortMode ? 'Multi-Sort aktiv: Klicks werden kombiniert' : 'Multi-Sort: Klick zum Aktivieren'}">+</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('value') ? ' active' : ''}${sortStack.indexOf('value') >= 0 ? ' sort-' + (sortStack.indexOf('value') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('value')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Wert ${sortDirections.value ? '↓' : '↑'}</button>
+                        onclick="AttributeSummaryCard.setSortMode('value')" title="Klick: primär sortieren / nochmal: Richtung wechseln">${_t('needsEditor.sortValue', 'Wert')} ${sortDirections.value ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('name') ? ' active' : ''}${sortStack.indexOf('name') >= 0 ? ' sort-' + (sortStack.indexOf('name') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('name')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Name ${sortDirections.name ? '↓' : '↑'}</button>
+                        onclick="AttributeSummaryCard.setSortMode('name')" title="Klick: primär sortieren / nochmal: Richtung wechseln">${_t('needsEditor.sortName', 'Name')} ${sortDirections.name ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('id') ? ' active' : ''}${sortStack.indexOf('id') >= 0 ? ' sort-' + (sortStack.indexOf('id') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('id')" title="Klick: primär sortieren / nochmal: Richtung wechseln">#B Nr. ${sortDirections.id ? '↓' : '↑'}</button>
+                        onclick="AttributeSummaryCard.setSortMode('id')" title="Klick: primär sortieren / nochmal: Richtung wechseln">${_t('needsEditor.sortId', '#B Nr.')} ${sortDirections.id ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('status') ? ' active' : ''}${sortStack.indexOf('status') >= 0 ? ' sort-' + (sortStack.indexOf('status') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('status')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Status ${sortDirections.status ? '↓' : '↑'}</button>
+                        onclick="AttributeSummaryCard.setSortMode('status')" title="Klick: primär sortieren / nochmal: Richtung wechseln">${_t('needsEditor.sortStatus', 'Status')} ${sortDirections.status ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn${sortStack.includes('changed') ? ' active' : ''}${sortStack.indexOf('changed') >= 0 ? ' sort-' + (sortStack.indexOf('changed') + 1) : ''}"
-                        onclick="AttributeSummaryCard.setSortMode('changed')" title="Klick: primär sortieren / nochmal: Richtung wechseln">Geändert ${sortDirections.changed ? '↓' : '↑'}</button>
+                        onclick="AttributeSummaryCard.setSortMode('changed')" title="Klick: primär sortieren / nochmal: Richtung wechseln">${_t('needsEditor.sortChanged', 'Geändert')} ${sortDirections.changed ? '↓' : '↑'}</button>
                 <button class="flat-needs-sort-btn sort-reset-btn${sortStack.length === 1 && sortStack[0] === 'id' && sortDirections.id && !additiveSortMode ? ' hidden' : ''}"
                         onclick="AttributeSummaryCard.resetSort()" title="Sortierung zurücksetzen">✕</button>
             </div>
@@ -3166,20 +3180,24 @@ const AttributeSummaryCard = (function() {
         // Finde das Subtitle-Element und aktualisiere den Text
         const subtitleElement = document.querySelector('.flat-needs-subtitle');
         if (subtitleElement) {
-            let currentText = subtitleElement.textContent;
-            // Ersetze den "davon gesperrt: X" Teil
-            currentText = currentText.replace(/davon gesperrt: \d+/, `davon gesperrt: ${lockedNeedsCount}`);
-            // Ersetze oder füge den "geändert: X" Teil hinzu
-            if (currentText.includes('geändert:')) {
-                currentText = currentText.replace(/geändert: \d+/, `geändert: ${changedNeedsCount}`);
-            } else if (changedNeedsCount > 0) {
-                currentText += `, geändert: ${changedNeedsCount}`;
+            // Lese gespeicherte Werte aus data-Attributen (sprachunabhängig)
+            const archetypLabel   = subtitleElement.dataset.archetype || '';
+            const totalNeedsCount = parseInt(subtitleElement.dataset.total)    || 0;
+            const filteredCount   = parseInt(subtitleElement.dataset.filtered) || 0;
+            const filterActive    = subtitleElement.dataset.filterActive === 'true';
+            // Aktualisiere data-Attribute
+            subtitleElement.dataset.locked  = lockedNeedsCount;
+            subtitleElement.dataset.changed = changedNeedsCount;
+            // Baue übersetzten Text neu
+            let newText = filterActive
+                ? _t('needsEditor.profileTitleFiltered', 'Dein {archetype}-Profil (Gefiltert: {filtered} von {total}), davon gesperrt: {locked}')
+                    .replace('{archetype}', archetypLabel).replace('{filtered}', filteredCount).replace('{total}', totalNeedsCount).replace('{locked}', lockedNeedsCount)
+                : _t('needsEditor.profileTitle', 'Dein {archetype}-Profil ({count} Bedürfnisse), davon gesperrt: {locked}')
+                    .replace('{archetype}', archetypLabel).replace('{count}', totalNeedsCount).replace('{locked}', lockedNeedsCount);
+            if (changedNeedsCount > 0) {
+                newText += `, ${_t('needsEditor.geaendert', 'geändert')}: ${changedNeedsCount}`;
             }
-            // Entferne "geändert: 0" wenn vorhanden
-            if (changedNeedsCount === 0) {
-                currentText = currentText.replace(/, geändert: \d+/, '');
-            }
-            subtitleElement.textContent = currentText;
+            subtitleElement.textContent = newText;
             console.log('[updateLockedCountDisplay] Subtitle aktualisiert:', lockedNeedsCount, 'gesperrt,', changedNeedsCount, 'geändert');
         }
     }
