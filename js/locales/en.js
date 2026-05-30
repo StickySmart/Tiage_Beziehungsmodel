@@ -1804,6 +1804,28 @@ var TiageLocale_EN = {
                 beziehung: 'At this level, two people meet as conscious beings with their own depth. Shared values, mutual growth and shared meaning make relationships lastingly alive.',
                 frage: 'What truly gives your life — and this relationship — meaning?'
             }
+        },
+        popupFaehigkeit: 'Capability',
+        popupSynonym: 'Synonyms',
+        popupStrategie: 'Strategy',
+        popupStufe: 'Level',
+        needDetails: {
+            wohlbefinden:    { fae: 'Self-care',             syn: 'Integrity, health, fitness',                                     str: 'Every other need that is met contributes to our well-being.' },
+            sicherheit:      { fae: 'Self-protection',       syn: 'Stability, protection, support, loyalty, fidelity',              str: 'A house, clothes, contracts, agreements…' },
+            leichtigkeit:    { fae: 'Energy saving',         syn: 'Energy conservation, simplicity, harmony',                      str: 'Order, habits, vacations, media consumption…' },
+            orientierung:    { fae: 'Perception',            syn: 'Clarity, structure, order, rules, guidance',                    str: 'A map, a watch, an organizational chart, a conversation…' },
+            wirksamkeit:     { fae: 'Ability to act',        syn: 'Influence, power, sovereignty',                                 str: 'Every active effort contributes to its effectiveness.' },
+            freiheit:        { fae: 'Decision-making',       syn: 'Autonomy, self-determination, independence',                    str: 'Every self-determined decision nurtures freedom.' },
+            intensitaet:     { fae: 'Sensation',             syn: 'Vitality, passion, sensuality, pleasure',                       str: 'Every intense sensory or emotional experience fuels that intensity.' },
+            entwicklung:     { fae: 'Learning',              syn: 'Growth, unfolding, learning',                                   str: 'A seminar, a journey, an adventure, a mindful experience.' },
+            gemeinschaft:    { fae: 'Social interaction',    syn: 'Society, belonging, family, clan, group',                       str: 'Shared rituals, gatherings, rules, names…' },
+            anerkennung:     { fae: 'Self-esteem',           syn: 'Appreciation, respect, significance, usefulness',               str: 'A word of praise, a compliment, a thoughtful gesture, a smile…' },
+            gerechtigkeit:   { fae: 'Value awareness',       syn: 'Fairness, respect, appropriateness, equal value',               str: 'A complaint, an accusation, a report, revenge…' },
+            verbundenheit:   { fae: 'Empathy',               syn: 'Intimacy, security, closeness, trust, love',                    str: 'A conversation, shared intense experiences, sex…' },
+            selbsterkenntnis:{ fae: 'Self-reflection',       syn: 'Awareness, integration, wisdom',                                str: 'Meditation, coaching, and therapy, true friendship…' },
+            sinn:            { fae: 'Intentionality',        syn: 'Calling, vision, mission',                                      str: 'Any action that enriches the world as a whole nourishes our sense of purpose.' },
+            integritaet:     { fae: 'Self-responsibility',   syn: 'Truthfulness, consistency, authenticity, dignity',              str: 'Every action taken in accordance with one\'s own values fosters integrity.' },
+            selbstentfaltung:{ fae: 'Self-love',             syn: 'Self-becoming, self-actualization, flow',                       str: 'Developing one\'s own abilities and talents for the good of the world.' }
         }
     },
 

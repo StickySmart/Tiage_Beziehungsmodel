@@ -1806,6 +1806,28 @@ var TiageLocale_DE = {
                 beziehung: 'Auf dieser Ebene begegnen sich zwei Menschen als bewusste Wesen mit eigener Tiefe. Gemeinsame Werte, gegenseitiges Wachstum und geteilter Sinn machen Beziehungen dauerhaft lebendig.',
                 frage: 'Was gibt deinem Leben — und dieser Beziehung — wirklich Bedeutung?'
             }
+        },
+        popupFaehigkeit: 'Fähigkeit',
+        popupSynonym: 'Synonyme',
+        popupStrategie: 'Strategie',
+        popupStufe: 'Stufe',
+        needDetails: {
+            wohlbefinden:    { fae: 'Selbstversorgung',       syn: 'Unversehrtheit, Gesundheit, Fitness',                             str: 'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.' },
+            sicherheit:      { fae: 'Selbstschutz',           syn: 'Stabilität, Schutz, Halt, Loyalität, Treue',                      str: 'Ein Haus, Kleidung, Verträge, Absprachen…' },
+            leichtigkeit:    { fae: 'Energieeinsparung',      syn: 'Energieeinsparung, Einfachheit, Harmonie',                        str: 'Ordnung, Gewohnheiten, Urlaub, Medienkonsum…' },
+            orientierung:    { fae: 'Wahrnehmung',            syn: 'Klarheit, Struktur, Ordnung, Regeln, Führung',                    str: 'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch…' },
+            wirksamkeit:     { fae: 'Handlungsfähigkeit',     syn: 'Einfluss, Macht, Souveränität',                                   str: 'Jede aktive Einflussnahme nährt die Wirksamkeit.' },
+            freiheit:        { fae: 'Entscheidungsfähigkeit', syn: 'Autonomie, Selbstbestimmtheit, Un-Abhängigkeit',                  str: 'Jede selbstbestimmte Entscheidung nährt die Freiheit.' },
+            intensitaet:     { fae: 'Empfinden',              syn: 'Lebendigkeit, Leidenschaft, Sinnlichkeit, Genuss',                str: 'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.' },
+            entwicklung:     { fae: 'Lernen',                 syn: 'Wachstum, Entfaltung, Lernen',                                   str: 'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.' },
+            gemeinschaft:    { fae: 'Soziale Interaktion',    syn: 'Gesellschaft, Zugehörigkeit, Familie, Clan, Gruppe',              str: 'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen…' },
+            anerkennung:     { fae: 'Selbstwertempfinden',    syn: 'Wertschätzung, Respekt, Bedeutung, Nützlichkeit',                 str: 'Ein Lob, ein Kompliment, eine Aufmerksamkeit, ein Lächeln…' },
+            gerechtigkeit:   { fae: 'Wertebewusstsein',       syn: 'Fairness, Respekt, Angemessenheit, Gleichwertigkeit',             str: 'Eine Beschwerde, eine Anklage, eine Anzeige, Rache…' },
+            verbundenheit:   { fae: 'Empathie',               syn: 'Intimität, Geborgenheit, Nähe, Vertrauen, Liebe',                 str: 'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex…' },
+            selbsterkenntnis:{ fae: 'Selbstreflexion',        syn: 'Bewusstheit, Integration, Weisheit',                              str: 'Meditation, Coaching und Therapie, ehrliche Freundschaft…' },
+            sinn:            { fae: 'Intentionalität',        syn: 'Berufung, Vision, Mission',                                       str: 'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.' },
+            integritaet:     { fae: 'Selbstverantwortung',    syn: 'Wahrhaftigkeit, Konsistenz, Authentizität, Würde',                str: 'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.' },
+            selbstentfaltung:{ fae: 'Selbstliebe',            syn: 'Selbstwerdung, Selbstverwirklichung, Flow',                       str: 'Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.' }
         }
     },
 
