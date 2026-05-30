@@ -14,7 +14,15 @@
           "karte_key": "major_arcana.1_existence",
           "karte_nummer": 1,
           "tiage": "El bienestar no es un estado que se alcance, sino la calidad de tu presencia. El universo respira a través de ti en cuanto dejas de luchar contra él.",
-          "reflexion": "¿Puedo SER yo mismo en esta relación sin tener que demostrar mi valía constantemente?"
+          "reflexion": "¿Puedo SER yo mismo en esta relación sin tener que demostrar mi valía constantemente?",
+          "traditionen": {
+            "christentum": "En el cristianismo es \"Yo soy el que soy\" (Éxodo 3:14) - el ser está antes que el hacer, la existencia antes que el logro.",
+            "buddhismus": "Buda lo reconoció: Sólo quien acepta su propio sufrimiento puede ser verdaderamente compasivo. La verdadera compasión nace de la aceptación de la realidad, no de la lucha contra ella.",
+            "islam": "El Islam enseña que cada alma fue creada directamente por Alá, incomparable, única y valiosa en su propia existencia.",
+            "osho": "No estás aquí para convertirte en otra persona, estás aquí para ser TÚ, en toda tu verdad desnuda.",
+            "moderne": "Las investigaciones modernas sobre el apego lo confirman: La verdadera conexión sólo surge entre dos personas que se han encontrado a sí mismas. El bienestar no empieza con la optimización, sino con la aceptación radical: soy quien soy, y ese es el punto de partida.",
+            "pirsig": "Pirsig: La calidad empieza antes de pensar, en la experiencia inmediata de ser. El bienestar es calidad dinámica: la iluminación de la vida antes de que la mente la nombre."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -24,7 +32,15 @@
           "karte_key": "minor_arcana.water.king_healing",
           "karte_nummer": 14,
           "tiage": "En el bienestar compartido se cura lo que tú solo no has podido curar. El encuentro con el otro no es una amenaza para tu paz, sino su plenitud.",
-          "reflexion": "¿Me siento lo suficientemente seguro como para mostrar mi vulnerabilidad?"
+          "reflexion": "¿Me siento lo suficientemente seguro como para mostrar mi vulnerabilidad?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús no cura borrando las heridas, sino tocando amorosamente a la persona herida. Las cicatrices permanecen, pero pierden su poder.",
+            "buddhismus": "Buda enseñó que la curación se produce a través de la atención plena: mirando conscientemente el dolor, no suprimiéndolo.",
+            "islam": "En el Islam, Alá es Ar-Raafi (el que eleva) y Ash-Shafi (el que cura) - la curación como un don divino recibido a través de la propia práctica.",
+            "osho": "Sanar no significa deshacer, sino llegar a ser íntegro CON la propia historia.",
+            "moderne": "Las investigaciones modernas sobre el trauma demuestran que la corregulación, la regulación conjunta de las emociones, es más poderosa que cualquier terapia individual. El bienestar surge cuando nos permitimos estar rotos Y enteros.",
+            "pirsig": "Pirsig: La curación es el camino de vuelta a la calidad estática después de la perturbación. El sistema nervioso recuerda la totalidad cuando dejamos de luchar contra el ahora."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -34,7 +50,15 @@
           "karte_key": "minor_arcana.water.2_friendliness",
           "karte_nummer": 2,
           "tiage": "El bienestar tiene su origen en la amistad contigo mismo. Si te tratas con la misma calidez con la que tratas a un amigo querido, se crea una base capaz de soportar cualquier tormenta. La amabilidad hacia uno mismo no es una debilidad: es la base.",
-          "reflexion": "¿Me trato a mí mismo con la misma amabilidad con la que trato a los demás sin pensarlo dos veces?"
+          "reflexion": "¿Me trato a mí mismo con la misma amabilidad con la que trato a los demás sin pensarlo dos veces?",
+          "traditionen": {
+            "christentum": "En el cristianismo se aplica el doble mandamiento: \"Ama a tu prójimo como a ti mismo\" (Mt 22,39), ni más ni menos. Ser amable con uno mismo no es narcisismo, sino un requisito previo para amar al prójimo.",
+            "buddhismus": "Metta, la bondad amorosa, siempre empieza por uno mismo. Sólo cuando te das bondad a ti mismo puedes irradiarla de verdad. Tu propia paz es la base de la paz mundial.",
+            "islam": "El Islam enseña: 'No te causes daño a ti mismo' (La darar wa la dirar) El Profeta Muhammad (ﷺ) era amable consigo mismo y con los demás. Ser amable con uno mismo es una ética islámica.",
+            "osho": "Sé primero tu propio amigo. Sólo entonces podrás ser verdaderamente amable con los demás. Las personas hostiles consigo mismas llevan esa hostilidad a todas sus relaciones.",
+            "moderne": "Kristin Neff demuestra que la autocompasión predice el bienestar psicológico mejor que la autoestima. Las personas que se tratan a sí mismas como a un buen amigo son más resilientes, más equilibradas y están más conectadas.",
+            "pirsig": "Para Pirsig, la amistad es la cualidad social en estado puro: el momento en que una cualidad dinámica se enciende entre dos personas y las conmueve a ambas."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -44,7 +68,15 @@
           "karte_key": "zusaetzliche_karten.acceptance",
           "karte_nummer": null,
           "tiage": "El bienestar en su forma más profunda no es un estado al que se llega, sino lo que queda cuando dejas de luchar contra ti mismo. La aceptación no significa resignación. Es el primer soplo de paz: soy como soy, y ese es el punto de partida, no el objetivo.",
-          "reflexion": "¿Puedo aceptarme a mí mismo, no a pesar de mis imperfecciones, sino precisamente por ellas?"
+          "reflexion": "¿Puedo aceptarme a mí mismo, no a pesar de mis imperfecciones, sino precisamente por ellas?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús invita: \"Venid a mí todos los que estáis cansados\" (Mt 11,28); la aceptación antes que el rendimiento, el ser antes que el hacer. El Evangelio no comienza con exigencias, sino con una invitación.",
+            "buddhismus": "Tathata -'ser así'- es la enseñanza budista de la aceptación radical: ver las cosas como son sin convertirlas en un problema. El fin del sufrimiento comienza con el cese de la lucha.",
+            "islam": "Rida en el Islam se refiere a la profunda satisfacción con el juicio de Allah, no forzada, sino nacida de la confianza: \"Allah está con el paciente\" (2:153)",
+            "osho": "La aceptación no es resignación: es el cese de la lucha. En la lucha pierdes energía. En la aceptación, la recuperas. El bienestar es tu estado natural, cuando dejas de impedirlo.",
+            "moderne": "Las investigaciones de Kristin Neff sobre la autocompasión demuestran que la autoaceptación -y no la autocrítica- es la base del bienestar sostenible. Las personas que son capaces de aceptarse a sí mismas muestran mayor resiliencia, menos ansiedad y habilidades relacionales más profundas.",
+            "pirsig": "Pirsig: La verdadera calidad empieza por aceptar lo que es. El bienestar existencial no proviene de la optimización, sino de estar plenamente presente en el ahora."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -147,7 +179,15 @@
           "karte_key": "minor_arcana.water.page_trust",
           "karte_nummer": 11,
           "tiage": "La seguridad empieza por dentro. No en los muros, ni en las garantías, sino en la confianza de que la vida te sostiene.",
-          "reflexion": "¿Generamos confianza a través de la fiabilidad o del control?"
+          "reflexion": "¿Generamos confianza a través de la fiabilidad o del control?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús dice \"No temas\" 365 veces, todos los días del año. La confianza es una práctica diaria contra el miedo.",
+            "buddhismus": "Buda enseñó las Tres Joyas como lugares de refugio: Buda (despertar), Dharma (verdad), Sangha (comunidad). La confianza surge de los principios Y de las personas.",
+            "islam": "El Islam reconoce el tawakkul, la confianza en Dios una vez terminado el trabajo: \"Ata tu camello y confía en Alá\" La confianza no sustituye a la responsabilidad, sino que la sigue.",
+            "osho": "Confía en la vida. Cuando confías, puedes desprenderte de tus conocimientos. Con la confianza, se abre algo inconmensurable.",
+            "moderne": "Las investigaciones sobre el apego demuestran que el apego seguro no procede de la perfección, sino de la reparación. La confianza crece cuando se produce la curación tras una ruptura. Seguridad no significa \"nada puede ir mal\", sino \"si las cosas van mal, seguimos dialogando\"",
+            "pirsig": "Pirsig: La seguridad es la calidad estática, los patrones estables que hacen posible la calidad dinámica. Sin estructuras fiables, la vida no puede fluir libremente."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -157,7 +197,15 @@
           "karte_key": "zusaetzliche_karten.protection",
           "karte_nummer": null,
           "tiage": "La seguridad no se consigue apartando todas las amenazas, sino que surge en ese espacio de delicadeza donde la vulnerabilidad es bienvenida. La protección no es un muro de fortaleza, sino un suave manto de comprensión: aquí puedes permitirte ser vulnerable.",
-          "reflexion": "¿Podemos crear juntos un espacio en el que ambos podamos ser vulnerables, sin tener que demostrar nada?"
+          "reflexion": "¿Podemos crear juntos un espacio en el que ambos podamos ser vulnerables, sin tener que demostrar nada?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Dios envuelve como una madre: \"Como una madre consuela a su hijo, así os consolaré yo\" (Is 66,13) (Is 66,13) La protección no es un escudo, sino una envoltura amorosa.",
+            "buddhismus": "La práctica budista del nidra (yoga del sueño) enseña que el corazón se abre al abrigo del silencio. La seguridad es la condición, no el objetivo de la práctica.",
+            "islam": "Allah es Al-Muhaymin - el protector que vela por todo. Protección significa: Soy visto, soy guardado - no: Nada malo puede suceder.",
+            "osho": "La verdadera protección no viene de fuera, sino de la fuerza interior que te permite ser vulnerable. La protección más fuerte es el espacio en el que no tienes que mostrar fuerza.",
+            "moderne": "Teoría polivagal (Stephen Porges): El sistema nervioso necesita señales de seguridad para pasar de un estado de defensa a un estado de conexión. La seguridad se experimenta a través de la corregulación, es decir, a través de alguien que mantiene la calma cuando uno está agitado.",
+            "pirsig": "Pirsig: La paciencia es la sabiduría de saber cuándo preservar la cualidad estática. La verdadera fuerza se demuestra en la resistencia tranquila, no en la acción precipitada."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -167,7 +215,15 @@
           "karte_key": "minor_arcana.rainbows.6_compromise",
           "karte_nummer": 6,
           "tiage": "No todos los compromisos aportan verdadera seguridad. Algunos acuerdos le cuestan demasiado a tu alma y dejan una punzante sensación de falsedad. La verdadera seguridad surge cuando el compromiso permite que ambos crezcan, no cuando uno de los dos tiene que ceder.",
-          "reflexion": "¿Estamos sacrificando nuestra verdad en este ámbito a cambio de una paz falsa, o estamos encontrando soluciones comunes auténticas?"
+          "reflexion": "¿Estamos sacrificando nuestra verdad en este ámbito a cambio de una paz falsa, o estamos encontrando soluciones comunes auténticas?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús advierte contra el \"sí-sí-no-no\" (Mt 5, 37): la honradez es protección. Un compromiso perezoso que sacrifica la verdad socava los cimientos de toda relación.",
+            "buddhismus": "El Camino Medio no es una media. Es el equilibrio vivo entre los extremos, no el compromiso como tibieza, sino como presencia completa en ambas verdades.",
+            "islam": "El Islam reconoce la Sulh (reconciliación, acuerdo) como el camino hacia la justicia - pero la Sulh, que se construye sobre la injusticia, no crea seguridad. La justicia es una condición para la paz real.",
+            "osho": "El compromiso puede ser sabiduría o cobardía. La pregunta es: ¿estás comprometiendo tu verdad? Un compromiso que te empequeñece no es paz, es una lenta traición.",
+            "moderne": "La terapia de pareja demuestra que los compromisos que hacen retroceder a ambos miembros de la pareja crean resentimiento a largo plazo. La verdadera seguridad proviene de soluciones en las que ambos sienten que se satisfacen sus necesidades básicas, no de ceder el uno ante el otro a expensas de su propia verdad.",
+            "pirsig": "Pirsig: La confianza entre las personas surge cuando ambas reconocen la misma cualidad, más allá de las palabras, en la experiencia compartida de auténtica fiabilidad."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -177,7 +233,15 @@
           "karte_key": "zusaetzliche_karten.support",
           "karte_nummer": null,
           "tiage": "La seguridad existencial no surge de la ausencia de amenazas, sino que se nutre de la sensación de apoyo. No son los muros los que dan seguridad, sino el suelo invisible que te sostiene: tu carácter, tus valores, tu conexión con algo más grande.",
-          "reflexion": "¿De qué apoyo interno dispongo cuando desaparece toda seguridad externa?"
+          "reflexion": "¿De qué apoyo interno dispongo cuando desaparece toda seguridad externa?",
+          "traditionen": {
+            "christentum": "Los Salmos dicen: 'El Señor es mi pastor, nada me falta' (Salmo 23:1) La seguridad no es la ausencia de peligro, sino la presencia del sustentador.",
+            "buddhismus": "Las Tres Joyas -Buda, Dharma, Sangha- son los tres refugios: Despertar, Verdad y Comunidad. La seguridad está anclada en los principios, no en las circunstancias.",
+            "islam": "Al-Wali -el que apoya, el protector- es uno de los 99 nombres de Allah. La seguridad existencial radica en el conocimiento: No estoy solo. El apoyo es mayor de lo que veo.",
+            "osho": "El verdadero apoyo es invisible. No te da la respuesta: te da el valor de buscar por ti mismo. La seguridad no es la ausencia de riesgo, sino el conocimiento: Me sostienen.",
+            "moderne": "Lo demuestran los estudios sobre resiliencia: Las personas con un fuerte locus de control interno -la sensación de tener una estabilidad interior- no sobreviven indemnes a las crisis, pero son más fuertes. La seguridad es una actitud, no solo una condición.",
+            "pirsig": "Pirsig: La seguridad en el plano de la identidad significa estar arraigado en la propia calidad, inquebrantable no por los muros, sino por la coherencia interior."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -232,7 +296,15 @@
           "karte_key": "minor_arcana.water.ace_going_with_the_flow",
           "karte_nummer": 1,
           "tiage": "La ligereza no es la ausencia de pesadez, sino la confianza en que todo saldrá bien. Déjate llevar. Déjate fluir.",
-          "reflexion": "¿En qué aspectos me aferro al control cuando podría dejarlo ir?"
+          "reflexion": "¿En qué aspectos me aferro al control cuando podría dejarlo ir?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús dice: \"Mirad las aves del cielo: no siembran, no cosechan y, sin embargo, vuestro Padre celestial las alimenta\" Confianza en lugar de tensión.",
+            "buddhismus": "El Tao Te Ching enseña el Wu Wei: actuar sin forzar, fortalecer cediendo como el agua que fluye alrededor de cada piedra.",
+            "islam": "El Islam reconoce el tawakkul, la rendición después del trabajo. planifica y luego ríndete\"",
+            "osho": "La vida no es un problema que hay que resolver, sino un misterio que hay que vivir.",
+            "moderne": "La neurobiología demuestra que un afán crónico de control activa permanentemente el sistema del estrés. La ligereza significa la capacidad de desprenderse de los planes cuando la vida quiere algo diferente.",
+            "pirsig": "Pirsig: El impulso de autodeterminación es una cualidad dinámica que busca expresión. Quienes confían en su propio sentido de la calidad actúan desde la integridad, no desde las normas."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -242,7 +314,15 @@
           "karte_key": "minor_arcana.rainbows.knight_slowing_down",
           "karte_nummer": 12,
           "tiage": "La ligereza no surge de la aceleración. Se revela al ralentizar el ritmo, cuando escuchas la respiración antes de que llegue la siguiente. Al hacer una pausa consciente, se crea espacio para lo que realmente importa.",
-          "reflexion": "¿Nos permitimos realmente bajar el ritmo, o vamos todos juntos a toda prisa de un momento a otro?"
+          "reflexion": "¿Nos permitimos realmente bajar el ritmo, o vamos todos juntos a toda prisa de un momento a otro?",
+          "traditionen": {
+            "christentum": "La contemplación cristiana enseña: \"Estad quietos y conoced\" (Sal 46,11). La Regla de San Benito estructura el día en torno al silencio, no a la pereza, sino a la curación.",
+            "buddhismus": "En el Zen existe el Kinhin: meditación caminando con pasos diminutos. Reducir la velocidad es una práctica: cuanto más despacio caminas, más ves. El mundo se despliega cuando haces una pausa.",
+            "islam": "El Islam reconoce el tafakkur, la reflexión lenta y meditativa sobre la creación. La sabiduría se pierde en la prisa. El Profeta (ﷺ) dijo: 'La prisa viene del diablo, la deliberación de Allah",
+            "osho": "El mundo dice: ¡Más rápido! El zen dice: más despacio. Al reducir la velocidad encuentras profundidad. Si nunca te detienes, nunca experimentas la maravilla del momento presente.",
+            "moderne": "Neurobiológicamente, la red de modos por defecto -nuestro estado de reposo- es crucial para la creatividad, la integración y el procesamiento emocional. Ralentizar el ritmo activa este estado. Las prisas crónicas bloquean el cerebro en modo de estrés permanente: la ligereza es literalmente imposible desde el punto de vista neurológico.",
+            "pirsig": "Pirsig: La creatividad es la cualidad dinámica en acción, el momento en que lo nuevo irrumpe en nosotros. Autonomía significa seguir este impulso, incluso sin garantías."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -252,7 +332,15 @@
           "karte_key": "minor_arcana.water.10_harmony",
           "karte_nummer": 10,
           "tiage": "Cuando dejas de luchar, la armonía se revela como tu estado natural. Lo único que queda es la ligereza.",
-          "reflexion": "¿Podremos volver a estar juntos después de una discusión?"
+          "reflexion": "¿Podremos volver a estar juntos después de una discusión?",
+          "traditionen": {
+            "christentum": "En la Trinidad cristiana, Padre, Hijo y Espíritu Santo son tres Y uno: diversidad en perfecta armonía.",
+            "buddhismus": "El budismo enseña el principio del mandala: cada elemento tiene su lugar, y así es precisamente como se crea el todo.",
+            "islam": "En el Islam, Silm (paz) no significa libre de conflictos, sino bastante equilibrado.",
+            "osho": "No todos tocan la misma nota, pero todos tocan juntos.",
+            "moderne": "La terapia de pareja según Gottman lo demuestra: Las parejas felices discuten tanto como las infelices, sólo que reparan mejor. La armonía surge de la confianza en la capacidad de reparación.",
+            "pirsig": "Pirsig: La auténtica comunidad se crea cuando se permite a las personas aportar sus cualidades individuales. La autonomía y la conexión no son contradictorias, sino mutuamente dependientes."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -262,7 +350,15 @@
           "karte_key": "minor_arcana.water.8_letting_go",
           "karte_nummer": 8,
           "tiage": "La verdadera ligereza no proviene de dejar de lado las tareas, sino de liberarte de la carga que tú mismo representas. Cuando dejas de aferrarte a tu historia, a la imagen que tienes de ti mismo y a tu necesidad de control, se crea un espacio. Soltar no es una tarea, es llegar.",
-          "reflexion": "¿Qué sería de mí si dejara de aferrarme a mi historia?"
+          "reflexion": "¿Qué sería de mí si dejara de aferrarme a mi historia?",
+          "traditionen": {
+            "christentum": "Jesús dice: \"Si el grano de trigo no cae en tierra y muere, queda él solo; pero si muere, da mucho fruto\" (Juan 12:24) Dejar ir no es derrota, es transformación.",
+            "buddhismus": "Upadana -apego- es descrita por Buda como una de las principales causas del sufrimiento. Dejar ir es el camino principal: no reprimir, no aferrarse, dejar fluir.",
+            "islam": "Tawakkul es el principio coránico de confiar en Dios una vez terminado el trabajo: se hace lo que se puede y luego se deja ir. hay que confiar en Allah (64:13)",
+            "osho": "Dejar ir no es una debilidad, es la mayor fortaleza. Sólo quien puede soltar es verdaderamente libre. Las manos vacías pueden recibir. La ligereza es el estado natural del alma, que no tiene nada que demostrar.",
+            "moderne": "La ACT (Terapia de Aceptación y Compromiso) enseña la defusión cognitiva: la capacidad de observar los pensamientos y las imágenes de uno mismo sin ser idéntico a ellos. Dejar ir crea flexibilidad psicológica, la base de la verdadera ligereza.",
+            "pirsig": "Pirsig: El nivel más alto de autonomía es estar en sintonía con la propia naturaleza cualitativa, libre de máscaras sociales, auténtico en el sentido más profundo."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -317,7 +413,15 @@
           "karte_key": "major_arcana.7_awareness",
           "karte_nummer": 7,
           "tiage": "La orientación no viene del exterior: surge en el silencio de tu conciencia. Ya sabes dónde estás. Solo tienes que hacer una pausa.",
-          "reflexion": "¿Estoy presente o simplemente estoy actuando de forma mecánica?"
+          "reflexion": "¿Estoy presente o simplemente estoy actuando de forma mecánica?",
+          "traditionen": {
+            "christentum": "En el cristianismo es \"vigilancia\": \"Velad y orad\" (Mateo 26:41). El místico Angelus Silesius: \"La rosa no tiene por qué, florece porque florece\" Presencia pura.",
+            "buddhismus": "Buda enseñó Vipassana - meditación de la percepción a través de la mera observación sin juicio. Sati (atención plena) como base de todo despertar.",
+            "islam": "En el sufismo, muraqaba (vigilancia) es la presencia constante ante Allah, no como vigilancia, sino como atención amorosa.",
+            "osho": "La conciencia es la única transformación. Todo lo demás viene por sí solo.",
+            "moderne": "La neurobiología moderna demuestra que nuestro cerebro está en piloto automático el 90% del tiempo. La orientación no proviene de una mayor planificación, sino de una mayor presencia.",
+            "pirsig": "Pirsig: La calma y la quietud no son la ausencia de calidad, sino la razón por la que surge la calidad dinámica. La mente tranquila reconoce la calidad inmediatamente."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -327,7 +431,15 @@
           "karte_key": "major_arcana.2_inner_voice",
           "karte_nummer": 2,
           "tiage": "Cuando dos personas hablan juntas desde su voz interior, ya no necesitan ningún mapa. El propio encuentro se convierte en una guía.",
-          "reflexion": "¿Conozco mi verdad o solo repito las creencias de otros?"
+          "reflexion": "¿Conozco mi verdad o solo repito las creencias de otros?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es la \"vocecita apacible\" - la voz de Dios no en la tormenta, sino en el susurro (1 Reyes 19:12). San Ignacio enseñó a discernir los espíritus: ¿qué voz conduce a la paz?",
+            "buddhismus": "Buda lo reconoció: La voz interior no es el ego que parlotea constantemente, sino la sabiduría silenciosa que hay debajo.",
+            "islam": "En el sufismo es el Qalb (corazón) el órgano de la cognición, no la emoción, sino la intuición más profunda.",
+            "osho": "Escucha todas las voces, pero sigue sólo una: la tuya.",
+            "moderne": "La psicología del desarrollo demuestra que muchas personas nunca han desarrollado su voz interior porque aprendieron a obedecer a los demás demasiado pronto. La orientación surge de la claridad: ¿Qué quiero realmente?",
+            "pirsig": "Pirsig: La gratitud es reconocer la calidad de lo que ya existe. Quien se detiene un momento ve la abundancia que el activismo pasa por alto."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -337,7 +449,15 @@
           "karte_key": "minor_arcana.water.queen_receptivity",
           "karte_nummer": 13,
           "tiage": "La verdadera orientación no surge solo de la planificación, sino cuando estás dispuesto a recibir: las señales de la vida, los impulsos del corazón, la sabiduría del momento. La receptividad no es pasividad. Es el arte de dejar que lo correcto llegue.",
-          "reflexion": "¿Estoy realmente abierto, o demasiado ocupado con mis propios planes como para recibir orientación?"
+          "reflexion": "¿Estoy realmente abierto, o demasiado ocupado con mis propios planes como para recibir orientación?",
+          "traditionen": {
+            "christentum": "María es la imagen arquetípica de la receptividad: \"Hágase en mí según tu palabra\" (Lucas 1,38) No sumisión, sino un sí total. Recibir orientación significa: estar abierto a lo que quiere pasar a través de mí.",
+            "buddhismus": "En el budismo, prajna (sabiduría) es receptiva: no se puede forzar, se muestra por sí misma. Quienes mantienen la mente en calma y abierta reciben una guía que la mente activa nunca encuentra.",
+            "islam": "En el sufismo, el corazón receptivo (qalb) es el órgano de la cognición. el corazón del creyente está entre los dedos de Allah\", no desgarrado, sino guiado por la receptividad.",
+            "osho": "Lo femenino es receptivo, no pasivo. Recibe y transforma. Es como la tierra que recibe la semilla y produce una flor. La receptividad es la forma más elevada de fuerza.",
+            "moderne": "Las investigaciones sobre la intuición (Gerd Gigerenzen) demuestran que los juicios rápidos y receptivos suelen ser más acertados que las largas deliberaciones. La receptividad a las señales internas es una habilidad, no una debilidad. La orientación basada en la receptividad suele ser más profunda que la basada en el análisis.",
+            "pirsig": "Pirsig: La posibilidad de encuentros genuinos surge en el retiro social. Sólo quien puede estar a solas consigo mismo puede encontrarse realmente con los demás."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -347,7 +467,15 @@
           "karte_key": "major_arcana.the_master",
           "karte_nummer": null,
           "tiage": "El maestro ya no necesita un mapa: él es el centro. Orientarse en el nivel 4 no significa conocer todas las respuestas. Significa estar tan en sintonía con tu propio eje interior que no te pierdes, incluso sin un camino.",
-          "reflexion": "¿Soy fiel a mi propio eje interior, aunque nadie conozca el camino y nadie me esté observando?"
+          "reflexion": "¿Soy fiel a mi propio eje interior, aunque nadie conozca el camino y nadie me esté observando?",
+          "traditionen": {
+            "christentum": "Jesús dice: 'Yo soy el camino, la verdad y la vida' (Juan 14:6) Orientación no como un mapa, sino como una encarnación viva. El Maestro no muestra el camino, sino que lo ha recorrido.",
+            "buddhismus": "El bodhisattva se orienta hacia la compasión y la sabiduría, no hacia las reglas. Es dueño de sus propios motivos. Su brújula es Karuna, el corazón que sabe.",
+            "islam": "El murshid -el líder espiritual en el sufismo- no es alguien que da órdenes, sino alguien que encarna. Orienta a través de su ser, no de sus palabras.",
+            "osho": "El maestro zen no domina a los demás, se domina a sí mismo. No tiene ningún propósito personal, ningún deseo. A sus ojos, los estudiantes pueden encontrar reflejada su propia verdad.",
+            "moderne": "La logoterapia de Viktor Frankl lo demuestra: En las situaciones más extremas - campos de concentración, pérdida, miedo a la muerte - queda una libertad: la elección de la actitud. La brújula interior es la última orientación.",
+            "pirsig": "Pirsig: La calma más profunda no es la pasividad, sino la quietud del ser humano plenamente integrado, donde lo dinámico y lo estático vibran en armonía."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -434,7 +562,15 @@
           "karte_key": "major_arcana.16_thunderbolt",
           "karte_nummer": 16,
           "tiage": "Tu potencial más profundo se despliega cuando dejas de proteger lo que, de todos modos, no es real. El rayo lo despeja todo. Lo que queda es fuerza.",
-          "reflexion": "¿Estoy dispuesto a renunciar a mis certezas por la verdad?"
+          "reflexion": "¿Estoy dispuesto a renunciar a mis certezas por la verdad?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es Pentecostés: el Espíritu Santo en forma de lenguas de fuego que queman todo lo viejo. Saulo se convierte en Pablo gracias a un relámpago. A veces todo tiene que derrumbarse para que pueda surgir algo nuevo.",
+            "buddhismus": "En el budismo, es el kensho, el despertar repentino que hace añicos todas las ilusiones. El maestro zen golpea al alumno y en ese momento todo el conocimiento se desvanece.",
+            "islam": "En el Islam, es la noche de Lailat al-Qadr, una noche que vale más que mil meses. Transformación en un instante.",
+            "osho": "A veces la mayor gracia es un susto.",
+            "moderne": "En las relaciones, el Rayo es la crisis que lo pone todo en cuestión. La investigación moderna sobre las crisis muestra que muchas parejas afirman que el peor momento fue, en retrospectiva, el más valioso.",
+            "pirsig": "Pirsig: El placer es una cualidad dinámica que habla a través del cuerpo. El placer no es una distracción de la seriedad de la vida: es un acceso directo a la calidad."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -444,7 +580,15 @@
           "karte_key": "minor_arcana.fire.6_success",
           "karte_nummer": 6,
           "tiage": "Cuando dos personas actúan partiendo de una conciencia común y clara, no solo se duplica su eficacia, sino que también experimentan el verdadero éxito: esa profunda sensación de haber hecho lo correcto, juntas y de forma auténtica. El verdadero éxito es la plenitud interior.",
-          "reflexion": "¿Actuamos movidos por una sensación de plenitud interior, o por la presión de las expectativas ajenas?"
+          "reflexion": "¿Actuamos movidos por una sensación de plenitud interior, o por la presión de las expectativas ajenas?",
+          "traditionen": {
+            "christentum": "En el cristianismo, el mayor éxito no es el poder ni la fama, sino: \"Bendito seas, siervo bueno y fiel\" (Mt 25, 21) La eficacia al servicio del bien: ése es el éxito que perdura.",
+            "buddhismus": "En el budismo, kusala (acción sana) es el éxito, no lo que consigues, sino lo que creas con tus acciones: Menos sufrimiento, más despertar. El éxito del bodhisattva es el bienestar de los demás.",
+            "islam": "En el Islam, el tawfiq (éxito gracias al apoyo de Dios) es supremo: tu trabajo es bendecido si se realiza con niyya (intención pura). El éxito exterior sin enfoque interior es un esfuerzo vacío.",
+            "osho": "El verdadero éxito es cuando floreces por dentro. El éxito que el mundo conoce está vacío. Puedes ser un rey y un fracasado, o un pobre y un triunfador de la vida.",
+            "moderne": "La Teoría de la Autodeterminación (Deci y Ryan) muestra que el éxito intrínsecamente motivado -a través de la autonomía, el sentido de competencia y la pertenencia- crea un bienestar sostenible. La eficacia impuesta extrínsecamente conduce al agotamiento. El éxito auténtico se siente desde dentro.",
+            "pirsig": "Pirsig: La dedicación completa a una experiencia produce lo que Pirsig describe como \"buen trabajo\": estar absorto en la actividad, donde ego y calidad se funden."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -454,7 +598,15 @@
           "karte_key": "minor_arcana.clouds.7_politics",
           "karte_nummer": 7,
           "tiage": "Pierdes eficacia cuando los juegos de poder y las agendas ocultas se apoderan del espacio. En cuanto entra en juego la manipulación, la acción pierde su fuerza. Reconoce los juegos políticos en el día a día de tus relaciones y elige el camino de la transparencia.",
-          "reflexion": "¿Actúo con transparencia en mis intenciones, o escondo lo que realmente quiero?"
+          "reflexion": "¿Actúo con transparencia en mis intenciones, o escondo lo que realmente quiero?",
+          "traditionen": {
+            "christentum": "Jesús dice: \"Lo que digáis en la oscuridad se oirá en la luz\" (Lucas 12:3) La falta de transparencia socava la eficacia. El verdadero poder viene de la luz, no de las sombras.",
+            "buddhismus": "En el budismo, samma sankappa (rectitud mental) forma parte del Óctuple Sendero. Actuar por motivos poco claros -avaricia, odio, engaño- debilita la eficacia. La claridad de intenciones es la fuerza.",
+            "islam": "En el Islam, el ikhlas (intención sincera) es la condición para la acción bienaventurada. La eficacia hipócrita (riya) se considera un pecado grave. Sólo quien actúa con transparencia actúa con eficacia.",
+            "osho": "La política está en todas partes, no sólo en el gobierno. Reconozca los juegos en su propia vida: ¿Quién manipula a quién? La verdadera eficacia no necesita manipulación: funciona a través de la claridad.",
+            "moderne": "La psicología organizativa demuestra que los equipos con un alto nivel de seguridad psicológica y transparencia son mucho más eficaces que los equipos jerárquicamente manipuladores. Las dinámicas políticas ocultas cuestan hasta el 30% de la productividad y el 100% de la confianza.",
+            "pirsig": "Pirsig: La conexión lúdica entre las personas es una cualidad dinámica en el espacio social. Ligereza y profundidad no se excluyen mutuamente."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -464,7 +616,15 @@
           "karte_key": "minor_arcana.fire.king_the_creator",
           "karte_nummer": 14,
           "tiage": "El Creador no crea para demostrar su eficacia; crea porque la creación es su esencia. La eficacia en el nivel 4 no pregunta «¿Qué he hecho?», sino «¿De quién he sido canal?». Tú no eres el autor; eres la abertura a través de la cual actúa el Todo.",
-          "reflexion": "¿Vivo como artífice de mi vida, o como una reacción a lo que me sucede?"
+          "reflexion": "¿Vivo como artífice de mi vida, o como una reacción a lo que me sucede?",
+          "traditionen": {
+            "christentum": "La Biblia comienza con \"En el principio creó Dios\", y el hombre es creado como Imago Dei, como imagen del Creador. La acción creadora es la participación en la actividad más intrínseca de Dios.",
+            "buddhismus": "Karma significa: cada acción crea la realidad. No eres una víctima de las circunstancias: eres el cocreador de cada momento. La eficacia es responsabilidad, no poder.",
+            "islam": "Jalifa -gobernador, guardián- es el término coránico para designar la tarea humana en la tierra. Gestionas la creación, no como propietario, sino como fideicomisario. La eficacia es una responsabilidad sagrada.",
+            "osho": "Tú no eres el creador, eres el canal. Cuando te vacías, la creación fluye a través de ti. El mayor creador es el que menos se interpone en el camino.",
+            "moderne": "Csikszentmihalyi describe el flujo como el estado máximo de eficacia: el yo y la acción se funden. Yo no hago - sucede. La autoeficacia (Bandura) no crece a través del control, sino de la confianza en el propio canal.",
+            "pirsig": "Pirsig: En el plano de la identidad, la alegría no es un estado, sino una forma de ser: la cualidad de una persona plenamente viva que ya no necesita distracciones."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -511,7 +671,15 @@
           "karte_key": "major_arcana.4_the_rebel",
           "karte_nummer": 4,
           "tiage": "Tu libertad no es una protesta, es un «sí» a ti mismo. El verdadero rebelde sigue su propia verdad, no la resistencia.",
-          "reflexion": "¿Me adapto por amor… o por miedo al rechazo?"
+          "reflexion": "¿Me adapto por amor… o por miedo al rechazo?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús es el máximo rebelde: rompe el sábado, come con pecadores, vuelca las mesas. No contra la tradición, sino por la verdad que hay detrás de la tradición.",
+            "buddhismus": "Buda abandonó el palacio y toda seguridad - rebelión contra la prisión dorada.",
+            "islam": "En el sufismo, Hallaj es el rebelde que grita \"Ana al-Haqq\" (Yo soy la verdad) y muere por ello. La verdad antes que la seguridad.",
+            "osho": "La rebelión no es contra algo, es PARA uno mismo.",
+            "moderne": "La terapia de pareja moderna advierte contra la \"pseudomutualidad\", el mito de que las buenas parejas siempre están de acuerdo. Libertad significa: puedo ser diferente, aunque te irrite.",
+            "pirsig": "Pirsig: La honestidad es la base para experimentar la calidad. Si te mientes a ti mismo, pierdes el acceso a la calidad dinámica, a la experiencia directa de la autenticidad."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -521,7 +689,15 @@
           "karte_key": "minor_arcana.rainbows.page_adventure",
           "karte_nummer": 11,
           "tiage": "La libertad y el amor no son enemigos. En un encuentro auténtico, la unión te libera. Puedo quererte Y necesitar espacio para mí.",
-          "reflexion": "¿Vivo ambas cosas: la libertad Y la unión?"
+          "reflexion": "¿Vivo ambas cosas: la libertad Y la unión?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús es plenamente Dios Y plenamente humano: diversidad sin pérdida de unidad. La verdadera libertad no reside en la separación, sino en la integración de los opuestos.",
+            "buddhismus": "El Camino Medio enseña que la libertad y el compromiso no son contradictorios, sino que se trata de tomar conciencia de cómo vivir ambos.",
+            "islam": "El Islam reconoce el adl (equilibrio): La libertad y la responsabilidad van juntas, ninguna sin la otra.",
+            "osho": "Puedo estar comprometido Y ser autónomo. La libertad no es \"o compromiso o independencia\", sino ambas cosas a la vez.",
+            "moderne": "La terapia de pareja moderna lo llama diferenciación: la capacidad de seguir siendo \"yo\" en el encuentro con \"tú\". Las relaciones más sólidas combinan la máxima autonomía con la máxima conexión.",
+            "pirsig": "Pirsig: Integridad significa que la calidad interna y externa coinciden. El mecánico de motos que pasa por alto un problema de forma deshonesta produce mala calidad."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -531,7 +707,15 @@
           "karte_key": "major_arcana.11_breakthrough",
           "karte_nummer": 11,
           "tiage": "Tu libertad no crece con más espacio, sino con más claridad. Cuando te das cuenta de cuáles son los límites reales y cuáles te los has impuesto tú mismo, lo viejo se desmorona.",
-          "reflexion": "¿Me quedo por amor… o por miedo al cambio?"
+          "reflexion": "¿Me quedo por amor… o por miedo al cambio?",
+          "traditionen": {
+            "christentum": "En el cristianismo es la resurrección: la tumba no puede retener a los vivos. Todas las limitaciones se hacen añicos.",
+            "buddhismus": "En el Zen, es el satori, un despertar repentino que rompe todos los conceptos. La puerta nunca estuvo cerrada, sólo tenías miedo de empujarla.",
+            "islam": "En el sufismo es Fath (apertura) - Dios abre el corazón y de repente todo se aclara.",
+            "osho": "No estás atrapado. Sólo sueñas con estar atrapado.",
+            "moderne": "La terapia moderna demuestra: A veces hay que estar dispuesto a irse para poder quedarse de verdad. La libertad no es escapar: la libertad es el poder de elegir.",
+            "pirsig": "Pirsig: Las relaciones sinceras surgen cuando ambos miembros de la pareja están dispuestos a afrontar cualidades incómodas. La honestidad es la forma más elevada de calidad social."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -541,7 +725,15 @@
           "karte_key": "minor_arcana.fire.2_possibilities",
           "karte_nummer": 2,
           "tiage": "La libertad, en su sentido más profundo, no es la ausencia de ataduras, sino el despertar a la infinidad de posibilidades. No estás atrapado en tu historia. Eres más que la suma de tus experiencias. Cada momento abre una puerta que nunca antes se había abierto.",
-          "reflexion": "¿Qué versión de mí mismo aún no ha nacido, y qué es lo que me da miedo encontrarme con ella?"
+          "reflexion": "¿Qué versión de mí mismo aún no ha nacido, y qué es lo que me da miedo encontrarme con ella?",
+          "traditionen": {
+            "christentum": "San Pablo escribe: \"Donde está el Espíritu del Señor, allí hay libertad\" (Libertad no como ausencia de ataduras, sino como don del Espíritu: el sí a una realidad que me supera.",
+            "buddhismus": "Shunyata -el vacío- no es una negación en el budismo, sino pura posibilidad. Lo que está vacío puede convertirse en cualquier cosa. La libertad se basa en la comprensión de que no existe un yo fijo.",
+            "islam": "Insan al-Kamil -el ser humano perfecto- es libre porque refleja en sí mismo todas las posibilidades de Allah. Los 99 nombres de Dios muestran que la creación es posibilidad inagotable.",
+            "osho": "La vida está llena de posibilidades. Cuando eliges una, no te cierras, sino que profundizas. La libertad no consiste en mantener todas las puertas abiertas, sino en la profundidad que aguarda detrás de cada puerta.",
+            "moderne": "Viktor Frankl califica la libertad de actitud como la máxima libertad humana, inviolable incluso en un campo de concentración. La libertad no es una condición externa. Es una actitud interior hacia la plenitud de lo posible.",
+            "pirsig": "Pirsig: En el plano de la identidad, la veracidad ya no es una virtud: es la esencia. Una persona que es completamente fiel a sí misma no puede ser otra cosa que auténtica."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -596,7 +788,15 @@
           "karte_key": "major_arcana.6_the_lovers",
           "karte_nummer": 6,
           "tiage": "Tu intensidad no es un defecto, es tu don. Los amantes tienen alas: su pasión los impulsa, en lugar de consumirlos.",
-          "reflexion": "¿Estoy realmente presente en la intimidad, o simplemente estoy actuando?"
+          "reflexion": "¿Estoy realmente presente en la intimidad, o simplemente estoy actuando?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es el Matrimonio Místico: el alma se une a Cristo. No fusión, sino comunión - comunión en la diversidad.",
+            "buddhismus": "En el Tantra, Maithuna es la unión sagrada de Shiva (conciencia) y Shakti (energía): el sexo como meditación.",
+            "islam": "El Islam conoce el amor entre Rumi y Shams, un amor tan intenso que los transformó a ambos.",
+            "osho": "El amor no es una relación: el amor es un estado del ser.",
+            "moderne": "La investigación sexual moderna lo demuestra: Los encuentros más intensos son aquellos en los que ambos están plenamente presentes. No la actuación, sino la presencia. La verdadera pasión necesita vulnerabilidad.",
+            "pirsig": "Pirsig: La búsqueda del conocimiento es una cualidad dinámica que busca la comprensión. Una auténtica sed de conocimiento no surge del deber, sino de la fascinación directa."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -606,7 +806,15 @@
           "karte_key": "minor_arcana.fire.knight_intensity",
           "karte_nummer": 12,
           "tiage": "Cuando dos personas están plenamente presentes al mismo tiempo, el encuentro arde como un fuego puro. Esa es la intensidad en su forma más sagrada.",
-          "reflexion": "¿Estoy realmente ahí cuando estoy ahí?"
+          "reflexion": "¿Estoy realmente ahí cuando estoy ahí?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es la devoción de los mártires, no por deber, sino por amor ardiente. Intensidad absoluta incluso en la desesperación.",
+            "buddhismus": "En el Zen, es el espíritu samurái: cada acción como si fuera la última. El maestro del té prepara el té con la misma intensidad con la que lucha el guerrero.",
+            "islam": "En el sufismo, los derviches danzan hasta el éxtasis, la entrega total al momento.",
+            "osho": "Sé total en todo. La tibieza es el único pecado.",
+            "moderne": "La investigación moderna sobre la atención lo demuestra: Estamos tan distraídos que la presencia real tiene un efecto radical. Un momento de presencia plena vale más que horas de media presencia.",
+            "pirsig": "Pirsig: La cognición surge en el momento de atención plena, cuando el observador se funde con lo observado. Entonces la comprensión ya no es un logro, sino un don."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -616,7 +824,15 @@
           "karte_key": "minor_arcana.water.7_projections",
           "karte_nummer": 7,
           "tiage": "Los encuentros más intensos son como un espejo. Lo que más te conmueve —ya sea admiración o rechazo— también vive en ti. La intensidad es una invitación al autoconocimiento: ¿qué me revela sobre mí mismo la intensidad de mi reacción?",
-          "reflexion": "¿Qué me dice mi intensidad sobre mí mismo, y no sobre los demás?"
+          "reflexion": "¿Qué me dice mi intensidad sobre mí mismo, y no sobre los demás?",
+          "traditionen": {
+            "christentum": "En cristiano, Jesús dice: \"¿Por qué ves la paja en el ojo de tu hermano y no reparas en la viga que tienes en el tuyo?\" (Mt 7,3) La proyección no es malicia, es ceguera que necesita claridad.",
+            "buddhismus": "En el budismo, vipallasa (percepción errónea) es la causa de muchas proyecciones. Lo que vemos dice más de nuestro condicionamiento que de la realidad. La práctica de la meditación limpia el espejo.",
+            "islam": "En el sufismo, el maestro enseña que lo que te molesta de los demás suele ser una cualidad reflejada. el espejo sólo muestra tu cara\", la intensidad de tu reacción te señala a ti.",
+            "osho": "Nunca ves a la otra persona, sólo ves tu proyección. Retírala y te reconocerás. Cuanto más intensa sea la reacción, más profunda será tu propia herida.",
+            "moderne": "Los junguianos lo llaman sombra: Lo que más nos disgusta de los demás suele ser lo que no hemos integrado en nosotros mismos. Las relaciones intensas se convierten en un catalizador para el trabajo con la sombra, si estás dispuesto a mirar.",
+            "pirsig": "Pirsig: El conocimiento compartido entre personas genera calidad intelectual: el reconocimiento conjunto de patrones que son más grandes que el individuo."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -626,7 +842,15 @@
           "karte_key": "zusaetzliche_karten.passion",
           "karte_nummer": null,
           "tiage": "La pasión sagrada no pide permiso. Es el fuego que te reconoce EN la acción: no por lo que haces, sino por QUIÉN eres cuando ardes. La intensidad en el nivel 4 no es adrenalina: es entrega sin ego.",
-          "reflexion": "¿Por qué me apasiona tanto algo hasta el punto de olvidar quién soy?"
+          "reflexion": "¿Por qué me apasiona tanto algo hasta el punto de olvidar quién soy?",
+          "traditionen": {
+            "christentum": "Jesús dice: \"He venido a arrojar fuego sobre la tierra\" (Lc 12,49) La pasión como principio divino, no destructor, sino transformador. Los santos arden sin consumirse.",
+            "buddhismus": "La bodichita -la apasionada determinación de alcanzar el despertar en beneficio de todos los seres- es la fuerza que lleva a los bodhisattvas a través de los eones. La pasión como devoción sin límites.",
+            "islam": "El ishq -amor divino, pasión sagrada- está en el corazón de la tradición sufí. Rumi enseñó: El fuego del amor quema todo lo que no es verdadero. Lo que queda es oro puro\".",
+            "osho": "La sexualidad es un fuego sagrado - si no quieres poseerlo. Transfórmalo, no lo reprimas. La pasión es la semilla de la energía más elevada. Déjala surgir.",
+            "moderne": "Csikszentmihalyi distingue el compromiso apasionado del agotamiento: \"La pasión que nace del sentido no agota, sino que alimenta. La intensidad, que yo elijo, es energía vital. La intensidad que me impulsa es el miedo.",
+            "pirsig": "Pirsig: La realización más profunda es la realización de la propia calidad, más allá del sujeto y del objeto, donde el conocimiento se convierte en ser."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -681,7 +905,15 @@
           "karte_key": "major_arcana.0_the_fool",
           "karte_nummer": 0,
           "tiage": "Tu crecimiento comienza donde termina tu conocimiento. El bufón no es ingenuo: es lo suficientemente sabio como para acoger lo desconocido.",
-          "reflexion": "¿Te conozco, o solo creo que te conozco?"
+          "reflexion": "¿Te conozco, o solo creo que te conozco?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Pablo dice: \"Si alguno de vosotros se cree sabio, hágase necio para llegar a ser sabio\" (1 Cor 3:18) La locura divina es más sabia que la sabiduría humana.",
+            "buddhismus": "En el Zen, shoshin (la mente del principiante) es la virtud más elevada: \"En la mente del principiante hay muchas posibilidades, en la mente del experto sólo unas pocas\"",
+            "islam": "El Islam reconoce a los malamatiyya (sufíes de Tadler), que se presentan deliberadamente como tontos para no caer en el orgullo.",
+            "osho": "Sigue siendo un tonto - esa es la única sabiduría.",
+            "moderne": "La psicología del desarrollo demuestra que las parejas que se ven a sí mismas como \"completamente aprendidas\" se congelan. Desarrollo significa estar preparado para no volver a conocer a tu pareja.",
+            "pirsig": "Pirsig: La autoestima surge cuando se reconoce la propia calidad, no por los demás, sino desde dentro. Una moto que funciona bien no necesita confirmación."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -691,7 +923,15 @@
           "karte_key": "major_arcana.13_transformation",
           "karte_nummer": 13,
           "tiage": "En el encuentro, os transformáis mutuamente. No porque queráis, sino porque la conexión auténtica cambia inevitablemente.",
-          "reflexion": "¿Puedo aceptar la muerte del anciano, o me aferro a él?"
+          "reflexion": "¿Puedo aceptar la muerte del anciano, o me aferro a él?",
+          "traditionen": {
+            "christentum": "En el cristianismo es muerte y resurrección: \"Si el grano de trigo no cae en tierra y muere, queda él solo\" (Juan 12:24)",
+            "buddhismus": "En el budismo, es la enseñanza de anicca (impermanencia): todo cambia, siempre. Aferrarse es sufrir.",
+            "islam": "En el sufismo, la fana (extinción) es la condición previa para la baqa (continuidad en Dios). El ego debe morir para que el yo pueda vivir.",
+            "osho": "Muere a cada instante, entonces vivirás de verdad.",
+            "moderne": "La terapia de pareja demuestra que muchos matrimonios necesitan varias \"muertes\": muere el matrimonio sin hijos, muere el matrimonio con hijos. El desarrollo implica estar preparado para dejar atrás lo que fuimos.",
+            "pirsig": "Pirsig: El auténtico amor propio es la capacidad de ver y cultivar tu propia calidad, como un artesano que trata sus herramientas con cuidado."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -701,7 +941,15 @@
           "karte_key": "major_arcana.10_change",
           "karte_nummer": 10,
           "tiage": "Tu evolución no es un camino recto: es un baile con el cambio. Aférrate a lo esencial y deja ir todo lo demás.",
-          "reflexion": "¿Me dejo llevar por el cambio, o lucho contra él?"
+          "reflexion": "¿Me dejo llevar por el cambio, o lucho contra él?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Ecclesia semper reformanda (la iglesia que siempre se reforma) es el principio del cambio saludable.",
+            "buddhismus": "Anicca (impermanencia) es la primera característica de toda existencia: la rueda gira y los que danzan con ella no sufren.",
+            "islam": "El Islam enseña: La hawla wa la quwwata illa billah - no hay poder excepto con Allah. El cambio es obra divina.",
+            "osho": "Todo cambia. Esa es la única verdad. Si sigues la corriente, bailarás.",
+            "moderne": "La psicología del desarrollo lo demuestra: Los ciclos de cambio son inevitables. Las parejas que aceptan el cambio como una constante son más estables que las que luchan por la inmutabilidad.",
+            "pirsig": "Pirsig: La dignidad en una relación surge cuando cada uno reconoce y refleja la calidad en el otro. El respeto mutuo es la base de la verdadera conexión."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -711,7 +959,15 @@
           "karte_key": "minor_arcana.rainbows.ace_maturity",
           "karte_nummer": 1,
           "tiage": "La madurez es la meta de todo desarrollo y, paradójicamente, su fin. La persona madura deja de crecer y comienza a ser. El desarrollo en el nivel 4 significa: ya no te conviertes en algo, ya lo eres. El fruto ya no necesita crecer más. Puede caer.",
-          "reflexion": "¿Y si el desarrollo no significara crecimiento, sino llegar a un destino?"
+          "reflexion": "¿Y si el desarrollo no significara crecimiento, sino llegar a un destino?",
+          "traditionen": {
+            "christentum": "Pablo escribe: 'Cuando era niño, hablaba como un niño... Cuando me hice hombre, dejé lo que era de niño' (1 Cor 13:11) La madurez como meta espiritual: alcanzar la medida perfecta del crecimiento de Cristo (Ef 4:13).",
+            "buddhismus": "Las paramitas -las diez perfecciones- describen la madurez de un bodhisattva. No es perfeccionismo, sino integración. El bodhisattva maduro sigue sufriendo, pero ya no se aferra.",
+            "islam": "Insan al-Kamil -el ser humano perfecto y maduro- es el ideal islámico de desarrollo espiritual. Madurez significa que los atributos de Dios se reflejan en el hombre. Transmite la Rahma (misericordia).",
+            "osho": "La madurez no es una cuestión de edad. Es una cuestión de integración. Una persona madura ha digerido sus experiencias: ya no las posee, las lleva consigo.",
+            "moderne": "La teoría del desarrollo adulto de Robert Kegan describe cinco etapas de la conciencia. El pensamiento postconvencional -etapa 4/5- es el signo de la madurez: ya no se conduce, sino que se elige. La mayoría de las personas nunca alcanzan este estadio.",
+            "pirsig": "Pirsig: En el plano de la identidad, la autoestima es la certeza silenciosa de la propia calidad, no adquirida como un logro, sino reconocida como un hecho ontológico."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -790,7 +1046,15 @@
           "karte_key": "minor_arcana.fire.4_participation",
           "karte_nummer": 4,
           "tiage": "Tu necesidad de pertenencia no se satisface solo con el hecho de formar parte de algo, sino con la participación. Tu singularidad enriquece lo común.",
-          "reflexion": "¿Me implico, o simplemente me adapto?"
+          "reflexion": "¿Me implico, o simplemente me adapto?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la Iglesia es \"un cuerpo con muchos miembros\" (1 Cor 12): cada uno contribuye con su propio don, no por obligación.",
+            "buddhismus": "En el budismo, la Sangha (comunidad) es una de las Tres Joyas, no opcional, sino esencial. El camino se recorre juntos.",
+            "islam": "En el Islam, la Ummah (comunidad de creyentes) es central - la Salah (oración) tiene más poder en la comunidad.",
+            "osho": "No puedes iluminarte solo: la iluminación se produce en la danza con los demás.",
+            "moderne": "La sociología moderna lo demuestra: Los miembros de una comunidad viven más tiempo, más sanos y más felices. La comunidad no se crea a través de la igualdad, sino de la participación viva de personas diferentes.",
+            "pirsig": "Pirsig: El vínculo es la forma en que la calidad dinámica fluye entre dos personas. La verdadera conexión surge en momentos en los que se reconoce la calidad, más allá de los conceptos."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -800,7 +1064,15 @@
           "karte_key": "minor_arcana.water.3_celebration",
           "karte_nummer": 3,
           "tiage": "Cuando celebráis juntos —sin motivo aparente, sin planes— surge la comunidad en su forma más pura.",
-          "reflexion": "¿Celebramos los éxitos, o nos lanzamos directamente a la siguiente tarea?"
+          "reflexion": "¿Celebramos los éxitos, o nos lanzamos directamente a la siguiente tarea?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la Cena del Señor es Eucharistia (acción de gracias), la celebración de la presencia de Dios en el pan. Las fiestas judías, como la Pascua, visualizan la historia como una comunidad viva.",
+            "buddhismus": "En el hinduismo, festivales como Holi son acontecimientos cósmicos: lo divino celebra a través de las personas.",
+            "islam": "Las festividades islámicas de Eid ul-Fitr y Eid ul-Adha son celebraciones comunales: el agradecimiento como práctica colectiva.",
+            "osho": "Celébralo todo: el nacimiento, la muerte, el amor, el dolor. La vida misma es el motivo de celebración.",
+            "moderne": "La psicología positiva demuestra que las parejas que celebran juntas son más felices. La comunidad no solo se crea en las crisis, sino aún más en la alegría compartida.",
+            "pirsig": "Pirsig: La devoción profunda a una persona es la cualidad estática en su forma más social: el patrón que permite crecer y protegerse al mismo tiempo."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -810,7 +1082,15 @@
           "karte_key": "minor_arcana.water.6_the_dream",
           "karte_nummer": 6,
           "tiage": "Toda comunidad viva alberga un sueño: una visión común que trasciende a cada individuo. La pregunta clave es: ¿es vuestro sueño una semilla viva que os hace crecer, o una ilusión rígida que os aleja del presente?",
-          "reflexion": "¿Compartimos un sueño común de verdad, o estamos proyectando nuestros deseos individuales el uno en el otro?"
+          "reflexion": "¿Compartimos un sueño común de verdad, o estamos proyectando nuestros deseos individuales el uno en el otro?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la comunidad vive de una esperanza compartida: el sueño del reino de Dios. Este sueño inspira y une - siempre y cuando permanezca vivo y no se solidifique en una doctrina rígida.",
+            "buddhismus": "En el budismo, el voto del bodhisattva es un sueño colectivo: liberar a todos los seres. Este sueño no es una ensoñación, sino un anhelo que determina nuestras acciones cotidianas.",
+            "islam": "El Islam reconoce a la Ummah como una comunidad de fe y esperanza compartidas. Un sueño que crea comunidad debe ser vivido, no sólo creído.",
+            "osho": "Los sueños pueden inspirarte o mantenerte cautivo. La cuestión es: ¿sueñas para despertar o para volver a dormir? El sueño vivo te atrae a la acción; la ilusión muerta te mantiene cautivo.",
+            "moderne": "La psicología social lo demuestra: Los grupos con una visión compartida y significativa son más cohesionados y creativos. Pero los sueños de grupo también pueden congelarse en el pensamiento grupal. El sueño debe examinarse periódicamente: ¿sigue siendo real?",
+            "pirsig": "Pirsig: La calidad genuina de una relación surge cuando ambos miembros de la pareja desarrollan el mismo sentido de la calidad, un campo compartido de realización."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -820,7 +1100,15 @@
           "karte_key": "zusaetzliche_karten.love",
           "karte_nummer": null,
           "tiage": "La comunidad, en su nivel más profundo, no es una organización: es amor. No el amor que necesita y toma, sino el amor que reconoce: no estamos separados. No amas a la comunidad: tú eres ella. Cada contacto auténtico es un momento de reconocimiento: tú también eres yo.",
-          "reflexion": "¿Vivo la comunidad como un regreso a mí mismo, o como una huida de mí mismo?"
+          "reflexion": "¿Vivo la comunidad como un regreso a mí mismo, o como una huida de mí mismo?",
+          "traditionen": {
+            "christentum": "Juan escribe: \"Dios es amor, y el que permanece en el amor permanece en Dios\" (1 Juan 4:16) La comunidad no como institución, sino como lugar donde habita el amor. La Iglesia como comunidad de amor.",
+            "buddhismus": "Metta -bondad amorosa- es la extensión ilimitada del corazón hacia todos los seres: Amigos, extraños, enemigos. La comunidad como campo de entrenamiento para el amor universal.",
+            "islam": "La Ummah -la comunidad de creyentes- se describe como un cuerpo: si un miembro sufre, todo el cuerpo sufre. (Hadiz) El amor es la sustancia de la que se compone la comunidad.",
+            "osho": "El amor no es algo que se recibe, es algo que se es. Cuando amas, no pides nada a cambio. La comunidad surge cuando las personas han dejado de necesitarse unas a otras.",
+            "moderne": "La filosofía Yo-Tú de Martin Buber describe encuentros reales: no yo y un objeto, sino yo y un homólogo. La comunidad es posible allí donde el amor supera al miedo. Sólo quien se ama a sí mismo puede encontrarse verdaderamente con los demás.",
+            "pirsig": "Pirsig: La conexión completa entre dos personas es el punto en el que se funden las cualidades individuales y sociales: el ego se disuelve en el nosotros sin perderse."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -899,7 +1187,15 @@
           "karte_key": "zusaetzliche_karten.warmth",
           "karte_nummer": null,
           "tiage": "El reconocimiento más profundo es la calidez: no se trata de una aprobación que juzga, ni de los elogios como moneda de cambio, sino del resplandor natural de un corazón abierto. La calidez es una presencia que no juzga. Cuando te sientes realmente reconocido, es esa calidez lo que percibes.",
-          "reflexion": "¿Muestro mi reconocimiento con auténtica calidez y presencia, o lo utilizo como recompensa?"
+          "reflexion": "¿Muestro mi reconocimiento con auténtica calidez y presencia, o lo utilizo como recompensa?",
+          "traditionen": {
+            "christentum": "En el cristianismo, el ágape no es un sentimiento, sino una decisión: ver, calentar, alimentar, independientemente de los méritos. dios es amor\" (1 Jn 4,8). Este amor es calor sin condición.",
+            "buddhismus": "Mudita - compasión - es uno de los cuatro Brahmaviharas: alegría genuina por el bienestar de los demás. Esta calidez radiante es agradecimiento en su forma más pura: Me alegro de que seas quien eres.",
+            "islam": "La calidez es el resplandor natural de un corazón que ama a Dios. El Profeta (ﷺ) era conocido por su cálida sonrisa y su presencia. La calidez es Rahma (misericordia) en forma encarnada.",
+            "osho": "La calidez no es un sentimiento, sino una presencia que no juzga. No tienes que crearlo, sólo abrir tu corazón. Un corazón abierto irradia por sí mismo. El reconocimiento es calidez: te ven sin juzgarte.",
+            "moderne": "La neurobiología lo demuestra: Las miradas cálidas y apreciativas activan el sistema de recompensa con más fuerza que los elogios verbales. La calidez como reconocimiento no verbal es evolutivamente primaria: señala: Perteneces a un grupo, estás a salvo.",
+            "pirsig": "Pirsig: La alegría surge cuando la calidad dinámica puede fluir sin obstáculos. El hombre, en su forma de expresión más pura, es un canal de calidad, sin conciencia de sí mismo."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -909,7 +1205,15 @@
           "karte_key": "minor_arcana.fire.page_playfulness",
           "karte_nummer": 11,
           "tiage": "La forma más hermosa de reconocimiento es la naturalidad: cuando el otro te ve tan tal y como eres que es capaz de reírse contigo.",
-          "reflexion": "¿Somos capaces de reírnos, incluso de nosotros mismos?"
+          "reflexion": "¿Somos capaces de reírnos, incluso de nosotros mismos?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Dios hace que el mundo exista: \"Deus ludens\". El Espíritu Santo sopla donde quiere, de forma imprevisible y fácil.",
+            "buddhismus": "En el Zen, la vida misma es un juego, ¿por qué tanta seriedad? \"Antes de la iluminación, cortar leña, acarrear agua. Después de la iluminación, cortar leña, acarrear agua\", pero con una sonrisa.",
+            "islam": "En el sufismo, los derviches danzan: la religión como un juego extático.",
+            "osho": "No te tomes la vida en serio: de todos modos, no saldrás vivo.",
+            "moderne": "Los estudios demuestran que las parejas que ríen juntas discuten de forma más constructiva. A veces un guiño vale más que unas palabras patéticas.",
+            "pirsig": "Pirsig: El entusiasmo es la prueba de que la Calidad Dinámica está activa. Quien es entusiasta ha encontrado el impulso de la calidad y lo sigue incondicionalmente."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -919,7 +1223,15 @@
           "karte_key": "minor_arcana.clouds.5_comparison",
           "karte_nummer": 5,
           "tiage": "El reconocimiento desaparece en el momento en que empiezas a comparar. La comparación nos convierte en objetos en una escala, en lugar de personas únicas. El reconocimiento más profundo te dice: eres único, y lo único no necesita una escala de referencia.",
-          "reflexion": "¿Reconozco al otro en su singularidad, o lo comparo constantemente con los demás o conmigo mismo?"
+          "reflexion": "¿Reconozco al otro en su singularidad, o lo comparo constantemente con los demás o conmigo mismo?",
+          "traditionen": {
+            "christentum": "En cristiano, Pablo dice: 'No nos atrevemos a compararnos ni a medirnos con algunos que se encomiendan a sí mismos' (2 Cor 10:12) La comparación es un autoengaño. El reconocimiento reconoce lo que es único.",
+            "buddhismus": "Buda enseñó: No hay dos seres iguales. La naturaleza búdica se manifiesta en cada uno de forma única. La comparación no reconoce la naturaleza del ser.",
+            "islam": "En el Islam, cada persona es única. no hay dos personas con las mismas huellas dactilares\", una metáfora coránica de la singularidad. Alá no mira el exterior, sino el corazón.",
+            "osho": "Nunca te compares. Tú eres único. No existe un estándar porque no hay nadie como tú. Cuando empiezas a comparar, dejas de ser tú mismo, y yo dejo de verte de verdad.",
+            "moderne": "La teoría de la comparación social (Festinger) demuestra: La comparación hacia arriba genera una autoestima crónicamente pobre, la comparación hacia abajo genera una superioridad engañosa. Ambas impiden el encuentro genuino. El reconocimiento genuino suspende la comparación y ve lo concreto.",
+            "pirsig": "Pirsig: El entusiasmo compartido entre las personas es la Calidad Dinámica en el espacio social: el brillo contagioso de la calidad que ambos reconocen al mismo tiempo."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -929,7 +1241,15 @@
           "karte_key": "zusaetzliche_karten.compassion",
           "karte_nummer": null,
           "tiage": "El reconocimiento más profundo es la compasión: no ves al otro porque se parezca a ti o te reafirme. Lo ves porque es como es. La compasión es un reconocimiento incondicional: esa mirada que dice: «Te veo, y no necesito cambiarte».",
-          "reflexion": "¿Reconozco al otro en su singularidad, o lo busco como un reflejo de mis propias necesidades?"
+          "reflexion": "¿Reconozco al otro en su singularidad, o lo busco como un reflejo de mis propias necesidades?",
+          "traditionen": {
+            "christentum": "Jesús dice: 'En cuanto lo hicisteis a uno de estos hermanos míos más pequeños, a mí me lo hicisteis' (Mt 25,40) Reconocimiento del otro como reconocimiento de Dios mismo. Compasión como co-sufrimiento a la altura de los ojos.",
+            "buddhismus": "Karuna - compasión - es uno de los cuatro Brahmaviharas: la cualidad inconmensurable del alma. Ve el sufrimiento de los demás sin distancia, sin superioridad. La compasión es la forma más elevada de reconocimiento.",
+            "islam": "Al-Rahman, Al-Rahim -el misericordioso, el compasivo- son los primeros atributos de Allah en cada versículo coránico. La misericordia es la actitud básica de la que surge el reconocimiento de los demás.",
+            "osho": "La compasión no es lástima. La compasión mira desde arriba. La compasión está a la altura de los ojos: reconoce que somos iguales. No eres mejor, eres tan humano como yo.",
+            "moderne": "La teoría del reconocimiento de Axel Honneth lo demuestra: La gente lucha toda su vida para que la vean. Lo más profundo no son los elogios, sino la experiencia: te reconocen como persona completa, no por tu rendimiento.",
+            "pirsig": "Pirsig: En el plano de la identidad, la alegría de vivir ya no es una reacción emocional, sino una cualidad ontológica: el tono básico de una persona que se ha realizado a sí misma."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -976,7 +1296,15 @@
           "karte_key": "minor_arcana.rainbows.king_abundance",
           "karte_nummer": 14,
           "tiage": "La justicia que surge de la conciencia de la abundancia es diferente de la justicia que nace de la escasez. Quien sabe que hay suficiente para todos, comparte de otra manera: no por obligación, sino por abundancia. La abundancia es la base de una equidad generosa.",
-          "reflexion": "¿Mi sentido de la justicia proviene de la conciencia de la abundancia, o del miedo a salir perdiendo?"
+          "reflexion": "¿Mi sentido de la justicia proviene de la conciencia de la abundancia, o del miedo a salir perdiendo?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús alimenta a cinco mil personas con cinco panes y dos peces: la abundancia como milagro. La justicia no se consigue compartiendo la escasez, sino compartiendo la abundancia que multiplica.",
+            "buddhismus": "El zen quiere que vivas, que vivas en la abundancia, que vivas en la totalidad, no al mínimo, sino al máximo, desbordándote. Esta abundancia da lugar a la justicia natural: no tomas más de lo que necesitas.",
+            "islam": "El zakat -el deber islámico de pagar impuestos a los pobres- surge de la constatación de que lo que tengo no es sólo mío. La abundancia nos obliga a hacer justicia. Alá, el Dador, bendice a quienes comparten la abundancia.",
+            "osho": "La justicia no se crea exigiendo, sino dando desde la abundancia. Cuando sientes que tienes suficiente, dejas de luchar. La abundancia y la justicia son dos caras de la misma verdad.",
+            "moderne": "La economía del comportamiento lo demuestra: Las personas con mentalidad de escasez toman peores decisiones y son menos justas y generosas. La mentalidad de abundancia genera un comportamiento más cooperativo. La equidad comienza con una actitud interior hacia los recursos.",
+            "pirsig": "Pirsig: La ambición es una cualidad dinámica que empuja hacia la expresión y la excelencia. El verdadero impulso no procede del miedo al fracaso, sino del amor a la calidad."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -986,7 +1314,15 @@
           "karte_key": "minor_arcana.fire.queen_sharing",
           "karte_nummer": 13,
           "tiage": "Compartir es justicia en acción. Cuando compartes desde la conciencia de la conexión —no por obligación, sino porque te desborda—, la justicia no surge como una norma, sino como una expresión natural. Lo que das, te vuelve multiplicado.",
-          "reflexion": "¿Comparto por generosidad y por el vínculo que nos une, o por obligación y por sentir que debo hacerlo?"
+          "reflexion": "¿Comparto por generosidad y por el vínculo que nos une, o por obligación y por sentir que debo hacerlo?",
+          "traditionen": {
+            "christentum": "La primera iglesia de Jerusalén tenía \"todas las cosas en común\" (Hch 2,44), no como una obligación, sino como una exuberancia de alegría. Compartir como expresión espontánea de comunidad: justicia por amor.",
+            "buddhismus": "Dana -generosidad- es la primera paramita. En Theravada, el crecimiento espiritual comienza con aprender a dar sin pensar en nada a cambio. Compartir libera el apego y crea justicia.",
+            "islam": "La sadaqa -donación voluntaria- va más allá de la cantidad obligatoria del zakat. no compartas porque debes, comparte porque puedes\" El Corán describe a los generosos como \"amados por Dios\".",
+            "osho": "No compartas porque debes, comparte porque te sobra. El verdadero compartir no conoce el sacrificio. Si compartes y lo dejas vacío, no fue verdadero compartir - sólo diste lo que ya no querías.",
+            "moderne": "La psicología positiva (Seligman) lo demuestra: La generosidad es una de las mayores fuentes de satisfacción vital. Las sociedades con mayor disposición a compartir (capital social) son más justas, sanas y felices.",
+            "pirsig": "Pirsig: La excelencia no proviene de la optimización, sino de estar completamente absorto en el trabajo. El artesano que ama la calidad supera al que sólo quiere resultados."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -996,7 +1332,15 @@
           "karte_key": "minor_arcana.rainbows.10_we_are_the_world",
           "karte_nummer": 10,
           "tiage": "La verdadera justicia no se limita a la puerta de casa. «Somos el mundo» significa que lo que hago tiene consecuencias para toda la red. La justicia en una relación que no se preocupa por el mundo que la rodea se ha quedado a medio camino.",
-          "reflexion": "¿Pensamos, al hablar de justicia, también en quienes no están sentados a la mesa: en todas las personas afectadas y en las generaciones futuras?"
+          "reflexion": "¿Pensamos, al hablar de justicia, también en quienes no están sentados a la mesa: en todas las personas afectadas y en las generaciones futuras?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la tradición profética llama: \"Haz justicia, favorece el amor y camina humildemente con tu Dios\" (Miq 6:8) La justicia nunca es sólo individual, sino que concierne a todo el pueblo de Dios.",
+            "buddhismus": "En el budismo, pratityasamutpada (surgimiento condicional) es el fundamento más profundo de la justicia: todo está conectado. La injusticia en cualquier lugar sacude a todas partes. Somos el mundo y el mundo somos nosotros.",
+            "islam": "La Ummah islámica une a todos los creyentes en un solo cuerpo. La justicia es sistémica, no individual. Si una parte sufre, todo el cuerpo sufre: esta constatación hace que la injusticia en todas partes sea asunto suyo.",
+            "osho": "No eres una isla, eres todo el océano. Reconoce la interconexión y la compasión surgirá por sí misma. La justicia que el mundo olvida no es un sentido de justicia, es camaradería.",
+            "moderne": "La terapia sistémica muestra que los problemas en las relaciones a menudo tienen sus raíces en injusticias sociales más amplias. Pensar con justicia significa mirar más allá de la propia burbuja. La verdadera justicia tiene en cuenta a todas las partes interesadas, incluidas las invisibles.",
+            "pirsig": "Pirsig: La calidad del liderazgo surge cuando los demás perciben la calidad del líder, no su autoridad. La gente sigue a quienes encarnan la calidad."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1006,7 +1350,15 @@
           "karte_key": "minor_arcana.water.knight_understanding",
           "karte_nummer": 12,
           "tiage": "La justicia sin comprensión es ley. La justicia con comprensión es sabiduría. En el nivel 4 no nos preguntamos primero «¿qué es lo correcto?», sino «¿qué necesita esta alma?». La comprensión es el fundamento sobre el que se construye la verdadera justicia.",
-          "reflexion": "¿Puedo actuar con justicia sin juzgar, y juzgar sin condenar?"
+          "reflexion": "¿Puedo actuar con justicia sin juzgar, y juzgar sin condenar?",
+          "traditionen": {
+            "christentum": "Santiago escribe: \"La misericordia triunfa sobre el juicio\" (St 2,13) La comprensión vence a la ley. Jesús protege a la mujer adúltera, no infringiendo las normas, sino con comprensión.",
+            "buddhismus": "Prajna - sabiduría - es la forma más profunda de comprensión en el budismo: no intelectual, sino existencial. Quien comprende de verdad por qué sufre la gente ya no puede juzgar.",
+            "islam": "Ijtihad -pensamiento jurídico independiente basado en la comprensión profunda- es el principio islámico de que la justicia requiere comprensión, no sólo letras. El Ilm (conocimiento/comprensión) precede a toda práctica jurídica.",
+            "osho": "La comprensión no es intelectual, es existencial. Cuando lo entiendes de verdad, te transforma. Ya no puedes juzgar, porque te das cuenta de que, en otras circunstancias, serías tú.",
+            "moderne": "La justicia reparadora da prioridad a la comprensión sobre el castigo. El encuentro entre delincuente y víctima, una mirada a las necesidades que hay detrás del delito: es la justicia que cura en lugar de separar.",
+            "pirsig": "Pirsig: La forma más elevada de ambición es la búsqueda de la calidad por sí misma, sin público, sin precio. Esa es la madurez del nivel de identidad."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -1053,7 +1405,15 @@
           "karte_key": "major_arcana.20_beyond_illusion",
           "karte_nummer": 20,
           "tiage": "El sentimiento más profundo de conexión no surge de la cercanía, sino de darse cuenta de que la separación es, en realidad, una ilusión.",
-          "reflexion": "¿Siento un vínculo, o solo cercanía?"
+          "reflexion": "¿Siento un vínculo, o solo cercanía?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es la unidad mística: \"Vivo yo, pero ya no vivo yo, sino que es Cristo quien vive en mí\" (Gálatas 2:20). La frontera entre tú y yo se disuelve.",
+            "buddhismus": "En el budismo, es la realización de anatta (no-yo) - no hay ego fijo, y por lo tanto no hay separación.",
+            "islam": "En el sufismo, Hallaj grita \"Ana al-Haqq\" (Yo soy la verdad): él y Dios son uno.",
+            "osho": "El amor no es una relación entre dos personas: el amor es la desaparición de las dos.",
+            "moderne": "La neurociencia lo demuestra: En la intimidad profunda, las ondas cerebrales, los latidos del corazón y la respiración se sincronizan. La conexión no se establece, se reconoce.",
+            "pirsig": "Pirsig: La empatía es el reconocimiento de la calidad en los demás: el sentimiento inmediato de lo que conmueve a la otra persona antes de que la mente lo analice."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -1063,7 +1423,15 @@
           "karte_key": "zusaetzliche_karten.touch",
           "karte_nummer": null,
           "tiage": "La conexión comienza en el cuerpo. Un contacto consciente puede sanar lo que las palabras nunca logran. El cuerpo es el lugar más sincero del encuentro: no miente. Antes que cualquier lenguaje, antes que cualquier historia: tú y yo, dos cuerpos que se tocan.",
-          "reflexion": "¿Estamos realmente presentes físicamente el uno para el otro, o solo conectados mentalmente?"
+          "reflexion": "¿Estamos realmente presentes físicamente el uno para el otro, o solo conectados mentalmente?",
+          "traditionen": {
+            "christentum": "Jesús cura con el tacto: \"Extendió la mano y le tocó\" (Marcos 1:41). El tacto es encarnación: lo divino hablando a través de los cuerpos. El abrazo de la resurrección es físico.",
+            "buddhismus": "En el Vajrayana (Tantra), el cuerpo es sagrado, no para ser superado, sino para ser santificado. El tacto en su forma consciente puede alcanzar una profundidad que ninguna meditación puede ofrecer. El cuerpo como camino.",
+            "islam": "En el Islam, el encuentro comienza con salaam -paz- y un apretón de manos. El Profeta (ﷺ) saludaba a la gente con calidez y contacto físico. El tacto es una bendición: \"Quien bese a un niño será recompensado por Dios\"",
+            "osho": "El cuerpo no está separado del alma, es su templo. El tacto puede curar lo que las palabras nunca podrán lograr. Un vínculo que nunca se manifiesta físicamente es un vínculo a distancia.",
+            "moderne": "Las investigaciones sobre la oxitocina lo demuestran: El tacto consciente aumenta drásticamente los niveles de la hormona del vínculo. La privación del tacto es un fenómeno real con consecuencias para la salud. El apego necesita un lenguaje físico, no puede existir de forma puramente cognitiva.",
+            "pirsig": "Pirsig: La compasión es una cualidad dinámica en la esfera social, el impulso que nos conecta cuando reconocemos el sufrimiento de los demás como propio."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -1073,7 +1441,15 @@
           "karte_key": "minor_arcana.clouds.9_sorrow",
           "karte_nummer": 9,
           "tiage": "El vínculo más profundo también da lugar a la vulnerabilidad más profunda. El duelo es el precio del amor, y al mismo tiempo su prueba. Si eres capaz de llorar la pérdida de alguien o algo, es que realmente estabas unido a esa persona o cosa. Deja que el duelo siga su curso: rinde homenaje a lo que fue.",
-          "reflexion": "¿Me permito sentir el dolor cuando se pierde el vínculo, como muestra de su autenticidad y profundidad?"
+          "reflexion": "¿Me permito sentir el dolor cuando se pierde el vínculo, como muestra de su autenticidad y profundidad?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Jesús llora ante la tumba de Lázaro: \"Jesús lloró\" (Juan 11:35) Dios mismo llora. El dolor es sagrado. Es la expresión del amor que pierde lo que ama.",
+            "buddhismus": "Buda enseñó que Dukkha (sufrimiento/dolor) es la primera de las Tres Características. Aquellos que buscan la conexión también conocerán la separación. La voluntad de sufrir es la voluntad de amar de verdad.",
+            "islam": "En el Islam, el luto es permisible y humano. El Profeta (ﷺ) lloró la muerte de su hijo Ibrahim. 'El ojo llora, el corazón se lamenta, pero sólo decimos lo que agrada a nuestro Señor Llorar no es un fracaso de la fe.",
+            "osho": "El dolor no es lo contrario de la alegría, sino su profundidad. Quien no sabe llorar no puede alegrarse de verdad. La conexión que no conoce también la pena no es realmente profunda.",
+            "moderne": "La Teoría del Apego demuestra que el duelo por la pérdida del apego es un proceso biológicamente normal. El duelo reprimido se somatiza: se enferma, no se supera. El apego genuino incluye la capacidad de afligirse.",
+            "pirsig": "Pirsig: El cuidado genuino surge cuando la calidad estática -estructuras fiables de apoyo- se une a la calidad dinámica -compasión viva-."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1083,7 +1459,15 @@
           "karte_key": "zusaetzliche_karten.intimacy",
           "karte_nummer": null,
           "tiage": "La conexión en su nivel más profundo es la intimidad: la capacidad de dejarse ver sin máscaras —y de ver al otro sin máscaras—. No conectados por similitudes o por un pasado compartido, sino por la cruda verdad del momento. El mayor riesgo. El mayor regalo.",
-          "reflexion": "¿Me permito que me vean tal y como soy, incluso en lo que más oculto?"
+          "reflexion": "¿Me permito que me vean tal y como soy, incluso en lo que más oculto?",
+          "traditionen": {
+            "christentum": "Adán y Eva estaban \"desnudos y no se avergonzaban\" (Gn 2,25): el vínculo paradisíaco antes del velo del juicio. La intimidad como retorno a la apertura original ante Dios y ante el otro.",
+            "buddhismus": "Shoshin -la mente del principiante- es una especie de intimidad existencial: me encuentro contigo sin conocimiento previo, sin categoría, como si fuera la primera vez. La presencia total de Buda con cada ser humano era intimidad en su forma más pura.",
+            "islam": "Nosotros -intimidad con Dios- es el término sufí para la conexión más profunda. Los místicos hablan de Dios como el Amado. La verdadera conexión es la intimidad: lo familiar que no conoce a ningún extraño.",
+            "osho": "La intimidad requiere valentía, la valentía de mostrarse tal y como uno es. Ése es el mayor riesgo y el mayor regalo. La conexión surge cuando dos personas han dejado de esconderse.",
+            "moderne": "Brené Brown muestra que la vulnerabilidad -la voluntad de ser visto- es la fuente de la verdadera conexión. La intimidad no es la ausencia de límites. Es la elección de permitir el contacto a pesar de los límites.",
+            "pirsig": "Pirsig: En el plano de la identidad, la empatía ya no es una técnica, sino la permeabilidad natural de las personas que se conocen a sí mismas."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -1186,7 +1570,15 @@
           "karte_key": "minor_arcana.rainbows.7_patience",
           "karte_nummer": 7,
           "tiage": "El autoconocimiento comienza cuando estás dispuesto a observar con paciencia, sin prisas y sin juzgar. La verdad sobre ti mismo va saliendo a la luz poco a poco.",
-          "reflexion": "¿Soy paciente conmigo mismo… y contigo?"
+          "reflexion": "¿Soy paciente conmigo mismo… y contigo?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la paciencia es un fruto del Espíritu (Gálatas 5:22) - Dios trabaja despacio pero seguro. para Dios, mil años son como un día",
+            "buddhismus": "En el budismo, khanti (paciencia) es una de las seis paramitas (perfecciones): no es resignación, sino perseverancia. El loto crece en el barro, pero no de la noche a la mañana.",
+            "islam": "En el sufismo, sabr (paciencia) es la virtud de los santos: resistir confiando en Dios.",
+            "osho": "La paciencia no es esperar. La paciencia es la capacidad de ser feliz mientras se espera.",
+            "moderne": "La psicología moderna del desarrollo lo demuestra: Las personas crecen por fases, no linealmente. El autoconocimiento no llega por aceleración, sino por observación paciente. La verdadera intimidad lleva tiempo, no horas, sino años.",
+            "pirsig": "Pirsig: La armonía es el estado en el que la cualidad dinámica y estática están en armonía en un sistema. La paz interior no es la ausencia de tensión, sino el equilibrio satisfactorio de la tensión."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -1196,7 +1588,15 @@
           "karte_key": "major_arcana.3_creativity",
           "karte_nummer": 3,
           "tiage": "El autoconocimiento también surge a través de la expresión creativa. Lo que creas —sin público, sin un objetivo concreto— te muestra quién eres realmente. Al crear, el inconsciente sale a la luz. La creatividad es una revelación de uno mismo.",
-          "reflexion": "¿Qué creo cuando nadie me ve? ¿Y qué revela eso sobre mi esencia más íntima?"
+          "reflexion": "¿Qué creo cuando nadie me ve? ¿Y qué revela eso sobre mi esencia más íntima?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la creatividad es Imago Dei: creamos porque somos imagen del Creador. Lo que creo muestra lo que vive en mí. El autoconocimiento a través de la creación es un camino teológico.",
+            "buddhismus": "En el budismo, la expresión creativa -caligrafía, té, ikebana- es una forma de autorrealización. Cuando el ego se aparta y la creación fluye a través de ti, te das cuenta de quién eres realmente.",
+            "islam": "El Islam honra la artesanía como un servicio a Dios. Lo que creas con devoción lleva tu alma. El calígrafo que escribe el nombre de Alá se reconoce al servicio de la belleza.",
+            "osho": "La creatividad es tu naturaleza. Cuando eres creativo, el universo fluye a través de ti. Y en este flujo, te muestras a ti mismo: desnudo, sin censura, real. El autoconocimiento es el efecto secundario de la verdadera creatividad.",
+            "moderne": "La Terapia de Artes Expresivas hace un uso específico de los procesos creativos para el autoconocimiento. El inconsciente se revela en símbolos, imágenes y sonidos, antes de que las palabras puedan captarlo. La creatividad es un acceso directo a la propia verdad.",
+            "pirsig": "Pirsig: La reconciliación tras un conflicto es la restauración de la calidad: el camino de vuelta al equilibrio tras la perturbación causada por la Calidad Dinámica."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -1206,7 +1606,15 @@
           "karte_key": "major_arcana.12_new_vision",
           "karte_nummer": 12,
           "tiage": "Tu autoconocimiento crece cuando estás dispuesto a dejar que te pongan boca abajo. Déjate llevar. Lo que entonces ves siempre ha estado ahí.",
-          "reflexion": "¿Estoy preparado para verme con otros ojos?"
+          "reflexion": "¿Estoy preparado para verme con otros ojos?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la conversión es a menudo un cambio de perspectiva: Saulo se convierte en Pablo mediante una reorientación completa de su mirada.",
+            "buddhismus": "En Zen: Cuando todos los conceptos caen, el ojo que siempre ha visto ve. La nueva visión es el fin de la visión conceptual.",
+            "islam": "En el sufismo, la devoción conduce a la fath (apertura): el corazón ve de repente lo que siempre ha sido verdad.",
+            "osho": "Rendirse no es una derrota, es la mayor victoria. Cuando dejas de luchar, de repente ves lo que siempre ha estado ahí.",
+            "moderne": "La psicología cognitiva lo demuestra: Las nuevas perspectivas no se crean pensando más, sino interrumpiendo el pensamiento habitual. El autoconocimiento exige a veces un cambio radical de perspectiva.",
+            "pirsig": "Pirsig: La armonía social surge cuando todos los implicados comparten el mismo estándar de calidad, no forzada, sino emergente de una madurez compartida."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1216,7 +1624,15 @@
           "karte_key": "minor_arcana.water.4_turning_in",
           "karte_nummer": 4,
           "tiage": "El autoconocimiento es el giro hacia el interior, no para encontrar respuestas, sino para reconocer a quien pregunta. ¿Quién soy yo cuando dejo de ser alguien? El giro hacia el interior no es una técnica ni un concepto. Es el final de toda búsqueda y el comienzo del reconocimiento.",
-          "reflexion": "¿Qué queda cuando dejo atrás todos mis roles, historias y creencias?"
+          "reflexion": "¿Qué queda cuando dejo atrás todos mis roles, historias y creencias?",
+          "traditionen": {
+            "christentum": "El salmo dice: \"Estad quietos y conoced que yo soy Dios\" (Sal 46,11) (Sal 46:11) La tradición contemplativa - Meister Eckhart, San Juan de la Cruz - reconoce la vuelta hacia el interior como el camino hacia Dios. Dios es más profundo que lo más íntimo del ser.",
+            "buddhismus": "Vipassana -meditación de introspección- es la vuelta sistemática hacia el interior: atención a la mente observando la mente. El autoconocimiento no surge a través del pensamiento, sino a través de la visión.",
+            "islam": "Muraqaba -guardar y observar el corazón- es la práctica sufí de volverse hacia el interior. quien se conoce a sí mismo conoce a su Señor (Hadiz sufí) El autoconocimiento como camino hacia Dios.",
+            "osho": "El viaje hacia el exterior tiene sus límites. El viaje hacia el interior no tiene límites. Vuélvete hacia dentro, no para encontrar respuestas, sino para reconocer al que pregunta.",
+            "moderne": "El concepto del Yo Observador en IFS (Sistemas Familiares Internos) y en ACT: Hay una parte de ti que puede observar todas las demás partes sin ser idéntica a ellas. Este testigo es el objetivo del giro interior.",
+            "pirsig": "Pirsig: La armonía completa es el estado en el que el individuo ya no tiene que elegir entre autenticidad y pertenencia: ambas son expresión de la misma cualidad."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -1279,7 +1695,15 @@
           "karte_key": "minor_arcana.rainbows.3_guidance",
           "karte_nummer": 3,
           "tiage": "El sentido no se puede forzar. Se revela cuando dejas de buscarlo y empiezas a seguir lo que realmente te mueve.",
-          "reflexion": "¿Sigo a autoridades ciegas… o a mi propia verdad?"
+          "reflexion": "¿Sigo a autoridades ciegas… o a mi propia verdad?",
+          "traditionen": {
+            "christentum": "En el cristianismo, el Espíritu Santo es el Paráclito (consejero), no fuera de ti, sino dentro de ti.",
+            "buddhismus": "En el budismo, la naturaleza de Buda ya está en cada uno; no se puede alcanzar, sólo reconocer.",
+            "islam": "En el sufismo, el Murshid (guía espiritual) es un espejo: sólo te muestra lo que ya está dentro de ti.",
+            "osho": "No necesitas un maestro, pero quizá sí un espejo.",
+            "moderne": "La logoterapia (Viktor Frankl) demuestra que el sentido no se crea encontrando, sino creando. La pregunta no es \"¿Cuál es el significado?\", sino \"¿Cuál es MI significado, aquí, contigo?",
+            "pirsig": "Pirsig: Todo encuentro con lo desconocido es una invitación de la Calidad Dinámica. La curiosidad es la actitud básica de la persona de calidad: abierta, sin respuestas precipitadas."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -1289,7 +1713,15 @@
           "karte_key": "minor_arcana.fire.3_experiencing",
           "karte_nummer": 3,
           "tiage": "El sentido no se manifiesta solo en la reflexión, sino que se despliega en la experiencia plena. Cuando te sumerges por completo, sin reservas, surge ese momento en el que todo cobra sentido. No como una explicación, sino como una experiencia viva.",
-          "reflexion": "¿Vivo realmente mis encuentros, o solo los observo desde una distancia segura?"
+          "reflexion": "¿Vivo realmente mis encuentros, o solo los observo desde una distancia segura?",
+          "traditionen": {
+            "christentum": "En el cristianismo, la encarnación es el principio de la inmersión total: Dios se hace hombre para conocer la experiencia humana desde dentro. El sentido se crea a través de la experiencia, no del concepto.",
+            "buddhismus": "En el Zen, no hay comprensión sin experiencia. si tienes hambre, come El significado no es la interpretación, sino la inmersión total en el momento. La propia experiencia es el significado.",
+            "islam": "En el Islam, la ibada (adoración) no es sólo ritual: es presencia completa. El Hayy es un camino de experiencia: hay que recorrer las estaciones en carne y hueso, no sólo pensar en ellas.",
+            "osho": "No vivas a medias. Sumérgete de lleno en cada experiencia. Sólo así aprenderás de verdad. El sentido no viene de la filosofía, sino de vivir la vida. Un momento vivido plenamente contiene más significado que un año de reflexión.",
+            "moderne": "La psicología existencial (Yalom) demuestra que el significado no suele ser un concepto, sino un fenómeno vivencial, una iluminación en la experiencia completa. Las experiencias de flujo (Csikszentmihalyi) son los momentos subjetivamente más significativos, y surgen a través de la inmersión, no de la reflexión.",
+            "pirsig": "Pirsig: La renovación a través de la exploración es una cualidad dinámica que se renueva a sí misma. Lo nuevo surge cuando permitimos que se disuelvan los patrones familiares de la cualidad estática."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -1299,7 +1731,15 @@
           "karte_key": "major_arcana.18_past_lives",
           "karte_nummer": 18,
           "tiage": "El sentido también surge al mirar atrás: ¿qué patrones se repiten en tu vida, en tus relaciones? El pasado —ya sea en sentido literal o simbólico— encierra mensajes sobre lo que has venido a aprender. Identifica el patrón y el sentido se revelará.",
-          "reflexion": "¿Qué patrones se repiten en mis relaciones, y qué me quieren decir sobre mi misión vital más profunda?"
+          "reflexion": "¿Qué patrones se repiten en mis relaciones, y qué me quieren decir sobre mi misión vital más profunda?",
+          "traditionen": {
+            "christentum": "En el cristianismo, el recuerdo (anamnesis) es fundamental: \"Haz esto en memoria mía\" El pasado se hace presente para cobrar sentido. La historia no es el pasado: vive en nosotros y nos da forma.",
+            "buddhismus": "En el budismo, los patrones kármicos se repiten a lo largo de muchas vidas hasta que se reconocen y se resuelven. El pasado vive en tu inconsciente hasta que lo haces consciente. El autoconocimiento empieza por reconocer la repetición.",
+            "islam": "En el Islam, el Corán es un \"dhikr\", un recuerdo. Recordar la verdad divina da sentido a la vida. Recordar los propios patrones también es una forma de dhikr: ¿Qué me muestra Alá a través de lo que se repite?",
+            "osho": "El pasado no ha terminado: sigue vivo en tu inconsciente. Los patrones se repiten hasta que los reconoces y los dejas ir. Lo que aparece una y otra vez quiere ser visto, y al verlo se disuelve.",
+            "moderne": "Terapia narrativa (White & Epston) y ACT show: Somos las historias que nos contamos a nosotros mismos. Los patrones recurrentes en las relaciones suelen ser ecos de viejas heridas. Reconocer el patrón es el primer paso hacia el significado y la liberación.",
+            "pirsig": "Pirsig: El descubrimiento conjunto entre personas crea la forma más fuerte de calidad social: la experiencia de abrir nuevos caminos juntos."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1309,7 +1749,15 @@
           "karte_key": "major_arcana.21_completion",
           "karte_nummer": 21,
           "tiage": "El sentido no es algo que se encuentra, sino lo que se percibe al contemplar la propia vida: el círculo que se cierra. La plenitud no es el final, sino el momento en que el patrón se hace visible. Tu vida cobra sentido no a través de una explicación, sino a través de su forma.",
-          "reflexion": "Cuando al final de mi vida eche la vista atrás, ¿cuál fue el hilo conductor que lo unió todo?"
+          "reflexion": "Cuando al final de mi vida eche la vista atrás, ¿cuál fue el hilo conductor que lo unió todo?",
+          "traditionen": {
+            "christentum": "Jesús grita en la cruz: 'Consumado es' (Juan 19:30) Tetelestai - la palabra griega significa: completamente cumplido, terminado, realizado. El significado surge cuando el propósito se ha realizado plenamente.",
+            "buddhismus": "Parinirvana -la completa extinción del Buda- es la culminación sin resto. No es la muerte, sino la conclusión de un camino plenamente vivido. El significado se revela en el arco completado.",
+            "islam": "en verdad, pertenecemos a Allah y a Él regresamos (Inna lillahi wa inna ilayhi raji'un) - el versículo coránico en duelo. El significado reside en el círculo completo: de Dios, a través de la vida, de vuelta a Dios.",
+            "osho": "La culminación no es la perfección. Se trata de presencia. Es honrar el arco completo de la experiencia y saber que estás completo, incluso cuando vuelves a empezar.",
+            "moderne": "Lo demuestra la teoría de la identidad narrativa de Dan McAdam: La gente encuentra sentido cuando puede contar su vida como una historia coherente. Viktor Frankl descubrió en el campo que quienes tienen un porqué pueden soportar casi cualquier cómo.",
+            "pirsig": "Pirsig: En el plano de la identidad, la curiosidad ya no es una característica, sino una forma de ser: la persona plenamente despierta que experimenta la vida misma como una cualidad dinámica."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -1380,7 +1828,15 @@
           "karte_key": "major_arcana.17_silence",
           "karte_nummer": 17,
           "tiage": "La integridad crece en la quietud. No en medio del ruido de las justificaciones y las explicaciones, sino en esos momentos en los que te detienes y escuchas: ¿Lo que hago concuerda con lo que realmente soy? La quietud es el espejo más sincero.",
-          "reflexion": "¿Me concedo suficiente silencio para ser sincero conmigo mismo, lejos de las distracciones y las expectativas?"
+          "reflexion": "¿Me concedo suficiente silencio para ser sincero conmigo mismo, lejos de las distracciones y las expectativas?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Dios dice en el susurro, no en la tormenta (1 Reyes 19:12). La tradición contemplativa -desde los padres del desierto hasta Meister Eckhart- reconoce el silencio como el espacio en el que surge la integridad: En el silencio escucho si soy fiel a mí mismo.",
+            "buddhismus": "En el Zen, zazen (meditación sentada) es la práctica más elevada: no pensar en la verdad, sino estar en la verdad. El silencio revela lo que es real y lo que es una fachada. La integridad surge en el silencio, no al hablar.",
+            "islam": "En el sufismo, el sukut (silencio) es una de las prácticas más elevadas. El murid silencioso aprende que lo que se reconoce en silencio es más verdadero que lo que se afirma en voz alta. La integridad es actuar desde el conocimiento silencioso del corazón.",
+            "osho": "En silencio, la máscara desaparece. Cuando te permites estar verdaderamente quieto, te das cuenta de lo que es real en ti, y de lo que sólo era una representación. La integridad no se puede explicar, sólo se puede sentir en silencio.",
+            "moderne": "Los investigadores del estrés (Elissa Epel) lo demuestran: La sobrecarga crónica y el ruido suprimen el córtex prefrontal medial, el lugar de la autorreflexión. El silencio es el prerrequisito neurológico para el auténtico autoconocimiento. La integridad requiere calma mental: quienes nunca dan el pecho no pueden ser honestos consigo mismos.",
+            "pirsig": "Pirsig: La creatividad es la cualidad dinámica en su forma más pura: el momento en que se crea algo nuevo que no existía antes. La creatividad no se puede forzar, solo invitar."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -1390,7 +1846,15 @@
           "karte_key": "minor_arcana.rainbows.8_ordinariness",
           "karte_nummer": 8,
           "tiage": "La integridad no se manifiesta en los grandes momentos, sino que se revela en lo cotidiano. La forma en que vives tu día a día, cómo te enfrentas a las pequeñas cosas, lo dice todo sobre tu forma de ser. Lo cotidiano es la piedra de toque de la verdad.",
-          "reflexion": "¿Vivo según mis valores en el día a día, o solo cuando hay alguien mirando?"
+          "reflexion": "¿Vivo según mis valores en el día a día, o solo cuando hay alguien mirando?",
+          "traditionen": {
+            "christentum": "En la orden benedictina, \"ora et labora\" (reza y trabaja) no es una contradicción: el trabajo ordinario se convierte en práctica espiritual. La integridad se demuestra en el pequeño servicio diario, no en el gran escenario.",
+            "buddhismus": "En el Zen existe la historia del maestro que pregunta: \"¿Has comido?\" - \"Sí\" - \"Entonces lava tu cuenco\" La integridad comienza con hacer completamente lo ordinario. La iluminación está en las cosas sencillas.",
+            "islam": "El Profeta Muhammad (ﷺ) reparaba su propio calzado y cosía su propia ropa. En el Islam, la dignidad de la acción ordinaria es la base de toda espiritualidad. Quien es recto en las cosas pequeñas también lo es en las grandes.",
+            "osho": "La mayor espiritualidad es la vida más sencilla. No necesitas grandes hazañas para ser íntegro, sólo prestar total atención a lo que es ahora mismo. Lo ordinario es sagrado.",
+            "moderne": "La psicología del carácter (James Q. Wilson) lo demuestra: La integridad no es un estado, sino un hábito. Se crea a través de miles de acciones ordinarias, no a través de una gran decisión. Ética de la virtud: el carácter se revela en la vida cotidiana.",
+            "pirsig": "Pirsig: La maestría proviene de años de dedicación a la calidad estática: el dominio de las formas que permite expresar plenamente la calidad dinámica."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -1400,7 +1864,15 @@
           "karte_key": "minor_arcana.clouds.queen_morality",
           "karte_nummer": 13,
           "tiage": "La integridad no es una moral impuesta, sino una ética vivida. La moral viene de fuera, la ética de dentro. Si actúas porque tienes que hacerlo, eso es moral. Si actúas porque, desde lo más profundo de tu ser, te parece lo correcto, eso es integridad.",
-          "reflexion": "¿Actúo según mis propios valores, o según lo que los demás esperan de mí?"
+          "reflexion": "¿Actúo según mis propios valores, o según lo que los demás esperan de mí?",
+          "traditionen": {
+            "christentum": "En el cristianismo, Pablo distingue entre ley y gracia: la ley te dice lo que tienes que hacer, la gracia lo hace desde dentro (Rm 8:3-4). La integridad no se consigue mediante la obediencia a las normas, sino mediante la transformación del corazón.",
+            "buddhismus": "En Theravada, sila (ética) no es un conjunto de reglas, sino una expresión de pureza interior. El arhat ya no necesita reglas: actúa correctamente por sí mismo porque su naturaleza está purificada. La integridad es la ética madura.",
+            "islam": "El Corán distingue entre zahir (apariencia exterior) y batin (apariencia interior). La moral superficial sin dirección interior es riya (hipocresía). La auténtica ética islámica surge de la taqwa (conciencia de Dios), no de la presión social.",
+            "osho": "La moral es esclavitud, la ética es liberación. La moral te dice lo que debes hacer. La ética te pregunta quién eres realmente. La integridad es el valor de vivir según tu propia verdad interior, aunque te resulte incómodo.",
+            "moderne": "La psicología del desarrollo (Kohlberg/Gilligan) muestra: La madurez moral pasa del cumplimiento de las normas convencionales (estadios 3-4) a la responsabilidad personal postconvencional (estadios 5-6). La integridad al más alto nivel no es la obediencia a las normas, sino el valor de decir la propia verdad ética.",
+            "pirsig": "Pirsig: La co-creación entre personas es Calidad Dinámica en plural - cuando el trabajo conjunto se convierte en algo mayor que la suma de sus partes."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1410,7 +1882,15 @@
           "karte_key": "zusaetzliche_karten.commitment",
           "karte_nummer": null,
           "tiage": "La integridad, en su sentido más profundo, es el compromiso contigo mismo. No como una obligación, sino como la más profunda fidelidad a lo que has descubierto. El compromiso no es una cadena: es la forma que adopta tu libertad. Quien se mantiene fiel a sí mismo no necesita ninguna máscara.",
-          "reflexion": "¿A qué promesa que me hice a mí mismo —no a los demás— me mantengo realmente fiel?"
+          "reflexion": "¿A qué promesa que me hice a mí mismo —no a los demás— me mantengo realmente fiel?",
+          "traditionen": {
+            "christentum": "Jesús dice: 'Que tu sí sea sí, y tu no sea no' (Mt 5,37) Integridad como unidad de palabra y de ser. Esto es compromiso: no por obligación, sino por acuerdo con el ser interior.",
+            "buddhismus": "Sila -disciplina ética- es uno de los tres aspectos del Óctuple Sendero. El voto del bodhisattva es el compromiso supremo: actuar en favor de todos los seres, independientemente de los resultados.",
+            "islam": "La Amanah -confianza, integridad- es uno de los atributos centrales de un creyente. Comprometerse con la Amanah significa: soy un testigo para mí mismo, no sólo para los demás.",
+            "osho": "El verdadero compromiso no nace del deber, sino del amor. No es una cadena, sino una danza. El compromiso sin acuerdo interior es hipocresía, pero el compromiso basado en la realización es integridad.",
+            "moderne": "La teoría de la coherencia de la integridad muestra: La integridad es la coherencia entre valores, palabras y acciones. Las personas con un alto grado de integridad se sienten completas por dentro, no porque sean perfectas, sino porque son honestas.",
+            "pirsig": "Pirsig: En el plano de la identidad, la persona creativa ha superado la separación entre ella misma y su obra. La vida misma se convierte en una obra de arte."
+          }
         },
         "V5": {
           "kontext": "V5",
@@ -1457,7 +1937,15 @@
           "karte_key": "minor_arcana.rainbows.queen_flowering",
           "karte_nummer": 13,
           "tiage": "Tu desarrollo personal no es un proyecto: es tu naturaleza. Tu néctar no te pertenece solo a ti: es el regalo que has traído al mundo.",
-          "reflexion": "¿Estoy creciendo en este aspecto, o estoy retrocediendo?"
+          "reflexion": "¿Estoy creciendo en este aspecto, o estoy retrocediendo?",
+          "traditionen": {
+            "christentum": "En el cristianismo, es el fruto del Espíritu (Gálatas 5:22-23) - amor, alegría, paz... no se hacen, sino que crecen.",
+            "buddhismus": "En el budismo, Bodhi (el despertar) es como la flor de loto: crece en el barro, pero no lo toca.",
+            "islam": "En el sufismo, Fana-fi-Allah (disolución en Dios) no es la aniquilación, sino la realización más elevada.",
+            "osho": "Una rosa no necesita permiso para florecer, simplemente florece.",
+            "moderne": "La psicología del desarrollo lo demuestra: Las personas que mantienen relaciones de apoyo se desarrollan más que las que están solas. El amor verdadero no dice \"quédate como estás\", sino \"conviértete en quien puedes ser\"",
+            "pirsig": "Pirsig: La trascendencia es el momento en el que la calidad dinámica disuelve todos los patrones estáticos: la superación de los propios límites en pura calidad."
+          }
         },
         "V2": {
           "kontext": "V2",
@@ -1467,7 +1955,15 @@
           "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
           "karte_nummer": 2,
           "tiage": "En la convivencia os realizáis a vosotros mismos viviendo plenamente cada momento. Sin planes, sin expectativas para el futuro: solo este instante.",
-          "reflexion": "¿Estoy presente, o vivo en el pasado y en los planes?"
+          "reflexion": "¿Estoy presente, o vivo en el pasado y en los planes?",
+          "traditionen": {
+            "christentum": "En el cristianismo es \"No te preocupes por el mañana\" (Mateo 6:34) - cada día tiene su propia plaga.",
+            "buddhismus": "En el Zen es el koan: \"Cuando camines, camina. Cuando te sientes, siéntate. Pero no te tambalees Permanece plenamente en el momento\".",
+            "islam": "En el sufismo, el momento (Waqt) es sagrado: el pasado es memoria, el futuro es fantasía, sólo el ahora es real.",
+            "osho": "La vida no es un ensayo: cada momento es una representación.",
+            "moderne": "Las investigaciones sobre mindfulness demuestran que la presencia es el factor que mejor predice la satisfacción en las relaciones. El autodesarrollo no es un objetivo para el futuro, sino un proceso que tiene lugar ahora, en esta respiración.",
+            "pirsig": "Pirsig: El crecimiento es la danza continua entre la cualidad dinámica y la estática: lo nuevo empuja, lo probado sujeta. La madurez viene de soportar ambas fuerzas."
+          }
         },
         "V3": {
           "kontext": "V3",
@@ -1477,7 +1973,15 @@
           "karte_key": "minor_arcana.rainbows.9_ripeness",
           "karte_nummer": 9,
           "tiage": "Tu desarrollo no se puede forzar. Ocurre cuando llega el momento adecuado. Lo que llevas dentro se manifestará, en el momento oportuno, por sí solo.",
-          "reflexion": "¿Es hora de dejarlo ir, o me aferro a ello por miedo?"
+          "reflexion": "¿Es hora de dejarlo ir, o me aferro a ello por miedo?",
+          "traditionen": {
+            "christentum": "En el cristianismo se trata de Kairos (tiempo cumplido) frente a Chronos (tiempo que se agota): el momento adecuado, determinado divinamente.",
+            "buddhismus": "En zen se dice: \"Cuando estás maduro, la fruta cae\" No recojas demasiado pronto, no recojas demasiado tarde.",
+            "islam": "En el sufismo, la Baqa (persistencia después de la Fana) es la etapa de madurez: ya no se lucha, sino que se es.",
+            "osho": "La madurez es cuando dejas de ser y empiezas a ser.",
+            "moderne": "La psicología del desarrollo lo demuestra: Las transiciones son a menudo dolorosas, pero necesarias. El autodesarrollo no tiene una meta fija, sólo la madurez del momento. La pregunta no es \"¿Hemos alcanzado nuestra meta?\", sino \"¿Estamos preparados para el siguiente paso?",
+            "pirsig": "Pirsig: La comunidad espiritual surge cuando las personas crecen juntas más allá de sus límites individuales: cualidad dinámica como despertar colectivo."
+          }
         },
         "V4": {
           "kontext": "V4",
@@ -1487,7 +1991,15 @@
           "karte_key": "minor_arcana.clouds.10_rebirth",
           "karte_nummer": 10,
           "tiage": "El desarrollo personal nunca termina: se renueva constantemente. Cada desarrollo completo lleva en sí el germen del siguiente renacimiento. El camello se convierte en león, y el león, en niño. El renacimiento no es algo que ocurre una sola vez: es el ritmo de la vida que despierta. No te desarrollas una sola vez. Te desarrollas una y otra vez.",
-          "reflexion": "¿Qué versión de mí mismo debe morir para que pueda nacer la siguiente?"
+          "reflexion": "¿Qué versión de mí mismo debe morir para que pueda nacer la siguiente?",
+          "traditionen": {
+            "christentum": "Jesús le dice a Nicodemo: 'El que no nazca de nuevo no puede ver el Reino de Dios' (Juan 3:3) El renacimiento no es un acontecimiento puntual, sino un principio: nacer una y otra vez.",
+            "buddhismus": "En el budismo, el renacimiento no es sólo un principio cósmico, sino también psicológico: a cada momento, un yo muere y surge uno nuevo. El despertar es renacer del sueño del condicionamiento.",
+            "islam": "Fana -la aniquilación del ego- y Baqa -la existencia en Dios- son las etapas sufíes del renacimiento espiritual. El viejo yo muere para que el verdadero yo pueda vivir en Dios.",
+            "osho": "Tu conciencia es un espejo. Te vuelves joven, te vuelves viejo; estás vivo, estás muerto. Todos estos estados son sólo reflejos. Nietzsche lo llamó: camello, león, niño. El autodesarrollo nunca es completo, siempre vuelve a nacer.",
+            "moderne": "Las tres metamorfosis de Nietzsche - camello, león, niño - describen el renacimiento del espíritu a través de la transformación. Lo demuestra el crecimiento postraumático (Tedeschi/Calhoun): Las personas tras una crisis manifiestan una sensación de renacimiento. Aprendizaje transformador de Mezirow: toda realización profunda es un renacimiento de la perspectiva.",
+            "pirsig": "Pirsig: El nivel más alto es la identificación completa con la calidad misma, no como experiencia, sino como ser. El ser humano es calidad que se reconoce a sí misma."
+          }
         },
         "V5": {
           "kontext": "V5",
