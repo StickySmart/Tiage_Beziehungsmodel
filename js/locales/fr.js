@@ -1461,7 +1461,17 @@ var TiageLocale_FR = {
         profileTitle: 'Votre profil {archetype} ({count} besoins), verrouillés : {locked}',
         profileTitleFiltered: 'Votre profil {archetype} (Filtré : {filtered} sur {total}), verrouillés : {locked}',
         davonGesperrt: 'verrouillés',
-        geaendert: 'modifiés'
+        geaendert: 'modifiés',
+        searchPlaceholder: 'Rechercher...',
+        clearSearch: 'Effacer la recherche',
+        loadingText: 'Chargement et calcul des données',
+        modalCurrentValue: 'Ta valeur actuelle',
+        modalBreakdown: 'Détail des valeurs',
+        modalTotal: 'Total',
+        modalStats: 'Contexte statistique',
+        modalBelongsTo: 'Appartient à :',
+        modalNuances: 'Nuances :',
+        modalContext: 'Contexte :'
     },
 
     beduerfnisKatalog: {

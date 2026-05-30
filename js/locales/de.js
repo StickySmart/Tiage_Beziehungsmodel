@@ -1704,7 +1704,17 @@ var TiageLocale_DE = {
         profileTitle: 'Dein {archetype}-Profil ({count} Bedürfnisse), davon gesperrt: {locked}',
         profileTitleFiltered: 'Dein {archetype}-Profil (Gefiltert: {filtered} von {total}), davon gesperrt: {locked}',
         davonGesperrt: 'davon gesperrt',
-        geaendert: 'geändert'
+        geaendert: 'geändert',
+        searchPlaceholder: 'Suchen...',
+        clearSearch: 'Suche leeren',
+        loadingText: 'Daten werden geladen und berechnet',
+        modalCurrentValue: 'Dein aktueller Wert',
+        modalBreakdown: 'Werte-Breakdown',
+        modalTotal: 'Gesamt',
+        modalStats: 'Statistischer Hintergrund',
+        modalBelongsTo: 'Gehört zu:',
+        modalNuances: 'Nuancen:',
+        modalContext: 'Kontext:'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

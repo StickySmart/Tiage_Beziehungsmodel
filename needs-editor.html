@@ -502,7 +502,7 @@
                     <input type="text"
                            id="profileReviewSearchInput"
                            class="profile-review-search-input"
-                           placeholder="Such..."
+                           placeholder="Suchen..."
                            oninput="handleIntelligentSearch(this.value)"
                            onkeydown="handleSearchKeydown(event)"
                            onfocus="showSearchSuggestions()"
@@ -524,7 +524,7 @@
             <div class="needs-editor-list-container" id="needsEditorListContainer">
                 <div class="needs-loading-container" id="needsLoadingIndicator">
                     <div class="needs-loading-spinner"></div>
-                    <div class="needs-loading-text">Daten werden geladen und berechnet</div>
+                    <div class="needs-loading-text" data-i18n="needsEditor.loadingText">Daten werden geladen und berechnet</div>
                     <div class="needs-loading-subtext" data-i18n="needsEditor.analyzing">16 Bedürfnisse werden analysiert...</div>
                 </div>
             </div>
@@ -565,6 +565,10 @@
     <script src="js/components/WorkflowGuide.js"></script>
 
     <script>
+        function _t(key, fallback) {
+            return (typeof TiageI18n !== 'undefined') ? TiageI18n.t(key, fallback) : fallback;
+        }
+
         // ═══════════════════════════════════════════════════════════════════════════
         // NEED DEFINITION MODAL - DIREKT AUS BEDUERFNIS-KATALOG
         // ═══════════════════════════════════════════════════════════════════════════
@@ -602,13 +606,15 @@
             }
 
             // Titel setzen
-            title.textContent = need.label;
+            title.textContent = _t('beduerfnisKatalog.needs.' + (need.stringKey || ''), need.label);
 
             // Stufen-Farben für 16-Bedürfnis-Modell
             const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
             const STUFEN_LABELS = {
-                1: 'Passive Basisbedürfnisse', 2: 'Handlungs-Bedürfnisse',
-                3: 'Soziale Bedürfnisse',      4: 'Identitäts-Bedürfnisse'
+                1: _t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),
+                2: _t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),
+                3: _t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'),
+                4: _t('beduerfnisKatalog.stufen.S4.label', 'Sinn')
             };
             // Legacy-Felder (leer im neuen 16er-Katalog)
             const kategorie = null;
@@ -645,10 +651,10 @@
 
             if (need.stufe) {
                 const stufeColor = STUFEN_FARBEN[need.stufe] || '#888';
-                const stufeLabel = STUFEN_LABELS[need.stufe] || `Stufe ${need.stufe}`;
+                const stufeLabel = STUFEN_LABELS[need.stufe] || (_t('beduerfnisKatalog.popupStufe', 'Stufe') + ' ' + need.stufe);
                 html += `
                     <div class="need-modal-meta-item">
-                        <span class="need-modal-meta-label">Stufe</span>
+                        <span class="need-modal-meta-label">${_t('beduerfnisKatalog.popupStufe', 'Stufe')}</span>
                         <span class="need-modal-meta-value" style="color: ${stufeColor}">
                             <span class="need-modal-dot" style="background: ${stufeColor}"></span>
                             ${need.stufe} — ${stufeLabel}
@@ -660,17 +666,18 @@
             if (need.faehigkeit) {
                 html += `
                     <div class="need-modal-meta-item">
-                        <span class="need-modal-meta-label">Fähigkeit</span>
-                        <span class="need-modal-meta-value">${need.faehigkeit}</span>
+                        <span class="need-modal-meta-label">${_t('beduerfnisKatalog.popupFaehigkeit', 'Fähigkeit')}</span>
+                        <span class="need-modal-meta-value">${_t('beduerfnisKatalog.needDetails.' + (need.stringKey || '') + '.fae', need.faehigkeit)}</span>
                     </div>
                 `;
             }
 
             if (need.synonyme && need.synonyme.length > 0) {
+                const synFallback = need.synonyme.join(' · ');
                 html += `
                     <div class="need-modal-meta-item" style="grid-column: 1/-1">
-                        <span class="need-modal-meta-label">Synonyme</span>
-                        <span class="need-modal-meta-value">${need.synonyme.join(' · ')}</span>
+                        <span class="need-modal-meta-label">${_t('beduerfnisKatalog.popupSynonym', 'Synonyme')}</span>
+                        <span class="need-modal-meta-value">${_t('beduerfnisKatalog.needDetails.' + (need.stringKey || '') + '.syn', synFallback)}</span>
                     </div>
                 `;
             }
@@ -681,7 +688,7 @@
                 html += `
                     <div class="need-modal-question">
                         <span class="need-modal-question-icon">💡</span>
-                        <span class="need-modal-question-text">${need.strategie}</span>
+                        <span class="need-modal-question-text">${_t('beduerfnisKatalog.needDetails.' + (need.stringKey || '') + '.str', need.strategie)}</span>
                     </div>
                 `;
             }
@@ -700,7 +707,7 @@
             if (need.kontext) {
                 html += `
                     <div class="need-modal-context">
-                        <span class="need-modal-context-label">Kontext:</span>
+                        <span class="need-modal-context-label">${_t('needsEditor.modalContext', 'Kontext:')}</span>
                         <span class="need-modal-context-text">${need.kontext}</span>
                     </div>
                 `;
@@ -712,7 +719,7 @@
                 if (hauptNeed) {
                     html += `
                         <div class="need-modal-parent">
-                            <span class="need-modal-parent-label">Gehört zu:</span>
+                            <span class="need-modal-parent-label">${_t('needsEditor.modalBelongsTo', 'Gehört zu:')}</span>
                             <span class="need-modal-parent-link" onclick="openNeedDefinitionModal('${need.hauptbeduerfnis}')">${hauptNeed.label} (${need.hauptbeduerfnis})</span>
                         </div>
                     `;
@@ -723,7 +730,7 @@
             if (need.nuancen && need.nuancen.length > 0) {
                 html += `
                     <div class="need-modal-nuancen">
-                        <span class="need-modal-nuancen-label">Nuancen:</span>
+                        <span class="need-modal-nuancen-label">${_t('needsEditor.modalNuances', 'Nuancen:')}</span>
                         <div class="need-modal-nuancen-list">
                             ${need.nuancen.map(nId => {
                                 const n = katalog.beduerfnisse[nId];
@@ -765,7 +772,7 @@
                     <div class="need-modal-statistics">
                         <div class="need-modal-statistics-header">
                             <span class="need-modal-statistics-icon">📊</span>
-                            <span class="need-modal-statistics-label">Statistischer Hintergrund</span>
+                            <span class="need-modal-statistics-label">${_t('needsEditor.modalStats', 'Statistischer Hintergrund')}</span>
                         </div>
                         <div class="need-modal-statistics-content">
                             <div class="need-modal-statistics-text">
@@ -829,11 +836,11 @@
                 breakdownHtml = `
                     <div class="need-modal-breakdown" style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;">
                         <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-weight:600;color:var(--text-primary,#e5e7eb);">
-                            <span>🧮</span><span>Werte-Breakdown</span>
+                            <span>🧮</span><span>${_t('needsEditor.modalBreakdown', 'Werte-Breakdown')}</span>
                         </div>
                         <div>${rowsHtml}</div>
                         <div style="display:flex;justify-content:space-between;padding:8px 0 2px;margin-top:4px;border-top:1px solid rgba(255,255,255,0.15);font-weight:700;">
-                            <span>Gesamt</span><span style="font-variant-numeric:tabular-nums;">${displayValue}</span>
+                            <span>${_t('needsEditor.modalTotal', 'Gesamt')}</span><span style="font-variant-numeric:tabular-nums;">${displayValue}</span>
                         </div>
                     </div>
                 `;
@@ -844,7 +851,7 @@
             html += `
                 <div class="need-modal-value" data-need-id="${bId}" data-need-key="${needKey}">
                     <div class="need-modal-value-header">
-                        <span class="need-modal-value-label">Dein aktueller Wert</span>
+                        <span class="need-modal-value-label">${_t('needsEditor.modalCurrentValue', 'Dein aktueller Wert')}</span>
                         <span class="need-modal-value-number" id="needModalValueDisplay">${displayValue}</span>
                     </div>
                     <div class="need-modal-value-bar">
@@ -1879,7 +1886,12 @@
             '#K3':3,'#K6':3,'#K10':3,'#K15':3,'#K16':3,'#K17':3,
             '#K4':4,'#K8':4,'#K12':4,'#K13':4
         };
-        var STUFEN_LABELS_EDITOR = { 1:'Fundament', 2:'Entfaltung', 3:'Verbundenheit', 4:'Sinn' };
+        var STUFEN_LABELS_EDITOR = {
+            1: _t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),
+            2: _t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),
+            3: _t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'),
+            4: _t('beduerfnisKatalog.stufen.S4.label', 'Sinn')
+        };
         // RTI-Säulen-Mapping: Kategorie → primäre Säule (abgeleitet aus Taxonomie-Dimensionen)
         // D3→S1, D1→S2, D4→S3, D6→S4, D2+D5→S5
         var RTI_K_MAP_EDITOR = {
@@ -2403,6 +2415,21 @@
                 }, 100);
             }
         });
+
+        // i18n: Re-render dynamic content on language switch
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.subscribe) {
+            TiageI18n.subscribe(function() {
+                var searchInput = document.getElementById('profileReviewSearchInput');
+                if (searchInput) searchInput.placeholder = _t('needsEditor.searchPlaceholder', 'Suchen...');
+                var clearBtn = document.querySelector('.profile-review-search-clear');
+                if (clearBtn) clearBtn.title = _t('needsEditor.clearSearch', 'Suche leeren');
+                STUFEN_LABELS_EDITOR[1] = _t('beduerfnisKatalog.stufen.S1.label', 'Fundament');
+                STUFEN_LABELS_EDITOR[2] = _t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung');
+                STUFEN_LABELS_EDITOR[3] = _t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit');
+                STUFEN_LABELS_EDITOR[4] = _t('beduerfnisKatalog.stufen.S4.label', 'Sinn');
+                if (typeof renderNeedsList === 'function') renderNeedsList();
+            });
+        }
 
         document.addEventListener('dimensionKategorieFilterChange', function(event) {
             var kategorien = event.detail && event.detail.kategorien;

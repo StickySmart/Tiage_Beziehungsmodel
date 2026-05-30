@@ -287,6 +287,13 @@ const ResonanzProfileHeaderCard = (function() {
         });
     });
 
+    if (typeof TiageI18n !== 'undefined' && TiageI18n.subscribe) {
+        TiageI18n.subscribe(function() {
+            var card = document.querySelector('.resonanz-profile-header-card');
+            if (card) init();
+        });
+    }
+
     return {
         render,
         init,

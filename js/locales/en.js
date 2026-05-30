@@ -1702,7 +1702,17 @@ var TiageLocale_EN = {
         profileTitle: 'Your {archetype} profile ({count} needs), locked: {locked}',
         profileTitleFiltered: 'Your {archetype} profile (Filtered: {filtered} of {total}), locked: {locked}',
         davonGesperrt: 'locked',
-        geaendert: 'changed'
+        geaendert: 'changed',
+        searchPlaceholder: 'Search...',
+        clearSearch: 'Clear search',
+        loadingText: 'Loading and computing data',
+        modalCurrentValue: 'Your current value',
+        modalBreakdown: 'Value Breakdown',
+        modalTotal: 'Total',
+        modalStats: 'Statistical Background',
+        modalBelongsTo: 'Belongs to:',
+        modalNuances: 'Nuances:',
+        modalContext: 'Context:'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

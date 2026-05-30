@@ -1451,7 +1451,17 @@ var TiageLocale_RU = {
         profileTitle: 'Ваш профиль {archetype} ({count} потребностей), заблокировано: {locked}',
         profileTitleFiltered: 'Ваш профиль {archetype} (Отфильтровано: {filtered} из {total}), заблокировано: {locked}',
         davonGesperrt: 'заблокировано',
-        geaendert: 'изменено'
+        geaendert: 'изменено',
+        searchPlaceholder: 'Поиск...',
+        clearSearch: 'Очистить поиск',
+        loadingText: 'Загрузка и обработка данных',
+        modalCurrentValue: 'Твоё текущее значение',
+        modalBreakdown: 'Анализ значений',
+        modalTotal: 'Итого',
+        modalStats: 'Статистический контекст',
+        modalBelongsTo: 'Принадлежит к:',
+        modalNuances: 'Нюансы:',
+        modalContext: 'Контекст:'
     },
 
     beduerfnisKatalog: {

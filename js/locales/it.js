@@ -1682,7 +1682,17 @@ var TiageLocale_IT = {
         profileTitle: 'Il tuo profilo {archetype} ({count} bisogni), bloccati: {locked}',
         profileTitleFiltered: 'Il tuo profilo {archetype} (Filtrati: {filtered} di {total}), bloccati: {locked}',
         davonGesperrt: 'bloccati',
-        geaendert: 'modificati'
+        geaendert: 'modificati',
+        searchPlaceholder: 'Cerca...',
+        clearSearch: 'Cancella ricerca',
+        loadingText: 'Caricamento e calcolo dei dati',
+        modalCurrentValue: 'Il tuo valore attuale',
+        modalBreakdown: 'Analisi valori',
+        modalTotal: 'Totale',
+        modalStats: 'Contesto statistico',
+        modalBelongsTo: 'Appartiene a:',
+        modalNuances: 'Sfumature:',
+        modalContext: 'Contesto:'
     },
 
     beduerfnisKatalog: {
