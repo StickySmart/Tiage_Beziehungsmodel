@@ -1556,7 +1556,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FLOATING ACTION BAR (Desktop only, right side)
+   FLOATING ACTION BAR (Desktop only, top-center)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .fab-btn {
@@ -1574,7 +1574,7 @@
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     opacity: 0;
-    transform: translateX(40px);
+    transform: translateY(-40px);
     pointer-events: none;
     transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
                 transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -1583,17 +1583,17 @@
 
 .fab-btn.fab-active {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
     pointer-events: auto;
 }
 
 .fab-btn:hover {
     box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
-    transform: translateX(-3px);
+    transform: translateY(-2px);
 }
 
 .fab-btn.fab-active:hover {
-    transform: translateX(-3px) scale(1.06);
+    transform: translateY(-2px) scale(1.06);
 }
 
 .fab-icon {

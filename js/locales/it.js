@@ -1574,7 +1574,13 @@ var TiageLocale_IT = {
         testsAllCombinations: 'Testa tutte le 864 combinazioni di archetipi',
         selectManually: 'Seleziona partner manualmente →',
         pageTitlePartner: 'Il tuo Partner',
-        pageTitleBestMatch: 'Trova Partner'
+        pageTitleBestMatch: 'Trova Partner',
+        syntheseBtn: 'SINTESI'
+    },
+
+    fab: {
+        bestMatch: 'BEST MATCH',
+        synthese: 'SINTESI'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

@@ -1594,7 +1594,13 @@ var TiageLocale_EN = {
         testsAllCombinations: 'Tests all 864 archetype combinations',
         selectManually: 'Select partner manually →',
         pageTitlePartner: 'Your Partner',
-        pageTitleBestMatch: 'Find Partner'
+        pageTitleBestMatch: 'Find Partner',
+        syntheseBtn: 'SYNTHESIS'
+    },
+
+    fab: {
+        bestMatch: 'BEST MATCH',
+        synthese: 'SYNTHESIS'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

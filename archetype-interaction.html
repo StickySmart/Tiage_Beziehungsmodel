@@ -1175,22 +1175,22 @@
                 <script>
                 (function() {
                     var NEEDS = [
-                        {id:'#B1',n:'1',label:'Wohlbefinden',s:1,c:'#10B981',icon:'🌿',fae:'Selbstversorgung',syn:'Unversehrtheit, Gesundheit, Fitness',str:'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.'},
-                        {id:'#B2',n:'2',label:'Sicherheit',s:1,c:'#10B981',icon:'🛡️',fae:'Selbstschutz',syn:'Stabilität, Schutz, Halt, Loyalität, Treue',str:'Ein Haus, Kleidung, Verträge, Absprachen…'},
-                        {id:'#B3',n:'3',label:'Leichtigkeit',s:1,c:'#10B981',icon:'🌊',fae:'Energieeinsparung',syn:'Energieeinsparung, Einfachheit, Harmonie',str:'Ordnung, Gewohnheiten, Urlaub, Medienkonsum…'},
-                        {id:'#B4',n:'4',label:'Orientierung',s:1,c:'#10B981',icon:'🧭',fae:'Wahrnehmung',syn:'Klarheit, Struktur, Ordnung, Regeln, Führung',str:'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch…'},
-                        {id:'#B5',n:'5',label:'Wirksamkeit',s:2,c:'#3B82F6',icon:'⚡',fae:'Handlungsfähigkeit',syn:'Einfluss, Macht, Souveränität',str:'Jede aktive Einflussnahme nährt die Wirksamkeit.'},
-                        {id:'#B6',n:'6',label:'Freiheit',s:2,c:'#3B82F6',icon:'🦋',fae:'Entscheidungsfähigkeit',syn:'Autonomie, Selbstbestimmtheit, Un-Abhängigkeit',str:'Jede selbstbestimmte Entscheidung nährt die Freiheit.'},
-                        {id:'#B7',n:'7',label:'Intensität',s:2,c:'#3B82F6',icon:'🔥',fae:'Empfinden',syn:'Lebendigkeit, Leidenschaft, Sinnlichkeit, Genuss',str:'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.'},
-                        {id:'#B8',n:'8',label:'Entwicklung',s:2,c:'#3B82F6',icon:'🌱',fae:'Lernen',syn:'Wachstum, Entfaltung, Lernen',str:'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.'},
-                        {id:'#B9',n:'9',label:'Gemeinschaft',s:3,c:'#8B5CF6',icon:'👥',fae:'Soziale Interaktion',syn:'Gesellschaft, Zugehörigkeit, Familie, Clan, Gruppe',str:'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen…'},
-                        {id:'#B10',n:'10',label:'Anerkennung',s:3,c:'#8B5CF6',icon:'⭐',fae:'Selbstwertempfinden',syn:'Wertschätzung, Respekt, Bedeutung, Nützlichkeit',str:'Ein Lob, ein Kompliment, eine Aufmerksamkeit, ein Lächeln…'},
-                        {id:'#B11',n:'11',label:'Gerechtigkeit',s:3,c:'#8B5CF6',icon:'⚖️',fae:'Wertebewusstsein',syn:'Fairness, Respekt, Angemessenheit, Gleichwertigkeit',str:'Eine Beschwerde, eine Anklage, eine Anzeige, Rache…'},
-                        {id:'#B12',n:'12',label:'Verbundenheit',s:3,c:'#8B5CF6',icon:'💗',fae:'Empathie',syn:'Intimität, Geborgenheit, Nähe, Vertrauen, Liebe',str:'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex…'},
-                        {id:'#B13',n:'13',label:'Selbsterkenntnis',s:4,c:'#F59E0B',icon:'🔮',fae:'Selbstreflexion',syn:'Bewusstheit, Integration, Weisheit',str:'Meditation, Coaching und Therapie, ehrliche Freundschaft…'},
-                        {id:'#B14',n:'14',label:'Sinn',s:4,c:'#F59E0B',icon:'✨',fae:'Intentionalität',syn:'Berufung, Vision, Mission',str:'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.'},
-                        {id:'#B15',n:'15',label:'Integrität',s:4,c:'#F59E0B',icon:'💎',fae:'Selbstverantwortung',syn:'Wahrhaftigkeit, Konsistenz, Authentizität, Würde',str:'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.'},
-                        {id:'#B16',n:'16',label:'Selbstentfaltung',s:4,c:'#F59E0B',icon:'🌸',fae:'Selbstliebe',syn:'Selbstwerdung, Selbstverwirklichung, Flow',str:'Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.'}
+                        {id:'#B1',n:'1',key:'wohlbefinden',label:'Wohlbefinden',s:1,c:'#10B981',icon:'🌿',fae:'Selbstversorgung',syn:'Unversehrtheit, Gesundheit, Fitness',str:'Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.'},
+                        {id:'#B2',n:'2',key:'sicherheit',label:'Sicherheit',s:1,c:'#10B981',icon:'🛡️',fae:'Selbstschutz',syn:'Stabilität, Schutz, Halt, Loyalität, Treue',str:'Ein Haus, Kleidung, Verträge, Absprachen…'},
+                        {id:'#B3',n:'3',key:'leichtigkeit',label:'Leichtigkeit',s:1,c:'#10B981',icon:'🌊',fae:'Energieeinsparung',syn:'Energieeinsparung, Einfachheit, Harmonie',str:'Ordnung, Gewohnheiten, Urlaub, Medienkonsum…'},
+                        {id:'#B4',n:'4',key:'orientierung',label:'Orientierung',s:1,c:'#10B981',icon:'🧭',fae:'Wahrnehmung',syn:'Klarheit, Struktur, Ordnung, Regeln, Führung',str:'Eine Karte, eine Uhr, ein Organigramm, ein Gespräch…'},
+                        {id:'#B5',n:'5',key:'wirksamkeit',label:'Wirksamkeit',s:2,c:'#3B82F6',icon:'⚡',fae:'Handlungsfähigkeit',syn:'Einfluss, Macht, Souveränität',str:'Jede aktive Einflussnahme nährt die Wirksamkeit.'},
+                        {id:'#B6',n:'6',key:'freiheit',label:'Freiheit',s:2,c:'#3B82F6',icon:'🦋',fae:'Entscheidungsfähigkeit',syn:'Autonomie, Selbstbestimmtheit, Un-Abhängigkeit',str:'Jede selbstbestimmte Entscheidung nährt die Freiheit.'},
+                        {id:'#B7',n:'7',key:'intensitaet',label:'Intensität',s:2,c:'#3B82F6',icon:'🔥',fae:'Empfinden',syn:'Lebendigkeit, Leidenschaft, Sinnlichkeit, Genuss',str:'Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.'},
+                        {id:'#B8',n:'8',key:'entwicklung',label:'Entwicklung',s:2,c:'#3B82F6',icon:'🌱',fae:'Lernen',syn:'Wachstum, Entfaltung, Lernen',str:'Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.'},
+                        {id:'#B9',n:'9',key:'gemeinschaft',label:'Gemeinschaft',s:3,c:'#8B5CF6',icon:'👥',fae:'Soziale Interaktion',syn:'Gesellschaft, Zugehörigkeit, Familie, Clan, Gruppe',str:'Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen…'},
+                        {id:'#B10',n:'10',key:'anerkennung',label:'Anerkennung',s:3,c:'#8B5CF6',icon:'⭐',fae:'Selbstwertempfinden',syn:'Wertschätzung, Respekt, Bedeutung, Nützlichkeit',str:'Ein Lob, ein Kompliment, eine Aufmerksamkeit, ein Lächeln…'},
+                        {id:'#B11',n:'11',key:'gerechtigkeit',label:'Gerechtigkeit',s:3,c:'#8B5CF6',icon:'⚖️',fae:'Wertebewusstsein',syn:'Fairness, Respekt, Angemessenheit, Gleichwertigkeit',str:'Eine Beschwerde, eine Anklage, eine Anzeige, Rache…'},
+                        {id:'#B12',n:'12',key:'verbundenheit',label:'Verbundenheit',s:3,c:'#8B5CF6',icon:'💗',fae:'Empathie',syn:'Intimität, Geborgenheit, Nähe, Vertrauen, Liebe',str:'Ein Gespräch, gemeinsame intensive Erfahrungen, Sex…'},
+                        {id:'#B13',n:'13',key:'selbsterkenntnis',label:'Selbsterkenntnis',s:4,c:'#F59E0B',icon:'🔮',fae:'Selbstreflexion',syn:'Bewusstheit, Integration, Weisheit',str:'Meditation, Coaching und Therapie, ehrliche Freundschaft…'},
+                        {id:'#B14',n:'14',key:'sinn',label:'Sinn',s:4,c:'#F59E0B',icon:'✨',fae:'Intentionalität',syn:'Berufung, Vision, Mission',str:'Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.'},
+                        {id:'#B15',n:'15',key:'integritaet',label:'Integrität',s:4,c:'#F59E0B',icon:'💎',fae:'Selbstverantwortung',syn:'Wahrhaftigkeit, Konsistenz, Authentizität, Würde',str:'Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.'},
+                        {id:'#B16',n:'16',key:'selbstentfaltung',label:'Selbstentfaltung',s:4,c:'#F59E0B',icon:'🌸',fae:'Selbstliebe',syn:'Selbstwerdung, Selbstverwirklichung, Flow',str:'Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.'}
                     ];
                     var STUFEN = [
                         {nr:1,label:'Fundament',c:'#10B981'},
@@ -1198,6 +1198,10 @@
                         {nr:3,label:'Verbundenheit',c:'#8B5CF6'},
                         {nr:4,label:'Sinn',c:'#F59E0B'}
                     ];
+
+                    function _t(key, fallback) {
+                        return (typeof TiageI18n !== 'undefined') ? TiageI18n.t(key, fallback) : fallback;
+                    }
 
                     function getValue(needId) {
                         if (typeof TiageState === 'undefined') return 50;
@@ -1237,7 +1241,7 @@
                         document.getElementById('cn16-p-icon').textContent = need.icon;
                         document.getElementById('cn16-p-id').textContent = need.id + ' · Stufe ' + need.s;
                         document.getElementById('cn16-p-id').style.color = need.c;
-                        document.getElementById('cn16-p-title').textContent = need.label;
+                        document.getElementById('cn16-p-title').textContent = _t('beduerfnisKatalog.needs.' + need.key, need.label);
                         document.getElementById('cn16-p-bar').style.background = 'linear-gradient(90deg,' + need.c + ' ' + v + '%, rgba(255,255,255,0.08) ' + v + '%)';
                         document.getElementById('cn16-p-fae').textContent = need.fae;
                         document.getElementById('cn16-p-syn').textContent = need.syn;
@@ -1267,7 +1271,7 @@
                             var isOpen = st.nr === openNr;
                             html += '<div onclick="window._cn16ToggleStufe('+st.nr+')" style="display:flex;align-items:center;gap:6px;margin:10px 0 2px;padding:3px 6px;background:'+st.c+'18;border-radius:5px;cursor:pointer;user-select:none;">';
                             html += '<span id="cn16-stc-'+st.nr+'" style="color:'+st.c+';font-size:9px;">'+(isOpen?'▼':'▶')+'</span>';
-                            html += '<span style="color:'+st.c+';font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">'+st.label+'</span>';
+                            html += '<span style="color:'+st.c+';font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">'+_t('beduerfnisKatalog.stufen.S'+st.nr+'.label', st.label)+'</span>';
                             html += '</div>';
                             html += '<div id="cn16-st-'+st.nr+'" style="display:'+(isOpen?'block':'none')+';">';
                             NEEDS.filter(function(n){return n.s===st.nr;}).forEach(function(need) {
@@ -1282,7 +1286,7 @@
                                 html += '<span style="font-size:16px;width:22px;text-align:center;">' + need.icon + '</span>';
                                 html += '<div style="flex:1;min-width:0;">';
                                 html += '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px;">';
-                                html += '<span style="color:' + (locked ? '#9CA3AF' : '#E5E7EB') + ';font-size:13px;font-weight:500;">' + need.label + '</span>';
+                                html += '<span style="color:' + (locked ? '#9CA3AF' : '#E5E7EB') + ';font-size:13px;font-weight:500;">' + _t('beduerfnisKatalog.needs.' + need.key, need.label) + '</span>';
                                 html += '<span id="cn16v-' + need.n + '" style="color:' + (locked ? '#6366F1' : valColor(v)) + ';font-size:14px;font-weight:700;min-width:30px;text-align:right;">' + v + '</span>';
                                 html += '</div>';
                                 html += '<div style="height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">';
@@ -1332,6 +1336,7 @@
                         render();
                         document.addEventListener('tiage:needs16Changed', update);
                         window.addEventListener('resonanzfaktoren-changed', update);
+                        if (typeof TiageI18n !== 'undefined') TiageI18n.subscribe(function() { render(); });
                         // Lock-Änderungen → update() statt render() (erhält Collapse-State)
                         document.addEventListener('flatNeedLockChange', update);
                         // Nach Zurück-Navigation von needs-editor: bfcache-Seite hat alten TiageState
@@ -1910,7 +1915,7 @@
                     </div>
                     <div class="lightbulb-button mobile-lightbulb-button" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
                         <span class="lightbulb-icon">💡</span>
-                        <span class="lightbulb-text">Ti-Age Synthese</span>
+                        <span class="lightbulb-text" data-i18n="mobile.syntheseBtn">SYNTHESE</span>
                     </div>
                     <div id="mobileScoreNote" class="score-note" style="display: none;"></div>
                     <div id="mobileKoTextDisplay" class="mobile-ko-text-display" style="display: none;"></div>
@@ -2890,7 +2895,6 @@
     <script defer src="js/config.js"></script>
     <!-- Global Toast System -->
     <script defer src="js/ui/toast.js"></script>
-    <script defer src="js/ui/translateHint.js"></script>
     <!-- Memory Manager -->
     <script defer src="js/memory-manager.js"></script>
     <script defer src="js/memory-manager-v2.js?v=20260529a"></script>
@@ -3166,14 +3170,14 @@
     <script type="module" src="/discord-activity.js"></script>
 
     <!-- Floating Action Bar (Desktop only, controlled by updateReadinessUI) -->
-    <div id="desktopFloatingBar" aria-label="Schnellzugriff" style="position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:300;pointer-events:none;">
+    <div id="desktopFloatingBar" aria-label="Schnellzugriff" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);display:flex;flex-direction:row;gap:12px;z-index:300;pointer-events:none;">
         <button id="floatBestMatch" class="fab-btn fab-match" data-action="open-slot-machine-modal" title="Besten Partner finden – testet alle Kombinationen">
             <span class="fab-icon">🎰</span>
-            <span class="fab-label">Best Match</span>
+            <span class="fab-label" data-i18n="fab.bestMatch">BEST MATCH</span>
         </button>
         <button id="floatSynthese" class="fab-btn fab-synthese" data-action="open-tiage-synthese" title="Ti-Age Synthese öffnen">
             <span class="fab-icon">💡</span>
-            <span class="fab-label">Synthese</span>
+            <span class="fab-label" data-i18n="fab.synthese">SYNTHESE</span>
         </button>
     </div>
 

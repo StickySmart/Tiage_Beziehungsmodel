@@ -1364,7 +1364,13 @@ var TiageLocale_RU = {
         testsAllCombinations: 'Тестирует все 864 комбинации архетипов',
         selectManually: 'Выбрать партнёра вручную →',
         pageTitlePartner: 'Ваш партнёр',
-        pageTitleBestMatch: 'Найти партнёра'
+        pageTitleBestMatch: 'Найти партнёра',
+        syntheseBtn: 'СИНТЕЗ'
+    },
+
+    fab: {
+        bestMatch: 'ПОДБОР',
+        synthese: 'СИНТЕЗ'
     },
 
     rti: {

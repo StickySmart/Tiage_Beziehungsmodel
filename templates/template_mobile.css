@@ -205,6 +205,7 @@ body {
     /* Mobile-Layout auf Mobil strikt zeigen (überschreibt inline style="display:none") */
     #mobileMultipage.mobile-multipage {
         display: block !important;
+        padding-top: 145px; /* offset for fixed header */
     }
 
     /* Navigations-Buttons zwischen Seiten ausblenden - User scrollt durch */

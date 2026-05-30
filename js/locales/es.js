@@ -1364,7 +1364,13 @@ var TiageLocale_ES = {
         testsAllCombinations: 'Prueba las 864 combinaciones de arquetipos',
         selectManually: 'Seleccionar pareja manualmente →',
         pageTitlePartner: 'Tu Pareja',
-        pageTitleBestMatch: 'Encontrar Pareja'
+        pageTitleBestMatch: 'Encontrar Pareja',
+        syntheseBtn: 'SÍNTESIS'
+    },
+
+    fab: {
+        bestMatch: 'MEJOR',
+        synthese: 'SÍNTESIS'
     },
 
     rti: {
