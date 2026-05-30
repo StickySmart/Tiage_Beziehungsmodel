@@ -207,6 +207,8 @@ const TiageI18n = (function() {
                         });
                     }
                     console.log(`[TiageI18n] Initialized with language: ${currentLanguage} (lazy-loaded)`);
+                    // Trigger re-render in all subscribers now that locale is available
+                    notifySubscribers(currentLanguage, currentLanguage);
                 }
             }).catch(e => {
                 console.warn('[TiageI18n] Failed to load initial locale:', e);
