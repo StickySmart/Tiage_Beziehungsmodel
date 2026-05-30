@@ -291,9 +291,10 @@ const OshoZenTextGenerator = (function() {
                     const zenData = beduerfnisse[needId];
                     const v1 = (zenData.varianten && zenData.varianten.V1) ? zenData.varianten.V1 : {};
                     const karteName = v1.karte || '';
+                    const _needCat = window.BeduerfnisIds && window.BeduerfnisIds.beduerfnisse && window.BeduerfnisIds.beduerfnisse[needId];
                     matches.push({
                         id: needId,
-                        label: zenData.label || needId,
+                        label: _needCat ? t('beduerfnisKatalog.needs.' + _needCat.key, zenData.label || needId) : (zenData.label || needId),
                         frage: v1.reflexion || '',
                         score1: Math.round(score1),
                         score2: Math.round(score2),

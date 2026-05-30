@@ -1,0 +1,150 @@
+{
+  "version": "4.0.0",
+  "beschreibung": "Strategie translations for beduerfnis-katalog.json",
+  "strategien": {
+    "#B1": {
+      "key": "wohlbefinden",
+      "de": "Jedes andere erfüllte Bedürfnis nährt das Wohlbefinden.",
+      "en": "Every other need that is met contributes to our well-being.",
+      "fr": "Tout autre besoin satisfait contribue au bien-être.",
+      "it": "Ogni altro bisogno soddisfatto contribuisce al benessere.",
+      "ru": "Каждая удовлетворенная потребность способствует хорошему самочувствию.",
+      "es": "Cualquier otra necesidad que se satisfaga contribuye al bienestar."
+    },
+    "#B2": {
+      "key": "sicherheit",
+      "de": "Ein Haus, Kleidung, Verträge, Absprachen…",
+      "en": "A house, clothes, contracts, agreements…",
+      "fr": "Une maison, des vêtements, des contrats, des accords…",
+      "it": "Una casa, vestiti, contratti, accordi…",
+      "ru": "Дом, одежда, договоры, договоренности…",
+      "es": "Una casa, ropa, contratos, acuerdos…"
+    },
+    "#B3": {
+      "key": "leichtigkeit",
+      "de": "Ordnung, Gewohnheiten, Urlaub, Medienkonsum…",
+      "en": "Order, habits, vacations, media consumption…",
+      "fr": "L'ordre, les habitudes, les vacances, la consommation des médias…",
+      "it": "Ordine, abitudini, vacanze, consumo dei media…",
+      "ru": "Порядок, привычки, отпуск, потребление медиа…",
+      "es": "El orden, los hábitos, las vacaciones, el consumo de medios..."
+    },
+    "#B4": {
+      "key": "orientierung",
+      "de": "Eine Karte, eine Uhr, ein Organigramm, ein Gespräch…",
+      "en": "A map, a watch, an organizational chart, a conversation…",
+      "fr": "Une carte, une montre, un organigramme, une conversation…",
+      "it": "Una mappa, un orologio, un organigramma, una conversazione…",
+      "ru": "Карта, часы, организационная схема, разговор…",
+      "es": "Un mapa, un reloj, un organigrama, una conversación…"
+    },
+    "#B5": {
+      "key": "wirksamkeit",
+      "de": "Jede aktive Einflussnahme nährt die Wirksamkeit.",
+      "en": "Every active effort contributes to its effectiveness.",
+      "fr": "Toute intervention active renforce l'efficacité.",
+      "it": "Ogni intervento attivo ne rafforza l'efficacia.",
+      "ru": "Любое активное участие способствует повышению эффективности.",
+      "es": "Cualquier intervención activa contribuye a la eficacia."
+    },
+    "#B6": {
+      "key": "freiheit",
+      "de": "Jede selbstbestimmte Entscheidung nährt die Freiheit.",
+      "en": "Every self-determined decision nurtures freedom.",
+      "fr": "Chaque décision prise en toute autonomie renforce la liberté.",
+      "it": "Ogni decisione presa in modo autonomo alimenta la libertà.",
+      "ru": "Каждое самостоятельное решение укрепляет свободу.",
+      "es": "Cada decisión tomada con autonomía alimenta la libertad."
+    },
+    "#B7": {
+      "key": "intensitaet",
+      "de": "Jede intensive Sinnes- oder Gefühls-Erfahrung nährt die Intensität.",
+      "en": "Every intense sensory or emotional experience fuels that intensity.",
+      "fr": "Toute expérience sensorielle ou émotionnelle intense alimente cette intensité.",
+      "it": "Ogni esperienza sensoriale o emotiva intensa alimenta l'intensità.",
+      "ru": "Любое яркое сенсорное или эмоциональное переживание усиливает эту интенсивность.",
+      "es": "Cualquier experiencia sensorial o emocional intensa alimenta esa intensidad."
+    },
+    "#B8": {
+      "key": "entwicklung",
+      "de": "Ein Seminar, eine Reise, ein Abenteuer, eine bewusste Erfahrung.",
+      "en": "A seminar, a journey, an adventure, a mindful experience.",
+      "fr": "Un séminaire, un voyage, une aventure, une expérience enrichissante.",
+      "it": "Un seminario, un viaggio, un'avventura, un'esperienza consapevole.",
+      "ru": "Семинар, путешествие, приключение, осознанный опыт.",
+      "es": "Un seminario, un viaje, una aventura, una experiencia consciente."
+    },
+    "#B9": {
+      "key": "gemeinschaft",
+      "de": "Gemeinsame Rituale, Zusammenkünfte, Regeln, Namen…",
+      "en": "Shared rituals, gatherings, rules, names…",
+      "fr": "Rituels communs, rassemblements, règles, noms…",
+      "it": "Rituali condivisi, incontri, regole, nomi…",
+      "ru": "Общие ритуалы, встречи, правила, имена…",
+      "es": "Rituales comunes, reuniones, normas, nombres…"
+    },
+    "#B10": {
+      "key": "anerkennung",
+      "de": "Ein Lob, ein Kompliment, eine Aufmerksamkeit, ein Lächeln…",
+      "en": "A word of praise, a compliment, a thoughtful gesture, a smile…",
+      "fr": "Un compliment, une attention, un sourire…",
+      "it": "Una parola di elogio, un complimento, un gesto di attenzione, un sorriso…",
+      "ru": "Слово похвалы, комплимент, знак внимания, улыбка…",
+      "es": "Un elogio, un cumplido, un detalle, una sonrisa…"
+    },
+    "#B11": {
+      "key": "gerechtigkeit",
+      "de": "Eine Beschwerde, eine Anklage, eine Anzeige, Rache…",
+      "en": "A complaint, an accusation, a report, revenge…",
+      "fr": "Une plainte, une accusation, une dénonciation, une vengeance…",
+      "it": "Una lamentela, un'accusa, una denuncia, una vendetta…",
+      "ru": "Жалоба, обвинение, заявление в полицию, месть…",
+      "es": "Una queja, una acusación, una denuncia, una venganza…"
+    },
+    "#B12": {
+      "key": "verbundenheit",
+      "de": "Ein Gespräch, gemeinsame intensive Erfahrungen, Sex…",
+      "en": "A conversation, shared intense experiences, sex…",
+      "fr": "Une conversation, des moments forts partagés, du sexe…",
+      "it": "Una conversazione, esperienze intense condivise, sesso…",
+      "ru": "Разговор, совместные яркие впечатления, секс…",
+      "es": "Una conversación, experiencias intensas compartidas, sexo…"
+    },
+    "#B13": {
+      "key": "selbsterkenntnis",
+      "de": "Meditation, Coaching und Therapie, ehrliche Freundschaft…",
+      "en": "Meditation, coaching, and therapy, true friendship…",
+      "fr": "Méditation, coaching et thérapie, une amitié sincère…",
+      "it": "Meditazione, coaching e terapia, amicizia sincera…",
+      "ru": "Медитация, коучинг и терапия, искренняя дружба…",
+      "es": "Meditación, coaching y terapia, amistad sincera…"
+    },
+    "#B14": {
+      "key": "sinn",
+      "de": "Jedes Tun, das die Welt als Ganzes bereichert, nährt das Sinnempfinden.",
+      "en": "Any action that enriches the world as a whole nourishes our sense of purpose.",
+      "fr": "Toute action qui enrichit le monde dans son ensemble nourrit le sens de la vie.",
+      "it": "Ogni azione che arricchisce il mondo nel suo insieme alimenta il senso della vita.",
+      "ru": "Любое действие, обогащающее мир в целом, питает чувство смысла.",
+      "es": "Cualquier acción que enriquezca al mundo en su conjunto alimenta el sentido de la vida."
+    },
+    "#B15": {
+      "key": "integritaet",
+      "de": "Jedes Handeln im Einklang mit den eigenen Werten nährt die Integrität.",
+      "en": "Every action taken in accordance with one's own values fosters integrity.",
+      "fr": "Chaque action en accord avec ses propres valeurs renforce l'intégrité.",
+      "it": "Ogni azione compiuta in linea con i propri valori rafforza l'integrità.",
+      "ru": "Любое поведение, соответствующее собственным ценностям, укрепляет честность.",
+      "es": "Cada acción que se realiza de acuerdo con los propios valores refuerza la integridad."
+    },
+    "#B16": {
+      "key": "selbstentfaltung",
+      "de": "Vervollkommnung eigener Anlagen und Talente zum Wohle der Welt.",
+      "en": "Developing one's own abilities and talents for the good of the world.",
+      "fr": "Le perfectionnement de ses propres capacités et talents pour le bien du monde.",
+      "it": "Perfezionare le proprie capacità e il proprio talento per il bene del mondo.",
+      "ru": "Совершенствование собственных способностей и талантов на благо всего мира.",
+      "es": "Perfeccionar nuestras propias capacidades y talentos en beneficio del mundo."
+    }
+  }
+}

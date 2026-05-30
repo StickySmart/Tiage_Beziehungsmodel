@@ -1,7 +1,7 @@
 {
   "version": "3.6.0",
-  "sprache": "it",
-  "beschreibung": "Ti-age Bedürfnis-Weisheitstexte – IT",
+  "sprache": "ru",
+  "beschreibung": "Ti-age Bedürfnis-Weisheitstexte – RU",
   "beduerfnisse": {
     "#B1": {
       "label": "Wohlbefinden",
@@ -13,8 +13,8 @@
           "karte_de": "Existenz",
           "karte_key": "major_arcana.1_existence",
           "karte_nummer": 1,
-          "tiage": "Il benessere non è uno stato che si raggiunge: è la qualità della tua presenza. L'universo respira attraverso di te non appena smetti di opporre resistenza.",
-          "reflexion": "Posso semplicemente ESSERE in questa relazione, senza dovermi dimostrare continuamente?"
+          "tiage": "Благополучие — это не состояние, которого нужно достичь, а качество твоего присутствия. Вселенная начинает дышать через тебя, как только ты перестаешь сопротивляться этому.",
+          "reflexion": "Могу ли я просто БЫТЬ в этих отношениях, не стараясь постоянно что-то доказывать?"
         },
         "V2": {
           "kontext": "V2",
@@ -23,8 +23,8 @@
           "karte_de": "Heilung",
           "karte_key": "minor_arcana.water.king_healing",
           "karte_nummer": 14,
-          "tiage": "Nel benessere condiviso guarisce ciò che da solo non sei riuscito a guarire. L'incontro con l'altro non è una minaccia alla tua serenità: ne è il completamento.",
-          "reflexion": "Mi sento abbastanza sicuro da mostrare la mia vulnerabilità?"
+          "tiage": "В общем благополучии исцеляется то, что ты не смог исцелить в одиночку. Встреча с другим человеком — это не угроза твоему покою, а его дополнение.",
+          "reflexion": "Достаточно ли я чувствую себя в безопасности, чтобы показать свою уязвимость?"
         },
         "V3": {
           "kontext": "V3",
@@ -33,8 +33,8 @@
           "karte_de": "Freundlichkeit",
           "karte_key": "minor_arcana.water.2_friendliness",
           "karte_nummer": 2,
-          "tiage": "Il benessere nasce dall'amicizia con te stesso. Se ti tratti con lo stesso calore che riservi a un caro amico, crei una base solida in grado di resistere a qualsiasi tempesta. Essere gentili con se stessi non è una debolezza: è il fondamento.",
-          "reflexion": "Tratto me stesso con la stessa gentilezza che riservo naturalmente agli altri?"
+          "tiage": "Благополучие коренится в дружбе с самим собой. Если ты относишься к себе с той же теплотой, с которой относишься к близкому другу, это создает основу, которая выдержит любые испытания. Доброта к себе — это не слабость, а прочный фундамент.",
+          "reflexion": "Отношусь ли я к себе с той же добротой, которую я, как правило, проявляю по отношению к другим?"
         },
         "V4": {
           "kontext": "V4",
@@ -43,8 +43,8 @@
           "karte_de": "Annahme",
           "karte_key": "zusaetzliche_karten.acceptance",
           "karte_nummer": null,
-          "tiage": "Il benessere nella sua forma più profonda non è uno stato che si raggiunge: è ciò che rimane quando smetti di lottare contro te stesso. Accettazione non significa rassegnazione. È il primo respiro di pace: io sono come sono – e questo è il punto di partenza, non la meta.",
-          "reflexion": "Posso accettarmi non nonostante le mie imperfezioni, ma proprio insieme alle mie imperfezioni?"
+          "tiage": "Благополучие в его самой глубокой сущности — это не состояние, которого можно достичь; это то, что остается, когда ты перестаешь бороться с самим собой. Принятие не означает смирение. Это первый вздох мира: я такой, какой я есть — и это отправная точка, а не цель.",
+          "reflexion": "Могу ли я принять себя не «несмотря на» свои недостатки, а «включая» их?"
         },
         "V5": {
           "kontext": "V5",
@@ -146,8 +146,8 @@
           "karte_de": "Vertrauen",
           "karte_key": "minor_arcana.water.page_trust",
           "karte_nummer": 11,
-          "tiage": "La sicurezza nasce dall'interno. Non dai muri, né dalle garanzie, ma dalla fiducia che la vita ti sostiene.",
-          "reflexion": "Costruiamo la fiducia attraverso l'affidabilità o attraverso il controllo?"
+          "tiage": "Безопасность начинается внутри. Не в стенах, не в гарантиях — а в уверенности, что жизнь поддержит тебя.",
+          "reflexion": "Доверие укрепляется благодаря надежности или контролю?"
         },
         "V2": {
           "kontext": "V2",
@@ -156,8 +156,8 @@
           "karte_de": "Schutz",
           "karte_key": "zusaetzliche_karten.protection",
           "karte_nummer": null,
-          "tiage": "La sicurezza non nasce dall’aver respinto ogni minaccia, ma nasce in quello spazio di delicatezza in cui la vulnerabilità è benvenuta. La protezione non è un muro di forza, ma un involucro delicato fatto di comprensione: qui puoi permetterti di essere vulnerabile.",
-          "reflexion": "Creiamo insieme uno spazio in cui entrambi possano rimanere se stessi, senza dover dimostrare nulla?"
+          "tiage": "Безопасность не возникает благодаря отражению всех угроз — она рождается в том мягком пространстве, где уязвимость приветствуется. Защита — это не стена, воздвигнутая силой, а нежная оболочка, сотканная из понимания: здесь ты можешь позволить себе быть уязвимым.",
+          "reflexion": "Давайте вместе создадим пространство, где оба смогут оставаться мягкими — без необходимости доказывать что-либо?"
         },
         "V3": {
           "kontext": "V3",
@@ -166,8 +166,8 @@
           "karte_de": "Kompromiss",
           "karte_key": "minor_arcana.rainbows.6_compromise",
           "karte_nummer": 6,
-          "tiage": "Non tutti i compromessi garantiscono una vera sicurezza. Alcuni accordi costano troppo alla tua anima e lasciano una fastidiosa sensazione di falsità. La vera sicurezza nasce quando il compromesso permette a entrambi di crescere, non quando uno dei due si piega alle esigenze dell’altro.",
-          "reflexion": "In questo ambito, sacrifichiamo la nostra verità in nome di una falsa pace, oppure troviamo soluzioni concrete e condivise?"
+          "tiage": "Не каждый компромисс приносит настоящую уверенность. Некоторые соглашения слишком дорого обходятся твоей душе — и оставляют мучительное ощущение неискренности. Настоящая уверенность возникает там, где компромисс позволяет обоим расти, а не там, где кто-то из них вынужден идти на уступки.",
+          "reflexion": "Приносим ли мы в этой сфере в жертву свою правду ради ложного мира — или же находим подлинные общие решения?"
         },
         "V4": {
           "kontext": "V4",
@@ -176,8 +176,8 @@
           "karte_de": "Unterstützung",
           "karte_key": "zusaetzliche_karten.support",
           "karte_nummer": null,
-          "tiage": "La sicurezza esistenziale non deriva dall’assenza di minacce, ma nasce dal senso di stabilità che provi. Non sono i muri a darti sicurezza, bensì il terreno invisibile che ti sostiene: il tuo carattere, i tuoi valori, il tuo legame con qualcosa di più grande.",
-          "reflexion": "Che tipo di sostegno interiore ho quando viene a mancare ogni sicurezza esteriore?"
+          "tiage": "Экзистенциальная безопасность не возникает из-за отсутствия угрозы — она рождается из ощущения опоры. Безопасность дают не стены, а невидимая почва, на которой ты стоишь: твой характер, твои ценности, твоя связь с чем-то большим.",
+          "reflexion": "Какую внутреннюю опору я имею, когда исчезает вся внешняя защищенность?"
         },
         "V5": {
           "kontext": "V5",
@@ -231,8 +231,8 @@
           "karte_de": "Mit dem Fluss gehen",
           "karte_key": "minor_arcana.water.ace_going_with_the_flow",
           "karte_nummer": 1,
-          "tiage": "La leggerezza non è l'assenza di peso: è la fiducia che tutto andrà per il meglio. Lasciati andare. Lasciati trasportare.",
-          "reflexion": "In quali situazioni mi aggrappo al controllo, quando invece potrei lasciarmi andare?"
+          "tiage": "Легкость — это не отсутствие тяжести, а уверенность в том, что всё сложится. Отпусти. Плыви по течению.",
+          "reflexion": "В каких ситуациях я цепляюсь за контроль, хотя мог бы отпустить?"
         },
         "V2": {
           "kontext": "V2",
@@ -241,8 +241,8 @@
           "karte_de": "Verlangsamen",
           "karte_key": "minor_arcana.rainbows.knight_slowing_down",
           "karte_nummer": 12,
-          "tiage": "La leggerezza non nasce dall'accelerazione. Si rivela nel rallentare, quando ascolti il respiro prima che arrivi quello successivo. Nel fermarsi consapevolmente si crea spazio per ciò che conta davvero.",
-          "reflexion": "Ci concediamo davvero di rallentare il ritmo, o corriamo insieme di momento in momento?"
+          "tiage": "Легкость не возникает благодаря ускорению. Она открывается в замедлении — когда ты прислушиваешься к одному вдоху, прежде чем наступит следующий. В осознанной паузе появляется пространство для того, что действительно важно.",
+          "reflexion": "Позволим ли мы себе действительно замедлить темп — или будем вместе мчаться от одного момента к другому?"
         },
         "V3": {
           "kontext": "V3",
@@ -251,8 +251,8 @@
           "karte_de": "Harmonie",
           "karte_key": "minor_arcana.water.10_harmony",
           "karte_nummer": 10,
-          "tiage": "Quando smetti di lottare, l'armonia si rivela come il tuo stato naturale. Ciò che rimane è la leggerezza.",
-          "reflexion": "Dopo un litigio, possiamo tornare insieme?"
+          "tiage": "Когда ты перестаешь бороться, гармония раскрывается как твое естественное состояние. Остается только легкость.",
+          "reflexion": "Сможем ли мы помириться после ссоры?"
         },
         "V4": {
           "kontext": "V4",
@@ -261,8 +261,8 @@
           "karte_de": "Loslassen",
           "karte_key": "minor_arcana.water.8_letting_go",
           "karte_nummer": 8,
-          "tiage": "La leggerezza più profonda non deriva dall’eliminazione dei compiti, ma dal lasciar andare il peso che sei tu stesso. Quando smetti di aggrapparti alla tua storia, all’immagine che hai di te stesso e al tuo bisogno di controllo, si crea uno spazio. Lasciar andare non è un compito: è un arrivo.",
-          "reflexion": "Cosa sarei se smettessi di aggrapparmi alla mia storia?"
+          "tiage": "Настоящая легкость не приходит от отказа от дел — она приходит от освобождения от того груза, которым являешься ты сам. Когда ты перестаёшь цепляться за свою историю, свой образ себя, своё стремление всё контролировать, появляется пространство. Отпустить — это не отказ, это приход к себе.",
+          "reflexion": "Кем бы я стал, если бы перестал цепляться за свою историю?"
         },
         "V5": {
           "kontext": "V5",
@@ -316,8 +316,8 @@
           "karte_de": "Bewusstheit",
           "karte_key": "major_arcana.7_awareness",
           "karte_nummer": 7,
-          "tiage": "L'orientamento non viene dall'esterno: nasce nel silenzio della tua consapevolezza. Sai già dove ti trovi. Devi solo fermarti un attimo.",
-          "reflexion": "Sono presente o mi limito a svolgere le mie funzioni?"
+          "tiage": "Ориентация не приходит извне — она рождается в тишине твоего сознания. Ты и так знаешь, где находишься. Тебе нужно лишь остановиться.",
+          "reflexion": "Я живу настоящим моментом или просто существую?"
         },
         "V2": {
           "kontext": "V2",
@@ -326,8 +326,8 @@
           "karte_de": "Innere Stimme",
           "karte_key": "major_arcana.2_inner_voice",
           "karte_nummer": 2,
-          "tiage": "Quando due persone parlano all’unisono seguendo la propria voce interiore, non hanno più bisogno di una mappa. È l’incontro stesso a fungere da guida.",
-          "reflexion": "Conosco la mia verità o mi limito a ripetere le convinzioni altrui?"
+          "tiage": "Когда два человека говорят в унисон, следуя своему внутреннему голосу, им больше не нужна карта. Сама встреча становится ориентиром.",
+          "reflexion": "Знаю ли я свою правду или просто повторяю чужие убеждения?"
         },
         "V3": {
           "kontext": "V3",
@@ -336,8 +336,8 @@
           "karte_de": "Empfänglichkeit",
           "karte_key": "minor_arcana.water.queen_receptivity",
           "karte_nummer": 13,
-          "tiage": "Il vero orientamento non nasce solo dalla pianificazione: nasce quando sei pronto ad accogliere i segni della vita, gli impulsi del cuore, la saggezza del momento. La ricettività non è passività. È l'arte di lasciare che accada ciò che è giusto.",
-          "reflexion": "Sono davvero aperto, o sono troppo preso dai miei progetti per lasciarmi guidare?"
+          "tiage": "Настоящая ориентация возникает не только благодаря планированию — она появляется, когда ты готов принять: знаки жизни, порывы сердца, мудрость момента. Восприимчивость — это не пассивность. Это искусство позволить правильному прийти.",
+          "reflexion": "Действительно ли я открыт — или слишком поглощен собственными планами, чтобы принять руководство?"
         },
         "V4": {
           "kontext": "V4",
@@ -346,8 +346,8 @@
           "karte_de": "Der Meister",
           "karte_key": "major_arcana.the_master",
           "karte_nummer": null,
-          "tiage": "Il maestro non ha più bisogno di una mappa: è lui il centro. Orientarsi al livello 4 non significa conoscere tutte le risposte. Significa avere una tale familiarità con il proprio asse interiore da non perdersi, anche senza un percorso.",
-          "reflexion": "Sono fedele al mio equilibrio interiore, anche se nessuno conosce la strada e nessuno mi osserva?"
+          "tiage": "Мастеру больше не нужна карта — он сам является центром. Ориентация на 4-м уровне не означает, что ты знаешь все ответы. Это означает, что ты настолько хорошо знаешь свою внутреннюю ось, что не теряешься — даже без пути.",
+          "reflexion": "Остаюсь ли я верным своей внутренней ориентации — даже если никто не знает пути и никто не наблюдает за мной?"
         },
         "V5": {
           "kontext": "V5",
@@ -433,8 +433,8 @@
           "karte_de": "Der Blitz",
           "karte_key": "major_arcana.16_thunderbolt",
           "karte_nummer": 16,
-          "tiage": "La tua efficacia più profonda si manifesta quando smetti di proteggere ciò che comunque non è reale. Il fulmine fa piazza pulita. Ciò che rimane è la forza.",
-          "reflexion": "Sono disposto a rinunciare alle certezze in nome della verità?"
+          "tiage": "Твоя истинная сила раскрывается, когда ты перестаешь защищать то, что и так не является подлинным. Молния расчищает путь. Остается только сила.",
+          "reflexion": "Готов ли я пожертвовать своими убеждениями ради истины?"
         },
         "V2": {
           "kontext": "V2",
@@ -443,8 +443,8 @@
           "karte_de": "Erfolg",
           "karte_key": "minor_arcana.fire.6_success",
           "karte_nummer": 6,
-          "tiage": "Quando due persone agiscono sulla base di una visione comune e chiara, non solo raddoppia la loro efficacia, ma provano anche un vero senso di successo: quella profonda sensazione di aver fatto la cosa giusta, insieme, in modo autentico. Il vero successo è la realizzazione interiore.",
-          "reflexion": "Agiamo spinti da un senso di appagamento interiore o dalla pressione delle aspettative esterne?"
+          "tiage": "Когда два человека действуют, руководствуясь общим, ясным пониманием, не только удваивается их эффективность — они также обретают настоящий успех: глубокое чувство, что они поступили правильно, вместе и искренне. Настоящий успех — это внутреннее удовлетворение.",
+          "reflexion": "Действуем ли мы из чувства внутреннего удовлетворения — или под давлением внешних ожиданий?"
         },
         "V3": {
           "kontext": "V3",
@@ -453,8 +453,8 @@
           "karte_de": "Politik",
           "karte_key": "minor_arcana.clouds.7_politics",
           "karte_nummer": 7,
-          "tiage": "Si perde efficacia quando i giochi di potere e gli interessi nascosti prendono il sopravvento. Non appena entra in gioco la manipolazione, l'azione perde la sua forza. Riconosci i giochi politici nella quotidianità delle tue relazioni e scegli la via della trasparenza.",
-          "reflexion": "Agisco in modo trasparente riguardo alle mie intenzioni, oppure nascondo ciò che voglio veramente?"
+          "tiage": "Ты теряешь свою эффективность, когда пространство заполняют игры за власть и скрытые мотивы. Как только в дело вступает манипуляция, действия теряют свою силу. Осознавай политические игры в повседневных отношениях — и выбирай путь открытости.",
+          "reflexion": "Я открыто выражаю свои намерения — или скрываю то, чего на самом деле хочу?"
         },
         "V4": {
           "kontext": "V4",
@@ -463,8 +463,8 @@
           "karte_de": "Der Schöpfer",
           "karte_key": "minor_arcana.fire.king_the_creator",
           "karte_nummer": 14,
-          "tiage": "Il Creatore non crea per dimostrare la propria efficacia: crea perché la creazione è la sua essenza. L'efficacia al livello 4 non chiede: «Che cosa ho fatto?», ma: «Di chi sono stato il canale?». Tu non sei l'autore: sei l'apertura attraverso la quale opera il Tutto.",
-          "reflexion": "Vivo come artefice della mia vita o reagisco semplicemente a ciò che mi accade?"
+          "tiage": "Творец творит не для того, чтобы доказать свою эффективность — он творит, потому что творение — это его сущность. Эффективность на 4-м уровне не задает вопрос «Что я сделал?», а спрашивает: «Чьим каналом я был?». Ты не автор — ты проем, через который действует Целое.",
+          "reflexion": "Я живу как творец своей жизни — или как реакция на то, что со мной происходит?"
         },
         "V5": {
           "kontext": "V5",
@@ -510,8 +510,8 @@
           "karte_de": "Der Rebell",
           "karte_key": "major_arcana.4_the_rebel",
           "karte_nummer": 4,
-          "tiage": "La tua libertà non è una forma di protesta: è un sì a te stesso. Il vero ribelle segue la propria verità, non la resistenza.",
-          "reflexion": "Mi adeguo per amore… o per paura del rifiuto?"
+          "tiage": "Твоя свобода — это не протест, а согласие с самим собой. Настоящий бунтарь следует своей собственной правде, а не сопротивлению.",
+          "reflexion": "Я подстраиваюсь из любви — или из страха быть отвергнутым?"
         },
         "V2": {
           "kontext": "V2",
@@ -520,8 +520,8 @@
           "karte_de": "Abenteuer",
           "karte_key": "minor_arcana.rainbows.page_adventure",
           "karte_nummer": 11,
-          "tiage": "La libertà e l’amore non sono nemici. In un incontro autentico, il legame ti rende libero. Posso amarti E avere bisogno di spazio per me stesso.",
-          "reflexion": "Sto vivendo entrambe le cose: la libertà E il senso di appartenenza?"
+          "tiage": "Свобода и любовь — не враги. В настоящих отношениях связь между людьми приносит освобождение. Я могу любить тебя И при этом нуждаться в личном пространстве.",
+          "reflexion": "Живу ли я и тем, и другим — свободой И связью?"
         },
         "V3": {
           "kontext": "V3",
@@ -530,8 +530,8 @@
           "karte_de": "Durchbruch",
           "karte_key": "major_arcana.11_breakthrough",
           "karte_nummer": 11,
-          "tiage": "La tua libertà non cresce grazie a più spazio, ma grazie a una maggiore chiarezza. Quando capisci quali limiti sono reali e quali li hai imposti tu stesso, il vecchio ordine crolla.",
-          "reflexion": "Rimango per amore… o per paura del cambiamento?"
+          "tiage": "Твоя свобода растет не благодаря большему пространству — она растет благодаря большей ясности. Когда ты понимаешь, какие границы реальны, а какие ты установил сам, старое рушится.",
+          "reflexion": "Я остаюсь из-за любви — или из-за страха перед переменами?"
         },
         "V4": {
           "kontext": "V4",
@@ -540,8 +540,8 @@
           "karte_de": "Möglichkeiten",
           "karte_key": "minor_arcana.fire.2_possibilities",
           "karte_nummer": 2,
-          "tiage": "La libertà nel suo senso più profondo non è libertà dai vincoli: è il risveglio all’infinità delle possibilità. Non sei prigioniero della tua storia. Sei più della somma delle tue esperienze. Ogni momento apre una porta che non è mai stata aperta prima.",
-          "reflexion": "Quale versione di me stesso deve ancora nascere – e di cosa ho paura quando la incontro?"
+          "tiage": "Свобода на самом глубоком уровне — это не свобода от ограничений, а пробуждение к бесконечности возможностей. Ты не заперт в своей истории. Ты — это нечто большее, чем просто совокупность твоих переживаний. Каждый момент открывает дверь, которая еще ни разу не открывалась.",
+          "reflexion": "Какая версия меня самого еще не родилась — и чего я боюсь в встрече с ней?"
         },
         "V5": {
           "kontext": "V5",
@@ -595,8 +595,8 @@
           "karte_de": "Die Liebenden",
           "karte_key": "major_arcana.6_the_lovers",
           "karte_nummer": 6,
-          "tiage": "La tua intensità non è un difetto: è il tuo dono. Gli innamorati hanno le ali: la loro passione li sostiene, invece di consumarli.",
-          "reflexion": "Sono davvero presente nell'intimità, o mi sto solo comportando in un certo modo?"
+          "tiage": "Твоя страсть — это не недостаток, а твой дар. У влюбленных есть крылья: их страсть не сжигает их, а несет вперед.",
+          "reflexion": "Действительно ли я полностью погружен в интимную близость — или просто делаю вид?"
         },
         "V2": {
           "kontext": "V2",
@@ -605,8 +605,8 @@
           "karte_de": "Intensität",
           "karte_key": "minor_arcana.fire.knight_intensity",
           "karte_nummer": 12,
-          "tiage": "Quando due persone sono pienamente presenti l’una all’altra, l’incontro arde come fuoco puro. Questa è l’intensità nella sua forma più sacra.",
-          "reflexion": "Sono davvero lì quando ci sono?"
+          "tiage": "Когда два человека одновременно полностью погружены в момент, их встреча горит, как чистый огонь. Это и есть интенсивность в ее самой священной форме.",
+          "reflexion": "Я действительно ТАМ, когда я там?"
         },
         "V3": {
           "kontext": "V3",
@@ -615,8 +615,8 @@
           "karte_de": "Projektionen",
           "karte_key": "minor_arcana.water.7_projections",
           "karte_nummer": 7,
-          "tiage": "Gli incontri più intensi sono come uno specchio. Ciò che ti colpisce di più – l’ammirazione o il disgusto – vive anche dentro di te. L’intensità è un invito alla conoscenza di sé: cosa mi rivela la forza della mia reazione su me stesso?",
-          "reflexion": "Cosa mi dice la mia intensità su me stesso – e non sugli altri?"
+          "tiage": "Самые яркие встречи — это зеркало. То, что вызывает у тебя самые сильные эмоции — восхищение или отвращение — живет и в тебе самом. Интенсивность — это приглашение к самопознанию: что моя сильная реакция говорит мне о самом себе?",
+          "reflexion": "Что моя интенсивность говорит мне о себе — а не о других?"
         },
         "V4": {
           "kontext": "V4",
@@ -625,8 +625,8 @@
           "karte_de": "Leidenschaft",
           "karte_key": "zusaetzliche_karten.passion",
           "karte_nummer": null,
-          "tiage": "La sacra passione non chiede il permesso. È il fuoco che ti riconosce NELL'AZIONE: non ciò che fai, ma CHI sei quando ardi. L'intensità al livello 4 non è adrenalina: è dedizione senza ego.",
-          "reflexion": "Per cosa brucio così tanto da dimenticare chi sono?"
+          "tiage": "Святая страсть не просит разрешения. Это огонь, который раскрывает тебя В ДЕЙСТВИИ — не то, что ты делаешь, а КТО ты есть, когда горишь. Интенсивность на 4-м уровне — это не адреналин, это самоотдача без эго.",
+          "reflexion": "Чем я так увлечен, что забываю, кто я?"
         },
         "V5": {
           "kontext": "V5",
@@ -680,8 +680,8 @@
           "karte_de": "Der Narr",
           "karte_key": "major_arcana.0_the_fool",
           "karte_nummer": 0,
-          "tiage": "La tua crescita inizia dove finisce la tua conoscenza. Il buffone non è ingenuo: è abbastanza saggio da accogliere con favore l'ignoto.",
-          "reflexion": "Ti conosco davvero – o mi sembra solo di conoscerti?"
+          "tiage": "Твое развитие начинается там, где заканчиваются твои знания. Дурак не наивен — он достаточно мудр, чтобы с радостью принять неизвестное.",
+          "reflexion": "Я знаю тебя — или мне только кажется, что я тебя знаю?"
         },
         "V2": {
           "kontext": "V2",
@@ -690,8 +690,8 @@
           "karte_de": "Transformation",
           "karte_key": "major_arcana.13_transformation",
           "karte_nummer": 13,
-          "tiage": "Nell'incontro vi trasformate a vicenda. Non perché lo volete, ma perché un legame autentico porta inevitabilmente a un cambiamento.",
-          "reflexion": "Posso accettare la morte del vecchio – o mi aggrappo a lui con tutte le mie forze?"
+          "tiage": "Взаимодействуя друг с другом, вы меняете друг друга. Не потому, что этого хотите, а потому, что подлинная связь неизбежно приводит к изменениям.",
+          "reflexion": "Могу ли я смириться со смертью старика — или я буду цепляться за него?"
         },
         "V3": {
           "kontext": "V3",
@@ -700,8 +700,8 @@
           "karte_de": "Veränderung",
           "karte_key": "major_arcana.10_change",
           "karte_nummer": 10,
-          "tiage": "Il tuo percorso non è una linea retta: è una danza con il cambiamento. Aggrappati a ciò che è essenziale e lascia andare tutto il resto.",
-          "reflexion": "Mi adeguo al cambiamento o lo combatto?"
+          "tiage": "Твой путь развития — это не прямая дорога, а танец с переменами. Держись за то, что действительно важно, а от всего остального отпусти.",
+          "reflexion": "Я иду в ногу со временем — или борюсь с ним?"
         },
         "V4": {
           "kontext": "V4",
@@ -710,8 +710,8 @@
           "karte_de": "Reife",
           "karte_key": "minor_arcana.rainbows.ace_maturity",
           "karte_nummer": 1,
-          "tiage": "La maturità è il fine di ogni sviluppo – e, paradossalmente, la sua fine. L’individuo maturo smette di crescere e inizia ad essere. Lo sviluppo al livello 4 significa: non diventi più – sei già. Il frutto non ha più bisogno di crescere. Può cadere.",
-          "reflexion": "E se lo sviluppo non significasse crescita, ma piuttosto «arrivare a destinazione»?"
+          "tiage": "Зрелость — это цель любого развития и, как ни парадоксально, его конец. Зрелый человек перестает расти и начинает просто быть. Развитие на 4-м уровне означает: ты больше не становишься — ты уже есть. Плоду больше не нужно расти. Он может упасть.",
+          "reflexion": "А что, если развитие означает не рост, а достижение цели?"
         },
         "V5": {
           "kontext": "V5",
@@ -789,8 +789,8 @@
           "karte_de": "Teilnahme",
           "karte_key": "minor_arcana.fire.4_participation",
           "karte_nummer": 4,
-          "tiage": "Il tuo bisogno di comunità non si soddisfa solo con l'appartenenza, ma attraverso la partecipazione. La tua unicità arricchisce ciò che abbiamo in comune.",
-          "reflexion": "Mi metto in gioco o mi limito ad adattarmi?"
+          "tiage": "Твоя потребность в общении удовлетворяется не просто принадлежностью к сообществу — она удовлетворяется участием. Твоя уникальность обогащает общее.",
+          "reflexion": "Я проявляю инициативу — или просто подстраиваюсь под других?"
         },
         "V2": {
           "kontext": "V2",
@@ -799,8 +799,8 @@
           "karte_de": "Feier",
           "karte_key": "minor_arcana.water.3_celebration",
           "karte_nummer": 3,
-          "tiage": "Quando festeggiate insieme – senza un motivo particolare, senza un programma – nasce la solidarietà nella sua forma più pura.",
-          "reflexion": "Festeggiamo i successi… o ci affrettiamo semplicemente verso il prossimo compito?"
+          "tiage": "Когда вы празднуете вместе — без повода, без планов — возникает чувство общности в его чистейшем проявлении.",
+          "reflexion": "Давайте отпразднуем успехи — или просто поспешим к следующему заданию?"
         },
         "V3": {
           "kontext": "V3",
@@ -809,8 +809,8 @@
           "karte_de": "Der Traum",
           "karte_key": "minor_arcana.water.6_the_dream",
           "karte_nummer": 6,
-          "tiage": "Ogni comunità viva porta con sé un sogno: una visione comune che va oltre i singoli individui. La domanda fondamentale è: il vostro sogno è un seme vitale che vi fa crescere, o un’illusione rigida che vi allontana dal presente?",
-          "reflexion": "Condividiamo davvero un sogno comune, oppure stiamo semplicemente proiettando i nostri desideri personali gli uni sugli altri?"
+          "tiage": "Каждое живое сообщество несет в себе мечту — общее видение, которое превосходит возможности отдельных людей. Главный вопрос заключается в следующем: является ли ваша мечта живым семенем, которое помогает вам расти, или же это негибкая иллюзия, отрывающая вас от настоящего?",
+          "reflexion": "У нас действительно общая мечта — или мы просто проецируем друг на друга свои личные желания?"
         },
         "V4": {
           "kontext": "V4",
@@ -819,8 +819,8 @@
           "karte_de": "Liebe",
           "karte_key": "zusaetzliche_karten.love",
           "karte_nummer": null,
-          "tiage": "La comunità, nel suo senso più profondo, non è un’organizzazione: è amore. Non l’amore che esige e prende, ma l’amore che riconosce: non siamo separati. Tu non ami la comunità: tu sei la comunità. Ogni contatto autentico è un momento di consapevolezza: tu sei anche me.",
-          "reflexion": "Vivo la comunità come un ritorno a me stesso o come una fuga da me stesso?"
+          "tiage": "Сообщество на самом глубоком уровне — это не организация, это любовь. Не та любовь, которая требует и берет, а та, которая осознает: мы не разделены. Ты не любишь сообщество — ты и есть оно. Каждый подлинный контакт — это момент осознания: ты — это и я.",
+          "reflexion": "Я воспринимаю общение как возвращение к самому себе — или как побег от самого себя?"
         },
         "V5": {
           "kontext": "V5",
@@ -898,8 +898,8 @@
           "karte_de": "Wärme",
           "karte_key": "zusaetzliche_karten.warmth",
           "karte_nummer": null,
-          "tiage": "Il riconoscimento più profondo è il calore: non un’approvazione giudicante, né una lode usata come moneta di scambio, ma il naturale risplendere di un cuore aperto. Il calore è una presenza che non giudica. Quando ti senti veramente riconosciuto, è proprio questo calore che percepisci.",
-          "reflexion": "Dimostrerò il mio apprezzamento con sincero calore e presenza, oppure lo userò come ricompensa?"
+          "tiage": "Самое глубокое признание — это теплота: не оценочное одобрение, не похвала как валюта, а естественное излучение открытого сердца. Теплота — это присутствие, не судящее. Когда ты действительно чувствуешь признание, именно эту теплоту ты и ощущаешь.",
+          "reflexion": "Я выражаю признание искренней теплотой и вниманием — или использую признание в качестве награды?"
         },
         "V2": {
           "kontext": "V2",
@@ -908,8 +908,8 @@
           "karte_de": "Verspieltheit",
           "karte_key": "minor_arcana.fire.page_playfulness",
           "karte_nummer": 11,
-          "tiage": "La forma più bella di riconoscimento è la spensieratezza: quando l’altro ti vede così profondamente da poter ridere insieme a te.",
-          "reflexion": "Riusciamo a ridere – anche di noi stessi?"
+          "tiage": "Самая прекрасная форма признания — это непринужденность: когда другой человек видит тебя настолько полноценным, что может смеяться вместе с тобой.",
+          "reflexion": "Можем ли мы смеяться — в том числе и над собой?"
         },
         "V3": {
           "kontext": "V3",
@@ -918,8 +918,8 @@
           "karte_de": "Vergleich",
           "karte_key": "minor_arcana.clouds.5_comparison",
           "karte_nummer": 5,
-          "tiage": "Il riconoscimento svanisce nel momento stesso in cui inizi a fare paragoni. Il confronto ci trasforma in oggetti su una scala, anziché in persone uniche. Il riconoscimento più profondo riconosce che sei un originale – e nessun originale ha bisogno di un metro di misura.",
-          "reflexion": "Riconosco l'altro nella sua unicità, oppure lo valuto costantemente in base agli altri o a me stesso?"
+          "tiage": "Признание умирает в тот момент, когда ты начинаешь сравнивать. Сравнение превращает нас в объекты на шкале, а не в уникальных людей. Наиболее глубокое признание заключается в том, что ты — оригинал, а оригиналу не нужен никакой эталон.",
+          "reflexion": "Умею ли я видеть в другом его уникальность — или постоянно сравниваю его с другими или с собой?"
         },
         "V4": {
           "kontext": "V4",
@@ -928,8 +928,8 @@
           "karte_de": "Mitgefühl",
           "karte_key": "zusaetzliche_karten.compassion",
           "karte_nummer": null,
-          "tiage": "Il riconoscimento più profondo è la compassione: non vedi l’altro perché ti assomiglia o ti conferma. Lo vedi perché esiste. La compassione è un riconoscimento incondizionato – quello sguardo che dice: «Ti vedo, e non ho bisogno di cambiarti».",
-          "reflexion": "Riconosco l'altro nella sua unicità, oppure lo cerco come specchio dei miei bisogni?"
+          "tiage": "Самое глубокое признание — это сострадание: ты видишь другого не потому, что он похож на тебя или подтверждает твои представления. Ты видишь его таким, какой он есть. Сострадание — это признание без условий, взгляд, который говорит: «Я вижу тебя, и мне не нужно тебя менять».",
+          "reflexion": "Вижу ли я другого человека в его уникальности — или ищу в нем отражение своих собственных потребностей?"
         },
         "V5": {
           "kontext": "V5",
@@ -975,8 +975,8 @@
           "karte_de": "Fülle",
           "karte_key": "minor_arcana.rainbows.king_abundance",
           "karte_nummer": 14,
-          "tiage": "La giustizia che nasce dalla consapevolezza dell'abbondanza è di natura diversa rispetto a quella che nasce dalla carenza. Chi sa che ce n'è abbastanza per tutti, condivide in modo diverso: non per dovere, ma per abbondanza. L'abbondanza è il fondamento di un'equità generosa.",
-          "reflexion": "Il mio senso di giustizia deriva dalla consapevolezza dell'abbondanza o dalla paura di rimanere a mani vuote?"
+          "tiage": "Справедливость, проистекающая из осознания изобилия, отличается от справедливости, основанной на недостатке. Тот, кто знает, что всего хватит на всех, делится иначе — не из чувства долга, а из-за изобилия. Изобилие — это основа щедрой справедливости.",
+          "reflexion": "Мое чувство справедливости проистекает из осознания изобилия — или из страха остаться в накладе?"
         },
         "V2": {
           "kontext": "V2",
@@ -985,8 +985,8 @@
           "karte_de": "Teilen",
           "karte_key": "minor_arcana.fire.queen_sharing",
           "karte_nummer": 13,
-          "tiage": "Condividere è giustizia in azione. Quando condividi spinto dal senso di connessione – non per dovere, ma perché sei colmo di generosità – la giustizia non nasce come una regola, ma come espressione naturale. Ciò che dai ti ritorna, moltiplicato.",
-          "reflexion": "Lo faccio per generosità e per affetto – o per dovere e per il senso del dovere?"
+          "tiage": "Делиться — это справедливость в действии. Когда ты делишься, исходя из чувства единства — не из чувства долга, а потому, что у тебя есть избыток, — справедливость возникает не как правило, а как естественное проявление. То, что ты даешь, возвращается к тебе, умножившись.",
+          "reflexion": "Делюсь ли я из избытка и из чувства близости — или из чувства долга и необходимости?"
         },
         "V3": {
           "kontext": "V3",
@@ -995,8 +995,8 @@
           "karte_de": "Wir sind die Welt",
           "karte_key": "minor_arcana.rainbows.10_we_are_the_world",
           "karte_nummer": 10,
-          "tiage": "La vera giustizia non si ferma alla soglia di casa propria. «Noi siamo il mondo» significa che ciò che faccio ha conseguenze per l’intera rete. Una giustizia nelle relazioni che non si preoccupa del mondo che ci circonda è rimasta a metà strada.",
-          "reflexion": "Quando parliamo di giustizia, pensiamo anche a chi non è seduto al tavolo delle trattative – a tutte le persone coinvolte, alle generazioni future?"
+          "tiage": "Настоящая справедливость не заканчивается на пороге собственного дома. «Мы — это мир» означает: то, что я делаю, имеет последствия для всей сети. Справедливость в отношениях, которая не заботится об окружающем мире, остановилась на полпути.",
+          "reflexion": "Говоря о справедливости, думаем ли мы также о тех, кого нет за столом переговоров — обо всех, кого это касается, о будущих поколениях?"
         },
         "V4": {
           "kontext": "V4",
@@ -1005,8 +1005,8 @@
           "karte_de": "Verstehen",
           "karte_key": "minor_arcana.water.knight_understanding",
           "karte_nummer": 12,
-          "tiage": "La giustizia senza comprensione è legge. La giustizia con comprensione è saggezza. Al livello 4 non ci chiediamo innanzitutto «Che cos'è giusto?», ma «Di cosa ha bisogno quest'anima?». La comprensione è il fondamento su cui si costruisce la vera giustizia.",
-          "reflexion": "Posso agire con giustizia senza giudicare – e giudicare senza condannare?"
+          "tiage": "Справедливость без понимания — это закон. Справедливость с пониманием — это мудрость. На 4-м уровне мы не спрашиваем в первую очередь: «Что такое справедливость?», — мы спрашиваем: «В чём нуждается эта душа?». Понимание — это фундамент, на котором строится истинная справедливость.",
+          "reflexion": "Могу ли я поступать справедливо, не вынося суждений, — и выносить суждения, не осуждая?"
         },
         "V5": {
           "kontext": "V5",
@@ -1052,8 +1052,8 @@
           "karte_de": "Jenseits der Illusion",
           "karte_key": "major_arcana.20_beyond_illusion",
           "karte_nummer": 20,
-          "tiage": "Il senso di connessione più profondo non nasce dalla vicinanza, ma dalla consapevolezza che è proprio la separazione a essere un'illusione.",
-          "reflexion": "Provo un senso di affinità… o solo di vicinanza?"
+          "tiage": "Самое глубокое чувство единства возникает не благодаря близости — оно возникает благодаря осознанию того, что разлука и есть настоящая иллюзия.",
+          "reflexion": "Я чувствую связь — или просто близость?"
         },
         "V2": {
           "kontext": "V2",
@@ -1062,8 +1062,8 @@
           "karte_de": "Berührung",
           "karte_key": "zusaetzliche_karten.touch",
           "karte_nummer": null,
-          "tiage": "Il legame nasce dal corpo. Un tocco consapevole può guarire ciò che le parole non riescono mai a raggiungere. Il corpo è il luogo più sincero dell’incontro: non mente. Prima di ogni parola, prima di ogni storia: tu ed io, due corpi che si toccano.",
-          "reflexion": "Siamo davvero presenti fisicamente gli uni per gli altri, o siamo legati solo con la mente?"
+          "tiage": "Связь начинается в теле. Внимательное прикосновение способно исцелить то, чего никогда не достигнут слова. Тело — это самое искреннее место встречи — оно не лжет. До появления языка, до появления истории: ты и я — два тела, соприкасающихся друг с другом.",
+          "reflexion": "Действительно ли мы физически присутствуем друг для друга — или связаны лишь мыслями?"
         },
         "V3": {
           "kontext": "V3",
@@ -1072,8 +1072,8 @@
           "karte_de": "Trauer",
           "karte_key": "minor_arcana.clouds.9_sorrow",
           "karte_nummer": 9,
-          "tiage": "Il legame più profondo porta con sé anche la vulnerabilità più profonda. Il dolore è il prezzo dell’amore – e al tempo stesso la sua prova. Se riesci a provare dolore per qualcuno o qualcosa, significa che eri davvero legato a quella persona o a quella cosa. Lascia che il dolore sia: rende onore a ciò che è stato.",
-          "reflexion": "Mi concedo il dolore quando il legame si affievolisce – a testimonianza della sua autenticità e profondità?"
+          "tiage": "Самая глубокая привязанность открывает и самую глубокую уязвимость. Скорбь — это цена любви и одновременно её доказательство. Если ты способен скорбеть о ком-то или о чём-то, значит, вы были по-настоящему близки. Прими эту скорбь: она чтит то, что было.",
+          "reflexion": "Могу ли я позволить себе скорбеть, когда связь угасает — как знак ее подлинности и глубины?"
         },
         "V4": {
           "kontext": "V4",
@@ -1082,8 +1082,8 @@
           "karte_de": "Intimität",
           "karte_key": "zusaetzliche_karten.intimacy",
           "karte_nummer": null,
-          "tiage": "Il legame nel suo senso più profondo è l'intimità: la capacità di essere visti senza maschere – e di vedere l'altro senza maschere. Non legati da somiglianze o da un passato comune, ma dalla nuda verità dell'attimo. Il rischio più grande. Il dono più grande.",
-          "reflexion": "Mi permetto di farmi vedere per quello che sono davvero – anche in ciò che nascondo di più?"
+          "tiage": "Самая глубокая степень связи — это близость: способность показаться другим без маски — и увидеть другого без маски. Связь не через сходство или общую историю, а через обнаженную правду мгновения. Самый большой риск. Самый большой дар.",
+          "reflexion": "Позволяю ли я себе быть увиденным по-настоящему — даже в том, что я больше всего скрываю?"
         },
         "V5": {
           "kontext": "V5",
@@ -1185,8 +1185,8 @@
           "karte_de": "Geduld",
           "karte_key": "minor_arcana.rainbows.7_patience",
           "karte_nummer": 7,
-          "tiage": "La conoscenza di sé inizia quando sei disposto a osservare con pazienza, senza fretta e senza giudicare. La verità su di te viene lentamente alla luce.",
-          "reflexion": "Sono paziente con me stesso… e con te?"
+          "tiage": "Самопознание начинается, когда ты готов терпеливо присмотреться — не торопясь и не осуждая. Истина о тебе постепенно выходит на свет.",
+          "reflexion": "Я терпелив к себе — и к тебе?"
         },
         "V2": {
           "kontext": "V2",
@@ -1195,8 +1195,8 @@
           "karte_de": "Kreativität",
           "karte_key": "major_arcana.3_creativity",
           "karte_nummer": 3,
-          "tiage": "La consapevolezza di sé nasce anche dall'espressione creativa. Ciò che crei – senza pubblico, senza uno scopo preciso – ti mostra chi sei veramente. Nel processo creativo, l'inconscio viene alla luce. La creatività è rivelazione di sé.",
-          "reflexion": "Cosa creo quando nessuno mi guarda – e cosa rivela questo del mio io più intimo?"
+          "tiage": "Самопознание возникает и в творческом самовыражении. То, что ты создаёшь — без зрителей, без цели — показывает тебе, кто ты есть на самом деле. В процессе творчества бессознательное выходит на свет. Творчество — это самораскрытие.",
+          "reflexion": "Что я творю, когда никто не смотрит — и что это говорит о моей внутренней сущности?"
         },
         "V3": {
           "kontext": "V3",
@@ -1205,8 +1205,8 @@
           "karte_de": "Neue Sicht",
           "karte_key": "major_arcana.12_new_vision",
           "karte_nummer": 12,
-          "tiage": "La consapevolezza di te stesso cresce quando sei disposto a lasciarti capovolgere. Lasciati andare. Quello che vedrai allora è sempre stato lì.",
-          "reflexion": "Sono pronto a guardarmi con occhi nuovi?"
+          "tiage": "Твое самопонимание углубляется, когда ты готов перевернуться с ног на голову. Поддайся. То, что ты увидишь, всегда было с тобой.",
+          "reflexion": "Готов ли я по-новому взглянуть на себя?"
         },
         "V4": {
           "kontext": "V4",
@@ -1215,8 +1215,8 @@
           "karte_de": "Innenwendung",
           "karte_key": "minor_arcana.water.4_turning_in",
           "karte_nummer": 4,
-          "tiage": "La conoscenza di sé è il rivolgersi verso l'interno – non per trovare risposte, ma per riconoscere chi pone le domande. Chi sono io quando smetto di essere qualcuno? Il rivolgersi verso l'interno non è una tecnica né un concetto. È la fine di ogni ricerca – e l'inizio della comprensione.",
-          "reflexion": "Cosa rimane quando lascio andare tutti i miei ruoli, le mie storie e le mie convinzioni?"
+          "tiage": "Самопознание — это обращение к себе, не для того, чтобы найти ответы, а для того, чтобы осознать, кто задает вопросы. Кем я являюсь, если перестаю быть кем-то? Обращение к себе — это не техника и не концепция. Это конец всех поисков — и начало познания.",
+          "reflexion": "Что останется, если я отпущу все свои роли, истории и убеждения?"
         },
         "V5": {
           "kontext": "V5",
@@ -1278,8 +1278,8 @@
           "karte_de": "Führung",
           "karte_key": "minor_arcana.rainbows.3_guidance",
           "karte_nummer": 3,
-          "tiage": "Il senso non si può forzare. Si rivela quando smetti di cercarlo e inizi a seguire ciò che ti muove davvero.",
-          "reflexion": "Devo seguire ciecamente le autorità o la mia verità?"
+          "tiage": "Смысл нельзя навязать. Он открывается, когда ты перестаешь его искать и начинаешь следовать за тем, что действительно трогает тебя.",
+          "reflexion": "Следовать ли мне слепой власти — или своей собственной правде?"
         },
         "V2": {
           "kontext": "V2",
@@ -1288,8 +1288,8 @@
           "karte_de": "Erfahren",
           "karte_key": "minor_arcana.fire.3_experiencing",
           "karte_nummer": 3,
-          "tiage": "Il senso non si manifesta solo nella riflessione: si dispiega nell’esperienza totale. Quando ti immergi completamente, senza riserve, nasce quel momento in cui tutto acquista senso. Non come una spiegazione, ma come un’esperienza viva.",
-          "reflexion": "Sto vivendo davvero i miei incontri, o mi limito a osservarli da una distanza di sicurezza?"
+          "tiage": "Смысл проявляется не только в размышлениях — он раскрывается в полноценном переживании. Когда ты погружаешься в это полностью, не сдерживаясь, наступает момент, когда всё обретает смысл. Не в виде объяснения, а как живой опыт.",
+          "reflexion": "Я действительно живу своими встречами — или просто наблюдаю за ними с безопасного расстояния?"
         },
         "V3": {
           "kontext": "V3",
@@ -1298,8 +1298,8 @@
           "karte_de": "Vergangene Leben",
           "karte_key": "major_arcana.18_past_lives",
           "karte_nummer": 18,
-          "tiage": "Il senso emerge anche guardando indietro: quali schemi si ripetono nella tua vita, nelle tue relazioni? Il passato – inteso in senso letterale o simbolico – racchiude messaggi su ciò che sei venuto a imparare. Riconosci lo schema e il senso si rivelerà.",
-          "reflexion": "Quali schemi si ripetono nelle mie relazioni – e cosa vogliono indicarmi riguardo alla mia missione di vita più profonda?"
+          "tiage": "Смысл становится понятным и при оглядывании назад: какие паттерны повторяются в твоей жизни, в твоих отношениях? Прошлое — будь то в буквальном или символическом смысле — несет в себе послания о том, чему тебе предстоит научиться. Осознай этот паттерн, и смысл станет ясен.",
+          "reflexion": "Какие паттерны повторяются в моих отношениях — и что они хотят мне показать о моем более глубоком жизненном предназначении?"
         },
         "V4": {
           "kontext": "V4",
@@ -1308,8 +1308,8 @@
           "karte_de": "Vollendung",
           "karte_key": "major_arcana.21_completion",
           "karte_nummer": 21,
-          "tiage": "Il senso non è qualcosa che si trova: è ciò che si riconosce guardando alla propria vita: l’arco che si chiude. Il compimento non è la fine, ma il momento in cui il disegno si rivela. La tua vita acquista senso non attraverso una spiegazione, ma attraverso la forma.",
-          "reflexion": "Quando, alla fine della mia vita, guarderò indietro, quale sarà stato il filo conduttore che ha unito ogni cosa?"
+          "tiage": "Смысл — это не то, что ты находишь, а то, что ты осознаешь, оглядываясь на свою жизнь: это замкнувшийся круг. Завершение — это не конец, а момент, когда становится видимым общий узор. Твоя жизнь обретает смысл не благодаря объяснению, а благодаря своей форме.",
+          "reflexion": "Когда я оглянусь назад в конце своей жизни — что же было той нитью, которая связывала всё воедино?"
         },
         "V5": {
           "kontext": "V5",
@@ -1379,8 +1379,8 @@
           "karte_de": "Stille",
           "karte_key": "major_arcana.17_silence",
           "karte_nummer": 17,
-          "tiage": "L'integrità cresce nel silenzio. Non nel frastuono delle giustificazioni e delle spiegazioni, ma nei momenti in cui ti fermi ad ascoltare: ciò che faccio è in linea con ciò che sono veramente? Il silenzio è lo specchio più sincero.",
-          "reflexion": "Mi concedo abbastanza silenzio per essere sincero con me stesso, lontano da distrazioni e aspettative?"
+          "tiage": "Честность растет в тишине. Не в шуме оправданий и объяснений, а в те моменты, когда ты останавливаешься и прислушиваешься: соответствует ли то, что я делаю, тому, кем я на самом деле являюсь? Тишина — это самое честное зеркало.",
+          "reflexion": "Достаточно ли я уделяю себе тишины, чтобы быть честным с самим собой — вдали от отвлекающих факторов и ожиданий?"
         },
         "V2": {
           "kontext": "V2",
@@ -1389,8 +1389,8 @@
           "karte_de": "Gewöhnlichkeit",
           "karte_key": "minor_arcana.rainbows.8_ordinariness",
           "karte_nummer": 8,
-          "tiage": "L'integrità non si manifesta nei momenti importanti, ma si rivela nelle cose di tutti i giorni. Il modo in cui vivi la tua quotidianità e come affronti le piccole cose la dice lunga sul tuo carattere. È proprio la quotidianità la vera prova della verità.",
-          "reflexion": "Metto in pratica i miei valori nella vita di tutti i giorni – o solo quando qualcuno mi guarda?"
+          "tiage": "Честность проявляется не в знаменательных моментах — она раскрывается в повседневной жизни. То, как ты живешь каждый день, как относишься к мелочам, — все это говорит о твоей сущности. Повседневная жизнь — это лакмусовая бумажка истины.",
+          "reflexion": "Следую ли я своим ценностям в повседневной жизни — или только тогда, когда кто-то смотрит?"
         },
         "V3": {
           "kontext": "V3",
@@ -1399,8 +1399,8 @@
           "karte_de": "Moral",
           "karte_key": "minor_arcana.clouds.queen_morality",
           "karte_nummer": 13,
-          "tiage": "L'integrità non è una morale imposta, ma un'etica vissuta. La morale viene dall'esterno, l'etica dall'interno. Se agisci perché sei obbligato a farlo, si tratta di morale. Se agisci perché ti sembra giusto dal profondo del tuo cuore, questa è integrità.",
-          "reflexion": "Agisco secondo i miei valori o secondo ciò che gli altri si aspettano da me?"
+          "tiage": "Честность — это не навязанная мораль, а воплощенная в жизнь этика. Мораль исходит извне, а этика — изнутри. Если ты поступаешь так, потому что должен, это мораль. Если ты поступаешь так, потому что это кажется тебе правильным из глубины души, — это честность.",
+          "reflexion": "Я действую в соответствии со своими собственными ценностями — или в соответствии с тем, чего от меня ожидают другие?"
         },
         "V4": {
           "kontext": "V4",
@@ -1409,8 +1409,8 @@
           "karte_de": "Verbindlichkeit",
           "karte_key": "zusaetzliche_karten.commitment",
           "karte_nummer": null,
-          "tiage": "L'integrità, nel suo senso più profondo, è l'impegno verso se stessi. Non come un dovere, ma come la più profonda fedeltà a ciò che hai compreso. L'impegno non è una catena: è la forma che assume la tua libertà. Chi rimane fedele a se stesso non ha bisogno di maschere.",
-          "reflexion": "A quale promessa fatta a me stesso – non agli altri – sono davvero fedele?"
+          "tiage": "Честность в своем самом глубоком проявлении — это верность самому себе. Не в смысле обязанности, а в смысле глубочайшей преданности тому, что ты осознал. Приверженность — это не оковы, а форма, которую принимает твоя свобода. Тот, кто остается верным себе, не нуждается в маске.",
+          "reflexion": "Какому обещанию, данному самому себе — а не другим, — я действительно верно следую?"
         },
         "V5": {
           "kontext": "V5",
@@ -1456,8 +1456,8 @@
           "karte_de": "Erblühen",
           "karte_key": "minor_arcana.rainbows.queen_flowering",
           "karte_nummer": 13,
-          "tiage": "La tua realizzazione personale non è un progetto: è la tua natura. Il tuo nettare non appartiene solo a te: è il dono che hai portato al mondo.",
-          "reflexion": "Sto crescendo in questo ambito… o sto regredendo?"
+          "tiage": "Твое саморазвитие — это не какой-то проект, это твоя сущность. Твой нектар принадлежит не только тебе — это дар, который ты принес миру.",
+          "reflexion": "Я расту в этом отношении — или сдаю позиции?"
         },
         "V2": {
           "kontext": "V2",
@@ -1466,8 +1466,8 @@
           "karte_de": "Moment zu Moment",
           "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
           "karte_nummer": 2,
-          "tiage": "È nel vivere insieme che vi realizzate, vivendo pienamente ogni istante. Nessun programma, nessuna aspettativa per il futuro: solo questo momento.",
-          "reflexion": "Sono presente, oppure vivo tra ricordi e progetti?"
+          "tiage": "Взаимодействуя друг с другом, вы раскрываете свой потенциал, полностью проживая каждый момент. Никаких планов, никаких ожиданий на будущее — только этот миг.",
+          "reflexion": "Я живу настоящим — или живу воспоминаниями и планами?"
         },
         "V3": {
           "kontext": "V3",
@@ -1476,8 +1476,8 @@
           "karte_de": "Reife",
           "karte_key": "minor_arcana.rainbows.9_ripeness",
           "karte_nummer": 9,
-          "tiage": "La tua realizzazione non può essere forzata. Avverrà quando sarà giunto il momento. Ciò che è insito in te verrà alla luce – al momento giusto, da sé.",
-          "reflexion": "È ora di lasciar andare – o mi aggrappo per paura?"
+          "tiage": "Твое развитие нельзя форсировать. Оно происходит, когда приходит время. То, что заложено в тебе, проявится — в нужный момент, само собой.",
+          "reflexion": "Пора ли отпустить — или я держусь из-за страха?"
         },
         "V4": {
           "kontext": "V4",
@@ -1486,8 +1486,8 @@
           "karte_de": "Wiedergeburt",
           "karte_key": "minor_arcana.clouds.10_rebirth",
           "karte_nummer": 10,
-          "tiage": "L'autorealizzazione non finisce mai: si ripete. Ogni piena realizzazione porta in sé il germe della rinascita successiva. Il cammello diventa un leone, il leone un bambino. La rinascita non è un evento isolato: è il ritmo della vita che si risveglia. Non ti realizzi una sola volta. Ti realizzi sempre di nuovo.",
-          "reflexion": "Quale versione di me stesso deve morire affinché possa nascere quella successiva?"
+          "tiage": "Саморазвитие никогда не заканчивается — оно повторяется. Каждое полное раскрытие несет в себе зародыш следующего перерождения. Верблюд становится львом, а лев — ребенком. Перерождение не бывает однократным — это ритм пробуждающейся жизни. Ты раскрываешься не один раз. Ты раскрываешься снова и снова.",
+          "reflexion": "Какая часть меня должна умереть, чтобы родилась новая?"
         },
         "V5": {
           "kontext": "V5",

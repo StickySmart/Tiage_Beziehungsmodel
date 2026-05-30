@@ -1,1365 +1,1511 @@
 {
-  "version": "2.0.0",
-  "beschreibung": "Textes du Tarot Zen d'Osho pour les 224 besoins - Version enrichie avec des textes de sagesse individuels",
-  "quelle": "Tarot Zen d'Osho par Ma Deva Padma (St. Martins Press), basé sur les enseignements d'Osho",
-  "copyright": "Tous droits réservés aux détenteurs respectifs. Ces descriptions sont des interprétations libres.",
-
+  "version": "3.6.0",
+  "sprache": "fr",
+  "beschreibung": "Ti-age Bedürfnis-Weisheitstexte – FR",
   "beduerfnisse": {
     "#B1": {
-      "label": "Air",
-      "frage": "Quelle importance accordez-vous à l'air frais et à la respiration libre ?",
-      "karte": "The Master",
-      "text": "Lorsque vous respirez, c'est le Tout qui respire à travers vous. La liberté commence par un seul souffle conscient."
+      "label": "Wohlbefinden",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Existence",
+          "karte_de": "Existenz",
+          "karte_key": "major_arcana.1_existence",
+          "karte_nummer": 1,
+          "tiage": "Le bien-être n'est pas un état que l'on atteint : c'est la qualité de ta présence. L'univers respire à travers toi dès que tu cesses de lutter contre cela.",
+          "reflexion": "Puis-je vivre cette relation sans avoir à faire mes preuves sans cesse ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_B1V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Healing",
+          "karte_de": "Heilung",
+          "karte_key": "minor_arcana.water.king_healing",
+          "karte_nummer": 14,
+          "tiage": "C'est dans le bien-être partagé que guérit ce que tu ne pouvais guérir seul. La rencontre avec l'autre n'est pas une menace pour ta paix intérieure : elle en est le complément.",
+          "reflexion": "Est-ce que je me sens suffisamment en sécurité pour montrer ma vulnérabilité ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B059_00001_.png",
+          "karte": "Friendliness",
+          "karte_de": "Freundlichkeit",
+          "karte_key": "minor_arcana.water.2_friendliness",
+          "karte_nummer": 2,
+          "tiage": "Le bien-être trouve ses racines dans l'amitié que tu te portes à toi-même. Si tu te traites avec la même bienveillance que celle que tu accordes à un ami cher, tu jettes des bases qui te permettront de traverser toutes les tempêtes. La bienveillance envers soi-même n'est pas une faiblesse : c'est un pilier.",
+          "reflexion": "Est-ce que je me traite avec la même gentillesse que celle que j'accorde naturellement aux autres ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_01_00000.png",
+          "karte": "Acceptance",
+          "karte_de": "Annahme",
+          "karte_key": "zusaetzliche_karten.acceptance",
+          "karte_nummer": null,
+          "tiage": "Le bien-être dans sa forme la plus profonde n'est pas un état que l'on atteint : c'est ce qui reste quand on cesse de se battre contre soi-même. L'acceptation n'est pas synonyme de résignation. C'est le premier souffle de paix : je suis tel que je suis – et c'est là le point de départ, pas le but.",
+          "reflexion": "Puis-je m'accepter tel que je suis, non pas malgré mes imperfections, mais en les acceptant pleinement ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B005_00001_.png",
+          "karte": "Meditation",
+          "karte_de": "Meditation",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B005_00001_ (2).png",
+          "karte": "Contemplation",
+          "karte_de": "Kontemplation",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B005_00001_ (3).png",
+          "karte": "Lotus",
+          "karte_de": "Lotus",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B059_00001_ (2).png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B005_00001_ (4).png",
+          "karte": "Lotus Light",
+          "karte_de": "Lotus-Licht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B005_00001_ (5).png",
+          "karte": "Healing Pod",
+          "karte_de": "Heilungsraum",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- The compassionate healer's (a half human half humanite) touch making whole, lot 88722.png",
+          "karte": "Healing Touch",
+          "karte_de": "Heilende Berührung",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722 (1).png",
+          "karte": "Source Light",
+          "karte_de": "Quellenlicht",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (2).png",
+          "karte": "Sacred Healing",
+          "karte_de": "Heilige Heilung",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        },
+        "V14": {
+          "kontext": "V14",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487 (1).png",
+          "karte": "Tree Healer",
+          "karte_de": "Baum-Heiler",
+          "karte_key": "custom.v14",
+          "karte_nummer": null
+        },
+        "V15": {
+          "kontext": "V15",
+          "bild": "Future/Erkenntnisse_Kapitel_01_00000 (2).png",
+          "karte": "Existence Light",
+          "karte_de": "Existenz-Licht",
+          "karte_key": "custom.v15",
+          "karte_nummer": null
+        }
+      }
     },
     "#B2": {
-      "label": "Eau",
-      "frage": "Quelle importance accordez-vous à une hydratation suffisante ?",
-      "karte": "Healing",
-      "text": "L'eau porte la mémoire. Lorsque vous vous nourrissez, vous devenez souple. La guérison se fait dans le flux."
+      "label": "Sicherheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Trust",
+          "karte_de": "Vertrauen",
+          "karte_key": "minor_arcana.water.page_trust",
+          "karte_nummer": 11,
+          "tiage": "La sécurité vient de l'intérieur. Elle ne réside pas dans des murs ni dans des garanties, mais dans la confiance que la vie te porte.",
+          "reflexion": "Est-ce par la fiabilité ou par le contrôle que l'on instaure la confiance ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B026_00001_ (2).png",
+          "karte": "Protection",
+          "karte_de": "Schutz",
+          "karte_key": "zusaetzliche_karten.protection",
+          "karte_nummer": null,
+          "tiage": "La sécurité ne naît pas de la suppression de toute menace ; elle naît dans cet espace de douceur où la vulnérabilité est la bienvenue. La protection n’est pas un mur de force, mais une enveloppe douce faite de compréhension : ici, tu as le droit d’être vulnérable.",
+          "reflexion": "Et si nous créions ensemble un espace où chacun pourrait rester tel qu’il est, sans avoir à faire ses preuves ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Noah's ark weathering the storm, Shiva's protective dance in stillness, cave sh 88722.png",
+          "karte": "Compromise",
+          "karte_de": "Kompromiss",
+          "karte_key": "minor_arcana.rainbows.6_compromise",
+          "karte_nummer": 6,
+          "tiage": "Tous les compromis n'apportent pas une véritable sécurité. Certains accords coûtent trop cher à ton âme – et laissent un sentiment lancinant de mensonge. La véritable sécurité naît là où le compromis permet aux deux parties de s'épanouir, et non là où l'une d'elles doit se plier aux exigences de l'autre.",
+          "reflexion": "Dans ce domaine, sacrifions-nous notre vérité au nom d'une fausse paix – ou trouvons-nous de véritables solutions communes ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_02_00000.png",
+          "karte": "Support",
+          "karte_de": "Unterstützung",
+          "karte_key": "zusaetzliche_karten.support",
+          "karte_nummer": null,
+          "tiage": "La sécurité existentielle ne découle pas de l'absence de menace ; elle naît du sentiment d'être en sécurité. Ce ne sont pas les murs qui apportent la sécurité, mais le sol invisible qui te soutient : ton caractère, tes valeurs, ton attachement à quelque chose de plus grand.",
+          "reflexion": "Sur quoi puis-je m'appuyer intérieurement lorsque toute sécurité extérieure vient à manquer ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B011_00001_.png",
+          "karte": "Shelter",
+          "karte_de": "Geborgenheit",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B011_00001_ (2).png",
+          "karte": "Cave Moon",
+          "karte_de": "Höhlenmond",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (4).png",
+          "karte": "Inner Sanctuary",
+          "karte_de": "Inneres Heiligtum",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B026_00001_.png",
+          "karte": "Protection",
+          "karte_de": "Schutz",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/Erkenntnisse_Kapitel_02_00000 (2).png",
+          "karte": "Trust Light",
+          "karte_de": "Vertrauenslicht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B3": {
-      "label": "Nourriture",
-      "frage": "Quelle importance accordez-vous à une alimentation saine et régulière ?",
-      "karte": "Conditioning",
-      "text": "Ce que vous mangez vous consume. Se nourrir n'est pas seulement de l'alimentation — c'est discerner l'authenticité de l'attachement."
+      "label": "Leichtigkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.1- Berührung der Hände. Two luminous hands almost touching, energy f 291798.png",
+          "karte": "Going With The Flow",
+          "karte_de": "Mit dem Fluss gehen",
+          "karte_key": "minor_arcana.water.ace_going_with_the_flow",
+          "karte_nummer": 1,
+          "tiage": "La légèreté, ce n'est pas l'absence de lourdeur : c'est la confiance que tout s'arrangera. Lâche prise. Laisse-toi porter.",
+          "reflexion": "Dans quels domaines est-ce que je m'accroche au contrôle alors que je pourrais lâcher prise ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.2- Schlaf der Sterne. Ethereal figure resting on purple nebula cloud 495626.png",
+          "karte": "Slowing Down",
+          "karte_de": "Verlangsamen",
+          "karte_key": "minor_arcana.rainbows.knight_slowing_down",
+          "karte_nummer": 12,
+          "tiage": "La légèreté ne naît pas de l'accélération. Elle se révèle dans le ralentissement – lorsque tu prêtes l'oreille à ton souffle avant que le suivant ne vienne. C'est en marquant une pause consciente que l'on fait de la place à ce qui compte vraiment.",
+          "reflexion": "Allons-nous vraiment nous permettre de ralentir, ou allons-nous courir ensemble d'un instant à l'autre ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/Firefly_Leichtigkeit Var.3- Tanz der Polarität. Two spiral energies dancing, one golden solar 88722.png",
+          "karte": "Harmony",
+          "karte_de": "Harmonie",
+          "karte_key": "minor_arcana.water.10_harmony",
+          "karte_nummer": 10,
+          "tiage": "Lorsque tu cesses de lutter, l'harmonie se révèle être ton état naturel. Il ne reste alors que la légèreté.",
+          "reflexion": "Pouvons-nous nous réconcilier après une dispute ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_03_00000.png",
+          "karte": "Letting Go",
+          "karte_de": "Loslassen",
+          "karte_key": "minor_arcana.water.8_letting_go",
+          "karte_nummer": 8,
+          "tiage": "La légèreté la plus profonde ne vient pas du fait d'abandonner certaines tâches, mais de lâcher prise sur le fardeau que tu es toi-même. Lorsque tu cesses de t'accrocher à ton histoire, à l'image que tu as de toi-même et à ton besoin de contrôle, un espace s'ouvre. Lâcher prise n'est pas un abandon, c'est une arrivée.",
+          "reflexion": "Qui serais-je si je cessais de m'accrocher à mon histoire ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/Firefly_Gemini Flash_B3V1- Birds neither sowing nor reaping yet fed, Krishna's divine play and Zen master' 88722.png",
+          "karte": "Carefree",
+          "karte_de": "Sorglosigkeit",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_B3V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Dream Lightness",
+          "karte_de": "Traumleichtigkeit",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_B3V3- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Dance",
+          "karte_de": "Tanz",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B030_00001_ (2).png",
+          "karte": "Playfulness",
+          "karte_de": "Spielfreude",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/Erkenntnisse_Kapitel_03_00000 (2).png",
+          "karte": "Flow Light",
+          "karte_de": "Fließendes Licht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B4": {
-      "label": "Mouvement",
-      "frage": "Quelle importance accordez-vous au mouvement physique ?",
-      "karte": "Adventure",
-      "text": "Le mouvement est la vie. Chaque pas est une invitation vers l'inconnu. Le courage ne signifie pas la destination, mais la confiance."
+      "label": "Orientierung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B057_00001_.png",
+          "karte": "Awareness",
+          "karte_de": "Bewusstheit",
+          "karte_key": "major_arcana.7_awareness",
+          "karte_nummer": 7,
+          "tiage": "L'orientation ne vient pas de l'extérieur : elle naît dans le silence de ta conscience. Tu sais déjà où tu es. Il te suffit de faire une pause.",
+          "reflexion": "Suis-je pleinement présent, ou est-ce que je me contente de fonctionner ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_B4V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Inner Voice",
+          "karte_de": "Innere Stimme",
+          "karte_key": "major_arcana.2_inner_voice",
+          "karte_nummer": 2,
+          "tiage": "Lorsque deux personnes s'expriment ensemble en écoutant leur voix intérieure, elles n'ont plus besoin de carte. C'est la rencontre elle-même qui leur sert de repère.",
+          "reflexion": "Est-ce que je connais ma propre vérité, ou est-ce que je ne fais que répéter les convictions des autres ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B054_00001_.png",
+          "karte": "Receptivity",
+          "karte_de": "Empfänglichkeit",
+          "karte_key": "minor_arcana.water.queen_receptivity",
+          "karte_nummer": 13,
+          "tiage": "Une véritable orientation ne naît pas uniquement de la planification ; elle naît lorsque tu es prêt à recevoir : les signes de la vie, les impulsions du cœur, la sagesse de l'instant. La réceptivité n'est pas de la passivité. C'est l'art de laisser venir ce qui doit venir.",
+          "reflexion": "Suis-je vraiment ouvert(e) – ou trop absorbé(e) par mes propres projets pour être à l'écoute des conseils ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_04_00000.png",
+          "karte": "The Master",
+          "karte_de": "Der Meister",
+          "karte_key": "major_arcana.the_master",
+          "karte_nummer": null,
+          "tiage": "Le maître n'a plus besoin de carte : il est le centre. S'orienter au niveau 4 ne signifie pas connaître toutes les réponses. Cela signifie être tellement en phase avec son axe intérieur que l'on ne se perd pas, même sans chemin.",
+          "reflexion": "Est-ce que je reste fidèle à ma propre boussole intérieure, même si personne ne connaît le chemin et que personne ne me regarde ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B030_00001_.png",
+          "karte": "Compass",
+          "karte_de": "Kompass",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER - postiv mit 523487.png",
+          "karte": "The Thinker",
+          "karte_de": "Der Denker",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B054_00001_ (2).png",
+          "karte": "Order",
+          "karte_de": "Ordnung",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B057_00001_ (2).png",
+          "karte": "Clarity",
+          "karte_de": "Klarheit",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B057_00001_ (3).png",
+          "karte": "Breakthrough",
+          "karte_de": "Durchbruch",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B014_00001_ (3).png",
+          "karte": "Compass Portal",
+          "karte_de": "Kompass-Portal",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Erkenntnisse_Kapitel_04_00000 (2).png",
+          "karte": "Clarity Light",
+          "karte_de": "Klares Licht",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (8).png",
+          "karte": "Quest",
+          "karte_de": "Suche",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/Firefly_Gemini Flash.png",
+          "karte": "Cosmic Compass",
+          "karte_de": "Kosmischer Kompass",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        }
+      }
     },
     "#B5": {
-      "label": "Toucher",
-      "frage": "Quelle importance accordez-vous au fait d'être touché par autrui ?",
-      "karte": "Touch",
-      "text": "Le toucher est le premier miroir. Le corps parle bien avant que les mots ne naissent."
+      "label": "Wirksamkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B038_00001_.png",
+          "karte": "Thunderbolt",
+          "karte_de": "Der Blitz",
+          "karte_key": "major_arcana.16_thunderbolt",
+          "karte_nummer": 16,
+          "tiage": "C'est lorsque tu cesses de protéger ce qui n'est de toute façon pas réel que tu déploies toute ta puissance. L'éclair fait le ménage. Ce qui reste, c'est la force.",
+          "reflexion": "Suis-je prêt à renoncer à mes certitudes au nom de la vérité ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_Gemini Flash_Gebrauchsanweisung im Alien-Modu 952409 KfR.png",
+          "karte": "Success",
+          "karte_de": "Erfolg",
+          "karte_key": "minor_arcana.fire.6_success",
+          "karte_nummer": 6,
+          "tiage": "Lorsque deux personnes agissent en partageant une vision commune et claire, non seulement leur efficacité est décuplée, mais elles connaissent aussi un véritable succès : ce sentiment profond d'avoir fait ce qu'il fallait, ensemble, en toute authenticité. Le véritable succès, c'est l'épanouissement intérieur.",
+          "reflexion": "Agissons-nous par sentiment d'épanouissement intérieur, ou sous la pression des attentes extérieures ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B056_00001_.png",
+          "karte": "Politics",
+          "karte_de": "Politik",
+          "karte_key": "minor_arcana.clouds.7_politics",
+          "karte_nummer": 7,
+          "tiage": "Tu perds toute efficacité lorsque les jeux de pouvoir et les intentions cachées envahissent l'espace. Dès que la manipulation s'installe, l'action perd de sa force. Reconnais les jeux politiques qui se jouent au quotidien dans tes relations – et opte pour la transparence.",
+          "reflexion": "Est-ce que j'affiche clairement mes intentions, ou est-ce que je cache ce que je veux vraiment ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_05_00000.png",
+          "karte": "The Creator",
+          "karte_de": "Der Schöpfer",
+          "karte_key": "minor_arcana.fire.king_the_creator",
+          "karte_nummer": 14,
+          "tiage": "Le Créateur ne crée pas pour prouver son efficacité – il crée parce que la création est son essence même. L'efficacité au niveau 4 ne pose pas la question « Qu'ai-je fait ? », mais « De quel canal ai-je été le vecteur ? ». Tu n'es pas l'auteur – tu es l'ouverture par laquelle le Tout agit.",
+          "reflexion": "Est-ce que je vis en tant que créateur de ma vie – ou en réaction à ce qui m'arrive ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B008_00001_.png",
+          "karte": "Energy Mandala",
+          "karte_de": "Kraftmandala",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (5).png",
+          "karte": "Energy Transfer",
+          "karte_de": "Energie-Transfer",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B038_00001_ (2).png",
+          "karte": "Effectiveness",
+          "karte_de": "Wirksamkeit",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B056_00001_ (2).png",
+          "karte": "Courage",
+          "karte_de": "Mut",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B6": {
-      "label": "Repos",
-      "frage": "Quelle importance accordez-vous au repos et au sommeil suffisant ?",
-      "karte": "No-Thingness",
-      "text": "Le véritable repos ne naît pas de l'action — mais de l'être. Le néant est le plus grand refuge."
+      "label": "Freiheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B017_00001_.png",
+          "karte": "The Rebel",
+          "karte_de": "Der Rebell",
+          "karte_key": "major_arcana.4_the_rebel",
+          "karte_nummer": 4,
+          "tiage": "Ta liberté n'est pas une forme de protestation : c'est un « oui » à toi-même. Le véritable rebelle suit sa propre vérité, et non la résistance.",
+          "reflexion": "Est-ce que je m'adapte par amour… ou par peur d'être rejeté ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B036_00001_.png",
+          "karte": "Adventure",
+          "karte_de": "Abenteuer",
+          "karte_key": "minor_arcana.rainbows.page_adventure",
+          "karte_nummer": 11,
+          "tiage": "La liberté et l'amour ne sont pas incompatibles. Dans une véritable relation, le lien qui vous unit est source de liberté. Je peux t'aimer ET avoir besoin d'espace pour moi.",
+          "reflexion": "Est-ce que je vis à la fois la liberté ET la solidarité ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B044_00001_.png",
+          "karte": "Breakthrough",
+          "karte_de": "Durchbruch",
+          "karte_key": "major_arcana.11_breakthrough",
+          "karte_nummer": 11,
+          "tiage": "Ta liberté ne s'élargit pas grâce à plus d'espace, mais grâce à plus de clarté. Lorsque tu distingues les limites réelles de celles que tu t'es toi-même fixées, l'ancien s'effondre.",
+          "reflexion": "Est-ce que je reste par amour… ou par peur du changement ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_06_00000.png",
+          "karte": "Possibilities",
+          "karte_de": "Möglichkeiten",
+          "karte_key": "minor_arcana.fire.2_possibilities",
+          "karte_nummer": 2,
+          "tiage": "Au plus profond d’elle-même, la liberté n’est pas l’absence de contraintes : c’est l’éveil à l’infini des possibilités. Tu n’es pas prisonnier de ton histoire. Tu es plus que la somme de tes expériences. Chaque instant ouvre une porte qui n’a jamais été ouverte auparavant.",
+          "reflexion": "Quelle version de moi-même n'est pas encore née – et qu'est-ce qui me fait peur à l'idée de la rencontrer ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B006_00001_.png",
+          "karte": "Boundless",
+          "karte_de": "Grenzenlos",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B006_00001_ (2).png",
+          "karte": "Cloud Freedom",
+          "karte_de": "Wolkenfreiheit",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B017_00001_ (2).png",
+          "karte": "Aloneness",
+          "karte_de": "Alleinsein",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B036_00001_ (2).png",
+          "karte": "The Rebel",
+          "karte_de": "Der Rebell",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B044_00001_ (2).png",
+          "karte": "Transformation",
+          "karte_de": "Transformation",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B7": {
-      "label": "Expression-sexuelle",
-      "frage": "Quelle importance accordez-vous à l'expression sexuelle ?",
-      "karte": "Passion",
-      "text": "La sexualité est un feu sacré — lorsque vous ne cherchez pas à le posséder. Expression, non appropriation."
+      "label": "Intensität",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B014_00001_.png",
+          "karte": "The Lovers",
+          "karte_de": "Die Liebenden",
+          "karte_key": "major_arcana.6_the_lovers",
+          "karte_nummer": 6,
+          "tiage": "Ton intensité n'est pas un défaut, c'est un don. Les amoureux ont des ailes : leur passion les porte au lieu de les consumer.",
+          "reflexion": "Suis-je vraiment présent dans l'intimité – ou est-ce que je fais simplement semblant ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B048_00001_.png",
+          "karte": "Intensity",
+          "karte_de": "Intensität",
+          "karte_key": "minor_arcana.fire.knight_intensity",
+          "karte_nummer": 12,
+          "tiage": "Lorsque deux personnes sont pleinement présentes l’une pour l’autre, leur rencontre brille comme un feu pur. C’est l’intensité dans sa forme la plus sacrée.",
+          "reflexion": "Suis-je vraiment là quand je suis là ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B045_00001_.png",
+          "karte": "Projections",
+          "karte_de": "Projektionen",
+          "karte_key": "minor_arcana.water.7_projections",
+          "karte_nummer": 7,
+          "tiage": "Les rencontres les plus intenses sont comme des miroirs. Ce qui te touche le plus – l'admiration ou le rejet – vit aussi en toi. L'intensité est une invitation à la connaissance de soi : qu'est-ce que la force de ma réaction m'apprend sur moi-même ?",
+          "reflexion": "Que m'apprend mon intensité sur moi-même – et non sur l'autre ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_07_00000.png",
+          "karte": "Passion",
+          "karte_de": "Leidenschaft",
+          "karte_key": "zusaetzliche_karten.passion",
+          "karte_nummer": null,
+          "tiage": "La passion sacrée ne demande pas la permission. C'est le feu qui te révèle EN ACTION – non pas ce que tu fais, mais QUI tu es lorsque tu brûles. L'intensité de niveau 4 n'est pas de l'adrénaline – c'est un abandon sans ego.",
+          "reflexion": "Qu'est-ce qui me passionne à ce point que j'en oublie qui je suis ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B009_00001_.png",
+          "karte": "Star Burst",
+          "karte_de": "Sternexplosion",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B053_00001_.png",
+          "karte": "Lightning",
+          "karte_de": "Blitz",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B045_00001_ (2).png",
+          "karte": "Passion",
+          "karte_de": "Leidenschaft",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B048_00001_ (2).png",
+          "karte": "Joy",
+          "karte_de": "Freude",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B012_00001_ (3).png",
+          "karte": "Energy Waves",
+          "karte_de": "Energiewellen",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B8": {
-      "label": "Sécurité-physique",
-      "frage": "Quelle importance accordez-vous à la sécurité physique ?",
-      "karte": "Courage",
-      "text": "La sécurité n'est pas l'absence de danger — c'est l'éclosion au cœur même de la pierre."
+      "label": "Entwicklung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png",
+          "karte": "The Fool",
+          "karte_de": "Der Narr",
+          "karte_key": "major_arcana.0_the_fool",
+          "karte_nummer": 0,
+          "tiage": "Ton évolution commence là où s'arrêtent tes connaissances. Le fou n'est pas naïf : il est assez sage pour accueillir l'inconnu à bras ouverts.",
+          "reflexion": "Est-ce que je te connais – ou est-ce que j'ai seulement l'impression de te connaître ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B065_00001_.png",
+          "karte": "Transformation",
+          "karte_de": "Transformation",
+          "karte_key": "major_arcana.13_transformation",
+          "karte_nummer": 13,
+          "tiage": "C'est dans la rencontre que vous vous transformez mutuellement. Non pas parce que vous le voulez, mais parce qu'une véritable connexion entraîne inévitablement un changement.",
+          "reflexion": "Puis-je accepter la mort du vieil homme – ou m'y accrocher de toutes mes forces ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/image_00000.png",
+          "karte": "Change",
+          "karte_de": "Veränderung",
+          "karte_key": "major_arcana.10_change",
+          "karte_nummer": 10,
+          "tiage": "Ton évolution n'est pas un chemin tout tracé : c'est une danse avec le changement. Accroche-toi à ce qui est essentiel et laisse tout le reste de côté.",
+          "reflexion": "Est-ce que je m'adapte au changement – ou est-ce que je m'y oppose ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_08_00000.png",
+          "karte": "Maturity",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.ace_maturity",
+          "karte_nummer": 1,
+          "tiage": "La maturité est le but de tout développement – et, paradoxalement, sa fin. L'être mûr cesse de grandir et commence à être. Le développement au niveau 4 signifie : tu ne deviens plus – tu es déjà. Le fruit n'a plus besoin de grossir. Il peut tomber.",
+          "reflexion": "Et si le développement ne signifiait pas la croissance, mais l'épanouissement ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B011_00001_ (4).png",
+          "karte": "Portal",
+          "karte_de": "Portal",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B032_00001_.png",
+          "karte": "Cosmic Spiral",
+          "karte_de": "Kosmische Spirale",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487.png",
+          "karte": "New World",
+          "karte_de": "Neue Welt",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B047_00001_.png",
+          "karte": "Wide Vision",
+          "karte_de": "Weite Vision",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B065_00001_ (2).png",
+          "karte": "Adventure",
+          "karte_de": "Abenteuer",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B011_00001_ (3).png",
+          "karte": "Star Gate",
+          "karte_de": "Sternentor",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/B014_00001_ (4).png",
+          "karte": "Breakthrough Portal",
+          "karte_de": "Durchbruch-Portal",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487 (1).png",
+          "karte": "Journey",
+          "karte_de": "Reise",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        }
+      }
     },
     "#B9": {
-      "label": "Abri",
-      "frage": "Quelle importance accordez-vous à un logement sûr ?",
-      "karte": "Harmony",
-      "text": "Un foyer est là où le cœur n'a pas besoin de lutter. L'harmonie intérieure est le véritable abri."
+      "label": "Gemeinschaft",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B033_00001_.png",
+          "karte": "Participation",
+          "karte_de": "Teilnahme",
+          "karte_key": "minor_arcana.fire.4_participation",
+          "karte_nummer": 4,
+          "tiage": "Ton besoin de communauté ne se comble pas par le simple fait d'appartenir à un groupe, mais par ta participation. Ce qui te rend unique enrichit la communauté.",
+          "reflexion": "Est-ce que je m'implique, ou est-ce que je me contente de m'adapter ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B024_00001_.png",
+          "karte": "Celebration",
+          "karte_de": "Feier",
+          "karte_key": "minor_arcana.water.3_celebration",
+          "karte_nummer": 3,
+          "tiage": "Quand vous faites la fête ensemble – sans raison particulière, sans programme – c'est la convivialité dans sa forme la plus pure qui s'installe.",
+          "reflexion": "Célébrons-nous nos succès – ou nous précipitons-nous simplement vers la tâche suivante ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B039_00001_.png",
+          "karte": "The Dream",
+          "karte_de": "Der Traum",
+          "karte_key": "minor_arcana.water.6_the_dream",
+          "karte_nummer": 6,
+          "tiage": "Toute communauté vivante porte en elle un rêve – une vision commune qui dépasse les individus. La question cruciale est la suivante : votre rêve est-il une graine vivante qui vous permet de grandir, ou une illusion figée qui vous coupe du présent ?",
+          "reflexion": "Partageons-nous un véritable rêve commun – ou projetons-nous nos désirs individuels les uns sur les autres ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_09_00000.png",
+          "karte": "Love",
+          "karte_de": "Liebe",
+          "karte_key": "zusaetzliche_karten.love",
+          "karte_nummer": null,
+          "tiage": "Au plus profond d’elle-même, la communauté n’est pas une organisation : c’est l’amour. Non pas l’amour qui exige et qui prend, mais l’amour qui reconnaît que nous ne sommes pas séparés. Tu n’aimes pas la communauté : tu en fais partie. Chaque véritable contact est un moment de prise de conscience : tu es aussi moi.",
+          "reflexion": "Est-ce que je vis la vie en communauté comme un retour à moi-même – ou comme une fuite loin de moi-même ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B060_00001_ (2).png",
+          "karte": "Network",
+          "karte_de": "Netzwerk",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B009_00001_ (2).png",
+          "karte": "Home Community",
+          "karte_de": "Heimatliche Gemeinschaft",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (9).png",
+          "karte": "Master and Sangha",
+          "karte_de": "Meister & Sangha",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B033_00001_ (2).png",
+          "karte": "Community",
+          "karte_de": "Gemeinschaft",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B039_00001_ (2).png",
+          "karte": "Participation",
+          "karte_de": "Teilhabe",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B008_00001_ (2).png",
+          "karte": "Dinner Circle",
+          "karte_de": "Abendrunde",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (6).png",
+          "karte": "Community Circle",
+          "karte_de": "Gemeinschaftskreis",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/B002_00001_ (4).png",
+          "karte": "Kitchen Sharing",
+          "karte_de": "Küchen-Teilen",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        }
+      }
     },
     "#B10": {
-      "label": "Constance",
-      "frage": "Quelle importance accordez-vous à la constance dans les relations ?",
-      "karte": "Completion",
-      "text": "La constance ne naît pas du fait de retenir, mais du fait de permettre à la vie de s'accomplir."
+      "label": "Anerkennung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B041_00001_.png",
+          "karte": "Warmth",
+          "karte_de": "Wärme",
+          "karte_key": "zusaetzliche_karten.warmth",
+          "karte_nummer": null,
+          "tiage": "La forme la plus profonde de reconnaissance, c'est la chaleur : ni approbation moralisatrice, ni éloge utilisé comme monnaie d'échange, mais le rayonnement naturel d'un cœur ouvert. La chaleur, c'est une présence qui ne juge pas. Quand tu te sens vraiment reconnu, c'est cette chaleur que tu ressens.",
+          "reflexion": "Est-ce que je leur témoigne ma reconnaissance par ma chaleur et ma présence sincères – ou est-ce que je leur accorde cette reconnaissance comme une récompense ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B047_00001_ (3).png",
+          "karte": "Playfulness",
+          "karte_de": "Verspieltheit",
+          "karte_key": "minor_arcana.fire.page_playfulness",
+          "karte_nummer": 11,
+          "tiage": "La plus belle forme de reconnaissance, c'est la légèreté : quand l'autre te voit tel que tu es, au point de pouvoir rire avec toi.",
+          "reflexion": "Sommes-nous capables de rire – même de nous-mêmes ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B023_00001_.png",
+          "karte": "Comparison",
+          "karte_de": "Vergleich",
+          "karte_key": "minor_arcana.clouds.5_comparison",
+          "karte_nummer": 5,
+          "tiage": "La reconnaissance disparaît dès l'instant où l'on commence à comparer. La comparaison fait de nous des objets sur une échelle plutôt que des êtres uniques. La reconnaissance la plus profonde reconnaît ceci : tu es un être unique – et un être unique n'a pas besoin d'échelle de mesure.",
+          "reflexion": "Est-ce que je reconnais l'autre dans son unicité – ou est-ce que je le compare sans cesse aux autres ou à moi-même ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_10_00000.png",
+          "karte": "Compassion",
+          "karte_de": "Mitgefühl",
+          "karte_key": "zusaetzliche_karten.compassion",
+          "karte_nummer": null,
+          "tiage": "La reconnaissance la plus profonde, c'est la compassion : tu ne vois pas l'autre parce qu'il te ressemble ou qu'il te conforte dans tes certitudes. Tu le vois parce qu'il est. La compassion, c'est une reconnaissance sans condition – ce regard qui dit : « Je te vois, et je n'ai pas besoin de te changer. »",
+          "reflexion": "Est-ce que je reconnais l'autre dans son unicité, ou est-ce que je le considère comme le reflet de mes propres besoins ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B041_00001_ (2).png",
+          "karte": "Appreciation",
+          "karte_de": "Wertschätzung",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B047_00001_.png",
+          "karte": "Respect",
+          "karte_de": "Respekt",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B047_00001_ (2).png",
+          "karte": "Success",
+          "karte_de": "Erfolg",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B023_00001_ (2).png",
+          "karte": "Significance",
+          "karte_de": "Bedeutsamkeit",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B11": {
-      "label": "Se-sentir-en-sécurité",
-      "frage": "Quelle importance accordez-vous au fait de vous sentir en sécurité émotionnellement ?",
-      "karte": "Trust",
-      "text": "Se sentir en sécurité ne signifie pas tout contrôler — mais sauter, même quand on ne voit pas le sol."
+      "label": "Gerechtigkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B035_00001_.png",
+          "karte": "Abundance",
+          "karte_de": "Fülle",
+          "karte_key": "minor_arcana.rainbows.king_abundance",
+          "karte_nummer": 14,
+          "tiage": "La justice qui découle d'une conscience de l'abondance est d'une autre nature que celle qui naît du manque. Celui qui sait qu'il y en a assez pour tout le monde partage différemment – non par devoir, mais par abondance. L'abondance est le fondement d'une équité généreuse.",
+          "reflexion": "Mon sens de la justice découle-t-il d'un sentiment d'abondance – ou de la crainte d'être lésé ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B029_00001_.png",
+          "karte": "Sharing",
+          "karte_de": "Teilen",
+          "karte_key": "minor_arcana.fire.queen_sharing",
+          "karte_nummer": 13,
+          "tiage": "Partager, c'est la justice en action. Lorsque tu partages en étant conscient de ton lien avec les autres – non par devoir, mais parce que tu débordes de générosité –, la justice ne s'impose pas comme une règle, mais s'exprime naturellement. Ce que tu donnes te revient, multiplié.",
+          "reflexion": "Est-ce que je partage par générosité et par attachement – ou par devoir et par obligation ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B024_00001_ (2).png",
+          "karte": "We Are the World",
+          "karte_de": "Wir sind die Welt",
+          "karte_key": "minor_arcana.rainbows.10_we_are_the_world",
+          "karte_nummer": 10,
+          "tiage": "La véritable justice ne s'arrête pas à sa propre porte. « Nous sommes le monde » signifie que mes actes ont des conséquences pour l'ensemble du réseau. Une justice relationnelle qui ne se soucie pas du monde qui l'entoure est restée à mi-chemin.",
+          "reflexion": "Quand on parle de justice, pensons-nous aussi à ceux qui ne sont pas à table – à toutes les personnes concernées, aux générations futures ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_11_00000.png",
+          "karte": "Understanding",
+          "karte_de": "Verstehen",
+          "karte_key": "minor_arcana.water.knight_understanding",
+          "karte_nummer": 12,
+          "tiage": "La justice sans compréhension n'est que loi. La justice accompagnée de compréhension est sagesse. Au niveau 4, nous ne nous demandons pas d'abord « Qu'est-ce qui est juste ? », mais « De quoi cette âme a-t-elle besoin ? ». La compréhension est le fondement sur lequel repose la véritable justice.",
+          "reflexion": "Puis-je agir avec justice sans porter de jugement – et porter un jugement sans condamner ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B060_00001_.png",
+          "karte": "Wheel of Balance",
+          "karte_de": "Rad des Gleichgewichts",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B029_00001_ (2).png",
+          "karte": "Understanding Differences",
+          "karte_de": "Unterschiede verstehen",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B035_00001_ (2).png",
+          "karte": "Shared Values",
+          "karte_de": "Gemeinsame Werte",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild  523487.png",
+          "karte": "Equal Lightning",
+          "karte_de": "Gleiches Feuer",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B12": {
-      "label": "Protection",
-      "frage": "Quelle importance accordez-vous au sentiment d'être protégé ?",
-      "karte": "Protection",
-      "text": "La protection n'est pas un bouclier — c'est l'espace où vous pouvez rester tendre."
+      "label": "Verbundenheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B021_00001_.png",
+          "karte": "Beyond Illusion",
+          "karte_de": "Jenseits der Illusion",
+          "karte_key": "major_arcana.20_beyond_illusion",
+          "karte_nummer": 20,
+          "tiage": "Le sentiment d'unité le plus profond ne naît pas de la proximité, mais de la prise de conscience que c'est la séparation qui est en réalité une illusion.",
+          "reflexion": "Est-ce que je ressens un lien affectif – ou simplement de la proximité ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B020_00001_.png",
+          "karte": "Touch",
+          "karte_de": "Berührung",
+          "karte_key": "zusaetzliche_karten.touch",
+          "karte_nummer": null,
+          "tiage": "La complicité commence dans le corps. Un contact plein d’attention peut guérir ce que les mots ne parviennent jamais à atteindre. Le corps est le lieu de rencontre le plus sincère qui soit – il ne ment pas. Avant tout langage, avant toute histoire : toi et moi, deux corps qui se touchent.",
+          "reflexion": "Sommes-nous vraiment présents physiquement l'un pour l'autre, ou ne sommes-nous liés que dans nos pensées ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B027_00001_.png",
+          "karte": "Sorrow",
+          "karte_de": "Trauer",
+          "karte_key": "minor_arcana.clouds.9_sorrow",
+          "karte_nummer": 9,
+          "tiage": "C'est l'attachement le plus profond qui révèle aussi la vulnérabilité la plus profonde. Le deuil est le prix de l'amour – et en même temps sa preuve. Si tu es capable de faire le deuil de quelqu'un ou de quelque chose, c'est que tu étais vraiment attaché. Laisse le deuil s'exprimer : il rend hommage à ce qui a été.",
+          "reflexion": "Puis-je me permettre de pleurer lorsque le lien se rompt – comme preuve de son authenticité et de sa profondeur ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_12_00000.png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "zusaetzliche_karten.intimacy",
+          "karte_nummer": null,
+          "tiage": "Au plus profond d'elle-même, la connexion, c'est l'intimité : la capacité d'être vu sans masque – et de voir l'autre sans masque. Non pas liés par des similitudes ou par une histoire commune, mais par la vérité nue de l'instant présent. Le plus grand risque. Le plus beau des cadeaux.",
+          "reflexion": "Est-ce que je me permets d'être vraiment vu, même dans ce que je cache le plus ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B042_00001_.png",
+          "karte": "Soul Connection",
+          "karte_de": "Seelenverbindung",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B042_00001_ (2).png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B053_00001_ (2).png",
+          "karte": "Passion in Rain",
+          "karte_de": "Leidenschaft im Regen",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B014_00001_ (2).png",
+          "karte": "Touch",
+          "karte_de": "Berührung",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B020_00001_ (2).png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B021_00001_ (2).png",
+          "karte": "Love",
+          "karte_de": "Liebe",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/B027_00001_ (2).png",
+          "karte": "Empathy",
+          "karte_de": "Empathie",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/B011_00001_ (5).png",
+          "karte": "Storm Comfort",
+          "karte_de": "Sturm-Geborgenheit",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/B012_00001_ (4).png",
+          "karte": "Home Dance",
+          "karte_de": "Heimtanz",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        },
+        "V14": {
+          "kontext": "V14",
+          "bild": "Future/B047_00001_ (4).png",
+          "karte": "Joyful Glance",
+          "karte_de": "Freudiger Blick",
+          "karte_key": "custom.v14",
+          "karte_nummer": null
+        },
+        "V15": {
+          "kontext": "V15",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild  523487 (1).png",
+          "karte": "Rain Romance",
+          "karte_de": "Regen-Romantik",
+          "karte_key": "custom.v15",
+          "karte_nummer": null
+        }
+      }
     },
     "#B13": {
-      "label": "Stabilité",
-      "frage": "Quelle importance accordez-vous à la stabilité émotionnelle ?",
-      "karte": "Maturity",
-      "text": "La stabilité n'est pas la rigidité. C'est un équilibre mûri — en dedans comme en dehors."
+      "label": "Selbsterkenntnis",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "B013.png",
+          "karte": "Patience",
+          "karte_de": "Geduld",
+          "karte_key": "minor_arcana.rainbows.7_patience",
+          "karte_nummer": 7,
+          "tiage": "La connaissance de soi commence lorsque tu es prêt à observer avec patience, sans précipitation et sans jugement. La vérité sur toi-même se révèle peu à peu.",
+          "reflexion": "Suis-je patient avec moi-même… et avec toi ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B018_00001_ (2).png",
+          "karte": "Creativity",
+          "karte_de": "Kreativität",
+          "karte_key": "major_arcana.3_creativity",
+          "karte_nummer": 3,
+          "tiage": "La connaissance de soi naît aussi de l'expression créative. Ce que tu crées – sans public, sans but – te révèle qui tu es vraiment. C'est dans la création que l'inconscient se manifeste. La créativité est une révélation de soi.",
+          "reflexion": "Que crée-je quand personne ne me regarde – et qu'est-ce que cela révèle de ma nature profonde ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B066_00001_.png",
+          "karte": "New Vision",
+          "karte_de": "Neue Sicht",
+          "karte_key": "major_arcana.12_new_vision",
+          "karte_nummer": 12,
+          "tiage": "Ta perception de toi-même s'élargit lorsque tu es prêt à te laisser bouleverser. Laisse-toi aller. Ce que tu verras alors a toujours été là.",
+          "reflexion": "Suis-je prêt à me voir sous un nouveau jour ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_13_00000.png",
+          "karte": "Turning In",
+          "karte_de": "Innenwendung",
+          "karte_key": "minor_arcana.water.4_turning_in",
+          "karte_nummer": 4,
+          "tiage": "La connaissance de soi, c'est se tourner vers l'intérieur – non pas pour trouver des réponses, mais pour reconnaître celui qui pose les questions. Qui suis-je lorsque je cesse d'être quelqu'un ? Ce retour sur soi n'est ni une technique ni un concept. C'est la fin de toute quête – et le début de la connaissance.",
+          "reflexion": "Que reste-t-il si je me détache de tous mes rôles, de toutes mes histoires et de toutes mes convictions ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B012_00001_.png",
+          "karte": "Inner Light",
+          "karte_de": "Inneres Licht",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B012_00001_ (2).png",
+          "karte": "Cave of Insight",
+          "karte_de": "Höhle der Erkenntnis",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B032_00001_ (2).png",
+          "karte": "Mirror",
+          "karte_de": "Spiegel",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487.png",
+          "karte": "Eternal Knowledge",
+          "karte_de": "Ewiges Wissen",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B014_00001_ (5).png",
+          "karte": "Mutual Recognition",
+          "karte_de": "Gegenseitige Erkenntnis",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER  523487.png",
+          "karte": "Dark Thinker",
+          "karte_de": "Dunkler Denker",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        }
+      }
     },
     "#B14": {
-      "label": "Légèreté",
-      "frage": "Quelle importance accordez-vous à la légèreté dans le quotidien ?",
-      "karte": "Playfulness",
-      "text": "La légèreté est l'art de faire confiance à l'instant — non parce qu'il est facile, mais parce que vous l'êtes."
+      "label": "Sinn",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B062_00001_.png",
+          "karte": "Guidance",
+          "karte_de": "Führung",
+          "karte_key": "minor_arcana.rainbows.3_guidance",
+          "karte_nummer": 3,
+          "tiage": "Le sens ne s'impose pas. Il se révèle lorsque tu cesses de le chercher et que tu commences à suivre ce qui te touche vraiment.",
+          "reflexion": "Dois-je suivre des autorités aveuglément… ou ma propre vérité ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B069_00001_.png",
+          "karte": "Experiencing",
+          "karte_de": "Erfahren",
+          "karte_key": "minor_arcana.fire.3_experiencing",
+          "karte_nummer": 3,
+          "tiage": "Le sens ne se révèle pas seulement dans la réflexion : il se déploie dans l'expérience totale. Lorsque tu t'immerges pleinement, sans retenue, surgit ce moment où tout prend tout son sens. Non pas comme une explication, mais comme une expérience vivante.",
+          "reflexion": "Est-ce que je vis pleinement mes rencontres, ou est-ce que je me contente de les observer à distance, en toute sécurité ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B063_00001_.png",
+          "karte": "Past Lives",
+          "karte_de": "Vergangene Leben",
+          "karte_key": "major_arcana.18_past_lives",
+          "karte_nummer": 18,
+          "tiage": "Le sens se révèle aussi avec le recul : quels schémas se répètent dans ta vie, dans tes relations ? Le passé – qu’il soit compris au sens littéral ou symbolique – recèle des messages sur ce que tu es venu apprendre. Identifie le schéma, et le sens se révélera.",
+          "reflexion": "Quels schémas se répètent dans mes relations – et que veulent-ils m'apprendre sur ma mission profonde dans la vie ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_14_00000.png",
+          "karte": "Completion",
+          "karte_de": "Vollendung",
+          "karte_key": "major_arcana.21_completion",
+          "karte_nummer": 21,
+          "tiage": "Le sens n'est pas quelque chose que l'on trouve : c'est ce que l'on perçoit lorsqu'on porte un regard sur sa vie : l'arc qui se referme. L'aboutissement n'est pas la fin, mais le moment où le schéma se révèle. Ta vie prend tout son sens non pas par l'explication, mais par la forme.",
+          "reflexion": "Quand je repenserai à ma vie à la fin de mes jours, quel aura été le fil conducteur qui a tout relié ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B002_00001_.png",
+          "karte": "Tree of Life",
+          "karte_de": "Lebensbaum",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (7).png",
+          "karte": "Cosmic Tree",
+          "karte_de": "Kosmischer Lebensbaum",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B062_00001_ (2).png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B063_00001_ (2).png",
+          "karte": "Sharing",
+          "karte_de": "Beitrag",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B002_00001_ (3).png",
+          "karte": "Purple Tree of Life",
+          "karte_de": "Violetter Lebensbaum",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B002_00002_.png",
+          "karte": "Sunset Tree",
+          "karte_de": "Sonnenuntergangsbaum",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (1).png",
+          "karte": "Sacred Traditions",
+          "karte_de": "Heilige Traditionen",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        }
+      }
     },
     "#B15": {
-      "label": "Sentiment-d'appartenance",
-      "frage": "Quelle importance accordez-vous au sentiment d'être en sécurité affective ?",
-      "karte": "We Are the World",
-      "text": "Le sentiment d'appartenance naît quand vous vous savez relié — non par la proximité, mais par la connexion."
+      "label": "Integrität",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B015_00001_.png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "major_arcana.17_silence",
+          "karte_nummer": 17,
+          "tiage": "L'intégrité se cultive dans le silence. Pas dans le tumulte des justifications et des explications, mais dans ces moments où tu t'arrêtes un instant pour écouter : ce que je fais correspond-il à ce que je suis vraiment ? Le silence est le miroir le plus honnête.",
+          "reflexion": "Est-ce que je m'accorde suffisamment de calme pour être honnête avec moi-même, loin des distractions et des attentes ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B050_00001_.png",
+          "karte": "Ordinariness",
+          "karte_de": "Gewöhnlichkeit",
+          "karte_key": "minor_arcana.rainbows.8_ordinariness",
+          "karte_nummer": 8,
+          "tiage": "L'intégrité ne se manifeste pas dans les grands moments, mais dans le quotidien. La façon dont tu vis au quotidien, dont tu gères les petites choses, en dit long sur ta personnalité. C'est dans le quotidien que se révèle la vérité.",
+          "reflexion": "Est-ce que je vis selon mes valeurs au quotidien – ou seulement quand quelqu'un me regarde ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B051_00001_.png",
+          "karte": "Morality",
+          "karte_de": "Moral",
+          "karte_key": "minor_arcana.clouds.queen_morality",
+          "karte_nummer": 13,
+          "tiage": "L'intégrité n'est pas une morale imposée : c'est une éthique vécue. La morale vient de l'extérieur, l'éthique de l'intérieur. Si tu agis parce que tu y es obligé, c'est de la morale. Si tu agis parce que cela te semble juste au plus profond de toi-même, c'est de l'intégrité.",
+          "reflexion": "Est-ce que j'agis selon mes propres valeurs – ou selon ce que les autres attendent de moi ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_15_00000.png",
+          "karte": "Commitment",
+          "karte_de": "Verbindlichkeit",
+          "karte_key": "zusaetzliche_karten.commitment",
+          "karte_nummer": null,
+          "tiage": "Au plus profond d’elle-même, l’intégrité est un engagement envers soi-même. Non pas comme un devoir, mais comme une loyauté absolue envers ce que l’on a compris. L’engagement n’est pas une chaîne : c’est la forme que prend ta liberté. Celui qui reste fidèle à lui-même n’a pas besoin de masque.",
+          "reflexion": "À quelle promesse que je me suis faite – et non à celle faite à autrui – suis-je vraiment fidèle ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B015_00001_ (2).png",
+          "karte": "Integrity",
+          "karte_de": "Integrität",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B050_00001_ (2).png",
+          "karte": "Authenticity",
+          "karte_de": "Authentizität",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B051_00001_ (2).png",
+          "karte": "Genuineness",
+          "karte_de": "Echtheit",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne schild text wie abgebildet - zusätzli 523487.png",
+          "karte": "Infinite Heart",
+          "karte_de": "Unendliches Herz",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B16": {
-      "label": "Chaleur",
-      "frage": "Quelle importance accordez-vous à la chaleur émotionnelle ?",
-      "karte": "Warmth",
-      "text": "La chaleur n'est pas un sentiment, mais une présence qui ne juge pas."
-    },
-    "#B17": {
-      "label": "Reconnaissance",
-      "frage": "Quelle importance accordez-vous à la reconnaissance de votre partenaire ?",
-      "karte": "Success",
-      "text": "La reconnaissance advient quand on vous voit sans masque — non pour vos performances, mais pour votre être."
-    },
-    "#B18": {
-      "label": "Proximité",
-      "frage": "Quelle importance accordez-vous à la proximité émotionnelle ?",
-      "karte": "The Lovers",
-      "text": "La proximité est le pont entre deux mondes intérieurs — elle commence par l'intimité avec soi-même."
-    },
-    "#B19": {
-      "label": "Compagnie",
-      "frage": "Quelle importance accordez-vous à la compagnie ?",
-      "karte": "Participation",
-      "text": "La compagnie nourrit quand vous n'avez pas besoin de faire vos preuves. Être là suffit."
-    },
-    "#B20": {
-      "label": "Intimité",
-      "frage": "Quelle importance accordez-vous à l'intimité ?",
-      "karte": "Intimacy",
-      "text": "L'intimité est la nudité de l'âme — non celle du corps."
-    },
-    "#B21": {
-      "label": "Amour",
-      "frage": "Quelle importance accordez-vous à l'amour ?",
-      "karte": "Love",
-      "text": "L'amour n'est pas une relation. C'est un espace. Quand vous aimez, vous laissez libre."
-    },
-    "#B22": {
-      "label": "Sollicitude",
-      "frage": "Quelle importance accordez-vous au fait de prendre soin des autres ?",
-      "karte": "Compassion",
-      "text": "La sollicitude est un don sans exigence — elle arrose sans compter."
-    },
-    "#B23": {
-      "label": "Soutien",
-      "frage": "Quelle importance accordez-vous au soutien ?",
-      "karte": "Support",
-      "text": "Le soutien est un sol invisible. Vous savez qu'il est là — parce que vous osez."
-    },
-    "#B24": {
-      "label": "Être-là-l'un-pour-l'autre",
-      "frage": "Quelle importance accordez-vous au fait d'être là l'un pour l'autre ?",
-      "karte": "Friendliness",
-      "text": "Être là l'un pour l'autre signifie grandir ensemble dans le silence — sans emprise, sans obligation."
-    },
-    "#B25": {
-      "label": "Acceptation",
-      "frage": "Quelle importance accordez-vous à l'acceptation ?",
-      "karte": "Acceptance",
-      "text": "L'acceptation est le premier souffle de liberté. Vous cessez de lutter — et la vie respire à travers vous."
-    },
-    "#B26": {
-      "label": "Compassion",
-      "frage": "Quelle importance accordez-vous à la compassion ?",
-      "karte": "Completion",
-      "text": "La compassion complète le cercle entre vous et l'autre. C'est la reconnaissance : nous ne sommes pas séparés."
-    },
-    "#B27": {
-      "label": "Considération",
-      "frage": "Quelle importance accordez-vous à la considération ?",
-      "karte": "Trust",
-      "text": "Être pris en considération signifie avoir une place dans la conscience de l'autre. C'est un acte de confiance."
-    },
-    "#B28": {
-      "label": "Empathie",
-      "frage": "Quelle importance accordez-vous à l'empathie ?",
-      "karte": "Receptivity",
-      "text": "L'empathie est la capacité d'écouter avec le cœur. La coupe doit être vide pour recueillir les larmes de l'autre."
-    },
-    "#B29": {
-      "label": "Confiance",
-      "frage": "Quelle importance accordez-vous à la confiance ?",
-      "karte": "Change",
-      "text": "La confiance est le courage de s'abandonner au changement. Elle dit oui avant qu'il n'y ait de certitude."
-    },
-    "#B30": {
-      "label": "Attention",
-      "frage": "Quelle importance accordez-vous à l'attention ?",
-      "karte": "Awareness",
-      "text": "Recevoir de l'attention est le don de la présence attentive. La conscience se tourne vers ce qui compte."
-    },
-    "#B31": {
-      "label": "Être-vu",
-      "frage": "Quelle importance accordez-vous au fait d'être vu ?",
-      "karte": "The Lovers",
-      "text": "Être vu signifie être reconnu dans son essence. Les amants se voient l'un l'autre sans voile."
-    },
-    "#B32": {
-      "label": "Être-compris",
-      "frage": "Quelle importance accordez-vous au fait d'être compris ?",
-      "karte": "Understanding",
-      "text": "Être compris va au-delà des mots. C'est le sentiment que quelqu'un parle le langage de votre cœur."
-    },
-    "#B33": {
-      "label": "Harmonie",
-      "frage": "Quelle importance accordez-vous à l'harmonie ?",
-      "karte": "Rebirth",
-      "text": "La véritable harmonie naît de la renaissance — du lâcher-prise des anciennes dissonances."
-    },
-    "#B34": {
-      "label": "Autodétermination",
-      "frage": "Quelle importance accordez-vous à l'autodétermination ?",
-      "karte": "Aloneness",
-      "text": "L'autodétermination commence dans la solitude. Seul celui qui s'appartient peut choisir librement."
-    },
-    "#B35": {
-      "label": "Pouvoir-choisir",
-      "frage": "Quelle importance accordez-vous au fait de pouvoir choisir ?",
-      "karte": "Transformation",
-      "text": "Chaque choix est une petite transformation. Pouvoir choisir signifie façonner activement sa vie."
-    },
-    "#B36": {
-      "label": "Indépendance",
-      "frage": "Quelle importance accordez-vous à l'indépendance ?",
-      "karte": "The Rebel",
-      "text": "L'indépendance est le chemin du rebelle. Il suit sa propre vérité, même quand elle va à contre-courant."
-    },
-    "#B37": {
-      "label": "Avoir-de-l'espace",
-      "frage": "Quelle importance accordez-vous au fait d'avoir de l'espace ?",
-      "karte": "Adventure",
-      "text": "Avoir de l'espace signifie liberté de découvrir. L'aventure a besoin d'étendue, non d'étroitesse."
-    },
-    "#B38": {
-      "label": "Spontanéité",
-      "frage": "Quelle importance accordez-vous à la spontanéité ?",
-      "karte": "Playfulness",
-      "text": "La spontanéité est la danse de l'instant. L'enfant joueur en vous ne connaît pas de plans — seulement la joie."
-    },
-    "#B39": {
-      "label": "Collaboration",
-      "frage": "Quelle importance accordez-vous à la collaboration ?",
-      "karte": "Participation",
-      "text": "La collaboration est une création partagée. Quand tous participent, il naît plus que la somme des parties."
-    },
-    "#B40": {
-      "label": "Communication",
-      "frage": "Quelle importance accordez-vous à la communication ?",
-      "karte": "The Lovers",
-      "text": "La véritable communication est le dialogue de deux cœurs. Les amants parlent aussi dans le silence."
-    },
-    "#B41": {
-      "label": "Communauté",
-      "frage": "Quelle importance accordez-vous à la communauté ?",
-      "karte": "We Are the World",
-      "text": "La communauté est la reconnaissance : nous sommes tous des vagues du même océan. La connexion est notre état naturel."
-    },
-    "#B42": {
-      "label": "Appartenance",
-      "frage": "Quelle importance accordez-vous à l'appartenance ?",
-      "karte": "We Are the World",
-      "text": "L'appartenance n'est pas une possession — c'est savoir que vous faites partie du Tout."
-    },
-    "#B43": {
-      "label": "Réciprocité",
-      "frage": "Quelle importance accordez-vous à la réciprocité ?",
-      "karte": "Going With The Flow",
-      "text": "La réciprocité est le flux naturel entre donner et recevoir. Comme l'eau, elle trouve son équilibre."
-    },
-    "#B44": {
-      "label": "Respect",
-      "frage": "Quelle importance accordez-vous au respect ?",
-      "karte": "The Master",
-      "text": "Le véritable respect commence par soi-même. Le maître honore la vie sous toutes ses formes."
-    },
-    "#B45": {
-      "label": "Avoir-du-sens",
-      "frage": "Quelle importance accordez-vous au fait d'avoir du sens ?",
-      "karte": "Ripeness",
-      "text": "Le sens mûrit comme un fruit. Quand le temps est venu, ce que vous avez apporté devient visible."
-    },
-    "#B46": {
-      "label": "Beauté",
-      "frage": "Quelle importance accordez-vous à la beauté ?",
-      "karte": "Creativity",
-      "text": "La beauté est le langage de l'âme. La créativité rend visible ce que le cœur ressent."
-    },
-    "#B47": {
-      "label": "Loisirs",
-      "frage": "Quelle importance accordez-vous aux loisirs ?",
-      "karte": "Moment to Moment",
-      "text": "Les loisirs sont l'art d'être dans l'instant. Ne pas remplir, mais vider — voilà le véritable repos."
-    },
-    "#B48": {
-      "label": "Joie",
-      "frage": "Quelle importance accordez-vous à la joie ?",
-      "karte": "Integration",
-      "text": "La joie naît quand toutes les parties de vous se réunissent. L'intégration est le chemin vers la joie profonde."
-    },
-    "#B49": {
-      "label": "Humour",
-      "frage": "Quelle importance accordez-vous à l'humour ?",
-      "karte": "Celebration",
-      "text": "L'humour est la célébration de l'absurde. Celui qui sait rire a compris que la vie est un jeu."
-    },
-    "#B50": {
-      "label": "Authenticité",
-      "frage": "Quelle importance accordez-vous à l'authenticité ?",
-      "karte": "Integration",
-      "text": "L'authenticité est intégration. Quand l'intérieur et l'extérieur s'accordent, vous êtes pleinement vous-même."
-    },
-    "#B51": {
-      "label": "Sincérité",
-      "frage": "Quelle importance accordez-vous à la sincérité ?",
-      "karte": "Friendliness",
-      "text": "La sincérité se révèle dans la bienveillance envers soi-même. Seul celui qui ne se déguise pas peut être véritablement amical."
-    },
-    "#B52": {
-      "label": "Intégrité",
-      "frage": "Quelle importance accordez-vous à l'intégrité ?",
-      "karte": "Healing",
-      "text": "L'intégrité est la guérison de la division intérieure. Quand vous êtes intègre, vous êtes entier."
-    },
-    "#B53": {
-      "label": "Présence",
-      "frage": "Quelle importance accordez-vous à la présence ?",
-      "karte": "Awareness",
-      "text": "La présence est la conscience vécue. Ici et maintenant — c'est le seul lieu où la vie se déroule."
-    },
-    "#B54": {
-      "label": "Ordre",
-      "frage": "Quelle importance accordez-vous à l'ordre ?",
-      "karte": "Understanding",
-      "text": "L'ordre naît de la compréhension. Quand vous percez les choses à jour, elles trouvent leur place."
-    },
-    "#B55": {
-      "label": "Conscience",
-      "frage": "Quelle importance accordez-vous à la conscience ?",
-      "karte": "Consciousness",
-      "text": "La conscience est le ciel — les pensées ne sont que des nuages. Vous êtes le ciel, pas les nuages."
-    },
-    "#B56": {
-      "label": "Défi",
-      "frage": "Quelle importance accordez-vous aux défis ?",
-      "karte": "Courage",
-      "text": "Les défis appellent votre courage. Chaque obstacle surmonté vous rend plus fort."
-    },
-    "#B57": {
-      "label": "Clarté",
-      "frage": "Quelle importance accordez-vous à la clarté ?",
-      "karte": "Breakthrough",
-      "text": "La clarté vient après la percée. Quand les brumes se dissipent, vous voyez ce qui a toujours été là."
-    },
-    "#B58": {
-      "label": "Compétence",
-      "frage": "Quelle importance accordez-vous à la compétence ?",
-      "karte": "The Creator",
-      "text": "La compétence est une maîtrise en devenir. Le créateur affine son art par une pratique empreinte d'amour."
-    },
-    "#B59": {
-      "label": "Efficience",
-      "frage": "Quelle importance accordez-vous à l'efficience ?",
-      "karte": "The Master",
-      "text": "La véritable efficience est une précision sans effort. Le maître ne gaspille aucune énergie — il coule."
-    },
-    "#B60": {
-      "label": "Efficacité",
-      "frage": "Quelle importance accordez-vous à l'efficacité ?",
-      "karte": "Totality",
-      "text": "L'efficacité naît de la totalité. Quoi que vous fassiez — faites-le entièrement, et cela portera ses fruits."
-    },
-    "#B61": {
-      "label": "Croissance",
-      "frage": "Quelle importance accordez-vous à la croissance ?",
-      "karte": "Rebirth",
-      "text": "La croissance est une renaissance continue. Chaque jour meurt quelque chose d'ancien pour que quelque chose de nouveau puisse éclore."
-    },
-    "#B62": {
-      "label": "Sens",
-      "frage": "Quelle importance accordez-vous au sens ?",
-      "karte": "Silence",
-      "text": "Dans le silence se révèle le sens. Il ne peut être pensé — seulement ressenti, dans la profondeur du silence."
-    },
-    "#B63": {
-      "label": "Contribuer",
-      "frage": "Quelle importance accordez-vous au fait de contribuer ?",
-      "karte": "Sharing",
-      "text": "Contribuer est un partage naturel. Quand vous donnez depuis l'abondance, vous vous enrichissez vous-même."
-    },
-    "#B64": {
-      "label": "Créativité",
-      "frage": "Quelle importance accordez-vous à la créativité ?",
-      "karte": "Creativity",
-      "text": "La créativité est votre nature. Quand vous créez, vous ne faites qu'un avec l'univers qui crée sans cesse."
-    },
-    "#B65": {
-      "label": "Découverte",
-      "frage": "Quelle importance accordez-vous à la découverte ?",
-      "karte": "Adventure",
-      "text": "La découverte est l'aventure de l'inconnu. Chaque pas vers le nouveau est un pas vers votre immensité."
-    },
-    "#B66": {
-      "label": "Apprentissage",
-      "frage": "Quelle importance accordez-vous à l'apprentissage ?",
-      "karte": "Understanding",
-      "text": "L'apprentissage est le chemin vers la compréhension. Le véritable élève reste toujours curieux, toujours ouvert."
-    },
-    "#B67": {
-      "label": "Expression-de-soi",
-      "frage": "Quelle importance accordez-vous à l'expression de soi ?",
-      "karte": "Integration",
-      "text": "L'expression de soi est une intégration vécue. Quand vous êtes pleinement vous-même, votre être coule naturellement vers l'extérieur."
-    },
-    "#B68": {
-      "label": "Recevoir-des-stimulations",
-      "frage": "Quelle importance accordez-vous au fait de recevoir des stimulations ?",
-      "karte": "Source",
-      "text": "Les stimulations les plus profondes viennent de la source en vous. Les impulsions extérieures éveillent ce qui vit déjà à l'intérieur."
-    },
-    "#B69": {
-      "label": "Célébrer-la-vie",
-      "frage": "Quelle importance accordez-vous au fait de célébrer la vie ?",
-      "karte": "Celebration",
-      "text": "La vie est une fête — vous n'avez besoin d'aucune raison pour célébrer. Votre existence même est raison suffisante."
-    },
-    "#B70": {
-      "label": "Inspiration",
-      "frage": "Quelle importance accordez-vous à l'inspiration ?",
-      "karte": "Inner Voice",
-      "text": "L'inspiration est la voix de la sagesse intérieure. Elle vous murmure ce que votre cœur sait déjà."
-    },
-    "#B71": {
-      "label": "Exprimer-le-deuil",
-      "frage": "Quelle importance accordez-vous au fait d'exprimer le deuil ?",
-      "karte": "Sorrow",
-      "text": "Le deuil a besoin d'expression comme la pluie a besoin de tomber. Laissez-le couler — de l'autre côté attend la clarté."
-    },
-    "#B72": {
-      "label": "Discernement",
-      "frage": "Quelle importance accordez-vous au discernement ?",
-      "karte": "New Vision",
-      "text": "Le discernement est un nouveau regard. Parfois il faut changer de perspective pour voir ce qui a toujours été là."
-    },
-    "#B73": {
-      "label": "Début-et-fin",
-      "frage": "Quelle importance accordez-vous au début et à la fin ?",
-      "karte": "Completion",
-      "text": "Chaque fin porte en elle un commencement. Le cercle se ferme pour qu'un nouveau puisse commencer."
-    },
-    "#B74": {
-      "label": "Exercer-le-contrôle",
-      "frage": "Quelle importance accordez-vous au fait d'exercer le contrôle ?",
-      "karte": "Control",
-      "text": "Le véritable contrôle réside dans le lâcher-prise du contrôle. Le maître de la vie ne contrôle pas — il coule."
-    },
-    "#B75": {
-      "label": "Abandon",
-      "frage": "Quelle importance accordez-vous à l'abandon ?",
-      "karte": "Letting Go",
-      "text": "L'abandon est un lâcher-prise dans la confiance. Les mains vides sont prêtes à recevoir."
-    },
-    "#B76": {
-      "label": "Guider",
-      "frage": "Quelle importance accordez-vous au fait de guider ?",
-      "karte": "Guidance",
-      "text": "Guider signifie montrer aux autres le chemin que vous avez vous-même parcouru. Le guide authentique inspire."
-    },
-    "#B77": {
-      "label": "Être-guidé",
-      "frage": "Quelle importance accordez-vous au fait d'être guidé ?",
-      "karte": "Trust",
-      "text": "Être guidé requiert de la confiance. C'est le courage de tendre la main à un autre dans l'obscurité."
-    },
-    "#B78": {
-      "label": "Rituel",
-      "frage": "Quelle importance accordez-vous au rituel ?",
-      "karte": "The Master",
-      "text": "Les rituels sont des actes conscients. Ils apportent le sacré dans le quotidien et le quotidien dans le sacré."
-    },
-    "#B79": {
-      "label": "Aftercare",
-      "frage": "Quelle importance accordez-vous à l'aftercare ?",
-      "karte": "Healing",
-      "text": "L'aftercare est une guérison attentive. Elle donne à ce qui s'est passé l'espace pour s'intégrer."
-    },
-    "#B80": {
-      "label": "Poser-des-limites",
-      "frage": "Quelle importance accordez-vous au fait de poser des limites ?",
-      "karte": "The Rebel",
-      "text": "Poser des limites est un acte de respect de soi. Le rebelle dit non pour protéger son oui."
-    },
-    "#B81": {
-      "label": "Respecter-les-limites",
-      "frage": "Quelle importance accordez-vous au respect des limites ?",
-      "karte": "Receptivity",
-      "text": "Respecter les limites signifie honorer l'espace de l'autre. La réceptivité commence par l'attention."
-    },
-    "#B82": {
-      "label": "Intensité",
-      "frage": "Quelle importance accordez-vous à l'intensité ?",
-      "karte": "Intensity",
-      "text": "L'intensité est la vie dans sa forme la plus pure. Brûlez intensément — mais ne vous consumez pas."
-    },
-    "#B83": {
-      "label": "Accorder-sa-confiance",
-      "frage": "Quelle importance accordez-vous au fait d'accorder votre confiance ?",
-      "karte": "Trust",
-      "text": "Accorder sa confiance est un acte de courage. Cela ouvre la porte à une connexion profonde."
-    },
-    "#B84": {
-      "label": "Assumer-la-responsabilité",
-      "frage": "Quelle importance accordez-vous au fait d'assumer la responsabilité ?",
-      "karte": "Maturity",
-      "text": "Assumer la responsabilité est un signe de maturité. Cela signifie : je suis le créateur de ma vie."
-    },
-    "#B85": {
-      "label": "Se-laisser-aller",
-      "frage": "Quelle importance accordez-vous au fait de vous laisser aller ?",
-      "karte": "Trust",
-      "text": "Se laisser aller requiert une confiance profonde. C'est le saut, sachant que l'on sera tenu."
-    },
-    "#B86": {
-      "label": "Échange-de-pouvoir",
-      "frage": "Quelle importance accordez-vous à l'échange de pouvoir ?",
-      "karte": "Transformation",
-      "text": "L'échange de pouvoir est une transformation dans la relation. Les deux partenaires se métamorphosent à travers ce jeu conscient."
-    },
-    "#B87": {
-      "label": "Être-au-service",
-      "frage": "Quelle importance accordez-vous au fait d'être au service ?",
-      "karte": "Compassion",
-      "text": "Être au service par compassion est un don sans perte. Vous donnez et recevez en même temps."
-    },
-    "#B88": {
-      "label": "Protéger",
-      "frage": "Quelle importance accordez-vous au fait de protéger ?",
-      "karte": "Courage",
-      "text": "Protéger requiert du courage — le courage de défendre ce que vous aimez."
-    },
-    "#B89": {
-      "label": "Désir-d'enfant",
-      "frage": "Quelle importance accordez-vous au désir d'enfant ?",
-      "karte": "Flowering",
-      "text": "Le désir d'enfant est l'aspiration à l'éclosion. La vie veut se poursuivre, fleurir, se transmettre."
-    },
-    "#B90": {
-      "label": "Parentalité",
-      "frage": "Quelle importance accordez-vous à la parentalité ?",
-      "karte": "The Lovers",
-      "text": "La parentalité est une forme d'amour qui lâche prise. Les amants deviennent trois — et l'amour grandit."
-    },
-    "#B91": {
-      "label": "Procréation",
-      "frage": "Quelle importance accordez-vous à la procréation ?",
-      "karte": "Source",
-      "text": "La procréation vous relie à la source de la vie elle-même. Vous devenez un canal pour un nouvel être."
-    },
-    "#B92": {
-      "label": "Fonder-une-famille",
-      "frage": "Quelle importance accordez-vous au fait de fonder une famille ?",
-      "karte": "We Are the World",
-      "text": "Fonder une famille signifie créer un cercle de connexion. Un microcosme du monde."
-    },
-    "#B93": {
-      "label": "Famille-recomposée",
-      "frage": "Quelle importance accordez-vous à la famille recomposée ?",
-      "karte": "Creativity",
-      "text": "La famille recomposée est une création familiale originale. De nouveaux motifs naissent de fils différents."
-    },
-    "#B94": {
-      "label": "Vie-sans-enfant",
-      "frage": "Quelle importance accordez-vous à une vie sans enfant ?",
-      "karte": "Aloneness",
-      "text": "Une vie sans enfant est un chemin conscient. Dans la solitude, vous trouvez d'autres formes d'accomplissement."
-    },
-    "#B95": {
-      "label": "Adoption",
-      "frage": "Quelle importance accordez-vous à l'adoption ?",
-      "karte": "Compassion",
-      "text": "L'adoption est la compassion en action. Vous ouvrez votre cœur à un enfant qui ne vient pas de vous."
-    },
-    "#B96": {
-      "label": "Enfants-d'accueil",
-      "frage": "Quelle importance accordez-vous aux enfants d'accueil ?",
-      "karte": "Healing",
-      "text": "Accueillir des enfants est un travail de guérison. Vous donnez à un enfant ce dont il a besoin pour guérir."
-    },
-    "#B97": {
-      "label": "Emménager-ensemble",
-      "frage": "Quelle importance accordez-vous au fait d'emménager ensemble ?",
-      "karte": "Harmony",
-      "text": "Emménager ensemble, c'est tisser une harmonie commune. Deux vies deviennent un espace partagé."
-    },
-    "#B98": {
-      "label": "Habiter-séparément",
-      "frage": "Quelle importance accordez-vous au fait d'habiter séparément ?",
-      "karte": "Aloneness",
-      "text": "Habiter séparément honore le besoin de solitude. La proximité a parfois besoin de distance pour respirer."
-    },
-    "#B99": {
-      "label": "Colocation",
-      "frage": "Quelle importance accordez-vous à la colocation ?",
-      "karte": "Participation",
-      "text": "La colocation est une participation partagée au quotidien. La communauté naît dans les petits moments."
-    },
-    "#B100": {
-      "label": "Chambre-à-soi",
-      "frage": "Quelle importance accordez-vous au fait d'avoir une chambre à soi ?",
-      "karte": "Aloneness",
-      "text": "Une chambre à soi est le refuge de l'âme. Dans la solitude, vous vous retrouvez."
-    },
-    "#B101": {
-      "label": "Vie-urbaine",
-      "frage": "Quelle importance accordez-vous à la vie urbaine ?",
-      "karte": "Experiencing",
-      "text": "La vie urbaine est une expérience intense. La ville vibre de vie — celui qui est ouvert en sera richement comblé."
-    },
-    "#B102": {
-      "label": "Vie-rurale",
-      "frage": "Quelle importance accordez-vous à la vie rurale ?",
-      "karte": "Harmony",
-      "text": "La vie rurale est harmonie avec la nature. Le rythme de la terre devient votre rythme."
-    },
-    "#B103": {
-      "label": "Mobilité",
-      "frage": "Quelle importance accordez-vous à la mobilité ?",
-      "karte": "Traveling",
-      "text": "La mobilité est la liberté du voyage. Celui qui peut se mouvoir peut s'épanouir."
-    },
-    "#B104": {
-      "label": "Sédentarité",
-      "frage": "Quelle importance accordez-vous à la sédentarité ?",
-      "karte": "Maturity",
-      "text": "La sédentarité est un enracinement mûri. S'enraciner signifie grandir en profondeur plutôt qu'en étendue."
-    },
-    "#B105": {
-      "label": "Mariage",
-      "frage": "Quelle importance accordez-vous au mariage ?",
-      "karte": "Commitment",
-      "text": "Le mariage est un oui conscient. C'est la décision de traverser ensemble toutes les saisons."
-    },
-    "#B106": {
-      "label": "Union-libre",
-      "frage": "Quelle importance accordez-vous à l'union libre ?",
-      "karte": "The Rebel",
-      "text": "Vivre en union libre est le chemin du rebelle. L'amour n'a pas besoin de certificat — seulement d'authenticité."
-    },
-    "#B107": {
-      "label": "Partenariat-enregistré",
-      "frage": "Quelle importance accordez-vous au partenariat enregistré ?",
-      "karte": "The Lovers",
-      "text": "Le partenariat enregistré est la reconnaissance officielle de l'amour. Les amants entrent visiblement dans le monde."
-    },
-    "#B108": {
-      "label": "Animaux-domestiques",
-      "frage": "Quelle importance accordez-vous aux animaux domestiques ?",
-      "karte": "Friendliness",
-      "text": "Les animaux domestiques enseignent la bienveillance inconditionnelle. Ils aiment sans questionner — et sont aimés en retour."
-    },
-    "#B109": {
-      "label": "Pas-d'animaux",
-      "frage": "Quelle importance accordez-vous au fait de ne pas avoir d'animaux ?",
-      "karte": "Slowing Down",
-      "text": "Ne pas avoir d'animaux crée de l'espace pour la lenteur. Moins d'obligations, plus de silence."
-    },
-    "#B110": {
-      "label": "Loisirs-communs",
-      "frage": "Quelle importance accordez-vous aux loisirs communs ?",
-      "karte": "Celebration",
-      "text": "Les loisirs communs sont des fêtes partagées. Ce qui procure de la joie grandit quand on le partage."
-    },
-    "#B111": {
-      "label": "Loisirs-personnels",
-      "frage": "Quelle importance accordez-vous aux loisirs personnels ?",
-      "karte": "Aloneness",
-      "text": "Les loisirs personnels sont des espaces de solitude. Ils nourrissent la part de vous qui n'appartient qu'à vous."
-    },
-    "#B112": {
-      "label": "Vacances-ensemble",
-      "frage": "Quelle importance accordez-vous aux vacances ensemble ?",
-      "karte": "Adventure",
-      "text": "Les vacances ensemble sont une aventure partagée. Les nouveaux lieux ouvrent de nouveaux espaces — aussi l'un pour l'autre."
-    },
-    "#B113": {
-      "label": "Vacances-séparées",
-      "frage": "Quelle importance accordez-vous aux vacances séparées ?",
-      "karte": "Aloneness",
-      "text": "Les vacances séparées honorent le besoin de solitude. Parfois il faut voyager seul pour se retrouver."
-    },
-    "#B114": {
-      "label": "Planification-à-long-terme",
-      "frage": "Quelle importance accordez-vous à la planification à long terme ?",
-      "karte": "Patience",
-      "text": "La planification à long terme est un ensemencement patient. Vous faites confiance que la graine germera en son temps."
-    },
-    "#B115": {
-      "label": "Vivre-l'instant",
-      "frage": "Quelle importance accordez-vous au fait de vivre l'instant ?",
-      "karte": "Moment to Moment",
-      "text": "Vivre l'instant est l'art suprême. Le passé et le futur disparaissent — seul reste le Maintenant."
-    },
-    "#B116": {
-      "label": "Priorité-carrière",
-      "frage": "Quelle importance accordez-vous à la priorité carrière ?",
-      "karte": "Success",
-      "text": "La priorité carrière est une énergie dirigée. Mais le véritable succès ne réside pas dans l'atteinte, mais dans le devenir."
-    },
-    "#B117": {
-      "label": "Priorité-famille",
-      "frage": "Quelle importance accordez-vous à la priorité famille ?",
-      "karte": "We Are the World",
-      "text": "La priorité famille est la connexion comme priorité. La famille est un microcosme du monde."
-    },
-    "#B118": {
-      "label": "Équilibre-vie-travail",
-      "frage": "Quelle importance accordez-vous à l'équilibre vie-travail ?",
-      "karte": "Integration",
-      "text": "L'équilibre vie-travail est une intégration vécue. Quand tous les domaines de vie coulent, l'harmonie naît."
-    },
-    "#B119": {
-      "label": "Valeurs-communes",
-      "frage": "Quelle importance accordez-vous aux valeurs communes ?",
-      "karte": "We Are the World",
-      "text": "Les valeurs communes sont le lien invisible. Elles relient plus profondément que les mots ou les actes."
-    },
-    "#B120": {
-      "label": "Respect-des-différences",
-      "frage": "Quelle importance accordez-vous au respect des différences ?",
-      "karte": "Understanding",
-      "text": "Respecter les différences signifie comprendre que la diversité est richesse. L'arc-en-ciel a besoin de toutes les couleurs."
-    },
-    "#B121": {
-      "label": "Cultiver-les-traditions",
-      "frage": "Quelle importance accordez-vous au fait de cultiver les traditions ?",
-      "karte": "Ordinariness",
-      "text": "Cultiver les traditions honore l'ordinaire. Dans ce qui revient réside le sacré du quotidien."
-    },
-    "#B122": {
-      "label": "Explorer-de-nouvelles-voies",
-      "frage": "Quelle importance accordez-vous au fait d'explorer de nouvelles voies ?",
-      "karte": "Adventure",
-      "text": "Explorer de nouvelles voies est l'aventure du pionnier. L'inconnu appelle — et vous répondez."
-    },
-    "#B123": {
-      "label": "Partager-la-spiritualité",
-      "frage": "Quelle importance accordez-vous au fait de partager la spiritualité ?",
-      "karte": "Inner Voice",
-      "text": "Partager la spiritualité signifie écouter ensemble la voix intérieure. Le silence partagé est une profondeur doublée."
-    },
-    "#B124": {
-      "label": "Vie-séculière",
-      "frage": "Quelle importance accordez-vous à une vie séculière ?",
-      "karte": "Ordinariness",
-      "text": "La vie séculière trouve le sacré dans l'ordinaire. Chaque instant est sacré — même sans rituel."
-    },
-    "#B125": {
-      "label": "Alimentation-saine",
-      "frage": "Quelle importance accordez-vous à une alimentation saine ?",
-      "karte": "Awareness",
-      "text": "L'alimentation saine est une nourriture consciente. Ce que vous mangez devient vous — choisissez avec attention."
-    },
-    "#B126": {
-      "label": "Sport-et-forme",
-      "frage": "Quelle importance accordez-vous au sport et à la forme physique ?",
-      "karte": "Totality",
-      "text": "Le sport et la forme vivent de la totalité. Donnez-vous entièrement — et le corps répondra par la vitalité."
-    },
-    "#B127": {
-      "label": "Indépendance-financière",
-      "frage": "Quelle importance accordez-vous à l'indépendance financière ?",
-      "karte": "Abundance",
-      "text": "L'indépendance financière est l'abondance extérieure comme miroir de la liberté intérieure. L'abondance attire l'abondance."
-    },
-    "#B128": {
-      "label": "Finances-communes",
-      "frage": "Quelle importance accordez-vous aux finances communes ?",
-      "karte": "Going With The Flow",
-      "text": "Les finances communes sont un flux partagé. L'argent coule entre vous comme l'eau — naturellement et librement."
-    },
-    "#B129": {
-      "label": "Finances-séparées",
-      "frage": "Quelle importance accordez-vous aux finances séparées ?",
-      "karte": "Aloneness",
-      "text": "Les finances séparées honorent l'autonomie. Chacun porte sa part — cela crée de la clarté."
-    },
-    "#B130": {
-      "label": "Frugalité",
-      "frage": "Quelle importance accordez-vous à la frugalité ?",
-      "karte": "Patience",
-      "text": "La frugalité est une garde patiente. Comme le paysan préserve ses semences, vous épargnez pour l'avenir."
-    },
-    "#B131": {
-      "label": "Générosité",
-      "frage": "Quelle importance accordez-vous à la générosité ?",
-      "karte": "Sharing",
-      "text": "La générosité est l'abondance qui déborde. Celui qui vit depuis la source ne peut s'empêcher de donner."
-    },
-    "#B132": {
-      "label": "Construction-de-patrimoine",
-      "frage": "Quelle importance accordez-vous à la construction de patrimoine ?",
-      "karte": "Abundance",
-      "text": "Construire un patrimoine, c'est créer l'abondance matérielle. Mais n'oubliez pas : la vraie richesse est intérieure."
-    },
-    "#B133": {
-      "label": "Minimalisme",
-      "frage": "Quelle importance accordez-vous au minimalisme ?",
-      "karte": "No-Thingness",
-      "text": "Le minimalisme est l'art du vide. Moins de choses, plus d'espace — plus d'espace, plus de liberté."
-    },
-    "#B134": {
-      "label": "Épanouissement-professionnel",
-      "frage": "Quelle importance accordez-vous à l'épanouissement professionnel ?",
-      "karte": "The Creator",
-      "text": "L'épanouissement professionnel est la création au quotidien. Quand le travail devient expression de votre être, c'est une vocation."
-    },
-    "#B135": {
-      "label": "Travail-comme-moyen",
-      "frage": "Quelle importance accordez-vous au travail comme moyen ?",
-      "karte": "Ordinariness",
-      "text": "Le travail comme moyen voit l'ordinaire avec lucidité. Le travail est un outil, non une identité."
-    },
-    "#B136": {
-      "label": "Travail-indépendant",
-      "frage": "Quelle importance accordez-vous au travail indépendant ?",
-      "karte": "The Rebel",
-      "text": "Le travail indépendant est le chemin du rebelle dans le monde professionnel. Vous créez selon vos propres règles."
-    },
-    "#B137": {
-      "label": "Salariat",
-      "frage": "Quelle importance accordez-vous au salariat ?",
-      "karte": "Participation",
-      "text": "Le salariat est la participation à quelque chose de plus grand. Vous contribuez à une œuvre commune."
-    },
-    "#B138": {
-      "label": "Poste-de-direction",
-      "frage": "Quelle importance accordez-vous à un poste de direction ?",
-      "karte": "Guidance",
-      "text": "Diriger est servir, non régner. Le vrai dirigeant montre le chemin qu'il emprunte lui-même."
-    },
-    "#B139": {
-      "label": "Travail-en-équipe",
-      "frage": "Quelle importance accordez-vous au travail en équipe ?",
-      "karte": "Participation",
-      "text": "Le travail en équipe est une participation chorégraphiée. Chacun danse sa partie, et ensemble naît le tout."
-    },
-    "#B140": {
-      "label": "Télétravail",
-      "frage": "Quelle importance accordez-vous au télétravail ?",
-      "karte": "Aloneness",
-      "text": "Le télétravail unit le travail et la solitude. Dans votre propre espace, vous trouvez votre propre rythme."
-    },
-    "#B141": {
-      "label": "Présence-au-bureau",
-      "frage": "Quelle importance accordez-vous à la présence au bureau ?",
-      "karte": "Participation",
-      "text": "La présence au bureau est une participation physique. Certaines énergies ne naissent que lorsque les gens sont ensemble."
-    },
-    "#B142": {
-      "label": "Horaires-flexibles",
-      "frage": "Quelle importance accordez-vous aux horaires flexibles ?",
-      "karte": "Going With The Flow",
-      "text": "Les horaires flexibles, c'est travailler dans le flux. Vous vous adaptez au rythme de la vie, non l'inverse."
-    },
-    "#B143": {
-      "label": "Structures-fixes",
-      "frage": "Quelle importance accordez-vous aux structures fixes ?",
-      "karte": "Maturity",
-      "text": "Les structures fixes donnent forme à la vie. L'âme mûre apprécie le cadre qui apporte la stabilité."
-    },
-    "#B144": {
-      "label": "Formation-continue",
-      "frage": "Quelle importance accordez-vous à la formation continue ?",
-      "karte": "Understanding",
-      "text": "La formation continue est le chemin de l'éternel élève. Celui qui cesse d'apprendre cesse de grandir."
-    },
-    "#B145": {
-      "label": "Planification-de-la-retraite",
-      "frage": "Quelle importance accordez-vous à la planification de la retraite ?",
-      "karte": "Patience",
-      "text": "Planifier la retraite signifie semer patiemment pour l'avenir. La récolte viendra — au moment juste."
-    },
-    "#B146": {
-      "label": "Année-sabbatique",
-      "frage": "Quelle importance accordez-vous à l'année sabbatique ?",
-      "karte": "Turning In",
-      "text": "L'année sabbatique est un temps de retour vers l'intérieur. L'arrêt extérieur permet le mouvement intérieur."
-    },
-    "#B147": {
-      "label": "Goût-du-risque",
-      "frage": "Quelle importance accordez-vous au goût du risque ?",
-      "karte": "Adventure",
-      "text": "Le goût du risque est le courage de l'aventure. Celui qui ne saute jamais ne découvre jamais qu'il peut voler."
-    },
-    "#B148": {
-      "label": "Recherche-de-sécurité",
-      "frage": "Quelle importance accordez-vous à la recherche de sécurité ?",
-      "karte": "Protection",
-      "text": "La recherche de sécurité est une protection sage. Parfois la prudence est la décision la plus courageuse."
-    },
-    "#B149": {
-      "label": "Échanges-quotidiens",
-      "frage": "Quelle importance accordez-vous aux échanges quotidiens ?",
-      "karte": "Friendliness",
-      "text": "Les échanges quotidiens sont la bienveillance vécue. Les petits mots tissent le fil de la connexion."
-    },
-    "#B150": {
-      "label": "Temps-de-qualité",
-      "frage": "Quelle importance accordez-vous au temps de qualité ?",
-      "karte": "Moment to Moment",
-      "text": "Le temps de qualité est un temps de présence. Ce n'est pas la quantité qui compte, mais la profondeur de chaque instant."
-    },
-    "#B151": {
-      "label": "Conversations-profondes",
-      "frage": "Quelle importance accordez-vous aux conversations profondes ?",
-      "karte": "Understanding",
-      "text": "Les conversations profondes mènent à la compréhension. Les mots deviennent des ponts entre les âmes."
-    },
-    "#B152": {
-      "label": "Conversation-légère",
-      "frage": "Quelle importance accordez-vous à la conversation légère ?",
-      "karte": "Playfulness",
-      "text": "La conversation légère est un être ludique. Tout n'a pas besoin d'être profond — parfois un sourire suffit."
-    },
-    "#B153": {
-      "label": "Ouverture-émotionnelle",
-      "frage": "Quelle importance accordez-vous à l'ouverture émotionnelle ?",
-      "karte": "Receptivity",
-      "text": "L'ouverture émotionnelle est un cœur réceptif. La coupe est vide — prête à être remplie."
-    },
-    "#B154": {
-      "label": "Communication-factuelle",
-      "frage": "Quelle importance accordez-vous à la communication factuelle ?",
-      "karte": "Consciousness",
-      "text": "La communication factuelle est une conscience claire. Les pensées sont exprimées avec précision."
-    },
-    "#B155": {
-      "label": "Aborder-les-conflits",
-      "frage": "Quelle importance accordez-vous au fait d'aborder les conflits ?",
-      "karte": "Breakthrough",
-      "text": "Aborder les conflits mène à la percée. Ce qui est exprimé peut guérir."
-    },
-    "#B156": {
-      "label": "Préserver-l'harmonie",
-      "frage": "Quelle importance accordez-vous au fait de préserver l'harmonie ?",
-      "karte": "Harmony",
-      "text": "Préserver l'harmonie est un art. Mais la véritable harmonie ne naît pas de l'évitement, mais de l'intégration."
-    },
-    "#B157": {
-      "label": "Communication-directe",
-      "frage": "Quelle importance accordez-vous à la communication directe ?",
-      "karte": "Courage",
-      "text": "La communication directe requiert du courage. Dire la vérité est un acte d'amour."
-    },
-    "#B158": {
-      "label": "Communication-diplomatique",
-      "frage": "Quelle importance accordez-vous à la communication diplomatique ?",
-      "karte": "Receptivity",
-      "text": "La communication diplomatique est réceptive à l'autre. Les mots sont choisis pour relier."
-    },
-    "#B159": {
-      "label": "Culture-du-feedback",
-      "frage": "Quelle importance accordez-vous à la culture du feedback ?",
-      "karte": "Understanding",
-      "text": "Le feedback est une compréhension mutuelle. Chaque retour est un cadeau — quand il est entendu."
-    },
-    "#B160": {
-      "label": "Communication-non-verbale",
-      "frage": "Quelle importance accordez-vous à la communication non verbale ?",
-      "karte": "Silence",
-      "text": "La communication non verbale parle dans le silence. Le corps dit ce que les mots ne peuvent pas."
-    },
-    "#B161": {
-      "label": "Écoute-active",
-      "frage": "Quelle importance accordez-vous à l'écoute active ?",
-      "karte": "Receptivity",
-      "text": "L'écoute active est une présence réceptive. Vous n'entendez pas seulement les mots — vous entendez le cœur derrière."
-    },
-    "#B162": {
-      "label": "Humour-dans-la-conversation",
-      "frage": "Quelle importance accordez-vous à l'humour dans la conversation ?",
-      "karte": "Celebration",
-      "text": "L'humour dans la conversation est une petite célébration. Le rire partagé relie plus profondément que bien des paroles."
-    },
-    "#B163": {
-      "label": "Sérieux",
-      "frage": "Quelle importance accordez-vous au sérieux ?",
-      "karte": "Maturity",
-      "text": "Le sérieux est une présence mûre. Certains sujets méritent la profondeur d'une attention indivisée."
-    },
-    "#B164": {
-      "label": "Conversations-spontanées",
-      "frage": "Quelle importance accordez-vous aux conversations spontanées ?",
-      "karte": "Playfulness",
-      "text": "Les conversations spontanées sont un échange ludique. Les moments imprévus portent souvent la plus grande magie."
-    },
-    "#B165": {
-      "label": "Conversations-planifiées",
-      "frage": "Quelle importance accordez-vous aux conversations planifiées ?",
-      "karte": "Guidance",
-      "text": "Les conversations planifiées créent un espace pour l'essentiel. Certains sujets ont besoin d'un cadre protégé."
-    },
-    "#B166": {
-      "label": "Communication-écrite",
-      "frage": "Quelle importance accordez-vous à la communication écrite ?",
-      "karte": "Consciousness",
-      "text": "La communication écrite est une conscience réfléchie. Le mot écrit porte plus de poids."
-    },
-    "#B167": {
-      "label": "Communication-orale",
-      "frage": "Quelle importance accordez-vous à la communication orale ?",
-      "karte": "Experiencing",
-      "text": "La communication orale est une expérience vivante. La voix porte bien plus que des mots."
-    },
-    "#B168": {
-      "label": "Décider-ensemble",
-      "frage": "Quelle importance accordez-vous au fait de décider ensemble ?",
-      "karte": "The Lovers",
-      "text": "Décider ensemble est l'art des amants. Deux voix trouvent une mélodie commune."
-    },
-    "#B169": {
-      "label": "Décisions-autonomes",
-      "frage": "Quelle importance accordez-vous aux décisions autonomes ?",
-      "karte": "The Rebel",
-      "text": "Les décisions autonomes sont le chemin du rebelle. Vous choisissez selon votre propre vérité."
-    },
-    "#B170": {
-      "label": "Disposition-au-compromis",
-      "frage": "Quelle importance accordez-vous à la disposition au compromis ?",
-      "karte": "Compromise",
-      "text": "Le compromis est un art. Mais distinguez entre flexibilité sage et trahison de soi."
-    },
-    "#B171": {
-      "label": "Positions-claires",
-      "frage": "Quelle importance accordez-vous aux positions claires ?",
-      "karte": "Courage",
-      "text": "Les positions claires requièrent du courage. Savoir ce que vous défendez est l'ancre dans les temps de tempête."
-    },
-    "#B172": {
-      "label": "Soutien-émotionnel",
-      "frage": "Quelle importance accordez-vous au soutien émotionnel ?",
-      "karte": "Healing",
-      "text": "Le soutien émotionnel est une présence guérissante. Parfois il suffit d'être là — sans mots."
-    },
-    "#B173": {
-      "label": "Soutien-pratique",
-      "frage": "Quelle importance accordez-vous au soutien pratique ?",
-      "karte": "Abundance",
-      "text": "Le soutien pratique est l'abondance en action. Les mains secourables montrent l'amour par les actes."
-    },
-    "#B174": {
-      "label": "Points-réguliers",
-      "frage": "Quelle importance accordez-vous aux points réguliers ?",
-      "karte": "Awareness",
-      "text": "Les points réguliers sont une attention consciente. Ils gardent le doigt sur le pouls de la relation."
-    },
-    "#B175": {
-      "label": "Réflexion-sur-la-relation",
-      "frage": "Quelle importance accordez-vous à la réflexion sur la relation ?",
-      "karte": "New Vision",
-      "text": "La réflexion sur la relation apporte un nouveau regard. S'arrêter et observer montre où vous en êtes vraiment."
-    },
-    "#B176": {
-      "label": "Flux-naturel",
-      "frage": "Quelle importance accordez-vous au flux naturel ?",
-      "karte": "Going With The Flow",
-      "text": "Le flux naturel est un écoulement sans effort. Quand vous cessez de lutter, le courant vous porte."
-    },
-    "#B177": {
-      "label": "Énergie-sociale",
-      "frage": "Quelle importance accordez-vous à l'énergie sociale ?",
-      "karte": "Experiencing",
-      "text": "L'énergie sociale est une expérience vivante avec les autres. Certaines personnes vous rechargent — cherchez-les."
-    },
-    "#B178": {
-      "label": "Convivialité",
-      "frage": "Quelle importance accordez-vous à la convivialité ?",
-      "karte": "Celebration",
-      "text": "La convivialité est la célébration commune de la vie. Des gens ensemble — c'est déjà une fête."
-    },
-    "#B179": {
-      "label": "Calme-loin-des-gens",
-      "frage": "Quelle importance accordez-vous au calme loin des gens ?",
-      "karte": "Aloneness",
-      "text": "Le calme loin des gens est une solitude bienfaisante. Le silence après l'agitation est un cadeau."
-    },
-    "#B180": {
-      "label": "Cultiver-les-amitiés",
-      "frage": "Quelle importance accordez-vous au fait de cultiver les amitiés ?",
-      "karte": "Friendliness",
-      "text": "Cultiver les amitiés est la bienveillance comme pratique. Les relations ont besoin d'attention pour fleurir."
-    },
-    "#B181": {
-      "label": "Temps-de-couple",
-      "frage": "Quelle importance accordez-vous au temps de couple ?",
-      "karte": "The Lovers",
-      "text": "Le temps de couple est le temps exclusif des amants. Dans cet espace vous n'êtes que deux — et c'est sacré."
-    },
-    "#B182": {
-      "label": "Amis-communs",
-      "frage": "Quelle importance accordez-vous aux amis communs ?",
-      "karte": "We Are the World",
-      "text": "Les amis communs élargissent votre monde. Le cercle s'agrandit, la connexion s'approfondit."
-    },
-    "#B183": {
-      "label": "Amis-personnels",
-      "frage": "Quelle importance accordez-vous aux amis personnels ?",
-      "karte": "Aloneness",
-      "text": "Les amis personnels sont des espaces d'individualité. Tout n'a pas besoin d'être partagé — certaines choses ne vous appartiennent qu'à vous."
-    },
-    "#B184": {
-      "label": "Réunions-familiales",
-      "frage": "Quelle importance accordez-vous aux réunions familiales ?",
-      "karte": "We Are the World",
-      "text": "Les réunions familiales vous relient à vos racines. Vous faites partie d'un courant plus grand de la vie."
-    },
-    "#B185": {
-      "label": "Distance-familiale",
-      "frage": "Quelle importance accordez-vous à la distance familiale ?",
-      "karte": "Aloneness",
-      "text": "La distance avec la famille peut être salutaire. Parfois vous avez besoin d'espace pour vous trouver."
-    },
-    "#B186": {
-      "label": "Fêtes-et-événements",
-      "frage": "Quelle importance accordez-vous aux fêtes et événements ?",
-      "karte": "Celebration",
-      "text": "Les fêtes et événements sont des célébrations collectives. L'énergie de nombreuses personnes amplifie la joie."
-    },
-    "#B187": {
-      "label": "Soirées-tranquilles",
-      "frage": "Quelle importance accordez-vous aux soirées tranquilles ?",
-      "karte": "Silence",
-      "text": "Les soirées tranquilles sont des oasis de silence. Dans le calme du soir, vous vous retrouvez."
-    },
-    "#B188": {
-      "label": "Rencontrer-de-nouvelles-personnes",
-      "frage": "Quelle importance accordez-vous au fait de rencontrer de nouvelles personnes ?",
-      "karte": "Adventure",
-      "text": "Rencontrer de nouvelles personnes est une aventure. Chaque être humain est un monde — attendez la découverte."
-    },
-    "#B189": {
-      "label": "Cercle-de-confiance",
-      "frage": "Quelle importance accordez-vous au cercle de confiance ?",
-      "karte": "Trust",
-      "text": "Un cercle de confiance est un cercle de foi. Ici vous pouvez être qui vous êtes vraiment."
-    },
-    "#B190": {
-      "label": "Temps-seul",
-      "frage": "Quelle importance accordez-vous au temps seul ?",
-      "karte": "Aloneness",
-      "text": "Le temps seul n'est pas la solitude — c'est l'espace où vous vous retrouvez."
-    },
-    "#B191": {
-      "label": "Être-ensemble",
-      "frage": "Quelle importance accordez-vous au fait d'être ensemble ?",
-      "karte": "We Are the World",
-      "text": "Être ensemble est la connexion vécue. Ne pas être seul est un besoin humain profond."
-    },
-    "#B192": {
-      "label": "Visites-spontanées",
-      "frage": "Quelle importance accordez-vous aux visites spontanées ?",
-      "karte": "Playfulness",
-      "text": "Les visites spontanées sont des surprises ludiques. L'inattendu apporte de la fraîcheur à la vie."
-    },
-    "#B193": {
-      "label": "Rendez-vous-planifiés",
-      "frage": "Quelle importance accordez-vous aux rendez-vous planifiés ?",
-      "karte": "Patience",
-      "text": "Les rendez-vous planifiés sont une anticipation patiente. L'attente rend les retrouvailles plus douces."
-    },
-    "#B194": {
-      "label": "Être-hôte",
-      "frage": "Quelle importance accordez-vous au fait d'être hôte ?",
-      "karte": "Sharing",
-      "text": "Être hôte est un partage généreux. Vous ouvrez votre espace et votre cœur."
-    },
-    "#B195": {
-      "label": "Être-invité",
-      "frage": "Quelle importance accordez-vous au fait d'être invité ?",
-      "karte": "Receptivity",
-      "text": "Être invité, c'est être réceptif. Vous acceptez ce que les autres vous offrent — avec gratitude."
-    },
-    "#B196": {
-      "label": "Contacts-en-ligne",
-      "frage": "Quelle importance accordez-vous aux contacts en ligne ?",
-      "karte": "Possibilities",
-      "text": "Les contacts en ligne ouvrent des possibilités. Le monde numérique relie ce que la distance sépare."
-    },
-    "#B197": {
-      "label": "Rencontres-en-personne",
-      "frage": "Quelle importance accordez-vous aux rencontres en personne ?",
-      "karte": "Experiencing",
-      "text": "Les rencontres en personne sont l'expérience pleine. La présence face à face est irremplaçable."
-    },
-    "#B198": {
-      "label": "Engagement-communautaire",
-      "frage": "Quelle importance accordez-vous à l'engagement communautaire ?",
-      "karte": "Participation",
-      "text": "L'engagement communautaire est une participation active au plus grand ensemble. Vous rendez ce que vous recevez."
-    },
-    "#B199": {
-      "label": "Vie-privée",
-      "frage": "Quelle importance accordez-vous à la vie privée ?",
-      "karte": "Silence",
-      "text": "La vie privée est un silence protégé. Certaines choses ne vous appartiennent qu'à vous — et c'est bien ainsi."
-    },
-    "#B200": {
-      "label": "Réseautage",
-      "frage": "Quelle importance accordez-vous au réseautage ?",
-      "karte": "We Are the World",
-      "text": "Le réseautage tisse des connexions. Chaque contact est un fil dans le grand tissu de la vie."
-    },
-    "#B201": {
-      "label": "Peu-de-relations-profondes",
-      "frage": "Quelle importance accordez-vous à avoir peu de relations profondes ?",
-      "karte": "Intimacy",
-      "text": "Peu de relations profondes sont l'intimité dans son essence. La qualité plutôt que la quantité — c'est le chemin du cœur."
-    },
-    "#B202": {
-      "label": "Nombreuses-connaissances",
-      "frage": "Quelle importance accordez-vous à avoir de nombreuses connaissances ?",
-      "karte": "Friendliness",
-      "text": "De nombreuses connaissances sont la bienveillance étendue. Un cœur vaste touche beaucoup de gens."
-    },
-    "#B203": {
-      "label": "Événements-culturels",
-      "frage": "Quelle importance accordez-vous aux événements culturels ?",
-      "karte": "Creativity",
-      "text": "Les événements culturels nourrissent la créativité. L'art ouvre des portes vers des mondes au-delà du quotidien."
-    },
-    "#B204": {
-      "label": "Proximité-corporelle",
-      "frage": "Quelle importance accordez-vous à la proximité corporelle ?",
-      "karte": "Touch",
-      "text": "La proximité corporelle est le langage du toucher. Le corps aspire au contact — il est fait pour cela."
-    },
-    "#B205": {
-      "label": "Câlins",
-      "frage": "Quelle importance accordez-vous aux câlins ?",
-      "karte": "Warmth",
-      "text": "Les câlins sont de la chaleur sans paroles. Dans la proximité d'un autre corps, les frontières fondent."
-    },
-    "#B206": {
-      "label": "Distance-physique",
-      "frage": "Quelle importance accordez-vous à la distance physique ?",
-      "karte": "Aloneness",
-      "text": "La distance physique crée de l'espace pour respirer. Parfois le corps a besoin de sa propre zone."
-    },
-    "#B207": {
-      "label": "Contact-physique",
-      "frage": "Quelle importance accordez-vous au contact physique ?",
-      "karte": "Touch",
-      "text": "Le contact physique est la communication originelle. La peau est le plus grand organe sensoriel — utilisez-le."
-    },
-    "#B208": {
-      "label": "Étreintes",
-      "frage": "Quelle importance accordez-vous aux étreintes ?",
-      "karte": "Love",
-      "text": "Les étreintes sont l'amour en action. Un bras autour de l'autre dit plus que mille mots."
-    },
-    "#B209": {
-      "label": "Vivre-la-douleur",
-      "frage": "Quelle importance accordez-vous au fait de vivre la douleur ?",
-      "karte": "Transformation",
-      "text": "Vivre consciemment la douleur peut transformer. En traversant le feu, vous êtes purifié."
-    },
-    "#B210": {
-      "label": "Donner-la-douleur",
-      "frage": "Quelle importance accordez-vous au fait de donner la douleur ?",
-      "karte": "Intensity",
-      "text": "Donner la douleur dans un cadre conscient est l'intensité comme cadeau. Les limites deviennent des portes."
-    },
-    "#B211": {
-      "label": "Vivre-le-bondage",
-      "frage": "Quelle importance accordez-vous au fait de vivre le bondage ?",
-      "karte": "Letting Go",
-      "text": "Vivre le bondage est une libération paradoxale. Par la contrainte extérieure, vous trouvez la liberté intérieure."
-    },
-    "#B212": {
-      "label": "Pratiquer-le-bondage",
-      "frage": "Quelle importance accordez-vous au fait de pratiquer le bondage ?",
-      "karte": "The Creator",
-      "text": "Pratiquer le bondage est un maintien créatif. Vous créez un espace où l'autre peut se laisser aller."
-    },
-    "#B213": {
-      "label": "Dévotion",
-      "frage": "Quelle importance accordez-vous à la dévotion ?",
-      "karte": "Trust",
-      "text": "La dévotion est une confiance profonde dans l'abandon. Vous vous donnez à quelque chose de plus grand que vous."
-    },
-    "#B214": {
-      "label": "Adoration",
-      "frage": "Quelle importance accordez-vous à l'adoration ?",
-      "karte": "Inner Voice",
-      "text": "L'adoration suit la voix intérieure de la vénération. Voir le divin dans l'autre est sacré."
-    },
-    "#B215": {
-      "label": "Humilité",
-      "frage": "Quelle importance accordez-vous à l'humilité ?",
-      "karte": "No-Thingness",
-      "text": "L'humilité est la reconnaissance de son propre vide. Dans le néant, vous vous prosternez aux pieds du Tout."
-    },
-    "#B216": {
-      "label": "Dominer",
-      "frage": "Quelle importance accordez-vous au fait de dominer ?",
-      "karte": "The Master",
-      "text": "Dominer est la maîtrise dans la responsabilité. Le vrai maître sert en dirigeant."
-    },
-    "#B217": {
-      "label": "Recevoir-une-punition",
-      "frage": "Quelle importance accordez-vous au fait de recevoir une punition ?",
-      "karte": "Transformation",
-      "text": "La punition dans un contexte conscient est transformation. L'ego meurt un peu, pour que vous deveniez plus libre."
-    },
-    "#B218": {
-      "label": "Punir",
-      "frage": "Quelle importance accordez-vous au fait de punir ?",
-      "karte": "Guidance",
-      "text": "Punir comme pratique consciente est guidance. Le maître corrige avec amour, non avec colère."
-    },
-    "#B219": {
-      "label": "Donner-du-service",
-      "frage": "Quelle importance accordez-vous au fait de donner du service ?",
-      "karte": "Compassion",
-      "text": "Donner du service est la compassion en action. Vous servez parce que votre cœur déborde — non par devoir."
-    },
-    "#B220": {
-      "label": "Recevoir-du-service",
-      "frage": "Quelle importance accordez-vous au fait de recevoir du service ?",
-      "karte": "Receptivity",
-      "text": "Recevoir du service est une humilité réceptive. Pouvoir accepter est un art en soi."
-    },
-    "#B221": {
-      "label": "Expérience-de-la-douleur",
-      "frage": "Quelle importance accordez-vous à l'expérience de la douleur ?",
-      "karte": "Transformation",
-      "text": "Vivre la douleur consciemment est une porte vers la transformation. Dans l'intensité réside la libération."
-    },
-    "#B222": {
-      "label": "Infliger-la-douleur",
-      "frage": "Quelle importance accordez-vous au fait d'infliger la douleur ?",
-      "karte": "Trust",
-      "text": "Infliger la douleur requiert une confiance profonde. Le donneur conscient porte la responsabilité comme un guérisseur."
-    },
-    "#B223": {
-      "label": "Expérience-du-bondage",
-      "frage": "Quelle importance accordez-vous à l'expérience du bondage ?",
-      "karte": "Surrender",
-      "text": "Dans l'abandon aux liens réside une liberté paradoxale. Le lâcher-prise commence là où le contrôle s'arrête."
-    },
-    "#B224": {
-      "label": "Sucre",
-      "frage": "Quelle importance accordez-vous à la consommation de sucre ?",
-      "karte": "Moment to Moment",
-      "text": "La douceur est un plaisir de l'instant. La question est : savourez-vous consciemment ou fuyez-vous ?"
-    },
-    "#B225": {
-      "label": "Être-protégé",
-      "frage": "Quelle importance accordez-vous au fait d'être protégé ?",
-      "karte": "The Lovers",
-      "text": "Être protégé signifie pouvoir se laisser tomber. Dans la sécurité affective réside la liberté d'être vulnérable."
-    },
-    "#B226": {
-      "label": "Recevoir-la-confiance",
-      "frage": "Quelle importance accordez-vous au fait de recevoir la confiance ?",
-      "karte": "Trust",
-      "text": "Recevoir la confiance est une responsabilité sacrée. Vous devenez le gardien d'un cadeau précieux."
+      "label": "Selbstentfaltung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B018_00001_.png",
+          "karte": "Flowering",
+          "karte_de": "Erblühen",
+          "karte_key": "minor_arcana.rainbows.queen_flowering",
+          "karte_nummer": 13,
+          "tiage": "Ton épanouissement personnel n'est pas un projet : c'est ta nature. Ton nectar ne t'appartient pas à toi seul : c'est le cadeau que tu as apporté au monde.",
+          "reflexion": "Est-ce que je m'épanouis dans ce domaine… ou est-ce que je régresse ?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B066_00001_ (2).png",
+          "karte": "Moment to Moment",
+          "karte_de": "Moment zu Moment",
+          "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
+          "karte_nummer": 2,
+          "tiage": "C'est en vivant ensemble que vous vous épanouissez, en profitant pleinement de chaque instant. Pas de programme, pas d'attentes pour plus tard – juste cet instant.",
+          "reflexion": "Suis-je dans le présent, ou est-ce que je vis dans mes souvenirs et mes projets ?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B069_00001_ (2).png",
+          "karte": "Ripeness",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.9_ripeness",
+          "karte_nummer": 9,
+          "tiage": "Ton épanouissement ne peut être forcé. Il se produira quand le moment sera venu. Ce qui est en toi se révélera – en temps voulu, tout naturellement.",
+          "reflexion": "Est-il temps de lâcher prise – ou est-ce que je m'accroche par peur ?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_16_00000.png",
+          "karte": "Rebirth",
+          "karte_de": "Wiedergeburt",
+          "karte_key": "minor_arcana.clouds.10_rebirth",
+          "karte_nummer": 10,
+          "tiage": "L'épanouissement ne s'achève jamais : il se renouvelle sans cesse. Chaque épanouissement complet porte en lui le germe de la prochaine renaissance. Le chameau devient lion, le lion devient enfant. La renaissance n'est pas un événement unique : c'est le rythme de la vie qui s'éveille. Tu ne t'épanouis pas une seule fois. Tu t'épanouis sans cesse, encore et encore.",
+          "reflexion": "Quelle version de moi-même doit mourir pour que la suivante puisse naître ?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B002_00001_ (2).png",
+          "karte": "Magic Growth Tree",
+          "karte_de": "Magischer Wachstumsbaum",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (3).png",
+          "karte": "Cosmic Bloom",
+          "karte_de": "Kosmische Entfaltung",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        }
+      }
     }
   }
 }

@@ -1,1365 +1,1511 @@
 {
-  "version": "2.0.0",
-  "description": "Osho Zen Tarot texts for the 224 needs - Extended version with individual wisdom texts",
-  "source": "Osho Zen Tarot by Ma Deva Padma (St. Martin's Press), based on the teachings of Osho",
-  "copyright": "All rights reserved by the respective owners. These descriptions are free interpretations.",
-
+  "version": "3.6.0",
+  "sprache": "en",
+  "beschreibung": "Ti-age Bedürfnis-Weisheitstexte – EN",
   "beduerfnisse": {
     "#B1": {
-      "label": "Air",
-      "frage": "How important is fresh air and free breathing to you?",
-      "karte": "The Master",
-      "text": "When you breathe, the whole breathes through you. Freedom begins with a single, conscious breath."
+      "label": "Wohlbefinden",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Existence",
+          "karte_de": "Existenz",
+          "karte_key": "major_arcana.1_existence",
+          "karte_nummer": 1,
+          "tiage": "Well-being isn't a state you achieve—it's the quality of your presence. The universe breathes through you the moment you stop fighting it.",
+          "reflexion": "Can I just BE in this relationship without constantly having to prove myself?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_B1V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Healing",
+          "karte_de": "Heilung",
+          "karte_key": "minor_arcana.water.king_healing",
+          "karte_nummer": 14,
+          "tiage": "In shared well-being, what you could not heal on your own is healed. Encountering another person is not a threat to your peace—it is its fulfillment.",
+          "reflexion": "Do I feel safe enough to show my vulnerability?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B059_00001_.png",
+          "karte": "Friendliness",
+          "karte_de": "Freundlichkeit",
+          "karte_key": "minor_arcana.water.2_friendliness",
+          "karte_nummer": 2,
+          "tiage": "Well-being begins with being kind to yourself. When you treat yourself with the same warmth you show a dear friend, you create a foundation that will weather any storm. Being kind to yourself is not a weakness—it is the foundation.",
+          "reflexion": "Do I treat myself with the same kindness that I naturally show others?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_01_00000.png",
+          "karte": "Acceptance",
+          "karte_de": "Annahme",
+          "karte_key": "zusaetzliche_karten.acceptance",
+          "karte_nummer": null,
+          "tiage": "Well-being in its deepest form is not a state you achieve—it is what remains when you stop fighting against yourself. Acceptance does not mean resignation. It is the first breath of peace: I am who I am—and that is the starting point, not the destination.",
+          "reflexion": "Can I accept myself—not in spite of my imperfections, but precisely because of them?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B005_00001_.png",
+          "karte": "Meditation",
+          "karte_de": "Meditation",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B005_00001_ (2).png",
+          "karte": "Contemplation",
+          "karte_de": "Kontemplation",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B005_00001_ (3).png",
+          "karte": "Lotus",
+          "karte_de": "Lotus",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B059_00001_ (2).png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B005_00001_ (4).png",
+          "karte": "Lotus Light",
+          "karte_de": "Lotus-Licht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B005_00001_ (5).png",
+          "karte": "Healing Pod",
+          "karte_de": "Heilungsraum",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- The compassionate healer's (a half human half humanite) touch making whole, lot 88722.png",
+          "karte": "Healing Touch",
+          "karte_de": "Heilende Berührung",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_B1V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722 (1).png",
+          "karte": "Source Light",
+          "karte_de": "Quellenlicht",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (2).png",
+          "karte": "Sacred Healing",
+          "karte_de": "Heilige Heilung",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        },
+        "V14": {
+          "kontext": "V14",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487 (1).png",
+          "karte": "Tree Healer",
+          "karte_de": "Baum-Heiler",
+          "karte_key": "custom.v14",
+          "karte_nummer": null
+        },
+        "V15": {
+          "kontext": "V15",
+          "bild": "Future/Erkenntnisse_Kapitel_01_00000 (2).png",
+          "karte": "Existence Light",
+          "karte_de": "Existenz-Licht",
+          "karte_key": "custom.v15",
+          "karte_nummer": null
+        }
+      }
     },
     "#B2": {
-      "label": "Water",
-      "frage": "How important is sufficient water and hydration to you?",
-      "karte": "Healing",
-      "text": "Water carries memory. When you nourish yourself, you become soft. Healing happens in the flowing."
+      "label": "Sicherheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Trust",
+          "karte_de": "Vertrauen",
+          "karte_key": "minor_arcana.water.page_trust",
+          "karte_nummer": 11,
+          "tiage": "Security begins within. Not in walls, not in guarantees—but in the trust that life will carry you.",
+          "reflexion": "Do we build trust through reliability or through control?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B026_00001_ (2).png",
+          "karte": "Protection",
+          "karte_de": "Schutz",
+          "karte_key": "zusaetzliche_karten.protection",
+          "karte_nummer": null,
+          "tiage": "Security doesn't come from warding off every threat—it arises in the soft space where vulnerability is welcomed. Protection isn't a wall of strength, but a gentle embrace of understanding: Here, you are allowed to be vulnerable.",
+          "reflexion": "Can we work together to create a space where both of us can remain vulnerable—without having to prove ourselves?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/Firefly_Gemini Flash_B2V1- Noah's ark weathering the storm, Shiva's protective dance in stillness, cave sh 88722.png",
+          "karte": "Compromise",
+          "karte_de": "Kompromiss",
+          "karte_key": "minor_arcana.rainbows.6_compromise",
+          "karte_nummer": 6,
+          "tiage": "Not every compromise brings true peace of mind. Some agreements take too much of a toll on your soul—and leave you with a nagging sense of dishonesty. True peace of mind comes when a compromise allows both parties to grow, not when one has to bend over backwards.",
+          "reflexion": "Are we sacrificing our truth for the sake of a false peace in this area—or are we finding genuine, shared solutions?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_02_00000.png",
+          "karte": "Support",
+          "karte_de": "Unterstützung",
+          "karte_key": "zusaetzliche_karten.support",
+          "karte_nummer": null,
+          "tiage": "Existential security does not arise from the absence of threat—it grows from the experience of stability. It is not walls that provide security, but the invisible ground that supports you: your character, your values, your connection to something greater.",
+          "reflexion": "What inner strength do I have when all external security is gone?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B011_00001_.png",
+          "karte": "Shelter",
+          "karte_de": "Geborgenheit",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B011_00001_ (2).png",
+          "karte": "Cave Moon",
+          "karte_de": "Höhlenmond",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (4).png",
+          "karte": "Inner Sanctuary",
+          "karte_de": "Inneres Heiligtum",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B026_00001_.png",
+          "karte": "Protection",
+          "karte_de": "Schutz",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/Erkenntnisse_Kapitel_02_00000 (2).png",
+          "karte": "Trust Light",
+          "karte_de": "Vertrauenslicht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B3": {
-      "label": "Nourishment",
-      "frage": "How important is healthy, regular nutrition to you?",
-      "karte": "Conditioning",
-      "text": "What you eat, eats you. Nutrition is not merely food — it is the discernment between authenticity and attachment."
+      "label": "Leichtigkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.1- Berührung der Hände. Two luminous hands almost touching, energy f 291798.png",
+          "karte": "Going With The Flow",
+          "karte_de": "Mit dem Fluss gehen",
+          "karte_key": "minor_arcana.water.ace_going_with_the_flow",
+          "karte_nummer": 1,
+          "tiage": "Lightness isn't the absence of heaviness—it's the confidence that everything will fall into place. Let go. Go with the flow.",
+          "reflexion": "Where am I clinging to control when I could let go?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_Gemini Flash_Leichtigkeit Var.2- Schlaf der Sterne. Ethereal figure resting on purple nebula cloud 495626.png",
+          "karte": "Slowing Down",
+          "karte_de": "Verlangsamen",
+          "karte_key": "minor_arcana.rainbows.knight_slowing_down",
+          "karte_nummer": 12,
+          "tiage": "Lightness doesn't come from speeding up. It emerges when you slow down—when you listen to your breath before the next one comes. In that conscious pause, space opens up for what truly matters.",
+          "reflexion": "Do we allow ourselves to truly slow down—or do we rush from moment to moment together?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/Firefly_Leichtigkeit Var.3- Tanz der Polarität. Two spiral energies dancing, one golden solar 88722.png",
+          "karte": "Harmony",
+          "karte_de": "Harmonie",
+          "karte_key": "minor_arcana.water.10_harmony",
+          "karte_nummer": 10,
+          "tiage": "When you stop struggling, harmony reveals itself as your natural state. What remains is a sense of ease.",
+          "reflexion": "Can we get back together after a fight?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_03_00000.png",
+          "karte": "Letting Go",
+          "karte_de": "Loslassen",
+          "karte_key": "minor_arcana.water.8_letting_go",
+          "karte_nummer": 8,
+          "tiage": "True lightness doesn’t come from letting go of tasks—it comes from letting go of the burden that is yourself. When you stop clinging to your story, your self-image, and your need for control, space is created. Letting go isn’t about giving up—it’s about arriving.",
+          "reflexion": "What would I be if I stopped clinging to my past?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/Firefly_Gemini Flash_B3V1- Birds neither sowing nor reaping yet fed, Krishna's divine play and Zen master' 88722.png",
+          "karte": "Carefree",
+          "karte_de": "Sorglosigkeit",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_B3V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Dream Lightness",
+          "karte_de": "Traumleichtigkeit",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_B3V3- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Dance",
+          "karte_de": "Tanz",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B030_00001_ (2).png",
+          "karte": "Playfulness",
+          "karte_de": "Spielfreude",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/Erkenntnisse_Kapitel_03_00000 (2).png",
+          "karte": "Flow Light",
+          "karte_de": "Fließendes Licht",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B4": {
-      "label": "Movement",
-      "frage": "How important is physical movement to you?",
-      "karte": "Adventure",
-      "text": "Movement is life. Every step is an invitation into the unknown. Courage means not destination, but trust."
+      "label": "Orientierung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B057_00001_.png",
+          "karte": "Awareness",
+          "karte_de": "Bewusstheit",
+          "karte_key": "major_arcana.7_awareness",
+          "karte_nummer": 7,
+          "tiage": "Guidance doesn't come from outside—it arises in the stillness of your awareness. You already know where you are. You just need to pause.",
+          "reflexion": "Am I truly present, or am I just going through the motions?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_B4V2- Bridging all faiths through quality and love, Pirsig's pursuit of excellence me 88722.png",
+          "karte": "Inner Voice",
+          "karte_de": "Innere Stimme",
+          "karte_key": "major_arcana.2_inner_voice",
+          "karte_nummer": 2,
+          "tiage": "When two people speak from their inner voice together, they no longer need a map. The encounter itself becomes their guide.",
+          "reflexion": "Do I know my own truth, or am I just parroting other people’s beliefs?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B054_00001_.png",
+          "karte": "Receptivity",
+          "karte_de": "Empfänglichkeit",
+          "karte_key": "minor_arcana.water.queen_receptivity",
+          "karte_nummer": 13,
+          "tiage": "True direction doesn't come from planning alone—it arises when you're open to receiving: the signs of life, the promptings of the heart, the wisdom of the moment. Receptivity isn't passivity. It's the art of letting the right things come to you.",
+          "reflexion": "Am I truly open—or too preoccupied with my own plans to receive guidance?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_04_00000.png",
+          "karte": "The Master",
+          "karte_de": "Der Meister",
+          "karte_key": "major_arcana.the_master",
+          "karte_nummer": null,
+          "tiage": "The master no longer needs a map—he is the center. Orientation at Level 4 doesn’t mean knowing all the answers. It means being so familiar with your own inner axis that you don’t lose your way—even without a path.",
+          "reflexion": "Am I staying true to my own inner compass—even when no one knows the way and no one is watching?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B030_00001_.png",
+          "karte": "Compass",
+          "karte_de": "Kompass",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER - postiv mit 523487.png",
+          "karte": "The Thinker",
+          "karte_de": "Der Denker",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B054_00001_ (2).png",
+          "karte": "Order",
+          "karte_de": "Ordnung",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B057_00001_ (2).png",
+          "karte": "Clarity",
+          "karte_de": "Klarheit",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B057_00001_ (3).png",
+          "karte": "Breakthrough",
+          "karte_de": "Durchbruch",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B014_00001_ (3).png",
+          "karte": "Compass Portal",
+          "karte_de": "Kompass-Portal",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Erkenntnisse_Kapitel_04_00000 (2).png",
+          "karte": "Clarity Light",
+          "karte_de": "Klares Licht",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (8).png",
+          "karte": "Quest",
+          "karte_de": "Suche",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/Firefly_Gemini Flash.png",
+          "karte": "Cosmic Compass",
+          "karte_de": "Kosmischer Kompass",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        }
+      }
     },
     "#B5": {
-      "label": "Touch",
-      "frage": "How important is it to you to be touched by others?",
-      "karte": "Touch",
-      "text": "Touch is the first mirror. The body speaks long before words arise."
+      "label": "Wirksamkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B038_00001_.png",
+          "karte": "Thunderbolt",
+          "karte_de": "Der Blitz",
+          "karte_key": "major_arcana.16_thunderbolt",
+          "karte_nummer": 16,
+          "tiage": "Your true power is unleashed when you stop protecting what isn't real anyway. The lightning clears the way. What remains is strength.",
+          "reflexion": "Am I willing to give up my certainties for the sake of truth?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/Firefly_Gemini Flash_Gebrauchsanweisung im Alien-Modu 952409 KfR.png",
+          "karte": "Success",
+          "karte_de": "Erfolg",
+          "karte_key": "minor_arcana.fire.6_success",
+          "karte_nummer": 6,
+          "tiage": "When two people act from a shared, clear sense of purpose, not only does their effectiveness double—they also experience true success: that deep sense of having done the right thing, together, in an authentic way. True success is inner fulfillment.",
+          "reflexion": "Do we act out of a sense of inner fulfillment—or out of pressure from external expectations?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B056_00001_.png",
+          "karte": "Politics",
+          "karte_de": "Politik",
+          "karte_key": "minor_arcana.clouds.7_politics",
+          "karte_nummer": 7,
+          "tiage": "You lose your effectiveness when power plays and hidden agendas take over. As soon as manipulation enters the picture, your actions lose their power. Recognize the political games in your everyday relationships—and choose the path of transparency.",
+          "reflexion": "Am I being transparent about my intentions—or am I hiding what I really want?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_05_00000.png",
+          "karte": "The Creator",
+          "karte_de": "Der Schöpfer",
+          "karte_key": "minor_arcana.fire.king_the_creator",
+          "karte_nummer": 14,
+          "tiage": "The Creator does not create to prove effectiveness—the Creator creates because creation is the Creator’s essence. Effectiveness at Level 4 does not ask, “What have I done?” but rather, “Whose channel was I?” You are not the originator—you are the opening through which the Whole acts.",
+          "reflexion": "Am I living as the creator of my life—or simply reacting to what happens to me?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B008_00001_.png",
+          "karte": "Energy Mandala",
+          "karte_de": "Kraftmandala",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (5).png",
+          "karte": "Energy Transfer",
+          "karte_de": "Energie-Transfer",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B038_00001_ (2).png",
+          "karte": "Effectiveness",
+          "karte_de": "Wirksamkeit",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B056_00001_ (2).png",
+          "karte": "Courage",
+          "karte_de": "Mut",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B6": {
-      "label": "Rest",
-      "frage": "How important is sufficient rest and sleep to you?",
-      "karte": "No-Thingness",
-      "text": "True rest arises not from doing — but from being. Nothingness is the greatest sanctuary."
+      "label": "Freiheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B017_00001_.png",
+          "karte": "The Rebel",
+          "karte_de": "Der Rebell",
+          "karte_key": "major_arcana.4_the_rebel",
+          "karte_nummer": 4,
+          "tiage": "Your freedom isn't a protest—it's a \"yes\" to yourself. The true rebel follows their own truth, not resistance.",
+          "reflexion": "Am I conforming out of love—or out of fear of rejection?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B036_00001_.png",
+          "karte": "Adventure",
+          "karte_de": "Abenteuer",
+          "karte_key": "minor_arcana.rainbows.page_adventure",
+          "karte_nummer": 11,
+          "tiage": "Freedom and love are not enemies. In a genuine connection, that bond sets you free. I can love you AND still need space for myself.",
+          "reflexion": "Do I experience both—freedom AND connection?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B044_00001_.png",
+          "karte": "Breakthrough",
+          "karte_de": "Durchbruch",
+          "karte_key": "major_arcana.11_breakthrough",
+          "karte_nummer": 11,
+          "tiage": "Your freedom doesn't come from having more space—it comes from having more clarity. When you realize which boundaries are real and which ones you've set for yourself, the old ways begin to break down.",
+          "reflexion": "Am I staying out of love—or out of fear of change?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_06_00000.png",
+          "karte": "Possibilities",
+          "karte_de": "Möglichkeiten",
+          "karte_key": "minor_arcana.fire.2_possibilities",
+          "karte_nummer": 2,
+          "tiage": "Freedom, at its deepest level, is not freedom from constraints—it is an awakening to the infinite possibilities. You are not trapped in your past. You are more than the sum of your experiences. Every moment opens a door that has never been opened before.",
+          "reflexion": "Which version of myself has yet to be born—and what am I afraid of encountering in her?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B006_00001_.png",
+          "karte": "Boundless",
+          "karte_de": "Grenzenlos",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B006_00001_ (2).png",
+          "karte": "Cloud Freedom",
+          "karte_de": "Wolkenfreiheit",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B017_00001_ (2).png",
+          "karte": "Aloneness",
+          "karte_de": "Alleinsein",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B036_00001_ (2).png",
+          "karte": "The Rebel",
+          "karte_de": "Der Rebell",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B044_00001_ (2).png",
+          "karte": "Transformation",
+          "karte_de": "Transformation",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B7": {
-      "label": "Sexual-Expression",
-      "frage": "How important is sexual expression to you?",
-      "karte": "Passion",
-      "text": "Sexuality is a fire that is sacred — when you do not seek to possess it. Expression, not appropriation."
+      "label": "Intensität",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B014_00001_.png",
+          "karte": "The Lovers",
+          "karte_de": "Die Liebenden",
+          "karte_key": "major_arcana.6_the_lovers",
+          "karte_nummer": 6,
+          "tiage": "Your intensity isn't a flaw—it's your gift. Lovers have wings: their passion carries them, rather than consuming them.",
+          "reflexion": "Am I truly present in intimacy—or am I just going through the motions?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B048_00001_.png",
+          "karte": "Intensity",
+          "karte_de": "Intensität",
+          "karte_key": "minor_arcana.fire.knight_intensity",
+          "karte_nummer": 12,
+          "tiage": "When two people are fully present in the moment, their encounter burns like pure fire. That is intensity in its most sacred form.",
+          "reflexion": "Am I really there when I'm there?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B045_00001_.png",
+          "karte": "Projections",
+          "karte_de": "Projektionen",
+          "karte_key": "minor_arcana.water.7_projections",
+          "karte_nummer": 7,
+          "tiage": "The most intense encounters are like mirrors. Whatever moves you the most—whether admiration or repulsion—also lives within you. Intensity is an invitation to self-knowledge: What does the strength of my reaction reveal about myself?",
+          "reflexion": "What does my intensity tell me about myself—not about the other person?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_07_00000.png",
+          "karte": "Passion",
+          "karte_de": "Leidenschaft",
+          "karte_key": "zusaetzliche_karten.passion",
+          "karte_nummer": null,
+          "tiage": "Holy passion doesn't ask for permission. It is the fire that reveals you IN the act—not what you do, but WHO you are when you burn. Level 4 intensity isn't adrenaline—it is devotion without ego.",
+          "reflexion": "What am I so passionate about that I forget who I am?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B009_00001_.png",
+          "karte": "Star Burst",
+          "karte_de": "Sternexplosion",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B053_00001_.png",
+          "karte": "Lightning",
+          "karte_de": "Blitz",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B045_00001_ (2).png",
+          "karte": "Passion",
+          "karte_de": "Leidenschaft",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B048_00001_ (2).png",
+          "karte": "Joy",
+          "karte_de": "Freude",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B012_00001_ (3).png",
+          "karte": "Energy Waves",
+          "karte_de": "Energiewellen",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        }
+      }
     },
     "#B8": {
-      "label": "Physical-Safety",
-      "frage": "How important is physical safety to you?",
-      "karte": "Courage",
-      "text": "Safety is not the absence of danger — it is the blossoming in the midst of stone."
+      "label": "Entwicklung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - 523487 (1).png",
+          "karte": "The Fool",
+          "karte_de": "Der Narr",
+          "karte_key": "major_arcana.0_the_fool",
+          "karte_nummer": 0,
+          "tiage": "Your growth begins where your knowledge ends. The fool is not naive—he is wise enough to embrace the unknown.",
+          "reflexion": "Do I know you—or do I just think I know you?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B065_00001_.png",
+          "karte": "Transformation",
+          "karte_de": "Transformation",
+          "karte_key": "major_arcana.13_transformation",
+          "karte_nummer": 13,
+          "tiage": "In your interactions, you transform one another. Not because you want to, but because genuine connection inevitably brings about change.",
+          "reflexion": "Can I let the old man die—or will I cling on?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/image_00000.png",
+          "karte": "Change",
+          "karte_de": "Veränderung",
+          "karte_key": "major_arcana.10_change",
+          "karte_nummer": 10,
+          "tiage": "Your journey isn't a straight path—it's a dance with change. Hold on to what matters most, and let everything else go.",
+          "reflexion": "Do I embrace change—or do I fight it?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_08_00000.png",
+          "karte": "Maturity",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.ace_maturity",
+          "karte_nummer": 1,
+          "tiage": "Maturity is the goal of all development—and, paradoxically, its end. The mature person stops growing and begins to simply be. Development at Level 4 means: You are no longer becoming—you already are. The fruit no longer needs to grow. It can fall.",
+          "reflexion": "What if development didn't mean growth—but rather arrival?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B011_00001_ (4).png",
+          "karte": "Portal",
+          "karte_de": "Portal",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B032_00001_.png",
+          "karte": "Cosmic Spiral",
+          "karte_de": "Kosmische Spirale",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487.png",
+          "karte": "New World",
+          "karte_de": "Neue Welt",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B047_00001_.png",
+          "karte": "Wide Vision",
+          "karte_de": "Weite Vision",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B065_00001_ (2).png",
+          "karte": "Adventure",
+          "karte_de": "Abenteuer",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B011_00001_ (3).png",
+          "karte": "Star Gate",
+          "karte_de": "Sternentor",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/B014_00001_ (4).png",
+          "karte": "Breakthrough Portal",
+          "karte_de": "Durchbruch-Portal",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  personen bitte lächelnd  523487 (1).png",
+          "karte": "Journey",
+          "karte_de": "Reise",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        }
+      }
     },
     "#B9": {
-      "label": "Shelter",
-      "frage": "How important is a safe living space to you?",
-      "karte": "Harmony",
-      "text": "A home is where the heart does not have to fight. Inner harmony is the true shelter."
+      "label": "Gemeinschaft",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B033_00001_.png",
+          "karte": "Participation",
+          "karte_de": "Teilnahme",
+          "karte_key": "minor_arcana.fire.4_participation",
+          "karte_nummer": 4,
+          "tiage": "Your need for community isn't fulfilled by belonging alone—it's fulfilled by participation. Your uniqueness enriches the collective.",
+          "reflexion": "Am I making a contribution—or am I just going along with the crowd?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B024_00001_.png",
+          "karte": "Celebration",
+          "karte_de": "Feier",
+          "karte_key": "minor_arcana.water.3_celebration",
+          "karte_nummer": 3,
+          "tiage": "When you celebrate together—without a special occasion or agenda—a sense of community emerges in its purest form.",
+          "reflexion": "Should we celebrate our successes—or just rush on to the next task?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B039_00001_.png",
+          "karte": "The Dream",
+          "karte_de": "Der Traum",
+          "karte_key": "minor_arcana.water.6_the_dream",
+          "karte_nummer": 6,
+          "tiage": "Every vibrant community carries a dream—a shared vision that is greater than the sum of its parts. The crucial question is: Is your dream a living seed that allows you to grow—or a rigid illusion that separates you from the present moment?",
+          "reflexion": "Do we share a genuine common dream—or are we projecting our individual desires onto one another?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_09_00000.png",
+          "karte": "Love",
+          "karte_de": "Liebe",
+          "karte_key": "zusaetzliche_karten.love",
+          "karte_nummer": null,
+          "tiage": "Community, at its deepest level, is not an organization—it is love. Not the kind of love that demands and takes, but the kind of love that recognizes: We are not separate. You do not love the community—you are it. Every genuine connection is a moment of realization: You are me, too.",
+          "reflexion": "Do I experience community as a return to myself—or as an escape from myself?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B060_00001_ (2).png",
+          "karte": "Network",
+          "karte_de": "Netzwerk",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B009_00001_ (2).png",
+          "karte": "Home Community",
+          "karte_de": "Heimatliche Gemeinschaft",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (9).png",
+          "karte": "Master and Sangha",
+          "karte_de": "Meister & Sangha",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B033_00001_ (2).png",
+          "karte": "Community",
+          "karte_de": "Gemeinschaft",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B039_00001_ (2).png",
+          "karte": "Participation",
+          "karte_de": "Teilhabe",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B008_00001_ (2).png",
+          "karte": "Dinner Circle",
+          "karte_de": "Abendrunde",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (6).png",
+          "karte": "Community Circle",
+          "karte_de": "Gemeinschaftskreis",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/B002_00001_ (4).png",
+          "karte": "Kitchen Sharing",
+          "karte_de": "Küchen-Teilen",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        }
+      }
     },
     "#B10": {
-      "label": "Consistency",
-      "frage": "How important is consistency in relationships to you?",
-      "karte": "Completion",
-      "text": "Consistency arises not from holding on, but from allowing life to come to completion."
+      "label": "Anerkennung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B041_00001_.png",
+          "karte": "Warmth",
+          "karte_de": "Wärme",
+          "karte_key": "zusaetzliche_karten.warmth",
+          "karte_nummer": null,
+          "tiage": "The deepest form of recognition is warmth: not judgmental approval, not praise as a form of currency—but the natural radiance of an open heart. Warmth is a non-judgmental presence. When you truly feel recognized, it is this warmth that you sense.",
+          "reflexion": "Do I show appreciation through genuine warmth and presence—or do I use appreciation as a reward?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B047_00001_ (3).png",
+          "karte": "Playfulness",
+          "karte_de": "Verspieltheit",
+          "karte_key": "minor_arcana.fire.page_playfulness",
+          "karte_nummer": 11,
+          "tiage": "The most beautiful form of recognition is ease: when the other person sees you so completely that they can laugh with you.",
+          "reflexion": "Can we laugh—even at ourselves?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B023_00001_.png",
+          "karte": "Comparison",
+          "karte_de": "Vergleich",
+          "karte_key": "minor_arcana.clouds.5_comparison",
+          "karte_nummer": 5,
+          "tiage": "Appreciation dies the moment you start comparing yourself to others. Comparison turns us into objects on a scale rather than unique individuals. The deepest form of appreciation recognizes this: You are one of a kind—and no one of a kind needs a yardstick.",
+          "reflexion": "Do I recognize the other person’s uniqueness—or do I constantly compare them to others or to myself?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_10_00000.png",
+          "karte": "Compassion",
+          "karte_de": "Mitgefühl",
+          "karte_key": "zusaetzliche_karten.compassion",
+          "karte_nummer": null,
+          "tiage": "The deepest form of recognition is compassion: You don’t see the other person because they resemble you or validate you. You see them simply because they are. Compassion is unconditional recognition—the look that says: I see you, and I don’t need to change you.",
+          "reflexion": "Do I recognize the other person for who they are—or do I see them as a reflection of my own needs?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B041_00001_ (2).png",
+          "karte": "Appreciation",
+          "karte_de": "Wertschätzung",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B047_00001_.png",
+          "karte": "Respect",
+          "karte_de": "Respekt",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B047_00001_ (2).png",
+          "karte": "Success",
+          "karte_de": "Erfolg",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B023_00001_ (2).png",
+          "karte": "Significance",
+          "karte_de": "Bedeutsamkeit",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B11": {
-      "label": "Feeling-Safe",
-      "frage": "How important is it to you to feel emotionally safe?",
-      "karte": "Trust",
-      "text": "To feel safe does not mean controlling everything — it means leaping even when you cannot see the ground."
+      "label": "Gerechtigkeit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B035_00001_.png",
+          "karte": "Abundance",
+          "karte_de": "Fülle",
+          "karte_key": "minor_arcana.rainbows.king_abundance",
+          "karte_nummer": 14,
+          "tiage": "Justice that stems from an awareness of abundance is different from justice born of scarcity. Those who know that there is enough for everyone share differently—not out of duty, but out of abundance. Abundance is the foundation of generous fairness.",
+          "reflexion": "Does my sense of justice stem from a sense of abundance—or from a fear of missing out?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B029_00001_.png",
+          "karte": "Sharing",
+          "karte_de": "Teilen",
+          "karte_key": "minor_arcana.fire.queen_sharing",
+          "karte_nummer": 13,
+          "tiage": "Sharing is justice in action. When you share out of a sense of connectedness—not out of duty, but because you have more than enough—justice emerges not as a rule, but as a natural expression. What you give returns to you, multiplied.",
+          "reflexion": "Do I share out of abundance and a sense of connection—or out of a sense of duty and the feeling that I have to?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B024_00001_ (2).png",
+          "karte": "We Are the World",
+          "karte_de": "Wir sind die Welt",
+          "karte_key": "minor_arcana.rainbows.10_we_are_the_world",
+          "karte_nummer": 10,
+          "tiage": "True justice doesn't stop at one's own doorstep. \"We are the world\" means that what I do has consequences for the entire network. Justice in a relationship that doesn't care about the world around it has only gone halfway.",
+          "reflexion": "When we think of justice, do we also think of those who aren’t at the table—of everyone affected, of future generations?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_11_00000.png",
+          "karte": "Understanding",
+          "karte_de": "Verstehen",
+          "karte_key": "minor_arcana.water.knight_understanding",
+          "karte_nummer": 12,
+          "tiage": "Justice without understanding is law. Justice with understanding is wisdom. At Level 4, we don’t start by asking, “What is right?”—we ask, “What does this soul need?” Understanding is the foundation upon which true justice is built.",
+          "reflexion": "Can I act fairly without passing judgment—and pass judgment without condemning?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B060_00001_.png",
+          "karte": "Wheel of Balance",
+          "karte_de": "Rad des Gleichgewichts",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B029_00001_ (2).png",
+          "karte": "Understanding Differences",
+          "karte_de": "Unterschiede verstehen",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B035_00001_ (2).png",
+          "karte": "Shared Values",
+          "karte_de": "Gemeinsame Werte",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild  523487.png",
+          "karte": "Equal Lightning",
+          "karte_de": "Gleiches Feuer",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B12": {
-      "label": "Protection",
-      "frage": "How important is the feeling of being protected to you?",
-      "karte": "Protection",
-      "text": "Protection is not shielding — it is the space in which you are allowed to remain soft."
+      "label": "Verbundenheit",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B021_00001_.png",
+          "karte": "Beyond Illusion",
+          "karte_de": "Jenseits der Illusion",
+          "karte_key": "major_arcana.20_beyond_illusion",
+          "karte_nummer": 20,
+          "tiage": "The deepest sense of connection does not arise from physical proximity—it arises from the realization that separation is the true illusion.",
+          "reflexion": "Do I feel a sense of connection—or just closeness?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B020_00001_.png",
+          "karte": "Touch",
+          "karte_de": "Berührung",
+          "karte_key": "zusaetzliche_karten.touch",
+          "karte_nummer": null,
+          "tiage": "Connection begins in the body. A mindful touch can heal what words never can. The body is the most honest place of encounter—it doesn’t lie. Before any language, before any story: you and me, two bodies touching.",
+          "reflexion": "Are we truly physically present for one another—or are we connected only in our minds?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B027_00001_.png",
+          "karte": "Sorrow",
+          "karte_de": "Trauer",
+          "karte_key": "minor_arcana.clouds.9_sorrow",
+          "karte_nummer": 9,
+          "tiage": "The deepest connection also brings the deepest vulnerability. Grief is the price of love—and at the same time, its proof. If you can grieve for someone or something, you were truly connected. Let the grief be: it honors what was.",
+          "reflexion": "Do I allow myself to grieve when that connection is lost—as a sign of its authenticity and depth?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_12_00000.png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "zusaetzliche_karten.intimacy",
+          "karte_nummer": null,
+          "tiage": "Connection at its deepest level is intimacy: the ability to be seen without a mask—and to see the other person without a mask. Connected not by similarity or history, but by the raw truth of the moment. The greatest risk. The greatest gift.",
+          "reflexion": "Do I allow myself to be truly seen—even in the things I hide the most?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B042_00001_.png",
+          "karte": "Soul Connection",
+          "karte_de": "Seelenverbindung",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B042_00001_ (2).png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B053_00001_ (2).png",
+          "karte": "Passion in Rain",
+          "karte_de": "Leidenschaft im Regen",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B014_00001_ (2).png",
+          "karte": "Touch",
+          "karte_de": "Berührung",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B020_00001_ (2).png",
+          "karte": "Intimacy",
+          "karte_de": "Intimität",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B021_00001_ (2).png",
+          "karte": "Love",
+          "karte_de": "Liebe",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/B027_00001_ (2).png",
+          "karte": "Empathy",
+          "karte_de": "Empathie",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        },
+        "V12": {
+          "kontext": "V12",
+          "bild": "Future/B011_00001_ (5).png",
+          "karte": "Storm Comfort",
+          "karte_de": "Sturm-Geborgenheit",
+          "karte_key": "custom.v12",
+          "karte_nummer": null
+        },
+        "V13": {
+          "kontext": "V13",
+          "bild": "Future/B012_00001_ (4).png",
+          "karte": "Home Dance",
+          "karte_de": "Heimtanz",
+          "karte_key": "custom.v13",
+          "karte_nummer": null
+        },
+        "V14": {
+          "kontext": "V14",
+          "bild": "Future/B047_00001_ (4).png",
+          "karte": "Joyful Glance",
+          "karte_de": "Freudiger Blick",
+          "karte_key": "custom.v14",
+          "karte_nummer": null
+        },
+        "V15": {
+          "kontext": "V15",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , ohne text schild  523487 (1).png",
+          "karte": "Rain Romance",
+          "karte_de": "Regen-Romantik",
+          "karte_key": "custom.v15",
+          "karte_nummer": null
+        }
+      }
     },
     "#B13": {
-      "label": "Stability",
-      "frage": "How important is emotional stability to you?",
-      "karte": "Maturity",
-      "text": "Stability is not rigidity. It is mature equilibrium — within and without."
+      "label": "Selbsterkenntnis",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "B013.png",
+          "karte": "Patience",
+          "karte_de": "Geduld",
+          "karte_key": "minor_arcana.rainbows.7_patience",
+          "karte_nummer": 7,
+          "tiage": "Self-awareness begins when you are willing to look closely and patiently—without rushing, without judging. The truth about yourself slowly comes to light.",
+          "reflexion": "Am I patient with myself—and with you?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B018_00001_ (2).png",
+          "karte": "Creativity",
+          "karte_de": "Kreativität",
+          "karte_key": "major_arcana.3_creativity",
+          "karte_nummer": 3,
+          "tiage": "Self-awareness also arises through creative expression. What you create—without an audience, without a goal—reveals who you truly are. In the act of creation, the unconscious comes to light. Creativity is self-revelation.",
+          "reflexion": "What do I create when no one is watching—and what does that reveal about my innermost self?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B066_00001_.png",
+          "karte": "New Vision",
+          "karte_de": "Neue Sicht",
+          "karte_key": "major_arcana.12_new_vision",
+          "karte_nummer": 12,
+          "tiage": "Your self-awareness grows when you're willing to let yourself be turned upside down. Let go. What you see then has always been there.",
+          "reflexion": "Am I ready to see myself in a new light?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_13_00000.png",
+          "karte": "Turning In",
+          "karte_de": "Innenwendung",
+          "karte_key": "minor_arcana.water.4_turning_in",
+          "karte_nummer": 4,
+          "tiage": "Self-awareness is the turning inward—not to find answers, but to recognize the one who asks the questions. Who am I when I stop being someone? This turning inward is neither a technique nor a concept. It is the end of all searching—and the beginning of understanding.",
+          "reflexion": "What remains when I let go of all my roles, stories, and beliefs?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B012_00001_.png",
+          "karte": "Inner Light",
+          "karte_de": "Inneres Licht",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B012_00001_ (2).png",
+          "karte": "Cave of Insight",
+          "karte_de": "Höhle der Erkenntnis",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B032_00001_ (2).png",
+          "karte": "Mirror",
+          "karte_de": "Spiegel",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style , wie abgebildet - zusätzlich hintergrund  523487.png",
+          "karte": "Eternal Knowledge",
+          "karte_de": "Ewiges Wissen",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B014_00001_ (5).png",
+          "karte": "Mutual Recognition",
+          "karte_de": "Gegenseitige Erkenntnis",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style , ohne text schild DER DENKER  523487.png",
+          "karte": "Dark Thinker",
+          "karte_de": "Dunkler Denker",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        }
+      }
     },
     "#B14": {
-      "label": "Lightness",
-      "frage": "How important is lightness in everyday life to you?",
-      "karte": "Playfulness",
-      "text": "Lightness is the art of trusting the moment — not because it is easy, but because you are."
+      "label": "Sinn",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B062_00001_.png",
+          "karte": "Guidance",
+          "karte_de": "Führung",
+          "karte_key": "minor_arcana.rainbows.3_guidance",
+          "karte_nummer": 3,
+          "tiage": "Meaning cannot be forced. It reveals itself when you stop searching for it and start following what truly moves you.",
+          "reflexion": "Do I follow blind authority—or my own truth?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B069_00001_.png",
+          "karte": "Experiencing",
+          "karte_de": "Erfahren",
+          "karte_key": "minor_arcana.fire.3_experiencing",
+          "karte_nummer": 3,
+          "tiage": "Meaning isn't just found in thought—it unfolds through the full experience. When you immerse yourself completely, without holding back, that's when the moment arrives when everything makes sense. Not as an explanation, but as a living experience.",
+          "reflexion": "Am I truly living my encounters—or am I just observing them from a safe distance?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B063_00001_.png",
+          "karte": "Past Lives",
+          "karte_de": "Vergangene Leben",
+          "karte_key": "major_arcana.18_past_lives",
+          "karte_nummer": 18,
+          "tiage": "Meaning also emerges in hindsight: What patterns repeat themselves in your life and in your relationships? The past—whether understood literally or symbolically—carries messages about what you came here to learn. Recognize the pattern, and the meaning will become clear.",
+          "reflexion": "What patterns keep repeating themselves in my relationships—and what do they reveal about my deeper purpose in life?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_14_00000.png",
+          "karte": "Completion",
+          "karte_de": "Vollendung",
+          "karte_key": "major_arcana.21_completion",
+          "karte_nummer": 21,
+          "tiage": "Meaning isn't something you find—it's what you recognize when you look at your life: the circle that closes. Completion isn't the end, but the moment when the pattern becomes visible. Your life makes sense not through explanation, but through form.",
+          "reflexion": "When I look back at my life at the end of it—what was the common thread that tied everything together?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B002_00001_.png",
+          "karte": "Tree of Life",
+          "karte_de": "Lebensbaum",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne text schild  523487 (7).png",
+          "karte": "Cosmic Tree",
+          "karte_de": "Kosmischer Lebensbaum",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B062_00001_ (2).png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/B063_00001_ (2).png",
+          "karte": "Sharing",
+          "karte_de": "Beitrag",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        },
+        "V9": {
+          "kontext": "V9",
+          "bild": "Future/B002_00001_ (3).png",
+          "karte": "Purple Tree of Life",
+          "karte_de": "Violetter Lebensbaum",
+          "karte_key": "custom.v9",
+          "karte_nummer": null
+        },
+        "V10": {
+          "kontext": "V10",
+          "bild": "Future/B002_00002_.png",
+          "karte": "Sunset Tree",
+          "karte_de": "Sonnenuntergangsbaum",
+          "karte_key": "custom.v10",
+          "karte_nummer": null
+        },
+        "V11": {
+          "kontext": "V11",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (1).png",
+          "karte": "Sacred Traditions",
+          "karte_de": "Heilige Traditionen",
+          "karte_key": "custom.v11",
+          "karte_nummer": null
+        }
+      }
     },
     "#B15": {
-      "label": "Sense-of-Belonging",
-      "frage": "How important is a sense of belonging to you?",
-      "karte": "We Are the World",
-      "text": "A sense of belonging arises when you know yourself to be woven in — not through proximity, but through connection."
+      "label": "Integrität",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B015_00001_.png",
+          "karte": "Silence",
+          "karte_de": "Stille",
+          "karte_key": "major_arcana.17_silence",
+          "karte_nummer": 17,
+          "tiage": "Integrity grows in silence. Not amid the clamor of justifications and explanations—but in those moments when you pause and listen: Does what I’m doing align with who I truly am? Silence is the most honest mirror.",
+          "reflexion": "Do I allow myself enough quiet time to be honest with myself—far from distractions and expectations?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B050_00001_.png",
+          "karte": "Ordinariness",
+          "karte_de": "Gewöhnlichkeit",
+          "karte_key": "minor_arcana.rainbows.8_ordinariness",
+          "karte_nummer": 8,
+          "tiage": "Integrity isn't revealed in grand moments—it shows itself in the ordinary. How you live your daily life, how you handle the little things—that says everything about who you are. The ordinary is the true test of character.",
+          "reflexion": "Do I live by my values in my daily life—or only when someone is watching?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B051_00001_.png",
+          "karte": "Morality",
+          "karte_de": "Moral",
+          "karte_key": "minor_arcana.clouds.queen_morality",
+          "karte_nummer": 13,
+          "tiage": "Integrity isn't morality imposed from the outside—it's ethics put into practice. Morality comes from the outside; ethics come from within. If you act because you have to, that's morality. If you act because it feels right deep down inside—that's integrity.",
+          "reflexion": "Do I act according to my own values—or according to what others expect of me?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_15_00000.png",
+          "karte": "Commitment",
+          "karte_de": "Verbindlichkeit",
+          "karte_key": "zusaetzliche_karten.commitment",
+          "karte_nummer": null,
+          "tiage": "Integrity, at its deepest level, is a commitment to yourself. Not as a duty, but as the deepest loyalty to what you have come to realize. Commitment is not a chain—it is the form that your freedom takes. Those who remain true to themselves have no need for a mask.",
+          "reflexion": "Which promise I made to myself—not to others—am I truly keeping?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B015_00001_ (2).png",
+          "karte": "Integrity",
+          "karte_de": "Integrität",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/B050_00001_ (2).png",
+          "karte": "Authenticity",
+          "karte_de": "Authentizität",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        },
+        "V7": {
+          "kontext": "V7",
+          "bild": "Future/B051_00001_ (2).png",
+          "karte": "Genuineness",
+          "karte_de": "Echtheit",
+          "karte_key": "custom.v7",
+          "karte_nummer": null
+        },
+        "V8": {
+          "kontext": "V8",
+          "bild": "Future/Firefly_Gemini Flash_Etwas futuristischer möglich - Comix style ohne schild text wie abgebildet - zusätzli 523487.png",
+          "karte": "Infinite Heart",
+          "karte_de": "Unendliches Herz",
+          "karte_key": "custom.v8",
+          "karte_nummer": null
+        }
+      }
     },
     "#B16": {
-      "label": "Warmth",
-      "frage": "How important is emotional warmth to you?",
-      "karte": "Warmth",
-      "text": "Warmth is not a feeling, but a presence that does not judge."
-    },
-    "#B17": {
-      "label": "Appreciation",
-      "frage": "How important is appreciation from your partner to you?",
-      "karte": "Success",
-      "text": "Appreciation happens when you are seen without a mask — not for achievement, but for your being."
-    },
-    "#B18": {
-      "label": "Closeness",
-      "frage": "How important is emotional closeness to you?",
-      "karte": "The Lovers",
-      "text": "Closeness is the bridge between two inner worlds — it begins with intimacy with yourself."
-    },
-    "#B19": {
-      "label": "Companionship",
-      "frage": "How important is companionship to you?",
-      "karte": "Participation",
-      "text": "Companionship nourishes when you do not have to prove yourself. Being present is enough."
-    },
-    "#B20": {
-      "label": "Intimacy",
-      "frage": "How important is intimacy to you?",
-      "karte": "Intimacy",
-      "text": "Intimacy is the nakedness of the soul — not of the body."
-    },
-    "#B21": {
-      "label": "Love",
-      "frage": "How important is love to you?",
-      "karte": "Love",
-      "text": "Love is not relationship. It is space. When you love, you set free."
-    },
-    "#B22": {
-      "label": "Caring",
-      "frage": "How important is it to you to care for others?",
-      "karte": "Compassion",
-      "text": "Caring is devotion without demand — it waters without counting."
-    },
-    "#B23": {
-      "label": "Support",
-      "frage": "How important is support to you?",
-      "karte": "Support",
-      "text": "Support is an invisible ground. You know it is there — because you dare."
-    },
-    "#B24": {
-      "label": "Being-There-for-Each-Other",
-      "frage": "How important is it to you to be there for each other?",
-      "karte": "Friendliness",
-      "text": "Being there for each other means being allowed to grow together in silence — without grip, without must."
-    },
-    "#B25": {
-      "label": "Acceptance",
-      "frage": "How important is acceptance to you?",
-      "karte": "Acceptance",
-      "text": "Acceptance is the first breath of freedom. You stop fighting — and life breathes through you."
-    },
-    "#B26": {
-      "label": "Compassion",
-      "frage": "How important is compassion to you?",
-      "karte": "Completion",
-      "text": "Compassion completes the circle between you and the other. It is the recognition: we are not separate."
-    },
-    "#B27": {
-      "label": "Consideration",
-      "frage": "How important is consideration to you?",
-      "karte": "Trust",
-      "text": "To be considered means to hold a place in the awareness of another. It is an act of trust."
-    },
-    "#B28": {
-      "label": "Empathy",
-      "frage": "How important is empathy to you?",
-      "karte": "Receptivity",
-      "text": "Empathy is the ability to listen with the heart. The cup must be empty to catch the tears of another."
-    },
-    "#B29": {
-      "label": "Trust",
-      "frage": "How important is trust to you?",
-      "karte": "Change",
-      "text": "Trust is the courage to surrender to change. It says yes before there is certainty."
-    },
-    "#B30": {
-      "label": "Attention",
-      "frage": "How important is attention to you?",
-      "karte": "Awareness",
-      "text": "To be noticed is the gift of attention. Awareness turns toward what truly matters."
-    },
-    "#B31": {
-      "label": "Being-Seen",
-      "frage": "How important is being seen to you?",
-      "karte": "The Lovers",
-      "text": "To be seen means to be recognized in your essence. The lovers see each other without veils."
-    },
-    "#B32": {
-      "label": "Being-Understood",
-      "frage": "How important is being understood to you?",
-      "karte": "Understanding",
-      "text": "Being understood is more than words. It is the feeling that someone speaks the language of your heart."
-    },
-    "#B33": {
-      "label": "Harmony",
-      "frage": "How important is harmony to you?",
-      "karte": "Rebirth",
-      "text": "True harmony arises through rebirth — through the release of old dissonance."
-    },
-    "#B34": {
-      "label": "Self-Determination",
-      "frage": "How important is self-determination to you?",
-      "karte": "Aloneness",
-      "text": "Self-determination begins in aloneness. Only one who belongs to oneself can choose freely."
-    },
-    "#B35": {
-      "label": "Freedom-to-Choose",
-      "frage": "How important is the freedom to choose to you?",
-      "karte": "Transformation",
-      "text": "Every choice is a small transformation. To be able to choose means to actively shape your life."
-    },
-    "#B36": {
-      "label": "Independence",
-      "frage": "How important is independence to you?",
-      "karte": "The Rebel",
-      "text": "Independence is the path of the rebel. He follows his own truth, even when it goes against the current."
-    },
-    "#B37": {
-      "label": "Having-Space",
-      "frage": "How important is having space to you?",
-      "karte": "Adventure",
-      "text": "Having space means freedom to explore. Adventure needs vastness, not confinement."
-    },
-    "#B38": {
-      "label": "Spontaneity",
-      "frage": "How important is spontaneity to you?",
-      "karte": "Playfulness",
-      "text": "Spontaneity is the dance of the moment. The playing child within you knows no plans — only joy."
-    },
-    "#B39": {
-      "label": "Collaboration",
-      "frage": "How important is collaboration to you?",
-      "karte": "Participation",
-      "text": "Collaboration is shared creation. When everyone participates, more emerges than the sum of all parts."
-    },
-    "#B40": {
-      "label": "Communication",
-      "frage": "How important is communication to you?",
-      "karte": "The Lovers",
-      "text": "True communication is the dialogue of two hearts. The lovers speak even in silence."
-    },
-    "#B41": {
-      "label": "Community",
-      "frage": "How important is community to you?",
-      "karte": "We Are the World",
-      "text": "Community is the recognition: we are all waves of the same ocean. Connection is our natural state."
-    },
-    "#B42": {
-      "label": "Belonging",
-      "frage": "How important is belonging to you?",
-      "karte": "We Are the World",
-      "text": "Belonging is not possession — it is the knowing that you are part of the whole."
-    },
-    "#B43": {
-      "label": "Reciprocity",
-      "frage": "How important is reciprocity to you?",
-      "karte": "Going With The Flow",
-      "text": "Reciprocity is the natural flow between giving and receiving. Like water, it finds its balance."
-    },
-    "#B44": {
-      "label": "Respect",
-      "frage": "How important is respect to you?",
-      "karte": "The Master",
-      "text": "True respect begins with yourself. The master honors life in every form."
-    },
-    "#B45": {
-      "label": "Having-Significance",
-      "frage": "How important is having significance to you?",
-      "karte": "Ripeness",
-      "text": "Significance ripens like a fruit. When the time has come, what you have contributed becomes visible."
-    },
-    "#B46": {
-      "label": "Beauty",
-      "frage": "How important is beauty to you?",
-      "karte": "Creativity",
-      "text": "Beauty is the language of the soul. Creativity makes visible what the heart perceives."
-    },
-    "#B47": {
-      "label": "Leisure",
-      "frage": "How important is leisure time to you?",
-      "karte": "Moment to Moment",
-      "text": "Leisure is the art of being in the moment. Not filling, but emptying — that is true restoration."
-    },
-    "#B48": {
-      "label": "Joy",
-      "frage": "How important is joy to you?",
-      "karte": "Integration",
-      "text": "Joy arises when all parts of you come together. Integration is the path to deep joy."
-    },
-    "#B49": {
-      "label": "Humor",
-      "frage": "How important is humor to you?",
-      "karte": "Celebration",
-      "text": "Humor is the celebration of the absurd. Whoever can laugh has understood that life is a play."
-    },
-    "#B50": {
-      "label": "Authenticity",
-      "frage": "How important is authenticity to you?",
-      "karte": "Integration",
-      "text": "Authenticity is integration. When inside and outside are in accord, you are wholly yourself."
-    },
-    "#B51": {
-      "label": "Genuineness",
-      "frage": "How important is genuineness to you?",
-      "karte": "Friendliness",
-      "text": "Genuineness reveals itself in friendliness toward yourself. Only one who does not pretend can be truly kind."
-    },
-    "#B52": {
-      "label": "Integrity",
-      "frage": "How important is integrity to you?",
-      "karte": "Healing",
-      "text": "Integrity is the healing of inner division. When you are whole, you are healed."
-    },
-    "#B53": {
-      "label": "Presence",
-      "frage": "How important is presence to you?",
-      "karte": "Awareness",
-      "text": "Presence is lived awareness. Here and now — that is the only place where life happens."
-    },
-    "#B54": {
-      "label": "Order",
-      "frage": "How important is order to you?",
-      "karte": "Understanding",
-      "text": "Order arises through understanding. When you see through things, they find their place."
-    },
-    "#B55": {
-      "label": "Awareness",
-      "frage": "How important is awareness to you?",
-      "karte": "Consciousness",
-      "text": "Awareness is the sky — thoughts are only clouds. You are the sky, not the clouds."
-    },
-    "#B56": {
-      "label": "Challenge",
-      "frage": "How important is challenge to you?",
-      "karte": "Courage",
-      "text": "Challenges summon your courage. Every hurdle overcome makes you stronger."
-    },
-    "#B57": {
-      "label": "Clarity",
-      "frage": "How important is clarity to you?",
-      "karte": "Breakthrough",
-      "text": "Clarity comes after the breakthrough. When the fog lifts, you see what was always there."
-    },
-    "#B58": {
-      "label": "Competence",
-      "frage": "How important is competence to you?",
-      "karte": "The Creator",
-      "text": "Competence is mastery in the making. The creator refines his craft through loving practice."
-    },
-    "#B59": {
-      "label": "Efficiency",
-      "frage": "How important is efficiency to you?",
-      "karte": "The Master",
-      "text": "True efficiency is effortless precision. The master wastes no energy — he flows."
-    },
-    "#B60": {
-      "label": "Effectiveness",
-      "frage": "How important is effectiveness to you?",
-      "karte": "Totality",
-      "text": "Effectiveness arises through totality. Whatever you do — do it completely, and it will show its effect."
-    },
-    "#B61": {
-      "label": "Growth",
-      "frage": "How important is growth to you?",
-      "karte": "Rebirth",
-      "text": "Growth is continuous rebirth. Every day something old dies so that something new may blossom."
-    },
-    "#B62": {
-      "label": "Meaning",
-      "frage": "How important is meaning to you?",
-      "karte": "Silence",
-      "text": "In silence, meaning reveals itself. It cannot be thought — only felt, in the depth of stillness."
-    },
-    "#B63": {
-      "label": "Contributing",
-      "frage": "How important is contributing to you?",
-      "karte": "Sharing",
-      "text": "Contributing is natural sharing. When you give from abundance, you enrich yourself."
-    },
-    "#B64": {
-      "label": "Creativity",
-      "frage": "How important is creativity to you?",
-      "karte": "Creativity",
-      "text": "Creativity is your nature. When you create, you are one with the universe that ceaselessly creates."
-    },
-    "#B65": {
-      "label": "Discovery",
-      "frage": "How important is discovery to you?",
-      "karte": "Adventure",
-      "text": "Discovery is the adventure of the unknown. Every step into the new is a step into your vastness."
-    },
-    "#B66": {
-      "label": "Learning",
-      "frage": "How important is learning to you?",
-      "karte": "Understanding",
-      "text": "Learning is the path to understanding. The true student remains always curious, always open."
-    },
-    "#B67": {
-      "label": "Self-Expression",
-      "frage": "How important is self-expression to you?",
-      "karte": "Integration",
-      "text": "Self-expression is lived integration. When you are wholly yourself, your essence flows naturally outward."
-    },
-    "#B68": {
-      "label": "Receiving-Inspiration",
-      "frage": "How important is receiving inspiration to you?",
-      "karte": "Source",
-      "text": "The deepest inspirations come from the source within you. Outer impulses awaken what already lives inside."
-    },
-    "#B69": {
-      "label": "Celebrating-Life",
-      "frage": "How important is celebrating life to you?",
-      "karte": "Celebration",
-      "text": "Life is a celebration — you need no reason to celebrate. Your being itself is reason enough."
-    },
-    "#B70": {
-      "label": "Inspiration",
-      "frage": "How important is inspiration to you?",
-      "karte": "Inner Voice",
-      "text": "Inspiration is the voice of inner wisdom. It whispers to you what your heart already knows."
-    },
-    "#B71": {
-      "label": "Expressing-Grief",
-      "frage": "How important is expressing grief to you?",
-      "karte": "Sorrow",
-      "text": "Grief needs expression as rain needs to fall. Let it flow — on the other side, clarity awaits."
-    },
-    "#B72": {
-      "label": "Insight",
-      "frage": "How important is insight to you?",
-      "karte": "New Vision",
-      "text": "Insight is new vision. Sometimes you must shift your perspective to see what was always there."
-    },
-    "#B73": {
-      "label": "Beginning-and-Ending",
-      "frage": "How important is the cycle of beginning and ending to you?",
-      "karte": "Completion",
-      "text": "Every ending carries a beginning within it. The circle closes so that a new one may begin."
-    },
-    "#B74": {
-      "label": "Exercising-Control",
-      "frage": "How important is exercising control to you?",
-      "karte": "Control",
-      "text": "True control lies in releasing control. The master of life does not control — he flows."
-    },
-    "#B75": {
-      "label": "Surrender",
-      "frage": "How important is surrender to you?",
-      "karte": "Letting Go",
-      "text": "Surrender is letting go in trust. Empty hands are ready to receive."
-    },
-    "#B76": {
-      "label": "Giving-Guidance",
-      "frage": "How important is giving guidance to you?",
-      "karte": "Guidance",
-      "text": "Giving guidance means showing others the path you yourself have walked. Authentic guidance inspires."
-    },
-    "#B77": {
-      "label": "Being-Guided",
-      "frage": "How important is being guided to you?",
-      "karte": "Trust",
-      "text": "Being guided requires trust. It is the courage to reach for another's hand in the dark."
-    },
-    "#B78": {
-      "label": "Ritual",
-      "frage": "How important is ritual to you?",
-      "karte": "The Master",
-      "text": "Rituals are conscious acts. They bring the sacred into the everyday and the everyday into the sacred."
-    },
-    "#B79": {
-      "label": "Aftercare",
-      "frage": "How important is aftercare to you?",
-      "karte": "Healing",
-      "text": "Aftercare is mindful healing. It gives what has happened the space for integration."
-    },
-    "#B80": {
-      "label": "Setting-Boundaries",
-      "frage": "How important is setting boundaries to you?",
-      "karte": "The Rebel",
-      "text": "Setting boundaries is an act of self-respect. The rebel says no in order to protect his yes."
-    },
-    "#B81": {
-      "label": "Respecting-Boundaries",
-      "frage": "How important is respecting boundaries to you?",
-      "karte": "Receptivity",
-      "text": "Respecting boundaries means honoring the space of the other. Receptivity begins with mindfulness."
-    },
-    "#B82": {
-      "label": "Intensity",
-      "frage": "How important is intensity to you?",
-      "karte": "Intensity",
-      "text": "Intensity is life in its purest form. Burn brightly — but do not burn yourself out."
-    },
-    "#B83": {
-      "label": "Giving-Trust",
-      "frage": "How important is giving trust to you?",
-      "karte": "Trust",
-      "text": "Giving trust is an act of courage. It opens the door to deep connection."
-    },
-    "#B84": {
-      "label": "Taking-Responsibility",
-      "frage": "How important is taking responsibility to you?",
-      "karte": "Maturity",
-      "text": "Taking responsibility is a sign of maturity. It means: I am the creator of my life."
-    },
-    "#B85": {
-      "label": "Letting-Go",
-      "frage": "How important is letting go to you?",
-      "karte": "Trust",
-      "text": "Letting go requires deep trust. It is the leap, knowing that you will be held."
-    },
-    "#B86": {
-      "label": "Power-Exchange",
-      "frage": "How important is power exchange to you?",
-      "karte": "Transformation",
-      "text": "Power exchange is transformation within relationship. Both partners are transformed through the conscious play."
-    },
-    "#B87": {
-      "label": "Being-of-Service",
-      "frage": "How important is being of service to you?",
-      "karte": "Compassion",
-      "text": "Being of service out of compassion is devotion without loss. You give and receive at the same time."
-    },
-    "#B88": {
-      "label": "Protecting",
-      "frage": "How important is protecting to you?",
-      "karte": "Courage",
-      "text": "Protecting requires courage — the courage to stand for what you love."
-    },
-    "#B89": {
-      "label": "Desire-for-Children",
-      "frage": "How important is the desire for children to you?",
-      "karte": "Flowering",
-      "text": "The desire for children is the longing for blossoming. Life wants to continue, to flower, to be passed on."
-    },
-    "#B90": {
-      "label": "Parenthood",
-      "frage": "How important is parenthood to you?",
-      "karte": "The Lovers",
-      "text": "Parenthood is a form of love that lets go. The lovers become three — and love grows."
-    },
-    "#B91": {
-      "label": "Procreation",
-      "frage": "How important is procreation to you?",
-      "karte": "Source",
-      "text": "Procreation connects you with the source of life itself. You become a channel for new being."
-    },
-    "#B92": {
-      "label": "Starting-a-Family",
-      "frage": "How important is starting a family to you?",
-      "karte": "We Are the World",
-      "text": "Starting a family means creating a circle of connection. A microcosm of the world."
-    },
-    "#B93": {
-      "label": "Blended-Family",
-      "frage": "How important is a blended family to you?",
-      "karte": "Creativity",
-      "text": "A blended family is the creative shaping of family. New patterns emerge from different threads."
-    },
-    "#B94": {
-      "label": "Child-Free-Life",
-      "frage": "How important is a child-free life to you?",
-      "karte": "Aloneness",
-      "text": "A child-free life is a conscious path. In aloneness you find other forms of fulfillment."
-    },
-    "#B95": {
-      "label": "Adoption",
-      "frage": "How important is adoption to you?",
-      "karte": "Compassion",
-      "text": "Adoption is compassion in action. You open your heart to a child that did not come from you."
-    },
-    "#B96": {
-      "label": "Foster-Children",
-      "frage": "How important are foster children to you?",
-      "karte": "Healing",
-      "text": "Taking in foster children is healing work. You give a child what it needs in order to heal."
-    },
-    "#B97": {
-      "label": "Moving-in-Together",
-      "frage": "How important is moving in together to you?",
-      "karte": "Harmony",
-      "text": "Moving in together is the weaving of shared harmony. Two lives become one shared space."
-    },
-    "#B98": {
-      "label": "Living-Apart",
-      "frage": "How important is living apart to you?",
-      "karte": "Aloneness",
-      "text": "Living apart honors the need for aloneness. Closeness sometimes needs distance in order to breathe."
-    },
-    "#B99": {
-      "label": "Shared-Living",
-      "frage": "How important is shared living to you?",
-      "karte": "Participation",
-      "text": "Shared living is collective participation in daily life. Community arises in the small moments."
-    },
-    "#B100": {
-      "label": "Own-Room",
-      "frage": "How important is having your own room to you?",
-      "karte": "Aloneness",
-      "text": "A room of your own is the retreat of the soul. In aloneness you rediscover yourself."
-    },
-    "#B101": {
-      "label": "City-Life",
-      "frage": "How important is city life to you?",
-      "karte": "Experiencing",
-      "text": "City life is intense experiencing. The city pulses with life — whoever is open will be richly gifted."
-    },
-    "#B102": {
-      "label": "Country-Life",
-      "frage": "How important is country life to you?",
-      "karte": "Harmony",
-      "text": "Country life is harmony with nature. The rhythm of the earth becomes your rhythm."
-    },
-    "#B103": {
-      "label": "Mobility",
-      "frage": "How important is mobility to you?",
-      "karte": "Traveling",
-      "text": "Mobility is the freedom of the journey. Whoever can move can unfold."
-    },
-    "#B104": {
-      "label": "Settledness",
-      "frage": "How important is settledness to you?",
-      "karte": "Maturity",
-      "text": "Settledness is mature grounding. To put down roots means to grow deep rather than wide."
-    },
-    "#B105": {
-      "label": "Marriage",
-      "frage": "How important is marriage to you?",
-      "karte": "Commitment",
-      "text": "Marriage is a conscious yes. It is the decision to walk together through all seasons."
-    },
-    "#B106": {
-      "label": "Without-Marriage",
-      "frage": "How important is living without marriage to you?",
-      "karte": "The Rebel",
-      "text": "Living without marriage is the path of the rebel. Love needs no certificate — only truthfulness."
-    },
-    "#B107": {
-      "label": "Civil-Partnership",
-      "frage": "How important is a civil partnership to you?",
-      "karte": "The Lovers",
-      "text": "Civil partnership is the official recognition of love. The lovers step visibly into the world."
-    },
-    "#B108": {
-      "label": "Pets",
-      "frage": "How important are pets to you?",
-      "karte": "Friendliness",
-      "text": "Pets teach unconditional friendliness. They love without asking — and are loved in return."
-    },
-    "#B109": {
-      "label": "No-Pets",
-      "frage": "How important is having no pets to you?",
-      "karte": "Slowing Down",
-      "text": "Having no pets creates space for slowness. Less obligation, more silence."
-    },
-    "#B110": {
-      "label": "Shared-Hobbies",
-      "frage": "How important are shared hobbies to you?",
-      "karte": "Celebration",
-      "text": "Shared hobbies are shared celebrations. What brings joy grows larger when it is shared."
-    },
-    "#B111": {
-      "label": "Individual-Hobbies",
-      "frage": "How important are individual hobbies to you?",
-      "karte": "Aloneness",
-      "text": "Individual hobbies are spaces of aloneness. They nourish the part of you that belongs only to you."
-    },
-    "#B112": {
-      "label": "Shared-Vacation",
-      "frage": "How important is shared vacation to you?",
-      "karte": "Adventure",
-      "text": "Shared vacation is shared adventure. New places open new spaces — also for each other."
-    },
-    "#B113": {
-      "label": "Separate-Vacation",
-      "frage": "How important is separate vacation to you?",
-      "karte": "Aloneness",
-      "text": "Separate vacation honors the need for aloneness. Sometimes you must travel alone to find yourself."
-    },
-    "#B114": {
-      "label": "Long-Term-Planning",
-      "frage": "How important is long-term planning to you?",
-      "karte": "Patience",
-      "text": "Long-term planning is patient sowing. You trust that the seed will sprout at the right time."
-    },
-    "#B115": {
-      "label": "Living-in-the-Moment",
-      "frage": "How important is living in the moment to you?",
-      "karte": "Moment to Moment",
-      "text": "Living in the moment is the highest art. Past and future vanish — only now remains."
-    },
-    "#B116": {
-      "label": "Career-Focus",
-      "frage": "How important is career focus to you?",
-      "karte": "Success",
-      "text": "Career focus is directed energy. Yet true success lies not in achieving, but in becoming."
-    },
-    "#B117": {
-      "label": "Family-Focus",
-      "frage": "How important is family focus to you?",
-      "karte": "We Are the World",
-      "text": "Family focus is connection as priority. The family is a microcosm of the world."
-    },
-    "#B118": {
-      "label": "Work-Life-Balance",
-      "frage": "How important is work-life balance to you?",
-      "karte": "Integration",
-      "text": "Work-life balance is lived integration. When all areas of life flow, harmony arises."
-    },
-    "#B119": {
-      "label": "Shared-Values",
-      "frage": "How important are shared values to you?",
-      "karte": "We Are the World",
-      "text": "Shared values are the invisible bond. They connect more deeply than words or deeds."
-    },
-    "#B120": {
-      "label": "Respect-for-Differences",
-      "frage": "How important is respect for differences to you?",
-      "karte": "Understanding",
-      "text": "Respecting differences means understanding that diversity is richness. The rainbow needs all its colors."
-    },
-    "#B121": {
-      "label": "Honoring-Traditions",
-      "frage": "How important is honoring traditions to you?",
-      "karte": "Ordinariness",
-      "text": "Honoring traditions cherishes the ordinary. In what recurs lies the sacredness of the everyday."
-    },
-    "#B122": {
-      "label": "Breaking-New-Ground",
-      "frage": "How important is breaking new ground to you?",
-      "karte": "Adventure",
-      "text": "Breaking new ground is the adventure of the pioneer. The unknown calls — and you answer."
-    },
-    "#B123": {
-      "label": "Sharing-Spirituality",
-      "frage": "How important is sharing spirituality to you?",
-      "karte": "Inner Voice",
-      "text": "Sharing spirituality means listening together to the inner voice. Shared silence is double the depth."
-    },
-    "#B124": {
-      "label": "Secular-Life",
-      "frage": "How important is a secular life to you?",
-      "karte": "Ordinariness",
-      "text": "Secular life finds the sacred in the ordinary. Every moment is holy — even without ritual."
-    },
-    "#B125": {
-      "label": "Healthy-Eating",
-      "frage": "How important is healthy eating to you?",
-      "karte": "Awareness",
-      "text": "Healthy eating is conscious nourishing. What you eat becomes you — choose with mindfulness."
-    },
-    "#B126": {
-      "label": "Sports-and-Fitness",
-      "frage": "How important are sports and fitness to you?",
-      "karte": "Totality",
-      "text": "Sports and fitness thrive on totality. Give yourself completely — and the body answers with vitality."
-    },
-    "#B127": {
-      "label": "Financial-Independence",
-      "frage": "How important is financial independence to you?",
-      "karte": "Abundance",
-      "text": "Financial independence is outer abundance as a mirror of inner freedom. Abundance attracts abundance."
-    },
-    "#B128": {
-      "label": "Shared-Finances",
-      "frage": "How important are shared finances to you?",
-      "karte": "Going With The Flow",
-      "text": "Shared finances are a shared flow. Money flows between you like water — naturally and freely."
-    },
-    "#B129": {
-      "label": "Separate-Finances",
-      "frage": "How important are separate finances to you?",
-      "karte": "Aloneness",
-      "text": "Separate finances honor independence. Each carries their part — and that creates clarity."
-    },
-    "#B130": {
-      "label": "Frugality",
-      "frage": "How important is frugality to you?",
-      "karte": "Patience",
-      "text": "Frugality is patient guarding. Like the farmer saves his seed, you save for the future."
-    },
-    "#B131": {
-      "label": "Generosity",
-      "frage": "How important is generosity to you?",
-      "karte": "Sharing",
-      "text": "Generosity is abundance overflowing. One who lives from the source cannot help but give."
-    },
-    "#B132": {
-      "label": "Wealth-Building",
-      "frage": "How important is wealth building to you?",
-      "karte": "Abundance",
-      "text": "Wealth building is creating material abundance. But do not forget: true richness is within."
-    },
-    "#B133": {
-      "label": "Minimalism",
-      "frage": "How important is minimalism to you?",
-      "karte": "No-Thingness",
-      "text": "Minimalism is the art of emptiness. Fewer things, more space — more space, more freedom."
-    },
-    "#B134": {
-      "label": "Professional-Fulfillment",
-      "frage": "How important is professional fulfillment to you?",
-      "karte": "The Creator",
-      "text": "Professional fulfillment is creation in daily life. When work becomes the expression of your essence, it becomes a calling."
-    },
-    "#B135": {
-      "label": "Work-as-Means",
-      "frage": "How important is work as a means to you?",
-      "karte": "Ordinariness",
-      "text": "Work as a means sees the ordinary clearly. Work is a tool, not an identity."
-    },
-    "#B136": {
-      "label": "Self-Employment",
-      "frage": "How important is self-employment to you?",
-      "karte": "The Rebel",
-      "text": "Self-employment is the path of the rebel in the world of work. You create by your own rules."
-    },
-    "#B137": {
-      "label": "Employment",
-      "frage": "How important is employment to you?",
-      "karte": "Participation",
-      "text": "Being employed is participation in something greater. You contribute to a shared endeavor."
-    },
-    "#B138": {
-      "label": "Leadership-Position",
-      "frage": "How important is a leadership position to you?",
-      "karte": "Guidance",
-      "text": "Leadership is service, not dominion. The true leader shows the way that he himself walks."
-    },
-    "#B139": {
-      "label": "Teamwork",
-      "frage": "How important is teamwork to you?",
-      "karte": "Participation",
-      "text": "Teamwork is choreographed participation. Each dances their part, and together the whole emerges."
-    },
-    "#B140": {
-      "label": "Home-Office",
-      "frage": "How important is working from home to you?",
-      "karte": "Aloneness",
-      "text": "Home office unites work and aloneness. In your own space you find your own rhythm."
-    },
-    "#B141": {
-      "label": "Office-Presence",
-      "frage": "How important is office presence to you?",
-      "karte": "Participation",
-      "text": "Office presence is physical participation. Some energy only arises when people are together."
-    },
-    "#B142": {
-      "label": "Flexible-Working-Hours",
-      "frage": "How important are flexible working hours to you?",
-      "karte": "Going With The Flow",
-      "text": "Flexible working hours mean working in flow. You adapt to the rhythm of life, not the other way around."
-    },
-    "#B143": {
-      "label": "Fixed-Structures",
-      "frage": "How important are fixed structures to you?",
-      "karte": "Maturity",
-      "text": "Fixed structures give life its form. The mature soul values the framework that provides support."
-    },
-    "#B144": {
-      "label": "Continuing-Education",
-      "frage": "How important is continuing education to you?",
-      "karte": "Understanding",
-      "text": "Continuing education is the path of the eternal student. Whoever stops learning stops growing."
-    },
-    "#B145": {
-      "label": "Retirement-Planning",
-      "frage": "How important is retirement planning to you?",
-      "karte": "Patience",
-      "text": "Planning for retirement means patiently sowing into the future. The harvest will come — at the right time."
-    },
-    "#B146": {
-      "label": "Sabbatical",
-      "frage": "How important is a sabbatical to you?",
-      "karte": "Turning In",
-      "text": "A sabbatical is a time of turning inward. The outer pause enables inner movement."
-    },
-    "#B147": {
-      "label": "Risk-Taking",
-      "frage": "How important is risk-taking to you?",
-      "karte": "Adventure",
-      "text": "Risk-taking is the courage for adventure. Whoever never leaps will never discover they can fly."
-    },
-    "#B148": {
-      "label": "Safety-Orientation",
-      "frage": "How important is safety orientation to you?",
-      "karte": "Protection",
-      "text": "Safety orientation is wise protection. Sometimes caution is the most courageous decision."
-    },
-    "#B149": {
-      "label": "Daily-Exchange",
-      "frage": "How important is daily exchange to you?",
-      "karte": "Friendliness",
-      "text": "Daily exchange is lived friendliness. Small words weave the web of connection."
-    },
-    "#B150": {
-      "label": "Quality-Time",
-      "frage": "How important is quality time to you?",
-      "karte": "Moment to Moment",
-      "text": "Quality time is present time. It is not the quantity that counts, but the depth of each moment."
-    },
-    "#B151": {
-      "label": "Deep-Conversations",
-      "frage": "How important are deep conversations to you?",
-      "karte": "Understanding",
-      "text": "Deep conversations lead to understanding. Words become bridges between souls."
-    },
-    "#B152": {
-      "label": "Light-Conversation",
-      "frage": "How important is light conversation to you?",
-      "karte": "Playfulness",
-      "text": "Light conversation is playful being. Not everything needs to be deep — sometimes a smile is enough."
-    },
-    "#B153": {
-      "label": "Emotional-Openness",
-      "frage": "How important is emotional openness to you?",
-      "karte": "Receptivity",
-      "text": "Emotional openness is a receptive heart. The cup is empty — ready to be filled."
-    },
-    "#B154": {
-      "label": "Factual-Communication",
-      "frage": "How important is factual communication to you?",
-      "karte": "Consciousness",
-      "text": "Factual communication is clear consciousness. Thoughts are expressed with precision."
-    },
-    "#B155": {
-      "label": "Addressing-Conflict",
-      "frage": "How important is addressing conflict to you?",
-      "karte": "Breakthrough",
-      "text": "Addressing conflict leads to breakthrough. What is spoken can heal."
-    },
-    "#B156": {
-      "label": "Preserving-Harmony",
-      "frage": "How important is preserving harmony to you?",
-      "karte": "Harmony",
-      "text": "Preserving harmony is an art. Yet true harmony arises not through avoidance, but through integration."
-    },
-    "#B157": {
-      "label": "Direct-Communication",
-      "frage": "How important is direct communication to you?",
-      "karte": "Courage",
-      "text": "Direct communication requires courage. Speaking the truth is an act of love."
-    },
-    "#B158": {
-      "label": "Diplomatic-Communication",
-      "frage": "How important is diplomatic communication to you?",
-      "karte": "Receptivity",
-      "text": "Diplomatic communication is receptive to the other. Words are chosen to connect."
-    },
-    "#B159": {
-      "label": "Feedback-Culture",
-      "frage": "How important is a feedback culture to you?",
-      "karte": "Understanding",
-      "text": "Feedback is mutual understanding. Every response is a gift — when it is heard."
-    },
-    "#B160": {
-      "label": "Nonverbal-Communication",
-      "frage": "How important is nonverbal communication to you?",
-      "karte": "Silence",
-      "text": "Nonverbal communication speaks in the silence. The body says what words cannot."
-    },
-    "#B161": {
-      "label": "Active-Listening",
-      "frage": "How important is active listening to you?",
-      "karte": "Receptivity",
-      "text": "Active listening is receptive presence. You hear not just words — you hear the heart behind them."
-    },
-    "#B162": {
-      "label": "Humor-in-Conversation",
-      "frage": "How important is humor in conversation to you?",
-      "karte": "Celebration",
-      "text": "Humor in conversation is a small celebration. Shared laughter connects more deeply than many words."
-    },
-    "#B163": {
-      "label": "Seriousness",
-      "frage": "How important is seriousness to you?",
-      "karte": "Maturity",
-      "text": "Seriousness is mature presence. Some topics deserve the depth of undivided attention."
-    },
-    "#B164": {
-      "label": "Spontaneous-Conversations",
-      "frage": "How important are spontaneous conversations to you?",
-      "karte": "Playfulness",
-      "text": "Spontaneous conversations are playful exchange. Unplanned moments often carry the greatest magic."
-    },
-    "#B165": {
-      "label": "Planned-Conversations",
-      "frage": "How important are planned conversations to you?",
-      "karte": "Guidance",
-      "text": "Planned conversations give space for what matters. Some topics need a protected setting."
-    },
-    "#B166": {
-      "label": "Written-Communication",
-      "frage": "How important is written communication to you?",
-      "karte": "Consciousness",
-      "text": "Written communication is reflected consciousness. The written word carries more weight."
-    },
-    "#B167": {
-      "label": "Verbal-Communication",
-      "frage": "How important is verbal communication to you?",
-      "karte": "Experiencing",
-      "text": "Verbal communication is living experience. The voice carries more than just words."
-    },
-    "#B168": {
-      "label": "Deciding-Together",
-      "frage": "How important is deciding together to you?",
-      "karte": "The Lovers",
-      "text": "Deciding together is the art of the lovers. Two voices find a shared melody."
-    },
-    "#B169": {
-      "label": "Independent-Decisions",
-      "frage": "How important are independent decisions to you?",
-      "karte": "The Rebel",
-      "text": "Independent decisions are the path of the rebel. You choose according to your own truth."
-    },
-    "#B170": {
-      "label": "Willingness-to-Compromise",
-      "frage": "How important is willingness to compromise to you?",
-      "karte": "Compromise",
-      "text": "Compromise is an art. But distinguish between wise flexibility and self-betrayal."
-    },
-    "#B171": {
-      "label": "Clear-Standpoints",
-      "frage": "How important are clear standpoints to you?",
-      "karte": "Courage",
-      "text": "Clear standpoints require courage. Knowing what you stand for is the anchor in stormy times."
-    },
-    "#B172": {
-      "label": "Emotional-Support",
-      "frage": "How important is emotional support to you?",
-      "karte": "Healing",
-      "text": "Emotional support is healing presence. Sometimes just being there is enough — without words."
-    },
-    "#B173": {
-      "label": "Practical-Support",
-      "frage": "How important is practical support to you?",
-      "karte": "Abundance",
-      "text": "Practical support is abundance in action. Helping hands show love through deeds."
-    },
-    "#B174": {
-      "label": "Regular-Check-Ins",
-      "frage": "How important are regular check-ins to you?",
-      "karte": "Awareness",
-      "text": "Regular check-ins are conscious attention. They keep a finger on the pulse of the relationship."
-    },
-    "#B175": {
-      "label": "Relationship-Reflection",
-      "frage": "How important is relationship reflection to you?",
-      "karte": "New Vision",
-      "text": "Relationship reflection brings new vision. Pausing and looking reveals where you truly stand."
-    },
-    "#B176": {
-      "label": "Natural-Flow",
-      "frage": "How important is natural flow to you?",
-      "karte": "Going With The Flow",
-      "text": "Natural flow is effortless streaming. When you stop fighting, the current carries you."
-    },
-    "#B177": {
-      "label": "Social-Energy",
-      "frage": "How important is social energy to you?",
-      "karte": "Experiencing",
-      "text": "Social energy is living experience with others. Some people recharge you — seek them out."
-    },
-    "#B178": {
-      "label": "Sociability",
-      "frage": "How important is sociability to you?",
-      "karte": "Celebration",
-      "text": "Sociability is the shared celebration of life. People together — that in itself is a feast."
-    },
-    "#B179": {
-      "label": "Quiet-from-People",
-      "frage": "How important is quiet from people to you?",
-      "karte": "Aloneness",
-      "text": "Quiet from people is healing aloneness. The silence after the bustle is a gift."
-    },
-    "#B180": {
-      "label": "Nurturing-Friendships",
-      "frage": "How important is nurturing friendships to you?",
-      "karte": "Friendliness",
-      "text": "Nurturing friendships is friendliness as practice. Relationships need attention in order to bloom."
-    },
-    "#B181": {
-      "label": "Couple-Time-Focus",
-      "frage": "How important is couple time focus to you?",
-      "karte": "The Lovers",
-      "text": "Couple time is the exclusive time of the lovers. In this space there are only you two — and that is sacred."
-    },
-    "#B182": {
-      "label": "Mutual-Friends",
-      "frage": "How important are mutual friends to you?",
-      "karte": "We Are the World",
-      "text": "Mutual friends expand your world. The circle grows larger, the connection deeper."
-    },
-    "#B183": {
-      "label": "Own-Friends",
-      "frage": "How important are your own friends to you?",
-      "karte": "Aloneness",
-      "text": "Your own friends are spaces of individuality. Not everything must be shared — some things belong only to you."
-    },
-    "#B184": {
-      "label": "Family-Gatherings",
-      "frage": "How important are family gatherings to you?",
-      "karte": "We Are the World",
-      "text": "Family gatherings connect you with your roots. You are part of a larger stream of life."
-    },
-    "#B185": {
-      "label": "Family-Distance",
-      "frage": "How important is distance from family to you?",
-      "karte": "Aloneness",
-      "text": "Distance from family can be healing. Sometimes you need space to find yourself."
-    },
-    "#B186": {
-      "label": "Parties-and-Events",
-      "frage": "How important are parties and events to you?",
-      "karte": "Celebration",
-      "text": "Parties and events are collective celebrations. The energy of many people amplifies the joy."
-    },
-    "#B187": {
-      "label": "Quiet-Evenings",
-      "frage": "How important are quiet evenings to you?",
-      "karte": "Silence",
-      "text": "Quiet evenings are oases of stillness. In the silence of the evening you find yourself again."
-    },
-    "#B188": {
-      "label": "Meeting-New-People",
-      "frage": "How important is meeting new people to you?",
-      "karte": "Adventure",
-      "text": "Meeting new people is an adventure. Every person is a world — await the discovery."
-    },
-    "#B189": {
-      "label": "Trusted-Circle",
-      "frage": "How important is a trusted circle to you?",
-      "karte": "Trust",
-      "text": "A trusted circle is a circle of trust. Here you can be who you truly are."
-    },
-    "#B190": {
-      "label": "Alone-Time",
-      "frage": "How important is alone time to you?",
-      "karte": "Aloneness",
-      "text": "Alone time is not loneliness — it is the space in which you rediscover yourself."
-    },
-    "#B191": {
-      "label": "Being-Together",
-      "frage": "How important is being together to you?",
-      "karte": "We Are the World",
-      "text": "Being together is lived connection. Not being alone is a deep human need."
-    },
-    "#B192": {
-      "label": "Spontaneous-Visits",
-      "frage": "How important are spontaneous visits to you?",
-      "karte": "Playfulness",
-      "text": "Spontaneous visits are playful surprises. The unexpected brings freshness to life."
-    },
-    "#B193": {
-      "label": "Planned-Meetings",
-      "frage": "How important are planned meetings to you?",
-      "karte": "Patience",
-      "text": "Planned meetings are patient anticipation. The waiting makes the reunion sweeter."
-    },
-    "#B194": {
-      "label": "Being-a-Host",
-      "frage": "How important is being a host to you?",
-      "karte": "Sharing",
-      "text": "Being a host is generous sharing. You open your space and your heart."
-    },
-    "#B195": {
-      "label": "Being-a-Guest",
-      "frage": "How important is being a guest to you?",
-      "karte": "Receptivity",
-      "text": "Being a guest is being receptive. You accept what others offer you — with gratitude."
-    },
-    "#B196": {
-      "label": "Online-Contacts",
-      "frage": "How important are online contacts to you?",
-      "karte": "Possibilities",
-      "text": "Online contacts open possibilities. The digital world connects what distance separates."
-    },
-    "#B197": {
-      "label": "In-Person-Meetings",
-      "frage": "How important are in-person meetings to you?",
-      "karte": "Experiencing",
-      "text": "In-person meetings are full experience. Face-to-face presence is irreplaceable."
-    },
-    "#B198": {
-      "label": "Community-Engagement",
-      "frage": "How important is community engagement to you?",
-      "karte": "Participation",
-      "text": "Community engagement is active participation in the greater whole. You give back what you receive."
-    },
-    "#B199": {
-      "label": "Private-Life",
-      "frage": "How important is private life to you?",
-      "karte": "Silence",
-      "text": "Private life is protected silence. Some things belong only to you — and that is as it should be."
-    },
-    "#B200": {
-      "label": "Networking",
-      "frage": "How important is networking to you?",
-      "karte": "We Are the World",
-      "text": "Networking weaves connections. Every contact is a thread in the great web of life."
-    },
-    "#B201": {
-      "label": "Few-Deep-Relationships",
-      "frage": "How important are few deep relationships to you?",
-      "karte": "Intimacy",
-      "text": "Few deep relationships are intimacy in its essence. Quality over quantity — that is the way of the heart."
-    },
-    "#B202": {
-      "label": "Many-Acquaintances",
-      "frage": "How important are many acquaintances to you?",
-      "karte": "Friendliness",
-      "text": "Many acquaintances are extended friendliness. An expansive heart touches many people."
-    },
-    "#B203": {
-      "label": "Cultural-Events",
-      "frage": "How important are cultural events to you?",
-      "karte": "Creativity",
-      "text": "Cultural events nourish creativity. Art opens doors to worlds beyond the everyday."
-    },
-    "#B204": {
-      "label": "Physical-Closeness",
-      "frage": "How important is physical closeness to you?",
-      "karte": "Touch",
-      "text": "Physical closeness is the language of touch. The body yearns for contact — it is made for it."
-    },
-    "#B205": {
-      "label": "Cuddling",
-      "frage": "How important is cuddling to you?",
-      "karte": "Warmth",
-      "text": "Cuddling is warmth without words. In the nearness of another body, boundaries melt away."
-    },
-    "#B206": {
-      "label": "Physical-Distance",
-      "frage": "How important is physical distance to you?",
-      "karte": "Aloneness",
-      "text": "Physical distance creates space to breathe. Sometimes the body needs its own zone."
-    },
-    "#B207": {
-      "label": "Body-Contact",
-      "frage": "How important is body contact to you?",
-      "karte": "Touch",
-      "text": "Body contact is primordial communication. The skin is the largest sense organ — use it."
-    },
-    "#B208": {
-      "label": "Hugs",
-      "frage": "How important are hugs to you?",
-      "karte": "Love",
-      "text": "Hugs are love in action. An arm around the other says more than a thousand words."
-    },
-    "#B209": {
-      "label": "Experiencing-Pain",
-      "frage": "How important is experiencing pain to you?",
-      "karte": "Transformation",
-      "text": "Conscious experience of pain can transform. Passing through the fire, you are purified."
-    },
-    "#B210": {
-      "label": "Giving-Pain",
-      "frage": "How important is giving pain to you?",
-      "karte": "Intensity",
-      "text": "Giving pain within a conscious framework is intensity as a gift. Boundaries become gateways."
-    },
-    "#B211": {
-      "label": "Experiencing-Bondage",
-      "frage": "How important is experiencing bondage to you?",
-      "karte": "Letting Go",
-      "text": "Experiencing bondage is paradoxical liberation. Through outer restriction you find inner freedom."
-    },
-    "#B212": {
-      "label": "Giving-Bondage",
-      "frage": "How important is giving bondage to you?",
-      "karte": "The Creator",
-      "text": "Giving bondage is creative holding. You create a space in which the other can let go."
-    },
-    "#B213": {
-      "label": "Devotion",
-      "frage": "How important is devotion to you?",
-      "karte": "Trust",
-      "text": "Devotion is deep trust in surrender. You give yourself to something greater than yourself."
-    },
-    "#B214": {
-      "label": "Worship",
-      "frage": "How important is worship to you?",
-      "karte": "Inner Voice",
-      "text": "Worship follows the inner voice of reverence. To see the divine in the other is sacred."
-    },
-    "#B215": {
-      "label": "Being-Humble",
-      "frage": "How important is being humble to you?",
-      "karte": "No-Thingness",
-      "text": "Humility is the recognition of one's own emptiness. In nothingness you lie at the feet of the whole."
-    },
-    "#B216": {
-      "label": "Dominating",
-      "frage": "How important is dominating to you?",
-      "karte": "The Master",
-      "text": "Dominating is mastery with responsibility. The true master serves by leading."
-    },
-    "#B217": {
-      "label": "Receiving-Punishment",
-      "frage": "How important is receiving punishment to you?",
-      "karte": "Transformation",
-      "text": "Punishment in a conscious context is transformation. The ego dies a little so that you become freer."
-    },
-    "#B218": {
-      "label": "Punishing",
-      "frage": "How important is punishing to you?",
-      "karte": "Guidance",
-      "text": "Punishing as conscious practice is guidance. The master corrects with love, not with anger."
-    },
-    "#B219": {
-      "label": "Giving-Service",
-      "frage": "How important is giving service to you?",
-      "karte": "Compassion",
-      "text": "Giving service is compassion in action. You serve because your heart overflows — not out of duty."
-    },
-    "#B220": {
-      "label": "Receiving-Service",
-      "frage": "How important is receiving service to you?",
-      "karte": "Receptivity",
-      "text": "Receiving service is receptive humility. Being able to accept is an art of its own."
-    },
-    "#B221": {
-      "label": "Pain-Experience",
-      "frage": "How important is pain experience to you?",
-      "karte": "Transformation",
-      "text": "To consciously experience pain is a gateway to transformation. In intensity lies liberation."
-    },
-    "#B222": {
-      "label": "Giving-Pain",
-      "frage": "How important is giving pain to you?",
-      "karte": "Trust",
-      "text": "To give pain requires deep trust. The conscious giver carries responsibility like a healer."
-    },
-    "#B223": {
-      "label": "Bondage-Experience",
-      "frage": "How important is experiencing bondage to you?",
-      "karte": "Surrender",
-      "text": "In the surrender to bonds lies paradoxical freedom. Letting go begins where control ends."
-    },
-    "#B224": {
-      "label": "Sugar",
-      "frage": "How important is sugar consumption to you?",
-      "karte": "Moment to Moment",
-      "text": "Sweetness is a pleasure of the moment. The question is: do you enjoy consciously, or are you fleeing?"
-    },
-    "#B225": {
-      "label": "Being-Protected",
-      "frage": "How important is being protected to you?",
-      "karte": "The Lovers",
-      "text": "Being protected means being able to let yourself fall. In the shelter of the other lies the freedom to be vulnerable."
-    },
-    "#B226": {
-      "label": "Receiving-Trust",
-      "frage": "How important is receiving trust to you?",
-      "karte": "Trust",
-      "text": "Receiving trust is a sacred responsibility. You become the guardian of a precious gift."
+      "label": "Selbstentfaltung",
+      "varianten": {
+        "V1": {
+          "kontext": "V1",
+          "bild": "Future/B018_00001_.png",
+          "karte": "Flowering",
+          "karte_de": "Erblühen",
+          "karte_key": "minor_arcana.rainbows.queen_flowering",
+          "karte_nummer": 13,
+          "tiage": "Your self-realization is not a project—it is your nature. Your nectar does not belong to you alone—it is the gift you brought with you to the world.",
+          "reflexion": "Am I growing in this area—or am I shrinking?"
+        },
+        "V2": {
+          "kontext": "V2",
+          "bild": "Future/B066_00001_ (2).png",
+          "karte": "Moment to Moment",
+          "karte_de": "Moment zu Moment",
+          "karte_key": "minor_arcana.rainbows.2_moment_to_moment",
+          "karte_nummer": 2,
+          "tiage": "It is in your togetherness that you truly come into your own, by living each moment to the fullest. No agenda, no expectations for the future—just this moment.",
+          "reflexion": "Am I living in the moment—or am I living in memories and plans?"
+        },
+        "V3": {
+          "kontext": "V3",
+          "bild": "Future/B069_00001_ (2).png",
+          "karte": "Ripeness",
+          "karte_de": "Reife",
+          "karte_key": "minor_arcana.rainbows.9_ripeness",
+          "karte_nummer": 9,
+          "tiage": "Your growth cannot be forced. It happens when the time is right. What lies within you will reveal itself—at the right time, all on its own.",
+          "reflexion": "Is it time to let go—or am I holding on out of fear?"
+        },
+        "V4": {
+          "kontext": "V4",
+          "bild": "Future/Erkenntnisse_Kapitel_16_00000.png",
+          "karte": "Rebirth",
+          "karte_de": "Wiedergeburt",
+          "karte_key": "minor_arcana.clouds.10_rebirth",
+          "karte_nummer": 10,
+          "tiage": "Self-unfolding never ends—it repeats itself. Every complete unfolding carries the seed of the next rebirth. The camel becomes a lion, the lion becomes a child. Rebirth is not a one-time event—it is the rhythm of awakening life. You do not unfold just once. You unfold anew, time and again.",
+          "reflexion": "Which version of myself must die so that the next one can be born?"
+        },
+        "V5": {
+          "kontext": "V5",
+          "bild": "Future/B002_00001_ (2).png",
+          "karte": "Magic Growth Tree",
+          "karte_de": "Magischer Wachstumsbaum",
+          "karte_key": "custom.v5",
+          "karte_nummer": null
+        },
+        "V6": {
+          "kontext": "V6",
+          "bild": "Future/Firefly_Etwas futuristischer möglich - Comix style ohne text schild  523487 (3).png",
+          "karte": "Cosmic Bloom",
+          "karte_de": "Kosmische Entfaltung",
+          "karte_key": "custom.v6",
+          "karte_nummer": null
+        }
+      }
     }
   }
 }
