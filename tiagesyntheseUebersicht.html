@@ -648,10 +648,10 @@
     <!-- Mobile Warnung -->
     <div class="mobile-wip-blocker" id="mobileWipBlocker" style="display:none">
         <div class="emoji" style="font-size:4rem;margin-bottom:30px;line-height:1;">&#x1F5A5;&#xFE0F;</div>
-        <h1 style="color:#A855F7;font-size:2.5rem;margin:0 0 20px 0;text-transform:uppercase;letter-spacing:3px;font-weight:300;line-height:1.2;">PC empfohlen</h1>
-        <p style="color:#ffffff;font-size:1.5rem;font-weight:bold;line-height:1.6;margin:0 0 16px 0;">Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
-        <p style="font-size:1rem;color:#94a3b8;margin:20px 0 0 0;font-weight:normal;line-height:1.5;">Auf dem Handy funktioniert nicht<br>jede Ansicht einwandfrei.</p>
-        <button type="button" class="continue-btn" style="margin-top:24px;padding:12px 28px;background:#A855F7;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-transform:none;letter-spacing:0;" onclick="(function(){try{localStorage.setItem('tiage_mobile_warned','1');}catch(e){}document.getElementById('mobileWipBlocker').classList.add('dismissed');document.getElementById('mobileWipBlocker').style.display='none';})()">Trotzdem fortfahren</button>
+        <h1 id="mobileWarnTitle" style="color:#A855F7;font-size:2.5rem;margin:0 0 20px 0;text-transform:uppercase;letter-spacing:3px;font-weight:300;line-height:1.2;">PC empfohlen</h1>
+        <p id="mobileWarnText1" style="color:#ffffff;font-size:1.5rem;font-weight:bold;line-height:1.6;margin:0 0 16px 0;">Diese App ist f&uuml;r die<br>Nutzung am <strong>Computer</strong> optimiert.</p>
+        <p id="mobileWarnText2" style="font-size:1rem;color:#94a3b8;margin:20px 0 0 0;font-weight:normal;line-height:1.5;">Auf dem Handy funktioniert nicht<br>jede Ansicht einwandfrei.</p>
+        <button type="button" id="mobileWarnBtn" class="continue-btn" style="margin-top:24px;padding:12px 28px;background:#A855F7;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-transform:none;letter-spacing:0;" onclick="(function(){try{localStorage.setItem('tiage_mobile_warned','1');}catch(e){}document.getElementById('mobileWipBlocker').classList.add('dismissed');document.getElementById('mobileWipBlocker').style.display='none';})()">Trotzdem fortfahren</button>
         <div style="margin-top:28px;padding:10px 20px;border:1px solid #A855F7;border-radius:8px;color:#A855F7;font-size:0.85rem;">ti-age.de</div>
     </div>
     <script>
@@ -702,13 +702,16 @@
         // Shortcut
         const t = SynthesePageShared.t;
 
-        // R-Faktoren Definitionen mit AGOD-Zuordnung
-        const rFaktorenDefs = [
-            { id: 'R1', label: 'Leben', icon: '🔥', color: '#E63946', agod: 'O', agodName: 'Orientierung', desc: 'Existenz, Zuneigung, Muße, Intimität & Romantik' },
-            { id: 'R2', label: 'Philosophie', icon: '🧠', color: '#2A9D8F', agod: 'A', agodName: 'Archetyp', desc: 'Freiheit, Teilnahme, Identität, Lebensplanung' },
-            { id: 'R3', label: 'Dynamik', icon: '⚡', color: '#8B5CF6', agod: 'D', agodName: 'Dominanz', desc: 'Dynamik, Sicherheit' },
-            { id: 'R4', label: 'Identität', icon: '💚', color: '#F4A261', agod: 'G', agodName: 'Geschlecht', desc: 'Verständnis, Erschaffen, Verbundenheit' }
-        ];
+        // R-Faktoren Definitionen mit AGOD-Zuordnung (labels/descs via i18n)
+        function getRFaktorenDefs() {
+            return [
+                { id: 'R1', label: t('synthese.factorLabels.R1', 'Leben'), icon: '🔥', color: '#E63946', agod: 'O', agodName: t('synthese.modOrientierung', 'Orientierung'), desc: t('synthese.factorDescs.R1', 'Existenz, Zuneigung, Muße, Intimität & Romantik') },
+                { id: 'R2', label: t('synthese.factorLabels.R2', 'Philosophie'), icon: '🧠', color: '#2A9D8F', agod: 'A', agodName: t('synthese.modArchetyp', 'Archetyp'), desc: t('synthese.factorDescs.R2', 'Freiheit, Teilnahme, Identität, Lebensplanung') },
+                { id: 'R3', label: t('synthese.factorLabels.R3', 'Dynamik'), icon: '⚡', color: '#8B5CF6', agod: 'D', agodName: t('synthese.modDominanz', 'Dominanz'), desc: t('synthese.factorDescs.R3', 'Dynamik, Sicherheit') },
+                { id: 'R4', label: t('synthese.factorLabels.R4', 'Identität'), icon: '💚', color: '#F4A261', agod: 'G', agodName: t('synthese.modGeschlecht', 'Geschlecht'), desc: t('synthese.factorDescs.R4', 'Verständnis, Erschaffen, Verbundenheit') }
+            ];
+        }
+        const rFaktorenDefs = getRFaktorenDefs();
 
         /**
          * Liest R-Faktoren aus TiageState (SSOT)
@@ -854,8 +857,8 @@
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th>R-Faktor</th>
-                                <th class="col-ich">ICH</th>
+                                <th>${t('synthese.matrixHeaderFactor', 'R-Faktor')}</th>
+                                <th class="col-ich">${t('synthese.labelIch', 'ICH')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -868,7 +871,7 @@
                                         </div>
                                         <div class="matrix-r-agod">${r.agod} (${r.agodName})</div>
                                     </td>
-                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
+                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="${t('synthese.matrixClickTooltip', 'Klicken um ICH/{label} in Einstellungen zu öffnen').replace('{label}', r.label)}">
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
                                         ${r.modifiedIch ? '<span class="matrix-modified" title="' + t('synthese.manuallyAdjusted', 'Bedürfnis(se) manuell angepasst') + '">*</span>' : ''}
                                     </td>
@@ -892,10 +895,10 @@
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th>R-Faktor → AGOD</th>
-                                <th class="col-ich">ICH</th>
-                                <th class="col-partner">PARTNER</th>
-                                <th class="col-kombi">ICH × PARTNER</th>
+                                <th>${t('synthese.matrixHeaderFactor', 'R-Faktor → AGOD')}</th>
+                                <th class="col-ich">${t('synthese.labelIch', 'ICH')}</th>
+                                <th class="col-partner">${t('synthese.labelPartner', 'PARTNER')}</th>
+                                <th class="col-kombi">${t('synthese.matrixColKombi', 'ICH × PARTNER')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -908,7 +911,7 @@
                                         </div>
                                         <div class="matrix-r-agod">→ ${r.agod} (${r.agodName})</div>
                                     </td>
-                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
+                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="${t('synthese.matrixClickTooltip', 'Klicken um ICH/{label} in Einstellungen zu öffnen').replace('{label}', r.label)}">
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
                                         ${r.modifiedIch ? '<span class="matrix-modified" title="' + t('synthese.manuallyAdjusted', 'Bedürfnis(se) manuell angepasst') + '">*</span>' : ''}
                                     </td>
@@ -973,7 +976,7 @@
             // Toast nur wenn explizit geändert (nicht bei jedem Zurück-Navigieren)
             if (!needsChanged) return;
             var toast = document.createElement('div');
-            toast.textContent = '↻ Neuberechnung nach Bedürfnis-Änderung';
+            toast.textContent = t('synthese.recalcToast', '↻ Neuberechnung nach Bedürfnis-Änderung');
             toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
                 'background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);' +
                 'color:#38BDF8;padding:8px 18px;border-radius:20px;font-size:13px;' +
@@ -1003,11 +1006,16 @@
             if (!row) return;
 
             const STUFEN_FARBEN = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
-            const STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+            const STUFEN_LABELS_DETAIL = {
+                1: t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),
+                2: t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),
+                3: t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'),
+                4: t('beduerfnisKatalog.stufen.S4.label', 'Sinn')
+            };
             const stufeColor = STUFEN_FARBEN[need.stufe] || '#888';
 
             let detailHtml = `<span style="font-weight:600;color:${stufeColor};">${need.label || id}</span>`;
-            if (need.stufe) detailHtml += ` <span style="font-size:10px;color:${stufeColor};background:${stufeColor}22;padding:1px 6px;border-radius:4px;">${STUFEN_LABELS[need.stufe] || ('Stufe ' + need.stufe)}</span>`;
+            if (need.stufe) detailHtml += ` <span style="font-size:10px;color:${stufeColor};background:${stufeColor}22;padding:1px 6px;border-radius:4px;">${STUFEN_LABELS_DETAIL[need.stufe] || (t('beduerfnisKatalog.stufeLabel', 'Stufe') + ' ' + need.stufe)}</span>`;
             if (need.faehigkeit) detailHtml += ` · <span style="font-size:11px;color:rgba(255,255,255,0.5);">${need.faehigkeit}</span>`;
             if (need.synonyme && need.synonyme.length) detailHtml += `<br><span style="font-size:11px;color:rgba(255,255,255,0.35);">${need.synonyme.join(' · ')}</span>`;
             if (need.strategie) detailHtml += `<br><span style="font-size:11px;color:rgba(255,255,255,0.45);font-style:italic;">${need.strategie}</span>`;
@@ -1045,12 +1053,15 @@
         /**
          * Erzeugt die Bedürfnis-Aufschlüsselungs-Tabelle (nach BeduerfnisIds-Load)
          */
-        const STUFEN_LABELS_UEBERSICHT = {
-            1: { label: 'Fund.', color: '#10B981' },
-            2: { label: 'Entf.', color: '#3B82F6' },
-            3: { label: 'Verb.', color: '#8B5CF6' },
-            4: { label: 'Sinn',  color: '#F59E0B' }
-        };
+        function getStufeLabelsUebersicht() {
+            return {
+                1: { label: t('beduerfnisKatalog.stufen.S1.short', 'Fund.'), color: '#10B981' },
+                2: { label: t('beduerfnisKatalog.stufen.S2.short', 'Entf.'), color: '#3B82F6' },
+                3: { label: t('beduerfnisKatalog.stufen.S3.short', 'Verb.'), color: '#8B5CF6' },
+                4: { label: t('beduerfnisKatalog.stufen.S4.short', 'Sinn'),  color: '#F59E0B' }
+            };
+        }
+        const STUFEN_LABELS_UEBERSICHT = getStufeLabelsUebersicht();
 
         function generateNeedsBreakdownHTML(archetyp, person) {
             person = person || 'ich';
@@ -1059,7 +1070,7 @@
             const baseNeeds  = getBaseNeeds(archetyp);
 
             if (Object.keys(flatNeeds).length === 0) {
-                return `<div class="breakdown-empty">Keine Bedürfnisse gespeichert.<br>Bitte auf der Hauptseite Bedürfnisse einstellen.</div>`;
+                return `<div class="breakdown-empty">${t('synthese.noNeedsSaved', 'Keine Bedürfnisse gespeichert.')}<br>${t('synthese.noNeedsSavedHint', 'Bitte auf der Hauptseite Bedürfnisse einstellen.')}</div>`;
             }
 
             const profile = {
@@ -1096,7 +1107,7 @@
                 .sort((a, b) => (Math.abs(b.total)+Math.abs(b.du)) - (Math.abs(a.total)+Math.abs(a.du)));
 
             if (rows.length === 0) {
-                return `<div class="breakdown-empty">Keine Modifikatoren aktiv.<br>Geschlecht / Dominanz / Orientierung auf der Hauptseite einstellen.</div>`;
+                return `<div class="breakdown-empty">${t('synthese.noModifiersActive', 'Keine Modifikatoren aktiv.')}<br>${t('synthese.noModifiersHint', 'Geschlecht / Dominanz / Orientierung auf der Hauptseite einstellen.')}</div>`;
             }
 
             const extras = personDims.geschlecht_extras || {};
@@ -1114,7 +1125,7 @@
                     <td class="td-name">
                         <button class="td-name-btn" data-need-id="${r.id}"
                                 onclick="toggleNeedDetail('${r.id}')"
-                                title="Details zu: ${r.label}">${r.label}</button>
+                                title="${t('synthese.breakdownDetailTitle', 'Details zu: {label}').replace('{label}', r.label)}">${r.label}</button>
                     </td>
                     ${stufeCell}
                     <td>${r.base}</td>
@@ -1134,16 +1145,19 @@
             return `
                 <div class="breakdown-info">
                     <strong>ℹ️ GAD G/A/D FFH</strong><br>
-                    ${rows.length} Bedürfnisse durch G/A/D${hasFFH ? '/FFH' : ''}${rows.some(r => r.du !== 0) ? '/Manuell' : ''} angepasst · Klick auf Name für Details
+                    ${t('synthese.breakdownInfo', '{n} Bedürfnisse durch G/A/D{ffh}{manual} angepasst · Klick auf Name für Details')
+                        .replace('{n}', rows.length)
+                        .replace('{ffh}', hasFFH ? '/FFH' : '')
+                        .replace('{manual}', rows.some(r => r.du !== 0) ? '/Manuell' : '')}
                 </div>
                 <div class="breakdown-table-wrap">
                     <table class="breakdown-table">
                         <thead><tr>
-                            <th class="th-left">Bedürfnis</th>
-                            <th>Stufe</th>
-                            <th>Basis</th><th>G</th><th>D</th><th>O</th>
+                            <th class="th-left">${t('synthese.breakdownColNeed', 'Bedürfnis')}</th>
+                            <th>${t('synthese.breakdownColStufe', 'Stufe')}</th>
+                            <th>${t('synthese.breakdownColBasis', 'Basis')}</th><th>G</th><th>D</th><th>O</th>
                             <th>F</th><th>FU</th><th>H</th><th>FR</th>
-                            <th class="th-du" title="Manuelle Slider-Abweichung von der automatischen Berechnung">±</th><th>=</th><th>Final</th>
+                            <th class="th-du" title="${t('synthese.breakdownManualTooltip', 'Manuelle Slider-Abweichung von der automatischen Berechnung')}">±</th><th>=</th><th>${t('synthese.breakdownColFinal', 'Final')}</th>
                         </tr></thead>
                         <tbody>${tableRows}</tbody>
                     </table>
@@ -1184,10 +1198,10 @@
             }
 
             const stufenDefs = [
-                { key: 'S1', label: 'Fundament',    desc: 'Existenz · Sicherheit · Ruhe · Alltag',                   color: '#10B981' },
-                { key: 'S2', label: 'Entfaltung',   desc: 'Freiheit · Ausdruck · Kink · Kommunikation',              color: '#3B82F6' },
-                { key: 'S3', label: 'Verbundenheit',desc: 'Zuneigung · Intimität · Werte · Soziales',                 color: '#8B5CF6' },
-                { key: 'S4', label: 'Sinn',         desc: 'Verständnis · Identität · Lebensplanung · Spiritualität',  color: '#F59E0B' }
+                { key: 'S1', label: t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),     desc: t('beduerfnisKatalog.stufen.S1.desc', 'Existenz · Sicherheit · Ruhe · Alltag'),                  color: '#10B981' },
+                { key: 'S2', label: t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),    desc: t('beduerfnisKatalog.stufen.S2.desc', 'Freiheit · Ausdruck · Kink · Kommunikation'),             color: '#3B82F6' },
+                { key: 'S3', label: t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'), desc: t('beduerfnisKatalog.stufen.S3.desc', 'Zuneigung · Intimität · Werte · Soziales'),                color: '#8B5CF6' },
+                { key: 'S4', label: t('beduerfnisKatalog.stufen.S4.label', 'Sinn'),          desc: t('beduerfnisKatalog.stufen.S4.desc', 'Verständnis · Identität · Lebensplanung · Spiritualität'), color: '#F59E0B' }
             ];
 
             const items = stufenDefs.map(s => {
@@ -1207,13 +1221,15 @@
                 </div>`;
             }).join('');
 
-            const subtitle = partnerStufen ? 'ICH × PARTNER — Resonanz nach Entwicklungsstufen' : 'ICH — Resonanz nach Entwicklungsstufen';
+            const subtitle = partnerStufen
+                ? t('synthese.evolutionSubtitleBoth', 'ICH × PARTNER — Resonanz nach Entwicklungsstufen')
+                : t('synthese.evolutionSubtitleIch', 'ICH — Resonanz nach Entwicklungsstufen');
             return `
                 <div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🧬</span>
                         <div>
-                            <div class="synthese-section-title">Evolutionäre Bedürfnisstärke</div>
+                            <div class="synthese-section-title">${t('synthese.evolutionTitle', 'Evolutionäre Bedürfnisstärke')}</div>
                             <div class="synthese-section-subtitle">${subtitle}</div>
                         </div>
                     </div>
@@ -1229,10 +1245,20 @@
         async function renderContent() {
             const container = document.getElementById('syntheseContent');
 
+            // Translate static mobile-warning HTML elements
+            var _mwt = document.getElementById('mobileWarnTitle');
+            var _mw1 = document.getElementById('mobileWarnText1');
+            var _mw2 = document.getElementById('mobileWarnText2');
+            var _mwb = document.getElementById('mobileWarnBtn');
+            if (_mwt) _mwt.textContent = t('synthese.mobileTitle',    'PC empfohlen');
+            if (_mw1) _mw1.innerHTML   = t('synthese.mobileText1',    'Diese App ist für die Nutzung am Computer optimiert.');
+            if (_mw2) _mw2.textContent = t('synthese.mobileText2',    'Auf dem Handy funktioniert nicht jede Ansicht einwandfrei.');
+            if (_mwb) _mwb.textContent = t('synthese.mobileContinue', 'Trotzdem fortfahren');
+
             // Ladeindikator
             container.innerHTML = `<div class="synthese-loading">
                 <div class="synthese-loading-spinner"></div>
-                <p>Lade Bedürfnis-Katalog...</p>
+                <p>${t('synthese.loadingKatalog', 'Lade Bedürfnis-Katalog...')}</p>
             </div>`;
 
             // Katalog und OshoZen-Daten laden
@@ -1251,8 +1277,8 @@
 
             // Top-5 Bar: immer persönliche ICH-Bedürfnisse
             let top5Html = '';
-            const top5Title    = 'Top-5 Bedürfnisse';
-            const top5Subtitle = 'Klicke bis zu 5 mal das Bild um mehr zu erfahren';
+            const top5Title    = t('synthese.top5Title', 'Top-5 Bedürfnisse');
+            const top5Subtitle = t('synthese.top5Subtitle', 'Klicke bis zu 5 mal das Bild um mehr zu erfahren');
 
             // Gemeinsame Top-5 IDs berechnen — gleicher Algorithmus wie OshoZen Stufen-Karten
             _U_gemeinsamTop5Ids = [];
@@ -1283,8 +1309,8 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🎯</span>
                         <div>
-                            <div class="synthese-section-title">ICH: ${label}</div>
-                            <div class="synthese-section-subtitle breakdown-header">Bedürfnis-Aufschlüsselung</div>
+                            <div class="synthese-section-title">${t('synthese.labelIch', 'ICH')}: ${label}</div>
+                            <div class="synthese-section-subtitle breakdown-header">${t('synthese.breakdownSubtitle', 'Bedürfnis-Aufschlüsselung')}</div>
                         </div>
                     </div>
                     ${generateNeedsBreakdownHTML(state.ichArchetype, 'ich')}
@@ -1313,8 +1339,8 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
                         <div>
-                            <div class="synthese-section-title">Gemeinsame Bedürfnisse</div>
-                            <div class="synthese-section-subtitle">Resonanz & Übereinstimmung</div>
+                            <div class="synthese-section-title">${t('synthese.sharedNeeds', 'Gemeinsame Bedürfnisse')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.resonanzSubtitle', 'Resonanz & Übereinstimmung')}</div>
                         </div>
                     </div>
                     <div class="osho-zen-content osho-zen-no-images">${oshoContent}</div>
@@ -1323,11 +1349,11 @@
                 resonanzHtml = `<div id="synthese-resonanz-block" class="synthese-section" style="margin-top:16px;display:none;">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🔥</span>
-                        <div><div class="synthese-section-title">Gemeinsame Bedürfnisse</div></div>
+                        <div><div class="synthese-section-title">${t('synthese.sharedNeeds', 'Gemeinsame Bedürfnisse')}</div></div>
                     </div>
                     <div style="text-align:center;padding:32px 20px;color:var(--text-muted);">
                         <div style="font-size:32px;margin-bottom:10px;">🔥</div>
-                        <p style="font-size:13px;">Kein Partner ausgewählt — wähle einen Partner-Archetypen auf der Hauptseite.</p>
+                        <p style="font-size:13px;">${t('synthese.noPartnerSelected', 'Kein Partner ausgewählt')} — ${t('synthese.selectPartnerHint', 'wähle einen Partner-Archetypen auf der Hauptseite.')}</p>
                     </div>
                 </div>`;
             }
@@ -1372,12 +1398,12 @@
 
         var _U_FARBEN  = { 1: '#10B981', 2: '#3B82F6', 3: '#8B5CF6', 4: '#F59E0B' };
         var _U_TRAD    = [
-            { key: 'christentum', icon: '✝',  label: 'Christentum',     col: '#C9B99A' },
-            { key: 'buddhismus',  icon: '☸',  label: 'Buddhismus',      col: '#A3C4BC' },
-            { key: 'islam',       icon: '☪',  label: 'Islam / Sufismus', col: '#B5C9A0' },
-            { key: 'osho',        icon: '✨', label: 'Osho',            col: '#D4A8D0' },
-            { key: 'moderne',     icon: '🧬', label: 'Moderne',         col: '#A0B5C9' },
-            { key: 'pirsig',      icon: '⚙',  label: 'Pirsig · Qualität', col: '#E8C97A' }
+            { key: 'christentum', icon: '✝',  label: t('synthese.tradChristentum', 'Christentum'),      col: '#C9B99A' },
+            { key: 'buddhismus',  icon: '☸',  label: t('synthese.tradBuddhismus',  'Buddhismus'),       col: '#A3C4BC' },
+            { key: 'islam',       icon: '☪',  label: t('synthese.tradIslam',       'Islam / Sufismus'), col: '#B5C9A0' },
+            { key: 'osho',        icon: '✨', label: t('synthese.tradOsho',        'Osho'),             col: '#D4A8D0' },
+            { key: 'moderne',     icon: '🧬', label: t('synthese.tradModerne',     'Moderne'),          col: '#A0B5C9' },
+            { key: 'pirsig',      icon: '⚙',  label: t('synthese.tradPirsig',      'Pirsig · Qualität'), col: '#E8C97A' }
         ];
         var _U_cachedBedData    = {};
         var _U_activeVariantKey = null;
@@ -1403,7 +1429,12 @@
         var _U_viewModeIdx       = 0;
         var _U_gemeinsamTop5Ids  = [];  // IDs der gemeinsamen Top-5 (leer = kein Partner)
 
-        var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+        var STUFEN_LABELS = {
+            1: t('beduerfnisKatalog.stufen.S1.label', 'Fundament'),
+            2: t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'),
+            3: t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'),
+            4: t('beduerfnisKatalog.stufen.S4.label', 'Sinn')
+        };
         var _BTN_STYLE = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:22px;line-height:1;padding:4px 10px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all 0.15s;';
 
         // ── Bild-Präferenz-Persistenz ──────────────────────────────────────────
@@ -1447,14 +1478,14 @@
                             var badge = document.createElement('span');
                             badge.setAttribute('data-pref-badge', '1');
                             badge.style.cssText = 'position:absolute;top:4px;left:4px;background:rgba(16,185,129,0.85);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;';
-                            badge.title = 'Standard-Bild gespeichert';
+                            badge.title = t('synthese.imagePrefSaved', 'Standard-Bild gespeichert');
                             badge.textContent = '✓';
                             card.appendChild(badge);
                         }
                     }
                 }
             }
-            if (typeof TiageToast !== 'undefined') TiageToast.success('Bild als Standard gespeichert ✓');
+            if (typeof TiageToast !== 'undefined') TiageToast.success(t('synthese.imageSavedToast', 'Bild als Standard gespeichert ✓'));
             else { var t=document.createElement('div'); t.textContent='✓ Standard-Bild gespeichert'; t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#10B981;padding:8px 18px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;'; document.body.appendChild(t); setTimeout(function(){t.style.transition='opacity 0.4s';t.style.opacity='0';setTimeout(function(){t.remove();},400);},2000); }
         };
 
@@ -1482,7 +1513,13 @@
             }
 
             var mode = _U_viewModes[_U_viewModeIdx] || 'bild';
-            var modeLabels = { bild: '📷 Bild', gemeinsam: '📖 Weisheit', tradition: '🕊 Traditionen', karte: '🃏 Bedürfniskarte', modif: '🔢 GAD G/A/D FFH' };
+            var modeLabels = {
+                bild:     t('synthese.viewBild',      '📷 Bild'),
+                gemeinsam:t('synthese.viewWeisheit',  '📖 Weisheit'),
+                tradition:t('synthese.viewTradition', '🕊 Traditionen'),
+                karte:    t('synthese.viewKarte',     '🃏 Bedürfniskarte'),
+                modif:    t('synthese.viewModif',     '🔢 GAD G/A/D FFH')
+            };
             var modeDotsHtml = _U_viewModes.map(function(m, i) {
                 return '<span style="width:7px;height:7px;border-radius:50%;background:' + (i === _U_viewModeIdx ? color : 'rgba(255,255,255,0.15)') + ';display:inline-block;margin:0 2px;"></span>';
             }).join('');
@@ -1497,18 +1534,18 @@
             if (activeCardEl) {
                 activeCardEl.style.overflow = 'visible';
                 var arrowsHtml = (hasMulti && mode === 'bild')
-                    ? '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',-1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="Vorherige">‹</button>'
-                    + '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="Nächste">›</button>'
+                    ? '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',-1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="' + t('synthese.prevImgTitle', 'Vorherige') + '">‹</button>'
+                    + '<button onclick="_U_switchVariant(\'' + needId + '\',' + value + ',1);event.stopPropagation();" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:14px;padding:2px 6px;border-radius:4px;cursor:pointer;" title="' + t('synthese.nextImgTitle', 'Nächste') + '">›</button>'
                     : '';
                 activeCardEl.insertAdjacentHTML('beforeend',
-                    '<div id="u-sticky-indicator" style="padding:4px 6px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;gap:4px;background:rgba(0,0,0,0.3);" onclick="toggleUebersichtWisdom(\'' + needId + '\',' + value + ');event.stopPropagation();" title="Nächste Ansicht">'
+                    '<div id="u-sticky-indicator" style="padding:4px 6px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;gap:4px;background:rgba(0,0,0,0.3);" onclick="toggleUebersichtWisdom(\'' + needId + '\',' + value + ');event.stopPropagation();" title="' + t('synthese.nextViewTitle', 'Nächste Ansicht') + '">'
                     + '<div style="display:flex;align-items:center;gap:4px;">'
                     +   '<span style="font-size:9px;color:rgba(255,255,255,0.45);white-space:nowrap;">' + (modeLabels[mode] || mode) + '</span>'
                     +   '<span style="display:inline-flex;align-items:center;">' + modeDotsHtml + '</span>'
                     + '</div>'
                     + '<div style="display:flex;align-items:center;gap:2px;" onclick="event.stopPropagation();">'
                     +   arrowsHtml
-                    +   '<button onclick="toggleUebersichtWisdom_close();event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;" title="Schließen">×</button>'
+                    +   '<button onclick="toggleUebersichtWisdom_close();event.stopPropagation();" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;" title="' + t('synthese.closeBtnTitle', 'Schließen') + '">×</button>'
                     + '</div>'
                     + '</div>'
                 );
@@ -1557,8 +1594,8 @@
                         (_subHigherNeeds.indexOf(needId) !== -1 && !_ichHigher)) {
                         _isKomplementaer = true;
                         _komplementaerText = _isDomSub
-                            ? 'Komplementäre Dynamik: Dominant braucht dieses Bedürfnis stark — Submissiv gibt es bewusst ab. Das ergänzt sich.'
-                            : 'Komplementäre Dynamik: Submissiv braucht dieses Bedürfnis stark — Dominant füllt es aus. Das ergänzt sich.';
+                            ? t('synthese.complementaryDom', 'Komplementäre Dynamik: Dominant braucht dieses Bedürfnis stark — Submissiv gibt es bewusst ab. Das ergänzt sich.')
+                            : t('synthese.complementarySub', 'Komplementäre Dynamik: Submissiv braucht dieses Bedürfnis stark — Dominant füllt es aus. Das ergänzt sich.');
                     }
                 }
 
@@ -1567,13 +1604,15 @@
                 var _bgCol     = _isKomplementaer ? 'rgba(99,102,241,0.07)' : 'rgba(245,158,11,0.07)';
                 var _textCol   = _isKomplementaer ? 'rgba(165,180,252,0.9)' : 'rgba(245,158,11,0.85)';
                 var _icon      = _isKomplementaer ? '⚡' : '⚠️';
-                var _title     = _isKomplementaer ? 'Komplementär — nicht gemeinsam' : 'Nicht in euren gemeinsamen Top-5';
+                var _title     = _isKomplementaer
+                    ? t('synthese.complementaryTitle', 'Komplementär — nicht gemeinsam')
+                    : t('synthese.notInTop5Title', 'Nicht in euren gemeinsamen Top-5');
 
                 var _valHtml = (_ichV !== null && _pV !== null)
                     ? '<div style="display:flex;align-items:center;gap:8px;margin-top:5px;padding-top:5px;border-top:1px solid ' + _borderCol + ';">'
-                    +   '<span style="font-size:10px;color:#22C55E;font-weight:600;">ICH ' + _ichV + '</span>'
+                    +   '<span style="font-size:10px;color:#22C55E;font-weight:600;">' + t('synthese.labelIch', 'ICH') + ' ' + _ichV + '</span>'
                     +   '<span style="font-size:9px;color:rgba(255,255,255,0.2);">|</span>'
-                    +   '<span style="font-size:10px;color:#EF4444;font-weight:600;">Partner ' + _pV + '</span>'
+                    +   '<span style="font-size:10px;color:#EF4444;font-weight:600;">' + t('synthese.labelPartner', 'Partner') + ' ' + _pV + '</span>'
                     +   '<span style="font-size:9px;color:rgba(255,255,255,0.2);">|</span>'
                     +   '<span style="font-size:10px;font-weight:700;color:' + _dCol + ';">Δ ' + _dSign + _delta + '</span>'
                     + '</div>'
@@ -1582,12 +1621,12 @@
                 if (!_isKomplementaer) {
                     if (_delta !== null && Math.abs(_delta) > 25) {
                         _explainText = _delta > 0
-                            ? 'Dein Spitzenwert wird durch die Differenz neutralisiert — Resonanz braucht ähnliche Stärke bei beiden.'
-                            : 'Dein Partner priorisiert das stärker als du — die Differenz ist zu groß für echte Übereinstimmung.';
+                            ? t('synthese.deltaHighIch', 'Dein Spitzenwert wird durch die Differenz neutralisiert — Resonanz braucht ähnliche Stärke bei beiden.')
+                            : t('synthese.deltaHighPartner', 'Dein Partner priorisiert das stärker als du — die Differenz ist zu groß für echte Übereinstimmung.');
                     } else if (_ichV !== null && _pV !== null && _ichV < 45 && _pV < 45) {
-                        _explainText = 'Beide priorisieren dieses Bedürfnis zu gering für die gemeinsamen Top-5.';
+                        _explainText = t('synthese.bothTooLow', 'Beide priorisieren dieses Bedürfnis zu gering für die gemeinsamen Top-5.');
                     } else if (_delta !== null) {
-                        _explainText = 'Die Werte sind zu unterschiedlich für eine echte gemeinsame Priorität.';
+                        _explainText = t('synthese.tooDifferent', 'Die Werte sind zu unterschiedlich für eine echte gemeinsame Priorität.');
                     }
                 }
                 var _explainHtml = _explainText
@@ -1608,7 +1647,7 @@
                     var _savedPref = _U_getImgPref(needId);
                     html += '<div style="text-align:center;margin-bottom:10px;">'
                         + '<img src="' + bildSrc + '" alt="' + kartenName + '" onclick="openLightbox(this.src,\'' + kartenName.replace(/'/g, "\\'") + '\')" style="max-height:250px;max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.5);object-fit:contain;cursor:zoom-in;">'
-                        + '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;">' + kartenName + (hasMulti ? ' · ' + (curIdx+1) + '/' + allKeys.length : '') + ' · zum Vergrößern klicken</div>'
+                        + '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;">' + kartenName + (hasMulti ? ' · ' + (curIdx+1) + '/' + allKeys.length : '') + ' · ' + t('synthese.zoomHint', 'zum Vergrößern klicken') + '</div>'
                         + '</div>';
                     // Bildergalerie: alle Varianten als anklickbare Thumbnails mit Checkmark
                     if (hasMulti) {
@@ -1623,7 +1662,7 @@
                             html += '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;">'
                                 + '<div style="position:relative;cursor:pointer;" onclick="_U_switchVariantToKey(\'' + needId + '\',' + value + ',\'' + vKey + '\');event.stopPropagation();">'
                                 +   '<img src="' + vSrc + '" alt="' + vLabel + '" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid ' + (isActive ? color : 'rgba(255,255,255,0.12)') + ';box-shadow:' + (isActive ? '0 0 8px ' + color + '55' : 'none') + ';transition:all 0.18s;">'
-                                +   '<button onclick="event.stopPropagation();_U_setStandardImg(\'' + needId + '\',\'' + vKey + '\',' + value + ');" title="Als Standard-Bild für dieses Bedürfnis setzen" style="position:absolute;bottom:2px;right:2px;background:' + (isPref ? color : 'rgba(0,0,0,0.65)') + ';border:' + (isPref ? '1.5px solid ' + color : '1px solid rgba(255,255,255,0.2)') + ';border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:' + (isPref ? '#000' : 'rgba(255,255,255,0.6)') + ';padding:0;line-height:1;font-weight:700;transition:all 0.18s;">✓</button>'
+                                +   '<button onclick="event.stopPropagation();_U_setStandardImg(\'' + needId + '\',\'' + vKey + '\',' + value + ');" title="' + t('synthese.setDefaultImgTitle', 'Als Standard-Bild für dieses Bedürfnis setzen') + '" style="position:absolute;bottom:2px;right:2px;background:' + (isPref ? color : 'rgba(0,0,0,0.65)') + ';border:' + (isPref ? '1.5px solid ' + color : '1px solid rgba(255,255,255,0.2)') + ';border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;color:' + (isPref ? '#000' : 'rgba(255,255,255,0.6)') + ';padding:0;line-height:1;font-weight:700;transition:all 0.18s;">✓</button>'
                                 + '</div>'
                                 + '<span style="font-size:9px;color:rgba(255,255,255,' + (isActive ? '0.65' : '0.28') + ');max-width:76px;text-align:center;line-height:1.2;">' + (vData.karte_de || vData.karte || vKey) + '</span>'
                                 + '</div>';
@@ -1633,17 +1672,17 @@
                         // Einzelbild: Checkmark-Button zum Festlegen als Standard
                         var _singleIsPref = _savedPref === _U_activeVariantKey;
                         html += '<div style="text-align:center;margin-bottom:10px;">'
-                            + '<button onclick="_U_setStandardImg(\'' + needId + '\',\'' + _U_activeVariantKey + '\',' + value + ');event.stopPropagation();" title="Als Standard-Bild setzen" style="background:' + (_singleIsPref ? color : 'rgba(255,255,255,0.07)') + ';border:1px solid ' + (_singleIsPref ? color : 'rgba(255,255,255,0.15)') + ';border-radius:20px;padding:3px 12px;color:' + (_singleIsPref ? '#000' : 'rgba(255,255,255,0.45)') + ';font-size:11px;cursor:pointer;">✓ Standard</button>'
+                            + '<button onclick="_U_setStandardImg(\'' + needId + '\',\'' + _U_activeVariantKey + '\',' + value + ');event.stopPropagation();" title="' + t('synthese.setDefaultImgTitle', 'Als Standard-Bild setzen') + '" style="background:' + (_singleIsPref ? color : 'rgba(255,255,255,0.07)') + ';border:1px solid ' + (_singleIsPref ? color : 'rgba(255,255,255,0.15)') + ';border-radius:20px;padding:3px 12px;color:' + (_singleIsPref ? '#000' : 'rgba(255,255,255,0.45)') + ';font-size:11px;cursor:pointer;">' + t('synthese.standardBtn', '✓ Standard') + '</button>'
                             + '</div>';
                     }
                 } else {
-                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Kein Bild verfügbar</div>';
+                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">' + t('synthese.noImage', 'Kein Bild verfügbar') + '</div>';
                 }
             } else if (mode === 'gemeinsam') {
                 if (v.tiage) {
                     html += '<div style="font-size:13px;color:rgba(255,255,255,0.78);font-style:italic;margin-bottom:14px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';line-height:1.6;">' + v.tiage + '</div>';
                 } else {
-                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Kein Weisheitstext verfügbar</div>';
+                    html += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">' + t('synthese.noWisdom', 'Kein Weisheitstext verfügbar') + '</div>';
                 }
             } else if (mode === 'tradition') {
                 var tradHtml = '';
@@ -1656,10 +1695,10 @@
                 });
                 html += tradHtml
                     ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;">' + tradHtml + '</div>'
-                    : '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">Keine Traditionsquellen verfügbar</div>';
+                    : '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:12px;">' + t('synthese.noTraditions', 'Keine Traditionsquellen verfügbar') + '</div>';
                 if (v.reflexion) {
                     html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;margin-top:10px;">'
-                        + '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">💡 Reflexion</div>'
+                        + '<div style="font-size:10px;color:#F59E0B;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">' + t('synthese.reflexionLabel', '💡 Reflexion') + '</div>'
                         + '<div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">' + v.reflexion + '</div>'
                         + '</div>';
                 }
@@ -1698,9 +1737,9 @@
 
                 // Modifier rows: [ key, abbr, icon, name, profileValue, delta, alwaysShow ]
                 var _modRows = [
-                    { abbr: 'G',  icon: '⚤',  name: 'Geschlecht',  val: gLabel2,             delta: bd2.g,  show: true },
-                    { abbr: 'A',  icon: '🧲', name: 'Attraktion',  val: oLabel2,             delta: bd2.o,  show: true },
-                    { abbr: 'D',  icon: '⚡', name: 'Dominanz',    val: dLabel2,             delta: bd2.d,  show: true },
+                    { abbr: 'G',  icon: '⚤',  name: t('synthese.modGeschlecht', 'Geschlecht'), val: gLabel2,     delta: bd2.g,  show: true },
+                    { abbr: 'A',  icon: '🧲', name: t('synthese.modAttraktion', 'Attraktion'), val: oLabel2,     delta: bd2.o,  show: true },
+                    { abbr: 'D',  icon: '⚡', name: t('synthese.modDominanz',    'Dominanz'),   val: dLabel2,     delta: bd2.d,  show: true },
                     { abbr: 'F',  icon: '💪', name: 'Fit',         val: 'Fit',               delta: bd2.f,  show: !!extras2.fit },
                     { abbr: 'FU', icon: '🔥', name: 'Fucked up',   val: 'Fucked up',         delta: bd2.fu, show: !!extras2.fuckedup },
                     { abbr: 'H',  icon: '😈', name: 'Horny',       val: 'Horny',             delta: bd2.h,  show: !!extras2.horny },
@@ -1732,7 +1771,7 @@
                     rowsHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">'
                         + '<div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);width:20px;text-align:center;flex-shrink:0;">±</div>'
                         + '<div style="font-size:11px;color:rgba(255,255,255,0.5);flex-shrink:0;width:14px;"></div>'
-                        + '<div style="font-size:12px;color:rgba(255,255,255,0.55);flex:1;">Manuell / Umfrage</div>'
+                        + '<div style="font-size:12px;color:rgba(255,255,255,0.55);flex:1;">' + t('synthese.manualSurvey', 'Manuell / Umfrage') + '</div>'
                         + '<div style="font-size:13px;font-weight:700;color:' + duC + ';flex-shrink:0;min-width:36px;text-align:right;">' + duS + '</div>'
                         + '</div>';
                 }
@@ -1742,11 +1781,11 @@
                 var _fPct = finalVal2 !== null ? Math.min(100, Math.max(0, finalVal2)) : _bPct;
                 var _fCol = _fPct > _bPct ? '#10B981' : _fPct < _bPct ? '#EF4444' : '#6366F1';
 
-                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🔢 GAD G/A/D FFH · Modifikatoren</div>';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">' + t('synthese.modifSectionTitle', '🔢 GAD G/A/D FFH · Modifikatoren') + '</div>';
 
                 // BASIS row
                 html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'
-                    + '<div style="font-size:10px;color:rgba(255,255,255,0.3);width:92px;flex-shrink:0;">Archetypbasis</div>'
+                    + '<div style="font-size:10px;color:rgba(255,255,255,0.3);width:92px;flex-shrink:0;">' + t('synthese.archetypbasis', 'Archetypbasis') + '</div>'
                     + '<div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;position:relative;">'
                     +   '<div style="width:' + _bPct + '%;height:100%;background:rgba(255,255,255,0.2);border-radius:2px;"></div>'
                     + '</div>'
@@ -1758,7 +1797,7 @@
 
                 // FINAL row
                 html += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);">'
-                    + '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);width:92px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.05em;">Final</div>'
+                    + '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);width:92px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.05em;">' + t('synthese.finalLabel', 'Final') + '</div>'
                     + '<div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:2.5px;">'
                     +   '<div style="width:' + _fPct + '%;height:100%;background:' + _fCol + ';border-radius:2.5px;"></div>'
                     + '</div>'
@@ -1866,7 +1905,7 @@
             }
 
             // Loading indicator in lower section
-            section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px;">🧬 Lade Tiage-Weisheit…</div>';
+            section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px;">' + t('synthese.loadingWisdom', '🧬 Lade Tiage-Weisheit…') + '</div>';
             var resonanzBlockLoad = document.getElementById('synthese-resonanz-block');
             if (resonanzBlockLoad) resonanzBlockLoad.style.display = 'none';
             _U_activateOshoZenItem(null, true);
@@ -1879,7 +1918,7 @@
             var defaultVariantKey = value <= 33 ? 'V1' : value <= 66 ? 'V2' : 'V3';
             OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
                 if (_U_activeNeedId !== needId) return;
-                if (!bedData) { section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Kein Text verfügbar.</div>'; return; }
+                if (!bedData) { section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">' + t('synthese.noTextAvailable', 'Kein Text verfügbar.') + '</div>'; return; }
                 _U_cachedBedData[needId] = bedData;
                 var varianten = bedData.varianten || {};
                 var savedKey = _U_getImgPref(needId);
@@ -1888,7 +1927,7 @@
                     : (Object.keys(varianten).filter(function(k){ return /^V\d+$/.test(k); }).sort()[0] || 'V1'));
                 _U_renderLowerSection(needId, value, bedData);
             }).catch(function() {
-                section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">Texte konnten nicht geladen werden.</div>';
+                section.innerHTML = '<div style="text-align:center;padding:24px;color:rgba(255,200,100,0.5);font-size:12px;">' + t('synthese.loadError', 'Texte konnten nicht geladen werden.') + '</div>';
             });
         };
 
@@ -1958,15 +1997,15 @@
                     : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
                 var badgeHtml = '';
                 if (n.id === bestMatchId) {
-                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;font-size:17px;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.9));" title="Beste gemeinsame Resonanz">💚</span>';
+                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;font-size:17px;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.9));" title="' + t('synthese.bestResonanceTitle', 'Beste gemeinsame Resonanz') + '">💚</span>';
                 } else if (n.id === worstMatchId) {
-                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;background:#EF4444;color:#fff;font-size:11px;font-weight:900;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(239,68,68,0.6);" title="Größte Differenz zum Partner">★</span>';
+                    badgeHtml = '<span style="position:absolute;top:6px;right:6px;background:#EF4444;color:#fff;font-size:11px;font-weight:900;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(239,68,68,0.6);" title="' + t('synthese.biggestDiffTitle', 'Größte Differenz zum Partner') + '">★</span>';
                 }
                 // Bild-Präferenz-Indikator
                 if (savedPrefV) {
-                    badgeHtml += '<span style="position:absolute;top:4px;left:4px;background:rgba(16,185,129,0.85);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;" title="Standard-Bild gespeichert">✓</span>';
+                    badgeHtml += '<span style="position:absolute;top:4px;left:4px;background:rgba(16,185,129,0.85);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;" title="' + t('synthese.imagePrefSaved', 'Standard-Bild gespeichert') + '">✓</span>';
                 }
-                return '<div id="u-top5-card-' + safeKey + '" onclick="toggleUebersichtWisdom(\'' + n.id + '\',' + n.value + ')" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;position:relative;" title="Klick: Tiage-Weisheit anzeigen">'
+                return '<div id="u-top5-card-' + safeKey + '" onclick="toggleUebersichtWisdom(\'' + n.id + '\',' + n.value + ')" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;position:relative;" title="' + t('synthese.clickWisdomTitle', 'Klick: Tiage-Weisheit anzeigen') + '">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
                     +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'

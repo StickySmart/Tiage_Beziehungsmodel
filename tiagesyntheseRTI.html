@@ -909,130 +909,120 @@
         const t = SynthesePageShared.t;
 
         // RTI Säulen Definitionen (nach Petzold) - Redesigned
-        const RTI_PILLARS = [
-            {
-                id: 'S1',
-                name: 'Leiblichkeit',
-                icon: '🫀',
-                color: '#E84393',
-                mapping: 'C (Nähe-Distanz)',
-                question: 'Wie wichtig ist körperliche Nähe in eurer Beziehung?',
-                relatedNeeds: ['Nähe-Distanz', 'Körperlichkeit', 'Intimität'],
-                description: 'Körperliche Gesundheit, Wohlbefinden, Sexualität, Bewegung. Wie wohl fühle ich mich in meinem Körper?',
-                interpretations: {
-                    high: 'Ihr teilt ein starkes Bedürfnis nach körperlicher Verbindung.',
-                    medium: 'Eure Vorstellungen von körperlicher Nähe unterscheiden sich teilweise.',
-                    low: 'Hier besteht Gesprächsbedarf – eure Bedürfnisse sind unterschiedlich.'
+        function getRTIPillars() {
+            return [
+                {
+                    id: 'S1',
+                    name: t('synthese.rtiPillars.S1.name', 'Leiblichkeit'),
+                    icon: '🫀',
+                    color: '#E84393',
+                    mapping: 'C (Nähe-Distanz)',
+                    question: t('synthese.rtiPillars.S1.question', 'Wie wichtig ist körperliche Nähe in eurer Beziehung?'),
+                    relatedNeeds: ['Nähe-Distanz', 'Körperlichkeit', 'Intimität'],
+                    description: t('synthese.rtiPillars.S1.desc', 'Körperliche Gesundheit, Wohlbefinden, Sexualität, Bewegung. Wie wohl fühle ich mich in meinem Körper?'),
+                    interpretations: {
+                        high: t('synthese.rtiPillars.S1.interpHigh', 'Ihr teilt ein starkes Bedürfnis nach körperlicher Verbindung.'),
+                        medium: t('synthese.rtiPillars.S1.interpMedium', 'Eure Vorstellungen von körperlicher Nähe unterscheiden sich teilweise.'),
+                        low: t('synthese.rtiPillars.S1.interpLow', 'Hier besteht Gesprächsbedarf – eure Bedürfnisse sind unterschiedlich.')
+                    }
+                },
+                {
+                    id: 'S2',
+                    name: t('synthese.rtiPillars.S2.name', 'Soziales Netzwerk'),
+                    icon: '👥',
+                    color: '#3B82F6',
+                    mapping: '(A × 0.6) + (F × 0.4)',
+                    question: t('synthese.rtiPillars.S2.question', 'Wie wichtig ist euch die Einbindung in ein soziales Umfeld?'),
+                    relatedNeeds: ['Freundeskreis', 'Familie', 'Gemeinschaft'],
+                    description: t('synthese.rtiPillars.S2.desc', 'Familie, Freunde, Kollegen, Gemeinschaft. Wie gut bin ich sozial eingebunden und unterstützt?'),
+                    interpretations: {
+                        high: t('synthese.rtiPillars.S2.interpHigh', 'Ihr schätzt beide ein starkes soziales Netzwerk.'),
+                        medium: t('synthese.rtiPillars.S2.interpMedium', 'Eure Vorstellungen von sozialer Einbindung variieren.'),
+                        low: t('synthese.rtiPillars.S2.interpLow', 'Unterschiedliche Erwartungen an soziale Integration.')
+                    }
+                },
+                {
+                    id: 'S3',
+                    name: t('synthese.rtiPillars.S3.name', 'Autonomie & Leistung'),
+                    icon: '💪',
+                    color: '#22c55e',
+                    mapping: 'D (Autonomie)',
+                    question: t('synthese.rtiPillars.S3.question', 'Wie viel persönlicher Freiraum ist euch wichtig?'),
+                    relatedNeeds: ['Autonomie', 'Selbstverwirklichung', 'Freiheit'],
+                    description: t('synthese.rtiPillars.S3.desc', 'Arbeit, Beruf, Erfolg, Selbstwirksamkeit. Wie selbstbestimmt und kompetent fühle ich mich?'),
+                    interpretations: {
+                        high: t('synthese.rtiPillars.S3.interpHigh', 'Ihr respektiert beide den persönlichen Freiraum des anderen.'),
+                        medium: t('synthese.rtiPillars.S3.interpMedium', 'Die Balance zwischen Nähe und Autonomie ist ein Thema.'),
+                        low: t('synthese.rtiPillars.S3.interpLow', 'Unterschiedliche Bedürfnisse nach Eigenständigkeit.')
+                    }
+                },
+                {
+                    id: 'S4',
+                    name: t('synthese.rtiPillars.S4.name', 'Sicherheit & Stabilität'),
+                    icon: '🛡️',
+                    color: '#f59e0b',
+                    mapping: '(A × 0.4) + (F × 0.6)',
+                    question: t('synthese.rtiPillars.S4.question', 'Wie wichtig sind Verlässlichkeit und Stabilität?'),
+                    relatedNeeds: ['Sicherheit', 'Verbindlichkeit', 'Planung'],
+                    description: t('synthese.rtiPillars.S4.desc', 'Materielle Absicherung, Wohnen, Finanzen, Zukunftsplanung. Wie sicher fühle ich mich?'),
+                    interpretations: {
+                        high: t('synthese.rtiPillars.S4.interpHigh', 'Stabilität und Verlässlichkeit sind für euch beide wichtig.'),
+                        medium: t('synthese.rtiPillars.S4.interpMedium', 'Eure Sicherheitsbedürfnisse sind unterschiedlich gewichtet.'),
+                        low: t('synthese.rtiPillars.S4.interpLow', 'Hier solltet ihr über eure Erwartungen sprechen.')
+                    }
+                },
+                {
+                    id: 'S5',
+                    name: t('synthese.rtiPillars.S5.name', 'Werte & Sinn'),
+                    icon: '💜',
+                    color: '#8b5cf6',
+                    mapping: '(B × 0.4) + (E × 0.6)',
+                    question: t('synthese.rtiPillars.S5.question', 'Teilt ihr gemeinsame Werte und Lebensziele?'),
+                    relatedNeeds: ['Werte', 'Sinn', 'Weltanschauung'],
+                    description: t('synthese.rtiPillars.S5.desc', 'Spiritualität, Ethik, Lebenssinn, Weltanschauung. Was gibt meinem Leben Bedeutung?'),
+                    interpretations: {
+                        high: t('synthese.rtiPillars.S5.interpHigh', 'Eure Grundwerte und Lebensziele sind kompatibel.'),
+                        medium: t('synthese.rtiPillars.S5.interpMedium', 'In einigen Bereichen unterscheiden sich eure Überzeugungen.'),
+                        low: t('synthese.rtiPillars.S5.interpLow', 'Unterschiedliche Wertvorstellungen erfordern Verständnis.')
+                    }
                 }
-            },
-            {
-                id: 'S2',
-                name: 'Soziales Netzwerk',
-                icon: '👥',
-                color: '#3B82F6',
-                mapping: '(A × 0.6) + (F × 0.4)',
-                question: 'Wie wichtig ist euch die Einbindung in ein soziales Umfeld?',
-                relatedNeeds: ['Freundeskreis', 'Familie', 'Gemeinschaft'],
-                description: 'Familie, Freunde, Kollegen, Gemeinschaft. Wie gut bin ich sozial eingebunden und unterstützt?',
-                interpretations: {
-                    high: 'Ihr schätzt beide ein starkes soziales Netzwerk.',
-                    medium: 'Eure Vorstellungen von sozialer Einbindung variieren.',
-                    low: 'Unterschiedliche Erwartungen an soziale Integration.'
-                }
-            },
-            {
-                id: 'S3',
-                name: 'Autonomie & Leistung',
-                icon: '💪',
-                color: '#22c55e',
-                mapping: 'D (Autonomie)',
-                question: 'Wie viel persönlicher Freiraum ist euch wichtig?',
-                relatedNeeds: ['Autonomie', 'Selbstverwirklichung', 'Freiheit'],
-                description: 'Arbeit, Beruf, Erfolg, Selbstwirksamkeit. Wie selbstbestimmt und kompetent fühle ich mich?',
-                interpretations: {
-                    high: 'Ihr respektiert beide den persönlichen Freiraum des anderen.',
-                    medium: 'Die Balance zwischen Nähe und Autonomie ist ein Thema.',
-                    low: 'Unterschiedliche Bedürfnisse nach Eigenständigkeit.'
-                }
-            },
-            {
-                id: 'S4',
-                name: 'Sicherheit & Stabilität',
-                icon: '🛡️',
-                color: '#f59e0b',
-                mapping: '(A × 0.4) + (F × 0.6)',
-                question: 'Wie wichtig sind Verlässlichkeit und Stabilität?',
-                relatedNeeds: ['Sicherheit', 'Verbindlichkeit', 'Planung'],
-                description: 'Materielle Absicherung, Wohnen, Finanzen, Zukunftsplanung. Wie sicher fühle ich mich?',
-                interpretations: {
-                    high: 'Stabilität und Verlässlichkeit sind für euch beide wichtig.',
-                    medium: 'Eure Sicherheitsbedürfnisse sind unterschiedlich gewichtet.',
-                    low: 'Hier solltet ihr über eure Erwartungen sprechen.'
-                }
-            },
-            {
-                id: 'S5',
-                name: 'Werte & Sinn',
-                icon: '💜',
-                color: '#8b5cf6',
-                mapping: '(B × 0.4) + (E × 0.6)',
-                question: 'Teilt ihr gemeinsame Werte und Lebensziele?',
-                relatedNeeds: ['Werte', 'Sinn', 'Weltanschauung'],
-                description: 'Spiritualität, Ethik, Lebenssinn, Weltanschauung. Was gibt meinem Leben Bedeutung?',
-                interpretations: {
-                    high: 'Eure Grundwerte und Lebensziele sind kompatibel.',
-                    medium: 'In einigen Bereichen unterscheiden sich eure Überzeugungen.',
-                    low: 'Unterschiedliche Wertvorstellungen erfordern Verständnis.'
-                }
-            }
-        ];
+            ];
+        }
 
         // RTI Prioritäten (0=Egal, 1=Normal, 2=Wichtig)
         let rtiPriorities = { S1: 1, S2: 1, S3: 1, S4: 1, S5: 1 };
 
         // RTI Säulen Erklärungen für Modal
-        const RTI_PILLAR_INFO = {
-            general: `<p>Die fünf Säulen bilden die Grundbedürfnisse ab, die in Beziehungen eine Rolle spielen. Sie basieren auf psychologischen Modellen und machen sichtbar, wo deine Prioritäten liegen.</p>
-<p><strong>0 = Egal</strong> – dieses Thema spielt für dich keine große Rolle<br>
-<strong>1 = Normal</strong> – ein Grundbedürfnis, aber nicht im Fokus<br>
-<strong>2 = Wichtig</strong> – hier liegt dein Schwerpunkt</p>
-<p>Es gibt kein "richtig" oder "falsch". Die Säulen zeigen, was dir wichtig ist – nicht was wichtig sein sollte.</p>`,
-
-            S1: {
-                title: 'Leiblichkeit',
-                text: `<p>Körperliche Nähe, Berührung, Sexualität. Wie wichtig ist dir der körperliche Ausdruck von Verbindung?</p>
-<p>Das umfasst: körperliche Präsenz, Zärtlichkeit, sexuelle Intimität, gemeinsames Erleben durch den Körper.</p>`,
-                quote: 'Pirsig würde sagen: Qualität zeigt sich zuerst im Spüren, bevor sie gedacht wird.'
-            },
-
-            S2: {
-                title: 'Soziales Netzwerk',
-                text: `<p>Einbindung in ein größeres Ganzes. Freunde, Familie, Community. Wie wichtig ist es dir, dass deine Beziehung in ein soziales Umfeld eingebettet ist?</p>
-<p>Das umfasst: gemeinsame Freunde, Familienintegration, öffentliche Sichtbarkeit der Beziehung, Teil einer Gemeinschaft sein.</p>`,
-                quote: null
-            },
-
-            S3: {
-                title: 'Autonomie',
-                text: `<p>Eigenständigkeit und persönlicher Freiraum. Wie wichtig ist es dir, in einer Beziehung du selbst zu bleiben?</p>
-<p>Das umfasst: eigene Zeit, eigene Interessen, eigene Entscheidungen, Raum für persönliche Entwicklung.</p>`,
-                quote: 'Osho sagt: Zwei ganze Menschen können sich begegnen. Zwei Hälften suchen nur Ergänzung.'
-            },
-
-            S4: {
-                title: 'Sicherheit',
-                text: `<p>Stabilität, Verlässlichkeit, Vertrauen. Wie wichtig ist dir das Gefühl, dich auf die Beziehung verlassen zu können?</p>
-<p>Das umfasst: emotionale Sicherheit, Verbindlichkeit, Beständigkeit, klare Absprachen.</p>`,
-                quote: null
-            },
-
-            S5: {
-                title: 'Werte & Sinn',
-                text: `<p>Gemeinsame Überzeugungen und Lebensziele. Wie wichtig ist es dir, dass ihr in grundlegenden Fragen übereinstimmt?</p>
-<p>Das umfasst: Weltanschauung, Lebensentwurf, ethische Grundsätze, spirituelle oder philosophische Ausrichtung.</p>`,
-                quote: 'Tiage-Perspektive: Resonanz entsteht nicht nur durch Gefühl, sondern auch durch gemeinsame Richtung.'
-            }
-        };
+        function getRTIPillarInfo() {
+            return {
+                general: t('synthese.rtiPillarInfo.general', '<p>Die fünf Säulen bilden die Grundbedürfnisse ab, die in Beziehungen eine Rolle spielen. Sie basieren auf psychologischen Modellen und machen sichtbar, wo deine Prioritäten liegen.</p><p><strong>0 = Egal</strong> – dieses Thema spielt für dich keine große Rolle<br><strong>1 = Normal</strong> – ein Grundbedürfnis, aber nicht im Fokus<br><strong>2 = Wichtig</strong> – hier liegt dein Schwerpunkt</p><p>Es gibt kein "richtig" oder "falsch". Die Säulen zeigen, was dir wichtig ist – nicht was wichtig sein sollte.</p>'),
+                S1: {
+                    title: t('synthese.rtiPillars.S1.name', 'Leiblichkeit'),
+                    text: t('synthese.rtiPillarInfo.S1.text', '<p>Körperliche Nähe, Berührung, Sexualität. Wie wichtig ist dir der körperliche Ausdruck von Verbindung?</p><p>Das umfasst: körperliche Präsenz, Zärtlichkeit, sexuelle Intimität, gemeinsames Erleben durch den Körper.</p>'),
+                    quote: t('synthese.rtiPillarInfo.S1.quote', 'Pirsig würde sagen: Qualität zeigt sich zuerst im Spüren, bevor sie gedacht wird.')
+                },
+                S2: {
+                    title: t('synthese.rtiPillars.S2.name', 'Soziales Netzwerk'),
+                    text: t('synthese.rtiPillarInfo.S2.text', '<p>Einbindung in ein größeres Ganzes. Freunde, Familie, Community. Wie wichtig ist es dir, dass deine Beziehung in ein soziales Umfeld eingebettet ist?</p><p>Das umfasst: gemeinsame Freunde, Familienintegration, öffentliche Sichtbarkeit der Beziehung, Teil einer Gemeinschaft sein.</p>'),
+                    quote: null
+                },
+                S3: {
+                    title: t('synthese.rtiPillars.S3.name', 'Autonomie & Leistung'),
+                    text: t('synthese.rtiPillarInfo.S3.text', '<p>Eigenständigkeit und persönlicher Freiraum. Wie wichtig ist es dir, in einer Beziehung du selbst zu bleiben?</p><p>Das umfasst: eigene Zeit, eigene Interessen, eigene Entscheidungen, Raum für persönliche Entwicklung.</p>'),
+                    quote: t('synthese.rtiPillarInfo.S3.quote', 'Osho sagt: Zwei ganze Menschen können sich begegnen. Zwei Hälften suchen nur Ergänzung.')
+                },
+                S4: {
+                    title: t('synthese.rtiPillars.S4.name', 'Sicherheit & Stabilität'),
+                    text: t('synthese.rtiPillarInfo.S4.text', '<p>Stabilität, Verlässlichkeit, Vertrauen. Wie wichtig ist dir das Gefühl, dich auf die Beziehung verlassen zu können?</p><p>Das umfasst: emotionale Sicherheit, Verbindlichkeit, Beständigkeit, klare Absprachen.</p>'),
+                    quote: null
+                },
+                S5: {
+                    title: t('synthese.rtiPillars.S5.name', 'Werte & Sinn'),
+                    text: t('synthese.rtiPillarInfo.S5.text', '<p>Gemeinsame Überzeugungen und Lebensziele. Wie wichtig ist es dir, dass ihr in grundlegenden Fragen übereinstimmt?</p><p>Das umfasst: Weltanschauung, Lebensentwurf, ethische Grundsätze, spirituelle oder philosophische Ausrichtung.</p>'),
+                    quote: t('synthese.rtiPillarInfo.S5.quote', 'Tiage-Perspektive: Resonanz entsteht nicht nur durch Gefühl, sondern auch durch gemeinsame Richtung.')
+                }
+            };
+        }
 
         /**
          * Öffnet das RTI Info Modal für eine bestimmte Säule
@@ -1040,8 +1030,10 @@
          */
         function openRtiModal(pillarId) {
             const modal = document.getElementById('rtiInfoModal');
-            const pillar = RTI_PILLARS.find(p => p.id === pillarId);
-            const info = RTI_PILLAR_INFO[pillarId];
+            const pillars = getRTIPillars();
+            const pillarInfo = getRTIPillarInfo();
+            const pillar = pillars.find(p => p.id === pillarId);
+            const info = pillarInfo[pillarId];
 
             if (!pillar || !info) return;
 
@@ -1050,7 +1042,7 @@
             document.getElementById('rtiModalTitle').textContent = `${pillarId}: ${info.title}`;
 
             // Allgemeine Info
-            document.getElementById('rtiModalGeneral').innerHTML = RTI_PILLAR_INFO.general;
+            document.getElementById('rtiModalGeneral').innerHTML = pillarInfo.general;
 
             // Spezifische Info
             document.getElementById('rtiModalSpecificTitle').textContent = info.title;
@@ -1243,7 +1235,7 @@
 
             // Kein Partner → ICH-only Pillar-Cards
             if (!SynthesePageShared.getCurrentState().hasPartner) {
-                let ichPillarsHTML = RTI_PILLARS.map(pillar => {
+                let ichPillarsHTML = getRTIPillars().map(pillar => {
                     const ichScore = scores.ich[pillar.id];
                     const priority = rtiPriorities[pillar.id] || 1;
                     const needTagsHTML = pillar.relatedNeeds.map(need =>
@@ -1286,8 +1278,8 @@
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">⚡</span>
                             <div>
-                                <div class="synthese-section-title">RTI Säulen der Identität</div>
-                                <div class="synthese-section-subtitle">Nach Hilarion Petzold</div>
+                                <div class="synthese-section-title">${t('synthese.rtiSectionTitle', 'RTI Säulen der Identität')}</div>
+                                <div class="synthese-section-subtitle">${t('synthese.rtiSectionSubtitle', 'Nach Hilarion Petzold')}</div>
                             </div>
                         </div>
                         <div class="rti-info-box">
@@ -1302,7 +1294,7 @@
                 return;
             }
 
-            let pillarsHTML = RTI_PILLARS.map(pillar => {
+            let pillarsHTML = getRTIPillars().map(pillar => {
                 const ichScore = scores.ich[pillar.id];
                 const partnerScore = scores.partner[pillar.id];
                 const combinedScore = combineScores(ichScore, partnerScore);
@@ -1317,8 +1309,8 @@
                 ).join('');
 
                 // Resonance display text
-                const resonanceText = resonanceLevel === 'high' ? 'Hohe Resonanz' :
-                                     resonanceLevel === 'medium' ? 'Mittlere Resonanz' : 'Niedrige Resonanz';
+                const resonanceText = resonanceLevel === 'high' ? t('synthese.resonanzHoch', 'Hohe Resonanz') :
+                                     resonanceLevel === 'medium' ? t('synthese.resonanzMittel', 'Mittlere Resonanz') : t('synthese.resonanzNiedrig', 'Niedrige Resonanz');
 
                 return `
                     <div class="rti-pillar-card ${pillar.id.toLowerCase()}">
@@ -1357,8 +1349,8 @@
 
                         <div class="rti-resonance">
                             <div class="rti-resonance-header">
-                                <span class="rti-resonance-label">Resonanz</span>
-                                <span class="rti-resonance-value ${resonanceLevel}">${resonanceText} (${diff}% Differenz)</span>
+                                <span class="rti-resonance-label">${t('synthese.resonanzLabel', 'Resonanz')}</span>
+                                <span class="rti-resonance-value ${resonanceLevel}">${resonanceText} (${t('synthese.differenzPct', '{n}% Differenz').replace('{n}', diff)})</span>
                             </div>
                             <div class="rti-resonance-text">
                                 <em>${interpretation}</em>
@@ -1378,19 +1370,18 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">⚡</span>
                         <div>
-                            <div class="synthese-section-title">RTI Säulen der Identität</div>
-                            <div class="synthese-section-subtitle">Nach Hilarion Petzold</div>
+                            <div class="synthese-section-title">${t('synthese.rtiSectionTitle', 'RTI Säulen der Identität')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.rtiSectionSubtitle', 'Nach Hilarion Petzold')}</div>
                         </div>
                     </div>
 
                     <div class="rti-info-box">
-                        <div class="rti-info-title">ℹ️ Was zeigt diese Auswertung?</div>
+                        <div class="rti-info-title">${t('synthese.rtiInfoTitle', 'ℹ️ Was zeigt diese Auswertung?')}</div>
                         <div class="rti-info-text">
-                            Die 5 Säulen zeigen, wie eure Bedürfnisse in den wichtigsten Lebensbereichen übereinstimmen.
-                            Die Balken vergleichen deine Werte (ICH) mit denen deines Partners.
+                            ${t('synthese.rtiInfoText', 'Die 5 Säulen zeigen, wie eure Bedürfnisse in den wichtigsten Lebensbereichen übereinstimmen. Die Balken vergleichen deine Werte (ICH) mit denen deines Partners.')}
                             <br><br>
-                            <strong>Hohe Resonanz</strong> = Eure Werte sind ähnlich&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <strong>Niedrige Resonanz</strong> = Hier könnt ihr voneinander lernen
+                            <strong>${t('synthese.rtiInfoHighLabel', 'Hohe Resonanz')}</strong> = ${t('synthese.rtiInfoHighMeaning', 'Eure Werte sind ähnlich')}&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <strong>${t('synthese.rtiInfoLowLabel', 'Niedrige Resonanz')}</strong> = ${t('synthese.rtiInfoLowMeaning', 'Hier könnt ihr voneinander lernen')}
                         </div>
                     </div>
 

@@ -599,12 +599,14 @@
         const t = SynthesePageShared.t;
 
         // Perspektiven Definitionen (SSOT: docs/howto-add-need.md, PerspektivenModal.js)
-        const perspektivenDefs = [
-            { id: '#P1', label: 'Statistik', description: 'Empirisch nachgewiesene Grundbedürfnisse' },
-            { id: '#P2', label: 'Konditionierung', description: 'Natürliche vs. anerzogene Bedürfnisse' },
-            { id: '#P3', label: 'Qualität', description: 'Statische vs. dynamische Qualitätsaspekte' },
-            { id: '#P4', label: 'SexPositiv', description: 'Bewusste Machtdynamik und Consent' }
-        ];
+        function getPerspektivenDefs() {
+            return [
+                { id: '#P1', label: t('synthese.perspectives.statistik', 'Statistik'), description: t('synthese.perspectives.statistikDesc', 'Empirisch nachgewiesene Grundbedürfnisse') },
+                { id: '#P2', label: t('synthese.perspectives.konditionierung', 'Konditionierung'), description: t('synthese.perspectives.konditionierungDesc', 'Natürliche vs. anerzogene Bedürfnisse') },
+                { id: '#P3', label: t('synthese.perspectives.qualitaet', 'Qualität'), description: t('synthese.perspectives.qualitaetDesc', 'Statische vs. dynamische Qualitätsaspekte') },
+                { id: '#P4', label: 'SexPositiv', description: t('synthese.perspectives.machtdynamik', 'Bewusste Machtdynamik und Consent') }
+            ];
+        }
 
         /**
          * Initialisierung via Shared Module
@@ -773,23 +775,23 @@
 
             // 4. Farbe und Interpretation bestimmen
             let color = '#eab308'; // Gelb - neutral
-            let interpretation = 'Manuelle Anpassungen weichen etwas von der Theorie ab';
+            let interpretation = t('synthese.balanceInterpNeutral', 'Manuelle Anpassungen weichen etwas von der Theorie ab');
 
             if (lockedCount === 0) {
                 color = '#22c55e'; // Grün
-                interpretation = 'Keine manuellen Änderungen - Theorie = Praxis';
+                interpretation = t('synthese.balanceInterpLocked0', 'Keine manuellen Änderungen - Theorie = Praxis');
             } else if (balance >= 0.95) {
                 color = '#22c55e'; // Grün
-                interpretation = 'Manuelle Anpassungen bestätigen die Theorie';
+                interpretation = t('synthese.balanceInterpVeryClose', 'Manuelle Anpassungen bestätigen die Theorie');
             } else if (balance >= 0.85) {
                 color = '#3b82f6'; // Blau
-                interpretation = 'Geringe Abweichung durch manuelle Anpassungen';
+                interpretation = t('synthese.balanceInterpClose', 'Geringe Abweichung durch manuelle Anpassungen');
             } else if (balance >= 0.70) {
                 color = '#eab308'; // Gelb
-                interpretation = 'Moderate Abweichung zwischen Theorie und Praxis';
+                interpretation = t('synthese.balanceInterpModerate', 'Moderate Abweichung zwischen Theorie und Praxis');
             } else {
                 color = '#ef4444'; // Rot
-                interpretation = 'Deutliche Diskrepanz - Praxis weicht stark von Theorie ab';
+                interpretation = t('synthese.balanceInterpHigh', 'Deutliche Diskrepanz - Praxis weicht stark von Theorie ab');
             }
 
             console.log('[getBalanceData]', {
@@ -844,16 +846,18 @@
             }
 
             // Fallback: Generische Pro/Contra wenn keine spezifischen Statements vorhanden
+            const ichName = SynthesePageShared.archetypeNames[SynthesePageShared.getCurrentState().ichArchetype] || SynthesePageShared.getCurrentState().ichArchetype;
+            const partnerName = SynthesePageShared.archetypeNames[SynthesePageShared.getCurrentState().partnerArchetype] || SynthesePageShared.getCurrentState().partnerArchetype;
             return {
                 pro: [
-                    `${SynthesePageShared.archetypeNames[SynthesePageShared.getCurrentState().ichArchetype] || SynthesePageShared.getCurrentState().ichArchetype} und ${SynthesePageShared.archetypeNames[SynthesePageShared.getCurrentState().partnerArchetype] || SynthesePageShared.getCurrentState().partnerArchetype} können voneinander lernen`,
-                    'Unterschiedliche Perspektiven bereichern die Beziehung',
-                    'Potenzial für gegenseitiges Wachstum'
+                    t('synthese.fallbackProCanLearn', '{ich} und {partner} können voneinander lernen').replace('{ich}', ichName).replace('{partner}', partnerName),
+                    t('synthese.fallbackProEnriching', 'Unterschiedliche Perspektiven bereichern die Beziehung'),
+                    t('synthese.fallbackProGrowth', 'Potenzial für gegenseitiges Wachstum')
                 ],
                 contra: [
-                    'Unterschiedliche Beziehungsphilosophien erfordern Kommunikation',
-                    'Erwartungsmanagement notwendig',
-                    'Kompromissbereitschaft auf beiden Seiten erforderlich'
+                    t('synthese.fallbackContraCommunication', 'Unterschiedliche Beziehungsphilosophien erfordern Kommunikation'),
+                    t('synthese.fallbackContraExpectations', 'Erwartungsmanagement notwendig'),
+                    t('synthese.fallbackContraCompromise', 'Kompromissbereitschaft auf beiden Seiten erforderlich')
                 ]
             };
         }
@@ -887,8 +891,8 @@
                         <div class="synthese-section-header">
                             <span class="synthese-section-icon">⚖️</span>
                             <div>
-                                <div class="synthese-section-title">Perspektiven & Pro/Contra</div>
-                                <div class="synthese-section-subtitle">Partner-Vergleich</div>
+                                <div class="synthese-section-title">${t('synthese.perspektivenTitle', 'Perspektiven & Pro/Contra')}</div>
+                                <div class="synthese-section-subtitle">${t('synthese.perspektivenSubtitle', 'Partner-Vergleich')}</div>
                             </div>
                         </div>
                         <div style="text-align:center; padding: 40px 20px; color: var(--text-muted);">
@@ -911,15 +915,15 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">⚖️</span>
                         <div>
-                            <div class="synthese-section-title">Perspektiven-Gewichtung</div>
-                            <div class="synthese-section-subtitle">Philosophische Blickwinkel auf Bedürfnisse</div>
+                            <div class="synthese-section-title">${t('synthese.perspektivenGewichtung', 'Perspektiven-Gewichtung')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.perspektivenBlickwinkel', 'Philosophische Blickwinkel auf Bedürfnisse')}</div>
                         </div>
                     </div>
 
                     <div class="perspektiven-grid">
                         ${(() => {
                             const werte = getPerspektivenWerte();
-                            return perspektivenDefs.map((p, i) => {
+                            return getPerspektivenDefs().map((p, i) => {
                                 const val = werte[p.id] || 1.0;
                                 return `
                                     <div class="perspektive-item perspektive-clickable"
@@ -941,15 +945,15 @@
             // Balance Section (Kopf-Herz-Balance)
             const balanceData = getBalanceData();
             const lockedInfo = balanceData.lockedCount > 0
-                ? `<span style="color: var(--text-muted); font-size: 11px;">(${balanceData.lockedCount} manuelle Änderungen)</span>`
+                ? `<span style="color: var(--text-muted); font-size: 11px;">(${t('synthese.manuelleAenderungen', '{n} manuelle Änderungen').replace('{n}', balanceData.lockedCount)})</span>`
                 : '';
             html += `
                 <div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🧠💚</span>
                         <div>
-                            <div class="synthese-section-title">Kopf-Herz-Balance</div>
-                            <div class="synthese-section-subtitle">Theorie vs. Praxis ${lockedInfo}</div>
+                            <div class="synthese-section-title">${t('synthese.kopfHerzBalance', 'Kopf-Herz-Balance')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.theorieVsPraxis', 'Theorie vs. Praxis')} ${lockedInfo}</div>
                         </div>
                     </div>
 
@@ -961,8 +965,8 @@
                         <div class="balance-meter">
                             <div class="balance-labels">
                                 <span>0</span>
-                                <span>Diskrepanz</span>
-                                <span>Einklang</span>
+                                <span>${t('synthese.diskrepanz', 'Diskrepanz')}</span>
+                                <span>${t('synthese.einklang', 'Einklang')}</span>
                                 <span>1</span>
                             </div>
                             <div class="balance-bar-container">
@@ -976,17 +980,17 @@
 
                         <div class="balance-components">
                             <div class="balance-component">
-                                <div class="balance-component-label">Theorie</div>
+                                <div class="balance-component-label">${t('synthese.theorie', 'Theorie')}</div>
                                 <div class="balance-component-value" style="color: #3b82f6;">${balanceData.logos}%</div>
-                                <div class="balance-component-desc">Automatische Berechnung</div>
+                                <div class="balance-component-desc">${t('synthese.automatischeBerechnung', 'Automatische Berechnung')}</div>
                             </div>
                             <div class="balance-component">
                                 <div style="font-size: 20px; color: var(--text-muted);">↔</div>
                             </div>
                             <div class="balance-component">
-                                <div class="balance-component-label">Praxis</div>
+                                <div class="balance-component-label">${t('synthese.praxis', 'Praxis')}</div>
                                 <div class="balance-component-value" style="color: #ec4899;">${balanceData.pathos}%</div>
-                                <div class="balance-component-desc">Mit manuellen Änderungen</div>
+                                <div class="balance-component-desc">${t('synthese.mitManuellenAenderungen', 'Mit manuellen Änderungen')}</div>
                             </div>
                         </div>
                     </div>
@@ -999,8 +1003,8 @@
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">⚖️</span>
                         <div>
-                            <div class="synthese-section-title">Pro & Contra</div>
-                            <div class="synthese-section-subtitle">Paarung</div>
+                            <div class="synthese-section-title">${t('synthese.proContraTitle', 'Pro & Contra')}</div>
+                            <div class="synthese-section-subtitle">${t('synthese.proContraPaarung', 'Paarung')}</div>
                         </div>
                     </div>
 

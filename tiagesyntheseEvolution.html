@@ -404,7 +404,7 @@
         }
 
         function rtiValueLabel(v) {
-            return v === 0 ? 'Egal' : v === 2 ? 'Wichtig' : 'Normal';
+            return v === 0 ? t('synthese.gewichtungEgal', 'Egal') : v === 2 ? t('synthese.gewichtungWichtig', 'Wichtig') : t('synthese.gewichtungNormal', 'Normal');
         }
 
         /**
@@ -453,7 +453,7 @@
 
         function renderNeedsRows(needs, color, archetypeName) {
             if (!needs || needs.length === 0) {
-                return '<div style="font-size:11px;color:rgba(255,255,255,0.3);padding:8px 0;">Keine Bedürfnisse in dieser Stufe gefunden</div>';
+                return '<div style="font-size:11px;color:rgba(255,255,255,0.3);padding:8px 0;">' + t('synthese.noNeedsInStufe', 'Keine Bedürfnisse in dieser Stufe gefunden') + '</div>';
             }
             return needs.map(function(n) {
                 var val = n.actual !== undefined ? n.actual : n.expected;
@@ -463,15 +463,15 @@
                     var d = Math.round(n.delta);
                     var sign = d > 0 ? '+' : '';
                     var dColor = d > 5 ? '#22C55E' : d < -5 ? '#EF4444' : 'rgba(255,255,255,0.3)';
-                    var quality = d > 15 ? 'stark überdurchschnittlich'
-                                : d > 5  ? 'überdurchschnittlich'
-                                : d < -15 ? 'stark unterdurchschnittlich'
-                                : d < -5  ? 'unterdurchschnittlich'
-                                : 'entspricht Archetyp-Norm';
+                    var quality = d > 15 ? t('synthese.deltaVeryHigh', 'stark überdurchschnittlich')
+                                : d > 5  ? t('synthese.deltaHigh', 'überdurchschnittlich')
+                                : d < -15 ? t('synthese.deltaVeryLow', 'stark unterdurchschnittlich')
+                                : d < -5  ? t('synthese.deltaLow', 'unterdurchschnittlich')
+                                : t('synthese.deltaNormal', 'entspricht Archetyp-Norm');
                     var arcLabel = archetypeName || 'Archetyp';
                     var sourceLine = n.isLocked
-                        ? '🔒 Von dir manuell gesetzt'
-                        : '📐 Aus Profil berechnet&#10;   (' + arcLabel + ' + G · D · O · FFH · RTI)';
+                        ? t('synthese.sourceManual', '🔒 Von dir manuell gesetzt')
+                        : t('synthese.sourceCalculated', '📐 Aus Profil berechnet&#10;   ({name} + G · D · O · FFH · RTI)').replace('{name}', arcLabel);
                     var tip = 'Du: ' + Math.round(val) + '  ·  ' + arcLabel + '-Ø: ' + Math.round(n.expected)
                             + '&#10;' + sign + d + ' → ' + quality
                             + '&#10;&#10;' + sourceLine;
@@ -524,7 +524,7 @@
 
             var need = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds.get(needId) : null;
             var color = need ? (STUFEN_FARBEN_CARD[need.stufe] || '#888') : '#888';
-            var STUFEN_LABELS = { 1: 'Fundament', 2: 'Entfaltung', 3: 'Verbundenheit', 4: 'Sinn' };
+            var STUFEN_LABELS = { 1: t('beduerfnisKatalog.stufen.S1.label', 'Fundament'), 2: t('beduerfnisKatalog.stufen.S2.label', 'Entfaltung'), 3: t('beduerfnisKatalog.stufen.S3.label', 'Verbundenheit'), 4: t('beduerfnisKatalog.stufen.S4.label', 'Sinn') };
 
             // Varianten-Key ermitteln
             var varianten = bedData.varianten || {};
@@ -535,7 +535,7 @@
                 if (!varianten[_E_activeVariantKey]) _E_activeVariantKey = variantKeys[0] || 'V1';
             }
             var v = varianten[_E_activeVariantKey] || varianten['V1'] || Object.values(varianten)[0];
-            if (!v) { section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>'; return; }
+            if (!v) { section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">' + t('synthese.noTextAvailable', 'Kein Text verfügbar.') + '</div>'; return; }
 
             var trad = v.traditionen || {};
             var kartenName = v.karte_de || v.karte || _E_activeVariantKey;
@@ -594,30 +594,30 @@
 
             } else if (mode === 'gemeinsam') {
                 var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
-                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📖 Ti-Age Weisheit</div>';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">' + t('synthese.viewWisheitHeader', '📖 Ti-Age Weisheit') + '</div>';
                 if (v.tiage) {
                     html += '<div style="font-size:13px;color:rgba(255,255,255,0.8);font-style:italic;line-height:1.6;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid ' + color + ';">'
                           + v.tiage + '</div>';
                 } else {
-                    html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;padding:20px 0;">Kein Text verfügbar</div>';
+                    html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;padding:20px 0;">' + t('synthese.noTextAvailable', 'Kein Text verfügbar.') + '</div>';
                 }
                 html += '</div>';
                 section.innerHTML = html;
 
             } else if (mode === 'tradition') {
                 var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
-                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🕊 Weisheitstraditionen</div>';
+                html += '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">' + t('synthese.viewTraditionHeader', '🕊 Weisheitstraditionen') + '</div>';
                 var hasTrad = false;
                 html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:12px;">';
-                TRAD_LIST.forEach(function(t) {
-                    if (!trad[t.key]) return;
+                TRAD_LIST.forEach(function(tradItem) {
+                    if (!trad[tradItem.key]) return;
                     hasTrad = true;
                     html += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
-                          +   '<div style="font-size:11px;font-weight:600;color:' + t.col + ';margin-bottom:4px;">' + t.icon + ' ' + t.label + '</div>'
-                          +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[t.key] + '</div>'
+                          +   '<div style="font-size:11px;font-weight:600;color:' + tradItem.col + ';margin-bottom:4px;">' + tradItem.icon + ' ' + tradItem.label + '</div>'
+                          +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[tradItem.key] + '</div>'
                           + '</div>';
                 });
-                if (!hasTrad) html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:10px 0;">Keine Traditionen verfügbar</div>';
+                if (!hasTrad) html += '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:10px 0;">' + t('synthese.noTraditionsAvail', 'Keine Traditionen verfügbar') + '</div>';
                 html += '</div>';
                 if (v.reflexion) {
                     html += '<div style="background:rgba(245,158,11,0.07);border-radius:7px;padding:10px 14px;border-left:3px solid #F59E0B;">'
@@ -707,7 +707,7 @@
             if (activeCard) { activeCard.style.border = '1.5px solid ' + color; activeCard.style.boxShadow = '0 0 8px ' + color + '44'; }
 
             var section = document.getElementById('evo-lower-section');
-            if (section) section.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;padding:10px 0;">Wird geladen…</div>';
+            if (section) section.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;padding:10px 0;">' + t('synthese.loadingWisdom', '🧬 Lade Tiage-Weisheit…') + '</div>';
 
             if (typeof OshoZenTextGenerator === 'undefined') return;
 
@@ -719,13 +719,13 @@
             OshoZenTextGenerator.loadAndGetBeduerfnisData(needId).then(function(bedData) {
                 if (_E_activeNeedId !== needId) return;
                 if (!bedData) {
-                    if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Kein Text verfügbar.</div>';
+                    if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">' + t('synthese.noTextAvailable', 'Kein Text verfügbar.') + '</div>';
                     return;
                 }
                 _E_cachedBedData[needId] = bedData;
                 _E_renderLowerSection(needId, value, bedData);
             }).catch(function() {
-                if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">Karten-Texte konnten nicht geladen werden.</div>';
+                if (section) section.innerHTML = '<div style="color:rgba(255,200,100,0.6);font-size:12px;text-align:center;padding:10px;">' + t('synthese.loadError', 'Texte konnten nicht geladen werden.') + '</div>';
             });
         };
 
@@ -750,7 +750,7 @@
 
         function renderContent() {
             var container = document.getElementById('syntheseContent');
-            container.innerHTML = '<div class="synthese-loading"><div class="synthese-loading-spinner"></div><p>Lade Katalog...</p></div>';
+            container.innerHTML = '<div class="synthese-loading"><div class="synthese-loading-spinner"></div><p>' + t('synthese.loadingKatalogShort', 'Lade Katalog...') + '</p></div>';
 
             var loadCatalog = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.load)
                 ? BeduerfnisIds.load() : Promise.resolve();
@@ -794,7 +794,7 @@
                         var rtiVal = rti[pk];
                         var valLabel = rtiValueLabel(rtiVal);
                         return '<span class="stufen-rti-badge" style="color:' + pillar.color + ';border-color:' + pillar.color + ';">'
-                            + pk + ' ' + pillar.label + ' · ' + valLabel
+                            + pk + ' ' + t('synthese.rtiPillars.' + pk + '.name', pillar.label) + ' · ' + valLabel
                             + '</span>';
                     }).join('');
 
@@ -816,21 +816,21 @@
 
                     return '<div class="stufen-card" id="stufen-card-' + def.key + '">'
                         + '<div class="stufen-card-header" onclick="toggleCard(\'' + def.key + '\')">'
-                        +   '<span class="stufen-card-label" style="color:' + def.color + ';">' + def.label + '</span>'
+                        +   '<span class="stufen-card-label" style="color:' + def.color + ';">' + t('beduerfnisKatalog.stufen.' + def.key + '.label', def.label) + '</span>'
                         +   '<div class="stufen-card-bar-wrap"><div class="stufen-card-bar-fill" style="width:' + barWidth + '%;background:' + def.color + ';"></div></div>'
                         +   '<span class="stufen-card-pct" style="color:' + def.color + ';">' + displayVal + '</span>'
                         +   '<span class="stufen-card-toggle">▶</span>'
                         + '</div>'
                         + '<div class="stufen-card-detail">'
-                        +   '<div class="stufen-card-desc">' + def.desc + '</div>'
+                        +   '<div class="stufen-card-desc">' + t('synthese.stufenDesc.' + def.key, def.desc) + '</div>'
                         +   (partnerVal !== null ? partnerRow : '')
                         +   '<div class="stufen-section-rti">'
-                        +     '<div class="stufen-section-rti-label">RTI-Verbindung</div>'
+                        +     '<div class="stufen-section-rti-label">' + t('synthese.rtiVerbindung', 'RTI-Verbindung') + '</div>'
                         +     rtiHtml
                         +   '</div>'
-                        +   '<div style="font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:8px;">' + def.rtiDesc + '</div>'
+                        +   '<div style="font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:8px;">' + t('synthese.stufenRtiDesc.' + def.key, def.rtiDesc) + '</div>'
                         +   '<div class="stufen-needs-list">'
-                        +     '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Stärkste Bedürfnisse · ' + ichLabel + '</div>'
+                        +     '<div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">' + t('synthese.staerksteBeduerfnisse', 'Stärkste Bedürfnisse · {name}').replace('{name}', ichLabel) + '</div>'
                         +     needsHtml
                         +   '</div>'
                         + '</div>'
@@ -838,8 +838,8 @@
                 }).join('');
 
                 var subtitle = hasPartner
-                    ? 'ICH × PARTNER — Ø-Bedürfnisstärke je Stufe (0–100)'
-                    : 'DU — Bedürfnisstärke je Stufe (0–100)';
+                    ? t('synthese.stufenSubtitleBoth', 'ICH × PARTNER — Ø-Bedürfnisstärke je Stufe (0–100)')
+                    : t('synthese.stufenSubtitleIch', 'DU — Bedürfnisstärke je Stufe (0–100)');
 
                 var top5Html = renderTop5Section(ichNeeds, ichArchetype);
 
@@ -848,7 +848,7 @@
                     + '<div class="synthese-section-header">'
                     +   '<span class="synthese-section-icon">🧬</span>'
                     +   '<div>'
-                    +     '<div class="synthese-section-title">Evolutionäre Bedürfnisstärke</div>'
+                    +     '<div class="synthese-section-title">' + t('synthese.evolutionTitle', 'Evolutionäre Bedürfnisstärke') + '</div>'
                     +     '<div class="synthese-section-subtitle">' + subtitle + '</div>'
                     +   '</div>'
                     + '</div>'
