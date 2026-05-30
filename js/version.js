@@ -18,7 +18,7 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-05-30',
-    mergeTime: '11:06',
+    mergeTime: '13:28',
 
     // Git Commit-Anzahl
     commitCount: 3270,

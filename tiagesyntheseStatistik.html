@@ -664,9 +664,9 @@
          */
         function formatLabel(needId) {
             if (typeof BeduerfnisKatalog !== 'undefined' && BeduerfnisKatalog.beduerfnisse[needId]) {
-                return BeduerfnisKatalog.beduerfnisse[needId].label;
+                const need = BeduerfnisKatalog.beduerfnisse[needId];
+                return t('beduerfnisKatalog.needs.' + need.key, need.label);
             }
-            // Fallback: ID formatieren
             return needId.replace('#B', 'B').replace(/_/g, ' ');
         }
 

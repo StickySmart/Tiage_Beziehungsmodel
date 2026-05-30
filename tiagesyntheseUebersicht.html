@@ -1949,7 +1949,7 @@
                 var val = ichNeeds && ichNeeds[needId] !== undefined ? ichNeeds[needId]
                         : baseProfil ? baseProfil[needId] : 50;
                 if (val === undefined) val = 50;
-                return { id: needId, label: catalog[needId].label, value: val,
+                return { id: needId, key: catalog[needId].key, label: catalog[needId].label, value: val,
                          stufe: catalog[needId].stufe, icon: catalog[needId].icon };
             });
             needsList.sort(function(a, b) { return b.value - a.value; });
@@ -1993,7 +1993,7 @@
                 var color = _U_FARBEN[n.stufe] || '#888';
                 var safeKey = n.id.replace('#', '');
                 var imgHtml = imgSrc
-                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:auto;display:block;">'
+                    ? '<img src="' + imgSrc + '" alt="' + t('beduerfnisKatalog.needs.' + n.key, n.label) + '" loading="lazy" style="width:100%;height:auto;display:block;">'
                     : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
                 var badgeHtml = '';
                 if (n.id === bestMatchId) {
@@ -2008,7 +2008,7 @@
                 return '<div id="u-top5-card-' + safeKey + '" onclick="toggleUebersichtWisdom(\'' + n.id + '\',' + n.value + ')" style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;position:relative;" title="' + t('synthese.clickWisdomTitle', 'Klick: Tiage-Weisheit anzeigen') + '">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
-                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
+                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + t('beduerfnisKatalog.needs.' + n.key, n.label) + '</div>'
                     +   '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">' + Math.round(n.value) + '</div>'
                     + '</div>'
                     + badgeHtml

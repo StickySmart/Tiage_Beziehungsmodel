@@ -353,7 +353,7 @@
                 var val = ichNeeds[needId];
                 if (val === undefined && baseNeeds) val = baseNeeds[needId];
                 if (val === undefined) val = 50;
-                return { id: needId, label: catalog[needId].label, value: val,
+                return { id: needId, key: catalog[needId].key, label: catalog[needId].label, value: val,
                          stufe: catalog[needId].stufe, icon: catalog[needId].icon };
             });
             needsList.sort(function(a, b) { return b.value - a.value; });
@@ -366,13 +366,13 @@
                 var color = STUFEN_FARBEN[n.stufe] || '#888';
                 var safeKey = n.id.replace('#', '');
                 var imgHtml = imgSrc
-                    ? '<img src="' + imgSrc + '" alt="' + n.label + '" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;pointer-events:none;">'
+                    ? '<img src="' + imgSrc + '" alt="' + t('beduerfnisKatalog.needs.' + n.key, n.label) + '" loading="lazy" style="width:100%;height:80px;object-fit:cover;border-radius:6px 6px 0 0;pointer-events:none;">'
                     : '<div style="width:100%;height:80px;background:rgba(255,255,255,0.05);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">' + (n.icon || '⭐') + '</div>';
                 return '<div id="top5-card-' + safeKey + '" data-need-id="' + n.id + '" data-need-val="' + Math.round(n.value) + '" data-stufe-color="' + color + '"'
                     + ' style="flex:1;min-width:0;background:rgba(20,20,30,0.8);border:1.5px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;cursor:pointer;transition:border 0.2s,box-shadow 0.2s;" onclick="toggleEvoWisdom(\'' + n.id + '\',' + Math.round(n.value) + ')">'
                     + imgHtml
                     + '<div style="padding:6px 8px;">'
-                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.label + '</div>'
+                    +   '<div style="font-size:10px;font-weight:700;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + t('beduerfnisKatalog.needs.' + n.key, n.label) + '</div>'
                     +   '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">' + Math.round(n.value) + '</div>'
                     + '</div>'
                     + '</div>';
@@ -432,6 +432,7 @@
 
                 results.push({
                     id: needId,
+                    key: bed.key,
                     label: bed.label || needId,
                     expected: displayExpected,
                     actual: actualValue,
@@ -481,7 +482,7 @@
                     deltaHtml = '<span class="stufen-need-delta" style="color:rgba(255,255,255,0.2);">–</span>';
                 }
                 return '<div class="stufen-need-row">'
-                    + '<span class="stufen-need-label">' + n.label + '</span>'
+                    + '<span class="stufen-need-label">' + t('beduerfnisKatalog.needs.' + n.key, n.label) + '</span>'
                     + '<div class="stufen-need-bar-wrap"><div class="stufen-need-bar-fill" style="width:' + barWidth + '%;background:' + color + ';opacity:0.6;"></div></div>'
                     + '<span class="stufen-need-val">' + Math.round(val) + (n.actual !== undefined && n.expected !== undefined ? '<br><span style="font-size:9px;color:rgba(255,255,255,0.22);">Ø ' + Math.round(n.expected) + '</span>' : '') + '</span>'
                     + deltaHtml
@@ -584,7 +585,7 @@
                 }
                 var html = '<div class="synthese-section" style="animation:fadeIn 0.25s ease;">';
                 if (imgSrc) {
-                    html += '<img src="' + imgSrc + '" alt="' + (need ? need.label : needId) + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;">';
+                    html += '<img src="' + imgSrc + '" alt="' + (need ? t('beduerfnisKatalog.needs.' + need.key, need.label) : needId) + '" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;">';
                 } else {
                     html += '<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:0.3;">' + (need && need.icon ? need.icon : '⭐') + '</div>';
                 }
@@ -641,7 +642,7 @@
                 if (need && need.stufe) {
                     html += '<div style="font-size:10px;font-weight:600;color:' + color + ';background:' + color + '22;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px;">' + (STUFEN_LABELS[need.stufe] || '') + '</div>';
                 }
-                html += '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">' + (need ? need.label : needId) + '</div>';
+                html += '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">' + (need ? t('beduerfnisKatalog.needs.' + need.key, need.label) : needId) + '</div>';
                 html += '<div style="font-size:12px;color:rgba(255,255,255,0.45);">' + kartenName + '</div>';
                 html += '</div></div>';
                 if (v.reflexion) {

@@ -2369,8 +2369,9 @@ const AttributeSummaryCard = (function() {
             .filter(need => shouldShowNeed(need.id))
             .map(need => ({
                 id: need.id,
+                stringKey: need.stringKey,
                 value: need.value,
-                label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
+                label: `${need.id} ${_t('beduerfnisKatalog.needs.' + need.stringKey, need.label)}`
             }));
 
         // Zähle Gesamt vor dem Filtern
