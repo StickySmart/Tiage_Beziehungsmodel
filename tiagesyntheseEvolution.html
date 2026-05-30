@@ -382,8 +382,8 @@
                 + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);">'
                 +   '<span style="font-size:20px;">⭐</span>'
                 +   '<div>'
-                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">Top-5 Bedürfnisse</div>'
-                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Klicke bis zu 5 mal das Bild um mehr zu erfahren</div>'
+                +     '<div style="font-size:15px;font-weight:600;color:var(--text-primary);">' + t('synthese.top5Title', 'Top-5 Bedürfnisse') + '</div>'
+                +     '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">' + t('synthese.top5Subtitle', 'Klicke bis zu 5 mal das Bild um mehr zu erfahren') + '</div>'
                 +   '</div>'
                 + '</div>'
                 + '<div id="evo-top5-cards" style="display:flex;gap:8px;">' + cardsHtml + '</div>'
@@ -613,7 +613,7 @@
                     if (!trad[tradItem.key]) return;
                     hasTrad = true;
                     html += '<div style="background:rgba(255,255,255,0.02);border-radius:6px;padding:8px 10px;">'
-                          +   '<div style="font-size:11px;font-weight:600;color:' + tradItem.col + ';margin-bottom:4px;">' + tradItem.icon + ' ' + tradItem.label + '</div>'
+                          +   '<div style="font-size:11px;font-weight:600;color:' + tradItem.col + ';margin-bottom:4px;">' + tradItem.icon + ' ' + t('synthese.trad' + tradItem.key.charAt(0).toUpperCase() + tradItem.key.slice(1), tradItem.label) + '</div>'
                           +   '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + trad[tradItem.key] + '</div>'
                           + '</div>';
                 });
