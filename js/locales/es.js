@@ -1549,6 +1549,28 @@ var TiageLocale_ES = {
                 beziehung: 'A este nivel, dos personas se encuentran como seres conscientes con su propia profundidad. Los valores compartidos, el crecimiento mutuo y el sentido compartido hacen que las relaciones sean duraderas y vivas.',
                 frage: '¿Qué da verdaderamente sentido a tu vida — y a esta relación?'
             }
+        },
+        popupFaehigkeit: 'Habilidad',
+        popupSynonym: 'Sinónimos',
+        popupStrategie: 'Estrategia',
+        popupStufe: 'Nivel',
+        needDetails: {
+            wohlbefinden:    { fae: "Autocuidado",              syn: "Integridad, salud, forma física",                  str: "Cualquier otra necesidad que se satisfaga contribuye al bienestar." },
+            sicherheit:      { fae: "Autoprotección",           syn: "Estabilidad, protección, apoyo, lealtad, fidelidad", str: "Una casa, ropa, contratos, acuerdos…" },
+            leichtigkeit:    { fae: "Ahorro de energía",        syn: "Ahorro de energía, sencillez, armonía",            str: "El orden, los hábitos, las vacaciones, el consumo de medios…" },
+            orientierung:    { fae: "Percepción",               syn: "Claridad, estructura, orden, reglas, guía",        str: "Un mapa, un reloj, un organigrama, una conversación…" },
+            wirksamkeit:     { fae: "Capacidad de acción",      syn: "Influencia, poder, soberanía",                     str: "Cualquier intervención activa contribuye a la eficacia." },
+            freiheit:        { fae: "Toma de decisiones",       syn: "Autonomía, autodeterminación, independencia",      str: "Cada decisión tomada con autonomía alimenta la libertad." },
+            intensitaet:     { fae: "Sensación",                syn: "Vitalidad, pasión, sensualidad, placer",           str: "Cualquier experiencia sensorial o emocional intensa alimenta esa intensidad." },
+            entwicklung:     { fae: "Aprendizaje",              syn: "Crecimiento, despliegue, aprendizaje",             str: "Un seminario, un viaje, una aventura, una experiencia consciente." },
+            gemeinschaft:    { fae: "Interacción social",       syn: "Sociedad, pertenencia, familia, clan, grupo",      str: "Rituales comunes, reuniones, normas, nombres…" },
+            anerkennung:     { fae: "Autoestima",               syn: "Apreciación, respeto, importancia, utilidad",      str: "Un elogio, un cumplido, un detalle, una sonrisa…" },
+            gerechtigkeit:   { fae: "Conciencia de valores",    syn: "Equidad, respeto, adecuación, valor igual",        str: "Una queja, una acusación, una denuncia, una venganza…" },
+            verbundenheit:   { fae: "Empatía",                  syn: "Intimidad, seguridad, cercanía, confianza, amor",  str: "Una conversación, experiencias intensas compartidas, sexo…" },
+            selbsterkenntnis:{ fae: "Autorreflexión",           syn: "Conciencia, integración, sabiduría",               str: "Meditación, coaching y terapia, amistad sincera…" },
+            sinn:            { fae: "Intencionalidad",          syn: "Vocación, visión, misión",                         str: "Cualquier acción que enriquezca al mundo en su conjunto alimenta el sentido de la vida." },
+            integritaet:     { fae: "Autorresponsabilidad",     syn: "Veracidad, coherencia, autenticidad, dignidad",    str: "Cada acción que se realiza de acuerdo con los propios valores refuerza la integridad." },
+            selbstentfaltung:{ fae: "Amor propio",              syn: "Ser uno mismo, autorrealización, flujo",           str: "Perfeccionar nuestras propias capacidades y talentos en beneficio del mundo." }
         }
     },
 

@@ -1545,6 +1545,28 @@ var TiageLocale_FR = {
                 beziehung: 'À ce niveau, deux personnes se rencontrent en tant qu\'êtres conscients avec leur propre profondeur. Des valeurs communes, une croissance mutuelle et un sens partagé rendent les relations durablement vivantes.',
                 frage: 'Qu\'est-ce qui donne vraiment un sens à votre vie — et à cette relation ?'
             }
+        },
+        popupFaehigkeit: 'Capacité',
+        popupSynonym: 'Synonymes',
+        popupStrategie: 'Stratégie',
+        popupStufe: 'Niveau',
+        needDetails: {
+            wohlbefinden:    { fae: "Soin de soi",             syn: "Intégrité, santé, forme physique",              str: "Tout autre besoin satisfait contribue au bien-être." },
+            sicherheit:      { fae: "Protection de soi",       syn: "Stabilité, protection, soutien, loyauté, fidélité", str: "Une maison, des vêtements, des contrats, des accords…" },
+            leichtigkeit:    { fae: "Économie d'énergie",      syn: "Économie d'énergie, simplicité, harmonie",      str: "L'ordre, les habitudes, les vacances, la consommation des médias…" },
+            orientierung:    { fae: "Perception",              syn: "Clarté, structure, ordre, règles, guidance",    str: "Une carte, une montre, un organigramme, une conversation…" },
+            wirksamkeit:     { fae: "Capacité d'action",       syn: "Influence, pouvoir, souveraineté",              str: "Toute intervention active renforce l'efficacité." },
+            freiheit:        { fae: "Prise de décision",       syn: "Autonomie, autodétermination, indépendance",    str: "Chaque décision prise en toute autonomie renforce la liberté." },
+            intensitaet:     { fae: "Sensation",               syn: "Vitalité, passion, sensualité, plaisir",        str: "Toute expérience sensorielle ou émotionnelle intense alimente cette intensité." },
+            entwicklung:     { fae: "Apprentissage",           syn: "Croissance, épanouissement, apprentissage",     str: "Un séminaire, un voyage, une aventure, une expérience enrichissante." },
+            gemeinschaft:    { fae: "Interaction sociale",     syn: "Société, appartenance, famille, clan, groupe",  str: "Rituels communs, rassemblements, règles, noms…" },
+            anerkennung:     { fae: "Estime de soi",           syn: "Appréciation, respect, importance, utilité",    str: "Un compliment, une attention, un sourire…" },
+            gerechtigkeit:   { fae: "Conscience des valeurs",  syn: "Équité, respect, adéquation, valeur égale",     str: "Une plainte, une accusation, une dénonciation, une vengeance…" },
+            verbundenheit:   { fae: "Empathie",                syn: "Intimité, sécurité, proximité, confiance, amour", str: "Une conversation, des moments forts partagés, du sexe…" },
+            selbsterkenntnis:{ fae: "Auto-réflexion",          syn: "Conscience, intégration, sagesse",              str: "Méditation, coaching et thérapie, une amitié sincère…" },
+            sinn:            { fae: "Intentionnalité",         syn: "Vocation, vision, mission",                     str: "Toute action qui enrichit le monde dans son ensemble nourrit le sens de la vie." },
+            integritaet:     { fae: "Responsabilité de soi",   syn: "Véracité, cohérence, authenticité, dignité",    str: "Chaque action en accord avec ses propres valeurs renforce l'intégrité." },
+            selbstentfaltung:{ fae: "Amour de soi",            syn: "Devenir soi-même, accomplissement de soi, flow", str: "Le perfectionnement de ses propres capacités et talents pour le bien du monde." }
         }
     },
 

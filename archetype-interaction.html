@@ -1121,7 +1121,7 @@
             <div class="center-column">
                 <!-- Entwicklungsstufen Display (ersetzt R-Faktoren) -->
                 <div class="r-factor-heading" style="text-align: center; margin-bottom: 6px;">
-                    <div style="color: #10B981; font-size: 14px; font-weight: 600;">Entwicklungsstufen</div>
+                    <div style="color: #10B981; font-size: 14px; font-weight: 600;" data-i18n="beduerfnisKatalog.heading">Entwicklungsstufen</div>
                     <div style="color: var(--text-muted); font-size: 10px;" id="rFactorSubtitle">ICH × PARTNER</div>
                 </div>
                 <div class="r-factor-display" id="rFactorDisplay">
@@ -1159,15 +1159,15 @@
                     </div>
                     <div id="cn16-p-bar" style="height:5px;border-radius:3px;margin-bottom:12px;transition:width 0.3s;"></div>
                     <div style="margin-bottom:8px;">
-                        <span style="font-size:10px;font-weight:600;color:#F4A261;text-transform:uppercase;letter-spacing:0.5px;">Fähigkeit</span>
+                        <span style="font-size:10px;font-weight:600;color:#F4A261;text-transform:uppercase;letter-spacing:0.5px;" data-i18n="beduerfnisKatalog.popupFaehigkeit">Fähigkeit</span>
                         <div id="cn16-p-fae" style="font-size:13px;color:#E5E7EB;margin-top:2px;"></div>
                     </div>
                     <div style="margin-bottom:8px;">
-                        <span style="font-size:10px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;">Synonyme</span>
+                        <span style="font-size:10px;font-weight:600;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;" data-i18n="beduerfnisKatalog.popupSynonym">Synonyme</span>
                         <div id="cn16-p-syn" style="font-size:12px;color:#9CA3AF;margin-top:2px;font-style:italic;"></div>
                     </div>
                     <div>
-                        <span style="font-size:10px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Strategie</span>
+                        <span style="font-size:10px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;" data-i18n="beduerfnisKatalog.popupStrategie">Strategie</span>
                         <div id="cn16-p-str" style="font-size:12px;color:#D1D5DB;margin-top:2px;line-height:1.45;"></div>
                     </div>
                 </div>
@@ -1239,13 +1239,13 @@
                         var pp = document.getElementById('cn16-popup');
                         if (!pp) return;
                         document.getElementById('cn16-p-icon').textContent = need.icon;
-                        document.getElementById('cn16-p-id').textContent = need.id + ' · Stufe ' + need.s;
+                        document.getElementById('cn16-p-id').textContent = need.id + ' · ' + _t('beduerfnisKatalog.popupStufe', 'Stufe') + ' ' + need.s;
                         document.getElementById('cn16-p-id').style.color = need.c;
                         document.getElementById('cn16-p-title').textContent = _t('beduerfnisKatalog.needs.' + need.key, need.label);
                         document.getElementById('cn16-p-bar').style.background = 'linear-gradient(90deg,' + need.c + ' ' + v + '%, rgba(255,255,255,0.08) ' + v + '%)';
-                        document.getElementById('cn16-p-fae').textContent = need.fae;
-                        document.getElementById('cn16-p-syn').textContent = need.syn;
-                        document.getElementById('cn16-p-str').textContent = need.str;
+                        document.getElementById('cn16-p-fae').textContent = _t('beduerfnisKatalog.needDetails.' + need.key + '.fae', need.fae);
+                        document.getElementById('cn16-p-syn').textContent = _t('beduerfnisKatalog.needDetails.' + need.key + '.syn', need.syn);
+                        document.getElementById('cn16-p-str').textContent = _t('beduerfnisKatalog.needDetails.' + need.key + '.str', need.str);
                         // Position
                         var rect = event.currentTarget.getBoundingClientRect();
                         var top = Math.max(10, Math.min(rect.top, window.innerHeight - 320));
