@@ -18,7 +18,11 @@ const TiageVersion = {
 
     // Letztes Commit-Datum und -Uhrzeit
     mergeDate: '2026-05-30',
+<<<<<<< HEAD
     mergeTime: '14:49',
+=======
+    mergeTime: '16:50',
+>>>>>>> fa85c383 (fix: bump template_mobile.css cache-buster to force browser reload)
 
     // Git Commit-Anzahl
     commitCount: 3280,
