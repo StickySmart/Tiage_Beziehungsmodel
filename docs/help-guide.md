@@ -33,11 +33,11 @@ Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
 Jede Person gibt ein: **Archetyp** (8 Typen), **Orientierung**, **Dominanz**, **Geschlecht** und **226 Bedürfnisse** (0–100).
 
-### Schritt 2: R-Faktoren berechnen
+### Schritt 2: R-Faktoren berechnen (v4.0)
 
-Pro Person wird aus den 226 Bedürfnissen gemessen: *Wie gut passen deine Bedürfnisse zu deinem Archetyp?*
+Pro Person wird gemessen: *Wie gut passen deine Bedürfnisse zu deinem Archetyp?*
 
-Das Ergebnis sind 4 **R-Faktoren** (Resonanz), die die Kohärenz zwischen deinen Bedürfnissen und dem Archetyp-Ideal beschreiben.
+Die Berechnung basiert auf dem Abgleich deiner Bedürfniswerte mit den Archetyp-Idealwerten – **gewichtet nach den 4 Entwicklungsstufen** (S1–S4). Das Ergebnis sind 4 **R-Faktoren** (Resonanz) pro Person.
 
 ### Schritt 3: Synthese
 
@@ -73,7 +73,7 @@ Wobei:
 
 ```
 rawCompatibility = (O × wO) + (A × wA) + (D × wD) + (G × wG)
-meanR            = (R1 + R2 + R3 + R4) / 4
+meanR            = combineRFactors(R1…R4, ICH und PARTNER)
 ```
 
 Jeder Faktor-Score (O, A, D, G) liegt zwischen 0–100. Die Gewichte (wO, wA, wD, wG) werden aus den Slider-Einstellungen berechnet und summieren sich immer auf 100%.
@@ -97,37 +97,78 @@ Das bedeutet: Wer einen Faktor auf „Sehr wichtig" stellt, beeinflusst damit da
 
 ---
 
-## R-Faktoren (Resonanz)
+## R-Faktoren (Resonanz, v4.0)
 
-Die R-Faktoren messen pro Dimension die Kohärenz zwischen den Bedürfnissen einer Person und dem Archetyp-Ideal:
+Die R-Faktoren messen pro Dimension, wie gut die Bedürfnisse einer Person zum Archetyp-Ideal passen. Die Berechnung erfolgt in zwei Schritten:
+
+### Schritt 1: Individueller R-Wert (pro Person)
+
+Für jedes Bedürfnis im Archetyp-Profil:
 
 ```
-similarity = 1 − (avgAbweichung / 100)
-R          = similarity²
+abweichung = (tatsächlicherWert − Archetyp-Idealwert) / 50
+match      = 1 + abweichung
 ```
 
-| similarity | R-Wert | Bedeutung |
-|-----------|--------|-----------|
-| 1.0 (identisch) | **1.0** | Volle Kohärenz – neutrale Wirkung |
-| 0.9 (10% Abw.) | **0.81** | Schwache Abschwächung |
-| 0.7 (30% Abw.) | **0.49** | Deutliche Abschwächung |
-| 0.5 (50% Abw.) | **0.25** | Starke Abschwächung |
-| 0.0 (100% Abw.) | **0.0** | Komplette Auflösung |
+- `match = 1.0` → Bedürfnis entspricht genau dem Archetyp-Ideal
+- `match > 1.0` → Bedürfnis übersteigt das Archetyp-Ideal (stärkere Ausprägung)
+- `match < 1.0` → Bedürfnis liegt unter dem Archetyp-Ideal
 
-> Die quadratische Formel bestraft Inkohärenz stark: 50% Abweichung halbiert nicht den Score, sondern reduziert ihn auf ein Viertel.
+Anschließend wird ein **Stufen-gewichteter Durchschnitt** gebildet (die 4 Entwicklungsstufen S1–S4 können unterschiedlich stark gewichtet sein):
 
-Die kombinierten R-Faktoren beider Personen fließen als **mittlerer R-Wert** (`meanR`) in die Hauptformel ein.
+```
+avgMatch = Σ(match × Stufengewicht) / Σ(Stufengewicht)
+R        = avgMatch^2.5
+```
+
+Die Potenz 2.5 verstärkt Abweichungen überproportional: kleine Differenzen bleiben klein, große Differenzen fallen stark ins Gewicht.
+
+| avgMatch | R-Wert | Bedeutung |
+|---------|--------|-----------|
+| 1.2 (+20%) | **1.58** | Deutliche Verstärkung |
+| 1.0 (=) | **1.00** | Neutral |
+| 0.8 (−20%) | **0.57** | Deutliche Abschwächung |
+| 0.5 (−50%) | **0.18** | Starke Abschwächung |
+
+### Schritt 2: Kombination beider Personen
+
+Die R-Werte von ICH und PARTNER werden kombiniert und belohnen gleichartige Resonanzprofile:
+
+```
+R_kombiniert = (R_ich + R_partner) / 2 × min(R_ich, R_partner) / max(R_ich, R_partner)
+```
+
+Wenn beide Partner ähnlich hohe R-Werte haben, bleibt der kombinierte R-Wert nahe an ihrem Durchschnitt. Wenn einer deutlich höher ist als der andere, wird der kombinierte Wert reduziert.
 
 ### Resonanz-Verstärkung
 
-Wenn `meanR > 1.0` (beide Partner leben ihren Archetyp kohärent), wird der Score zusätzlich verstärkt:
+Wenn `meanR > 1.0`, wird der finale Score zusätzlich verstärkt:
 
 ```
-boost = (meanR − 1.0) × 0.5
+boost      = (meanR − 1.0) × 0.5
 finalScore = Q × (1 + boost)
 ```
 
-Dies ermöglicht Scores über 100% bei besonders hoher Resonanz.
+Dies ermöglicht Scores über 100% bei besonders hoher gemeinsamer Resonanz.
+
+---
+
+## Die 16 Entwicklungsstufen-Bedürfnisse (V4)
+
+Das **Entwicklungsstufen-System** basiert auf 16 maßgeblichen Bedürfnissen (#B1–#B16), die in 4 Stufen organisiert sind:
+
+| Stufe | Name | Bedürfnisse |
+|-------|------|-------------|
+| **S1** Fundament | Existenz & Sicherheit | Wohlbefinden · Sicherheit · Leichtigkeit · Orientierung |
+| **S2** Entfaltung | Kraft & Ausdruck | Wirksamkeit · Freiheit · Intensität · Entwicklung |
+| **S3** Verbundenheit | Zugehörigkeit & Resonanz | Gemeinschaft · Anerkennung · Gerechtigkeit · Verbundenheit |
+| **S4** Sinn | Identität & Bedeutung | Selbsterkenntnis · Sinn · Integrität · Selbstentfaltung |
+
+Diese 16 Bedürfnisse haben eine **Doppelfunktion**:
+1. Sie definieren das persönliche **Entwicklungsprofil** (im Osho-Karten-Bereich sichtbar)
+2. Ihre Prioritätseinstellung (0/1/2) beeinflusst die **Stufen-Gewichtung** in der R-Faktor-Berechnung
+
+> Die übrigen 210 Bedürfnisse fließen weiterhin in den vollständigen Paar-Bedürfnis-Match (226 Bedürfnisse) ein.
 
 ---
 
@@ -183,16 +224,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 | D (Dominanz) | 100 | Submissiv + Dominant = komplementär |
 | G (Geschlecht) | 100 | Cis Frau × Cis Mann = Match |
 
-### R-Faktoren (aus den Bedürfnisprofilen berechnet)
+### R-Faktoren (kombiniert, aus Bedürfnisprofilen berechnet)
 
-| Dimension | Similarity | R-Wert | Bedeutung |
-|-----------|-----------|--------|-----------|
-| 🧠 R2 Philosophie | 0.89 | **0.80** | Leichte Dissonanz |
-| 🔥 R1 Leben | 1.18 | **1.40** | Starke Resonanz |
-| ⚡ R3 Dynamik | 1.05 | **1.10** | Resonanz |
-| 💚 R4 Identität | 1.14 | **1.30** | Starke Resonanz |
-
-*R-Werte > 1.0 entstehen, wenn die Bedürfnisse des Paares komplementär zum Archetyp-Ideal passen.*
+| Dimension | avgMatch ICH | avgMatch Partner | R kombiniert |
+|-----------|-------------|-----------------|--------------|
+| 🧠 R2 Philosophie | 0.92 | 0.92 | **0.80** |
+| 🔥 R1 Leben | 1.14 | 1.12 | **1.38** |
+| ⚡ R3 Dynamik | 1.04 | 1.04 | **1.11** |
+| 💚 R4 Identität | 1.12 | 1.10 | **1.28** |
 
 ### Berechnung
 
@@ -203,17 +242,15 @@ rawCompatibility = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25)
                  = 18.75 + 25.0 + 25.0 + 25.0
                  = 93.75
 
-meanR = (0.80 + 1.40 + 1.10 + 1.30) / 4
-      = 4.60 / 4
-      = 1.15
+meanR = (0.80 + 1.38 + 1.11 + 1.28) / 4 = 1.14
 
-Q = 93.75 × 1.15 = 107.8
+Q = 93.75 × 1.14 = 106.9
 
-Resonanz-Boost: (1.15 − 1.0) × 0.5 = 0.075
-finalScore = 107.8 × (1 + 0.075) ≈ 116 → 100% (gekappt)
+Resonanz-Boost: (1.14 − 1.0) × 0.5 = 0.07
+finalScore ≈ 106.9 × 1.07 ≈ 114 → 100% (gekappt)
 ```
 
-**Interpretation:** Starke Resonanz in Leben und Identität kompensiert die leichte Dissonanz in Philosophie. Das Paar sollte an ihrer gemeinsamen Beziehungsphilosophie arbeiten.
+**Interpretation:** Starke Resonanz in Leben und Identität verstärkt das Ergebnis. Die leichte Dissonanz in Philosophie zeigt: Das Paar sollte an ihrer gemeinsamen Beziehungsphilosophie arbeiten.
 
 ---
 

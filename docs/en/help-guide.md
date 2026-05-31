@@ -33,11 +33,11 @@ All changes and new features can be found in the [Changelog](../../CHANGELOG.md)
 
 Each person enters: **Archetype** (8 types), **Orientation**, **Dominance**, **Gender** and **226 Needs** (0–100).
 
-### Step 2: Calculate R-Factors
+### Step 2: Calculate R-Factors (v4.0)
 
-Per person, the 226 needs are used to measure: *How well do your needs match your archetype?*
+Per person, the system measures: *How well do your needs match your archetype?*
 
-The result is 4 **R-Factors** (Resonance) that describe the coherence between your needs and the archetype ideal.
+The calculation compares your actual need values against the archetype's ideal profile — **weighted by the 4 development stages** (S1–S4). The result is 4 **R-Factors** (Resonance) per person.
 
 ### Step 3: Synthesis
 
@@ -73,7 +73,7 @@ Where:
 
 ```
 rawCompatibility = (O × wO) + (A × wA) + (D × wD) + (G × wG)
-meanR            = (R1 + R2 + R3 + R4) / 4
+meanR            = combineRFactors(R1…R4, self and partner)
 ```
 
 Each factor score (O, A, D, G) is between 0–100. The weights (wO, wA, wD, wG) are calculated from the slider settings and always sum to 100%.
@@ -97,37 +97,78 @@ This means: setting a factor to "Very important" has a disproportionately strong
 
 ---
 
-## R-Factors (Resonance)
+## R-Factors (Resonance, v4.0)
 
-The R-factors measure per dimension how coherent a person's needs are with their archetype ideal:
+The R-factors measure per dimension how coherent a person's needs are with their archetype ideal. The calculation has two steps:
+
+### Step 1: Individual R-value (per person)
+
+For each need in the archetype's expected profile:
 
 ```
-similarity = 1 − (avgDeviation / 100)
-R          = similarity²
+deviation = (actualValue − archetypeIdealValue) / 50
+match     = 1 + deviation
 ```
 
-| similarity | R-Value | Meaning |
-|-----------|---------|---------|
-| 1.0 (identical) | **1.0** | Full coherence – neutral effect |
-| 0.9 (10% dev.) | **0.81** | Slight reduction |
-| 0.7 (30% dev.) | **0.49** | Noticeable reduction |
-| 0.5 (50% dev.) | **0.25** | Strong reduction |
-| 0.0 (100% dev.) | **0.0** | Complete elimination |
+- `match = 1.0` → need exactly matches the archetype ideal
+- `match > 1.0` → need exceeds the archetype's expected intensity
+- `match < 1.0` → need falls below the archetype's expected intensity
 
-> The quadratic formula penalises incoherence strongly: a 50% deviation does not halve the score — it reduces it to one quarter.
+A **stage-weighted average** is then calculated (the 4 development stages S1–S4 can be weighted differently):
 
-Both partners' R-factors are combined and averaged into a single **mean R value** (`meanR`) for the main formula.
+```
+avgMatch = Σ(match × stageWeight) / Σ(stageWeight)
+R        = avgMatch^2.5
+```
+
+The exponent 2.5 amplifies deviations non-linearly: small differences stay small, large deviations have a strong impact.
+
+| avgMatch | R-Value | Meaning |
+|---------|---------|---------|
+| 1.2 (+20%) | **1.58** | Clear amplification |
+| 1.0 (=) | **1.00** | Neutral |
+| 0.8 (−20%) | **0.57** | Clear reduction |
+| 0.5 (−50%) | **0.18** | Strong reduction |
+
+### Step 2: Combining both partners
+
+The R-values of self and partner are combined, rewarding similar resonance profiles:
+
+```
+R_combined = (R_self + R_partner) / 2 × min(R_self, R_partner) / max(R_self, R_partner)
+```
+
+When both partners have similarly high R-values, the combined R stays close to their average. When one is significantly higher than the other, the combined value is reduced.
 
 ### Resonance Boost
 
-When `meanR > 1.0` (both partners live their archetype coherently), the score receives an additional boost:
+When `meanR > 1.0`, the final score receives an additional boost:
 
 ```
-boost = (meanR − 1.0) × 0.5
+boost      = (meanR − 1.0) × 0.5
 finalScore = Q × (1 + boost)
 ```
 
 This allows scores above 100% when resonance is exceptionally strong.
+
+---
+
+## The 16 Development Stage Needs (V4)
+
+The **development stage system** is based on 16 defining needs (#B1–#B16), organised into 4 stages:
+
+| Stage | Name | Needs |
+|-------|------|-------|
+| **S1** Foundation | Existence & Security | Well-being · Security · Ease · Orientation |
+| **S2** Unfolding | Strength & Expression | Effectiveness · Freedom · Intensity · Development |
+| **S3** Connection | Belonging & Resonance | Community · Recognition · Justice · Connectedness |
+| **S4** Meaning | Identity & Purpose | Self-knowledge · Meaning · Integrity · Self-actualisation |
+
+These 16 needs serve a **dual purpose**:
+1. They define your personal **development profile** (visible in the Osho card section)
+2. Their priority setting (0/1/2) influences the **stage weighting** used in R-factor calculation
+
+> The remaining 210 needs still feed into the full pairwise needs match (226 needs total).
 
 ---
 
@@ -137,8 +178,8 @@ The **needs match** shows the weighted overlap across all 226 needs:
 
 ```
 For EACH need:
-    similarity = 100 − |value person 1 − value person 2|
-    weight     = (value person 1 + value person 2) / 2
+    similarity   = 100 − |value person 1 − value person 2|
+    weight       = (value person 1 + value person 2) / 2
     contribution = similarity × weight
 
 Total score = Σ(contribution) / Σ(weight)
@@ -183,16 +224,14 @@ Total score = Σ(contribution) / Σ(weight)
 | D (Dominance) | 100 | Submissive + Dominant = complementary |
 | G (Gender) | 100 | Cis Woman × Cis Man = Match |
 
-### R-Factors (calculated from needs profiles)
+### R-Factors (combined, from needs profiles)
 
-| Dimension | Similarity | R-Value | Meaning |
-|-----------|-----------|---------|---------|
-| 🧠 R2 Philosophy | 0.89 | **0.80** | Slight dissonance |
-| 🔥 R1 Life | 1.18 | **1.40** | Strong resonance |
-| ⚡ R3 Dynamics | 1.05 | **1.10** | Resonance |
-| 💚 R4 Identity | 1.14 | **1.30** | Strong resonance |
-
-*R-values above 1.0 arise when the pair's needs complement the archetype ideal.*
+| Dimension | avgMatch Self | avgMatch Partner | R combined |
+|-----------|--------------|-----------------|------------|
+| 🧠 R2 Philosophy | 0.92 | 0.92 | **0.80** |
+| 🔥 R1 Life | 1.14 | 1.12 | **1.38** |
+| ⚡ R3 Dynamics | 1.04 | 1.04 | **1.11** |
+| 💚 R4 Identity | 1.12 | 1.10 | **1.28** |
 
 ### Calculation
 
@@ -203,17 +242,15 @@ rawCompatibility = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25)
                  = 18.75 + 25.0 + 25.0 + 25.0
                  = 93.75
 
-meanR = (0.80 + 1.40 + 1.10 + 1.30) / 4
-      = 4.60 / 4
-      = 1.15
+meanR = (0.80 + 1.38 + 1.11 + 1.28) / 4 = 1.14
 
-Q = 93.75 × 1.15 = 107.8
+Q = 93.75 × 1.14 = 106.9
 
-Resonance boost: (1.15 − 1.0) × 0.5 = 0.075
-finalScore = 107.8 × (1 + 0.075) ≈ 116 → 100% (capped)
+Resonance boost: (1.14 − 1.0) × 0.5 = 0.07
+finalScore ≈ 106.9 × 1.07 ≈ 114 → 100% (capped)
 ```
 
-**Interpretation:** Strong resonance in Life and Identity compensates for the slight dissonance in Philosophy. The couple should work on developing a shared relationship philosophy.
+**Interpretation:** Strong resonance in Life and Identity amplifies the result. The slight dissonance in Philosophy signals that the couple should work on developing a shared relationship philosophy.
 
 ---
 
