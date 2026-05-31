@@ -24,65 +24,110 @@ Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
 ```
 ┌─────────────────┐     ┌─────────────────────┐     ┌─────────────────┐
-│  1. EINGABE     │ ──► │  2. ABWEICHUNG      │ ──► │  3. SYNTHESE    │
-│  (pro Person)   │     │  (pro Person)       │     │  (Paar-Match)   │
+│  1. EINGABE     │ ──► │  2. R-FAKTOREN      │ ──► │  3. SYNTHESE    │
+│  (pro Person)   │     │  (aus Bedürfnissen) │     │  (Paar-Match)   │
 └─────────────────┘     └─────────────────────┘     └─────────────────┘
 ```
 
 ### Schritt 1: Eingabe
 
-Jede Person gibt ein: **Archetyp** (8 Typen), **Orientierung**, **Dominanz**, **Geschlecht** und **226 Bedürfnisse** (0-100).
+Jede Person gibt ein: **Archetyp** (8 Typen), **Orientierung**, **Dominanz**, **Geschlecht** und **226 Bedürfnisse** (0–100).
 
-### Schritt 2: Archetyp-Abweichung
+### Schritt 2: R-Faktoren berechnen
 
-Pro Person wird geprüft: *Wie gut passen deine Bedürfnisse zu deinem Archetyp?*
+Pro Person wird aus den 226 Bedürfnissen gemessen: *Wie gut passen deine Bedürfnisse zu deinem Archetyp?*
 
-Das Ergebnis sind 4 **R-Faktoren** (Resonanz), die messen, wie kohärent du deinen Archetyp lebst.
+Das Ergebnis sind 4 **R-Faktoren** (Resonanz), die die Kohärenz zwischen deinen Bedürfnissen und dem Archetyp-Ideal beschreiben.
 
 ### Schritt 3: Synthese
 
 Die R-Faktoren beider Personen fließen in die Kompatibilitätsberechnung ein:
 
-1. **Lifestyle-Filter** – K.O.-Kriterien prüfen (z.B. Kinderwunsch)
-2. **Faktor-Scores** – Matrix-basierte Kompatibilität pro Faktor
+1. **Lifestyle-Filter** – K.O.-Kriterien prüfen (z.B. Kinderwunsch, Lebensform)
+2. **Faktor-Scores** – Archetypen-Matrix-Kompatibilität pro Faktor
 3. **Bedürfnis-Match** – Alle 226 Bedürfnisse vergleichen
-4. **Finale Berechnung** – Mit R-Faktoren multiplizieren
+4. **Finale Berechnung** – Gewichtete Faktoren × mittlere Resonanz
 
 ---
 
 ## Die 4 Qualitätsfaktoren
 
-| Faktor | Dimension | R-Faktor | Beschreibung |
-|--------|-----------|----------|--------------|
-| **O** Orientierung | Pathos | R1 🔥 Leben | Körperliche Polarität und Anziehung |
-| **A** Archetyp | Logos | R2 🧠 Philosophie | Beziehungsphilosophie: "Wie wollen wir leben?" |
-| **D** Dominanz | Pathos | R3 ⚡ Dynamik | Energetische Dynamik: Wer führt, wer folgt? |
-| **G** Geschlecht | Pathos | R4 💚 Identität | Gender-Chemie und Identitäts-Resonanz |
+| Faktor | Standard | Dimension | R-Faktor | Beschreibung |
+|--------|----------|-----------|----------|--------------|
+| **O** Orientierung | 25% | Pathos 🔥 | R1 Leben | Körperliche Polarität und Anziehung |
+| **A** Archetyp | 25% | Logos 🧠 | R2 Philosophie | Beziehungsphilosophie: „Wie wollen wir leben?" |
+| **D** Dominanz | 25% | Pathos ⚡ | R3 Dynamik | Energetische Dynamik: Wer führt, wer folgt? |
+| **G** Geschlecht | 25% | Pathos 💚 | R4 Identität | Gender-Chemie und Identitäts-Resonanz |
 
-*Standardgewichtung: je 25%, anpassbar über UI-Slider*
+*Die Gewichtungen sind per UI-Slider anpassbar (0 = Egal / 1 = Normal / 2 = Wichtig / 3 = Sehr wichtig).*
 
-### Hauptformel (v3.1)
+---
 
-```
-Q = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
-```
-
-### R-Faktoren (Resonanz)
-
-Die R-Faktoren messen die Kohärenz zwischen deinen Bedürfnissen und dem Archetyp-Ideal:
+## Hauptformel
 
 ```
-R = avgMatch² (quadratisch mit Komplementär-Mapping)
-similarity = 1 - (avgDiff / 100)
-R = similarity²
-// Wertebereich: 0 - 2 (praktisch 0.8 - 1.3)
+Q = rawCompatibility × meanR
 ```
 
-| R-Wert | Status | Bedeutung |
-|--------|--------|-----------|
-| ≥ 1.05 | ⬆️ Resonanz | Verstärkter Match |
-| 0.95-1.04 | ➡️ Neutral | Durchschnittliche Kohärenz |
-| ≤ 0.95 | ⬇️ Dissonanz | Geschwächter Match |
+Wobei:
+
+```
+rawCompatibility = (O × wO) + (A × wA) + (D × wD) + (G × wG)
+meanR            = (R1 + R2 + R3 + R4) / 4
+```
+
+Jeder Faktor-Score (O, A, D, G) liegt zwischen 0–100. Die Gewichte (wO, wA, wD, wG) werden aus den Slider-Einstellungen berechnet und summieren sich immer auf 100%.
+
+---
+
+## Gewichtungssystem
+
+Jeder Faktor hat eine Wichtigkeitsstufe von **0 bis 3**:
+
+| Einstellung | Bedeutung | Effektiver Anteil (Beispiel) |
+|-------------|-----------|------------------------------|
+| **0 – Egal** | Faktor wird ignoriert | 0% |
+| **1 – Normal** | Standardgewicht | 25% (wenn alle = 1) |
+| **2 – Wichtig** | Doppeltes Gewicht | ~44% (wenn dieser = 2, alle anderen = 1) |
+| **3 – Sehr wichtig** | Vierfaches Gewicht | ~60% (wenn dieser = 3, alle anderen = 1) |
+
+Die Gewichte werden **quadratisch normalisiert**: `w = gew² / Σgew²`
+
+Das bedeutet: Wer einen Faktor auf „Sehr wichtig" stellt, beeinflusst damit das Ergebnis überproportional stark.
+
+---
+
+## R-Faktoren (Resonanz)
+
+Die R-Faktoren messen pro Dimension die Kohärenz zwischen den Bedürfnissen einer Person und dem Archetyp-Ideal:
+
+```
+similarity = 1 − (avgAbweichung / 100)
+R          = similarity²
+```
+
+| similarity | R-Wert | Bedeutung |
+|-----------|--------|-----------|
+| 1.0 (identisch) | **1.0** | Volle Kohärenz – neutrale Wirkung |
+| 0.9 (10% Abw.) | **0.81** | Schwache Abschwächung |
+| 0.7 (30% Abw.) | **0.49** | Deutliche Abschwächung |
+| 0.5 (50% Abw.) | **0.25** | Starke Abschwächung |
+| 0.0 (100% Abw.) | **0.0** | Komplette Auflösung |
+
+> Die quadratische Formel bestraft Inkohärenz stark: 50% Abweichung halbiert nicht den Score, sondern reduziert ihn auf ein Viertel.
+
+Die kombinierten R-Faktoren beider Personen fließen als **mittlerer R-Wert** (`meanR`) in die Hauptformel ein.
+
+### Resonanz-Verstärkung
+
+Wenn `meanR > 1.0` (beide Partner leben ihren Archetyp kohärent), wird der Score zusätzlich verstärkt:
+
+```
+boost = (meanR − 1.0) × 0.5
+finalScore = Q × (1 + boost)
+```
+
+Dies ermöglicht Scores über 100% bei besonders hoher Resonanz.
 
 ---
 
@@ -92,9 +137,9 @@ Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über 
 
 ```
 Für JEDES Bedürfnis:
-    Ähnlichkeit = 100 - |Wert Person 1 - Wert Person 2|
-    Gewicht = (Wert Person 1 + Wert Person 2) / 2
-    Beitrag = Ähnlichkeit × Gewicht
+    Ähnlichkeit = 100 − |Wert Person 1 − Wert Person 2|
+    Gewicht     = (Wert Person 1 + Wert Person 2) / 2
+    Beitrag     = Ähnlichkeit × Gewicht
 
 Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 ```
@@ -103,25 +148,25 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 
 | Kategorie | IDs | Anzahl |
 |-----------|-----|--------|
-| Kernbedürfnisse | #B1-#B88 | 88 |
+| Kernbedürfnisse | #B1–#B88 | 88 |
 | Spezial | #B89 | 1 |
-| Lebensplanung | #B90-#B126 | 37 |
-| Finanzen & Karriere | #B127-#B148 | 22 |
-| Kommunikationsstil | #B149-#B176 | 28 |
-| Soziales Leben | #B177-#B203 | 27 |
-| Intimität & Romantik | #B204-#B208 | 5 |
-| Dynamik erweitert | #B209-#B220 | 12 |
-| Sexuelle Bedürfnisse | #B221-#B224 | 4 |
-| Symmetrische Paare | #B225-#B226 | 2 |
+| Lebensplanung | #B90–#B126 | 37 |
+| Finanzen & Karriere | #B127–#B148 | 22 |
+| Kommunikationsstil | #B149–#B176 | 28 |
+| Soziales Leben | #B177–#B203 | 27 |
+| Intimität & Romantik | #B204–#B208 | 5 |
+| Dynamik erweitert | #B209–#B220 | 12 |
+| Sexuelle Bedürfnisse | #B221–#B224 | 4 |
+| Symmetrische Paare | #B225–#B226 | 2 |
 | **Total** | | **226** |
 
 ### Bewertung
 
 | Score | Bedeutung |
 |-------|-----------|
-| **60-100%** 🟢 | Starke Übereinstimmung |
-| **40-59%** 🟡 | Moderate Übereinstimmung, bewusste Kommunikation wichtig |
-| **0-39%** 🔴 | Geringe Übereinstimmung, fundamentale Unterschiede |
+| **60–100%** 🟢 | Starke Übereinstimmung |
+| **40–59%** 🟡 | Moderate Übereinstimmung – bewusste Kommunikation wichtig |
+| **0–39%** 🔴 | Geringe Übereinstimmung – fundamentale Unterschiede |
 
 ---
 
@@ -138,25 +183,37 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
 | D (Dominanz) | 100 | Submissiv + Dominant = komplementär |
 | G (Geschlecht) | 100 | Cis Frau × Cis Mann = Match |
 
-### R-Faktoren (aus Bedürfnis-Kohärenz)
+### R-Faktoren (aus den Bedürfnisprofilen berechnet)
 
-| Dimension | Match | R-Wert | Status |
-|-----------|-------|--------|--------|
-| 🧠 Philosophie | 30% | **0.8** | ⬇️ Dissonanz |
-| 🔥 Leben | 90% | **1.4** | ⬆️⬆️ Resonanz |
-| ⚡ Dynamik | 60% | **1.1** | ⬆️ Resonanz |
-| 💚 Identität | 80% | **1.3** | ⬆️⬆️ Resonanz |
+| Dimension | Similarity | R-Wert | Bedeutung |
+|-----------|-----------|--------|-----------|
+| 🧠 R2 Philosophie | 0.89 | **0.80** | Leichte Dissonanz |
+| 🔥 R1 Leben | 1.18 | **1.40** | Starke Resonanz |
+| ⚡ R3 Dynamik | 1.05 | **1.10** | Resonanz |
+| 💚 R4 Identität | 1.14 | **1.30** | Starke Resonanz |
+
+*R-Werte > 1.0 entstehen, wenn die Bedürfnisse des Paares komplementär zum Archetyp-Ideal passen.*
 
 ### Berechnung
 
 ```
-Q = (A × w × R2) + (O × w × R1) + (D × w × R3) + (G × w × R4)
-  = (75 × 0.25 × 0.8)  +  (100 × 0.25 × 1.4)  +  (100 × 0.25 × 1.1)  +  (100 × 0.25 × 1.3)
-  =       15.0         +        35.0          +        27.5          +        32.5
-  = 110 → 100%
+Gewichte: wO = wA = wD = wG = 0.25 (alle auf Normal)
+
+rawCompatibility = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25)
+                 = 18.75 + 25.0 + 25.0 + 25.0
+                 = 93.75
+
+meanR = (0.80 + 1.40 + 1.10 + 1.30) / 4
+      = 4.60 / 4
+      = 1.15
+
+Q = 93.75 × 1.15 = 107.8
+
+Resonanz-Boost: (1.15 − 1.0) × 0.5 = 0.075
+finalScore = 107.8 × (1 + 0.075) ≈ 116 → 100% (gekappt)
 ```
 
-**Interpretation:** Starke Resonanz in Leben und Identität kompensiert die Dissonanz in Philosophie. Das Paar sollte an der Beziehungsphilosophie arbeiten.
+**Interpretation:** Starke Resonanz in Leben und Identität kompensiert die leichte Dissonanz in Philosophie. Das Paar sollte an ihrer gemeinsamen Beziehungsphilosophie arbeiten.
 
 ---
 
@@ -169,19 +226,19 @@ Q = (A × w × R2) + (O × w × R1) + (D × w × R3) + (G × w × R4)
 | **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen |
 | **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie |
 | **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern |
-| **RA** | Relationship Anarchist - Ablehnung aller Hierarchien |
-| **LAT** | Living Apart Together - Partnerschaft ohne Zusammenleben |
-| **Aromantisch** | Fokus auf platonische Verbindungen |
+| **RA** | Relationship Anarchist – Ablehnung aller Hierarchien |
+| **LAT** | Living Apart Together – Partnerschaft ohne Zusammenleben |
+| **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
 ---
 
 ## Ergebnis-Interpretation
 
-| Score | Bewertung |
-|-------|-----------|
-| **70-100%** | Gut – Solide Basis vorhanden |
-| **50-69%** | Mittel – Erfordert bewusste Arbeit |
-| **0-49%** | Herausfordernd – Fundamentale Unterschiede |
+| Score | Bewertung | Bedeutung |
+|-------|-----------|-----------|
+| **70–100%** | Gut | Solide Basis vorhanden |
+| **50–69%** | Mittel | Erfordert bewusste Arbeit |
+| **0–49%** | Herausfordernd | Fundamentale Unterschiede |
 
 *Der Qualitätsindex ist ein Orientierungswert. Echte Beziehungen hängen von vielen weiteren Faktoren ab.*
 
@@ -191,12 +248,12 @@ Q = (A × w × R2) + (O × w × R1) + (D × w × R3) + (G × w × R4)
 
 ### Philosophische Grundlagen
 
-- [Tiage-Synthese](theory/tiage-synthesis.md) - Das Gesamtkonzept
-- [Pirsig-Philosophie](theory/pirsig.md) - Metaphysik der Qualität
-- [OSHO-Philosophie](theory/osho.md) - Bewusstsein und Beziehung
-- [Pathos/Logos](theory/pathos-logos.md) - Die 75:25 Gewichtung
-- [Resonanz-Theorie](theory/resonance.md) - Der Meta-Faktor
-- [Die 4 Faktoren](theory/factors.md) - Alle Qualitätsfaktoren im Detail
+- [Tiage-Synthese](theory/tiage-synthesis.md) – Das Gesamtkonzept
+- [Pirsig-Philosophie](theory/pirsig.md) – Metaphysik der Qualität
+- [OSHO-Philosophie](theory/osho.md) – Bewusstsein und Beziehung
+- [Pathos/Logos](theory/pathos-logos.md) – Die 75:25 Gewichtung
+- [Resonanz-Theorie](theory/resonance.md) – Der Meta-Faktor
+- [Die 4 Faktoren](theory/factors.md) – Alle Qualitätsfaktoren im Detail
 
 ### Rechtliches
 
@@ -205,7 +262,7 @@ Q = (A × w × R2) + (O × w × R1) + (D × w × R3) + (G × w × R4)
 
 ### Wissenschaftliche Quellen
 
-- [Research Sources](../profiles/research-sources.md) - Vollständige Quellensammlung
+- [Research Sources](../profiles/docs/research-sources.md) – Vollständige Quellensammlung
 
 ---
 

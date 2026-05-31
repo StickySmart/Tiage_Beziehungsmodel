@@ -18,115 +18,163 @@
 
 All changes and new features can be found in the [Changelog](../../CHANGELOG.md).
 
+---
+
+## Workflow: From Input to Result
+
+```
+┌─────────────────┐     ┌─────────────────────┐     ┌─────────────────┐
+│  1. INPUT       │ ──► │  2. R-FACTORS       │ ──► │  3. SYNTHESIS   │
+│  (per person)   │     │  (from needs)       │     │  (pair match)   │
+└─────────────────┘     └─────────────────────┘     └─────────────────┘
+```
+
+### Step 1: Input
+
+Each person enters: **Archetype** (8 types), **Orientation**, **Dominance**, **Gender** and **226 Needs** (0–100).
+
+### Step 2: Calculate R-Factors
+
+Per person, the 226 needs are used to measure: *How well do your needs match your archetype?*
+
+The result is 4 **R-Factors** (Resonance) that describe the coherence between your needs and the archetype ideal.
+
+### Step 3: Synthesis
+
+Both partners' R-factors feed into the compatibility calculation:
+
+1. **Lifestyle Filter** – Check K.O. criteria (e.g. desire for children, living arrangements)
+2. **Factor Scores** – Archetype-matrix compatibility per factor
+3. **Needs Match** – Compare all 226 needs
+4. **Final Calculation** – Weighted factor scores × mean resonance
+
+---
+
 ## The 4 Quality Factors
 
-| Factor | Weight | Dimension | Description |
-|--------|--------|-----------|-------------|
-| **Orientation Compatibility** | 25% | Pathos | Physical polarity and attraction. OSHO: "Only extremes can truly attract each other." |
-| **Gender Attraction** | 25% | Pathos | Gender chemistry and identity resonance |
-| **Dominance Harmony** | 25% | Pathos | Energetic dynamic. OSHO: "Tao - one energy, two expressions." |
-| **Archetype Match** | 25% | Logos | Fundamental relationship philosophy: "How do we want to live relationships?" |
+| Factor | Default | Dimension | R-Factor | Description |
+|--------|---------|-----------|----------|-------------|
+| **O** Orientation | 25% | Pathos 🔥 | R1 Life | Physical polarity and attraction |
+| **A** Archetype | 25% | Logos 🧠 | R2 Philosophy | Relationship philosophy: "How do we want to live?" |
+| **D** Dominance | 25% | Pathos ⚡ | R3 Dynamics | Energetic dynamic: Who leads, who follows? |
+| **G** Gender | 25% | Pathos 💚 | R4 Identity | Gender chemistry and identity resonance |
 
-## Calculation (v3.1)
+*Weights are adjustable via UI slider (0 = Ignore / 1 = Normal / 2 = Important / 3 = Very important).*
 
-### Main Formula
+---
 
-```
-Q = (A × 0.25 × R_Philosophy) + (O × 0.25 × R_Life) + (D × 0.25 × R_Dynamics) + (G × 0.25 × R_Identity)
-```
-
-**NEW in v3.1:** Each factor is multiplied by its **own resonance dimension**:
-
-| Factor | Weight | × | Resonance Dimension |
-|--------|--------|---|---------------------|
-| A (Archetype) | 25% | × | 🧠 R_Philosophy |
-| O (Orientation) | 25% | × | 🔥 R_Life |
-| D (Dominance) | 25% | × | ⚡ R_Dynamics |
-| G (Gender) | 25% | × | 💚 R_Identity |
-
-Each factor is individually rated on 0-100%. **Resonance (R)** is a meta-factor (0.9-1.1) that modulates how well head (Logos) and heart (Pathos) resonate together.
-
-### Multi-Dimensional Resonance (v3.1)
-
-Resonance is calculated across **4 disjoint dimensions** – no overlap, each need is only counted once:
-
-| Dimension | Emoji | Question | Needs |
-|-----------|-------|----------|-------|
-| **Identity** | 💚 | *Who am I, who are you?* | 10 Needs (Authenticity, Self-expression...) |
-| **Philosophy** | 🧠 | *How do we want to live relationships?* | 17 Needs (Bonding, Autonomy...) |
-| **Life** | 🔥 | *What attracts us?* | 18 Needs (Intimacy, Sexuality...) |
-| **Dynamics** | ⚡ | *Who leads, who follows?* | 18 Needs (Control, Devotion...) |
-
-### Resonance Formula per Dimension
+## Main Formula
 
 ```
-R_dim = 0.9 + (Match_dim × 0.2)
+Q = rawCompatibility × meanR
 ```
 
-**Value range:** R varies between 0.9 (minimal resonance) and 1.1 (maximal resonance).
-
-**Interpretation per dimension:**
-
-| R-Value | Status | Symbol |
-|---------|--------|--------|
-| ≥ 1.05 | Resonance | ⬆️ |
-| 0.97-1.05 | Neutral | ➡️ |
-| ≤ 0.97 | Dissonance | ⬇️ |
-
-> **Important distinction:**
-> - **63 NVC Needs** → Dimensional match in R-values
-> - **30 baseAttributes** → Lifestyle filter (K.O. criteria like desire for children, living arrangement)
-
-### Match Calculation per Dimension
-
-For each dimension, the relevant needs are compared:
+Where:
 
 ```
-Match = Σ(100 - |Value_P1 - Value_P2|) / 100 / n
+rawCompatibility = (O × wO) + (A × wA) + (D × wD) + (G × wG)
+meanR            = (R1 + R2 + R3 + R4) / 4
 ```
 
-*Example: With 80% match in the Philosophy dimension: R_Phil = 0.9 + (0.8 × 0.2) = 1.06 ⬆️*
+Each factor score (O, A, D, G) is between 0–100. The weights (wO, wA, wD, wG) are calculated from the slider settings and always sum to 100%.
 
-### NVC Communication Factor (K)
+---
 
-Nonviolent Communication (NVC) according to Marshall Rosenberg modulates the dimensional coefficient:
+## Weight System
 
-| ME / Partner | high | medium | low |
-|--------------|------|--------|-----|
-| **high**     | 1.0  | 0.75   | 0.35 |
-| **medium**   | 0.75 | 0.5    | 0.2 |
-| **low**      | 0.35 | 0.2    | 0.0 |
+Each factor has an importance level from **0 to 3**:
+
+| Setting | Meaning | Effective share (example) |
+|---------|---------|--------------------------|
+| **0 – Ignore** | Factor is excluded | 0% |
+| **1 – Normal** | Standard weight | 25% (when all = 1) |
+| **2 – Important** | Double weight | ~44% (when this = 2, all others = 1) |
+| **3 – Very important** | Quadruple weight | ~60% (when this = 3, all others = 1) |
+
+Weights are **quadratically normalised**: `w = importance² / Σimportance²`
+
+This means: setting a factor to "Very important" has a disproportionately strong effect on the result.
+
+---
+
+## R-Factors (Resonance)
+
+The R-factors measure per dimension how coherent a person's needs are with their archetype ideal:
 
 ```
-R_final = R_dimensional × (0.85 + K × 0.15)
+similarity = 1 − (avgDeviation / 100)
+R          = similarity²
 ```
 
-### Resonance Override
+| similarity | R-Value | Meaning |
+|-----------|---------|---------|
+| 1.0 (identical) | **1.0** | Full coherence – neutral effect |
+| 0.9 (10% dev.) | **0.81** | Slight reduction |
+| 0.7 (30% dev.) | **0.49** | Noticeable reduction |
+| 0.5 (50% dev.) | **0.25** | Strong reduction |
+| 0.0 (100% dev.) | **0.0** | Complete elimination |
 
-OSHO taught: **Sexual orientation is conditioning, not nature.** The natural human is beyond labels.
+> The quadratic formula penalises incoherence strongly: a 50% deviation does not halve the score — it reduces it to one quarter.
 
-Normally: If orientation is incompatible (e.g., two heterosexual men), this results in 0% orientation score and thus a K.O. criterion.
+Both partners' R-factors are combined and averaged into a single **mean R value** (`meanR`) for the main formula.
 
-The **Resonance Override** enables an exception: If two people resonate on a deep level (R >= 1.05), this connection can transcend conditioned boundaries.
+### Resonance Boost
 
-| Resonance (R) | Override Effect | O_effective |
-|---------------|-----------------|-------------|
-| < 1.05 | No Override | 0% (K.O.) |
-| 1.05 | Weak Opening | 5% |
-| 1.08 | Moderate Opening | 8% |
-| 1.10 | Maximum Opening | 10% |
+When `meanR > 1.0` (both partners live their archetype coherently), the score receives an additional boost:
 
-**Formula:** `O_effective = (R - 1.0) × 100`
+```
+boost = (meanR − 1.0) × 0.5
+finalScore = Q × (1 + boost)
+```
 
-> *"Love knows no boundaries. When two souls truly resonate, all societal categories are just shadows on the wall."* – OSHO
+This allows scores above 100% when resonance is exceptionally strong.
 
-**Note:** This is not a recommendation, but a philosophical possibility that the model depicts. The override shows: Deep resonance can transcend conditioned patterns.
+---
 
-## Calculation Example (v3.1)
+## Needs Match (226 Needs)
+
+The **needs match** shows the weighted overlap across all 226 needs:
+
+```
+For EACH need:
+    similarity = 100 − |value person 1 − value person 2|
+    weight     = (value person 1 + value person 2) / 2
+    contribution = similarity × weight
+
+Total score = Σ(contribution) / Σ(weight)
+```
+
+### Categories
+
+| Category | IDs | Count |
+|----------|-----|-------|
+| Core needs | #B1–#B88 | 88 |
+| Special | #B89 | 1 |
+| Life planning | #B90–#B126 | 37 |
+| Finance & Career | #B127–#B148 | 22 |
+| Communication style | #B149–#B176 | 28 |
+| Social life | #B177–#B203 | 27 |
+| Intimacy & Romance | #B204–#B208 | 5 |
+| Dynamics extended | #B209–#B220 | 12 |
+| Sexual needs | #B221–#B224 | 4 |
+| Symmetric pairs | #B225–#B226 | 2 |
+| **Total** | | **226** |
+
+### Score Interpretation
+
+| Score | Meaning |
+|-------|---------|
+| **60–100%** 🟢 | Strong match |
+| **40–59%** 🟡 | Moderate match – conscious communication important |
+| **0–39%** 🔴 | Low match – fundamental differences |
+
+---
+
+## Calculation Example
 
 **Duo (Cis Woman, Submissive, Hetero) × Duo-Flex (Cis Man, Dominant, Hetero)**
 
-### Step 1: Factor Scores
+### Factor Scores
 
 | Factor | Value | Reason |
 |--------|-------|--------|
@@ -135,66 +183,77 @@ The **Resonance Override** enables an exception: If two people resonate on a dee
 | D (Dominance) | 100 | Submissive + Dominant = complementary |
 | G (Gender) | 100 | Cis Woman × Cis Man = Match |
 
-### Step 2: Dimensional Resonance (assumed)
+### R-Factors (calculated from needs profiles)
 
-| Dimension | Match | R-Value | Status |
-|-----------|-------|---------|--------|
-| 🧠 R_Philosophy | 30% | 0.9 + (0.3 × 0.2) = **0.96** | ⬇️ Dissonance |
-| 🔥 R_Life | 90% | 0.9 + (0.9 × 0.2) = **1.08** | ⬆️ Resonance |
-| ⚡ R_Dynamics | 60% | 0.9 + (0.6 × 0.2) = **1.02** | ➡️ Neutral |
-| 💚 R_Identity | 80% | 0.9 + (0.8 × 0.2) = **1.06** | ⬆️ Resonance |
+| Dimension | Similarity | R-Value | Meaning |
+|-----------|-----------|---------|---------|
+| 🧠 R2 Philosophy | 0.89 | **0.80** | Slight dissonance |
+| 🔥 R1 Life | 1.18 | **1.40** | Strong resonance |
+| ⚡ R3 Dynamics | 1.05 | **1.10** | Resonance |
+| 💚 R4 Identity | 1.14 | **1.30** | Strong resonance |
 
-### Step 3: Dimensional Multiplication (v3.1)
+*R-values above 1.0 arise when the pair's needs complement the archetype ideal.*
+
+### Calculation
 
 ```
-Q = (A × w_A × R_Phil) + (O × w_O × R_Life) + (D × w_D × R_Dyn) + (G × w_G × R_Ident)
+Weights: wO = wA = wD = wG = 0.25 (all set to Normal)
 
-Q = (75 × 0.15 × 0.96) +     = 10.8  🧠
-    (100 × 0.40 × 1.08) +    = 43.2  🔥
-    (100 × 0.20 × 1.02) +    = 20.4  ⚡
-    (100 × 0.25 × 1.06)      = 26.5  💚
-    ─────────────────────────────────
-    finalScore               = 101 → 100%
+rawCompatibility = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25)
+                 = 18.75 + 25.0 + 25.0 + 25.0
+                 = 93.75
+
+meanR = (0.80 + 1.40 + 1.10 + 1.30) / 4
+      = 4.60 / 4
+      = 1.15
+
+Q = 93.75 × 1.15 = 107.8
+
+Resonance boost: (1.15 − 1.0) × 0.5 = 0.075
+finalScore = 107.8 × (1 + 0.075) ≈ 116 → 100% (capped)
 ```
 
-**Comparison with Legacy (baseScore × R_total):**
-- baseScore = 11.25 + 40 + 20 + 25 = 96.25
-- Legacy: 96.25 × 1.03 = **99%**
-- v3.1: **100%** (dimensional resonance rewards strong match in O, D, G)
+**Interpretation:** Strong resonance in Life and Identity compensates for the slight dissonance in Philosophy. The couple should work on developing a shared relationship philosophy.
+
+---
 
 ## The 8 Archetypes
 
 | Archetype | Description |
 |-----------|-------------|
-| **Single** | Autonomous life without primary relationship |
+| **Single** | Autonomous life without a primary relationship |
 | **Duo** | Monogamous partnership with exclusivity |
 | **Duo-Flex** | Primary relationship with agreed openings |
 | **Solopoly** | Multiple equal relationships, focus on autonomy |
 | **Polyamorous** | Deep emotional bonds with multiple partners |
-| **RA** | Relationship Anarchist - Rejection of all relationship hierarchies |
-| **LAT** | Living Apart Together - Committed partnership without cohabitation |
+| **RA** | Relationship Anarchist – rejection of all relationship hierarchies |
+| **LAT** | Living Apart Together – committed partnership without cohabitation |
 | **Aromantic** | Focus on platonic connections without romantic component |
+
+---
 
 ## Result Interpretation
 
 | Score | Rating | Meaning |
 |-------|--------|---------|
-| **70-100%** | Good | Solid foundation present |
-| **50-69%** | Medium | Requires conscious effort |
-| **0-49%** | Challenging | Fundamental differences |
+| **70–100%** | Good | Solid foundation present |
+| **50–69%** | Medium | Requires conscious effort |
+| **0–49%** | Challenging | Fundamental differences |
 
 *The quality index is a guideline value. Real relationships depend on many other factors.*
+
+---
 
 ## Further Documentation
 
 ### Philosophical Foundations
 
-- [Tiage Synthesis](../theory/en/tiage-synthesis.md) - The overall concept
-- [Pirsig Philosophy](../theory/en/pirsig.md) - Metaphysics of Quality
-- [OSHO Philosophy](../theory/en/osho.md) - Consciousness and Relationship
-- [Pathos/Logos](../theory/en/pathos-logos.md) - The 75:25 weighting
-- [Resonance Theory](../theory/en/resonance.md) - The meta-factor
-- [The 4 Factors](../theory/en/factors.md) - All quality factors in detail
+- [Tiage Synthesis](../theory/en/tiage-synthesis.md) – The overall concept
+- [Pirsig Philosophy](../theory/en/pirsig.md) – Metaphysics of Quality
+- [OSHO Philosophy](../theory/en/osho.md) – Consciousness and Relationship
+- [Pathos/Logos](../theory/en/pathos-logos.md) – The 75:25 weighting
+- [Resonance Theory](../theory/en/resonance.md) – The meta-factor
+- [The 4 Factors](../theory/en/factors.md) – All quality factors in detail
 
 ### Legal
 
@@ -203,7 +262,9 @@ Q = (75 × 0.15 × 0.96) +     = 10.8  🧠
 
 ### Scientific Sources
 
-- [Research Sources](../../profiles/docs/en/research-sources.md) - Complete source collection
+- [Research Sources](../../profiles/docs/research-sources.md) – Complete source collection
+
+---
 
 ## Contact
 
