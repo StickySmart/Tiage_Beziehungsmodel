@@ -35,6 +35,8 @@ const OshoZenTextGenerator = (function() {
 
     // Tracks which Stufe modal is currently open (null = closed)
     let _activeStufeNr = null;
+    // Tracks the last need highlighted via highlightStufeForNeed (restored after modal close)
+    let _lastHighlightedNeedId = null;
 
     // ═══════════════════════════════════════════════════════════════════════════
     // DATEN LADEN
@@ -1298,6 +1300,18 @@ const OshoZenTextGenerator = (function() {
         };
     }
 
+    function _closeStufeModal() {
+        var modalEl = document.getElementById('osho-stufe-modal');
+        if (modalEl) modalEl.remove();
+        document.body.style.overflow = '';
+        _activeStufeNr = null;
+        if (_lastHighlightedNeedId) {
+            highlightStufeForNeed(_lastHighlightedNeedId);
+        } else {
+            _resetStufeCards();
+        }
+    }
+
     function _resetStufeCards() {
         [1, 2, 3, 4].forEach(function(n) {
             var card = document.getElementById('osho-stufe-card-' + n);
@@ -1332,6 +1346,7 @@ const OshoZenTextGenerator = (function() {
     }
 
     function highlightStufeForNeed(needId) {
+        _lastHighlightedNeedId = needId || null;
         if (!needId) { _resetStufeCards(); return; }
         var targetStufe = null;
         [1, 2, 3, 4].forEach(function(sn) {
@@ -1512,7 +1527,7 @@ const OshoZenTextGenerator = (function() {
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:flex-start;justify-content:center;background:rgba(0,0,0,0.8);overflow-y:auto;padding:20px 12px;';
         modal.innerHTML = `
             <div style="background:#1a1a2e;border:1px solid ${color}50;border-radius:14px;max-width:500px;width:100%;padding:20px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,0.7);">
-                <button onclick="document.getElementById('${modalId}').remove();document.body.style.overflow='';OshoZenTextGenerator._resetStufeCards();"
+                <button onclick="OshoZenTextGenerator._closeStufeModal();"
                     style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.08);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
 
                 <!-- Header -->
@@ -1579,7 +1594,7 @@ const OshoZenTextGenerator = (function() {
                 </div>` : ''}
             </div>`;
 
-        function _closeModal() { modal.remove(); document.body.style.overflow = ''; _resetStufeCards(); _activeStufeNr = null; }
+        function _closeModal() { _closeStufeModal(); }
 
         modal.addEventListener('click', function(e) { if (e.target === modal) _closeModal(); });
 
@@ -1646,6 +1661,7 @@ const OshoZenTextGenerator = (function() {
         closeLightbox: closeLightbox,
         showStufeModal: showStufeModal,
         _resetStufeCards: _resetStufeCards,
+        _closeStufeModal: _closeStufeModal,
         highlightStufeForNeed: highlightStufeForNeed,
 
         // Hilfsfunktionen
