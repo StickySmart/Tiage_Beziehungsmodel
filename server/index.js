@@ -71,7 +71,13 @@ app.use(cors());
 app.use(express.json());
 
 // Static Files — serve project root for local testing (HTML, JS, CSS, JSON)
-app.use(express.static(join(__dirname, '..')));
+app.use(express.static(join(__dirname, '..'), {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+    }
+}));
 
 // Request-Logging (Debug)
 app.use((req, res, next) => {
