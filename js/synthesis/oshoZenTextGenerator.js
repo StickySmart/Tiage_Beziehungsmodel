@@ -664,17 +664,12 @@ const OshoZenTextGenerator = (function() {
             });
 
         } else {
-            // Schließen: alle Items wieder anzeigen, collapsed
-            items.forEach(function(other, i) {
-                other.style.display = 'block';
-                const otherContent = other.querySelector('.osho-zen-item-content');
-                const otherToggle = other.querySelector('.osho-zen-toggle');
-                const otherHeader = other.querySelector('.osho-zen-item-header');
-                if (otherContent) otherContent.style.display = 'none';
-                if (otherToggle) otherToggle.textContent = '▶';
-                other.classList.remove('expanded');
-                if (otherHeader) { otherHeader.style.borderLeft = ''; otherHeader.style.background = ''; }
-            });
+            // Schließen: dieses Item vollständig ausblenden, alle anderen bleiben wie sie sind
+            item.style.display = 'none';
+            content.style.display = 'none';
+            toggle.textContent = '▶';
+            item.classList.remove('expanded');
+            if (header) { header.style.borderLeft = ''; header.style.background = ''; }
         }
     }
 
